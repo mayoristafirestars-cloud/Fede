@@ -1,0 +1,27 @@
+venv/
+__pycache__/
+*.pyc
+*.pyo
+
+# Bases de datos — NUNCA commitear
+*.db
+*.sqlite
+*.sqlite3
+*.db-journal
+*.db-wal
+*.db-shm
+
+# Credenciales
+.env
+.env.*
+secrets/
+*-service-account*.json
+*.pem
+
+# Varios
+.DS_Store
+data/csv_originales/
+*.zip
+
+# Backups locales que se generan al correr scripts
+/tmp-backups/

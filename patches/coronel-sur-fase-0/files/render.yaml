@@ -1,0 +1,63 @@
+services:
+  - type: web
+    name: coronel-sur
+    runtime: python
+    pythonVersion: "3.11"
+    plan: starter               # USD 7/mes, siempre activo. El free duerme tras 15min.
+    region: oregon              # más cercana de las opciones de Render a AR
+    buildCommand: pip install -r requirements.txt
+    startCommand: cd backend && uvicorn main:app --host 0.0.0.0 --port $PORT
+    healthCheckPath: /health
+    autoDeploy: true
+
+    # Disco persistente. La DB vive acá para sobrevivir deploys.
+    # El código de database.py detecta /data y lo usa automáticamente.
+    disk:
+      name: coronel-sur-data
+      mountPath: /data
+      sizeGB: 1
+
+    envVars:
+      - key: PYTHON_VERSION
+        value: "3.11.9"
+
+      # Fuerza a la app a usar el disco persistente (aunque el código
+      # lo detecta solo, lo seteamos explícito por claridad).
+      - key: DB_PATH
+        value: /data/coronel_sur.db
+
+      # --- Secrets: se setean a mano desde la UI de Render ---
+      # (Dashboard > coronel-sur > Environment)
+      # sync:false evita que Render los pise en deploys.
+
+      # Clave para encriptar backups nocturnos (Fernet, 44 chars base64).
+      # Generar con: python -c "from cryptography.fernet import Fernet; print(Fernet.generate_key().decode())"
+      - key: BACKUP_ENCRYPTION_KEY
+        sync: false
+
+      # ID de la carpeta de Drive donde suben los backups.
+      # (La service account tiene que estar compartida como Editor en esa carpeta.)
+      - key: BACKUP_DRIVE_FOLDER_ID
+        sync: false
+
+      # Secret File: el JSON de la service account de Google.
+      # Subir desde Environment > Secret Files con nombre google-service-account.json.
+      # Render lo monta en /etc/secrets/.
+      - key: GOOGLE_SERVICE_ACCOUNT_FILE
+        value: /etc/secrets/google-service-account.json
+
+      # Postgres (opcional). Si dejás DATABASE_URL vacío, usa SQLite en /data.
+      - key: DATABASE_URL
+        sync: false
+
+      # --- Bot multicanal (Fase 2, dejamos las keys vacías por ahora) ---
+      - key: ANTHROPIC_API_KEY
+        sync: false
+      - key: META_VERIFY_TOKEN
+        sync: false
+      - key: META_APP_SECRET
+        sync: false
+      - key: WHATSAPP_PHONE_NUMBER_ID
+        sync: false
+      - key: WHATSAPP_ACCESS_TOKEN
+        sync: false
