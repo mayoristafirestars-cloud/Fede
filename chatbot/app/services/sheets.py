@@ -75,15 +75,52 @@ def get_price_rows(force: bool = False) -> list[dict]:
         return _cache.rows
 
 
-def render_price_table_for_prompt(max_rows: int = 500) -> str:
-    """Devuelve la planilla en texto plano para mandarle a Claude."""
+def _public_columns(all_cols: list[str]) -> list[str]:
+    """Devuelve la lista de columnas visibles para el cliente.
+
+    Si SHEET_PUBLIC_COLUMNS está vacío, devuelve todas. Si no, devuelve
+    las que estén en el whitelist *y* existan en la planilla, en el
+    orden del whitelist.
+    """
+    s = get_settings()
+    whitelist = [c.strip() for c in s.sheet_public_columns.split(",") if c.strip()]
+    if not whitelist:
+        return all_cols
+    available = {c.lower(): c for c in all_cols}
+    return [available[c.lower()] for c in whitelist if c.lower() in available]
+
+
+def render_price_table_for_prompt(max_rows: int = 800) -> str:
+    """Devuelve la planilla filtrada y en TSV para mandarle a Claude.
+
+    Filtra las columnas sensibles (precio costo, utilidades, etc.)
+    según SHEET_PUBLIC_COLUMNS antes de mandarle nada al modelo.
+    Filas con stock 0 o vacío van al final, así Claude prioriza las
+    disponibles cuando se acerca al límite del prompt.
+    """
     rows = get_price_rows()
     if not rows:
         return "(La planilla de precios todavía no está disponible.)"
-    cols = list(rows[0].keys())
+
+    all_cols = list(rows[0].keys())
+    cols = _public_columns(all_cols)
+
+    def _stock(r: dict) -> int:
+        for k in ("Cantidad", "cantidad", "Stock", "stock"):
+            if k in r:
+                try:
+                    return int(float(str(r[k]).replace(",", ".") or 0))
+                except (ValueError, TypeError):
+                    return 0
+        return 0
+
+    # Productos con stock primero (Claude verá los disponibles aunque
+    # se trunquen las últimas filas).
+    rows_sorted = sorted(rows, key=lambda r: _stock(r) <= 0)
+
     lines = ["\t".join(cols)]
-    for row in rows[:max_rows]:
+    for row in rows_sorted[:max_rows]:
         lines.append("\t".join(str(row.get(c, "")) for c in cols))
-    if len(rows) > max_rows:
-        lines.append(f"... ({len(rows) - max_rows} filas más omitidas)")
+    if len(rows_sorted) > max_rows:
+        lines.append(f"... ({len(rows_sorted) - max_rows} filas más omitidas)")
     return "\n".join(lines)

@@ -31,8 +31,15 @@ class Settings(BaseSettings):
     google_service_account_json: str = ""
     google_service_account_file: str = ""
     google_sheet_id: str = ""
-    google_sheet_tab: str = "Precios"
+    google_sheet_tab: str = "Inventario"
     sheet_cache_seconds: int = 300
+    # Columnas que el bot puede mostrarle al cliente. Vacío = todas.
+    # Acepta lista separada por coma. Las columnas no listadas se
+    # filtran ANTES de mandárselas a Claude (protege precio costo,
+    # utilidades, stock mínimo, etc.).
+    sheet_public_columns: str = (
+        "Codigo,Descripción,Rubro,SubRubro,Marca,Proveedor,Precio Venta,Cantidad"
+    )
 
     # Negocio
     business_name: str = "Mi Negocio"

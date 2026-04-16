@@ -90,25 +90,74 @@ Copiá `.env.example` a `.env` y completá los valores. Resumen rápido:
 1. <https://platform.openai.com> → API key → `OPENAI_API_KEY`.
 2. Whisper cuesta ~ USD 0,006 por minuto de audio.
 
-### 4. Google Sheets (planilla de precios)
+### 4. Google Sheets (planilla de inventario)
 
-1. Subí tu Excel a Drive y abrilo como **Google Sheets** (Archivo → Guardar
-   como Google Sheets).
-2. La primera fila tiene que ser el **encabezado** (ej: `codigo`, `producto`,
-   `precio`, `stock`, `rubro`).
-3. Andá a <https://console.cloud.google.com>:
+#### 4.a. Subir el inventario de FactuPyme a Drive
+
+El bot espera el formato exacto de exportación de FactuPyme
+(`Inventario_Articulos_*.csv`), que tiene estas columnas:
+
+```
+Codigo | Descripción | Cod SubRubro | SubRubro | Cod Rubro | Rubro |
+Cod Marca | Marca | Cod Provedor | Proveedor | Temporada |
+Fecha Alta | Fecha Modif | Precio Costo | Precio Venta |
+Utilidad 1 | Utilidad 2 | Cantidad | Stock Min | Vencimiento |
+Reponer | imagenes
+```
+
+Pasos:
+
+1. Exportá el inventario desde FactuPyme como CSV.
+2. En Drive: **Nuevo → Subir archivo** → subí el CSV.
+3. Click derecho en el CSV → **Abrir con → Hojas de cálculo de Google**
+   (Drive lo convierte a Google Sheet automáticamente).
+4. Renombrá la pestaña a **`Inventario`** (o lo que pongas en
+   `GOOGLE_SHEET_TAB`).
+5. Verificá que la primera fila sean los encabezados originales tal cual
+   los exporta FactuPyme. NO los renombres ni traduzcas.
+
+#### 4.b. Qué ve y qué NO ve el cliente
+
+El bot **filtra antes de mandarle nada a Claude**. Por defecto, sólo
+expone estas columnas (vía `SHEET_PUBLIC_COLUMNS` en `.env`):
+
+```
+Codigo, Descripción, Rubro, SubRubro, Marca, Proveedor, Precio Venta, Cantidad
+```
+
+Las siguientes quedan **ocultas** (Claude nunca las recibe):
+
+```
+Precio Costo, Utilidad 1, Utilidad 2, Stock Min, Cod Provedor,
+Cod Marca, Cod Rubro, Cod SubRubro, Fecha Alta, Fecha Modif,
+Vencimiento, Reponer, Temporada, imagenes
+```
+
+Si querés cambiar la lista, editá `SHEET_PUBLIC_COLUMNS` con las
+columnas separadas por coma. Vacío = todas (NO recomendado).
+
+#### 4.c. Service account de Google Cloud
+
+1. Andá a <https://console.cloud.google.com>:
    - Creá un proyecto.
    - Habilitá **Google Sheets API** y **Google Drive API**.
    - Creá una **Service Account** y descargá la *key* en JSON.
-4. Pegá **el contenido entero** del JSON en la variable
+2. Pegá **el contenido entero** del JSON en la variable
    `GOOGLE_SERVICE_ACCOUNT_JSON` (en una sola línea, escapando comillas si lo
    ponés en un `.env`). Alternativa: subí el archivo y poné la ruta en
    `GOOGLE_SERVICE_ACCOUNT_FILE`.
-5. **MUY IMPORTANTE**: andá al Sheet y **compartilo con el email de la service
+3. **MUY IMPORTANTE**: andá al Sheet y **compartilo con el email de la service
    account** (algo como `chatbot@tu-proyecto.iam.gserviceaccount.com`) con
    permiso de **Lector**.
-6. Copiá el ID del Sheet de la URL (`/d/AQUI_VA_EL_ID/edit`) →
+4. Copiá el ID del Sheet de la URL (`/d/AQUI_VA_EL_ID/edit`) →
    `GOOGLE_SHEET_ID`.
+
+#### 4.d. Refrescar después de actualizar precios
+
+Cuando exportes un nuevo CSV de FactuPyme, lo reemplazás en Drive y el
+bot lo lee solo en hasta `SHEET_CACHE_SECONDS` segundos (5 min por
+defecto). Para forzar refresco inmediato podés reiniciar el servicio
+en Render.
 
 ## Correr en local
 
