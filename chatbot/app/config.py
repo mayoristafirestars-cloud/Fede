@@ -31,7 +31,11 @@ class Settings(BaseSettings):
     google_service_account_json: str = ""
     google_service_account_file: str = ""
     google_sheet_id: str = ""
-    google_sheet_tab: str = "Inventario"
+    # Dejalo vacío para leer siempre la primera pestaña del archivo.
+    # Útil cuando el export trae el nombre con fecha (p. ej.
+    # "Inventario_Articulos_2026-04-08.csv"), así no hay que
+    # actualizar .env cada vez.
+    google_sheet_tab: str = ""
     sheet_cache_seconds: int = 300
     # Columnas que el bot puede mostrarle al cliente. Vacío = todas.
     # Acepta lista separada por coma. Las columnas no listadas se

@@ -105,14 +105,26 @@ Utilidad 1 | Utilidad 2 | Cantidad | Stock Min | Vencimiento |
 Reponer | imagenes
 ```
 
-Pasos:
+Pasos (flujo recomendado, se usa un archivo permanente tipo
+`Base Bot Coronel Sur`):
 
-1. Exportá el inventario desde FactuPyme como CSV.
-2. En Drive: **Nuevo → Subir archivo** → subí el CSV.
-3. Click derecho en el CSV → **Abrir con → Hojas de cálculo de Google**
-   (Drive lo convierte a Google Sheet automáticamente).
-4. Renombrá la pestaña a **`Inventario`** (o lo que pongas en
-   `GOOGLE_SHEET_TAB`).
+1. Creá una vez un Google Sheet en Drive llamado **`Base Bot Coronel Sur`**
+   (o como quieras). Ese ID es el que va en `GOOGLE_SHEET_ID` y no cambia
+   nunca.
+2. Cada vez que actualizás precios:
+   - Exportá el CSV desde FactuPyme.
+   - Abrí `Base Bot Coronel Sur` en Drive.
+   - **Importá** el CSV (Archivo → Importar → Subir → Reemplazar hoja
+     actual, o "Reemplazar datos en la celda seleccionada").
+   - O, más simple: borrá la pestaña vieja y arrastrá el nuevo CSV dentro
+     del mismo Sheet.
+3. La pestaña va a quedar con un nombre tipo
+   `Inventario_Articulos_2026-04-16.csv` (FactuPyme le pone la fecha).
+   **No hay que renombrarla** — el bot por defecto lee la **primera
+   pestaña**, así que funciona igual.
+4. Si preferís fijar un nombre de pestaña específico, poné ese nombre en
+   `GOOGLE_SHEET_TAB`. Si el nombre configurado no existe, el bot igual
+   cae a la primera pestaña y loguea un warning.
 5. Verificá que la primera fila sean los encabezados originales tal cual
    los exporta FactuPyme. NO los renombres ni traduzcas.
 

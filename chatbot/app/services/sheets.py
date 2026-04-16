@@ -54,7 +54,24 @@ def _fetch_now() -> list[dict]:
         return []
     gc = gspread.authorize(creds)
     sh = gc.open_by_key(s.google_sheet_id)
-    ws = sh.worksheet(s.google_sheet_tab)
+
+    # Estrategia para elegir la pestaña (el export de FactuPyme cambia el
+    # nombre con la fecha, así que no podemos fiarnos de un nombre fijo):
+    # 1) si GOOGLE_SHEET_TAB está vacío → primera pestaña.
+    # 2) si está seteado y existe → esa.
+    # 3) si está seteado pero no existe → primera pestaña, con warning.
+    tab = (s.google_sheet_tab or "").strip()
+    if tab:
+        try:
+            ws = sh.worksheet(tab)
+        except gspread.WorksheetNotFound:
+            log.warning(
+                "Pestaña '%s' no existe; uso la primera disponible", tab
+            )
+            ws = sh.get_worksheet(0)
+    else:
+        ws = sh.get_worksheet(0)
+
     # get_all_records usa la primera fila como encabezados.
     return ws.get_all_records()
 
