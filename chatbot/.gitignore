@@ -7,3 +7,10 @@ data/*.db
 data/*.db-journal
 *.log
 .DS_Store
+
+# Credenciales — NUNCA subir a git
+secrets/*
+!secrets/.gitkeep
+!secrets/README.md
+*.pem
+*-service-account*.json
