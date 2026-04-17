@@ -4,4 +4,4 @@
 
 | Fecha | Peso (kg) | % Grasa | Cintura (cm) | Cadera (cm) | Pecho (cm) | Brazo (cm) | Pierna (cm) | Notas |
 |---|---|---|---|---|---|---|---|---|
-|  |  |  |  |  |  |  |  |  |
+17/04 105   grasa no lo se - 
