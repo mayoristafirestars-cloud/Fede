@@ -1,16 +1,16 @@
 # Objetivos
 
 ## Objetivo principal
-<!-- Ej: ganar 5kg de masa muscular en 6 meses, bajar a 15% grasa, correr 10k -->
+<!--ESTAS MAS SALUDABLE MEJORAR ... ESTAR MAS TRANQUILO Y BAJAR DE PESO 10KG -->
 
 ## Corto plazo (1–3 meses)
-- [ ]
+- [ 3]
 
 ## Medio plazo (3–6 meses)
-- [ ]
+- [ 3]
 
 ## Largo plazo (6–12 meses)
-- [ ]
+- [ 3]
 
 ## Restricciones / "no negociables"
 <!-- Ej: nada de running por lesión de rodilla, sin lácteos, 3 entrenos/semana máx -->
