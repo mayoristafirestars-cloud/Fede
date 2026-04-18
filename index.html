@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#0b1f3a" />
+  <meta name="description" content="Clima por hora, alertas y pronóstico a 7 días" />
+  <title>Clima • Pronóstico y Alertas</title>
+  <link rel="manifest" href="manifest.webmanifest" />
+  <link rel="icon" type="image/svg+xml" href="icons/icon.svg" />
+  <link rel="apple-touch-icon" href="icons/icon.svg" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="app-bar">
+    <div class="search">
+      <input id="q" type="search" placeholder="Buscar ciudad (ej: Buenos Aires)" autocomplete="off" />
+      <button id="btn-search" aria-label="Buscar">🔍</button>
+      <button id="btn-geo" aria-label="Mi ubicación">📍</button>
+    </div>
+    <div id="suggest" class="suggest" hidden></div>
+  </header>
+
+  <main>
+    <section id="alerts" class="alerts" hidden></section>
+
+    <section class="now card">
+      <div class="now-top">
+        <div>
+          <h1 id="place">—</h1>
+          <p id="desc" class="desc">Cargando…</p>
+          <p id="updated" class="muted"></p>
+        </div>
+        <div class="now-temp">
+          <div id="icon" class="icon">⛅</div>
+          <div id="temp" class="temp">--°</div>
+          <div id="feels" class="muted">ST --°</div>
+        </div>
+      </div>
+      <div class="now-grid">
+        <div><span class="k">💧 Lluvia</span><span id="n-rain" class="v">--</span></div>
+        <div><span class="k">💨 Viento</span><span id="n-wind" class="v">--</span></div>
+        <div><span class="k">🧭 Ráfagas</span><span id="n-gust" class="v">--</span></div>
+        <div><span class="k">💦 Humedad</span><span id="n-hum" class="v">--</span></div>
+        <div><span class="k">☀️ UV</span><span id="n-uv" class="v">--</span></div>
+        <div><span class="k">🌅 Sale</span><span id="n-sun" class="v">--</span></div>
+      </div>
+    </section>
+
+    <section class="card">
+      <div class="section-head">
+        <h2>Por hora (24 h)</h2>
+        <span class="muted" id="hourly-hint">desliza →</span>
+      </div>
+      <div id="hourly" class="hourly" role="list"></div>
+    </section>
+
+    <section class="card">
+      <h2>Próximos 7 días</h2>
+      <div id="daily" class="daily"></div>
+    </section>
+
+    <footer class="footer muted">
+      Datos: Open-Meteo (gratuito). Pronóstico y alertas oficiales pueden diferir.
+    </footer>
+  </main>
+
+  <div id="toast" class="toast" hidden></div>
+
+  <script src="app.js" defer></script>
+</body>
+</html>

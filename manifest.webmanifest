@@ -1,0 +1,16 @@
+{
+  "name": "Clima • Pronóstico y Alertas",
+  "short_name": "Clima",
+  "description": "Pronóstico por hora, viento, lluvia y alertas claras.",
+  "lang": "es",
+  "dir": "ltr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#0b1f3a",
+  "theme_color": "#0b1f3a",
+  "icons": [
+    { "src": "icons/icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any maskable" }
+  ]
+}
