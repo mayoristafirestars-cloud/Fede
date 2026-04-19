@@ -12,6 +12,14 @@
 **Impacto:** qué archivos se tocaron
 ```
 
+## 2026-04-19 (tarde)
+**Autor:** @nutricionista (via coordinador)
+**Que:** Menu semanal detallado dia por dia con variedad agregado al final de `dieta-actual.md`. Timing ajustado al entreno 08:00 AM (pre 06:30 liviano, post 09:15 batido, desayuno principal 10:30). Distribucion de hidratacion por franja horaria (3 L dias gym, 2,7 L descanso). Variedad completa de proteinas: pollo, pescado blanco, pescado graso, carne vacuna, huevos, atun, legumbres. Viernes cena = comida libre.
+**Por que:** Fede pidio mayor granularidad: plato a plato, gramo a gramo, todos los dias con variedad, agua especifica, horarios ajustados a entreno 8 am.
+**Impacto:** `dieta-actual.md` con seccion nueva "MENU SEMANAL DETALLADO" al final (7 dias completos con kcal y macros por comida).
+
+---
+
 ## 2026-04-19
 **Autor:** @nutricionista
 **Que:** Plan alimentario inicial completo cargado en `dieta-actual.md`. Suplementacion inicial cargada en `suplementacion.md`.

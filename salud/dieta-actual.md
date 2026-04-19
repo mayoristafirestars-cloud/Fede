@@ -321,3 +321,290 @@ Con esto armado, cada comida es armar el plato en 3 minutos.
 - **Si el peso no baja nada en 3 semanas:** ajuste de −200 kcal (primero revisar si hubo desvios antes de tocar el plan).
 - **Si el peso baja mas de 0,8 kg/semana sostenido:** ajuste de +150 kcal para no perder musculo con el entreno.
 - **Si hay fatiga persistente o rendimiento cae en el gym:** revisar proteina e ingesta calorica total antes de aumentar carga de entrenamiento.
+
+---
+
+## MENU SEMANAL DETALLADO — ajustado a ENTRENO 08:00 AM
+
+### Timing del dia de entreno (Lun / Mie / Vie)
+
+| Hora | Momento | Kcal aprox |
+|---|---|---|
+| 06:30 | Pre-entreno liviano | 200 |
+| 08:00 | **Entreno (complex 50-60 min)** | — |
+| 09:15 | Post-entreno (batido) | 350 |
+| 10:30 | Desayuno principal / brunch | 500 |
+| 13:00 | Almuerzo | 500 |
+| 16:30 | Merienda | 200 |
+| 20:30 | Cena | 400 |
+| 22:00 | Snack nocturno (ancla) | 120 |
+| **Total** | | **~2.270 kcal** |
+
+### Timing dia de descanso (Mar / Jue / Sab / Dom)
+
+| Hora | Momento | Kcal aprox |
+|---|---|---|
+| 07:30 | Desayuno | 430 |
+| 10:00 | Media manana | 200 |
+| 13:00 | Almuerzo | 450 |
+| 16:30 | Merienda | 200 |
+| 20:30 | Cena | 420 |
+| 22:00 | Snack nocturno | 120 |
+| 12:00/tarde | Hidratacion reforzada | — |
+| **Total** | | **~1.820 kcal + grasas aceite = 2.050 kcal** |
+
+---
+
+### HIDRATACION — 3 litros/dia (2,5 L en descanso)
+
+| Franja | Cantidad | Notas |
+|---|---|---|
+| 06:15 al despertar | 300 ml | Vaso grande agua + limon (opcional). Antes del pre-entreno. |
+| 06:45 pre-entreno | 200 ml | Con la fruta. |
+| 08:00-09:00 durante entreno | 500-700 ml | Sorbos cada 10 min. Dias gym. |
+| 09:30 post-entreno | 300 ml | Con el batido ya suma. |
+| 11:00 a 13:00 | 400 ml | Entre desayuno y almuerzo. |
+| 13:00 con almuerzo | 300 ml | |
+| 15:00 a 17:00 | 500 ml | Incluye mate SIN azucar (cuenta como hidratacion parcial). |
+| 17:00 a 20:00 | 500 ml | ULTIMO MATE 15:00. Despues solo agua. |
+| 20:30 con cena | 200 ml | No mas en cena (sino te despertas a orinar). |
+
+**Total dias gym: 3,0-3,2 L. Dias descanso: 2,5-2,8 L.**
+
+---
+
+### LUNES (GYM 8:00)
+
+- **06:30 Pre-entreno** (~200 kcal | P: 5 / C: 42 / G: 1):
+  - 1 banana mediana (100 g)
+  - 1 cda sopera miel (20 g)
+  - Cafe negro sin azucar (taza chica)
+  - Agua 200 ml
+
+- **09:15 Post-entreno** (~350 kcal | P: 45 / C: 30 / G: 8):
+  - Whey protein 35 g + 300 ml leche descremada + banana 100 g licuado
+  - Agua 300 ml
+
+- **10:30 Desayuno principal — "Avena proteica"** (~500 kcal | P: 35 / C: 55 / G: 12):
+  - Avena arrollada fina 70 g
+  - Leche descremada 200 ml
+  - Claras pasteurizadas 100 g
+  - Arandanos o frutillas 80 g
+  - Canela a gusto
+  - Hervi la leche, suma avena, revolve 2 min. Claras en sarten sin aceite. Fruta arriba.
+
+- **13:00 Almuerzo — "Pollo y batata"** (~500 kcal | P: 42 / C: 48 / G: 12):
+  - Pechuga de pollo grille 180 g cocido
+  - Batata al horno 150 g
+  - Ensalada: tomate 100 g + pepino 80 g + zanahoria rallada 50 g
+  - Aceite oliva 10 ml + limon + oregano
+
+- **16:30 Merienda** (~200 kcal | P: 18 / C: 18 / G: 6):
+  - Ricota descremada 150 g + manzana verde 1 chica (120 g)
+  - Canela
+
+- **20:30 Cena — "Merluza con zapallitos"** (~400 kcal | P: 40 / C: 15 / G: 18):
+  - Merluza al horno 200 g cocida
+  - Zapallitos salteados con ajo y morron 250 g
+  - 1 huevo duro
+  - Aceite oliva 10 ml
+
+- **22:00 Snack nocturno — ANCLA** (~120 kcal | P: 12 / C: 8 / G: 4):
+  - Yogur griego natural sin azucar 150 g + chia 10 g + canela
+
+**TOTAL LUNES: ~2.270 kcal | P: 197 / C: 216 / G: 61 | Agua: 3,0 L**
+
+---
+
+### MARTES (descanso)
+
+- **07:30 Desayuno — "Huevos con palta"** (~430 kcal | P: 28 / C: 30 / G: 22):
+  - 2 huevos enteros revueltos (sin aceite)
+  - 2 tostadas de pan integral (60 g)
+  - Palta 60 g
+  - Tomate 100 g rodajas con oregano
+
+- **10:00 Media manana** (~200 kcal | P: 20 / C: 18 / G: 5):
+  - Yogur griego natural 200 g + nueces 10 g
+
+- **13:00 Almuerzo — "Pollo con lentejas"** (~450 kcal | P: 45 / C: 45 / G: 10):
+  - Pechuga pollo 150 g cocido
+  - Lentejas cocidas 150 g (medidas ya cocidas)
+  - Ensalada de rucula 80 g + tomate 100 g
+  - Aceite oliva 10 ml + limon
+
+- **16:30 Merienda** (~200 kcal | P: 15 / C: 15 / G: 9):
+  - 1 huevo duro + 1 tostada de arroz + tomate 100 g + 5 almendras
+
+- **20:30 Cena — "Tortilla de espinaca"** (~420 kcal | P: 32 / C: 18 / G: 22):
+  - 2 huevos + 50 g claras + 150 g espinaca cocida + 20 g queso port salut descremado
+  - Ensalada de lechuga + palta 40 g
+  - Aceite oliva 5 ml
+
+- **22:00 Snack nocturno**: yogur griego 150 g + chia 10 g (~120 kcal)
+
+**TOTAL MARTES: ~1.820 kcal (+ grasas cocina) ≈ 2.050 kcal | P: 175 / C: 179 / G: 58 | Agua: 2,7 L**
+
+---
+
+### MIERCOLES (GYM 8:00)
+
+- **06:30 Pre-entreno**: banana 100 g + miel 20 g + cafe (igual lunes)
+- **09:15 Post-entreno**: whey 35 g + leche desc 300 ml + **durazno 120 g** (rotamos fruta)
+- **10:30 Desayuno — "Tostada completa con huevo"** (~500 kcal | P: 32 / C: 55 / G: 16):
+  - 2 tostadas de pan integral (60 g)
+  - 2 huevos revueltos
+  - Palta 40 g
+  - Tomate 80 g
+  - Cafe o mate
+
+- **13:00 Almuerzo — "Carne magra con arroz"** (~500 kcal | P: 45 / C: 50 / G: 11):
+  - Peceto o cuadrada al horno 170 g cocido
+  - Arroz integral 150 g cocido
+  - Ensalada: lechuga + tomate + cebolla morada + zanahoria
+  - Aceite oliva 10 ml
+
+- **16:30 Merienda**: 150 g cottage + 1 pera chica (120 g)
+
+- **20:30 Cena — "Pollo grille con ensalada"** (~400 kcal | P: 42 / C: 15 / G: 18):
+  - Pechuga pollo 180 g
+  - Ensalada mixta grande: lechuga, rucula, tomate, pepino, 5 aceitunas negras
+  - Aceite oliva 10 ml
+
+- **22:00 Snack nocturno**: yogur griego 150 g + chia 10 g
+
+**TOTAL MIERCOLES: ~2.270 kcal | P: 197 / C: 216 / G: 62 | Agua: 3,0 L**
+
+---
+
+### JUEVES (descanso)
+
+- **07:30 Desayuno — "Ricota con fruta"** (~430 kcal | P: 30 / C: 45 / G: 11):
+  - Ricota descremada 200 g
+  - 2 tostadas de arroz (20 g)
+  - Mermelada sin azucar 15 g
+  - Banana 80 g
+
+- **10:00 Media manana**: 1 huevo duro + 1 manzana verde
+
+- **13:00 Almuerzo — "Ensalada de atun y garbanzos"** (~450 kcal | P: 40 / C: 40 / G: 14):
+  - Atun al natural 150 g (1 lata grande escurrida)
+  - Garbanzos cocidos 120 g
+  - Rucula 80 g + tomate 100 g + pepino 80 g + cebolla morada
+  - Aceite oliva 10 ml + limon
+
+- **16:30 Merienda**: 200 g yogur griego + 15 g nueces
+
+- **20:30 Cena — "Pescado blanco al horno"** (~420 kcal | P: 42 / C: 18 / G: 18):
+  - Brotola o merluza 200 g cocida
+  - Brocoli al vapor 200 g
+  - 1 huevo duro
+  - Aceite oliva 10 ml + limon
+
+- **22:00 Snack nocturno**: yogur griego 150 g + chia 10 g
+
+**TOTAL JUEVES: ~2.050 kcal | P: 180 / C: 175 / G: 60 | Agua: 2,7 L**
+
+---
+
+### VIERNES (GYM 8:00) — la **CENA es la COMIDA LIBRE semanal**
+
+- **06:30 Pre-entreno**: banana 100 g + miel 20 g + cafe
+- **09:15 Post-entreno**: whey 35 g + leche desc 300 ml + **naranja en gajos 150 g**
+- **10:30 Desayuno — "Omelette y tostada"** (~500 kcal | P: 38 / C: 45 / G: 18):
+  - 2 huevos + 50 g claras + 25 g queso port salut descremado + ciboulette
+  - 1 tostada pan integral (30 g)
+  - Tomate 100 g
+
+- **13:00 Almuerzo — "Salmon con papa"** (~500 kcal | P: 40 / C: 45 / G: 16):
+  - Salmon grille 170 g cocido
+  - Papa al horno con cascara 150 g
+  - Ensalada de espinaca + tomate cherry + 5 almendras fileteadas
+  - Aceite oliva 5 ml + limon
+
+- **16:30 Merienda** (comer liviano porque la cena va a ser abundante):
+  - 150 g yogur griego + 1 manzana
+
+- **20:30 CENA LIBRE** (~600-800 kcal aprox):
+  - **Reglas de la comida libre:**
+    - Porcion normal, no hasta reventar.
+    - Elegi UNA cosa que te guste: pizza (2 porciones), parrilla moderada (250 g carne + ensalada), sushi (15-18 piezas), pasta con salsa (300 g cocido).
+    - Alcohol: **si hoy el corte esta firme, cero**. Si sentis que lo vas a querer igual, UNA copa de vino. No mas. Avisa al psicologo en bitacora si pasa.
+  - Si la comida libre pasa de 800 kcal, esta bien: el dia queda en deficit leve igual por la actividad.
+
+- **22:00 Snack nocturno**: OPCIONAL hoy. Si la cena fue abundante, salteala. Si sentis ganas de seguir picando, yogur griego 100 g con canela (80 kcal).
+
+**TOTAL VIERNES: ~2.400-2.700 kcal (dia metabolicamente alto, no es problema) | Agua: 3,0 L**
+
+---
+
+### SABADO (descanso)
+
+- **07:30 Desayuno — "Panqueques de avena"** (~430 kcal | P: 30 / C: 50 / G: 10):
+  - Batir: 50 g avena + 2 claras + 1 huevo + canela + 50 ml leche desc
+  - Cocinar en sarten como panqueques (2-3 chicos)
+  - Encima: 80 g arandanos o frutilla
+  - Mate o cafe
+
+- **10:00 Media manana**: 150 g cottage + 1 pera
+
+- **13:00 Almuerzo — "Milanesa al horno"** (~450 kcal | P: 40 / C: 40 / G: 14):
+  - Milanesa al horno de pollo o cuadrada 170 g (con pan rallado integral y huevo, sin frituras)
+  - Pure de calabaza 150 g
+  - Ensalada verde + tomate + 5 aceitunas
+
+- **16:30 Merienda**: 1 huevo duro + 1 tostada de arroz + 100 g tomate + aceite oliva
+
+- **20:30 Cena — "Omelette con vegetales"** (~420 kcal | P: 32 / C: 20 / G: 22):
+  - 2 huevos + 50 g claras + 30 g queso port salut + 150 g espinaca + 50 g champignones
+  - 1 tostada pan integral
+  - Ensalada verde
+
+- **22:00 Snack nocturno**: yogur griego 150 g + chia 10 g
+
+**TOTAL SABADO: ~2.050 kcal | P: 175 / C: 175 / G: 62 | Agua: 2,7 L**
+
+---
+
+### DOMINGO (descanso + **BATCH COOKING** 10:00–12:00)
+
+- **07:30 Desayuno — "Huevos poche con tostada"** (~430 kcal | P: 28 / C: 40 / G: 18):
+  - 2 huevos poche
+  - 1 tostada de pan integral (30 g)
+  - Palta 50 g
+  - Tomate 100 g
+
+- **10:00 a 12:00 BATCH COOKING** (ver seccion mas abajo del archivo)
+  - Durante el batch: mate sin azucar + 1 fruta (manzana 120 g)
+
+- **13:30 Almuerzo — "Asado moderado"** (~500 kcal | P: 45 / C: 35 / G: 20):
+  - Bife de chorizo o vacio magro 200 g cocido
+  - Ensalada de tomate + cebolla + lechuga + 40 g palta
+  - 1 papa al horno chica (100 g) — opcional
+  - **Sin pan. Sin chorizos. Sin chinchulines.** (Esos quedan para otra comida libre del mes si querés.)
+
+- **16:30 Merienda**: 200 g yogur griego + 10 g nueces + canela
+
+- **20:30 Cena liviana — "Ensalada completa"** (~420 kcal | P: 35 / C: 30 / G: 18):
+  - Ensalada grande: lechuga + rucula + tomate + pepino + 80 g atun al natural + 80 g garbanzos cocidos + 1 huevo duro + 40 g palta
+  - Aceite oliva 10 ml + limon + oregano
+
+- **22:00 Snack nocturno**: yogur griego 150 g + chia 10 g
+
+**TOTAL DOMINGO: ~2.050 kcal | P: 180 / C: 175 / G: 62 | Agua: 2,7 L**
+
+---
+
+### Resumen rapido de la semana (proteinas rotadas)
+
+| Dia | Almuerzo | Cena |
+|---|---|---|
+| Lun | Pollo + batata | Merluza + zapallitos |
+| Mar | Pollo + lentejas | Tortilla espinaca |
+| Mie | Carne magra + arroz integral | Pollo grille + ensalada |
+| Jue | Atun + garbanzos | Brotola + brocoli |
+| Vie | Salmon + papa | **LIBRE** |
+| Sab | Milanesa al horno | Omelette vegetales |
+| Dom | Asado moderado | Ensalada completa |
+
+No hay dos almuerzos iguales, ni dos cenas iguales. Rotacion completa de fuentes de proteina: pollo, pescado blanco, pescado graso, carne vacuna, huevos, atun, legumbres.
