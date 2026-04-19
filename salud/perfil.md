@@ -45,3 +45,14 @@
 - Sin medicación habitual: no hay interacciones a gestionar.
 - Sin patologías crónicas diagnosticadas al momento.
 - Motivación activa para el cambio.
+
+### Actualización 2026-04-17 — Antropometría
+
+- **Cintura:** 102 cm — **JUSTO en el umbral de alarma** (≥102 cm en hombre = factor de riesgo cardiovascular independiente). Marca obesidad abdominal.
+- **Cadera:** 109 cm. **Índice cintura/cadera: 0.94** — por encima de 0.90 indica riesgo cardiovascular aumentado (patrón androide / "manzana").
+- **Panza (nivel ombligo):** 107 cm — confirma acumulación de grasa visceral, la más peligrosa metabólicamente.
+- **Pecho:** 111 cm.
+- **Asimetría brazos:** der 38 / izq 36 (+2 cm). Normal si es diestro (dominancia); si es zurdo, evaluar secuela de fractura del derecho. Preguntar a Fede.
+- **TA:** pendiente — el smartwatch **no** sirve para medir tensión. Indicado: 3 mediciones en farmacia/tensiómetro en días distintos.
+
+**Conclusión:** se confirma obesidad abdominal. La prioridad clínica se mantiene: análisis + ECG + TA en farmacia antes de entrenar con intensidad. Lo positivo es que la cintura está en el límite, no desbordada — bajar aunque sea 5 cm de cintura cambia el riesgo sustancialmente, y es el primer objetivo de cuerpo.

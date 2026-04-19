@@ -12,6 +12,14 @@
 **Impacto:** qué archivos se tocaron
 ```
 
+## 2026-04-17 (tarde)
+**Autor:** @medico
+**Qué:** Carga de antropometría. Cintura 102 cm (umbral alarma), cadera 109, ICC 0.94 (riesgo aumentado), panza 107, pecho 111, brazo izq 36 / der 38 (posible dominancia), pierna pendiente.
+**Por qué:** Fede pasó las medidas a pedido del médico.
+**Impacto:** `mediciones.md` cargada primera fila. `perfil.md` actualizado con interpretación. TA sigue pendiente (el reloj no sirve).
+
+---
+
 ## 2026-04-17
 **Autor:** @medico
 **Qué:** Evaluación médica inicial completa. Primera carga de datos del paciente.
