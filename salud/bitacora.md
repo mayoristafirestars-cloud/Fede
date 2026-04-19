@@ -12,6 +12,15 @@
 **Impacto:** qué archivos se tocaron
 ```
 
+## 2026-04-19
+**Autor:** @nutricionista
+**Que:** Plan alimentario inicial completo cargado en `dieta-actual.md`. Suplementacion inicial cargada en `suplementacion.md`.
+**Por que:** Fede arranca gym el lunes 21/04/2026. Plan armado sobre TDEE 2.650–2.850 kcal (Apple Watch), deficit conservador 400–500 kcal = 2.250 kcal dias de entreno / 2.050 kcal dias de descanso. Macros dias entreno: P 190 g / C 210 g / G 65 g. Criterios aplicados: alta sospecha resistencia insulina (antecedente materno + obesidad grado II) → carbos orientados peri-entreno y manana, carga glucemica baja-media en el resto del dia; sueno 6 h → deficit conservador para no sumar estres fisiologico; corte reciente de alcohol → snack nocturno obligatorio como ancla anti-recaida; perfil comerciante → batch cooking dominical + comidas de 3 minutos.
+**Impacto:** `dieta-actual.md` (creado completo), `suplementacion.md` (actualizado con creatina, omega-3, vitamina D y proteina en polvo — todos pendientes de validacion medica post-analisis).
+**Proxima revision:** semana 3 (aprox. 12/05/2026) — revisar peso + cintura. Si no hay cambio, ajuste de -200 kcal.
+
+---
+
 ## 2026-04-17 (noche)
 **Autor:** @medico
 **Qué:** Carga de hábitos, sueño y estado de ánimo inicial. Fede arranca gym el lunes 21/04.
