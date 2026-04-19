@@ -12,6 +12,14 @@
 **Impacto:** qué archivos se tocaron
 ```
 
+## 2026-04-17 (tarde 3)
+**Autor:** @medico
+**Qué:** Carga de actividad basal del Apple Watch. 748 kcal activas/día, 7,3 km/día, 25 min ejercicio/día. FC/FR "típico". Sueño y TA sin datos.
+**Por qué:** Fede compartió screenshots de la app Salud.
+**Impacto:** `perfil.md` con sección de actividad basal + implicancias para nutri/entrenador/psicólogo. Sigue pendiente TA (farmacia) y sueño (autoevaluación).
+
+---
+
 ## 2026-04-17 (tarde 2)
 **Autor:** @medico
 **Qué:** Levantada restricción #2 (brazo derecho). Fede confirma dominancia diestra y funcionalidad plena.

@@ -56,3 +56,20 @@
 - **TA:** pendiente — el smartwatch **no** sirve para medir tensión. Indicado: 3 mediciones en farmacia/tensiómetro en días distintos.
 
 **Conclusión:** se confirma obesidad abdominal. La prioridad clínica se mantiene: análisis + ECG + TA en farmacia antes de entrenar con intensidad. Lo positivo es que la cintura está en el límite, no desbordada — bajar aunque sea 5 cm de cintura cambia el riesgo sustancialmente, y es el primer objetivo de cuerpo.
+
+### Actualización 2026-04-17 — Actividad basal (Apple Watch)
+
+Datos extraídos de screenshots de la app Salud (semana 10–16 abril 2026):
+
+- **Pasos promedio:** 8.000/día confirmados. Distancia caminata+trote: **7,3 km/día promedio**.
+- **Calorías activas:** **748 kcal/día** promedio. Cerró círculos de actividad 3 de 7 días.
+- **Tendencia de ejercicio:** subió de 6 min/día (promedio 18 sem) a **25 min/día** (promedio 8 sem). Tendencia clara de mejora en últimos 2 meses.
+- **Días sin actividad:** viernes y domingo (0 kcal/0 pasos). Patrón a explorar con el psicólogo/entrenador.
+- **Frecuencia cardíaca y respiratoria:** en rango "típico" del reloj. Tranquiliza pero **NO reemplaza el ECG de reposo clínico** (el Watch no detecta todas las arritmias).
+- **Sueño:** sin datos (el reloj no se lo trackea). Autoevaluación pendiente.
+- **TA:** sin datos (el smartwatch no la mide; indicado: farmacia).
+
+**Implicancias para el equipo:**
+- **Nutricionista:** tiene una cifra real para el cálculo calórico — TDEE estimado ≈ 2.650–2.850 kcal/día (reposo estimado ~2.000 + 748 activas). Trabajar sobre ese dato al armar déficit.
+- **Entrenador:** confirma base cardiovascular decente (7,3 km/día de caminata es lejos de "sedentario"). Puede planificar 3 días de fuerza dejando caminata en días libres, aprovechando los 2 días "cero" para romper el patrón.
+- **Psicólogo:** los días "cero" (viernes/domingo) merecen exploración: ¿descanso elegido, cansancio, bajón, trabajo distinto?
