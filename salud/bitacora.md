@@ -12,6 +12,14 @@
 **Impacto:** qué archivos se tocaron
 ```
 
+## 2026-04-17 (tarde 2)
+**Autor:** @medico
+**Qué:** Levantada restricción #2 (brazo derecho). Fede confirma dominancia diestra y funcionalidad plena.
+**Por qué:** Asimetría explicada por dominancia, fractura sin secuela. El entrenador puede incluir press/dominadas/fondos sin precauciones extra por este motivo.
+**Impacto:** `lesiones.md`, `perfil.md`.
+
+---
+
 ## 2026-04-17 (tarde)
 **Autor:** @medico
 **Qué:** Carga de antropometría. Cintura 102 cm (umbral alarma), cadera 109, ICC 0.94 (riesgo aumentado), panza 107, pecho 111, brazo izq 36 / der 38 (posible dominancia), pierna pendiente.
