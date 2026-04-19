@@ -12,6 +12,20 @@
 **Impacto:** qué archivos se tocaron
 ```
 
+## 2026-04-17 (noche)
+**Autor:** @medico
+**Qué:** Carga de hábitos, sueño y estado de ánimo inicial. Fede arranca gym el lunes 21/04.
+**Por qué:** Autoeval del paciente. Datos clave que cambian el plan:
+- **Sueño 6 h** (objetivo 7–8): el propio Fede lo identifica como su MAYOR problema.
+- **Alcohol: corte voluntario declarado** ("no voy a tomar más") — lo usaba para relajarse. Requiere intervención del psicólogo.
+- **No fuma**. Café por la mañana + mate siempre (revisar horario).
+- **Estrés "medio"** crónico, perfil de comerciante + antecedente paterno de ansiedad.
+- **Decisión del paciente:** arranca gym el lunes. Se mantiene la restricción de FC máx 121 lpm hasta ECG.
+**Impacto:** `sueño.md`, `habitos.md`, `estado-animo.md`. 
+**Próximo paso:** priorizar al psicólogo (sueño, alcohol, estrés) y al entrenador (rutina inicial conservadora para el lunes).
+
+---
+
 ## 2026-04-17 (tarde 3)
 **Autor:** @medico
 **Qué:** Carga de actividad basal del Apple Watch. 748 kcal activas/día, 7,3 km/día, 25 min ejercicio/día. FC/FR "típico". Sueño y TA sin datos.
