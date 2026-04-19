@@ -376,41 +376,54 @@ Con esto armado, cada comida es armar el plato en 3 minutos.
 ### LUNES (GYM 8:00)
 
 - **06:30 Pre-entreno** (~200 kcal | P: 5 / C: 42 / G: 1):
-  - 1 banana mediana (100 g)
-  - 1 cda sopera miel (20 g)
-  - Cafe negro sin azucar (taza chica)
-  - Agua 200 ml
+  - Banana mediana: 100 g (pesada sin cascara)
+  - Miel: 20 g (1 cucharada sopera colmada)
+  - Cafe negro sin azucar: 150 ml (1 taza chica)
+  - Agua: 200 ml
 
 - **09:15 Post-entreno** (~350 kcal | P: 45 / C: 30 / G: 8):
-  - Whey protein 35 g + 300 ml leche descremada + banana 100 g licuado
-  - Agua 300 ml
+  - Whey protein en polvo: 35 g (1 medida estandar rasa)
+  - Leche descremada: 300 ml
+  - Banana: 100 g
+  - (Licuar todo junto, tomar dentro de los 60 min post-entreno)
+  - Agua aparte: 300 ml
 
 - **10:30 Desayuno principal — "Avena proteica"** (~500 kcal | P: 35 / C: 55 / G: 12):
-  - Avena arrollada fina 70 g
-  - Leche descremada 200 ml
-  - Claras pasteurizadas 100 g
-  - Arandanos o frutillas 80 g
-  - Canela a gusto
-  - Hervi la leche, suma avena, revolve 2 min. Claras en sarten sin aceite. Fruta arriba.
+  - Avena arrollada fina: 70 g (6 cucharadas soperas colmadas)
+  - Leche descremada: 200 ml
+  - Claras pasteurizadas: 100 g (aprox. 3 claras)
+  - Arandanos o frutillas: 80 g
+  - Canela en polvo: 2 g (a gusto)
+  - **Preparacion:** hervi la leche, suma avena, revolve 2 min. Claras en sarten sin aceite. Fruta arriba.
 
 - **13:00 Almuerzo — "Pollo y batata"** (~500 kcal | P: 42 / C: 48 / G: 12):
-  - Pechuga de pollo grille 180 g cocido
-  - Batata al horno 150 g
-  - Ensalada: tomate 100 g + pepino 80 g + zanahoria rallada 50 g
-  - Aceite oliva 10 ml + limon + oregano
+  - Pechuga de pollo grille: 180 g (peso COCIDO)
+  - Batata al horno: 150 g (peso COCIDO, con piel)
+  - Tomate: 100 g
+  - Pepino: 80 g
+  - Zanahoria rallada: 50 g
+  - Aceite de oliva: 10 ml (2 cucharaditas)
+  - Limon: 1/2 unidad (exprimido)
+  - Oregano seco: 1 g (pizca)
 
 - **16:30 Merienda** (~200 kcal | P: 18 / C: 18 / G: 6):
-  - Ricota descremada 150 g + manzana verde 1 chica (120 g)
-  - Canela
+  - Ricota descremada: 150 g
+  - Manzana verde: 120 g (1 unidad chica)
+  - Canela en polvo: 1 g (pizca)
 
 - **20:30 Cena — "Merluza con zapallitos"** (~400 kcal | P: 40 / C: 15 / G: 18):
-  - Merluza al horno 200 g cocida
-  - Zapallitos salteados con ajo y morron 250 g
-  - 1 huevo duro
-  - Aceite oliva 10 ml
+  - Merluza al horno: 200 g (peso COCIDO)
+  - Zapallito verde en rodajas: 150 g
+  - Morron rojo en tiras: 70 g
+  - Ajo: 1 diente (3 g)
+  - Huevo duro: 1 unidad (50 g)
+  - Aceite de oliva: 10 ml (2 cucharaditas — 5 ml para saltear + 5 ml crudo arriba)
+  - Limon: 1/2 unidad
 
 - **22:00 Snack nocturno — ANCLA** (~120 kcal | P: 12 / C: 8 / G: 4):
-  - Yogur griego natural sin azucar 150 g + chia 10 g + canela
+  - Yogur griego natural sin azucar: 150 g
+  - Semillas de chia: 10 g (1 cucharadita colmada)
+  - Canela en polvo: 1 g (pizca)
 
 **TOTAL LUNES: ~2.270 kcal | P: 197 / C: 216 / G: 61 | Agua: 3,0 L**
 
@@ -419,27 +432,38 @@ Con esto armado, cada comida es armar el plato en 3 minutos.
 ### MARTES (descanso)
 
 - **07:30 Desayuno — "Huevos con palta"** (~430 kcal | P: 28 / C: 30 / G: 22):
-  - 2 huevos enteros revueltos (sin aceite)
-  - 2 tostadas de pan integral (60 g)
-  - Palta 60 g
-  - Tomate 100 g rodajas con oregano
+  - Huevos enteros: 2 unidades (~100 g) revueltos en sarten sin aceite
+  - Pan integral tostado: 60 g (2 rebanadas)
+  - Palta: 60 g (1/4 de palta)
+  - Tomate: 100 g (rodajas)
+  - Oregano seco: 1 g (pizca)
 
 - **10:00 Media manana** (~200 kcal | P: 20 / C: 18 / G: 5):
-  - Yogur griego natural 200 g + nueces 10 g
+  - Yogur griego natural sin azucar: 200 g
+  - Nueces peladas: 10 g (4-5 mitades)
 
 - **13:00 Almuerzo — "Pollo con lentejas"** (~450 kcal | P: 45 / C: 45 / G: 10):
-  - Pechuga pollo 150 g cocido
-  - Lentejas cocidas 150 g (medidas ya cocidas)
-  - Ensalada de rucula 80 g + tomate 100 g
-  - Aceite oliva 10 ml + limon
+  - Pechuga de pollo: 150 g (peso COCIDO)
+  - Lentejas cocidas: 150 g (si son secas: 60 g antes de remojar)
+  - Rucula: 80 g
+  - Tomate: 100 g
+  - Aceite de oliva: 10 ml (2 cucharaditas)
+  - Limon: 1/2 unidad
 
 - **16:30 Merienda** (~200 kcal | P: 15 / C: 15 / G: 9):
-  - 1 huevo duro + 1 tostada de arroz + tomate 100 g + 5 almendras
+  - Huevo duro: 1 unidad (50 g)
+  - Tostada de arroz: 1 unidad (5 g)
+  - Tomate: 100 g
+  - Almendras: 7 g (5 unidades)
 
 - **20:30 Cena — "Tortilla de espinaca"** (~420 kcal | P: 32 / C: 18 / G: 22):
-  - 2 huevos + 50 g claras + 150 g espinaca cocida + 20 g queso port salut descremado
-  - Ensalada de lechuga + palta 40 g
-  - Aceite oliva 5 ml
+  - Huevos enteros: 2 unidades (100 g)
+  - Claras pasteurizadas: 50 g (1,5 claras)
+  - Espinaca cocida: 150 g (hervida y escurrida)
+  - Queso port salut descremado: 20 g
+  - Lechuga: 80 g (1 taza grande)
+  - Palta: 40 g
+  - Aceite de oliva: 5 ml (1 cucharadita)
 
 - **22:00 Snack nocturno**: yogur griego 150 g + chia 10 g (~120 kcal)
 
@@ -449,27 +473,45 @@ Con esto armado, cada comida es armar el plato en 3 minutos.
 
 ### MIERCOLES (GYM 8:00)
 
-- **06:30 Pre-entreno**: banana 100 g + miel 20 g + cafe (igual lunes)
-- **09:15 Post-entreno**: whey 35 g + leche desc 300 ml + **durazno 120 g** (rotamos fruta)
+- **06:30 Pre-entreno** (igual que lunes):
+  - Banana: 100 g
+  - Miel: 20 g
+  - Cafe negro sin azucar: 150 ml
+  - Agua: 200 ml
+
+- **09:15 Post-entreno** (rotamos la fruta a durazno):
+  - Whey protein: 35 g
+  - Leche descremada: 300 ml
+  - Durazno fresco: 120 g (1 unidad mediana)
+
 - **10:30 Desayuno — "Tostada completa con huevo"** (~500 kcal | P: 32 / C: 55 / G: 16):
-  - 2 tostadas de pan integral (60 g)
-  - 2 huevos revueltos
-  - Palta 40 g
-  - Tomate 80 g
-  - Cafe o mate
+  - Pan integral tostado: 60 g (2 rebanadas)
+  - Huevos enteros: 2 unidades (100 g) revueltos
+  - Palta: 40 g
+  - Tomate: 80 g
+  - Cafe negro o mate sin azucar
 
 - **13:00 Almuerzo — "Carne magra con arroz"** (~500 kcal | P: 45 / C: 50 / G: 11):
-  - Peceto o cuadrada al horno 170 g cocido
-  - Arroz integral 150 g cocido
-  - Ensalada: lechuga + tomate + cebolla morada + zanahoria
-  - Aceite oliva 10 ml
+  - Peceto o cuadrada al horno: 170 g (peso COCIDO)
+  - Arroz integral: 150 g (peso COCIDO — equivale a 50 g en seco)
+  - Lechuga: 60 g
+  - Tomate: 100 g
+  - Cebolla morada: 30 g
+  - Zanahoria rallada: 40 g
+  - Aceite de oliva: 10 ml
 
-- **16:30 Merienda**: 150 g cottage + 1 pera chica (120 g)
+- **16:30 Merienda**:
+  - Queso cottage descremado: 150 g
+  - Pera: 120 g (1 unidad chica)
 
 - **20:30 Cena — "Pollo grille con ensalada"** (~400 kcal | P: 42 / C: 15 / G: 18):
-  - Pechuga pollo 180 g
-  - Ensalada mixta grande: lechuga, rucula, tomate, pepino, 5 aceitunas negras
-  - Aceite oliva 10 ml
+  - Pechuga de pollo grille: 180 g (peso COCIDO)
+  - Lechuga: 60 g
+  - Rucula: 50 g
+  - Tomate: 100 g
+  - Pepino: 80 g
+  - Aceitunas negras: 15 g (5 unidades)
+  - Aceite de oliva: 10 ml
 
 - **22:00 Snack nocturno**: yogur griego 150 g + chia 10 g
 
@@ -480,26 +522,35 @@ Con esto armado, cada comida es armar el plato en 3 minutos.
 ### JUEVES (descanso)
 
 - **07:30 Desayuno — "Ricota con fruta"** (~430 kcal | P: 30 / C: 45 / G: 11):
-  - Ricota descremada 200 g
-  - 2 tostadas de arroz (20 g)
-  - Mermelada sin azucar 15 g
-  - Banana 80 g
+  - Ricota descremada: 200 g
+  - Tostadas de arroz: 20 g (4 unidades)
+  - Mermelada sin azucar: 15 g (1 cucharada sopera)
+  - Banana: 80 g (1/2 unidad mediana)
 
-- **10:00 Media manana**: 1 huevo duro + 1 manzana verde
+- **10:00 Media manana**:
+  - Huevo duro: 1 unidad (50 g)
+  - Manzana verde: 150 g (1 unidad mediana)
 
 - **13:00 Almuerzo — "Ensalada de atun y garbanzos"** (~450 kcal | P: 40 / C: 40 / G: 14):
-  - Atun al natural 150 g (1 lata grande escurrida)
-  - Garbanzos cocidos 120 g
-  - Rucula 80 g + tomate 100 g + pepino 80 g + cebolla morada
-  - Aceite oliva 10 ml + limon
+  - Atun al natural: 150 g (1 lata grande escurrida)
+  - Garbanzos cocidos: 120 g (en seco: 50 g antes de remojar)
+  - Rucula: 80 g
+  - Tomate: 100 g
+  - Pepino: 80 g
+  - Cebolla morada: 30 g
+  - Aceite de oliva: 10 ml
+  - Limon: 1/2 unidad
 
-- **16:30 Merienda**: 200 g yogur griego + 15 g nueces
+- **16:30 Merienda**:
+  - Yogur griego natural sin azucar: 200 g
+  - Nueces peladas: 15 g (6-7 mitades)
 
 - **20:30 Cena — "Pescado blanco al horno"** (~420 kcal | P: 42 / C: 18 / G: 18):
-  - Brotola o merluza 200 g cocida
-  - Brocoli al vapor 200 g
-  - 1 huevo duro
-  - Aceite oliva 10 ml + limon
+  - Brotola o merluza al horno: 200 g (peso COCIDO)
+  - Brocoli al vapor: 200 g
+  - Huevo duro: 1 unidad (50 g)
+  - Aceite de oliva: 10 ml
+  - Limon: 1/2 unidad
 
 - **22:00 Snack nocturno**: yogur griego 150 g + chia 10 g
 
@@ -509,21 +560,37 @@ Con esto armado, cada comida es armar el plato en 3 minutos.
 
 ### VIERNES (GYM 8:00) — la **CENA es la COMIDA LIBRE semanal**
 
-- **06:30 Pre-entreno**: banana 100 g + miel 20 g + cafe
-- **09:15 Post-entreno**: whey 35 g + leche desc 300 ml + **naranja en gajos 150 g**
+- **06:30 Pre-entreno** (igual que lunes):
+  - Banana: 100 g
+  - Miel: 20 g
+  - Cafe negro sin azucar: 150 ml
+  - Agua: 200 ml
+
+- **09:15 Post-entreno** (rotamos fruta a naranja):
+  - Whey protein: 35 g
+  - Leche descremada: 300 ml
+  - Naranja en gajos: 150 g (1 unidad mediana)
+
 - **10:30 Desayuno — "Omelette y tostada"** (~500 kcal | P: 38 / C: 45 / G: 18):
-  - 2 huevos + 50 g claras + 25 g queso port salut descremado + ciboulette
-  - 1 tostada pan integral (30 g)
-  - Tomate 100 g
+  - Huevos enteros: 2 unidades (100 g)
+  - Claras pasteurizadas: 50 g (1,5 claras)
+  - Queso port salut descremado: 25 g (rallado)
+  - Ciboulette: 2 g (a gusto)
+  - Pan integral tostado: 30 g (1 rebanada)
+  - Tomate: 100 g (rodajas)
 
 - **13:00 Almuerzo — "Salmon con papa"** (~500 kcal | P: 40 / C: 45 / G: 16):
-  - Salmon grille 170 g cocido
-  - Papa al horno con cascara 150 g
-  - Ensalada de espinaca + tomate cherry + 5 almendras fileteadas
-  - Aceite oliva 5 ml + limon
+  - Salmon grille: 170 g (peso COCIDO)
+  - Papa al horno con cascara: 150 g (peso COCIDO)
+  - Espinaca fresca: 80 g
+  - Tomates cherry: 100 g (aprox 8-10 unidades)
+  - Almendras fileteadas: 7 g (5 unidades)
+  - Aceite de oliva: 5 ml (1 cucharadita)
+  - Limon: 1/2 unidad
 
 - **16:30 Merienda** (comer liviano porque la cena va a ser abundante):
-  - 150 g yogur griego + 1 manzana
+  - Yogur griego natural: 150 g
+  - Manzana: 150 g (1 unidad mediana)
 
 - **20:30 CENA LIBRE** (~600-800 kcal aprox):
   - **Reglas de la comida libre:**
@@ -541,24 +608,45 @@ Con esto armado, cada comida es armar el plato en 3 minutos.
 ### SABADO (descanso)
 
 - **07:30 Desayuno — "Panqueques de avena"** (~430 kcal | P: 30 / C: 50 / G: 10):
-  - Batir: 50 g avena + 2 claras + 1 huevo + canela + 50 ml leche desc
-  - Cocinar en sarten como panqueques (2-3 chicos)
-  - Encima: 80 g arandanos o frutilla
-  - Mate o cafe
+  - Avena arrollada fina: 50 g
+  - Claras pasteurizadas: 60 g (2 claras)
+  - Huevo entero: 1 unidad (50 g)
+  - Leche descremada: 50 ml
+  - Canela en polvo: 1 g
+  - Arandanos o frutilla: 80 g
+  - **Preparacion:** batir avena + claras + huevo + leche + canela. Cocinar en sarten antiadherente sin aceite como panqueques (2-3 chicos). Fruta arriba.
+  - Mate o cafe sin azucar
 
-- **10:00 Media manana**: 150 g cottage + 1 pera
+- **10:00 Media manana**:
+  - Queso cottage descremado: 150 g
+  - Pera: 150 g (1 unidad mediana)
 
 - **13:00 Almuerzo — "Milanesa al horno"** (~450 kcal | P: 40 / C: 40 / G: 14):
-  - Milanesa al horno de pollo o cuadrada 170 g (con pan rallado integral y huevo, sin frituras)
-  - Pure de calabaza 150 g
-  - Ensalada verde + tomate + 5 aceitunas
+  - Carne para milanesa (pollo o cuadrada): 170 g (peso COCIDO, sin frituras)
+  - Pan rallado integral: 20 g (para empanar)
+  - Clara de huevo: 30 g (1 unidad, para empanar)
+  - Pure de calabaza: 150 g (calabaza hervida y pisada, sin manteca)
+  - Lechuga: 60 g
+  - Tomate: 100 g
+  - Aceitunas verdes o negras: 15 g (5 unidades)
+  - Aceite de oliva: 5 ml
 
-- **16:30 Merienda**: 1 huevo duro + 1 tostada de arroz + 100 g tomate + aceite oliva
+- **16:30 Merienda**:
+  - Huevo duro: 1 unidad (50 g)
+  - Tostada de arroz: 1 unidad (5 g)
+  - Tomate: 100 g
+  - Aceite de oliva: 3 ml (unas gotas)
 
 - **20:30 Cena — "Omelette con vegetales"** (~420 kcal | P: 32 / C: 20 / G: 22):
-  - 2 huevos + 50 g claras + 30 g queso port salut + 150 g espinaca + 50 g champignones
-  - 1 tostada pan integral
-  - Ensalada verde
+  - Huevos enteros: 2 unidades (100 g)
+  - Claras pasteurizadas: 50 g (1,5 claras)
+  - Queso port salut descremado: 30 g
+  - Espinaca salteada: 150 g
+  - Champignones: 50 g
+  - Pan integral tostado: 30 g (1 rebanada)
+  - Lechuga: 60 g
+  - Tomate: 80 g
+  - Aceite de oliva: 5 ml
 
 - **22:00 Snack nocturno**: yogur griego 150 g + chia 10 g
 
@@ -569,25 +657,41 @@ Con esto armado, cada comida es armar el plato en 3 minutos.
 ### DOMINGO (descanso + **BATCH COOKING** 10:00–12:00)
 
 - **07:30 Desayuno — "Huevos poche con tostada"** (~430 kcal | P: 28 / C: 40 / G: 18):
-  - 2 huevos poche
-  - 1 tostada de pan integral (30 g)
-  - Palta 50 g
-  - Tomate 100 g
+  - Huevos poche: 2 unidades (100 g)
+  - Pan integral tostado: 30 g (1 rebanada)
+  - Palta: 50 g
+  - Tomate: 100 g (rodajas)
 
 - **10:00 a 12:00 BATCH COOKING** (ver seccion mas abajo del archivo)
   - Durante el batch: mate sin azucar + 1 fruta (manzana 120 g)
 
 - **13:30 Almuerzo — "Asado moderado"** (~500 kcal | P: 45 / C: 35 / G: 20):
-  - Bife de chorizo o vacio magro 200 g cocido
-  - Ensalada de tomate + cebolla + lechuga + 40 g palta
-  - 1 papa al horno chica (100 g) — opcional
+  - Bife de chorizo desgrasado o vacio magro: 200 g (peso COCIDO)
+  - Tomate: 100 g
+  - Cebolla blanca: 30 g
+  - Lechuga: 80 g
+  - Palta: 40 g
+  - Papa al horno con cascara: 100 g (peso COCIDO, 1 unidad chica — opcional)
+  - Aceite de oliva: 5 ml (para la ensalada)
   - **Sin pan. Sin chorizos. Sin chinchulines.** (Esos quedan para otra comida libre del mes si querés.)
 
-- **16:30 Merienda**: 200 g yogur griego + 10 g nueces + canela
+- **16:30 Merienda**:
+  - Yogur griego natural sin azucar: 200 g
+  - Nueces peladas: 10 g (4-5 mitades)
+  - Canela en polvo: 1 g
 
 - **20:30 Cena liviana — "Ensalada completa"** (~420 kcal | P: 35 / C: 30 / G: 18):
-  - Ensalada grande: lechuga + rucula + tomate + pepino + 80 g atun al natural + 80 g garbanzos cocidos + 1 huevo duro + 40 g palta
-  - Aceite oliva 10 ml + limon + oregano
+  - Lechuga: 80 g
+  - Rucula: 50 g
+  - Tomate: 100 g
+  - Pepino: 80 g
+  - Atun al natural escurrido: 80 g (1/2 lata chica)
+  - Garbanzos cocidos: 80 g
+  - Huevo duro: 1 unidad (50 g)
+  - Palta: 40 g
+  - Aceite de oliva: 10 ml
+  - Limon: 1/2 unidad
+  - Oregano seco: 1 g
 
 - **22:00 Snack nocturno**: yogur griego 150 g + chia 10 g
 
