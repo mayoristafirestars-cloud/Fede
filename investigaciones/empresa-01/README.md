@@ -243,7 +243,7 @@ Cliente → [Intake: dominio, tono, audiencia, temas semilla]
 ## 9. Próximas investigaciones derivadas
 
 - [ ] `analisis-competencia-detallado.md` — Deep dive en Animalz, Byword, Koala
-- [ ] `stack-tecnico-agentes.md` — Especificación técnica de cada agente
+- [x] [`stack-tecnico-agentes.md`](./stack-tecnico-agentes.md) — Especificación técnica de cada agente ✅
 - [ ] `playbook-outbound-linkedin.md` — Copys, cadencias, herramientas
 - [ ] `casos-estudio-propios.md` — Plan para construir los 2-3 blogs demo
 - [ ] `pricing-y-contratos.md` — Modelos de contrato, SLAs, cláusulas

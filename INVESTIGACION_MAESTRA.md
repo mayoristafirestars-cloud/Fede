@@ -31,6 +31,6 @@
 
 ## Registro de nuevas investigaciones
 
-| Fecha | Empresa | Investigación derivada | Archivo |
-|-------|---------|------------------------|---------|
-|       |         |                        |         |
+| Fecha       | Empresa | Investigación derivada         | Archivo |
+|-------------|---------|--------------------------------|---------|
+| 2026-04-20  | 01      | Stack técnico de agentes       | [stack-tecnico-agentes.md](./investigaciones/empresa-01/stack-tecnico-agentes.md) |
