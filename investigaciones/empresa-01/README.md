@@ -244,6 +244,7 @@ Cliente → [Intake: dominio, tono, audiencia, temas semilla]
 
 - [ ] `analisis-competencia-detallado.md` — Deep dive en Animalz, Byword, Koala
 - [x] [`stack-tecnico-agentes.md`](./stack-tecnico-agentes.md) — Especificación técnica de cada agente ✅
+- [x] [`proyeccion-financiera.md`](./proyeccion-financiera.md) — Modelo financiero 3 escenarios + plan 24 meses ✅
 - [ ] `playbook-outbound-linkedin.md` — Copys, cadencias, herramientas
 - [ ] `casos-estudio-propios.md` — Plan para construir los 2-3 blogs demo
 - [ ] `pricing-y-contratos.md` — Modelos de contrato, SLAs, cláusulas
