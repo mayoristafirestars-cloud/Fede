@@ -35,3 +35,4 @@
 |-------------|---------|--------------------------------|---------|
 | 2026-04-20  | 01      | Stack técnico de agentes       | [stack-tecnico-agentes.md](./investigaciones/empresa-01/stack-tecnico-agentes.md) |
 | 2026-04-20  | 01      | Proyección financiera 24 meses | [proyeccion-financiera.md](./investigaciones/empresa-01/proyeccion-financiera.md) |
+| 2026-04-20  | 01      | One-pager / pitch resumido     | [one-pager.md](./investigaciones/empresa-01/one-pager.md) |
