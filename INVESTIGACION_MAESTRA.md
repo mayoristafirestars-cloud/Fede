@@ -1,97 +1,31 @@
 # Investigación Maestra — 10 Estudios sobre 10 Empresas
 
-Este archivo es el índice central del cual se desprenden todas las nuevas investigaciones. Cada empresa tiene un bloque con el estudio principal y enlaces a las investigaciones derivadas.
+Índice central. Cada empresa es una carpeta navegable a la izquierda. Click en el nombre para entrar al proyecto.
 
 ---
 
-## Estructura
+## Proyectos
 
-- **Estudio principal**: análisis base de la empresa.
-- **Investigaciones derivadas**: sub-estudios que nacen a partir del estudio principal (mercado, competencia, producto, finanzas, etc.).
-
-Archivos derivados se guardan en `investigaciones/<empresa>/<nombre-derivada>.md`.
+| #  | Empresa      | Carpeta                                                        |
+|----|--------------|----------------------------------------------------------------|
+| 01 | _por definir_ | [investigaciones/empresa-01](./investigaciones/empresa-01/)   |
+| 02 | _por definir_ | [investigaciones/empresa-02](./investigaciones/empresa-02/)   |
+| 03 | _por definir_ | [investigaciones/empresa-03](./investigaciones/empresa-03/)   |
+| 04 | _por definir_ | [investigaciones/empresa-04](./investigaciones/empresa-04/)   |
+| 05 | _por definir_ | [investigaciones/empresa-05](./investigaciones/empresa-05/)   |
+| 06 | _por definir_ | [investigaciones/empresa-06](./investigaciones/empresa-06/)   |
+| 07 | _por definir_ | [investigaciones/empresa-07](./investigaciones/empresa-07/)   |
+| 08 | _por definir_ | [investigaciones/empresa-08](./investigaciones/empresa-08/)   |
+| 09 | _por definir_ | [investigaciones/empresa-09](./investigaciones/empresa-09/)   |
+| 10 | _por definir_ | [investigaciones/empresa-10](./investigaciones/empresa-10/)   |
 
 ---
 
-## 1. Empresa 1
+## Cómo funciona
 
-- **Sector**:
-- **Estudio principal**: [pendiente]
-- **Resumen ejecutivo**:
-- **Investigaciones derivadas**:
-  - [ ]
-
-## 2. Empresa 2
-
-- **Sector**:
-- **Estudio principal**: [pendiente]
-- **Resumen ejecutivo**:
-- **Investigaciones derivadas**:
-  - [ ]
-
-## 3. Empresa 3
-
-- **Sector**:
-- **Estudio principal**: [pendiente]
-- **Resumen ejecutivo**:
-- **Investigaciones derivadas**:
-  - [ ]
-
-## 4. Empresa 4
-
-- **Sector**:
-- **Estudio principal**: [pendiente]
-- **Resumen ejecutivo**:
-- **Investigaciones derivadas**:
-  - [ ]
-
-## 5. Empresa 5
-
-- **Sector**:
-- **Estudio principal**: [pendiente]
-- **Resumen ejecutivo**:
-- **Investigaciones derivadas**:
-  - [ ]
-
-## 6. Empresa 6
-
-- **Sector**:
-- **Estudio principal**: [pendiente]
-- **Resumen ejecutivo**:
-- **Investigaciones derivadas**:
-  - [ ]
-
-## 7. Empresa 7
-
-- **Sector**:
-- **Estudio principal**: [pendiente]
-- **Resumen ejecutivo**:
-- **Investigaciones derivadas**:
-  - [ ]
-
-## 8. Empresa 8
-
-- **Sector**:
-- **Estudio principal**: [pendiente]
-- **Resumen ejecutivo**:
-- **Investigaciones derivadas**:
-  - [ ]
-
-## 9. Empresa 9
-
-- **Sector**:
-- **Estudio principal**: [pendiente]
-- **Resumen ejecutivo**:
-- **Investigaciones derivadas**:
-  - [ ]
-
-## 10. Empresa 10
-
-- **Sector**:
-- **Estudio principal**: [pendiente]
-- **Resumen ejecutivo**:
-- **Investigaciones derivadas**:
-  - [ ]
+- Cada carpeta `empresa-XX/` es un **proyecto** con su `README.md` (estudio principal).
+- Las **investigaciones derivadas** se agregan como archivos `.md` dentro de la misma carpeta (ej: `analisis-mercado.md`, `competencia.md`, `finanzas.md`).
+- Todas las nuevas investigaciones salen desde acá.
 
 ---
 
