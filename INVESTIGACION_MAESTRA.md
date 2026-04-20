@@ -8,7 +8,7 @@
 
 | #  | Empresa      | Carpeta                                                        |
 |----|--------------|----------------------------------------------------------------|
-| 01 | _por definir_ | [investigaciones/empresa-01](./investigaciones/empresa-01/)   |
+| 01 | Agencia de contenido SEO "Content-as-a-Service" | [investigaciones/empresa-01](./investigaciones/empresa-01/) |
 | 02 | _por definir_ | [investigaciones/empresa-02](./investigaciones/empresa-02/)   |
 | 03 | _por definir_ | [investigaciones/empresa-03](./investigaciones/empresa-03/)   |
 | 04 | _por definir_ | [investigaciones/empresa-04](./investigaciones/empresa-04/)   |
