@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin — Banners Tienda</title>
+<link rel="icon" href="/static/logo-coronel.png" type="image/png">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Inter',system-ui,sans-serif;background:#F3F4F6;color:#1F2937;min-height:100vh}
+.topbar{background:#F08340;color:#fff;padding:14px 24px;display:flex;align-items:center;gap:16px;position:sticky;top:0;z-index:50}
+.topbar h1{font-size:18px;font-weight:700;flex:1}
+.topbar a,.topbar button{color:#fff;font-size:13px;font-weight:600;padding:8px 16px;border-radius:6px;border:none;cursor:pointer;text-decoration:none;transition:.15s}
+.btn-back{background:rgba(255,255,255,.2)}.btn-back:hover{background:rgba(255,255,255,.3)}
+.btn-new{background:rgba(255,255,255,.25)}.btn-new:hover{background:rgba(255,255,255,.4)}
+.btn-save{background:#fff;color:#F08340;font-weight:700}.btn-save:hover{background:#FFF5EE}
+.btn-save:disabled{opacity:.4;cursor:not-allowed}
+.btn-reset{background:rgba(255,255,255,.1);font-size:12px}.btn-reset:hover{background:rgba(255,255,255,.2)}
+.container{max-width:960px;margin:20px auto;padding:0 16px}
+.dirty-bar{background:#FEF3C7;border:1px solid #F59E0B;border-radius:8px;padding:10px 16px;margin-bottom:16px;font-size:13px;font-weight:600;color:#92400E;display:none;align-items:center;gap:8px}
+.dirty-bar.show{display:flex}
+.banner-list{display:flex;flex-direction:column;gap:12px}
+.banner-card{background:#fff;border-radius:10px;border:1px solid #E5E7EB;display:flex;gap:16px;padding:16px;align-items:center;transition:.15s}
+.banner-card:hover{box-shadow:0 4px 12px rgba(0,0,0,.08)}
+.banner-card.inactive{opacity:.5}
+.banner-preview{width:240px;height:100px;border-radius:8px;overflow:hidden;flex-shrink:0;position:relative;display:flex;align-items:center;padding:0 16px;color:#fff;font-size:12px;background-size:cover;background-position:center}
+.banner-preview .ov{position:absolute;inset:0;z-index:1}
+.banner-preview .content{position:relative;z-index:2;max-width:70%}
+.banner-preview .content h3{font-size:13px;font-weight:800;line-height:1.1;text-shadow:0 1px 4px rgba(0,0,0,.3)}
+.banner-preview .content p{font-size:9px;opacity:.8;margin-top:2px}
+.banner-preview .deco{position:absolute;right:8px;top:50%;transform:translateY(-50%);font-size:36px;opacity:.15;z-index:2}
+.banner-info{flex:1;min-width:0}
+.banner-info .title{font-size:15px;font-weight:700;margin-bottom:4px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.banner-info .tag{font-size:12px;color:#6B7280;margin-bottom:8px}
+.banner-info .status{display:inline-block;font-size:11px;font-weight:600;padding:2px 10px;border-radius:12px}
+.status.on{background:#D1FAE5;color:#065F46}.status.off{background:#FEE2E2;color:#991B1B}
+.banner-actions{display:flex;flex-direction:column;gap:6px;flex-shrink:0}
+.banner-actions button{padding:6px 14px;border:1px solid #E5E7EB;border-radius:6px;background:#fff;font-size:12px;font-weight:600;color:#374151;cursor:pointer;transition:.15s;white-space:nowrap}
+.banner-actions button:hover{background:#F9FAFB;border-color:#D1D5DB}
+.banner-actions .del{color:#EF4444;border-color:#FECACA}.del:hover{background:#FEF2F2!important}
+.arrows{display:flex;gap:4px}
+.arrows button{padding:4px 10px;font-size:14px;font-weight:700}
+.empty{text-align:center;padding:60px;color:#9CA3AF;font-size:14px}
+
+/* MODAL */
+.modal-bg{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:100;display:none;align-items:flex-start;justify-content:center;padding:40px 16px;overflow-y:auto}
+.modal-bg.open{display:flex}
+.modal{background:#fff;border-radius:12px;max-width:720px;width:100%;box-shadow:0 20px 60px rgba(0,0,0,.2)}
+.modal-head{padding:20px 24px;border-bottom:1px solid #E5E7EB;display:flex;justify-content:space-between;align-items:center}
+.modal-head h2{font-size:18px;font-weight:700}
+.modal-head button{width:32px;height:32px;border-radius:50%;background:#F3F4F6;font-size:18px;display:grid;place-items:center;border:none;cursor:pointer;color:#6B7280}
+.modal-body{padding:24px;display:flex;flex-direction:column;gap:20px}
+.modal-preview{border-radius:10px;overflow:hidden;height:160px;position:relative;display:flex;align-items:center;padding:0 32px;color:#fff;background-size:cover;background-position:center}
+.modal-preview .ov{position:absolute;inset:0;z-index:1}
+.modal-preview .content{position:relative;z-index:2;max-width:55%}
+.modal-preview .content .stag{display:inline-block;background:rgba(255,255,255,.2);backdrop-filter:blur(8px);padding:4px 12px;border-radius:20px;font-size:11px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;margin-bottom:8px}
+.modal-preview .content h2{font-size:28px;font-weight:900;line-height:1.05;text-shadow:0 2px 12px rgba(0,0,0,.3)}
+.modal-preview .content p{font-size:13px;opacity:.9;margin-top:6px}
+.modal-preview .deco{position:absolute;right:5%;top:50%;transform:translateY(-50%);font-size:100px;opacity:.12;z-index:2}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.form-grid .full{grid-column:1/-1}
+.field{display:flex;flex-direction:column;gap:4px}
+.field label{font-size:12px;font-weight:600;color:#374151}
+.field input,.field textarea{padding:10px 12px;border:1px solid #D1D5DB;border-radius:6px;font-size:14px;font-family:inherit;color:#1F2937;outline:none;transition:.15s}
+.field input:focus,.field textarea:focus{border-color:#F08340;box-shadow:0 0 0 3px rgba(240,131,64,.15)}
+.field input[type="color"]{height:40px;padding:4px;cursor:pointer}
+.field textarea{resize:vertical;min-height:50px}
+.modal-foot{padding:16px 24px;border-top:1px solid #E5E7EB;display:flex;gap:10px;justify-content:flex-end}
+.modal-foot button{padding:10px 24px;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer;border:none;transition:.15s}
+.btn-cancel{background:#F3F4F6;color:#374151}.btn-cancel:hover{background:#E5E7EB}
+.btn-apply{background:#F08340;color:#fff}.btn-apply:hover{background:#DA6F30}
+
+/* LOGIN */
+.login-box{max-width:360px;margin:80px auto;background:#fff;border-radius:12px;padding:32px;box-shadow:0 8px 24px rgba(0,0,0,.1);text-align:center}
+.login-box h2{font-size:20px;font-weight:700;margin-bottom:8px}
+.login-box p{font-size:13px;color:#6B7280;margin-bottom:20px}
+.login-box input{width:100%;padding:12px;border:1px solid #D1D5DB;border-radius:8px;font-size:14px;margin-bottom:10px;outline:none}
+.login-box input:focus{border-color:#F08340}
+.login-box button{width:100%;padding:12px;background:#F08340;color:#fff;border:none;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer}
+.login-box .err{color:#EF4444;font-size:13px;margin-top:8px;display:none}
+@media(max-width:768px){.banner-preview{width:160px;height:80px}.form-grid{grid-template-columns:1fr}.banner-card{flex-wrap:wrap}}
+</style>
+</head>
+<body>
+
+<div id="app-login" style="display:none">
+  <div class="login-box">
+    <h2>Admin Banners</h2>
+    <p>Ingresá con tu usuario administrador</p>
+    <input type="text" id="lg-user" placeholder="Usuario">
+    <input type="password" id="lg-pass" placeholder="Contraseña">
+    <button onclick="doLogin()">Ingresar</button>
+    <div class="err" id="lg-err"></div>
+  </div>
+</div>
+
+<div id="app-main" style="display:none">
+  <div class="topbar">
+    <a href="/" class="btn-back">← CRM</a>
+    <h1>Banners de la Tienda</h1>
+    <button class="btn-reset" onclick="resetDefaults()">Restaurar defaults</button>
+    <button class="btn-new" onclick="addBanner()">+ Nuevo</button>
+    <button class="btn-save" id="btn-save" onclick="guardarTodo()" disabled>💾 Guardar</button>
+  </div>
+  <div class="container">
+    <div class="dirty-bar" id="dirty-bar">⚠️ Tenés cambios sin guardar. Hacé click en "Guardar" para aplicarlos a la tienda.</div>
+    <div class="banner-list" id="banner-list"></div>
+  </div>
+</div>
+
+<div class="modal-bg" id="modal-bg" onclick="if(event.target===this)cerrarModal()">
+  <div class="modal">
+    <div class="modal-head"><h2 id="modal-title">Editar banner</h2><button onclick="cerrarModal()">✕</button></div>
+    <div class="modal-body">
+      <div class="modal-preview" id="mp">
+        <div class="ov" id="mp-ov"></div>
+        <div class="content"><span class="stag" id="mp-tag"></span><h2 id="mp-titulo"></h2><p id="mp-sub"></p></div>
+        <div class="deco" id="mp-emoji"></div>
+      </div>
+      <div class="form-grid">
+        <div class="field full"><label>Título (permite &lt;br&gt;)</label><input id="f-titulo" oninput="previewLive()"></div>
+        <div class="field full"><label>Subtítulo</label><textarea id="f-sub" rows="2" oninput="previewLive()"></textarea></div>
+        <div class="field"><label>Tag (etiqueta chica)</label><input id="f-tag" oninput="previewLive()"></div>
+        <div class="field"><label>Emoji decorativo</label><input id="f-emoji" oninput="previewLive()" style="font-size:24px;text-align:center"></div>
+        <div class="field full"><label>URL imagen de fondo (dejar vacío = solo color)</label><input id="f-img" oninput="previewLive()" placeholder="https://images.unsplash.com/..."></div>
+        <div class="field"><label>Color de fondo</label><input type="color" id="f-bgcol" oninput="previewLive()"></div>
+        <div class="field"><label>Overlay desde (rgba)</label><input id="f-ovfrom" oninput="previewLive()" placeholder="rgba(240,131,64,.78)"></div>
+        <div class="field"><label>Overlay hasta (rgba)</label><input id="f-ovto" oninput="previewLive()" placeholder="rgba(218,111,48,.88)"></div>
+        <div class="field"><label>Texto del botón</label><input id="f-btn" oninput="previewLive()"></div>
+        <div class="field"><label>Link del botón</label><input id="f-link" placeholder="#prods-container"></div>
+        <div class="field"><label>Color texto botón</label><input type="color" id="f-btncol"></div>
+      </div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn-cancel" onclick="cerrarModal()">Cancelar</button>
+      <button class="btn-apply" onclick="aplicarModal()">Aplicar cambios</button>
+    </div>
+  </div>
+</div>
+
+<script>
+var TOKEN='',BANNERS=[],DIRTY=false,EDIT_IDX=-1;
+
+function getToken(){
+  var keys=['cs_token','token','admin_token','crm_token'];
+  for(var i=0;i<keys.length;i++){var t=localStorage.getItem(keys[i]);if(t)return t}
+  return '';
+}
+
+async function doLogin(){
+  var u=document.getElementById('lg-user').value.trim();
+  var p=document.getElementById('lg-pass').value;
+  var e=document.getElementById('lg-err');
+  e.style.display='none';
+  if(!u||!p){e.textContent='Completá usuario y contraseña';e.style.display='block';return}
+  try{
+    var r=await fetch('/api/auth/login',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({username:u,password:p})});
+    var d=await r.json();
+    if(!r.ok){e.textContent=d.detail||'Error';e.style.display='block';return}
+    TOKEN=d.token||d.access_token||'';
+    if(!TOKEN){e.textContent='No se recibió token';e.style.display='block';return}
+    localStorage.setItem('cs_token',TOKEN);
+    initApp();
+  }catch(err){e.textContent='Error de conexión';e.style.display='block'}
+}
+
+async function initApp(){
+  document.getElementById('app-login').style.display='none';
+  document.getElementById('app-main').style.display='block';
+  try{
+    var r=await fetch('/api/admin/banners',{headers:{'Authorization':'Bearer '+TOKEN}});
+    if(r.status===401||r.status===403){document.getElementById('app-main').style.display='none';document.getElementById('app-login').style.display='block';TOKEN='';return}
+    BANNERS=await r.json();
+    renderList();
+  }catch(e){alert('Error cargando banners')}
+}
+
+function setDirty(v){DIRTY=v;document.getElementById('btn-save').disabled=!v;document.getElementById('dirty-bar').classList.toggle('show',v)}
+
+function renderList(){
+  var c=document.getElementById('banner-list');
+  if(!BANNERS.length){c.innerHTML='<div class="empty">No hay banners. Hacé click en "+ Nuevo" para crear uno.</div>';return}
+  c.innerHTML=BANNERS.map(function(b,i){
+    var bg=b.bg_image?'background-image:url('+b.bg_image+');background-color:'+b.bg_color:'background:linear-gradient(135deg,'+b.overlay_from+','+b.overlay_to+')';
+    var act=b.activo!==false;
+    return'<div class="banner-card'+(act?'':' inactive')+'">'+
+      '<div class="banner-preview" style="'+bg+'"><div class="ov" style="background:linear-gradient(135deg,'+(b.overlay_from||'transparent')+','+(b.overlay_to||'transparent')+')"></div><div class="content"><h3>'+b.titulo+'</h3><p>'+b.subtitulo.substring(0,60)+'</p></div><div class="deco">'+b.emoji+'</div></div>'+
+      '<div class="banner-info"><div class="title">'+b.titulo.replace(/<br>/g,' ')+'</div><div class="tag">'+b.tag+'</div><span class="status '+(act?'on':'off')+'">'+(act?'Activo':'Inactivo')+'</span></div>'+
+      '<div class="banner-actions">'+
+        '<button onclick="editBanner('+i+')">✏️ Editar</button>'+
+        '<button onclick="toggleActivo('+i+')">'+(act?'🔴 Desactivar':'🟢 Activar')+'</button>'+
+        '<button onclick="dupBanner('+i+')">📋 Duplicar</button>'+
+        '<button class="del" onclick="delBanner('+i+')">🗑️ Eliminar</button>'+
+        '<div class="arrows"><button onclick="mover('+i+',-1)">↑</button><button onclick="mover('+i+',1)">↓</button></div>'+
+      '</div></div>'
+  }).join('');
+}
+
+function editBanner(i){
+  EDIT_IDX=i;var b=BANNERS[i];
+  document.getElementById('modal-title').textContent='Editar banner #'+(i+1);
+  document.getElementById('f-titulo').value=b.titulo||'';
+  document.getElementById('f-sub').value=b.subtitulo||'';
+  document.getElementById('f-tag').value=b.tag||'';
+  document.getElementById('f-emoji').value=b.emoji||'';
+  document.getElementById('f-img').value=b.bg_image||'';
+  document.getElementById('f-bgcol').value=b.bg_color||'#F08340';
+  document.getElementById('f-ovfrom').value=b.overlay_from||'';
+  document.getElementById('f-ovto').value=b.overlay_to||'';
+  document.getElementById('f-btn').value=b.btn_text||'';
+  document.getElementById('f-link').value=b.btn_link||'';
+  document.getElementById('f-btncol').value=b.btn_color||'#DA6F30';
+  previewLive();
+  document.getElementById('modal-bg').classList.add('open');
+}
+
+function previewLive(){
+  var mp=document.getElementById('mp');
+  var img=document.getElementById('f-img').value;
+  var bgcol=document.getElementById('f-bgcol').value;
+  var ovfrom=document.getElementById('f-ovfrom').value;
+  var ovto=document.getElementById('f-ovto').value;
+  if(img){mp.style.backgroundImage='url('+img+')';mp.style.backgroundColor=bgcol;mp.style.background=''}
+  else{mp.style.backgroundImage='';mp.style.background='linear-gradient(135deg,'+(ovfrom||bgcol)+','+(ovto||bgcol)+')'}
+  document.getElementById('mp-ov').style.background='linear-gradient(135deg,'+(ovfrom||'transparent')+','+(ovto||'transparent')+')';
+  document.getElementById('mp-tag').textContent=document.getElementById('f-tag').value;
+  document.getElementById('mp-titulo').innerHTML=document.getElementById('f-titulo').value;
+  document.getElementById('mp-sub').textContent=document.getElementById('f-sub').value;
+  document.getElementById('mp-emoji').textContent=document.getElementById('f-emoji').value;
+}
+
+function aplicarModal(){
+  var b=BANNERS[EDIT_IDX];
+  b.titulo=document.getElementById('f-titulo').value;
+  b.subtitulo=document.getElementById('f-sub').value;
+  b.tag=document.getElementById('f-tag').value;
+  b.emoji=document.getElementById('f-emoji').value;
+  b.bg_image=document.getElementById('f-img').value;
+  b.bg_color=document.getElementById('f-bgcol').value;
+  b.overlay_from=document.getElementById('f-ovfrom').value;
+  b.overlay_to=document.getElementById('f-ovto').value;
+  b.btn_text=document.getElementById('f-btn').value;
+  b.btn_link=document.getElementById('f-link').value;
+  b.btn_color=document.getElementById('f-btncol').value;
+  cerrarModal();
+  renderList();
+  setDirty(true);
+}
+
+function cerrarModal(){document.getElementById('modal-bg').classList.remove('open');EDIT_IDX=-1}
+
+function addBanner(){
+  var maxId=BANNERS.reduce(function(m,b){return Math.max(m,b.id||0)},0);
+  BANNERS.push({id:maxId+1,orden:BANNERS.length+1,activo:true,titulo:'Nuevo banner',subtitulo:'Descripción del banner',tag:'Etiqueta',emoji:'⭐',bg_image:'',bg_color:'#F08340',overlay_from:'rgba(240,131,64,.78)',overlay_to:'rgba(218,111,48,.88)',btn_text:'Ver más →',btn_link:'#prods-container',btn_color:'#DA6F30'});
+  renderList();setDirty(true);
+  editBanner(BANNERS.length-1);
+}
+
+function dupBanner(i){
+  var copy=JSON.parse(JSON.stringify(BANNERS[i]));
+  var maxId=BANNERS.reduce(function(m,b){return Math.max(m,b.id||0)},0);
+  copy.id=maxId+1;copy.titulo+=' (copia)';
+  BANNERS.splice(i+1,0,copy);
+  renderList();setDirty(true);
+}
+
+function delBanner(i){
+  if(!confirm('¿Eliminar este banner?'))return;
+  BANNERS.splice(i,1);renderList();setDirty(true);
+}
+
+function toggleActivo(i){BANNERS[i].activo=!BANNERS[i].activo;renderList();setDirty(true)}
+
+function mover(i,dir){
+  var j=i+dir;if(j<0||j>=BANNERS.length)return;
+  var tmp=BANNERS[i];BANNERS[i]=BANNERS[j];BANNERS[j]=tmp;
+  renderList();setDirty(true);
+}
+
+async function guardarTodo(){
+  document.getElementById('btn-save').disabled=true;
+  document.getElementById('btn-save').textContent='Guardando...';
+  try{
+    var r=await fetch('/api/admin/banners',{method:'PUT',headers:{'Content-Type':'application/json','Authorization':'Bearer '+TOKEN},body:JSON.stringify(BANNERS)});
+    var d=await r.json();
+    if(r.ok&&d.ok){setDirty(false);alert('✅ Banners guardados. La tienda ya muestra los cambios.')}
+    else{alert('Error: '+(d.detail||'desconocido'))}
+  }catch(e){alert('Error de conexión')}
+  document.getElementById('btn-save').textContent='💾 Guardar';
+  document.getElementById('btn-save').disabled=!DIRTY;
+}
+
+async function resetDefaults(){
+  if(!confirm('¿Restaurar los 4 banners por defecto? Esto descarta los cambios.'))return;
+  try{
+    var r=await fetch('/api/admin/banners/reset',{method:'POST',headers:{'Authorization':'Bearer '+TOKEN}});
+    if(r.ok){await initApp();setDirty(false);alert('Banners restaurados.')}
+  }catch(e){alert('Error')}
+}
+
+(function(){
+  TOKEN=getToken();
+  if(TOKEN){initApp()}
+  else{document.getElementById('app-login').style.display='block'}
+})();
+</script>
+</body>
+</html>

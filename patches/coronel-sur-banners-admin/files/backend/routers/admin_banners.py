@@ -19,6 +19,7 @@ from pathlib import Path
 from typing import Any
 
 from fastapi import APIRouter, HTTPException, Request, Body
+from fastapi.responses import HTMLResponse
 
 router = APIRouter()
 
@@ -170,6 +171,18 @@ def _normalizar(banners: list[Any]) -> list[dict]:
             "btn_color": str(b.get("btn_color", "")).strip(),
         })
     return out
+
+
+# ---------------- PAGINA ADMIN ----------------
+
+TEMPLATE_DIR = Path(__file__).resolve().parent.parent.parent / "frontend" / "templates"
+
+@router.get("/admin/banners", response_class=HTMLResponse)
+def pagina_admin():
+    html_path = TEMPLATE_DIR / "admin_banners.html"
+    if not html_path.exists():
+        raise HTTPException(status_code=404, detail="Template no encontrado")
+    return HTMLResponse(html_path.read_text(encoding="utf-8"))
 
 
 # ---------------- ENDPOINTS PUBLICOS ----------------

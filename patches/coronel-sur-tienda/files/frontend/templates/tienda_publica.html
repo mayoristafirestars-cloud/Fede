@@ -227,12 +227,7 @@ body.mayorista-active .hero-wrap{margin-top:calc(var(--topbar-h) + 36px)}
 <div class="mayorista-bar" id="mayorista-bar">🏷️ Viendo precios mayoristas <button onclick="toggleMayorista()" style="background:rgba(255,255,255,.2);border-radius:50%;width:20px;height:20px;font-size:12px;color:#fff;display:grid;place-items:center;margin-left:6px">✕</button></div>
 
 <div class="hero-wrap">
-  <div class="banner"><div class="banner-track" id="banner-track">
-    <div class="banner-slide" style="background-image:url('https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=1280&q=80');background-color:#F08340"><div class="slide-overlay" style="background:linear-gradient(135deg,rgba(240,131,64,.78),rgba(218,111,48,.88))"></div><div class="slide-content"><span class="slide-tag">★ Distribuidora Coronel Sur</span><h2>Precio, Calidad<br>y Atención</h2><p>Tu distribuidora de confianza. Pedí online, retirá en el local o te lo enviamos a domicilio.</p><a class="slide-btn" href="#prods-container">Ver productos →</a></div><div class="slide-deco">★</div></div>
-    <div class="banner-slide" style="background-image:url('https://images.unsplash.com/photo-1513542789411-b6a5d4f31634?w=1280&q=80');background-color:#3483FA"><div class="slide-overlay" style="background:linear-gradient(135deg,rgba(52,131,250,.82),rgba(26,63,139,.9))"></div><div class="slide-content"><span class="slide-tag">📚 Todo para estudiar</span><h2>Librería Escolar<br>y Oficina</h2><p>Cuadernos, carpetas, útiles y más. Los mejores precios de la ciudad.</p><a class="slide-btn" href="#prods-container" style="color:#1A3F8B">Explorar →</a></div><div class="slide-deco">📚</div></div>
-    <div class="banner-slide" style="background:linear-gradient(135deg,#00A650,#005C2C)"><div class="slide-content"><span class="slide-tag">🚚 Delivery gratis</span><h2>Envío a domicilio</h2><p>Te lo llevamos sin costo extra en la ciudad.</p><a class="slide-btn" href="#prods-container" style="color:#005C2C">Comprar →</a></div><div class="slide-deco">🚚</div></div>
-    <div class="banner-slide" style="background:linear-gradient(135deg,#7B2D8E,#4A1A54)"><div class="slide-content"><span class="slide-tag">🏷️ Precios especiales</span><h2>Precios Mayoristas</h2><p>Activá el modo mayorista arriba para ver precios especiales.</p><a class="slide-btn" href="#prods-container" style="color:#4A1A54">Ver lista →</a></div><div class="slide-deco">🏷️</div></div>
-  </div><div class="hero-fade"></div><div class="banner-dots"><button class="dot active" onclick="irSlide(0)"></button><button class="dot" onclick="irSlide(1)"></button><button class="dot" onclick="irSlide(2)"></button><button class="dot" onclick="irSlide(3)"></button></div><button class="banner-arr banner-prev" onclick="slideAnterior()">‹</button><button class="banner-arr banner-next" onclick="slideSiguiente()">›</button></div>
+  <div class="banner"><div class="banner-track" id="banner-track"></div><div class="hero-fade"></div><div class="banner-dots" id="banner-dots"></div><button class="banner-arr banner-prev" onclick="slideAnterior()">‹</button><button class="banner-arr banner-next" onclick="slideSiguiente()">›</button></div>
 </div>
 
 <div class="personalizadas-wrap">
@@ -294,7 +289,32 @@ function toggleMayorista(){TIPO_CLIENTE=TIPO_CLIENTE==='mayorista'?'minorista':'
 function aplicarMayorista(){var a=TIPO_CLIENTE==='mayorista';document.getElementById('mayorista-bar').classList.toggle('active',a);document.body.classList.toggle('mayorista-active',a)}
 aplicarMayorista();
 
-var sa=0,st;function irSlide(n){sa=n;document.getElementById('banner-track').style.transform='translateX(-'+(n*100)+'%)';document.querySelectorAll('.dot').forEach(function(d,i){d.classList.toggle('active',i===n)})}function slideSiguiente(){irSlide((sa+1)%4)}function slideAnterior(){irSlide((sa-1+4)%4)}st=setInterval(slideSiguiente,5000);document.querySelector('.banner').addEventListener('mouseenter',function(){clearInterval(st)});document.querySelector('.banner').addEventListener('mouseleave',function(){st=setInterval(slideSiguiente,5000)});
+var sa=0,st,TOTAL_SLIDES=0;
+var BANNERS_FALLBACK=[
+  {titulo:'Precio, Calidad<br>y Atención',subtitulo:'Tu distribuidora de confianza. Pedí online, retirá en el local o te lo enviamos a domicilio.',tag:'★ Distribuidora Coronel Sur',emoji:'★',bg_image:'https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=1280&q=80',bg_color:'#F08340',overlay_from:'rgba(240,131,64,.78)',overlay_to:'rgba(218,111,48,.88)',btn_text:'Ver productos →',btn_link:'#prods-container',btn_color:'#DA6F30'},
+  {titulo:'Librería Escolar<br>y Oficina',subtitulo:'Cuadernos, carpetas, útiles y más. Los mejores precios de la ciudad.',tag:'📚 Todo para estudiar',emoji:'📚',bg_image:'https://images.unsplash.com/photo-1513542789411-b6a5d4f31634?w=1280&q=80',bg_color:'#3483FA',overlay_from:'rgba(52,131,250,.82)',overlay_to:'rgba(26,63,139,.9)',btn_text:'Explorar →',btn_link:'#prods-container',btn_color:'#1A3F8B'},
+  {titulo:'Envío a domicilio',subtitulo:'Te lo llevamos sin costo extra en la ciudad.',tag:'🚚 Delivery gratis',emoji:'🚚',bg_image:'',bg_color:'#00A650',overlay_from:'#00A650',overlay_to:'#005C2C',btn_text:'Comprar →',btn_link:'#prods-container',btn_color:'#005C2C'},
+  {titulo:'Precios Mayoristas',subtitulo:'Activá el modo mayorista arriba para ver precios especiales.',tag:'🏷️ Precios especiales',emoji:'🏷️',bg_image:'',bg_color:'#7B2D8E',overlay_from:'#7B2D8E',overlay_to:'#4A1A54',btn_text:'Ver lista →',btn_link:'#prods-container',btn_color:'#4A1A54'}
+];
+async function cargarBanners(){
+  var banners=BANNERS_FALLBACK;
+  try{var r=await fetch('/api/shop/banners');if(r.ok){var d=await r.json();if(d&&d.length)banners=d}}catch(e){}
+  TOTAL_SLIDES=banners.length;
+  var track=document.getElementById('banner-track');
+  track.innerHTML=banners.map(function(b){
+    var bgStyle=b.bg_image?'background-image:url(\''+b.bg_image+'\');background-color:'+b.bg_color:'background:linear-gradient(135deg,'+b.overlay_from+','+b.overlay_to+')';
+    var ovStyle='background:linear-gradient(135deg,'+(b.overlay_from||'transparent')+','+(b.overlay_to||'transparent')+')';
+    var btnStyle=b.btn_color?'color:'+b.btn_color:'';
+    return'<div class="banner-slide" style="'+bgStyle+'"><div class="slide-overlay" style="'+ovStyle+'"></div><div class="slide-content"><span class="slide-tag">'+b.tag+'</span><h2>'+b.titulo+'</h2><p>'+b.subtitulo+'</p><a class="slide-btn" href="'+(b.btn_link||'#prods-container')+'" style="'+btnStyle+'">'+b.btn_text+'</a></div><div class="slide-deco">'+b.emoji+'</div></div>'
+  }).join('');
+  document.getElementById('banner-dots').innerHTML=banners.map(function(_,i){return'<button class="dot'+(i===0?' active':'')+'" onclick="irSlide('+i+')"></button>'}).join('');
+  sa=0;initSlider();
+}
+function irSlide(n){sa=n;document.getElementById('banner-track').style.transform='translateX(-'+(n*100)+'%)';document.querySelectorAll('.dot').forEach(function(d,i){d.classList.toggle('active',i===n)})}
+function slideSiguiente(){irSlide((sa+1)%TOTAL_SLIDES)}
+function slideAnterior(){irSlide((sa-1+TOTAL_SLIDES)%TOTAL_SLIDES)}
+function initSlider(){if(st)clearInterval(st);st=setInterval(slideSiguiente,5000);var b=document.querySelector('.banner');b.addEventListener('mouseenter',function(){clearInterval(st)});b.addEventListener('mouseleave',function(){st=setInterval(slideSiguiente,5000)})}
+cargarBanners();
 
 function rc(r){var u=(r||'').toUpperCase(),m={'LIBRERIA':['#4A6CF7','#6B8AFF'],'BAZAR':['#E8743F','#F0945F'],'HOGAR/JARDIN':['#10B981','#34D399'],'TEXTIL':['#9333EA','#A855F7'],'LIBROS':['#EF4444','#F87171'],'REGALERIA':['#EC4899','#F472B6'],'JUGUETERIA':['#F59E0B','#FBBF24'],'ELECTRONICA':['#3B82F6','#60A5FA'],'ALIMENTOS':['#14B8A6','#2DD4BF']};return m[u]||['#9CA3AF','#D1D5DB']}
 function ph(d,r,s){var c=rc(r),i=(d||'?')[0].toUpperCase(),f=s==='big'?'64px':(s==='mini'?'18px':'36px');return'<div style="width:100%;height:100%;background:linear-gradient(135deg,'+c[0]+'22,'+c[1]+'22);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px"><span style="font-size:'+f+';font-weight:300;color:'+c[0]+';line-height:1;opacity:.6">'+i+'</span></div>'}
