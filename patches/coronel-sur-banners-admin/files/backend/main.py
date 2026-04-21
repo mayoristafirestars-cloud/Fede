@@ -34,6 +34,7 @@ from routers.admin_panel import router as router_admin_panel
 from routers.bot import router as router_bot
 from routers.tienda_publica import router as router_tienda_publica
 from routers.admin_banners import router as router_admin_banners
+from routers.admin_fotos import router as router_admin_fotos
 
 # Rate limiter: 120 req/min por IP (general)
 limiter = Limiter(
@@ -84,6 +85,7 @@ app.include_router(router_admin_panel)
 app.include_router(router_bot)
 app.include_router(router_tienda_publica)
 app.include_router(router_admin_banners)
+app.include_router(router_admin_fotos)
 
 @app.on_event("startup")
 def startup():
