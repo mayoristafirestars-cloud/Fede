@@ -21,15 +21,47 @@ html[data-theme="dark"]{--bg:#121212;--bg2:#1E1E1E;--card:#1E1E1E;--border:#333;
 .topbar-actions{display:flex;align-items:center;gap:8px;flex-shrink:0}
 .btn-top{height:36px;border-radius:var(--radius);display:flex;align-items:center;gap:5px;padding:0 12px;font-size:13px;font-weight:600;color:rgba(255,255,255,.9);transition:.15s;white-space:nowrap}.btn-top:hover{background:rgba(255,255,255,.15)}
 .btn-cart-top{background:rgba(255,255,255,.15);font-weight:700;position:relative}.cart-badge-top{background:#fff;color:var(--primary);border-radius:50%;width:18px;height:18px;font-size:10px;font-weight:800;display:grid;place-items:center;position:absolute;top:-4px;right:-4px}
-@media(max-width:768px){.topbar{padding:0 10px;gap:8px;height:52px}.topbar-logo span{display:none}.btn-top span{display:none}.btn-top{padding:0 8px}.topbar-search input{font-size:14px;padding:8px 40px 8px 12px}}
+@media(max-width:768px){:root,html[data-theme="light"],html[data-theme="dark"]{--topbar-h:52px}.topbar{padding:0 10px;gap:8px;height:52px}.topbar-logo span{display:none}.btn-top span{display:none}.btn-top{padding:0 8px}.topbar-search input{font-size:14px;padding:8px 40px 8px 12px}}
 
-main{margin-top:var(--topbar-h);max-width:var(--max-w);margin-left:auto;margin-right:auto}
-@media(max-width:768px){main{margin-top:52px}}
+main{max-width:var(--max-w);margin-left:auto;margin-right:auto}
 
-/* BANNER */
-.banner-wrap{background:var(--bg);padding:16px 16px 0;margin-bottom:0}
-.banner{position:relative;border-radius:var(--radius);overflow:hidden;height:280px;box-shadow:var(--shadow-lg)}.banner-track{display:flex;height:100%;transition:transform .5s ease}.banner-slide{min-width:100%;height:100%;display:flex;align-items:center;padding:0 48px;color:#fff;position:relative;overflow:hidden;background-size:cover;background-position:center}.slide-overlay{position:absolute;inset:0;z-index:1}.banner-slide .slide-content{position:relative;z-index:2;max-width:55%}.banner-slide .slide-tag{display:inline-block;background:rgba(255,255,255,.18);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);padding:5px 14px;border-radius:20px;font-size:12px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;margin-bottom:10px}.banner-slide h2{font-size:38px;font-weight:900;margin-bottom:10px;line-height:1.05;text-shadow:0 2px 12px rgba(0,0,0,.3)}.banner-slide p{font-size:16px;opacity:.95;margin-bottom:16px;text-shadow:0 1px 4px rgba(0,0,0,.15);max-width:400px}.banner-slide .slide-btn{display:inline-block;padding:12px 28px;background:#fff;color:var(--primary-dark);border-radius:var(--radius);font-weight:700;font-size:15px;transition:.2s;box-shadow:0 4px 12px rgba(0,0,0,.15)}.banner-slide .slide-btn:hover{transform:translateY(-2px);box-shadow:0 8px 20px rgba(0,0,0,.2)}.slide-deco{position:absolute;right:6%;top:50%;transform:translateY(-50%);z-index:2;font-size:140px;opacity:.12;line-height:1;pointer-events:none;color:#fff;text-shadow:0 0 40px rgba(255,255,255,.1)}.banner-dots{position:absolute;bottom:14px;left:50%;transform:translateX(-50%);display:flex;gap:6px;z-index:3}.banner-dots .dot{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,.4);cursor:pointer;transition:.2s;padding:0;border:none}.banner-dots .dot.active{background:#fff;width:20px;border-radius:4px}.banner-arr{position:absolute;top:50%;transform:translateY(-50%);width:36px;height:36px;border-radius:50%;background:rgba(0,0,0,.2);color:#fff;font-size:18px;display:grid;place-items:center;cursor:pointer;transition:.15s;z-index:3}.banner-arr:hover{background:rgba(0,0,0,.4)}.banner-prev{left:12px}.banner-next{right:12px}
-@media(max-width:768px){.banner{height:180px}.banner-slide{padding:0 20px}.banner-slide h2{font-size:22px}.banner-slide .slide-content{max-width:75%}.banner-arr{display:none}.slide-deco{font-size:80px;right:3%}.banner-slide .slide-tag{font-size:10px;padding:4px 10px}}
+/* HERO / BANNER FULL-WIDTH */
+.hero-wrap{position:relative;width:100%;margin-top:var(--topbar-h)}
+body.mayorista-active .hero-wrap{margin-top:calc(var(--topbar-h) + 36px)}
+.banner{position:relative;overflow:hidden;height:380px;border-radius:0}
+.banner-track{display:flex;height:100%;transition:transform .5s ease}
+.banner-slide{min-width:100%;height:100%;display:flex;align-items:center;padding:0 8%;color:#fff;position:relative;overflow:hidden;background-size:cover;background-position:center}
+.slide-overlay{position:absolute;inset:0;z-index:1}
+.banner-slide .slide-content{position:relative;z-index:2;max-width:55%;max-width:min(55%,600px)}
+.banner-slide .slide-tag{display:inline-block;background:rgba(255,255,255,.2);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);padding:6px 16px;border-radius:24px;font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;margin-bottom:12px}
+.banner-slide h2{font-size:44px;font-weight:900;margin-bottom:12px;line-height:1.05;text-shadow:0 2px 16px rgba(0,0,0,.35);letter-spacing:-.02em}
+.banner-slide p{font-size:17px;opacity:.95;margin-bottom:20px;text-shadow:0 1px 4px rgba(0,0,0,.2);max-width:440px;font-weight:500}
+.banner-slide .slide-btn{display:inline-block;padding:13px 32px;background:#fff;color:var(--primary-dark);border-radius:var(--radius);font-weight:700;font-size:15px;transition:.2s;box-shadow:0 4px 16px rgba(0,0,0,.2)}
+.banner-slide .slide-btn:hover{transform:translateY(-2px);box-shadow:0 10px 28px rgba(0,0,0,.25)}
+.slide-deco{position:absolute;right:6%;top:50%;transform:translateY(-50%);z-index:2;font-size:180px;opacity:.12;line-height:1;pointer-events:none;color:#fff;text-shadow:0 0 40px rgba(255,255,255,.15)}
+.hero-fade{position:absolute;bottom:0;left:0;right:0;height:80px;background:linear-gradient(to bottom,transparent,var(--bg2));z-index:4;pointer-events:none}
+.banner-dots{position:absolute;bottom:20px;left:50%;transform:translateX(-50%);display:flex;gap:6px;z-index:5}
+.banner-dots .dot{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,.45);cursor:pointer;transition:.2s;padding:0;border:none}
+.banner-dots .dot.active{background:#fff;width:22px;border-radius:4px}
+.banner-arr{position:absolute;top:50%;transform:translateY(-50%);width:42px;height:42px;border-radius:50%;background:rgba(0,0,0,.25);color:#fff;font-size:20px;display:grid;place-items:center;cursor:pointer;transition:.15s;z-index:5}
+.banner-arr:hover{background:rgba(0,0,0,.5)}
+.banner-prev{left:16px}.banner-next{right:16px}
+@media(max-width:768px){.banner{height:220px}.banner-slide{padding:0 20px}.banner-slide h2{font-size:22px}.banner-slide .slide-content{max-width:75%}.banner-arr{display:none}.slide-deco{font-size:100px;right:3%}.banner-slide .slide-tag{font-size:10px;padding:4px 10px}.hero-fade{height:50px}}
+
+/* CARDS PERSONALIZADAS (ML-style) */
+.personalizadas-wrap{position:relative;z-index:6;padding:0 16px;margin-top:-30px}
+.personalizadas{display:grid;grid-template-columns:repeat(6,1fr);gap:10px;max-width:var(--max-w);margin:0 auto}
+.pers-card{background:var(--card);border-radius:var(--radius);padding:14px 12px;cursor:pointer;transition:.18s;display:flex;flex-direction:column;min-height:220px;border:1px solid var(--border);box-shadow:var(--shadow-sm)}
+.pers-card:hover{box-shadow:var(--shadow-lg);transform:translateY(-3px)}
+.pers-card-label{font-size:13px;font-weight:700;color:var(--text);margin-bottom:10px;line-height:1.2;min-height:32px}
+.pers-card-img{height:100px;background:var(--bg2);border-radius:var(--radius-sm);overflow:hidden;margin-bottom:10px;display:flex;align-items:center;justify-content:center}
+.pers-card-img img{width:100%;height:100%;object-fit:contain;mix-blend-mode:multiply}
+.pers-card-name{font-size:11px;color:var(--text2);line-height:1.3;overflow:hidden;text-overflow:ellipsis;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;margin-bottom:6px;min-height:28px}
+.pers-card-price{font-size:15px;font-weight:700;color:var(--text);margin-top:auto}
+.pers-card-cta{font-size:11px;color:var(--blue);font-weight:600;margin-top:4px}
+.pers-card-empty{font-size:11px;color:var(--text3);line-height:1.4;padding:20px 0;text-align:center;flex:1;display:flex;align-items:center;justify-content:center}
+@media(max-width:1024px){.personalizadas{grid-template-columns:repeat(3,1fr)}}
+@media(max-width:640px){.personalizadas-wrap{padding:0;margin-top:-20px}.personalizadas{display:flex;overflow-x:auto;gap:8px;-webkit-overflow-scrolling:touch;padding:0 16px 4px;grid-template-columns:unset}.pers-card{flex-shrink:0;width:150px;min-height:190px}.pers-card-img{height:80px}}
 
 /* BENEFICIOS */
 .benefits{background:var(--bg);padding:20px 16px;display:flex;gap:12px;overflow-x:auto;-webkit-overflow-scrolling:touch;margin-bottom:2px}
@@ -177,8 +209,7 @@ main{margin-top:var(--topbar-h);max-width:var(--max-w);margin-left:auto;margin-r
 @media(max-width:768px){.wa-float{bottom:14px;right:14px;width:48px;height:48px;font-size:24px}}
 
 .mayorista-bar{background:var(--blue);color:#fff;padding:8px 16px;text-align:center;font-size:13px;font-weight:600;display:none;position:fixed;top:var(--topbar-h);left:0;right:0;z-index:99}.mayorista-bar.active{display:flex;align-items:center;justify-content:center;gap:8px}
-body.mayorista-active main{margin-top:calc(var(--topbar-h) + 36px)}
-@media(max-width:768px){body.mayorista-active main{margin-top:calc(52px + 36px)}.mayorista-bar{top:52px}}
+@media(max-width:768px){.mayorista-bar{top:52px}}
 </style>
 </head>
 <body>
@@ -194,16 +225,20 @@ body.mayorista-active main{margin-top:calc(var(--topbar-h) + 36px)}
 </div>
 <div class="mayorista-bar" id="mayorista-bar">🏷️ Viendo precios mayoristas <button onclick="toggleMayorista()" style="background:rgba(255,255,255,.2);border-radius:50%;width:20px;height:20px;font-size:12px;color:#fff;display:grid;place-items:center;margin-left:6px">✕</button></div>
 
-<main>
-  <div class="banner-wrap">
-    <div class="banner"><div class="banner-track" id="banner-track">
-      <div class="banner-slide" style="background-image:url('https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=1280&q=80');background-color:#D9612D"><div class="slide-overlay" style="background:linear-gradient(135deg,rgba(217,97,45,.85),rgba(139,58,21,.92))"></div><div class="slide-content"><span class="slide-tag">★ Distribuidora Coronel Sur</span><h2>Precio, Calidad<br>y Atención</h2><p>Tu distribuidora de confianza. Pedí online, retirá en el local o te lo enviamos a domicilio.</p><a class="slide-btn" href="#prods-container">Ver productos →</a></div><div class="slide-deco">★</div></div>
-      <div class="banner-slide" style="background-image:url('https://images.unsplash.com/photo-1513542789411-b6a5d4f31634?w=1280&q=80');background-color:#3483FA"><div class="slide-overlay" style="background:linear-gradient(135deg,rgba(52,131,250,.82),rgba(26,63,139,.9))"></div><div class="slide-content"><span class="slide-tag">📚 Todo para estudiar</span><h2>Librería Escolar<br>y Oficina</h2><p>Cuadernos, carpetas, útiles y más. Los mejores precios de la ciudad.</p><a class="slide-btn" href="#prods-container" style="color:#1A3F8B">Explorar →</a></div><div class="slide-deco">📚</div></div>
-      <div class="banner-slide" style="background:linear-gradient(135deg,#00A650,#005C2C)"><div class="slide-content"><span class="slide-tag">🚚 Delivery gratis</span><h2>Envío a domicilio</h2><p>Te lo llevamos sin costo extra en la ciudad.</p><a class="slide-btn" href="#prods-container" style="color:#005C2C">Comprar →</a></div><div class="slide-deco">🚚</div></div>
-      <div class="banner-slide" style="background:linear-gradient(135deg,#7B2D8E,#4A1A54)"><div class="slide-content"><span class="slide-tag">🏷️ Precios especiales</span><h2>Precios Mayoristas</h2><p>Activá el modo mayorista arriba para ver precios especiales.</p><a class="slide-btn" href="#prods-container" style="color:#4A1A54">Ver lista →</a></div><div class="slide-deco">🏷️</div></div>
-    </div><div class="banner-dots"><button class="dot active" onclick="irSlide(0)"></button><button class="dot" onclick="irSlide(1)"></button><button class="dot" onclick="irSlide(2)"></button><button class="dot" onclick="irSlide(3)"></button></div><button class="banner-arr banner-prev" onclick="slideAnterior()">‹</button><button class="banner-arr banner-next" onclick="slideSiguiente()">›</button></div>
-  </div>
+<div class="hero-wrap">
+  <div class="banner"><div class="banner-track" id="banner-track">
+    <div class="banner-slide" style="background-image:url('https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=1280&q=80');background-color:#D9612D"><div class="slide-overlay" style="background:linear-gradient(135deg,rgba(217,97,45,.85),rgba(139,58,21,.92))"></div><div class="slide-content"><span class="slide-tag">★ Distribuidora Coronel Sur</span><h2>Precio, Calidad<br>y Atención</h2><p>Tu distribuidora de confianza. Pedí online, retirá en el local o te lo enviamos a domicilio.</p><a class="slide-btn" href="#prods-container">Ver productos →</a></div><div class="slide-deco">★</div></div>
+    <div class="banner-slide" style="background-image:url('https://images.unsplash.com/photo-1513542789411-b6a5d4f31634?w=1280&q=80');background-color:#3483FA"><div class="slide-overlay" style="background:linear-gradient(135deg,rgba(52,131,250,.82),rgba(26,63,139,.9))"></div><div class="slide-content"><span class="slide-tag">📚 Todo para estudiar</span><h2>Librería Escolar<br>y Oficina</h2><p>Cuadernos, carpetas, útiles y más. Los mejores precios de la ciudad.</p><a class="slide-btn" href="#prods-container" style="color:#1A3F8B">Explorar →</a></div><div class="slide-deco">📚</div></div>
+    <div class="banner-slide" style="background:linear-gradient(135deg,#00A650,#005C2C)"><div class="slide-content"><span class="slide-tag">🚚 Delivery gratis</span><h2>Envío a domicilio</h2><p>Te lo llevamos sin costo extra en la ciudad.</p><a class="slide-btn" href="#prods-container" style="color:#005C2C">Comprar →</a></div><div class="slide-deco">🚚</div></div>
+    <div class="banner-slide" style="background:linear-gradient(135deg,#7B2D8E,#4A1A54)"><div class="slide-content"><span class="slide-tag">🏷️ Precios especiales</span><h2>Precios Mayoristas</h2><p>Activá el modo mayorista arriba para ver precios especiales.</p><a class="slide-btn" href="#prods-container" style="color:#4A1A54">Ver lista →</a></div><div class="slide-deco">🏷️</div></div>
+  </div><div class="hero-fade"></div><div class="banner-dots"><button class="dot active" onclick="irSlide(0)"></button><button class="dot" onclick="irSlide(1)"></button><button class="dot" onclick="irSlide(2)"></button><button class="dot" onclick="irSlide(3)"></button></div><button class="banner-arr banner-prev" onclick="slideAnterior()">‹</button><button class="banner-arr banner-next" onclick="slideSiguiente()">›</button></div>
+</div>
 
+<div class="personalizadas-wrap">
+  <div class="personalizadas" id="personalizadas"></div>
+</div>
+
+<main>
   <div class="benefits">
     <div class="benefit-card"><span class="benefit-icon">🚚</span><div class="benefit-title">Envío a domicilio</div><div class="benefit-desc">Entrega en Coronel Suárez sin costo extra</div></div>
     <div class="benefit-card"><span class="benefit-icon">🛡️</span><div class="benefit-title">Compra segura</div><div class="benefit-desc">Tu pedido confirmado por WhatsApp</div></div>
@@ -249,7 +284,8 @@ body.mayorista-active main{margin-top:calc(var(--topbar-h) + 36px)}
 <a class="wa-float" href="#" id="wa-float" target="_blank">💬</a>
 
 <script>
-var CART=JSON.parse(localStorage.getItem('cs_shop_cart')||'[]'),OFFSET=0,RUBRO='',QUERY='',MP_PROD=null,MP_CANT=1,ENTREGA='retiro',SHOP_WA='',OFERTAS_IDS={},VIEW=localStorage.getItem('cs_shop_view')||'grid',TIPO_CLIENTE=localStorage.getItem('cs_tipo_cliente')||'minorista',SEARCH_IDX=-1;
+var CART=JSON.parse(localStorage.getItem('cs_shop_cart')||'[]'),VISTOS=JSON.parse(localStorage.getItem('cs_shop_vistos')||'[]'),OFFSET=0,RUBRO='',QUERY='',MP_PROD=null,MP_CANT=1,ENTREGA='retiro',SHOP_WA='',OFERTAS_IDS={},VIEW=localStorage.getItem('cs_shop_view')||'grid',TIPO_CLIENTE=localStorage.getItem('cs_tipo_cliente')||'minorista',SEARCH_IDX=-1;
+function registrarVisto(p){if(!p||!p.id)return;VISTOS=VISTOS.filter(function(x){return x.id!==p.id});VISTOS.unshift({id:p.id,descripcion:p.descripcion,precio:p.precio,foto_url:p.foto_url||'',rubro:p.rubro||''});if(VISTOS.length>10)VISTOS=VISTOS.slice(0,10);localStorage.setItem('cs_shop_vistos',JSON.stringify(VISTOS))}
 function fmt(n){return'$ '+Math.round(n||0).toLocaleString('es-AR')}
 function toggleTheme(){var t=document.documentElement.getAttribute('data-theme')==='dark'?'light':'dark';document.documentElement.setAttribute('data-theme',t);localStorage.setItem('cs_shop_theme',t);document.getElementById('btn-theme').textContent=t==='dark'?'☀️':'🌙'}
 (function(){var t=localStorage.getItem('cs_shop_theme');if(!t&&window.matchMedia('(prefers-color-scheme:dark)').matches)t='dark';if(t==='dark'){document.documentElement.setAttribute('data-theme','dark');document.getElementById('btn-theme').textContent='☀️'}})();
@@ -271,7 +307,41 @@ function verTodosSearch(){document.getElementById('search-results').classList.re
 function handleSearchKey(e){var items=document.querySelectorAll('.search-result-item');if(e.key==='ArrowDown'){e.preventDefault();SEARCH_IDX=Math.min(SEARCH_IDX+1,items.length-1);items.forEach(function(it,i){it.classList.toggle('focused',i===SEARCH_IDX)})}else if(e.key==='ArrowUp'){e.preventDefault();SEARCH_IDX=Math.max(SEARCH_IDX-1,-1);items.forEach(function(it,i){it.classList.toggle('focused',i===SEARCH_IDX)})}else if(e.key==='Enter'){e.preventDefault();var f=document.querySelector('.search-result-item.focused')||document.querySelector('.search-result-item');if(f)f.click();else verTodosSearch()}else if(e.key==='Escape'){document.getElementById('search-results').classList.remove('open')}}
 document.addEventListener('click',function(e){if(!e.target.closest('.topbar-search'))document.getElementById('search-results').classList.remove('open')});
 
-(async function(){await cargarInfo();await cargarDestacados();await cargarOfertas();await cargarCategorias();await cargarProductos(true);renderCarrito()})();
+(async function(){await cargarInfo();await cargarPersonalizadas();await cargarDestacados();await cargarOfertas();await cargarCategorias();await cargarProductos(true);renderCarrito()})();
+
+async function cargarPersonalizadas(){
+  var cont=document.getElementById('personalizadas');if(!cont)return;
+  var dest=[],ofer=[],vistoRubro='';
+  try{var r=await fetch('/api/shop/destacados?limit=8');if(r.ok)dest=await r.json()}catch(e){}
+  try{var r=await fetch('/api/shop/ofertas?limit=8');if(r.ok){ofer=await r.json();ofer.forEach(function(p){OFERTAS_IDS[p.id]={po:p.precio_original,pf:p.precio_oferta,dc:p.descuento}})}}catch(e){}
+  if(VISTOS[0]&&VISTOS[0].rubro)vistoRubro=VISTOS[0].rubro;
+  var porqueInteresa=null;
+  if(vistoRubro){
+    try{var r=await fetch('/api/shop/productos?limit=6&tipo_cliente='+TIPO_CLIENTE+'&rubro='+encodeURIComponent(vistoRubro));if(r.ok){var d=await r.json();porqueInteresa=(d.productos||[]).find(function(p){return !VISTOS.some(function(v){return v.id===p.id})})||null}}catch(e){}
+  }
+  if(!porqueInteresa)porqueInteresa=dest[0]||null;
+  var carritoItem=CART[0]||null;
+  var vistoItem=VISTOS[0]||null;
+  var favorito=dest[0]||null;
+  var queres=dest[1]||dest[0]||null;
+  var terminar=carritoItem||dest[2]||ofer[0]||null;
+  var cards=[
+    {label:'Porque te interesa',prod:porqueInteresa,fallback:'Explorá nuestro catálogo'},
+    {label:'Llevate tu favorito',prod:favorito,fallback:'Lo más vendido'},
+    {label:carritoItem?'Comprá tu carrito':'Armá tu carrito',prod:carritoItem,fallback:'Agregá productos al carrito',cta:carritoItem?'Seguir comprando':null},
+    {label:vistoItem?'Visto recientemente':'Descubrí productos',prod:vistoItem,fallback:'Mirá los productos destacados'},
+    {label:'Lo querés',prod:queres,fallback:'Recomendados'},
+    {label:terminar===carritoItem&&carritoItem?'Terminá tu compra':'Ofertas para vos',prod:terminar,fallback:'Explorá ofertas',cta:terminar===carritoItem&&carritoItem?'Ir al carrito':null}
+  ];
+  cont.innerHTML=cards.map(function(c){
+    if(!c.prod)return'<div class="pers-card"><div class="pers-card-label">'+c.label+'</div><div class="pers-card-empty">'+c.fallback+'</div></div>';
+    var p=c.prod,o=TIPO_CLIENTE==='mayorista'?null:(OFERTAS_IDS[p.id]||null);
+    var precio=o?o.pf:p.precio;
+    var img=p.foto_url?'<img src="'+p.foto_url+'" loading="lazy">':ph(p.descripcion,p.rubro,'small');
+    var ctaHtml=c.cta?'<div class="pers-card-cta">'+c.cta+' →</div>':'';
+    return'<div class="pers-card" onclick="verProducto('+p.id+')"><div class="pers-card-label">'+c.label+'</div><div class="pers-card-img">'+img+'</div><div class="pers-card-name">'+(p.descripcion||'')+'</div><div class="pers-card-price">'+fmt(precio)+'</div>'+ctaHtml+'</div>';
+  }).join('');
+}
 
 async function cargarInfo(){try{var d=await(await fetch('/api/shop/info')).json();SHOP_WA=d.telefono_wa||'';var u='https://wa.me/'+SHOP_WA;['wa-link','wa-float','wa-footer','wa-footer2'].forEach(function(id){var e=document.getElementById(id);if(e)e.href=u})}catch(e){}}
 async function cargarDestacados(){try{var d=await(await fetch('/api/shop/destacados?limit=12')).json();if(!d.length){document.getElementById('dest-section').style.display='none';return}document.getElementById('dest-section').style.display='block';document.getElementById('dest-scroll').innerHTML=d.map(function(p){var img=p.foto_url?'<img src="'+p.foto_url+'" loading="lazy">':ph(p.descripcion,p.rubro,'small');return'<div class="scroll-card" onclick="verProducto('+p.id+')"><span class="card-badge badge-top">MÁS VENDIDO</span><div class="card-img">'+img+'</div><div class="card-name">'+p.descripcion+'</div><div class="card-price">'+fmt(p.precio)+'</div></div>'}).join('')}catch(e){}}
@@ -285,7 +355,7 @@ function cargarMas(){cargarProductos(false)}
 function gh(p){var img=p.foto_url?'<img src="'+p.foto_url+'" loading="lazy">':ph(p.descripcion,p.rubro,'small');var o=TIPO_CLIENTE==='mayorista'?null:OFERTAS_IDS[p.id];var pr=o?o.pf:p.precio;var precioHtml=o?'<div style="font-size:13px;color:var(--text3);text-decoration:line-through">'+fmt(o.po)+'</div><div class="product-price" style="color:var(--text)">'+fmt(o.pf)+' <span style="font-size:12px;color:var(--green);font-weight:600">'+o.dc+'% OFF</span></div>':'<div class="product-price">'+fmt(p.precio)+'</div>';return'<div class="product-card" onclick="verProducto('+p.id+')"><div class="product-img">'+img+'</div><div class="product-body"><div class="product-name">'+p.descripcion+'</div>'+precioHtml+'<div class="product-cuotas">Consultá cuotas</div><div class="product-envio">Envío a Coronel Suárez</div></div></div>'}
 function lh(p){var img=p.foto_url?'<img src="'+p.foto_url+'" loading="lazy">':ph(p.descripcion,p.rubro,'small');var o=TIPO_CLIENTE==='mayorista'?null:OFERTAS_IDS[p.id];var pr=o?o.pf:p.precio;var precioHtml=o?'<div class="list-price-orig">'+fmt(o.po)+'</div><div class="list-price">'+fmt(o.pf)+' <span style="font-size:12px;color:var(--green);font-weight:600">'+o.dc+'% OFF</span></div>':'<div class="list-price">'+fmt(p.precio)+'</div>';return'<div class="list-card" onclick="verProducto('+p.id+')"><div class="list-img">'+img+'</div><div class="list-info"><div class="list-name">'+p.descripcion+'</div><div class="list-rubro">'+(p.rubro||'')+'</div></div><div class="list-right">'+precioHtml+'<div class="list-cuotas">Consultá cuotas</div><button class="list-btn" onclick="event.stopPropagation();ar('+p.id+',\''+(p.descripcion||'').replace(/'/g,"\\'")+'\','+pr+',\''+(p.foto_url||'').replace(/'/g,"\\'")+'\',\''+(p.rubro||'').replace(/'/g,"\\'")+'\')">Agregar</button></div></div>'}
 
-async function verProducto(id){try{var p=await(await fetch('/api/shop/productos/'+id+'?tipo_cliente='+TIPO_CLIENTE)).json();MP_PROD=p;MP_CANT=1;var o=TIPO_CLIENTE==='mayorista'?null:OFERTAS_IDS[id];document.getElementById('mp-name').textContent=p.descripcion;document.getElementById('mp-rubro').textContent=p.rubro||'';if(o){document.getElementById('mp-price').innerHTML='<span style="text-decoration:line-through;color:var(--text3);font-size:18px;margin-right:10px">'+fmt(o.po)+'</span>'+fmt(o.pf)+' <span style="font-size:14px;color:var(--green)">'+o.dc+'% OFF</span>';MP_PROD.precio=o.pf}else{document.getElementById('mp-price').textContent=fmt(p.precio)}document.getElementById('mp-cant').textContent='1';document.getElementById('mp-img').innerHTML=p.foto_url?'<img src="'+p.foto_url+'">':ph(p.descripcion,p.rubro,'big');document.getElementById('modal-prod').classList.add('open')}catch(e){}}
+async function verProducto(id){try{var p=await(await fetch('/api/shop/productos/'+id+'?tipo_cliente='+TIPO_CLIENTE)).json();MP_PROD=p;MP_CANT=1;registrarVisto(p);var o=TIPO_CLIENTE==='mayorista'?null:OFERTAS_IDS[id];document.getElementById('mp-name').textContent=p.descripcion;document.getElementById('mp-rubro').textContent=p.rubro||'';if(o){document.getElementById('mp-price').innerHTML='<span style="text-decoration:line-through;color:var(--text3);font-size:18px;margin-right:10px">'+fmt(o.po)+'</span>'+fmt(o.pf)+' <span style="font-size:14px;color:var(--green)">'+o.dc+'% OFF</span>';MP_PROD.precio=o.pf}else{document.getElementById('mp-price').textContent=fmt(p.precio)}document.getElementById('mp-cant').textContent='1';document.getElementById('mp-img').innerHTML=p.foto_url?'<img src="'+p.foto_url+'">':ph(p.descripcion,p.rubro,'big');document.getElementById('modal-prod').classList.add('open')}catch(e){}}
 function cerrarModal(){document.getElementById('modal-prod').classList.remove('open')}
 function mpCant(d){MP_CANT=Math.max(1,MP_CANT+d);document.getElementById('mp-cant').textContent=MP_CANT}
 function mpAgregar(){if(!MP_PROD)return;var o=TIPO_CLIENTE==='mayorista'?null:OFERTAS_IDS[MP_PROD.id];var pr=o?o.pf:MP_PROD.precio;ac(MP_PROD.id,MP_PROD.descripcion,pr,MP_PROD.foto_url,MP_PROD.rubro,MP_CANT);cerrarModal()}
