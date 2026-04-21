@@ -31,26 +31,36 @@ from routers.agente_precios import router as router_agente_precios
 from routers.agente_cobranzas import router as router_agente_cobranzas
 from routers.admin import router as router_admin
 from routers.admin_panel import router as router_admin_panel
+from routers.bot import router as router_bot
 from routers.tienda_publica import router as router_tienda_publica
 from routers.admin_banners import router as router_admin_banners
 
-limiter = Limiter(key_func=get_remote_address, default_limits=["120/minute"])
+# Rate limiter: 120 req/min por IP (general)
+limiter = Limiter(
+    key_func=get_remote_address,
+    default_limits=["120/minute"],
+    storage_uri="memory://",
+)
 
 app = FastAPI(title="Coronel Sur", version="1.4.0")
 app.state.limiter = limiter
 
+
 @app.exception_handler(RateLimitExceeded)
 async def rate_limit_handler(request: Request, exc: RateLimitExceeded):
-    return JSONResponse(status_code=429, content={"detail": "Demasiadas solicitudes. Intentá de nuevo en un momento."})
+    return JSONResponse(
+        status_code=429,
+        content={"detail": "Demasiadas solicitudes. Espera un momento antes de reintentar."}
+    )
 
-BACKEND = os.path.dirname(os.path.abspath(__file__))
+
+BACKEND  = os.path.dirname(os.path.abspath(__file__))
 FRONTEND = os.path.join(os.path.dirname(BACKEND), "frontend")
-STATIC = os.path.join(FRONTEND, "static")
+STATIC   = os.path.join(FRONTEND, "static")
 TEMPLATE = os.path.join(FRONTEND, "templates", "index.html")
 
 os.makedirs(STATIC, exist_ok=True)
 app.mount("/static", StaticFiles(directory=STATIC), name="static")
-
 app.include_router(router_facturacion)
 app.include_router(router_crm)
 app.include_router(router_tienda)
@@ -71,13 +81,14 @@ app.include_router(router_agente_precios)
 app.include_router(router_agente_cobranzas)
 app.include_router(router_admin)
 app.include_router(router_admin_panel)
+app.include_router(router_bot)
 app.include_router(router_tienda_publica)
 app.include_router(router_admin_banners)
 
 @app.on_event("startup")
 def startup():
     inicializar_db()
-    print("Coronel Sur iniciado")
+    print("Coronel Sur v1.4.0 en http://localhost:8000")
 
 @app.get("/", response_class=HTMLResponse)
 def raiz():
@@ -95,9 +106,9 @@ def estado_db():
         return {
             "estado": "ok",
             "registros": {
-                "productos": conn.execute("SELECT COUNT(*) FROM productos").fetchone()[0],
-                "clientes": conn.execute("SELECT COUNT(*) FROM clientes").fetchone()[0],
-                "ventas": conn.execute("SELECT COUNT(*) FROM ventas_historicas WHERE origen='factura'").fetchone()[0],
+                "productos":    conn.execute("SELECT COUNT(*) FROM productos").fetchone()[0],
+                "clientes":     conn.execute("SELECT COUNT(*) FROM clientes").fetchone()[0],
+                "ventas":       conn.execute("SELECT COUNT(*) FROM ventas_historicas WHERE origen='factura'").fetchone()[0],
                 "presupuestos": conn.execute("SELECT COUNT(*) FROM ventas_historicas WHERE origen='presupuesto'").fetchone()[0],
             }
         }
@@ -108,14 +119,12 @@ def estado_db():
 def listar_productos(rubro: str = None, buscar: str = None, limit: int = 50):
     conn = conectar()
     try:
-        query = "SELECT * FROM productos WHERE activo = 1"
+        query  = "SELECT * FROM productos WHERE activo = 1"
         params = []
         if rubro:
-            query += " AND rubro = ?"
-            params.append(rubro)
+            query += " AND rubro = ?"; params.append(rubro)
         if buscar:
-            query += " AND (descripcion LIKE ? OR codigo LIKE ?)"
-            params += [f"%{buscar}%", f"%{buscar}%"]
+            query += " AND (descripcion LIKE ? OR codigo LIKE ?)"; params += [f"%{buscar}%", f"%{buscar}%"]
         limit = max(1, min(int(limit), 500))
         query += f" ORDER BY descripcion LIMIT {limit}"
         return [dict(f) for f in conn.execute(query, params).fetchall()]
