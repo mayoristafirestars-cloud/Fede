@@ -185,6 +185,14 @@ def pagina_admin():
     return HTMLResponse(html_path.read_text(encoding="utf-8"))
 
 
+@router.get("/admin/reportes", response_class=HTMLResponse)
+def pagina_reportes():
+    html_path = TEMPLATE_DIR / "admin_reportes.html"
+    if not html_path.exists():
+        raise HTTPException(status_code=404, detail="Template no encontrado")
+    return HTMLResponse(html_path.read_text(encoding="utf-8"))
+
+
 # ---------------- ENDPOINTS PUBLICOS ----------------
 
 @router.get("/api/shop/banners")
