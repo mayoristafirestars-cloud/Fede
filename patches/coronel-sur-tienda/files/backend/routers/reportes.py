@@ -194,20 +194,21 @@ def dashboard(periodo: str = "mes"):
             prod_dict = {}
             for lk in [f"%-{m}" for m in like]:
                 rows = conn.execute(
-                    "SELECT producto, rubro, SUM(cantidad) as unidades, SUM(subtotal) as facturado, SUM(ganancia) as ganancia FROM ventas_historicas WHERE fecha LIKE ? GROUP BY producto",
+                    "SELECT producto, rubro, SUM(cantidad) as unidades, SUM(subtotal) as facturado, SUM(ganancia) as ganancia FROM ventas_historicas WHERE fecha LIKE ? GROUP BY producto, rubro",
                     (lk,)
                 ).fetchall()
                 for r in rows:
-                    k = r[0]
+                    d = dict(r)
+                    k = d["producto"]
                     if k not in prod_dict:
-                        prod_dict[k] = {'producto': r[0], 'rubro': r[1], 'unidades': 0, 'facturado': 0, 'ganancia': 0}
-                    prod_dict[k]['unidades'] += r[2] or 0
-                    prod_dict[k]['facturado'] += r[3] or 0
-                    prod_dict[k]['ganancia'] += r[4] or 0
+                        prod_dict[k] = {'producto': d["producto"], 'rubro': d["rubro"], 'unidades': 0, 'facturado': 0, 'ganancia': 0}
+                    prod_dict[k]['unidades'] += d.get("unidades") or 0
+                    prod_dict[k]['facturado'] += d.get("facturado") or 0
+                    prod_dict[k]['ganancia'] += d.get("ganancia") or 0
             top_productos = sorted(prod_dict.values(), key=lambda x: -x['facturado'])[:10]
         else:
             top_productos = [dict(r) for r in conn.execute(
-                "SELECT producto, rubro, SUM(cantidad) as unidades, SUM(subtotal) as facturado, SUM(ganancia) as ganancia FROM ventas_historicas WHERE fecha LIKE ? GROUP BY producto ORDER BY facturado DESC LIMIT 10",
+                "SELECT producto, rubro, SUM(cantidad) as unidades, SUM(subtotal) as facturado, SUM(ganancia) as ganancia FROM ventas_historicas WHERE fecha LIKE ? GROUP BY producto, rubro ORDER BY facturado DESC LIMIT 10",
                 (like,)
             ).fetchall()]
 
