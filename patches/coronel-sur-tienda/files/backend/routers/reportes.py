@@ -41,19 +41,21 @@ def query_total(conn, like):
         cant = 0
         for m in like:
             r = conn.execute(
-                "SELECT SUM(subtotal), SUM(ganancia), COUNT(*) FROM ventas_historicas WHERE fecha LIKE ?",
+                "SELECT SUM(subtotal) as t, SUM(ganancia) as g, COUNT(*) as c FROM ventas_historicas WHERE fecha LIKE ?",
                 (f"%-{m}",)
             ).fetchone()
-            total += r[0] or 0
-            gan += r[1] or 0
-            cant += r[2] or 0
+            total += (r["t"] or 0) if r else 0
+            gan += (r["g"] or 0) if r else 0
+            cant += (r["c"] or 0) if r else 0
         return total, gan, cant
     else:
         r = conn.execute(
-            "SELECT SUM(subtotal), SUM(ganancia), COUNT(*) FROM ventas_historicas WHERE fecha LIKE ?",
+            "SELECT SUM(subtotal) as t, SUM(ganancia) as g, COUNT(*) as c FROM ventas_historicas WHERE fecha LIKE ?",
             (like,)
         ).fetchone()
-        return r[0] or 0, r[1] or 0, r[2] or 0
+        if not r:
+            return 0, 0, 0
+        return r["t"] or 0, r["g"] or 0, r["c"] or 0
 
 
 @router.get("/dashboard")
@@ -78,12 +80,12 @@ def dashboard(periodo: str = "mes"):
         total_ant, gan_ant, cant_ant = query_total(conn, f"%-{mes_ant_str}")
 
         # Ventas de hoy (sistema)
-        hoy_sistema = conn.execute("""
-            SELECT SUM(total) as total, COUNT(*) as cant
-            FROM comprobantes WHERE fecha=? AND estado!='anulado' AND tipo='factura'
-        """, (hoy_str,)).fetchone()
-        total_hoy = hoy_sistema["total"] or 0
-        cant_hoy  = hoy_sistema["cant"]  or 0
+        hoy_sistema = conn.execute(
+            "SELECT SUM(total) as t, COUNT(*) as c FROM comprobantes WHERE fecha=? AND estado!='anulado' AND tipo='factura'",
+            (hoy_str,)
+        ).fetchone()
+        total_hoy = (hoy_sistema["t"] or 0) if hoy_sistema else 0
+        cant_hoy  = (hoy_sistema["c"] or 0) if hoy_sistema else 0
 
         # Meta
         meta_mes = 11_269_041
@@ -103,10 +105,11 @@ def dashboard(periodo: str = "mes"):
             dt = hoy.replace(day=1) - timedelta(days=i*30)
             m = dt.strftime("%m-%Y")
             lbl = dt.strftime("%b %y")
-            tot = conn.execute(
-                "SELECT SUM(subtotal) FROM ventas_historicas WHERE fecha LIKE ?",
+            rr = conn.execute(
+                "SELECT SUM(subtotal) as t FROM ventas_historicas WHERE fecha LIKE ?",
                 (f"%-{m}",)
-            ).fetchone()[0] or 0
+            ).fetchone()
+            tot = (rr["t"] or 0) if rr else 0
             ventas_por_mes.append({"mes": lbl, "total": round(tot, 0)})
 
         # Margen por mes (ultimos 6)
@@ -116,11 +119,11 @@ def dashboard(periodo: str = "mes"):
             m = dt.strftime("%m-%Y")
             lbl = dt.strftime("%b %y")
             r = conn.execute(
-                "SELECT SUM(subtotal), SUM(ganancia) FROM ventas_historicas WHERE fecha LIKE ?",
+                "SELECT SUM(subtotal) as t, SUM(ganancia) as g FROM ventas_historicas WHERE fecha LIKE ?",
                 (f"%-{m}",)
             ).fetchone()
-            t = r[0] or 0
-            g = r[1] or 0
+            t = (r["t"] or 0) if r else 0
+            g = (r["g"] or 0) if r else 0
             mar = round(g/t*100, 1) if t > 0 else 0
             margen_por_mes.append({"mes": lbl, "margen": mar})
 
