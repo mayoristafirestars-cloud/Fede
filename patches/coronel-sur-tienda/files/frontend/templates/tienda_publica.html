@@ -302,13 +302,26 @@ async function cargarBanners(){
   TOTAL_SLIDES=banners.length;
   var track=document.getElementById('banner-track');
   track.innerHTML=banners.map(function(b){
-    var bgStyle=b.bg_image?'background-image:url(\''+b.bg_image+'\');background-color:'+b.bg_color:'background:linear-gradient(135deg,'+b.overlay_from+','+b.overlay_to+')';
-    var ovStyle='background:linear-gradient(135deg,'+(b.overlay_from||'transparent')+','+(b.overlay_to||'transparent')+')';
+    var from=b.bg_image?toRgbaAuto(b.overlay_from,0.45):(b.overlay_from||'transparent');
+    var to=b.bg_image?toRgbaAuto(b.overlay_to,0.65):(b.overlay_to||'transparent');
+    var bgStyle=b.bg_image?"background-image:url('"+b.bg_image.replace(/'/g,"\\'")+"');background-color:"+b.bg_color:'background:linear-gradient(135deg,'+(b.overlay_from||b.bg_color)+','+(b.overlay_to||b.bg_color)+')';
+    var ovStyle='background:linear-gradient(135deg,'+from+','+to+')';
     var btnStyle=b.btn_color?'color:'+b.btn_color:'';
     return'<div class="banner-slide" style="'+bgStyle+'"><div class="slide-overlay" style="'+ovStyle+'"></div><div class="slide-content"><span class="slide-tag">'+b.tag+'</span><h2>'+b.titulo+'</h2><p>'+b.subtitulo+'</p><a class="slide-btn" href="'+(b.btn_link||'#prods-container')+'" style="'+btnStyle+'">'+b.btn_text+'</a></div><div class="slide-deco">'+b.emoji+'</div></div>'
   }).join('');
   document.getElementById('banner-dots').innerHTML=banners.map(function(_,i){return'<button class="dot'+(i===0?' active':'')+'" onclick="irSlide('+i+')"></button>'}).join('');
   sa=0;initSlider();
+}
+function toRgbaAuto(c,a){
+  if(!c)return'transparent';
+  var s=c.trim();
+  if(s.indexOf('rgba')===0||s.indexOf('rgb(')===0)return s;
+  if(s.charAt(0)==='#'){
+    var h=s.slice(1);if(h.length===3)h=h.split('').map(function(x){return x+x}).join('');
+    var r=parseInt(h.substr(0,2),16),g=parseInt(h.substr(2,2),16),b=parseInt(h.substr(4,2),16);
+    return'rgba('+r+','+g+','+b+','+a+')';
+  }
+  return s;
 }
 function irSlide(n){sa=n;document.getElementById('banner-track').style.transform='translateX(-'+(n*100)+'%)';document.querySelectorAll('.dot').forEach(function(d,i){d.classList.toggle('active',i===n)})}
 function slideSiguiente(){irSlide((sa+1)%TOTAL_SLIDES)}
