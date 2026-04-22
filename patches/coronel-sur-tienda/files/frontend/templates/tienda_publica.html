@@ -8,20 +8,25 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 <style>
-:root,html[data-theme="light"]{--bg:#FFFFFF;--bg2:#FAFAFA;--card:#FFFFFF;--border:#F0F0F0;--border2:#E0E0E0;--text:#1A1A1A;--text2:#555;--text3:#999;--primary:#F08340;--primary-dark:#DA6F30;--primary-light:#F5A568;--primary-pale:rgba(240,131,64,.06);--primary-glow:rgba(240,131,64,.2);--green:#00A650;--red:#F23D4F;--blue:#3483FA;--gold:#F59E0B;--shadow-sm:0 2px 8px rgba(0,0,0,.04);--shadow:0 4px 16px rgba(0,0,0,.07);--shadow-lg:0 12px 40px rgba(0,0,0,.12);--radius:12px;--radius-sm:8px;--max-w:1280px;--topbar-h:64px;--topbar-bg:rgba(255,255,255,.95)}
+:root,html[data-theme="light"]{--bg:#FFFFFF;--bg2:#FAFAFA;--card:#FFFFFF;--border:#F0F0F0;--border2:#E0E0E0;--text:#1A1A1A;--text2:#555;--text3:#999;--primary:#F08340;--primary-dark:#DA6F30;--primary-light:#F5A568;--primary-pale:rgba(240,131,64,.06);--primary-glow:rgba(240,131,64,.2);--green:#00A650;--red:#F23D4F;--blue:#3483FA;--gold:#F59E0B;--shadow-sm:0 2px 8px rgba(0,0,0,.04);--shadow:0 4px 16px rgba(0,0,0,.07);--shadow-lg:0 12px 40px rgba(0,0,0,.12);--radius:12px;--radius-sm:8px;--max-w:1280px;--topbar-h:82px;--topbar-bg:rgba(255,255,255,.95)}
 html[data-theme="dark"]{--bg:#121212;--bg2:#1E1E1E;--card:#1E1E1E;--border:#333;--border2:#444;--text:#E0E0E0;--text2:#AAA;--text3:#666;--primary:#F5945A;--primary-dark:#E8743F;--primary-light:#F7AE77;--primary-pale:rgba(245,148,90,.1);--primary-glow:rgba(245,148,90,.25);--green:#34D399;--red:#F87171;--blue:#60A5FA;--gold:#FBBF24;--shadow-sm:0 1px 2px rgba(0,0,0,.3);--shadow:0 2px 8px rgba(0,0,0,.4);--shadow-lg:0 8px 24px rgba(0,0,0,.5);--topbar-bg:rgba(18,18,18,.95)}
 *{box-sizing:border-box;margin:0;padding:0}body{font-family:'Inter',system-ui,sans-serif;background:var(--bg2);color:var(--text);line-height:1.5;-webkit-font-smoothing:antialiased;transition:background .3s}a{text-decoration:none;color:inherit}button{cursor:pointer;font-family:inherit;border:none;background:none}img{max-width:100%;display:block}
 
 /* TOPBAR */
 .topbar{position:fixed;top:0;left:0;right:0;height:var(--topbar-h);background:var(--primary);z-index:100;display:flex;align-items:center;padding:0 20px;gap:16px}
-.topbar-logo{display:flex;align-items:center;gap:12px;flex-shrink:0}.topbar-logo img{height:44px;width:44px;border-radius:10px;background:#fff;padding:4px;object-fit:contain;box-shadow:0 2px 8px rgba(0,0,0,.08)}.topbar-logo span{font-weight:800;font-size:18px;color:#fff;letter-spacing:-.02em}
+.topbar-logo{display:flex;align-items:center;gap:14px;flex-shrink:0;text-decoration:none}
+.topbar-logo img{height:64px;width:64px;border-radius:14px;background:#fff;padding:6px;object-fit:contain;box-shadow:0 4px 16px rgba(0,0,0,.15)}
+.topbar-brand{display:flex;flex-direction:column;line-height:1}
+.brand-sub{font-size:10px;font-weight:700;letter-spacing:.2em;color:rgba(255,255,255,.75);text-transform:uppercase;margin-bottom:4px}
+.brand-name{font-size:24px;font-weight:900;color:#fff;letter-spacing:-.03em;line-height:1}
+.brand-slogan{font-size:10px;font-weight:500;color:rgba(255,255,255,.7);margin-top:3px;font-style:italic;letter-spacing:.02em}
 .topbar-search{flex:1;max-width:600px;position:relative;margin:0 auto}.topbar-search input{width:100%;padding:10px 44px 10px 16px;border:none;border-radius:var(--radius);font-size:15px;background:#fff;color:#333;outline:none;font-weight:500}.topbar-search input::placeholder{color:#999}.topbar-search button{position:absolute;right:0;top:0;bottom:0;width:44px;background:var(--bg2);border-radius:0 var(--radius) var(--radius) 0;font-size:18px;color:var(--text2);border-left:1px solid var(--border)}
 .search-results{position:absolute;top:calc(100% + 4px);left:0;right:0;background:var(--card);border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow-lg);max-height:400px;overflow-y:auto;z-index:150;display:none}.search-results.open{display:block}
 .search-result-item{display:flex;align-items:center;gap:12px;padding:10px 14px;cursor:pointer;border-bottom:1px solid var(--border);transition:.15s}.search-result-item:hover{background:var(--bg2)}.search-result-img{width:44px;height:44px;border-radius:4px;overflow:hidden;background:#fff;flex-shrink:0}.search-result-img img{width:100%;height:100%;object-fit:cover}.search-result-info{flex:1;min-width:0}.search-result-name{font-size:13px;font-weight:500;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.search-result-rubro{font-size:11px;color:var(--text3)}.search-result-price{font-size:16px;font-weight:700;color:var(--text);flex-shrink:0}.search-results .ver-todos{padding:10px;text-align:center;color:var(--blue);font-weight:600;font-size:13px;cursor:pointer;border-top:1px solid var(--border)}.search-results .ver-todos:hover{background:var(--bg2)}
 .topbar-actions{display:flex;align-items:center;gap:8px;flex-shrink:0}
 .btn-top{height:36px;border-radius:var(--radius);display:flex;align-items:center;gap:5px;padding:0 12px;font-size:13px;font-weight:600;color:rgba(255,255,255,.9);transition:.15s;white-space:nowrap}.btn-top:hover{background:rgba(255,255,255,.15)}
 .btn-cart-top{background:rgba(255,255,255,.15);font-weight:700;position:relative}.cart-badge-top{background:#fff;color:var(--primary);border-radius:50%;width:18px;height:18px;font-size:10px;font-weight:800;display:grid;place-items:center;position:absolute;top:-4px;right:-4px}
-@media(max-width:768px){:root,html[data-theme="light"],html[data-theme="dark"]{--topbar-h:52px}.topbar{padding:0 10px;gap:8px;height:52px}.topbar-logo span{display:none}.btn-top span{display:none}.btn-top{padding:0 8px}.topbar-search input{font-size:14px;padding:8px 40px 8px 12px}}
+@media(max-width:768px){:root,html[data-theme="light"],html[data-theme="dark"]{--topbar-h:64px}.topbar{padding:0 10px;gap:8px;height:64px}.topbar-logo img{height:48px;width:48px;border-radius:10px}.topbar-brand{display:none}.brand-sub,.brand-slogan{display:none}.btn-top span{display:none}.btn-top{padding:0 8px}.topbar-search input{font-size:14px;padding:8px 40px 8px 12px}}
 
 main{max-width:var(--max-w);margin-left:auto;margin-right:auto}
 
@@ -219,7 +224,7 @@ body.mayorista-active .hero-wrap{margin-top:calc(var(--topbar-h) + 36px)}
 </head>
 <body>
 <div class="topbar">
-  <a href="/shop" class="topbar-logo"><img referrerpolicy="no-referrer" src="/static/logo-coronel.png" alt="CS" onerror="this.style.display='none'"><span>Coronel Sur</span></a>
+  <a href="/shop" class="topbar-logo"><img referrerpolicy="no-referrer" src="/static/logo-coronel.png" alt="Coronel Sur" onerror="this.style.display='none'"><div class="topbar-brand"><span class="brand-sub">Distribuidora</span><span class="brand-name">Coronel Sur</span><span class="brand-slogan">Precio, Calidad y Atención</span></div></a>
   <div class="topbar-search"><input type="text" id="search" placeholder="Buscar productos, marcas y más..." oninput="buscarPredictivo(this.value)" onkeydown="handleSearchKey(event)" autocomplete="off"><button onclick="verTodosSearch()">🔍</button><div class="search-results" id="search-results"></div></div>
   <div class="topbar-actions">
     <button class="btn-top" onclick="toggleMayorista()" id="btn-mayorista" title="Modo mayorista">🏷️ <span>Mayorista</span></button>
