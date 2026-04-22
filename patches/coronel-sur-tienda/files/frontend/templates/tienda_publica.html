@@ -6,12 +6,12 @@
 <title>Coronel Sur — Tienda Online</title>
 <link rel="icon" href="/static/logo-coronel.png" type="image/png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800;900&family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
 <style>
-:root,html[data-theme="light"]{--bg:#FFFFFF;--bg2:#F8F9FA;--card:#FFFFFF;--border:#EAEDF0;--border2:#DDE1E6;--text:#0F1419;--text2:#536471;--text3:#8B98A5;--primary:#F08340;--primary-dark:#DA6F30;--primary-light:#F5A568;--primary-pale:rgba(240,131,64,.05);--primary-glow:rgba(240,131,64,.18);--secondary:#1B2A4A;--secondary-light:#2D4470;--green:#00A650;--red:#E0245E;--blue:#1D9BF0;--gold:#F5A623;--shadow-sm:0 1px 3px rgba(15,20,25,.08);--shadow:0 4px 12px rgba(15,20,25,.1);--shadow-lg:0 16px 48px rgba(15,20,25,.14);--radius:16px;--radius-sm:10px;--max-w:1280px;--topbar-h:90px;--topbar-bg:rgba(255,255,255,.92);--font-heading:'Playfair Display',Georgia,serif;--font-body:'Inter',system-ui,sans-serif}}
-html[data-theme="dark"]{--bg:#121212;--bg2:#1E1E1E;--card:#1E1E1E;--border:#333;--border2:#444;--text:#E0E0E0;--text2:#AAA;--text3:#666;--primary:#F5945A;--primary-dark:#E8743F;--primary-light:#F7AE77;--primary-pale:rgba(245,148,90,.1);--primary-glow:rgba(245,148,90,.25);--green:#34D399;--red:#F87171;--blue:#60A5FA;--gold:#FBBF24;--shadow-sm:0 1px 2px rgba(0,0,0,.3);--shadow:0 2px 8px rgba(0,0,0,.4);--shadow-lg:0 8px 24px rgba(0,0,0,.5);--topbar-bg:rgba(18,18,18,.95)}
-*{box-sizing:border-box;margin:0;padding:0}body{font-family:var(--font-body);background:var(--bg2);color:var(--text);line-height:1.6;-webkit-font-smoothing:antialiased;transition:background .3s}a{text-decoration:none;color:inherit}button{cursor:pointer;font-family:inherit;border:none;background:none}img{max-width:100%;display:block}
+:root,html[data-theme="light"]{--bg:#FFFFFF;--bg2:#F2F2F2;--card:#FFFFFF;--border:#EAEDF0;--border2:#DDE1E6;--text:#111111;--text2:#555;--text3:#8B98A5;--primary:#FF6A00;--primary-dark:#E55D00;--primary-light:#FF8C33;--primary-pale:rgba(255,106,0,.05);--primary-glow:rgba(255,106,0,.18);--secondary:#111111;--secondary-light:#333;--green:#00A650;--red:#E0245E;--blue:#1D9BF0;--gold:#FF8C33;--shadow-sm:0 1px 3px rgba(0,0,0,.06);--shadow:0 4px 12px rgba(0,0,0,.08);--shadow-lg:0 16px 48px rgba(0,0,0,.12);--radius:16px;--radius-sm:10px;--max-w:1280px;--topbar-h:90px;--topbar-bg:rgba(255,255,255,.92);--font-heading:'Poppins',system-ui,sans-serif;--font-body:'Poppins',system-ui,sans-serif}}
+html[data-theme="dark"]{--bg:#111111;--bg2:#1A1A1A;--card:#222;--border:#333;--border2:#444;--text:#F0F0F0;--text2:#AAA;--text3:#666;--primary:#FF8C33;--primary-dark:#FF6A00;--primary-light:#FFAA66;--primary-pale:rgba(255,140,51,.1);--primary-glow:rgba(255,140,51,.25);--secondary:#F0F0F0;--green:#34D399;--red:#F87171;--blue:#60A5FA;--gold:#FF8C33;--shadow-sm:0 1px 2px rgba(0,0,0,.4);--shadow:0 2px 8px rgba(0,0,0,.5);--shadow-lg:0 8px 24px rgba(0,0,0,.6);--topbar-bg:rgba(17,17,17,.95)}
+*{box-sizing:border-box;margin:0;padding:0}body{font-family:'Poppins',system-ui,sans-serif;background:var(--bg2);color:var(--text);line-height:1.6;-webkit-font-smoothing:antialiased;transition:background .3s}a{text-decoration:none;color:inherit}button{cursor:pointer;font-family:inherit;border:none;background:none}img{max-width:100%;display:block}
 
 /* TOPBAR */
 .topbar{position:fixed;top:0;left:0;right:0;height:var(--topbar-h);background:var(--primary);backdrop-filter:saturate(1.2) blur(20px);-webkit-backdrop-filter:saturate(1.2) blur(20px);z-index:100;display:flex;align-items:center;padding:0 24px;gap:16px}
@@ -218,7 +218,7 @@ body.mayorista-active .hero-wrap{margin-top:0}
 .btn-wa-big{display:inline-flex;align-items:center;gap:8px;padding:14px 28px;background:var(--green);color:#fff;border-radius:var(--radius);font-size:15px;font-weight:700;transition:.15s}.btn-wa-big:hover{filter:brightness(1.1)}
 
 /* FOOTER */
-.shop-footer{background:var(--secondary);color:#fff;padding:48px 24px;margin-top:0}
+.shop-footer{background:#111111;color:#fff;padding:48px 24px;margin-top:0}
 .footer-grid{max-width:var(--max-w);margin:0 auto;display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:32px}
 .footer-logo{background:#fff;border-radius:12px;padding:10px;width:110px;margin-bottom:12px;box-shadow:0 4px 12px rgba(0,0,0,.2)}.footer-logo img{width:100%;height:auto;display:block}
 .footer-brand{font-family:var(--font-heading);font-size:24px;font-weight:800;margin-bottom:8px;color:var(--primary-light)}.footer-slogan{font-size:13px;opacity:.6;margin-bottom:12px}
@@ -272,11 +272,10 @@ body.mayorista-active .hero-wrap{margin-top:0}
 
 <main>
   <div class="benefits">
-    <div class="benefit-card"><span class="benefit-icon">🚚</span><div class="benefit-title">Envío GRATIS en Santa Rosa</div><div class="benefit-desc">Te lo llevamos a tu casa sin costo</div></div>
-    <div class="benefit-card"><span class="benefit-icon">🛡️</span><div class="benefit-title">Compra segura</div><div class="benefit-desc">Tu pedido confirmado por WhatsApp</div></div>
-    <div class="benefit-card"><span class="benefit-icon">💰</span><div class="benefit-title">Mejores precios</div><div class="benefit-desc">Precios de distribuidora, sin intermediarios</div></div>
-    <div class="benefit-card"><span class="benefit-icon">🏷️</span><div class="benefit-title">Lista mayorista</div><div class="benefit-desc">Precios especiales comprando en cantidad</div></div>
-    <div class="benefit-card"><span class="benefit-icon">📱</span><div class="benefit-title">Pedí por WhatsApp</div><div class="benefit-desc">Consultá stock y hacé pedidos al instante</div></div>
+    <div class="benefit-card"><span class="benefit-icon" style="color:var(--primary)">💲</span><div class="benefit-title">Precios mayoristas</div><div class="benefit-desc">Comprá más, pagá menos</div></div>
+    <div class="benefit-card"><span class="benefit-icon" style="color:var(--primary)">✅</span><div class="benefit-title">Calidad garantizada</div><div class="benefit-desc">Productos originales y con respaldo</div></div>
+    <div class="benefit-card"><span class="benefit-icon" style="color:var(--primary)">🚚</span><div class="benefit-title">Envíos rápidos</div><div class="benefit-desc">En Santa Rosa y zonas cercanas</div></div>
+    <div class="benefit-card"><span class="benefit-icon" style="color:var(--primary)">🎧</span><div class="benefit-title">Atención personalizada</div><div class="benefit-desc">Te asesoramos por WhatsApp</div></div>
   </div>
 
   <div class="content-area">
@@ -367,7 +366,7 @@ aplicarMayorista();
 
 var sa=0,st,TOTAL_SLIDES=0;
 var BANNERS_FALLBACK=[
-  {titulo:'Precio, Calidad<br>y Atención',subtitulo:'Tu distribuidora de confianza. Pedí online, retirá en el local o te lo enviamos a domicilio.',tag:'★ Distribuidora Coronel Sur',emoji:'★',bg_image:'https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=1280&q=80',bg_color:'#F08340',overlay_from:'rgba(240,131,64,.78)',overlay_to:'rgba(218,111,48,.88)',btn_text:'Ver productos →',btn_link:'#prods-container',btn_color:'#DA6F30'},
+  {titulo:'Más que productos,<br>soluciones para tu día a día',subtitulo:'Tu distribuidora de confianza. Comprá online, recibí en tu casa o retirá en el local.',tag:'★ Distribuidora Coronel Sur',emoji:'★',bg_image:'https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=1280&q=80',bg_color:'#FF6A00',overlay_from:'rgba(255,106,0,.75)',overlay_to:'rgba(229,93,0,.88)',btn_text:'COMPRAR AHORA →',btn_link:'#prods-container',btn_color:'#E55D00'},
   {titulo:'Librería Escolar<br>y Oficina',subtitulo:'Cuadernos, carpetas, útiles y más. Los mejores precios de la ciudad.',tag:'📚 Todo para estudiar',emoji:'📚',bg_image:'https://images.unsplash.com/photo-1513542789411-b6a5d4f31634?w=1280&q=80',bg_color:'#3483FA',overlay_from:'rgba(52,131,250,.82)',overlay_to:'rgba(26,63,139,.9)',btn_text:'Explorar →',btn_link:'#prods-container',btn_color:'#1A3F8B'},
   {titulo:'Envío a domicilio',subtitulo:'Te lo llevamos sin costo extra en la ciudad.',tag:'🚚 Delivery gratis',emoji:'🚚',bg_image:'',bg_color:'#00A650',overlay_from:'#00A650',overlay_to:'#005C2C',btn_text:'Comprar →',btn_link:'#prods-container',btn_color:'#005C2C'},
   {titulo:'Precios Mayoristas',subtitulo:'Activá el modo mayorista arriba para ver precios especiales.',tag:'🏷️ Precios especiales',emoji:'🏷️',bg_image:'',bg_color:'#7B2D8E',overlay_from:'#7B2D8E',overlay_to:'#4A1A54',btn_text:'Ver lista →',btn_link:'#prods-container',btn_color:'#4A1A54'}
