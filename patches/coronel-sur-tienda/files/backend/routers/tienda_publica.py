@@ -75,7 +75,7 @@ def listar_productos(
         if rubro:
             sql += " AND rubro = ?"
             params.append(rubro.strip())
-        sql += " ORDER BY (foto_url != '' AND foto_url NOT LIKE '%product.png%') DESC, descripcion ASC"
+        sql += " ORDER BY (foto_url != '' AND POSITION('product.png' IN foto_url) = 0) DESC, descripcion ASC"
         sql += f" LIMIT {int(limit)} OFFSET {int(offset)}"
         filas = conn.execute(sql, params).fetchall()
         productos = []
