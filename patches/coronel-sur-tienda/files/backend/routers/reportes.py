@@ -267,40 +267,32 @@ def dashboard(periodo: str = "mes"):
         por_hora = []
         for h in range(24):
             por_hora.append({"hora": f"{h:02d}:00", "total": 0, "cant": 0})
+        mejor_hora = por_hora[0]
+        peor_hora_activa = None
         try:
-            if isinstance(like, list):
-                rows_hora = []
-                for m in like:
-                    rows_hora += conn.execute(
-                        "SELECT creado_en, total FROM comprobantes WHERE estado != 'anulado' AND tipo = 'factura' AND fecha LIKE ?",
-                        (f"%-{m}",)
-                    ).fetchall()
-            else:
-                rows_hora = conn.execute(
-                    "SELECT creado_en, total FROM comprobantes WHERE estado != 'anulado' AND tipo = 'factura' AND fecha LIKE ?",
-                    (like,)
-                ).fetchall()
+            rows_hora = conn.execute(
+                "SELECT creado_en, total FROM comprobantes WHERE estado != 'anulado' AND tipo = 'factura'",
+                ()
+            ).fetchall()
             for row in rows_hora:
                 try:
                     d = dict(row)
-                    ts = str(d.get("creado_en", ""))
-                    if " " in ts:
-                        hora_str = ts.split(" ")[1].split(":")[0]
-                        h = int(hora_str)
+                    ts = str(d.get("creado_en") or "")
+                    monto = float(d.get("total") or 0)
+                    if " " in ts and monto > 0:
+                        partes_hora = ts.split(" ")[1].split(":")
+                        h = int(partes_hora[0])
                         if 0 <= h < 24:
-                            por_hora[h]["total"] += float(d.get("total", 0) or 0)
+                            por_hora[h]["total"] += monto
                             por_hora[h]["cant"] += 1
-                except:
-                    pass
-        except:
+                except Exception:
+                    continue
+            mejor_hora = max(por_hora, key=lambda x: x["total"])
+            horas_activas = [h for h in por_hora if h["cant"] > 0]
+            if horas_activas:
+                peor_hora_activa = min(horas_activas, key=lambda x: x["total"])
+        except Exception:
             pass
-
-        # Franja mas productiva
-        mejor_hora = max(por_hora, key=lambda x: x["total"])
-        peor_hora_activa = None
-        horas_activas = [h for h in por_hora if h["cant"] > 0]
-        if horas_activas:
-            peor_hora_activa = min(horas_activas, key=lambda x: x["total"])
 
         return {
             "hoy": {
