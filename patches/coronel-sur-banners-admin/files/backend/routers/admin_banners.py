@@ -52,7 +52,7 @@ BANNERS_DEFAULT: list[dict] = [
         "subtitulo": "",
         "tag": "",
         "emoji": "",
-        "bg_image": "https://i.postimg.cc/50fd0YLQ/Chat-GPT-Image-22-abr-2026-05-09-45-p-m.png",
+        "bg_image": "https://i.postimg.cc/7PWHB9SQ/Chat-GPT-Image-22-abr-2026-05-28-58-p-m.png",
         "bg_color": "#1A3F8B",
         "overlay_from": "transparent",
         "overlay_to": "transparent",
