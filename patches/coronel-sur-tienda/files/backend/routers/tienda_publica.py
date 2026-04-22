@@ -82,7 +82,7 @@ def listar_productos(
         for f in filas:
             d = dict(f)
             precio = d.get("precio_mayorista", 0) if tipo_cliente == "mayorista" and d.get("precio_mayorista", 0) > 0 else d.get("precio_venta", 0)
-            productos.append({"id":d.get("id"),"codigo":d.get("codigo"),"descripcion":d.get("descripcion"),"rubro":d.get("rubro"),"precio":float(precio or 0),"foto_url":d.get("foto_url") or "","ean":d.get("ean") or ""})
+            productos.append({"id":d.get("id"),"codigo":d.get("codigo"),"descripcion":d.get("descripcion"),"rubro":d.get("rubro"),"precio":float(precio or 0),"stock":float(d.get("stock",0) or 0),"foto_url":d.get("foto_url") or "","ean":d.get("ean") or ""})
         return {"productos": productos, "tipo_cliente": tipo_cliente}
     finally:
         conn.close()
