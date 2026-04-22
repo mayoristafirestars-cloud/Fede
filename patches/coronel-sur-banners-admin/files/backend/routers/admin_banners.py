@@ -36,7 +36,7 @@ BANNERS_DEFAULT: list[dict] = [
         "subtitulo": "",
         "tag": "",
         "emoji": "",
-        "bg_image": "https://i.postimg.cc/yNgt8hDT/Captura-de-pantalla-2026-04-22-173427.png",
+        "bg_image": "https://i.postimg.cc/HkQ7DR2j/Chat-GPT-Image-22-abr-2026-05-41-14-p-m.png",
         "bg_color": "#FF6A00",
         "overlay_from": "transparent",
         "overlay_to": "transparent",
