@@ -70,8 +70,8 @@ def listar_productos(
         params: list = []
         if q:
             qlike = f"%{q.strip()}%"
-            sql += " AND (descripcion LIKE ? OR codigo LIKE ? OR COALESCE(ean,'') LIKE ?)"
-            params += [qlike, qlike, qlike]
+            sql += " AND (LOWER(descripcion) LIKE LOWER(?) OR codigo LIKE ? OR COALESCE(ean,'') LIKE ? OR LOWER(COALESCE(rubro,'')) LIKE LOWER(?))"
+            params += [qlike, qlike, qlike, qlike]
         if rubro:
             sql += " AND rubro = ?"
             params.append(rubro.strip())
