@@ -3,59 +3,199 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Trama — Atención al Cliente</title>
+  <title>Trama — Demo del agente Sofi</title>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
-    html, body { height: 100%; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: #f3f4f6; color: #111; }
+    html, body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; color: #111; background: #fafafa; }
 
-    .app {
-      max-width: 480px;
-      margin: 0 auto;
-      height: 100vh;
-      display: flex;
-      flex-direction: column;
+    /* ============ Página simulada de Trama (decorativa) ============ */
+    .site-header {
+      padding: 24px 40px;
       background: #fff;
-      box-shadow: 0 0 30px rgba(0,0,0,0.05);
+      border-bottom: 1px solid #eee;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .site-header .logo { font-weight: 800; font-size: 22px; letter-spacing: 1px; }
+    .site-header nav a {
+      margin-left: 24px;
+      color: #555;
+      text-decoration: none;
+      font-size: 14px;
     }
 
-    header {
-      padding: 16px 20px;
+    .hero {
+      padding: 80px 40px;
+      background: linear-gradient(180deg, #f5f5f4 0%, #fafafa 100%);
+      text-align: center;
+    }
+    .hero h1 { font-size: 48px; font-weight: 800; margin-bottom: 16px; }
+    .hero p { font-size: 18px; color: #666; max-width: 540px; margin: 0 auto 24px; }
+    .hero .cta {
+      display: inline-block;
+      background: #111;
+      color: #fff;
+      padding: 14px 28px;
+      border-radius: 8px;
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    .products {
+      padding: 60px 40px;
+      max-width: 1100px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 24px;
+    }
+    .product {
+      background: #fff;
+      border: 1px solid #eee;
+      border-radius: 12px;
+      overflow: hidden;
+    }
+    .product .img {
+      height: 220px;
+      background: linear-gradient(135deg, #e7e5e4, #d6d3d1);
+    }
+    .product .info { padding: 16px; }
+    .product h3 { font-size: 14px; margin-bottom: 4px; }
+    .product .price { font-weight: 700; }
+
+    /* ============ Widget de chat (lo importante) ============ */
+
+    /* Botón flotante */
+    #chat-bubble {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      background: #111;
+      color: #fff;
+      border: none;
+      cursor: pointer;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.18);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 26px;
+      transition: transform 0.2s ease, background 0.2s ease;
+      z-index: 999;
+    }
+    #chat-bubble:hover { transform: scale(1.05); }
+    #chat-bubble.open { background: #444; }
+
+    #chat-bubble .badge {
+      position: absolute;
+      top: -4px;
+      right: -4px;
+      background: #ef4444;
+      color: #fff;
+      font-size: 11px;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      border: 2px solid #fff;
+    }
+    #chat-bubble.open .badge { display: none; }
+
+    /* Ventana de chat */
+    #chat-window {
+      position: fixed;
+      bottom: 100px;
+      right: 24px;
+      width: 380px;
+      height: 580px;
+      max-height: calc(100vh - 120px);
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: 0 16px 48px rgba(0,0,0,0.18);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      transform: translateY(20px) scale(0.95);
+      opacity: 0;
+      pointer-events: none;
+      transition: all 0.25s ease;
+      z-index: 998;
+    }
+    #chat-window.open {
+      transform: translateY(0) scale(1);
+      opacity: 1;
+      pointer-events: auto;
+    }
+    @media (max-width: 480px) {
+      #chat-window {
+        right: 12px;
+        left: 12px;
+        width: auto;
+        bottom: 90px;
+      }
+    }
+
+    .chat-header {
+      padding: 18px 20px;
       background: #111;
       color: #fff;
       display: flex;
       align-items: center;
-      justify-content: space-between;
+      gap: 12px;
     }
-    header .title { display: flex; align-items: center; gap: 12px; }
-    header .avatar {
-      width: 40px; height: 40px;
+    .chat-header .avatar {
+      width: 42px;
+      height: 42px;
       border-radius: 50%;
       background: #fff;
       color: #111;
-      display: flex; align-items: center; justify-content: center;
-      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      font-size: 16px;
     }
-    header h1 { font-size: 16px; line-height: 1.2; }
-    header p { font-size: 12px; color: #aaa; }
-    header button {
-      background: transparent;
-      border: 1px solid #444;
-      color: #ddd;
-      padding: 6px 10px;
+    .chat-header .info h2 { font-size: 15px; line-height: 1.2; }
+    .chat-header .info p {
       font-size: 12px;
+      color: #aaa;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .chat-header .info .dot {
+      width: 8px;
+      height: 8px;
+      background: #22c55e;
+      border-radius: 50%;
+      display: inline-block;
+    }
+    .chat-header button {
+      margin-left: auto;
+      background: transparent;
+      border: 1px solid #333;
+      color: #ccc;
+      padding: 4px 10px;
+      font-size: 11px;
       border-radius: 6px;
       cursor: pointer;
     }
-    header button:hover { background: #222; }
+    .chat-header button:hover { background: #222; }
 
-    #messages {
+    .chat-body {
       flex: 1;
       overflow-y: auto;
       padding: 16px;
       display: flex;
       flex-direction: column;
-      gap: 10px;
-      background: #f9fafb;
+      gap: 8px;
+      background: #fafafa;
     }
 
     .msg {
@@ -66,6 +206,11 @@
       line-height: 1.45;
       white-space: pre-wrap;
       word-wrap: break-word;
+      animation: slide-in 0.2s ease;
+    }
+    @keyframes slide-in {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
     }
     .msg.user {
       align-self: flex-end;
@@ -77,28 +222,67 @@
       align-self: flex-start;
       background: #fff;
       color: #111;
-      border: 1px solid #e5e7eb;
+      border: 1px solid #eee;
       border-bottom-left-radius: 4px;
     }
-    .msg.typing {
+
+    .typing {
       align-self: flex-start;
       background: #fff;
-      color: #888;
-      border: 1px solid #e5e7eb;
-      font-style: italic;
+      border: 1px solid #eee;
+      padding: 12px 16px;
+      border-radius: 16px;
+      border-bottom-left-radius: 4px;
+      display: flex;
+      gap: 4px;
+    }
+    .typing span {
+      width: 6px;
+      height: 6px;
+      background: #888;
+      border-radius: 50%;
+      animation: bounce 1.4s infinite ease-in-out both;
+    }
+    .typing span:nth-child(1) { animation-delay: -0.32s; }
+    .typing span:nth-child(2) { animation-delay: -0.16s; }
+    @keyframes bounce {
+      0%, 80%, 100% { transform: scale(0.6); opacity: 0.5; }
+      40% { transform: scale(1); opacity: 1; }
+    }
+
+    .quick-replies {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      padding: 8px 16px 4px;
+    }
+    .quick-replies button {
+      background: #fff;
+      border: 1px solid #ddd;
+      color: #333;
+      padding: 8px 14px;
+      border-radius: 999px;
+      font-size: 13px;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+    .quick-replies button:hover {
+      background: #111;
+      color: #fff;
+      border-color: #111;
     }
 
     .composer {
       padding: 12px;
       background: #fff;
-      border-top: 1px solid #e5e7eb;
+      border-top: 1px solid #eee;
       display: flex;
       gap: 8px;
     }
     .composer input {
       flex: 1;
-      padding: 12px 14px;
-      border: 1px solid #d1d5db;
+      padding: 11px 14px;
+      border: 1px solid #ddd;
       border-radius: 999px;
       font-size: 14px;
       outline: none;
@@ -115,63 +299,150 @@
       cursor: pointer;
     }
     .composer button:disabled { opacity: 0.5; cursor: not-allowed; }
+
+    .footer-note {
+      text-align: center;
+      font-size: 11px;
+      color: #999;
+      padding: 6px;
+      background: #fafafa;
+    }
   </style>
 </head>
 <body>
-  <div class="app">
-    <header>
-      <div class="title">
-        <div class="avatar">S</div>
-        <div>
-          <h1>Sofi · Trama</h1>
-          <p>Atención al cliente · 24/7</p>
-        </div>
+
+  <!-- Página decorativa simulando trama.com.ar -->
+  <div class="site-header">
+    <div class="logo">TRAMA</div>
+    <nav>
+      <a href="#">Remeras</a>
+      <a href="#">Buzos</a>
+      <a href="#">Joggers</a>
+      <a href="#">Sale</a>
+    </nav>
+  </div>
+
+  <section class="hero">
+    <h1>Algodón orgánico, hecho en Argentina.</h1>
+    <p>Básicos atemporales pensados para todos los días. Envíos a todo el país.</p>
+    <a href="#" class="cta">Ver colección</a>
+  </section>
+
+  <section class="products">
+    <div class="product"><div class="img"></div><div class="info"><h3>Buzo Hoodie Classic</h3><div class="price">$48.900</div></div></div>
+    <div class="product"><div class="img"></div><div class="info"><h3>Remera Basic Box</h3><div class="price">$18.500</div></div></div>
+    <div class="product"><div class="img"></div><div class="info"><h3>Jogger Relax Fit</h3><div class="price">$38.000</div></div></div>
+    <div class="product"><div class="img"></div><div class="info"><h3>Campera Workwear</h3><div class="price">$89.000</div></div></div>
+  </section>
+
+  <!-- Widget de chat (esto es lo que importa) -->
+
+  <button id="chat-bubble" aria-label="Abrir chat">
+    <span id="bubble-icon">💬</span>
+    <span class="badge">1</span>
+  </button>
+
+  <div id="chat-window">
+    <div class="chat-header">
+      <div class="avatar">S</div>
+      <div class="info">
+        <h2>Sofi · Trama</h2>
+        <p><span class="dot"></span> En línea · responde 24/7</p>
       </div>
-      <button id="reset">Reiniciar</button>
-    </header>
+      <button id="reset-btn">Reiniciar</button>
+    </div>
 
-    <div id="messages"></div>
+    <div class="chat-body" id="chat-body"></div>
 
-    <form id="composer" class="composer" autocomplete="off">
+    <div class="quick-replies" id="quick-replies"></div>
+
+    <form class="composer" id="composer" autocomplete="off">
       <input id="input" type="text" placeholder="Escribí tu consulta..." required />
       <button type="submit" id="send">Enviar</button>
     </form>
+
+    <div class="footer-note">Asistente IA — desarrollado para Trama</div>
   </div>
 
   <script>
-    const messagesEl = document.getElementById('messages');
+    const bubble = document.getElementById('chat-bubble');
+    const bubbleIcon = document.getElementById('bubble-icon');
+    const win = document.getElementById('chat-window');
+    const body = document.getElementById('chat-body');
     const form = document.getElementById('composer');
     const input = document.getElementById('input');
     const sendBtn = document.getElementById('send');
-    const resetBtn = document.getElementById('reset');
+    const resetBtn = document.getElementById('reset-btn');
+    const quickRepliesEl = document.getElementById('quick-replies');
 
-    // Sesión persistente en localStorage para que sobreviva al refresh
     let sessionId = localStorage.getItem('trama_session');
     if (!sessionId) {
       sessionId = crypto.randomUUID();
       localStorage.setItem('trama_session', sessionId);
     }
 
+    const QUICK_REPLIES = [
+      "¿Cuánto tarda el envío?",
+      "Estado de mi pedido",
+      "¿Tienen este buzo en talle L?",
+      "Quiero hacer un cambio"
+    ];
+
     function addMessage(text, who) {
       const div = document.createElement('div');
       div.className = 'msg ' + who;
       div.textContent = text;
-      messagesEl.appendChild(div);
-      messagesEl.scrollTop = messagesEl.scrollHeight;
+      body.appendChild(div);
+      body.scrollTop = body.scrollHeight;
       return div;
     }
 
-    addMessage('¡Hola! Soy Sofi, ¿en qué te puedo ayudar?', 'bot');
+    function showTyping() {
+      const div = document.createElement('div');
+      div.className = 'typing';
+      div.innerHTML = '<span></span><span></span><span></span>';
+      body.appendChild(div);
+      body.scrollTop = body.scrollHeight;
+      return div;
+    }
 
-    form.addEventListener('submit', async (e) => {
-      e.preventDefault();
-      const text = input.value.trim();
-      if (!text) return;
+    function renderQuickReplies(show) {
+      quickRepliesEl.innerHTML = '';
+      if (!show) return;
+      QUICK_REPLIES.forEach(text => {
+        const btn = document.createElement('button');
+        btn.textContent = text;
+        btn.addEventListener('click', () => sendMessage(text));
+        quickRepliesEl.appendChild(btn);
+      });
+    }
+
+    function openChat() {
+      win.classList.add('open');
+      bubble.classList.add('open');
+      bubbleIcon.textContent = '✕';
+      input.focus();
+    }
+    function closeChat() {
+      win.classList.remove('open');
+      bubble.classList.remove('open');
+      bubbleIcon.textContent = '💬';
+    }
+
+    bubble.addEventListener('click', () => {
+      if (win.classList.contains('open')) closeChat();
+      else openChat();
+    });
+
+    // Saludo inicial + quick replies
+    addMessage('¡Hola! Soy Sofi de Trama 😊 ¿En qué te puedo ayudar?', 'bot');
+    renderQuickReplies(true);
+
+    async function sendMessage(text) {
       addMessage(text, 'user');
-      input.value = '';
+      renderQuickReplies(false);
       sendBtn.disabled = true;
-
-      const typing = addMessage('Sofi está escribiendo...', 'typing');
+      const typing = showTyping();
 
       try {
         const res = await fetch('/api/chat', {
@@ -193,6 +464,14 @@
         sendBtn.disabled = false;
         input.focus();
       }
+    }
+
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const text = input.value.trim();
+      if (!text) return;
+      input.value = '';
+      sendMessage(text);
     });
 
     resetBtn.addEventListener('click', async () => {
@@ -202,8 +481,9 @@
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ session_id: sessionId, message: 'reset' })
       });
-      messagesEl.innerHTML = '';
-      addMessage('¡Hola! Soy Sofi, ¿en qué te puedo ayudar?', 'bot');
+      body.innerHTML = '';
+      addMessage('¡Hola! Soy Sofi de Trama 😊 ¿En qué te puedo ayudar?', 'bot');
+      renderQuickReplies(true);
     });
   </script>
 </body>
