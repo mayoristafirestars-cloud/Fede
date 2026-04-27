@@ -1,7 +1,7 @@
 """
-Agente de soporte - Paso 4: con memoria de conversación.
-Mantiene el historial completo dentro de cada sesión, así Sofi
-recuerda lo que se habló antes en la misma charla.
+Agente de soporte - Paso 5: con base de conocimiento.
+Carga personalidad (prompts/system_prompt.md) y datos de la tienda
+(data/faqs.md, data/productos.md). Mantiene memoria de la conversación.
 """
 from pathlib import Path
 
@@ -12,15 +12,45 @@ load_dotenv()
 
 MODEL = "claude-sonnet-4-6"
 MAX_TOKENS = 1024
-PROMPT_PATH = Path(__file__).parent / "prompts" / "system_prompt.md"
+
+BASE_DIR = Path(__file__).parent
+PROMPT_PATH = BASE_DIR / "prompts" / "system_prompt.md"
+FAQS_PATH = BASE_DIR / "data" / "faqs.md"
+PRODUCTOS_PATH = BASE_DIR / "data" / "productos.md"
 
 client = Anthropic()
-SYSTEM_PROMPT = PROMPT_PATH.read_text(encoding="utf-8")
+
+
+def build_system_prompt() -> str:
+    """Combina la personalidad con la base de conocimiento."""
+    persona = PROMPT_PATH.read_text(encoding="utf-8")
+    faqs = FAQS_PATH.read_text(encoding="utf-8")
+    productos = PRODUCTOS_PATH.read_text(encoding="utf-8")
+    return f"""{persona}
+
+---
+
+# BASE DE CONOCIMIENTO — FAQS
+
+Usá esta sección para responder preguntas frecuentes con info exacta.
+
+{faqs}
+
+---
+
+# BASE DE CONOCIMIENTO — CATÁLOGO DE PRODUCTOS
+
+Usá esta sección cuando el cliente pregunte por productos, talles, colores, precios o stock.
+
+{productos}
+"""
+
+
+SYSTEM_PROMPT = build_system_prompt()
 
 
 def chat(historial: list[dict], mensaje_usuario: str) -> str:
-    """Agrega el mensaje del usuario al historial, llama a Claude
-    y agrega la respuesta también al historial. Devuelve la respuesta."""
+    """Envía el mensaje + historial a Claude y guarda la respuesta."""
     historial.append({"role": "user", "content": mensaje_usuario})
     response = client.messages.create(
         model=MODEL,
