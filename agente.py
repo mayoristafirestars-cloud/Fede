@@ -1,7 +1,7 @@
 """
-Agente de soporte - Paso 3: con personalidad de soporte.
-Carga un system prompt desde prompts/system_prompt.md.
-Todavía no tiene memoria (cada mensaje es independiente).
+Agente de soporte - Paso 4: con memoria de conversación.
+Mantiene el historial completo dentro de cada sesión, así Sofi
+recuerda lo que se habló antes en la misma charla.
 """
 from pathlib import Path
 
@@ -18,19 +18,24 @@ client = Anthropic()
 SYSTEM_PROMPT = PROMPT_PATH.read_text(encoding="utf-8")
 
 
-def chat(mensaje: str) -> str:
-    """Envía un mensaje a Claude con el system prompt de Trama."""
+def chat(historial: list[dict], mensaje_usuario: str) -> str:
+    """Agrega el mensaje del usuario al historial, llama a Claude
+    y agrega la respuesta también al historial. Devuelve la respuesta."""
+    historial.append({"role": "user", "content": mensaje_usuario})
     response = client.messages.create(
         model=MODEL,
         max_tokens=MAX_TOKENS,
         system=SYSTEM_PROMPT,
-        messages=[{"role": "user", "content": mensaje}],
+        messages=historial,
     )
-    return response.content[0].text
+    respuesta = response.content[0].text
+    historial.append({"role": "assistant", "content": respuesta})
+    return respuesta
 
 
 def main():
-    print("Sofi (Trama) iniciada. Escribí 'salir' para terminar.\n")
+    print("Sofi (Trama) iniciada. Escribí 'salir' para terminar, 'reset' para empezar de nuevo.\n")
+    historial: list[dict] = []
     while True:
         try:
             user_input = input("Vos: ").strip()
@@ -42,8 +47,12 @@ def main():
         if user_input.lower() in ("salir", "exit", "quit"):
             print("Chau!")
             break
+        if user_input.lower() == "reset":
+            historial = []
+            print("[Conversación reiniciada]\n")
+            continue
         try:
-            respuesta = chat(user_input)
+            respuesta = chat(historial, user_input)
             print(f"\nSofi: {respuesta}\n")
         except Exception as e:
             print(f"\n[Error]: {e}\n")
