@@ -275,9 +275,27 @@ main {
   color: var(--gold); cursor: pointer; font-size: 1rem;
   display: flex; align-items: center; justify-content: center;
   transition: all .15s;
+  flex-shrink: 0;
 }
 .qty-ctrl button:hover { background: var(--gold); color: var(--bg); border-color: var(--gold); }
-.qty-num { font-weight: 700; color: var(--text); min-width: 18px; text-align: center; }
+.qty-input {
+  width: 44px; height: 28px;
+  background: var(--surface); color: var(--text);
+  border: 1.5px solid var(--border); border-radius: 6px;
+  font-family: var(--font-body); font-size: .9rem; font-weight: 700;
+  text-align: center;
+  outline: none;
+  -moz-appearance: textfield;
+  transition: border-color .15s, background .15s;
+}
+.qty-input:focus { border-color: var(--gold); background: var(--surface2); }
+.qty-input::-webkit-outer-spin-button,
+.qty-input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+
+.pack-label {
+  font-size: .65rem; text-transform: uppercase; letter-spacing: .08em;
+  color: var(--text-soft); margin-top: 1px;
+}
 
 /* ESTADOS */
 .estado {
@@ -950,14 +968,16 @@ function cardFooterHtml(p) {
   const ctrl = cant === 0
     ? `<button class="btn-add" data-action="add" data-id="${p.id}">+ Agregar</button>`
     : `<div class="qty-ctrl">
-        <button data-action="sub" data-id="${p.id}">-</button>
-        <span class="qty-num">${cant}</span>
-        <button data-action="add" data-id="${p.id}">+</button>
+        <button data-action="sub" data-id="${p.id}" aria-label="Quitar uno">−</button>
+        <input class="qty-input" type="number" inputmode="numeric" min="1" step="1"
+               value="${cant}" data-action="qty" data-id="${p.id}" aria-label="Cantidad de packs">
+        <button data-action="add" data-id="${p.id}" aria-label="Agregar uno">+</button>
        </div>`;
   return `
     <div class="card-precios">
       ${p.precioAntes > 0 ? `<span class="precio-antes">${fmt(p.precioAntes)}</span>` : ""}
       <span class="card-precio">${fmt(p.precio)}</span>
+      <span class="pack-label">Pack mínimo</span>
     </div>
     ${ctrl}`;
 }
@@ -989,6 +1009,19 @@ function quitar(id) {
   if (!carrito[id]) return;
   carrito[id].cant--;
   if (carrito[id].cant <= 0) delete carrito[id];
+  actualizarUI([id]);
+}
+
+function setCantidad(id, valor) {
+  const n = parseInt(valor, 10);
+  if (!Number.isFinite(n) || n < 1) {
+    if (carrito[id]) { delete carrito[id]; actualizarUI([id]); }
+    return;
+  }
+  const p = productos.find(x => x.id === id);
+  if (!p) return;
+  if (!carrito[id]) carrito[id] = { ...p, cant: 0 };
+  carrito[id].cant = n;
   actualizarUI([id]);
 }
 
@@ -1039,12 +1072,13 @@ function renderDrawerLista() {
       <div class="item-c-thumb">${thumb}</div>
       <div class="item-c-info">
         <div class="item-c-nom">${esc(item.nombre)}</div>
-        <div class="item-c-sub">${fmt(item.precio)} c/u</div>
+        <div class="item-c-sub">${fmt(item.precio)} /pack</div>
       </div>
       <div class="item-c-qty">
-        <button data-action="sub" data-id="${item.id}">-</button>
-        <span>${item.cant}</span>
-        <button data-action="add" data-id="${item.id}">+</button>
+        <button data-action="sub" data-id="${item.id}" aria-label="Quitar uno">−</button>
+        <input class="qty-input" type="number" inputmode="numeric" min="1" step="1"
+               value="${item.cant}" data-action="qty" data-id="${item.id}" aria-label="Cantidad de packs">
+        <button data-action="add" data-id="${item.id}" aria-label="Agregar uno">+</button>
       </div>
     </div>`;
   }).join("");
@@ -1061,9 +1095,9 @@ function actualizarBtnWA() {
     btn.onclick = e => { e.preventDefault(); alert("Agregá al menos un producto primero 😊"); };
     return;
   }
-  const lineas = items.map(i => `* ${i.nombre} x${i.cant} - ${fmt(i.precio * i.cant)}`).join("\n");
+  const lineas = items.map(i => `• ${i.nombre} — ${i.cant} ${i.cant === 1 ? "pack" : "packs"} — ${fmt(i.precio * i.cant)}`).join("\n");
   const total = items.reduce((s, i) => s + i.precio * i.cant, 0);
-  const msg = `¡Hola! 👋 Quiero hacer el siguiente pedido:\n\n${lineas}\n\n*Total estimado: ${fmt(total)}*\n\n¿Tienen disponibilidad?`;
+  const msg = `¡Hola! 👋 Quiero hacer el siguiente pedido:\n\n${lineas}\n\n*Total estimado: ${fmt(total)}*\n_Los precios son por pack mínimo de venta._\n\n¿Tienen disponibilidad?`;
   btn.href = `https://wa.me/${CONFIG.whatsapp}?text=${encodeURIComponent(msg)}`;
   btn.onclick = null;
 }
@@ -1103,6 +1137,7 @@ function handleAction(e) {
     renderGrilla();
     return;
   }
+  if (action === "qty") return; // gestionado por handleQtyChange
   const id = parseInt(t.dataset.id, 10);
   if (!Number.isFinite(id)) return;
   if (action === "add") agregar(id);
@@ -1112,9 +1147,28 @@ function handleAction(e) {
     if (p && p.foto) abrirLightbox(p.foto, p.nombre);
   }
 }
+
+function handleQtyChange(e) {
+  const t = e.target;
+  if (!t.matches?.("[data-action='qty']")) return;
+  const id = parseInt(t.dataset.id, 10);
+  if (!Number.isFinite(id)) return;
+  setCantidad(id, t.value);
+}
+
+function handleQtyKey(e) {
+  if (e.key === "Enter" && e.target.matches?.("[data-action='qty']")) {
+    e.target.blur();
+  }
+}
+
 document.getElementById("filtros").addEventListener("click", handleAction);
 document.getElementById("grilla").addEventListener("click", handleAction);
 document.getElementById("drawerLista").addEventListener("click", handleAction);
+document.getElementById("grilla").addEventListener("change", handleQtyChange);
+document.getElementById("drawerLista").addEventListener("change", handleQtyChange);
+document.getElementById("grilla").addEventListener("keydown", handleQtyKey);
+document.getElementById("drawerLista").addEventListener("keydown", handleQtyKey);
 
 cargarProductos();
 renderDrawerLista();
