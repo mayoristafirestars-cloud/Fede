@@ -601,32 +601,32 @@ main {
 <header>
   <div class="logo-wrap">
     <div class="logo-circle" id="logoChico">
-      &#127863;
+      🍷
     </div>
     <div class="logo-text">
       <h1 id="nombreNegocio">Tienda de Bebidas</h1>
-      <span id="subNegocio">Bebidas &amp; Mas</span>
+      <span id="subNegocio">Bebidas &amp; Más</span>
     </div>
   </div>
   <button class="btn-carrito" onclick="toggleDrawer()">
-    &#128722; Mi pedido
+    🛒 Mi pedido
     <span class="badge" id="badge">0</span>
   </button>
 </header>
 
 <div class="hero">
   <div class="hero-logo" id="logoGrande">
-    &#127863;
+    🍷
   </div>
-  <h2>Elegi tus <em>bebidas</em></h2>
-  <p>Seleccionalas, arma tu pedido y te lo enviamos al toque</p>
+  <h2>Elegí tus <em>bebidas</em></h2>
+  <p>Seleccionalas, armá tu pedido y te lo enviamos al toque</p>
 </div>
 
 <div class="banner-promo" id="bannerPromo">
   <div class="banner-inner">
-    <span class="banner-icon">&#128293;</span>
-    <span class="banner-texto">PROMO: <strong>Lleva 10 + 1 de regalo</strong> en Pritty 1500cc y Pritty 2250 &nbsp;&middot;&nbsp; Solo por tiempo limitado!</span>
-    <span class="banner-icon">&#128293;</span>
+    <span class="banner-icon">🔥</span>
+    <span class="banner-texto">PROMO: <strong>Llevá 10 + 1 de regalo</strong> en Pritty 1500cc y Pritty 2250 &nbsp;·&nbsp; ¡Solo por tiempo limitado!</span>
+    <span class="banner-icon">🔥</span>
   </div>
 </div>
 
@@ -637,7 +637,7 @@ main {
 </div>
 
 <div class="barra-busqueda" style="margin: 0 clamp(16px,4vw,40px)">
-  <input type="text" id="buscador" placeholder="Buscar producto..." oninput="buscar()" />
+  <input type="text" id="buscador" placeholder="🔍  Buscar producto..." oninput="buscar()" />
 </div>
 
 <main>
@@ -660,7 +660,7 @@ main {
 </a>
 
 <div class="lightbox" id="lightbox" onclick="cerrarLightbox()">
-  <button class="lightbox-cerrar" onclick="cerrarLightbox()">X</button>
+  <button class="lightbox-cerrar" onclick="cerrarLightbox()" aria-label="Cerrar">✕</button>
   <img class="lightbox-img" id="lightboxImg" src="" alt="">
   <div class="lightbox-nombre" id="lightboxNombre"></div>
 </div>
@@ -670,7 +670,7 @@ main {
 <div class="drawer" id="drawer">
   <div class="drawer-head">
     <h3>Tu pedido</h3>
-    <button class="btn-cerrar" onclick="toggleDrawer()">X</button>
+    <button class="btn-cerrar" onclick="toggleDrawer()" aria-label="Cerrar">✕</button>
   </div>
   <div class="drawer-lista" id="drawerLista"></div>
   <div class="drawer-foot">
@@ -693,7 +693,7 @@ const CONFIG = {
   sheetCSV: "https://docs.google.com/spreadsheets/d/e/2PACX-1vS7pVJtwlRxNf4ZCUB4DoHIN_Cm4oxJHVtaTPTRMaaVvyBqXk_oi3eGpMdnOx5gfRMmMzSD_qImBqk2/pub?output=csv",
   whatsapp: "542954558431",
   nombre: "Tienda de Bebidas",
-  subtitulo: "Santa Rosa - La Pampa",
+  subtitulo: "Santa Rosa · La Pampa",
   logo: "",
 };
 
@@ -703,7 +703,31 @@ let textoBusqueda = "";
 const carrito = {};
 
 const ESC_MAP = { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" };
-function esc(s) { return String(s ?? "").replace(/[&<>"']/g, c => ESC_MAP[c]); }
+const ESC_RE = /[&<>"']/g;
+function esc(s) { return String(s ?? "").replace(ESC_RE, c => ESC_MAP[c]); }
+
+const EMOJI_RUBRO = {
+  yerba: "🧉", gaseosa: "🥤", gaseosas: "🥤",
+  cerveza: "🍺", cervezas: "🍺",
+  vino: "🍷", vinos: "🍷",
+  espumante: "🥂", espumantes: "🥂",
+  destilado: "🥃", destilados: "🥃",
+  whisky: "🥃", gin: "🍸", fernet: "🥃",
+  ofertas: "🔥", oferta: "🔥",
+  comestibles: "🍴", comestible: "🍴",
+  "sin alcohol": "💧", agua: "💧",
+  jugo: "🧃", jugos: "🧃",
+  general: "🍾"
+};
+function getEmoji(rubro) {
+  return EMOJI_RUBRO[String(rubro || "").toLowerCase().trim()] || "🍾";
+}
+
+window.imgFail = function (img) {
+  const span = document.createElement("span");
+  span.textContent = img.dataset.fallback || "🍾";
+  img.replaceWith(span);
+};
 
 function parsePrice(raw) {
   if (raw == null) return 0;
@@ -765,20 +789,20 @@ async function cargarProductos() {
     } catch (e1) {
       await new Promise(r => setTimeout(r, 1500));
       try { return await fetchCSVOnce(); }
-      catch (e2) { throw new Error("No se pudo conectar al Sheet. Verifica tu conexion."); }
+      catch (e2) { throw new Error("No se pudo conectar al Sheet. Verificá tu conexión."); }
     }
   }
 
   try {
     const csv = await fetchCSV();
     productos = parsearCSV(csv);
-    if (!productos.length) throw new Error("El Sheet esta vacio o las columnas no coinciden (titulo, imagen, precio, categoria, precio_antes, etiqueta)");
+    if (!productos.length) throw new Error("El Sheet está vacío o las columnas no coinciden (titulo, imagen, precio, categoria, precio_antes, etiqueta)");
     renderizar();
   } catch (e) {
     document.getElementById("grilla").innerHTML = `
       <div class="estado">
         <div class="estado-icon">!</div>
-        <h3>No se pudo cargar el catalogo</h3>
+        <h3>No se pudo cargar el catálogo</h3>
         <p>${esc(e.message)}</p>
       </div>`;
   }
@@ -838,7 +862,7 @@ function cargarProductosDemo() {
   productos = [
     { id:1, nombre:"Vino Malbec 750ml",     rubro:"Vinos",     precio:3200, foto:"", precioAntes:0, etiqueta:"" },
     { id:2, nombre:"Cerveza Artesanal IPA",  rubro:"Cervezas",  precio:1100, foto:"", precioAntes:0, etiqueta:"" },
-    { id:3, nombre:"Whisky 8 Anios 750ml",   rubro:"Destilados",precio:9800, foto:"", precioAntes:0, etiqueta:"" },
+    { id:3, nombre:"Whisky 8 Años 750ml",    rubro:"Destilados",precio:9800, foto:"", precioAntes:0, etiqueta:"" },
     { id:4, nombre:"Fernet 1L",              rubro:"Destilados",precio:4200, foto:"", precioAntes:5000, etiqueta:"OFERTA" },
     { id:5, nombre:"Agua Con Gas 1.5L",      rubro:"Sin Alcohol",precio:650, foto:"", precioAntes:0, etiqueta:"" },
     { id:6, nombre:"Espumante Brut 750ml",   rubro:"Espumantes",precio:5500, foto:"", precioAntes:0, etiqueta:"" },
@@ -874,7 +898,7 @@ function renderGrilla() {
     grilla.innerHTML = `<div class="estado">
       <div class="estado-icon">?</div>
       <h3>Sin resultados</h3>
-      <p>No hay productos que coincidan con tu busqueda.</p>
+      <p>No hay productos que coincidan con tu búsqueda.</p>
     </div>`;
     return;
   }
@@ -882,9 +906,10 @@ function renderGrilla() {
   grilla.innerHTML = lista.map((p, i) => {
     const safeName = esc(p.nombre);
     const safeFoto = esc(p.foto);
+    const safeEmoji = esc(getEmoji(p.rubro));
     const imgTag = p.foto
-      ? `<img src="${safeFoto}" alt="${safeName}" loading="lazy" data-action="zoom" data-id="${p.id}" style="cursor:zoom-in" onerror="this.remove()">`
-      : esc(getEmoji(p.rubro));
+      ? `<img src="${safeFoto}" alt="${safeName}" loading="lazy" data-action="zoom" data-id="${p.id}" data-fallback="${safeEmoji}" style="cursor:zoom-in" onerror="imgFail(this)">`
+      : safeEmoji;
 
     return `
     <div class="card" data-card-id="${p.id}" style="animation-delay:${i * 0.04}s">
@@ -949,6 +974,8 @@ function quitar(id) {
 }
 
 function vaciarCarrito() {
+  if (!Object.keys(carrito).length) return;
+  if (!confirm("¿Vaciar el carrito? Se borrarán todos los productos agregados.")) return;
   const ids = Object.keys(carrito).map(Number);
   ids.forEach(k => delete carrito[k]);
   actualizarUI(ids);
@@ -978,15 +1005,16 @@ function renderDrawerLista() {
   const items = Object.values(carrito);
 
   if (!items.length) {
-    cont.innerHTML = `<div class="vacioDrawer"><div>cart</div><p>Todavia no agregaste nada</p></div>`;
+    cont.innerHTML = `<div class="vacioDrawer"><div>🛒</div><p>Todavía no agregaste nada</p></div>`;
     document.getElementById("totalNum").textContent = "$0";
     return;
   }
 
   cont.innerHTML = items.map(item => {
+    const safeEmoji = esc(getEmoji(item.rubro));
     const thumb = item.foto
-      ? `<img src="${esc(item.foto)}" alt="${esc(item.nombre)}" onerror="this.remove()">`
-      : esc(getEmoji(item.rubro));
+      ? `<img src="${esc(item.foto)}" alt="${esc(item.nombre)}" data-fallback="${safeEmoji}" onerror="imgFail(this)">`
+      : safeEmoji;
     return `
     <div class="item-c">
       <div class="item-c-thumb">${thumb}</div>
@@ -1011,12 +1039,12 @@ function actualizarBtnWA() {
   const btn = document.getElementById("btnWA");
   if (!items.length) {
     btn.href = "#";
-    btn.onclick = e => { e.preventDefault(); alert("Agrega al menos un producto primero"); };
+    btn.onclick = e => { e.preventDefault(); alert("Agregá al menos un producto primero 😊"); };
     return;
   }
   const lineas = items.map(i => `* ${i.nombre} x${i.cant} - ${fmt(i.precio * i.cant)}`).join("\n");
   const total = items.reduce((s, i) => s + i.precio * i.cant, 0);
-  const msg = `Hola! Quiero hacer el siguiente pedido:\n\n${lineas}\n\n*Total estimado: ${fmt(total)}*\n\nTienen disponibilidad?`;
+  const msg = `¡Hola! 👋 Quiero hacer el siguiente pedido:\n\n${lineas}\n\n*Total estimado: ${fmt(total)}*\n\n¿Tienen disponibilidad?`;
   btn.href = `https://wa.me/${CONFIG.whatsapp}?text=${encodeURIComponent(msg)}`;
   btn.onclick = null;
 }
@@ -1030,17 +1058,6 @@ function fmt(n) {
   return "$" + n.toLocaleString("es-AR", { maximumFractionDigits: 0 });
 }
 
-function getEmoji(rubro) {
-  const mapa = {
-    yerba:"Y", gaseosa:"G", gaseosas:"G", cerveza:"C", cervezas:"C",
-    vino:"V", vinos:"V", espumante:"E", espumantes:"E",
-    destilado:"D", destilados:"D", whisky:"W", gin:"G", fernet:"F",
-    ofertas:"!", oferta:"!", comestibles:"C", comestible:"C",
-    "sin alcohol":"S", agua:"A", jugo:"J", jugos:"J", general:"X"
-  };
-  return mapa[rubro?.toLowerCase().trim()] || "X";
-}
-
 function mostrarBannerConfig() {
   document.getElementById("bannerConfig").innerHTML = `
     <div class="banner-config">
@@ -1048,21 +1065,25 @@ function mostrarBannerConfig() {
       <div>
         <strong>Modo demo</strong> - Para conectar tus productos reales:<br>
         1. En Google Sheets - Archivo - Compartir - Publicar en la web - Valores separados por comas (.csv)<br>
-        2. Copia la URL y pegala en <code>CONFIG.sheetCSV</code> del archivo HTML.<br>
+        2. Copiá la URL y pegala en <code>CONFIG.sheetCSV</code> del archivo HTML.<br>
         Columnas del Sheet (en este orden): <strong>A:titulo - B:imagen - C:precio - D:categoria - E:precio_antes - F:etiqueta</strong>
       </div>
     </div>`;
 }
 
+let prevBodyOverflow = "";
 function abrirLightbox(src, nombre) {
-  document.getElementById("lightboxImg").src = src;
-  document.getElementById("lightboxNombre").textContent = nombre;
+  const img = document.getElementById("lightboxImg");
+  img.src = src;
+  img.alt = nombre || "";
+  document.getElementById("lightboxNombre").textContent = nombre || "";
   document.getElementById("lightbox").classList.add("visible");
+  prevBodyOverflow = document.body.style.overflow;
   document.body.style.overflow = "hidden";
 }
 function cerrarLightbox() {
   document.getElementById("lightbox").classList.remove("visible");
-  document.body.style.overflow = "";
+  document.body.style.overflow = prevBodyOverflow;
 }
 document.addEventListener("keydown", e => { if (e.key === "Escape") cerrarLightbox(); });
 
@@ -1081,7 +1102,6 @@ function handleAction(e) {
   if (action === "add") agregar(id);
   else if (action === "sub") quitar(id);
   else if (action === "zoom") {
-    e.stopPropagation();
     const p = productos.find(x => x.id === id);
     if (p && p.foto) abrirLightbox(p.foto, p.nombre);
   }
