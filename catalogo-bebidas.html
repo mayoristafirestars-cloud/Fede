@@ -742,26 +742,30 @@ async function cargarProductos() {
     url => `https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(url)}`,
   ];
 
-  function timeoutSignal(ms) {
-    if (typeof AbortSignal !== "undefined" && AbortSignal.timeout) return AbortSignal.timeout(ms);
+  async function fetchCSVOnce() {
     const ctrl = new AbortController();
-    setTimeout(() => ctrl.abort(), ms);
-    return ctrl.signal;
-  }
-
-  async function tryProxy(proxy) {
-    const r = await fetch(proxy(CONFIG.sheetCSV), { signal: timeoutSignal(8000) });
-    if (!r.ok) throw new Error("status " + r.status);
-    const txt = await r.text();
-    if (!txt || txt.length <= 10) throw new Error("empty");
-    return txt;
+    const timer = setTimeout(() => ctrl.abort(), 10000);
+    try {
+      return await Promise.any(PROXIES.map(async proxy => {
+        const r = await fetch(proxy(CONFIG.sheetCSV), { signal: ctrl.signal });
+        if (!r.ok) throw new Error("status " + r.status);
+        const t = await r.text();
+        if (!t || t.length <= 10) throw new Error("empty");
+        return t;
+      }));
+    } finally {
+      clearTimeout(timer);
+      ctrl.abort();
+    }
   }
 
   async function fetchCSV() {
     try {
-      return await Promise.any(PROXIES.map(tryProxy));
-    } catch (e) {
-      throw new Error("No se pudo conectar al Sheet. Verifica tu conexion.");
+      return await fetchCSVOnce();
+    } catch (e1) {
+      await new Promise(r => setTimeout(r, 1500));
+      try { return await fetchCSVOnce(); }
+      catch (e2) { throw new Error("No se pudo conectar al Sheet. Verifica tu conexion."); }
     }
   }
 
@@ -781,42 +785,53 @@ async function cargarProductos() {
 }
 
 function parsearCSV(csv) {
-  const lineas = csv.trim().split(/\r?\n/);
-  if (lineas.length < 2) return [];
+  const filas = parseCSVRows(csv);
+  if (filas.length < 2) return [];
 
-  return lineas.slice(1).map((linea, i) => {
-    const cols = splitCSVLine(linea);
-    const nombre = cols[0]?.trim() || "";
+  return filas.slice(1).map((cols, i) => {
+    const nombre = (cols[0] || "").trim();
     if (!nombre) return null;
 
+    const precio = parsePrice(cols[2] || "");
     const precioAntes = parsePrice(cols[4] || "");
-    const etiquetaManual = cols[5]?.trim() || "";
-    const etiqueta = etiquetaManual || (precioAntes > 0 ? "OFERTA" : "");
+    const etiquetaManual = (cols[5] || "").trim();
+    const tieneOferta = precioAntes > precio;
+    const etiqueta = etiquetaManual || (tieneOferta ? "OFERTA" : "");
 
     return {
       id: i + 1,
       nombre,
-      foto:   cols[1]?.trim() || "",
-      precio: parsePrice(cols[2] || ""),
-      rubro:  cols[3]?.trim() || "General",
-      precioAntes,
+      foto:   (cols[1] || "").trim(),
+      precio,
+      rubro:  (cols[3] || "").trim() || "General",
+      precioAntes: tieneOferta ? precioAntes : 0,
       etiqueta,
     };
   }).filter(Boolean);
 }
 
-function splitCSVLine(linea) {
-  const cols = []; let dentro = false; let actual = "";
-  for (let i = 0; i < linea.length; i++) {
-    const c = linea[i];
-    if (c === '"') {
-      if (dentro && linea[i + 1] === '"') { actual += '"'; i++; }
-      else { dentro = !dentro; }
-    } else if (c === "," && !dentro) { cols.push(actual); actual = ""; }
-    else actual += c;
+// RFC 4180 CSV parser: handles quoted fields with embedded commas,
+// newlines and escaped quotes ("").
+function parseCSVRows(csv) {
+  const filas = [];
+  let fila = [], campo = "", dentro = false;
+  for (let i = 0; i < csv.length; i++) {
+    const c = csv[i];
+    if (dentro) {
+      if (c === '"') {
+        if (csv[i + 1] === '"') { campo += '"'; i++; }
+        else dentro = false;
+      } else campo += c;
+    } else {
+      if (c === '"') dentro = true;
+      else if (c === ",") { fila.push(campo); campo = ""; }
+      else if (c === "\n") { fila.push(campo); filas.push(fila); fila = []; campo = ""; }
+      else if (c === "\r") { /* ignorar */ }
+      else campo += c;
+    }
   }
-  cols.push(actual);
-  return cols;
+  if (campo.length || fila.length) { fila.push(campo); filas.push(fila); }
+  return filas;
 }
 
 function cargarProductosDemo() {
@@ -865,7 +880,6 @@ function renderGrilla() {
   }
 
   grilla.innerHTML = lista.map((p, i) => {
-    const cant = carrito[p.id]?.cant || 0;
     const safeName = esc(p.nombre);
     const safeFoto = esc(p.foto);
     const imgTag = p.foto
@@ -873,7 +887,7 @@ function renderGrilla() {
       : esc(getEmoji(p.rubro));
 
     return `
-    <div class="card" style="animation-delay:${i * 0.04}s">
+    <div class="card" data-card-id="${p.id}" style="animation-delay:${i * 0.04}s">
       <div class="card-img">
         ${imgTag}
         <span class="card-rubro-tag">${esc(p.rubro)}</span>
@@ -881,24 +895,36 @@ function renderGrilla() {
       </div>
       <div class="card-body">
         <div class="card-nombre">${safeName}</div>
-
-        <div class="card-footer">
-          <div class="card-precios">
-            ${p.precioAntes > 0 ? `<span class="precio-antes">${fmt(p.precioAntes)}</span>` : ""}
-            <span class="card-precio">${fmt(p.precio)}</span>
-          </div>
-          ${cant === 0
-            ? `<button class="btn-add" data-action="add" data-id="${p.id}">+ Agregar</button>`
-            : `<div class="qty-ctrl">
-                <button data-action="sub" data-id="${p.id}">-</button>
-                <span class="qty-num">${cant}</span>
-                <button data-action="add" data-id="${p.id}">+</button>
-               </div>`
-          }
-        </div>
+        <div class="card-footer">${cardFooterHtml(p)}</div>
       </div>
     </div>`;
   }).join("");
+}
+
+function cardFooterHtml(p) {
+  const cant = carrito[p.id]?.cant || 0;
+  const ctrl = cant === 0
+    ? `<button class="btn-add" data-action="add" data-id="${p.id}">+ Agregar</button>`
+    : `<div class="qty-ctrl">
+        <button data-action="sub" data-id="${p.id}">-</button>
+        <span class="qty-num">${cant}</span>
+        <button data-action="add" data-id="${p.id}">+</button>
+       </div>`;
+  return `
+    <div class="card-precios">
+      ${p.precioAntes > 0 ? `<span class="precio-antes">${fmt(p.precioAntes)}</span>` : ""}
+      <span class="card-precio">${fmt(p.precio)}</span>
+    </div>
+    ${ctrl}`;
+}
+
+function actualizarCard(id) {
+  const card = document.querySelector(`.card[data-card-id="${id}"]`);
+  if (!card) return;
+  const p = productos.find(x => x.id === id);
+  if (!p) return;
+  const footer = card.querySelector(".card-footer");
+  if (footer) footer.innerHTML = cardFooterHtml(p);
 }
 
 function renderizar() {
@@ -908,9 +934,10 @@ function renderizar() {
 
 function agregar(id) {
   const p = productos.find(x => x.id === id);
+  if (!p) return;
   if (!carrito[id]) carrito[id] = { ...p, cant: 0 };
   carrito[id].cant++;
-  actualizarUI();
+  actualizarUI([id]);
   animarBadge();
 }
 
@@ -918,16 +945,18 @@ function quitar(id) {
   if (!carrito[id]) return;
   carrito[id].cant--;
   if (carrito[id].cant <= 0) delete carrito[id];
-  actualizarUI();
+  actualizarUI([id]);
 }
 
 function vaciarCarrito() {
-  Object.keys(carrito).forEach(k => delete carrito[k]);
-  actualizarUI();
+  const ids = Object.keys(carrito).map(Number);
+  ids.forEach(k => delete carrito[k]);
+  actualizarUI(ids);
 }
 
-function actualizarUI() {
-  renderGrilla();
+function actualizarUI(idsAfectados) {
+  if (idsAfectados && idsAfectados.length) idsAfectados.forEach(actualizarCard);
+  else renderGrilla();
   renderDrawerLista();
   actualizarBadge();
   actualizarBtnWA();
