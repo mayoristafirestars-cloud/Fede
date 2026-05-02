@@ -613,9 +613,6 @@ main {
       <span id="subNegocio">Bebidas &amp; Mas</span>
     </div>
   </div>
-  <div class="contador-wrap">
-    &#128065; <span class="contador-num" id="contadorNum">...</span> visitas hoy
-  </div>
   <button class="btn-carrito" onclick="toggleDrawer()">
     &#128722; Mi pedido
     <span class="badge" id="badge">0</span>
@@ -640,7 +637,7 @@ main {
 
 <div class="barra-filtros">
   <div class="filtros-inner" id="filtros">
-    <button class="chip on" onclick="filtrar('Todos', this)">Todos</button>
+    <button class="chip on" data-action="filter" data-rubro="Todos">Todos</button>
   </div>
 </div>
 
@@ -660,7 +657,7 @@ main {
   </div>
 </main>
 
-<a class="wa-float" id="waFloat" href="https://wa.me/542954558431" target="_blank">
+<a class="wa-float" id="waFloat" href="#" target="_blank">
   <span class="wa-float-tooltip">Consultanos</span>
   <svg viewBox="0 0 24 24" fill="white">
     <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
@@ -710,11 +707,30 @@ let rubroActivo = "Todos";
 let textoBusqueda = "";
 const carrito = {};
 
+const ESC_MAP = { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" };
+function esc(s) { return String(s ?? "").replace(/[&<>"']/g, c => ESC_MAP[c]); }
+
+function parsePrice(raw) {
+  if (raw == null) return 0;
+  const cleaned = String(raw).replace(/[^\d.,]/g, "");
+  if (!cleaned) return 0;
+  if (cleaned.includes(",")) {
+    return parseFloat(cleaned.replace(/\./g, "").replace(",", ".")) || 0;
+  }
+  const parts = cleaned.split(".");
+  if (parts.length > 2 || (parts.length === 2 && parts[1].length === 3)) {
+    return parseFloat(cleaned.replace(/\./g, "")) || 0;
+  }
+  return parseFloat(cleaned) || 0;
+}
+
 document.getElementById("nombreNegocio").textContent = CONFIG.nombre;
 document.getElementById("subNegocio").textContent   = CONFIG.subtitulo;
+document.getElementById("waFloat").href = "https://wa.me/" + CONFIG.whatsapp;
 if (CONFIG.logo) {
-  document.getElementById("logoChico").innerHTML  = `<img src="${CONFIG.logo}" alt="Logo">`;
-  document.getElementById("logoGrande").innerHTML = `<img src="${CONFIG.logo}" alt="Logo">`;
+  const safeLogo = esc(CONFIG.logo);
+  document.getElementById("logoChico").innerHTML  = `<img src="${safeLogo}" alt="Logo">`;
+  document.getElementById("logoGrande").innerHTML = `<img src="${safeLogo}" alt="Logo">`;
 }
 
 async function cargarProductos() {
@@ -747,14 +763,14 @@ async function cargarProductos() {
   try {
     const csv = await fetchCSV();
     productos = parsearCSV(csv);
-    if (!productos.length) throw new Error("El Sheet esta vacio o las columnas no coinciden (titulo, imagen, precio, categoria)");
+    if (!productos.length) throw new Error("El Sheet esta vacio o las columnas no coinciden (titulo, imagen, precio, categoria, precio_antes, etiqueta)");
     renderizar();
   } catch (e) {
     document.getElementById("grilla").innerHTML = `
       <div class="estado">
         <div class="estado-icon">!</div>
         <h3>No se pudo cargar el catalogo</h3>
-        <p>${e.message}</p>
+        <p>${esc(e.message)}</p>
       </div>`;
   }
 }
@@ -768,12 +784,18 @@ function parsearCSV(csv) {
     const nombre = cols[0]?.trim() || "";
     if (!nombre) return null;
 
+    const precioAntes = parsePrice(cols[4] || "");
+    const etiquetaManual = cols[5]?.trim() || "";
+    const etiqueta = etiquetaManual || (precioAntes > 0 ? "OFERTA" : "");
+
     return {
       id: i + 1,
       nombre,
       foto:   cols[1]?.trim() || "",
-      precio: parseFloat((cols[2]?.replace(/[^\d.,]/g,"") || "0").replace(",",".")) || 0,
+      precio: parsePrice(cols[2] || ""),
       rubro:  cols[3]?.trim() || "General",
+      precioAntes,
+      etiqueta,
     };
   }).filter(Boolean);
 }
@@ -782,8 +804,10 @@ function splitCSVLine(linea) {
   const cols = []; let dentro = false; let actual = "";
   for (let i = 0; i < linea.length; i++) {
     const c = linea[i];
-    if (c === '"') { dentro = !dentro; }
-    else if (c === "," && !dentro) { cols.push(actual); actual = ""; }
+    if (c === '"') {
+      if (dentro && linea[i + 1] === '"') { actual += '"'; i++; }
+      else { dentro = !dentro; }
+    } else if (c === "," && !dentro) { cols.push(actual); actual = ""; }
     else actual += c;
   }
   cols.push(actual);
@@ -792,14 +816,14 @@ function splitCSVLine(linea) {
 
 function cargarProductosDemo() {
   productos = [
-    { id:1, nombre:"Vino Malbec 750ml",     rubro:"Vinos",     descripcion:"Malbec de alta gama, notas a frutas rojas y especias.",   precio:3200, foto:"" },
-    { id:2, nombre:"Cerveza Artesanal IPA",  rubro:"Cervezas",  descripcion:"IPA rubia, amargor pronunciado, aroma citrico.",           precio:1100, foto:"" },
-    { id:3, nombre:"Whisky 8 Anios 750ml",    rubro:"Destilados",descripcion:"Single malt escoces, 8 anios de aniejamiento en roble.",     precio:9800, foto:"" },
-    { id:4, nombre:"Fernet 1L",              rubro:"Destilados",descripcion:"Fernet con Cola el clasico argentino.",                    precio:4200, foto:"" },
-    { id:5, nombre:"Agua Con Gas 1.5L",      rubro:"Sin Alcohol",descripcion:"Agua mineral con gas, ideal para acompaniar.",             precio:650,  foto:"" },
-    { id:6, nombre:"Espumante Brut 750ml",   rubro:"Espumantes",descripcion:"Espumante Extra Brut, burbuja fina y persistente.",        precio:5500, foto:"" },
-    { id:7, nombre:"Gin Artesanal 500ml",    rubro:"Destilados",descripcion:"Gin premium con botanicos locales. Ideal para G&T.",       precio:7200, foto:"" },
-    { id:8, nombre:"Cerveza Negra 1L",       rubro:"Cervezas",  descripcion:"Stout oscura con notas a cafe y chocolate amargo.",       precio:1800, foto:"" },
+    { id:1, nombre:"Vino Malbec 750ml",     rubro:"Vinos",     precio:3200, foto:"", precioAntes:0, etiqueta:"" },
+    { id:2, nombre:"Cerveza Artesanal IPA",  rubro:"Cervezas",  precio:1100, foto:"", precioAntes:0, etiqueta:"" },
+    { id:3, nombre:"Whisky 8 Anios 750ml",   rubro:"Destilados",precio:9800, foto:"", precioAntes:0, etiqueta:"" },
+    { id:4, nombre:"Fernet 1L",              rubro:"Destilados",precio:4200, foto:"", precioAntes:5000, etiqueta:"OFERTA" },
+    { id:5, nombre:"Agua Con Gas 1.5L",      rubro:"Sin Alcohol",precio:650, foto:"", precioAntes:0, etiqueta:"" },
+    { id:6, nombre:"Espumante Brut 750ml",   rubro:"Espumantes",precio:5500, foto:"", precioAntes:0, etiqueta:"" },
+    { id:7, nombre:"Gin Artesanal 500ml",    rubro:"Destilados",precio:7200, foto:"", precioAntes:0, etiqueta:"" },
+    { id:8, nombre:"Cerveza Negra 1L",       rubro:"Cervezas",  precio:1800, foto:"", precioAntes:0, etiqueta:"" },
   ];
   renderizar();
 }
@@ -807,14 +831,8 @@ function cargarProductosDemo() {
 function renderFiltros() {
   const rubros = ["Todos", ...new Set(productos.map(p => p.rubro))];
   document.getElementById("filtros").innerHTML = rubros.map(r => `
-    <button class="chip ${r === rubroActivo ? 'on' : ''}" onclick="filtrar('${r.replace(/'/g,"\\'")}', this)">${r}</button>
+    <button class="chip ${r === rubroActivo ? 'on' : ''}" data-action="filter" data-rubro="${esc(r)}">${esc(r)}</button>
   `).join("");
-}
-
-function filtrar(rubro, btn) {
-  rubroActivo = rubro;
-  renderFiltros();
-  renderGrilla();
 }
 
 function buscar() {
@@ -829,7 +847,6 @@ function renderGrilla() {
   let lista = rubroActivo === "Todos" ? productos : productos.filter(p => p.rubro === rubroActivo);
   if (textoBusqueda) lista = lista.filter(p =>
     p.nombre.toLowerCase().includes(textoBusqueda) ||
-    p.descripcion.toLowerCase().includes(textoBusqueda) ||
     p.rubro.toLowerCase().includes(textoBusqueda)
   );
 
@@ -844,19 +861,21 @@ function renderGrilla() {
 
   grilla.innerHTML = lista.map((p, i) => {
     const cant = carrito[p.id]?.cant || 0;
+    const safeName = esc(p.nombre);
+    const safeFoto = esc(p.foto);
     const imgTag = p.foto
-      ? `<img src="${p.foto}" alt="${p.nombre}" loading="lazy" onclick="abrirLightbox('${p.foto.replace(/'/g,"\'")}','${p.nombre.replace(/'/g,"\'")}'); event.stopPropagation();" style="cursor:zoom-in">`
-      : getEmoji(p.rubro);
+      ? `<img src="${safeFoto}" alt="${safeName}" loading="lazy" data-action="zoom" data-id="${p.id}" style="cursor:zoom-in" onerror="this.remove()">`
+      : esc(getEmoji(p.rubro));
 
     return `
     <div class="card" style="animation-delay:${i * 0.04}s">
       <div class="card-img">
         ${imgTag}
-        <span class="card-rubro-tag">${p.rubro}</span>
-        ${p.etiqueta ? `<span class="card-badge">${p.etiqueta}</span>` : ""}
+        <span class="card-rubro-tag">${esc(p.rubro)}</span>
+        ${p.etiqueta ? `<span class="card-badge">${esc(p.etiqueta)}</span>` : ""}
       </div>
       <div class="card-body">
-        <div class="card-nombre">${p.nombre}</div>
+        <div class="card-nombre">${safeName}</div>
 
         <div class="card-footer">
           <div class="card-precios">
@@ -864,11 +883,11 @@ function renderGrilla() {
             <span class="card-precio">${fmt(p.precio)}</span>
           </div>
           ${cant === 0
-            ? `<button class="btn-add" onclick="agregar(${p.id})">+ Agregar</button>`
+            ? `<button class="btn-add" data-action="add" data-id="${p.id}">+ Agregar</button>`
             : `<div class="qty-ctrl">
-                <button onclick="quitar(${p.id})">-</button>
+                <button data-action="sub" data-id="${p.id}">-</button>
                 <span class="qty-num">${cant}</span>
-                <button onclick="agregar(${p.id})">+</button>
+                <button data-action="add" data-id="${p.id}">+</button>
                </div>`
           }
         </div>
@@ -932,19 +951,19 @@ function renderDrawerLista() {
 
   cont.innerHTML = items.map(item => {
     const thumb = item.foto
-      ? `<img src="${item.foto}" alt="${item.nombre}">`
-      : getEmoji(item.rubro);
+      ? `<img src="${esc(item.foto)}" alt="${esc(item.nombre)}" onerror="this.remove()">`
+      : esc(getEmoji(item.rubro));
     return `
     <div class="item-c">
       <div class="item-c-thumb">${thumb}</div>
       <div class="item-c-info">
-        <div class="item-c-nom">${item.nombre}</div>
+        <div class="item-c-nom">${esc(item.nombre)}</div>
         <div class="item-c-sub">${fmt(item.precio)} c/u</div>
       </div>
       <div class="item-c-qty">
-        <button onclick="quitar(${item.id})">-</button>
+        <button data-action="sub" data-id="${item.id}">-</button>
         <span>${item.cant}</span>
-        <button onclick="agregar(${item.id})">+</button>
+        <button data-action="add" data-id="${item.id}">+</button>
       </div>
     </div>`;
   }).join("");
@@ -979,12 +998,13 @@ function fmt(n) {
 
 function getEmoji(rubro) {
   const mapa = {
-    vinos:"V", espumantes:"E", cervezas:"C", cerveza:"C",
-    destilados:"D", whisky:"W", gin:"G", fernet:"F",
-    "sin alcohol":"S", agua:"A", gaseosas:"GA", jugos:"J",
-    general:"X"
+    yerba:"Y", gaseosa:"G", gaseosas:"G", cerveza:"C", cervezas:"C",
+    vino:"V", vinos:"V", espumante:"E", espumantes:"E",
+    destilado:"D", destilados:"D", whisky:"W", gin:"G", fernet:"F",
+    ofertas:"!", oferta:"!", comestibles:"C", comestible:"C",
+    "sin alcohol":"S", agua:"A", jugo:"J", jugos:"J", general:"X"
   };
-  return mapa[rubro?.toLowerCase()] || "X";
+  return mapa[rubro?.toLowerCase().trim()] || "X";
 }
 
 function mostrarBannerConfig() {
@@ -995,7 +1015,7 @@ function mostrarBannerConfig() {
         <strong>Modo demo</strong> - Para conectar tus productos reales:<br>
         1. En Google Sheets - Archivo - Compartir - Publicar en la web - Valores separados por comas (.csv)<br>
         2. Copia la URL y pegala en <code>CONFIG.sheetCSV</code> del archivo HTML.<br>
-        Columnas del Sheet: <strong>nombre - rubro - descripcion - precio - foto - activo</strong>
+        Columnas del Sheet (en este orden): <strong>A:titulo - B:imagen - C:precio - D:categoria - E:precio_antes - F:etiqueta</strong>
       </div>
     </div>`;
 }
@@ -1012,29 +1032,31 @@ function cerrarLightbox() {
 }
 document.addEventListener("keydown", e => { if (e.key === "Escape") cerrarLightbox(); });
 
-cargarProductos();
-
-async function contarVisita() {
-  try {
-    const r = await fetch("https://api.countapi.xyz/hit/tienda-bebidas-sr/visitas");
-    const data = await r.json();
-    const el = document.getElementById("contadorNum");
-    if (el && data.value) {
-      let start = Math.max(0, data.value - 20);
-      const end = data.value;
-      const step = Math.ceil((end - start) / 30);
-      const timer = setInterval(() => {
-        start = Math.min(start + step, end);
-        el.textContent = start.toLocaleString("es-AR");
-        if (start >= end) clearInterval(timer);
-      }, 40);
-    }
-  } catch(e) {
-    const el = document.getElementById("contadorNum");
-    if (el) el.closest(".contador-wrap").style.display = "none";
+function handleAction(e) {
+  const t = e.target.closest("[data-action]");
+  if (!t) return;
+  const action = t.dataset.action;
+  if (action === "filter") {
+    rubroActivo = t.dataset.rubro || "Todos";
+    renderFiltros();
+    renderGrilla();
+    return;
+  }
+  const id = parseInt(t.dataset.id, 10);
+  if (!Number.isFinite(id)) return;
+  if (action === "add") agregar(id);
+  else if (action === "sub") quitar(id);
+  else if (action === "zoom") {
+    e.stopPropagation();
+    const p = productos.find(x => x.id === id);
+    if (p && p.foto) abrirLightbox(p.foto, p.nombre);
   }
 }
-contarVisita();
+document.getElementById("filtros").addEventListener("click", handleAction);
+document.getElementById("grilla").addEventListener("click", handleAction);
+document.getElementById("drawerLista").addEventListener("click", handleAction);
+
+cargarProductos();
 renderDrawerLista();
 </script>
 </body>
