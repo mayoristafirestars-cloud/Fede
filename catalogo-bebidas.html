@@ -443,11 +443,6 @@ main {
   text-decoration: line-through;
   font-family: var(--font-disp);
 }
-.card-precio {
-  font-family: var(--font-disp);
-  font-size: 1.15rem; font-weight: 700; color: var(--gold-lt);
-  white-space: nowrap;
-}
 
 /* BOTON FLOTANTE WA */
 .wa-float {
@@ -699,7 +694,7 @@ const CONFIG = {
   whatsapp: "542954558431",
   nombre: "Tienda de Bebidas",
   subtitulo: "Santa Rosa - La Pampa",
-  logo: "data:image/png;base64,LOGO_BASE64_PLACEHOLDER",
+  logo: "",
 };
 
 let productos = [];
@@ -747,17 +742,27 @@ async function cargarProductos() {
     url => `https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(url)}`,
   ];
 
+  function timeoutSignal(ms) {
+    if (typeof AbortSignal !== "undefined" && AbortSignal.timeout) return AbortSignal.timeout(ms);
+    const ctrl = new AbortController();
+    setTimeout(() => ctrl.abort(), ms);
+    return ctrl.signal;
+  }
+
+  async function tryProxy(proxy) {
+    const r = await fetch(proxy(CONFIG.sheetCSV), { signal: timeoutSignal(8000) });
+    if (!r.ok) throw new Error("status " + r.status);
+    const txt = await r.text();
+    if (!txt || txt.length <= 10) throw new Error("empty");
+    return txt;
+  }
+
   async function fetchCSV() {
-    for (const proxy of PROXIES) {
-      try {
-        const r = await fetch(proxy(CONFIG.sheetCSV), { signal: AbortSignal.timeout(8000) });
-        if (r.ok) {
-          const txt = await r.text();
-          if (txt && txt.length > 10) return txt;
-        }
-      } catch(e) { continue; }
+    try {
+      return await Promise.any(PROXIES.map(tryProxy));
+    } catch (e) {
+      throw new Error("No se pudo conectar al Sheet. Verifica tu conexion.");
     }
-    throw new Error("No se pudo conectar al Sheet. Verifica tu conexion.");
   }
 
   try {
