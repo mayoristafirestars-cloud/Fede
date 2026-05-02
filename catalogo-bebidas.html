@@ -641,7 +641,6 @@ main {
 </div>
 
 <main>
-  <div id="bannerConfig"></div>
   <div class="grilla" id="grilla">
     <div class="skeleton-grid" id="skeletonGrid" style="grid-column:1/-1; display:contents">
     <div class="skeleton-card"><div class="skeleton-img"></div><div class="skeleton-body"><div class="skeleton-line"></div><div class="skeleton-line short"></div><div class="skeleton-line price"></div></div></div>
@@ -752,52 +751,87 @@ if (CONFIG.logo) {
   document.getElementById("logoGrande").innerHTML = `<img src="${safeLogo}" alt="Logo">`;
 }
 
+const CACHE_KEY = "catalogoBebidas:csv";
+const CACHE_TTL_MS = 60_000; // 1 minuto
+
+function cacheGet() {
+  try {
+    const raw = sessionStorage.getItem(CACHE_KEY);
+    if (!raw) return null;
+    const { csv, ts, url } = JSON.parse(raw);
+    if (url !== CONFIG.sheetCSV) return null;
+    if (Date.now() - ts > CACHE_TTL_MS) return null;
+    return csv;
+  } catch { return null; }
+}
+
+function cacheSet(csv) {
+  try {
+    sessionStorage.setItem(CACHE_KEY, JSON.stringify({ csv, ts: Date.now(), url: CONFIG.sheetCSV }));
+  } catch {}
+}
+
+const PROXIES = [
+  url => url,
+  url => `https://api.allorigins.win/raw?url=${encodeURIComponent(url)}`,
+  url => `https://corsproxy.io/?${encodeURIComponent(url)}`,
+  url => `https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(url)}`,
+];
+
+async function fetchCSVOnce() {
+  const ctrl = new AbortController();
+  const timer = setTimeout(() => ctrl.abort(), 10000);
+  try {
+    return await Promise.any(PROXIES.map(async proxy => {
+      const r = await fetch(proxy(CONFIG.sheetCSV), { signal: ctrl.signal });
+      if (!r.ok) throw new Error("status " + r.status);
+      const t = await r.text();
+      if (!t || t.length <= 10) throw new Error("empty");
+      return t;
+    }));
+  } finally {
+    clearTimeout(timer);
+    ctrl.abort();
+  }
+}
+
+async function fetchCSV() {
+  try {
+    return await fetchCSVOnce();
+  } catch (e1) {
+    await new Promise(r => setTimeout(r, 1500));
+    try { return await fetchCSVOnce(); }
+    catch (e2) { throw new Error("No se pudo conectar al Sheet. Verificá tu conexión."); }
+  }
+}
+
+function aplicarCSV(csv) {
+  productos = parsearCSV(csv);
+  if (!productos.length) throw new Error("El Sheet está vacío o las columnas no coinciden (titulo, imagen, precio, categoria, precio_antes, etiqueta)");
+  renderizar();
+}
+
 async function cargarProductos() {
   if (!CONFIG.sheetCSV) {
-    mostrarBannerConfig();
-    cargarProductosDemo();
+    document.getElementById("grilla").innerHTML = `
+      <div class="estado">
+        <div class="estado-icon">!</div>
+        <h3>Falta configurar el Sheet</h3>
+        <p>Pegá la URL del CSV en <code>CONFIG.sheetCSV</code> dentro del archivo HTML.</p>
+      </div>`;
     return;
   }
 
-  const PROXIES = [
-    url => url,
-    url => `https://api.allorigins.win/raw?url=${encodeURIComponent(url)}`,
-    url => `https://corsproxy.io/?${encodeURIComponent(url)}`,
-    url => `https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(url)}`,
-  ];
-
-  async function fetchCSVOnce() {
-    const ctrl = new AbortController();
-    const timer = setTimeout(() => ctrl.abort(), 10000);
-    try {
-      return await Promise.any(PROXIES.map(async proxy => {
-        const r = await fetch(proxy(CONFIG.sheetCSV), { signal: ctrl.signal });
-        if (!r.ok) throw new Error("status " + r.status);
-        const t = await r.text();
-        if (!t || t.length <= 10) throw new Error("empty");
-        return t;
-      }));
-    } finally {
-      clearTimeout(timer);
-      ctrl.abort();
-    }
-  }
-
-  async function fetchCSV() {
-    try {
-      return await fetchCSVOnce();
-    } catch (e1) {
-      await new Promise(r => setTimeout(r, 1500));
-      try { return await fetchCSVOnce(); }
-      catch (e2) { throw new Error("No se pudo conectar al Sheet. Verificá tu conexión."); }
-    }
+  const cached = cacheGet();
+  if (cached) {
+    try { aplicarCSV(cached); return; }
+    catch { /* cache invalido, sigue al fetch */ }
   }
 
   try {
     const csv = await fetchCSV();
-    productos = parsearCSV(csv);
-    if (!productos.length) throw new Error("El Sheet está vacío o las columnas no coinciden (titulo, imagen, precio, categoria, precio_antes, etiqueta)");
-    renderizar();
+    cacheSet(csv);
+    aplicarCSV(csv);
   } catch (e) {
     document.getElementById("grilla").innerHTML = `
       <div class="estado">
@@ -856,20 +890,6 @@ function parseCSVRows(csv) {
   }
   if (campo.length || fila.length) { fila.push(campo); filas.push(fila); }
   return filas;
-}
-
-function cargarProductosDemo() {
-  productos = [
-    { id:1, nombre:"Vino Malbec 750ml",     rubro:"Vinos",     precio:3200, foto:"", precioAntes:0, etiqueta:"" },
-    { id:2, nombre:"Cerveza Artesanal IPA",  rubro:"Cervezas",  precio:1100, foto:"", precioAntes:0, etiqueta:"" },
-    { id:3, nombre:"Whisky 8 Años 750ml",    rubro:"Destilados",precio:9800, foto:"", precioAntes:0, etiqueta:"" },
-    { id:4, nombre:"Fernet 1L",              rubro:"Destilados",precio:4200, foto:"", precioAntes:5000, etiqueta:"OFERTA" },
-    { id:5, nombre:"Agua Con Gas 1.5L",      rubro:"Sin Alcohol",precio:650, foto:"", precioAntes:0, etiqueta:"" },
-    { id:6, nombre:"Espumante Brut 750ml",   rubro:"Espumantes",precio:5500, foto:"", precioAntes:0, etiqueta:"" },
-    { id:7, nombre:"Gin Artesanal 500ml",    rubro:"Destilados",precio:7200, foto:"", precioAntes:0, etiqueta:"" },
-    { id:8, nombre:"Cerveza Negra 1L",       rubro:"Cervezas",  precio:1800, foto:"", precioAntes:0, etiqueta:"" },
-  ];
-  renderizar();
 }
 
 function renderFiltros() {
@@ -1056,19 +1076,6 @@ function toggleDrawer() {
 
 function fmt(n) {
   return "$" + n.toLocaleString("es-AR", { maximumFractionDigits: 0 });
-}
-
-function mostrarBannerConfig() {
-  document.getElementById("bannerConfig").innerHTML = `
-    <div class="banner-config">
-      <span class="icono">i</span>
-      <div>
-        <strong>Modo demo</strong> - Para conectar tus productos reales:<br>
-        1. En Google Sheets - Archivo - Compartir - Publicar en la web - Valores separados por comas (.csv)<br>
-        2. Copiá la URL y pegala en <code>CONFIG.sheetCSV</code> del archivo HTML.<br>
-        Columnas del Sheet (en este orden): <strong>A:titulo - B:imagen - C:precio - D:categoria - E:precio_antes - F:etiqueta</strong>
-      </div>
-    </div>`;
 }
 
 let prevBodyOverflow = "";
