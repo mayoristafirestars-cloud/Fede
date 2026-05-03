@@ -468,28 +468,12 @@ a { color: inherit; text-decoration: none; }
   margin-top: auto;
 }
 .b-card-btn:hover { background: var(--red); }
-.b-card-qty {
-  display: flex; align-items: stretch;
-  border: 1px solid var(--ink);
-  margin-top: auto;
-  background: #fff;
+.b-card-btn-added {
+  background: #fff; color: var(--ink);
+  border: 2px solid #0e6b3a;
+  padding: 9px 11px;
 }
-.b-card-qty button {
-  background: transparent; border: none;
-  width: 36px; cursor: pointer;
-  font-size: 16px; font-weight: 700;
-  color: var(--ink);
-}
-.b-card-qty button:hover { background: var(--ink); color: #fff; }
-.b-card-qty input {
-  flex: 1; min-width: 0;
-  background: transparent; border: none; outline: none;
-  text-align: center;
-  font-family: 'Archivo'; font-weight: 700; font-size: 14px;
-  -moz-appearance: textfield;
-}
-.b-card-qty input::-webkit-outer-spin-button,
-.b-card-qty input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+.b-card-btn-added:hover { background: #0e6b3a; color: #fff; border-color: #0e6b3a; }
 
 /* EMPTY */
 .b-empty {
@@ -581,16 +565,24 @@ a { color: inherit; text-decoration: none; }
   padding: 16px 24px;
 }
 .b-cd-item {
-  display: flex; align-items: center; gap: 12px;
-  padding: 14px 0;
+  display: grid;
+  grid-template-columns: 64px 1fr;
+  gap: 12px;
+  padding: 16px 0;
   border-bottom: 1px solid var(--line);
 }
+.b-cd-item-row {
+  grid-column: 2;
+  display: flex; align-items: center; justify-content: space-between;
+  margin-top: 8px; gap: 8px;
+}
 .b-cd-thumb {
-  width: 60px; height: 90px;
+  grid-row: 1 / span 2;
+  width: 64px; height: 64px;
   display: grid; place-items: center;
   background: var(--paper);
   flex-shrink: 0;
-  font-size: 32px;
+  font-size: 28px;
 }
 .b-cd-thumb img { max-width: 100%; max-height: 100%; object-fit: contain; }
 .b-cd-info { flex: 1; min-width: 0; }
@@ -599,24 +591,28 @@ a { color: inherit; text-decoration: none; }
 .b-cd-price { font-family: 'Archivo Black'; font-size: 15px; margin-top: 4px; letter-spacing: -0.02em; }
 .b-cd-qty {
   display: flex; gap: 0; align-items: stretch;
-  border: 1px solid var(--line);
+  border: 1.5px solid var(--ink);
   flex-shrink: 0;
+  background: #fff;
 }
 .b-cd-qty button {
   background: transparent; border: none;
-  width: 26px; height: 28px;
-  cursor: pointer; font-size: 14px;
+  width: 40px; height: 40px;
+  cursor: pointer; font-size: 22px; font-weight: 700;
   color: var(--ink);
+  display: grid; place-items: center;
+  -webkit-tap-highlight-color: transparent;
 }
-.b-cd-qty button:hover { background: var(--paper); }
+.b-cd-qty button:active, .b-cd-qty button:hover { background: var(--ink); color: #fff; }
 .b-cd-qty input {
-  width: 36px; height: 28px;
+  width: 56px; height: 40px;
   background: transparent; border: none; outline: none;
   text-align: center;
-  font-weight: 700; font-size: 13px;
+  font-weight: 700; font-size: 16px;
   font-family: inherit;
   -moz-appearance: textfield;
 }
+.b-cd-qty input:focus { background: var(--paper); }
 .b-cd-qty input::-webkit-outer-spin-button,
 .b-cd-qty input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
 .b-cd-foot { padding: 20px 24px; border-top: 1px solid var(--line); background: var(--paper); }
@@ -727,31 +723,43 @@ a { color: inherit; text-decoration: none; }
 }
 .b-lb-add:hover { background: var(--red); }
 
-/* FAB MOBILE */
-.b-fab {
+/* STICKY BAR MOBILE */
+.b-sticky {
   position: fixed;
-  bottom: 24px; right: 24px;
+  left: 0; right: 0; bottom: 0;
   background: var(--ink); color: #fff;
-  border: none;
-  padding: 14px 20px;
-  font-family: 'Archivo Black';
   display: none;
-  align-items: center; gap: 10px;
-  cursor: pointer;
-  box-shadow: 0 8px 24px rgba(0,0,0,0.25);
+  align-items: center; justify-content: space-between;
+  gap: 12px;
+  padding: 12px 16px;
+  box-shadow: 0 -4px 20px rgba(0,0,0,0.25);
   z-index: 80;
-  text-transform: uppercase;
+  font-family: 'Archivo';
+}
+.b-sticky.on { display: flex; }
+.b-sticky-info { display: flex; flex-direction: column; line-height: 1.1; }
+.b-sticky-count {
+  font-size: 11px; opacity: 0.7;
+  text-transform: uppercase; letter-spacing: 0.08em;
+}
+.b-sticky-total {
+  font-family: 'Archivo Black'; font-size: 20px;
+  letter-spacing: -0.02em;
+}
+.b-sticky-btn {
+  background: var(--green); color: #fff;
+  border: none;
+  padding: 14px 22px;
+  font-family: 'Archivo Black';
+  font-size: 13px;
   letter-spacing: 0.05em;
+  text-transform: uppercase;
+  cursor: pointer;
+  display: flex; align-items: center; gap: 8px;
+  -webkit-tap-highlight-color: transparent;
 }
-.b-fab.on { display: flex; }
-.b-fab strong { font-size: 14px; letter-spacing: -0.01em; }
-.b-fab-c {
-  background: var(--red);
-  width: 22px; height: 22px;
-  border-radius: 50%;
-  display: grid; place-items: center;
-  font-size: 11px;
-}
+.b-sticky-btn:active { background: #1eb858; }
+body.has-sticky { padding-bottom: 80px; }
 
 /* WhatsApp flotante */
 .b-wa-float {
@@ -853,7 +861,6 @@ a { color: inherit; text-decoration: none; }
   .b-lb-info { padding: 24px; }
   .b-foot-grid { grid-template-columns: 1fr 1fr; gap: 24px; padding: 40px 16px; }
   .b-foot-bottom { flex-direction: column; gap: 8px; padding: 16px; text-align: center; }
-  .b-fab.on { display: flex; }
   .b-cart { display: none; }
   .b-wa-float { width: 50px; height: 50px; bottom: 92px; }
   .b-wa-float svg { width: 24px; height: 24px; }
@@ -1024,13 +1031,16 @@ a { color: inherit; text-decoration: none; }
   </svg>
 </a>
 
-<!-- FAB -->
-<button class="b-fab" id="fab">
-  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-    <path d="M3 3h2l1 2h14l-2 8H7L5 3M7 19a2 2 0 100 4 2 2 0 000-4m10 0a2 2 0 100 4 2 2 0 000-4"/>
-  </svg>
-  <span class="b-fab-c" id="fabCount">0</span>
-  <strong id="fabTotal">$0</strong>
+<!-- STICKY BAR -->
+<button class="b-sticky" id="sticky" aria-label="Ver carrito">
+  <div class="b-sticky-info">
+    <span class="b-sticky-count" id="stickyCount">0 packs</span>
+    <strong class="b-sticky-total" id="stickyTotal">$0</strong>
+  </div>
+  <span class="b-sticky-btn">
+    Ver carrito
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+  </span>
 </button>
 
 <!-- LIGHTBOX -->
@@ -1368,7 +1378,7 @@ function actualizarCarritoUI(idsAfectados) {
   else renderTodasLasGrillas();
   renderDrawerLista();
   actualizarBadge();
-  actualizarFAB();
+  actualizarStickybar();
 }
 
 function pulseCart() {
@@ -1384,14 +1394,16 @@ function actualizarBadge() {
   bub.hidden = total === 0;
 }
 
-function actualizarFAB() {
-  const fab = document.getElementById("fab");
+function actualizarStickybar() {
+  const sticky = document.getElementById("sticky");
   const items = Object.values(carrito);
   const total = items.reduce((s, i) => s + i.precio * i.cant, 0);
   const count = items.reduce((s, i) => s + i.cant, 0);
-  fab.classList.toggle("on", count > 0);
-  document.getElementById("fabCount").textContent = count;
-  document.getElementById("fabTotal").textContent = fmt(total);
+  const on = count > 0;
+  sticky.classList.toggle("on", on);
+  document.body.classList.toggle("has-sticky", on);
+  document.getElementById("stickyCount").textContent = `${count} ${count === 1 ? "pack" : "packs"}`;
+  document.getElementById("stickyTotal").textContent = fmt(total);
 }
 
 // ══════════════════════════════════════════════════════════════
@@ -1405,7 +1417,7 @@ function renderTodo() {
   renderCatalogoFiltrado();
   renderDrawerLista();
   actualizarBadge();
-  actualizarFAB();
+  actualizarStickybar();
 }
 
 function renderHeader() {
@@ -1494,13 +1506,9 @@ function productoImagen(p) {
 function cardCtrlHtml(p) {
   const cant = carrito[p.id]?.cant || 0;
   if (cant === 0) {
-    return `<button class="b-card-btn" data-action="add" data-id="${p.id}">Agregar al carrito</button>`;
+    return `<button class="b-card-btn" data-action="add" data-id="${p.id}">+ Agregar al carrito</button>`;
   }
-  return `<div class="b-card-qty">
-    <button data-action="sub" data-id="${p.id}" aria-label="Quitar uno">−</button>
-    <input type="number" inputmode="numeric" min="1" step="1" value="${cant}" data-action="qty" data-id="${p.id}" aria-label="Cantidad">
-    <button data-action="add" data-id="${p.id}" aria-label="Agregar uno">+</button>
-  </div>`;
+  return `<button class="b-card-btn b-card-btn-added" data-action="openCart" data-id="${p.id}">✓ ${cant} ${cant === 1 ? "pack" : "packs"} · Tocá para editar</button>`;
 }
 
 function cardHtml(p) {
@@ -1629,13 +1637,15 @@ function renderDrawerLista() {
       <div class="b-cd-thumb">${thumb}</div>
       <div class="b-cd-info">
         <div class="b-cd-name">${esc(item.nombre)}</div>
-        <div class="b-cd-isub">${esc(item.rubro)} · ${fmt(item.precio)} /pack</div>
-        <div class="b-cd-price">${fmt(item.precio * item.cant)}</div>
+        <div class="b-cd-isub">${fmt(item.precio)} /pack</div>
       </div>
-      <div class="b-cd-qty">
-        <button data-action="sub" data-id="${item.id}" aria-label="Quitar uno">−</button>
-        <input type="number" inputmode="numeric" min="1" step="1" value="${item.cant}" data-action="qty" data-id="${item.id}" aria-label="Cantidad">
-        <button data-action="add" data-id="${item.id}" aria-label="Agregar uno">+</button>
+      <div class="b-cd-item-row">
+        <div class="b-cd-qty">
+          <button data-action="sub" data-id="${item.id}" aria-label="Quitar uno">−</button>
+          <input type="number" inputmode="numeric" min="1" step="1" value="${item.cant}" data-action="qty" data-id="${item.id}" aria-label="Cantidad">
+          <button data-action="add" data-id="${item.id}" aria-label="Agregar uno">+</button>
+        </div>
+        <div class="b-cd-price">${fmt(item.precio * item.cant)}</div>
       </div>
     </div>`;
   }).join("");
@@ -1762,6 +1772,8 @@ function handleClick(e) {
 
   if (action === "closeDrawer") { cerrarDrawer(); return; }
 
+  if (action === "openCart") { e.stopPropagation(); abrirDrawer(); return; }
+
   if (action === "heroGo") {
     e.stopPropagation();
     heroGo(parseInt(t.dataset.i, 10));
@@ -1803,7 +1815,7 @@ document.addEventListener("keydown", e => {
 
 // Fixed handlers
 document.getElementById("btnCart").addEventListener("click", abrirDrawer);
-document.getElementById("fab").addEventListener("click", abrirDrawer);
+document.getElementById("sticky").addEventListener("click", abrirDrawer);
 document.getElementById("cdClose").addEventListener("click", cerrarDrawer);
 document.getElementById("cartBack").addEventListener("click", cerrarDrawer);
 document.getElementById("cdSend").addEventListener("click", enviarPedido);
