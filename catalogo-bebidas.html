@@ -204,28 +204,11 @@ a { color: inherit; text-decoration: none; }
 }
 .b-hero-cta:hover { background: currentColor; color: var(--ink); }
 .b-hero-deco { display: grid; place-items: center; }
-.b-hero-stamp {
-  width: 200px; height: 200px;
-  border: 2px solid currentColor;
-  border-radius: 50%;
-  display: grid; place-items: center;
-  font-family: 'Archivo Black';
-  text-align: center;
-  font-size: 22px;
-  letter-spacing: 0.05em;
-  transform: rotate(-8deg);
-  position: relative;
-  text-transform: uppercase;
+.b-hero-logo-big {
+  width: 240px; height: 240px;
+  object-fit: contain;
+  filter: drop-shadow(0 8px 32px rgba(0,0,0,0.35));
 }
-.b-hero-stamp::before {
-  content: '';
-  position: absolute; inset: 8px;
-  border: 1px dashed currentColor;
-  border-radius: 50%;
-  opacity: 0.5;
-}
-.b-hero-stamp > div:first-child { line-height: 1; }
-.b-hero-stamp-yr { font-size: 12px; opacity: 0.7; margin: 8px 0; letter-spacing: 0.2em; }
 .b-hero-dots {
   position: absolute; bottom: 24px; left: 50%; transform: translateX(-50%);
   display: flex; gap: 8px; z-index: 2;
@@ -447,33 +430,56 @@ a { color: inherit; text-decoration: none; }
   margin: 2px 0;
 }
 .b-card-pack {
-  font-size: 11px;
-  color: var(--muted);
-  margin-top: 2px;
-  letter-spacing: 0.05em;
+  display: inline-block;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--ink);
+  background: var(--paper);
+  padding: 4px 8px;
+  margin-top: 8px;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
+  border-radius: 4px;
+  align-self: flex-start;
 }
 .b-card-btn {
   background: var(--ink);
   color: #fff;
   border: none;
-  padding: 11px;
+  padding: 14px 14px;
+  border-radius: 14px;
   font-family: 'Archivo';
   font-weight: 700;
-  font-size: 12px;
-  letter-spacing: 0.05em;
+  font-size: 13px;
+  letter-spacing: 0.04em;
   cursor: pointer;
   text-transform: uppercase;
-  transition: background 0.15s;
+  transition: background 0.15s, transform 0.1s;
   margin-top: auto;
+  -webkit-tap-highlight-color: transparent;
 }
 .b-card-btn:hover { background: var(--red); }
+.b-card-btn:active { transform: scale(0.97); }
 .b-card-btn-added {
   background: #fff; color: var(--ink);
   border: 2px solid #0e6b3a;
-  padding: 9px 11px;
+  padding: 12px 12px;
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+}
+.b-card-btn-added strong {
+  font-family: 'Archivo Black';
+  font-size: 15px;
+  letter-spacing: -0.01em;
+}
+.b-card-btn-added .edit-tag {
+  font-size: 10px;
+  opacity: 0.6;
+  font-weight: 600;
+  letter-spacing: 0.08em;
 }
 .b-card-btn-added:hover { background: #0e6b3a; color: #fff; border-color: #0e6b3a; }
+.b-card-btn-added:hover .edit-tag { opacity: 0.85; }
 
 /* EMPTY */
 .b-empty {
@@ -927,13 +933,7 @@ body.has-sticky { padding-bottom: 80px; }
         <p class="b-hero-p" id="heroP"></p>
         <button class="b-hero-cta" id="heroCta">Ver promo →</button>
       </div>
-      <div class="b-hero-deco">
-        <div class="b-hero-stamp">
-          <div>BEBIDAS</div>
-          <div class="b-hero-stamp-yr">★ SANTA ROSA ★</div>
-          <div>LA PAMPA</div>
-        </div>
-      </div>
+      <div class="b-hero-deco" id="heroDeco"></div>
     </div>
     <div class="b-hero-dots" id="heroDots"></div>
     <button class="b-hero-arrow b-hero-prev" id="heroPrev" aria-label="Anterior">‹</button>
@@ -1429,7 +1429,10 @@ function renderHeader() {
   document.getElementById("footMail").textContent = CONFIG.email || "";
   document.getElementById("waFloat").href = "https://wa.me/" + CONFIG.whatsapp;
   if (CONFIG.logo) {
-    document.getElementById("logoMark").innerHTML = `<img src="${esc(CONFIG.logo)}" alt="${esc(CONFIG.nombre)}" data-fallback="🍷" onerror="imgFail(this)">`;
+    const safeLogo = esc(CONFIG.logo);
+    const safeName = esc(CONFIG.nombre);
+    document.getElementById("logoMark").innerHTML = `<img src="${safeLogo}" alt="${safeName}" data-fallback="🍷" onerror="imgFail(this)">`;
+    document.getElementById("heroDeco").innerHTML = `<img class="b-hero-logo-big" src="${safeLogo}" alt="${safeName}" data-fallback="🍷" onerror="imgFail(this)">`;
   }
 }
 
@@ -1506,9 +1509,13 @@ function productoImagen(p) {
 function cardCtrlHtml(p) {
   const cant = carrito[p.id]?.cant || 0;
   if (cant === 0) {
-    return `<button class="b-card-btn" data-action="add" data-id="${p.id}">+ Agregar al carrito</button>`;
+    return `<button class="b-card-btn" data-action="add" data-id="${p.id}">+ Agregar</button>`;
   }
-  return `<button class="b-card-btn b-card-btn-added" data-action="openCart" data-id="${p.id}">✓ ${cant} ${cant === 1 ? "pack" : "packs"} · Tocá para editar</button>`;
+  return `<button class="b-card-btn b-card-btn-added" data-action="openCart" data-id="${p.id}">
+    <span>✓</span>
+    <strong>${cant} ${cant === 1 ? "pack" : "packs"}</strong>
+    <span class="edit-tag">EDITAR</span>
+  </button>`;
 }
 
 function cardHtml(p) {
