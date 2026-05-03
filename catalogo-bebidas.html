@@ -975,14 +975,6 @@ a { color: inherit; text-decoration: none; }
   </section>
 
   <!-- SECCIONES DINÁMICAS -->
-  <section class="b-section" id="secPromos" hidden>
-    <div class="b-section-head">
-      <h2 style="color: var(--red)">PROMOS</h2>
-      <span>Combos especiales</span>
-    </div>
-    <div class="b-grid" id="gridPromos"></div>
-  </section>
-
   <section class="b-section" id="secOfertas" hidden>
     <div class="b-section-head">
       <h2 style="color: var(--red)">OFERTAS</h2>
@@ -997,6 +989,14 @@ a { color: inherit; text-decoration: none; }
       <span>Lo más pedido</span>
     </div>
     <div class="b-grid" id="gridDestacados"></div>
+  </section>
+
+  <section class="b-section" id="secTodos" hidden>
+    <div class="b-section-head">
+      <h2>TODOS LOS PRODUCTOS</h2>
+      <span id="todosCount">0 productos</span>
+    </div>
+    <div class="b-grid" id="gridTodos"></div>
   </section>
 </div>
 
@@ -1521,14 +1521,16 @@ function cardHtml(p) {
 }
 
 function renderHomeSecciones() {
-  const promos = productos.filter(p => /oferta|promo/i.test(p.rubro));
-  const ofertas = productos.filter(p => p.precioAntes > 0 && !/oferta|promo/i.test(p.rubro));
-  const usadosIds = new Set([...promos, ...ofertas].map(p => p.id));
-  const destacados = productos.filter(p => !usadosIds.has(p.id)).slice(0, 8);
+  const ofertas = productos.filter(p => p.precioAntes > 0);
+  const ofertasIds = new Set(ofertas.map(p => p.id));
+  const destacados = productos.filter(p => !ofertasIds.has(p.id)).slice(0, 8);
 
-  renderSeccion("secPromos", "gridPromos", promos);
   renderSeccion("secOfertas", "gridOfertas", ofertas);
   renderSeccion("secDestacados", "gridDestacados", destacados);
+  renderSeccion("secTodos", "gridTodos", productos);
+
+  const todosCount = document.getElementById("todosCount");
+  if (todosCount) todosCount.textContent = `${productos.length} ${productos.length === 1 ? "producto" : "productos"}`;
 }
 
 function renderSeccion(secId, gridId, lista) {
