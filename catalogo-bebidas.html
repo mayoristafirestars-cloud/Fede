@@ -1225,7 +1225,7 @@ const CONFIG = {
 };
 
 const HERO_SLIDES = [
-  { eyebrow: "PROMO DESTACADA", h: "10 + 1\nde regalo", p: "En todos los Pritty 1500cc y 2250cc.\nSolo por tiempo limitado.", cta: "Ver promo →", bg: "#e63946", ink: "#fff", accent: "#ffd700", filtro: "OFERTAS", bgImage: "https://i.ibb.co/Z1gpP9SZ/Chat-GPT-Image-3-may-2026-06-14-08-p-m.png" },
+  { fullImage: true, cta: "", filtro: "OFERTAS", bg: "#1a1a1a", ink: "#fff", accent: "#ffd700", bgImage: "https://i.ibb.co/Z1gpP9SZ/Chat-GPT-Image-3-may-2026-06-14-08-p-m.png" },
   { eyebrow: "ENVÍO EN 24HS", h: "Llevamos\ntu pedido", p: "Envío sin cargo en pedidos grandes\nen Santa Rosa y zona.", cta: "Ver el catálogo →", bg: "#1a1a1a", ink: "#fff", accent: "#e63946", filtro: "Todos" },
   { eyebrow: "MAYORISTA", h: "Pedís\npor pack cerrado", p: "Precios mayoristas para comercios.\nMínimos por pack.", cta: "Quiero pedir →", bg: "#0e6b3a", ink: "#fff", accent: "#ffd700", filtro: "Todos" },
 ];
@@ -1878,29 +1878,62 @@ function renderHeroDots() {
 function paintHero() {
   const s = HERO_SLIDES[heroIdx];
   const hero = document.getElementById("hero");
-  if (s.bgImage) {
-    // Overlay oscuro a la izquierda (donde va el texto) + imagen al fondo
+  const heroText = hero.querySelector(".b-hero-text");
+  const heroDeco = document.getElementById("heroDeco");
+
+  if (s.fullImage && s.bgImage) {
+    // Imagen "full art": viene con todo el texto dibujado adentro.
+    // Sin overlay, sin texto encima. El hero entero se vuelve clickeable.
+    hero.style.backgroundImage = `url('${s.bgImage}')`;
+    hero.style.backgroundSize = "cover";
+    hero.style.backgroundPosition = "center";
+    hero.style.backgroundColor = s.bg;
+    heroText.style.display = "none";
+    heroDeco.style.display = "none";
+    hero.dataset.action = "filter";
+    hero.dataset.rubro = s.filtro || "Todos";
+    hero.style.cursor = "pointer";
+  } else if (s.bgImage) {
+    // Imagen + overlay con texto editable encima
     hero.style.backgroundImage = `linear-gradient(90deg, rgba(0,0,0,0.78) 0%, rgba(0,0,0,0.55) 45%, rgba(0,0,0,0.15) 75%, rgba(0,0,0,0) 100%), url('${s.bgImage}')`;
     hero.style.backgroundSize = "cover, cover";
     hero.style.backgroundPosition = "center, center";
     hero.style.backgroundColor = s.bg;
+    heroText.style.display = "";
+    heroDeco.style.display = "";
+    heroDeco.style.visibility = "hidden";
+    delete hero.dataset.action;
+    delete hero.dataset.rubro;
+    hero.style.cursor = "";
+    pintarTextoHero(s);
   } else {
+    // Sin imagen — solo color sólido + texto + logo grande a la derecha
     hero.style.backgroundImage = "none";
     hero.style.backgroundColor = s.bg;
+    heroText.style.display = "";
+    heroDeco.style.display = "";
+    heroDeco.style.visibility = "";
+    delete hero.dataset.action;
+    delete hero.dataset.rubro;
+    hero.style.cursor = "";
+    pintarTextoHero(s);
   }
+
   hero.style.color = s.ink;
-  document.getElementById("heroEyebrow").textContent = "// " + s.eyebrow;
-  document.getElementById("heroEyebrow").style.color = s.accent;
-  document.getElementById("heroH").textContent = s.h;
-  document.getElementById("heroP").textContent = s.p;
-  const cta = document.getElementById("heroCta");
-  cta.textContent = s.cta;
-  cta.dataset.action = "filter";
-  cta.dataset.rubro = s.filtro;
-  // Si hay imagen de fondo, escondo el logo del lado derecho para no chocar
-  document.getElementById("heroDeco").style.visibility = s.bgImage ? "hidden" : "";
   document.querySelectorAll(".b-hero-deco").forEach(el => el.style.color = s.accent);
   renderHeroDots();
+}
+
+function pintarTextoHero(s) {
+  document.getElementById("heroEyebrow").textContent = s.eyebrow ? "// " + s.eyebrow : "";
+  document.getElementById("heroEyebrow").style.color = s.accent;
+  document.getElementById("heroH").textContent = s.h || "";
+  document.getElementById("heroP").textContent = s.p || "";
+  const cta = document.getElementById("heroCta");
+  cta.textContent = s.cta || "";
+  cta.style.display = s.cta ? "" : "none";
+  cta.dataset.action = "filter";
+  cta.dataset.rubro = s.filtro || "Todos";
 }
 
 function heroGo(i) { heroIdx = ((i % HERO_SLIDES.length) + HERO_SLIDES.length) % HERO_SLIDES.length; paintHero(); }
