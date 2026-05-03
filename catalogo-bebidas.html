@@ -3,6 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#1a1a1a">
+<meta name="description" content="Catálogo mayorista de bebidas en Santa Rosa, La Pampa. Pedí por WhatsApp.">
 <title>Tienda de Bebidas · Santa Rosa La Pampa</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -12,7 +14,7 @@
   --bg: #ffffff;
   --ink: #1a1a1a;
   --ink2: #3d3d3d;
-  --muted: #8a8a8a;
+  --muted: #6e6e6e;
   --line: #e8e8e8;
   --line2: #d0d0d0;
   --paper: #f6f4ef;
@@ -77,7 +79,7 @@ a { color: inherit; text-decoration: none; }
 .b-search svg { color: var(--muted); flex-shrink: 0; }
 .b-search input {
   background: transparent; border: none; outline: none;
-  font-family: inherit; font-size: 14px;
+  font-family: inherit; font-size: 16px;
   flex: 1; min-width: 0;
 }
 
@@ -392,7 +394,8 @@ a { color: inherit; text-decoration: none; }
   position: relative;
 }
 .b-card-img img {
-  max-width: 100%; max-height: 200px;
+  width: 100%; max-height: 200px;
+  aspect-ratio: 1 / 1;
   object-fit: contain;
 }
 .b-card-body {
@@ -463,25 +466,61 @@ a { color: inherit; text-decoration: none; }
 }
 .b-card-btn:hover { background: var(--red); }
 .b-card-btn:active { transform: scale(0.97); }
-.b-card-btn-added {
-  background: #fff; color: var(--ink);
+
+/* Stepper inline en la card */
+.b-card-stepper {
+  display: grid;
+  grid-template-columns: 44px 1fr 44px;
+  align-items: stretch;
+  height: 48px;
+  margin-top: auto;
   border: 2px solid #0e6b3a;
-  padding: 12px 12px;
-  display: flex; align-items: center; justify-content: center; gap: 8px;
+  border-radius: 14px;
+  overflow: hidden;
+  background: #fff;
 }
-.b-card-btn-added strong {
-  font-family: 'Archivo Black';
-  font-size: 15px;
-  letter-spacing: -0.01em;
+.b-card-stepper button {
+  background: #0e6b3a; color: #fff;
+  border: none;
+  cursor: pointer;
+  font-size: 22px; font-weight: 700;
+  display: grid; place-items: center;
+  -webkit-tap-highlight-color: transparent;
+  font-family: inherit;
+  transition: background 0.12s, transform 0.08s;
 }
-.b-card-btn-added .edit-tag {
-  font-size: 10px;
-  opacity: 0.6;
+.b-card-stepper button:hover { background: #0a5a30; }
+.b-card-stepper button:active { transform: scale(0.94); }
+.b-card-stepper-count {
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  background: #fff;
+  cursor: text;
+  padding: 4px 0 6px;
+}
+.b-card-stepper input {
+  width: 100%;
+  background: transparent; border: none; outline: none;
+  text-align: center;
+  font-family: 'Archivo Black'; font-weight: 700; font-size: 16px;
+  color: var(--ink);
+  -moz-appearance: textfield;
+  cursor: text;
+  line-height: 1;
+}
+.b-card-stepper input:focus { background: var(--paper); }
+.b-card-stepper input::-webkit-outer-spin-button,
+.b-card-stepper input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+.b-card-stepper-unit {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
   font-weight: 600;
   letter-spacing: 0.08em;
+  color: var(--muted);
+  margin-top: 1px;
+  pointer-events: none;
+  text-transform: uppercase;
 }
-.b-card-btn-added:hover { background: #0e6b3a; color: #fff; border-color: #0e6b3a; }
-.b-card-btn-added:hover .edit-tag { opacity: 0.85; }
 
 /* EMPTY */
 .b-empty {
@@ -499,26 +538,59 @@ a { color: inherit; text-decoration: none; }
 }
 
 /* ESTADO LOAD/ERROR */
-.b-loading, .b-error {
+.b-error {
   text-align: center;
   padding: 80px 20px;
   color: var(--muted);
 }
-.b-loading::before {
-  content: ''; display: inline-block;
-  width: 32px; height: 32px;
-  border: 3px solid var(--line);
-  border-top-color: var(--ink);
-  border-radius: 50%;
-  animation: spin 0.8s linear infinite;
-  margin-bottom: 16px;
-  vertical-align: middle;
-}
-@keyframes spin { to { transform: rotate(360deg); } }
 .b-error h3 {
   font-family: 'Archivo Black'; font-size: 22px;
   color: var(--ink); margin-bottom: 8px;
 }
+
+/* SKELETON */
+.b-sk { padding: 56px 32px; max-width: 1280px; margin: 0 auto; }
+.b-sk-head {
+  height: 32px; width: 200px;
+  background: var(--paper);
+  margin-bottom: 28px;
+  border-radius: 4px;
+}
+.b-sk-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1px;
+  background: var(--line);
+  border: 1px solid var(--line);
+}
+.b-sk-card {
+  background: #fff;
+  padding: 16px;
+  display: flex; flex-direction: column;
+}
+.b-sk-img {
+  aspect-ratio: 1/1;
+  background: linear-gradient(90deg, var(--paper) 0%, #e8e6e0 50%, var(--paper) 100%);
+  background-size: 200% 100%;
+  animation: shimmer 1.4s ease-in-out infinite;
+}
+.b-sk-line {
+  height: 12px;
+  background: linear-gradient(90deg, var(--paper) 0%, #e8e6e0 50%, var(--paper) 100%);
+  background-size: 200% 100%;
+  animation: shimmer 1.4s ease-in-out infinite;
+  border-radius: 3px;
+  margin-top: 12px;
+}
+.b-sk-line.short { width: 60%; }
+.b-sk-line.price { height: 22px; width: 50%; margin-top: 14px; }
+.b-sk-line.btn { height: 44px; margin-top: 16px; border-radius: 14px; }
+@keyframes shimmer {
+  0%   { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+@media (max-width: 1100px) { .b-sk-grid { grid-template-columns: repeat(3, 1fr); } }
+@media (max-width: 800px)  { .b-sk-grid { grid-template-columns: repeat(2, 1fr); } .b-sk { padding: 32px 16px; } }
 
 /* DRAWER CARRITO */
 .b-cd-back {
@@ -869,9 +941,14 @@ body.has-sticky { padding-bottom: 80px; }
   .b-lb-info { padding: 24px; }
   .b-foot-grid { grid-template-columns: 1fr 1fr; gap: 24px; padding: 40px 16px; }
   .b-foot-bottom { flex-direction: column; gap: 8px; padding: 16px; text-align: center; }
-  .b-cart { display: none; }
-  .b-wa-float { width: 50px; height: 50px; bottom: 92px; }
-  .b-wa-float svg { width: 24px; height: 24px; }
+  .b-wa-float { width: 48px; height: 48px; bottom: 96px; right: 16px; }
+  .b-wa-float svg { width: 22px; height: 22px; }
+  .b-hero { height: 280px; }
+  .b-hero-h { font-size: clamp(28px, 7vw, 48px); }
+  .b-hero-p { font-size: 14px; max-width: 100%; margin-bottom: 18px; }
+  .b-hero-eyebrow { font-size: 11px; margin-bottom: 12px; }
+  .b-hero-cta { padding: 10px 20px; font-size: 12px; }
+  .b-hero-dots { bottom: 12px; }
 }
 </style>
 </head>
@@ -1024,7 +1101,17 @@ body.has-sticky { padding-bottom: 80px; }
 </div>
 
 <!-- LOADING/ERROR -->
-<div class="b-loading" id="loading">Cargando catálogo…</div>
+<div id="loading">
+  <section class="b-sk">
+    <div class="b-sk-head"></div>
+    <div class="b-sk-grid">
+      <div class="b-sk-card"><div class="b-sk-img"></div><div class="b-sk-line"></div><div class="b-sk-line short"></div><div class="b-sk-line price"></div><div class="b-sk-line btn"></div></div>
+      <div class="b-sk-card"><div class="b-sk-img"></div><div class="b-sk-line"></div><div class="b-sk-line short"></div><div class="b-sk-line price"></div><div class="b-sk-line btn"></div></div>
+      <div class="b-sk-card"><div class="b-sk-img"></div><div class="b-sk-line"></div><div class="b-sk-line short"></div><div class="b-sk-line price"></div><div class="b-sk-line btn"></div></div>
+      <div class="b-sk-card"><div class="b-sk-img"></div><div class="b-sk-line"></div><div class="b-sk-line short"></div><div class="b-sk-line price"></div><div class="b-sk-line btn"></div></div>
+    </div>
+  </section>
+</div>
 
 <!-- WhatsApp flotante -->
 <a class="b-wa-float" id="waFloat" href="#" target="_blank" aria-label="Consultar por WhatsApp">
@@ -1285,6 +1372,42 @@ function parsearCSV(csv) {
 // ══════════════════════════════════════════════════════════════
 const CACHE_KEY = "catalogoBebidas:csv";
 const CACHE_TTL_MS = 60_000;
+const CART_KEY = "catalogoBebidas:cart";
+const CART_TTL_MS = 7 * 24 * 60 * 60 * 1000; // 7 días
+
+function cartLoad() {
+  try {
+    const raw = localStorage.getItem(CART_KEY);
+    if (!raw) return null;
+    const { items, ts } = JSON.parse(raw);
+    if (Date.now() - ts > CART_TTL_MS) { localStorage.removeItem(CART_KEY); return null; }
+    return items; // { [id]: cant }
+  } catch { return null; }
+}
+
+function cartSave() {
+  try {
+    const items = {};
+    Object.entries(carrito).forEach(([id, p]) => { items[id] = p.cant; });
+    if (Object.keys(items).length === 0) {
+      localStorage.removeItem(CART_KEY);
+    } else {
+      localStorage.setItem(CART_KEY, JSON.stringify({ items, ts: Date.now() }));
+    }
+  } catch {}
+}
+
+function cartHydrate() {
+  const saved = cartLoad();
+  if (!saved) return;
+  Object.entries(saved).forEach(([id, cant]) => {
+    const n = parseInt(cant, 10);
+    if (!Number.isFinite(n) || n < 1) return;
+    const p = productos.find(x => x.id === +id);
+    if (!p) return; // producto ya no existe en el sheet
+    carrito[id] = { ...p, cant: n };
+  });
+}
 
 function cacheGet() {
   try {
@@ -1347,6 +1470,7 @@ function aplicarCSV(csv) {
   productos = parsearCSV(csv);
   if (!productos.length) throw new Error("El Sheet está vacío o las columnas no coinciden.");
   document.getElementById("loading").hidden = true;
+  cartHydrate();
   renderTodo();
 }
 
@@ -1420,6 +1544,7 @@ function actualizarCarritoUI(idsAfectados) {
   renderDrawerLista();
   actualizarBadge();
   actualizarStickybar();
+  cartSave();
 }
 
 function pulseCart() {
@@ -1552,11 +1677,14 @@ function cardCtrlHtml(p) {
   if (cant === 0) {
     return `<button class="b-card-btn" data-action="add" data-id="${p.id}">+ Agregar</button>`;
   }
-  return `<button class="b-card-btn b-card-btn-added" data-action="openCart" data-id="${p.id}">
-    <span>✓</span>
-    <strong>${cant} ${cant === 1 ? "pack" : "packs"}</strong>
-    <span class="edit-tag">EDITAR</span>
-  </button>`;
+  return `<div class="b-card-stepper">
+    <button data-action="sub" data-id="${p.id}" aria-label="Quitar uno">−</button>
+    <label class="b-card-stepper-count">
+      <input type="number" inputmode="numeric" min="1" step="1" value="${cant}" data-action="qty" data-id="${p.id}" aria-label="Cantidad de packs">
+      <span class="b-card-stepper-unit">${cant === 1 ? "PACK" : "PACKS"}</span>
+    </label>
+    <button data-action="add" data-id="${p.id}" aria-label="Agregar uno">+</button>
+  </div>`;
 }
 
 function cardHtml(p) {
@@ -1647,8 +1775,21 @@ function actualizarCard(id) {
     const p = productos.find(x => x.id === id);
     if (!p) return;
     const body = card.querySelector(".b-card-body");
-    // Replace from prices block onwards (preserves the image/flags)
     const ctrlNode = body.lastElementChild;
+
+    // Si el usuario está tipeando dentro del stepper de esta card, no re-renderizar:
+    // solo actualizar el value del input para no perder el foco.
+    const focused = ctrlNode && ctrlNode.contains(document.activeElement) ? document.activeElement : null;
+    if (focused && focused.matches('input[data-action="qty"]')) {
+      const cant = carrito[p.id]?.cant || 0;
+      if (cant > 0) {
+        if (focused.value !== String(cant)) focused.value = cant;
+        const unit = ctrlNode.querySelector(".b-card-stepper-unit");
+        if (unit) unit.textContent = cant === 1 ? "PACK" : "PACKS";
+        return;
+      }
+    }
+
     const newCtrl = document.createElement("div");
     newCtrl.innerHTML = cardCtrlHtml(p);
     body.replaceChild(newCtrl.firstElementChild, ctrlNode);
@@ -1819,8 +1960,6 @@ function handleClick(e) {
   }
 
   if (action === "closeDrawer") { cerrarDrawer(); return; }
-
-  if (action === "openCart") { e.stopPropagation(); abrirDrawer(); return; }
 
   if (action === "heroGo") {
     e.stopPropagation();
