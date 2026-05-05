@@ -105,6 +105,151 @@ a { color: inherit; text-decoration: none; }
   transition: background 0.15s;
 }
 .b-action:hover { background: var(--paper); }
+
+/* SEARCH FULL-SCREEN MODAL */
+.b-search-fab {
+  background: transparent; border: 1px solid transparent;
+  width: 42px; height: 42px;
+  display: none; place-items: center;
+  cursor: pointer;
+  color: var(--ink);
+  transition: background 0.15s;
+}
+.b-search-fab:hover { background: var(--paper); }
+.b-sm {
+  position: fixed; inset: 0;
+  background: #fff;
+  z-index: 250;
+  display: flex; flex-direction: column;
+  transform: translateY(-100%);
+  transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.b-sm.on { transform: translateY(0); }
+.b-sm-head {
+  display: flex; align-items: center; gap: 12px;
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--line);
+  background: #fff;
+}
+.b-sm-back {
+  background: transparent; border: none;
+  width: 40px; height: 40px;
+  display: grid; place-items: center;
+  cursor: pointer;
+  color: var(--ink);
+  flex-shrink: 0;
+}
+.b-sm-input-wrap {
+  flex: 1;
+  background: var(--paper);
+  border: 1px solid var(--line);
+  display: flex; align-items: center; gap: 8px;
+  padding: 8px 14px;
+  border-radius: 4px;
+}
+.b-sm-input-wrap svg { color: var(--muted); flex-shrink: 0; }
+.b-sm-input {
+  flex: 1; min-width: 0;
+  background: transparent; border: none; outline: none;
+  font-family: inherit; font-size: 16px; font-weight: 500;
+  color: var(--ink);
+}
+.b-sm-clear {
+  background: transparent; border: none;
+  font-size: 18px; cursor: pointer;
+  color: var(--muted);
+  width: 28px; height: 28px;
+  display: none; place-items: center;
+}
+.b-sm-clear.on { display: grid; }
+.b-sm-results {
+  flex: 1;
+  overflow-y: auto;
+  padding: 8px 0;
+}
+.b-sm-empty {
+  padding: 60px 20px;
+  text-align: center;
+  color: var(--muted);
+  font-size: 14px;
+}
+.b-sm-empty strong {
+  display: block;
+  font-family: 'Archivo Black';
+  font-size: 18px;
+  color: var(--ink);
+  margin-bottom: 6px;
+}
+.b-sm-row {
+  display: flex; align-items: center; gap: 14px;
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--line);
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+.b-sm-row:active { background: var(--paper); }
+.b-sm-thumb {
+  width: 56px; height: 56px;
+  background: var(--paper);
+  display: grid; place-items: center;
+  font-size: 24px;
+  flex-shrink: 0;
+}
+.b-sm-thumb img { width: 100%; height: 100%; object-fit: contain; }
+.b-sm-info { flex: 1; min-width: 0; }
+.b-sm-name {
+  font-weight: 700; font-size: 14px;
+  text-transform: uppercase;
+  line-height: 1.2;
+}
+.b-sm-meta {
+  display: flex; gap: 10px; align-items: center;
+  margin-top: 4px;
+  font-size: 12px;
+}
+.b-sm-meta-rubro { color: var(--muted); text-transform: uppercase; letter-spacing: 0.05em; }
+.b-sm-meta-precio { font-family: 'Archivo Black'; color: var(--ink); }
+.b-sm-add {
+  background: var(--ink); color: #fff;
+  border: none;
+  width: 40px; height: 40px;
+  font-size: 22px; font-weight: 700;
+  cursor: pointer;
+  flex-shrink: 0;
+  -webkit-tap-highlight-color: transparent;
+}
+.b-sm-add:active { background: var(--red); }
+.b-sm-suggest {
+  padding: 16px;
+}
+.b-sm-suggest-h {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--muted);
+  margin-bottom: 12px;
+}
+.b-sm-suggest-chips {
+  display: flex; flex-wrap: wrap; gap: 8px;
+}
+.b-sm-suggest-chip {
+  background: var(--paper);
+  border: 1px solid var(--line);
+  color: var(--ink);
+  padding: 8px 14px;
+  font-family: inherit; font-size: 13px;
+  cursor: pointer;
+  border-radius: 4px;
+}
+.b-sm-suggest-chip:active { background: var(--ink); color: #fff; }
+
+/* Mostrar el botón lupa en mobile y esconder el search inline */
+@media (max-width: 800px) {
+  .b-search { display: none !important; }
+  .b-search-fab { display: grid; }
+  .b-header-row { grid-template-columns: auto 1fr auto auto; }
+}
 .b-cart-bub {
   position: absolute; top: 4px; right: 4px;
   background: var(--red); color: #fff;
@@ -123,8 +268,13 @@ a { color: inherit; text-decoration: none; }
   padding: 0 32px;
   overflow-x: auto;
   scrollbar-width: none;
+  scroll-snap-type: x proximity;
+  scroll-padding: 0 32px;
+  scroll-behavior: smooth;
+  background: #fff;
 }
 .b-nav::-webkit-scrollbar { display: none; }
+.b-nav-item { scroll-snap-align: center; }
 .b-nav-item {
   background: transparent; border: none;
   padding: 14px 18px;
@@ -344,6 +494,160 @@ a { color: inherit; text-decoration: none; }
   text-transform: uppercase;
 }
 .b-clear:hover { background: var(--ink); color: #fff; }
+.b-section-tools {
+  display: flex; gap: 8px; align-items: center;
+}
+.b-tool-btn {
+  background: #fff;
+  border: 1.5px solid var(--ink);
+  padding: 10px 14px;
+  font-family: 'Archivo'; font-weight: 600; font-size: 12px;
+  letter-spacing: 0.05em;
+  cursor: pointer;
+  text-transform: uppercase;
+  display: flex; align-items: center; gap: 6px;
+  -webkit-tap-highlight-color: transparent;
+}
+.b-tool-btn:hover, .b-tool-btn.on { background: var(--ink); color: #fff; }
+.b-tool-btn-count {
+  background: var(--red); color: #fff;
+  border-radius: 50%;
+  min-width: 18px; height: 18px;
+  font-size: 10px;
+  display: grid; place-items: center;
+  padding: 0 5px;
+}
+
+/* BOTTOM-SHEET FILTROS */
+.b-bs-back {
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,0.5);
+  z-index: 220;
+  opacity: 0; pointer-events: none;
+  transition: opacity 0.2s;
+}
+.b-bs-back.on { opacity: 1; pointer-events: auto; }
+.b-bs {
+  position: fixed; left: 0; right: 0; bottom: 0;
+  background: #fff;
+  z-index: 221;
+  transform: translateY(100%);
+  transition: transform 0.28s cubic-bezier(0.4, 0, 0.2, 1);
+  max-height: 85vh;
+  display: flex; flex-direction: column;
+  border-radius: 16px 16px 0 0;
+}
+.b-bs.on { transform: translateY(0); }
+.b-bs-grip {
+  width: 40px; height: 4px;
+  background: var(--line2);
+  border-radius: 4px;
+  margin: 8px auto 0;
+}
+.b-bs-head {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 12px 24px 8px;
+  border-bottom: 1px solid var(--line);
+}
+.b-bs-h {
+  font-family: 'Archivo Black'; font-size: 18px;
+  letter-spacing: -0.02em;
+}
+.b-bs-x {
+  background: transparent; border: none;
+  width: 36px; height: 36px;
+  font-size: 24px; cursor: pointer;
+  color: var(--ink);
+}
+.b-bs-body {
+  padding: 20px 24px;
+  overflow-y: auto;
+  flex: 1;
+}
+.b-bs-section { margin-bottom: 24px; }
+.b-bs-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--muted);
+  margin-bottom: 10px;
+}
+.b-bs-chips {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 6px;
+}
+.b-bs-chip {
+  background: #fff;
+  border: 1.5px solid var(--line);
+  padding: 12px 10px;
+  font-family: inherit; font-weight: 600; font-size: 13px;
+  cursor: pointer;
+  text-align: center;
+  border-radius: 4px;
+  -webkit-tap-highlight-color: transparent;
+}
+.b-bs-chip.on { background: var(--ink); color: #fff; border-color: var(--ink); }
+.b-bs-toggle {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 14px 0;
+  border-top: 1px solid var(--line);
+}
+.b-bs-toggle:first-child { border-top: none; padding-top: 0; }
+.b-bs-toggle-label {
+  font-weight: 600; font-size: 14px;
+}
+.b-bs-toggle-sub {
+  font-size: 12px; color: var(--muted); margin-top: 2px;
+}
+.b-bs-switch {
+  width: 48px; height: 28px;
+  background: var(--line2);
+  border-radius: 28px;
+  border: none;
+  position: relative;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: background 0.18s;
+}
+.b-bs-switch::after {
+  content: '';
+  position: absolute;
+  top: 3px; left: 3px;
+  width: 22px; height: 22px;
+  background: #fff;
+  border-radius: 50%;
+  transition: transform 0.18s;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+}
+.b-bs-switch.on { background: #0e6b3a; }
+.b-bs-switch.on::after { transform: translateX(20px); }
+.b-bs-foot {
+  display: flex; gap: 10px;
+  padding: 14px 24px;
+  border-top: 1px solid var(--line);
+  background: #fff;
+}
+.b-bs-reset {
+  flex: 1;
+  background: #fff; color: var(--ink);
+  border: 1.5px solid var(--ink);
+  padding: 14px;
+  font-family: 'Archivo Black'; font-size: 13px;
+  letter-spacing: 0.05em; text-transform: uppercase;
+  cursor: pointer;
+  border-radius: 6px;
+}
+.b-bs-apply {
+  flex: 2;
+  background: var(--ink); color: #fff;
+  border: none;
+  padding: 14px;
+  font-family: 'Archivo Black'; font-size: 13px;
+  letter-spacing: 0.05em; text-transform: uppercase;
+  cursor: pointer;
+  border-radius: 6px;
+}
+.b-bs-apply:hover { background: var(--red); }
 
 /* GRID DE PRODUCTOS */
 .b-grid {
@@ -639,6 +943,37 @@ a { color: inherit; text-decoration: none; }
   cursor: pointer; margin-top: 12px;
   text-transform: uppercase;
 }
+.b-cd-last {
+  margin: 0 24px 24px;
+  padding: 18px;
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+}
+.b-cd-last-h {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--ink);
+}
+.b-cd-last-h span { color: var(--muted); font-weight: 400; }
+.b-cd-last-info {
+  font-family: 'Archivo Black';
+  font-size: 16px;
+  margin: 6px 0 14px;
+  letter-spacing: -0.01em;
+}
+.b-cd-last-btn {
+  width: 100%;
+  background: var(--ink); color: #fff;
+  border: none; padding: 12px;
+  font-family: 'Archivo Black'; font-size: 13px;
+  letter-spacing: 0.05em; text-transform: uppercase;
+  cursor: pointer;
+  border-radius: 8px;
+}
+.b-cd-last-btn:hover { background: var(--red); }
 .b-cd-list {
   flex: 1;
   overflow-y: auto;
@@ -987,6 +1322,11 @@ body.has-sticky { padding-bottom: 80px; }
     </div>
     <div></div>
     <div class="b-header-actions">
+      <button class="b-search-fab" id="btnSearchOpen" aria-label="Buscar productos">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+          <circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/>
+        </svg>
+      </button>
       <button class="b-action b-cart" id="btnCart" aria-label="Abrir carrito">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
           <path d="M3 3h2l1 2h14l-2 8H7L5 3M7 19a2 2 0 100 4 2 2 0 000-4m10 0a2 2 0 100 4 2 2 0 000-4"/>
@@ -1094,10 +1434,68 @@ body.has-sticky { padding-bottom: 80px; }
         <h2 id="catTitulo">PRODUCTOS</h2>
         <span id="catSub">0 productos</span>
       </div>
-      <button class="b-clear" id="btnClear" data-action="clearFilter">← Volver al inicio</button>
+      <div class="b-section-tools">
+        <button class="b-tool-btn" id="btnFilters" data-action="openFilters">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M3 6h18M6 12h12M10 18h4"/></svg>
+          Filtros
+          <span class="b-tool-btn-count" id="filtersCount" hidden>0</span>
+        </button>
+        <button class="b-clear" id="btnClear" data-action="clearFilter">←</button>
+      </div>
     </div>
     <div class="b-grid" id="grilla"></div>
   </section>
+</div>
+
+<!-- BOTTOM-SHEET FILTROS -->
+<div class="b-bs-back" id="bsBack"></div>
+<div class="b-bs" id="filtersSheet" aria-hidden="true">
+  <div class="b-bs-grip"></div>
+  <div class="b-bs-head">
+    <div class="b-bs-h">Filtrar y ordenar</div>
+    <button class="b-bs-x" id="bsClose" aria-label="Cerrar">×</button>
+  </div>
+  <div class="b-bs-body">
+    <div class="b-bs-section">
+      <div class="b-bs-label">Ordenar por</div>
+      <div class="b-bs-chips" id="sortChips">
+        <button class="b-bs-chip" data-sort="default">Recomendado</button>
+        <button class="b-bs-chip" data-sort="precio-asc">Precio · menor a mayor</button>
+        <button class="b-bs-chip" data-sort="precio-desc">Precio · mayor a menor</button>
+        <button class="b-bs-chip" data-sort="nombre">Alfabético A-Z</button>
+      </div>
+    </div>
+    <div class="b-bs-section">
+      <div class="b-bs-toggle">
+        <div>
+          <div class="b-bs-toggle-label">Solo ofertas</div>
+          <div class="b-bs-toggle-sub">Productos con precio rebajado</div>
+        </div>
+        <button class="b-bs-switch" id="onlyOfertasSwitch" aria-label="Solo ofertas"></button>
+      </div>
+      <div class="b-bs-toggle">
+        <div>
+          <div class="b-bs-toggle-label">Con foto</div>
+          <div class="b-bs-toggle-sub">Esconder productos sin imagen</div>
+        </div>
+        <button class="b-bs-switch" id="onlyFotoSwitch" aria-label="Solo con foto"></button>
+      </div>
+    </div>
+    <div class="b-bs-section">
+      <div class="b-bs-label">Rango de precio</div>
+      <div class="b-bs-chips" id="precioChips">
+        <button class="b-bs-chip" data-precio="all">Todos</button>
+        <button class="b-bs-chip" data-precio="0-2000">Hasta $2.000</button>
+        <button class="b-bs-chip" data-precio="2000-5000">$2.000 a $5.000</button>
+        <button class="b-bs-chip" data-precio="5000-10000">$5.000 a $10.000</button>
+        <button class="b-bs-chip" data-precio="10000-">$10.000 o más</button>
+      </div>
+    </div>
+  </div>
+  <div class="b-bs-foot">
+    <button class="b-bs-reset" id="bsReset">Limpiar</button>
+    <button class="b-bs-apply" id="bsApply">Aplicar filtros</button>
+  </div>
 </div>
 
 <!-- LOADING/ERROR -->
@@ -1131,6 +1529,21 @@ body.has-sticky { padding-bottom: 80px; }
     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
   </span>
 </button>
+
+<!-- SEARCH MODAL -->
+<div class="b-sm" id="searchModal" aria-hidden="true">
+  <div class="b-sm-head">
+    <button class="b-sm-back" id="smBack" aria-label="Cerrar buscador">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+    </button>
+    <div class="b-sm-input-wrap">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+      <input class="b-sm-input" id="smInput" type="search" inputmode="search" autocomplete="off" placeholder="Buscar producto, marca, rubro...">
+      <button class="b-sm-clear" id="smClear" aria-label="Limpiar búsqueda">✕</button>
+    </div>
+  </div>
+  <div class="b-sm-results" id="smResults"></div>
+</div>
 
 <!-- LIGHTBOX -->
 <div class="b-lb" id="lightbox">
@@ -1393,6 +1806,8 @@ const CACHE_KEY = "catalogoBebidas:csv";
 const CACHE_TTL_MS = 60_000;
 const CART_KEY = "catalogoBebidas:cart";
 const CART_TTL_MS = 7 * 24 * 60 * 60 * 1000; // 7 días
+const LAST_ORDER_KEY = "catalogoBebidas:lastOrder";
+const LAST_ORDER_TTL_MS = 30 * 24 * 60 * 60 * 1000; // 30 días
 
 function cartLoad() {
   try {
@@ -1426,6 +1841,50 @@ function cartHydrate() {
     if (!p) return; // producto ya no existe en el sheet
     carrito[id] = { ...p, cant: n };
   });
+}
+
+function lastOrderSave() {
+  try {
+    const items = {};
+    Object.entries(carrito).forEach(([id, p]) => { items[id] = p.cant; });
+    if (!Object.keys(items).length) return;
+    localStorage.setItem(LAST_ORDER_KEY, JSON.stringify({ items, ts: Date.now() }));
+  } catch {}
+}
+
+function lastOrderLoad() {
+  try {
+    const raw = localStorage.getItem(LAST_ORDER_KEY);
+    if (!raw) return null;
+    const { items, ts } = JSON.parse(raw);
+    if (Date.now() - ts > LAST_ORDER_TTL_MS) { localStorage.removeItem(LAST_ORDER_KEY); return null; }
+    return { items, ts };
+  } catch { return null; }
+}
+
+function fmtRelative(ts) {
+  const diffH = (Date.now() - ts) / (60 * 60 * 1000);
+  if (diffH < 1) return "hace minutos";
+  if (diffH < 24) return `hace ${Math.round(diffH)} h`;
+  const diffD = diffH / 24;
+  if (diffD < 2) return "ayer";
+  if (diffD < 30) return `hace ${Math.round(diffD)} días`;
+  return "hace más de un mes";
+}
+
+function repetirUltimoPedido() {
+  const last = lastOrderLoad();
+  if (!last) return;
+  // Limpiar carrito y rearmar desde el snapshot
+  Object.keys(carrito).forEach(k => delete carrito[k]);
+  Object.entries(last.items).forEach(([id, cant]) => {
+    const n = parseInt(cant, 10);
+    if (!Number.isFinite(n) || n < 1) return;
+    const p = productos.find(x => x.id === +id);
+    if (!p) return;
+    carrito[id] = { ...p, cant: n };
+  });
+  actualizarCarritoUI();
 }
 
 function cacheGet() {
@@ -1484,6 +1943,12 @@ let rubroActivo = "Todos";
 let textoBusqueda = "";
 const carrito = {};
 let zoomProducto = null;
+const filtros = {
+  sort: "default",
+  onlyOfertas: false,
+  onlyFoto: false,
+  precio: "all",
+};
 
 function aplicarCSV(csv) {
   productos = parsearCSV(csv);
@@ -1640,6 +2105,11 @@ function renderNav() {
     const hot = /oferta|promo/i.test(r);
     return `<button class="b-nav-item ${hot ? "b-nav-hot" : ""} ${r === rubroActivo ? "on" : ""}" data-action="filter" data-rubro="${esc(r)}">${esc(r)}</button>`;
   }).join("");
+  // Scrollear el chip activo al centro
+  requestAnimationFrame(() => {
+    const active = nav.querySelector(".b-nav-item.on");
+    if (active) active.scrollIntoView({ behavior: "smooth", block: "nearest", inline: "center" });
+  });
   // also footer cat shortcuts
   const visibles = rubros.slice(0, 4);
   ["footCat1","footCat2","footCat3","footCat4"].forEach((id, i) => {
@@ -1741,10 +2211,32 @@ function renderSeccion(secId, gridId, lista) {
   document.getElementById(gridId).innerHTML = lista.map(cardHtml).join("");
 }
 
+function filtrosActivosCount() {
+  let n = 0;
+  if (filtros.sort !== "default") n++;
+  if (filtros.onlyOfertas) n++;
+  if (filtros.onlyFoto) n++;
+  if (filtros.precio !== "all") n++;
+  return n;
+}
+
+function aplicarFiltrosLista(lista) {
+  if (filtros.onlyOfertas) lista = lista.filter(p => p.precioAntes > 0);
+  if (filtros.onlyFoto) lista = lista.filter(p => p.foto);
+  if (filtros.precio !== "all") {
+    const [min, max] = filtros.precio.split("-").map(s => s === "" ? Infinity : Number(s));
+    lista = lista.filter(p => p.precio >= min && p.precio <= (max || Infinity));
+  }
+  if (filtros.sort === "precio-asc")  lista = [...lista].sort((a, b) => a.precio - b.precio);
+  if (filtros.sort === "precio-desc") lista = [...lista].sort((a, b) => b.precio - a.precio);
+  if (filtros.sort === "nombre")      lista = [...lista].sort((a, b) => a.nombre.localeCompare(b.nombre));
+  return lista;
+}
+
 function renderCatalogoFiltrado() {
   const home = document.getElementById("home");
   const cat = document.getElementById("catalogo");
-  const filtroActivo = textoBusqueda || rubroActivo !== "Todos";
+  const filtroActivo = textoBusqueda || rubroActivo !== "Todos" || filtrosActivosCount() > 0;
   home.hidden = filtroActivo;
   cat.hidden = !filtroActivo;
 
@@ -1756,12 +2248,21 @@ function renderCatalogoFiltrado() {
     const q = textoBusqueda.toLowerCase();
     lista = lista.filter(p => p.nombre.toLowerCase().includes(q) || p.rubro.toLowerCase().includes(q));
   }
+  lista = aplicarFiltrosLista(lista);
 
   document.getElementById("catTitulo").textContent = textoBusqueda
     ? `Resultados para "${textoBusqueda}"`
     : rubroActivo.toUpperCase();
   document.getElementById("catSub").textContent =
     `${lista.length} ${lista.length === 1 ? "producto" : "productos"} encontrados`;
+
+  // Indicador de filtros activos en el botón
+  const filtersBtn = document.getElementById("btnFilters");
+  const filtersCount = document.getElementById("filtersCount");
+  const fc = filtrosActivosCount();
+  filtersBtn.classList.toggle("on", fc > 0);
+  filtersCount.hidden = fc === 0;
+  filtersCount.textContent = fc;
 
   const grilla = document.getElementById("grilla");
   if (!lista.length) {
@@ -1825,11 +2326,29 @@ function renderDrawerLista() {
   const foot = document.getElementById("cdFoot");
 
   if (!items.length) {
+    const last = lastOrderLoad();
+    let lastHtml = "";
+    if (last) {
+      const totalLast = Object.entries(last.items).reduce((s, [id, n]) => {
+        const p = productos.find(x => x.id === +id);
+        return s + (p ? p.precio * n : 0);
+      }, 0);
+      const cantLast = Object.values(last.items).reduce((s, n) => s + +n, 0);
+      const validos = Object.keys(last.items).filter(id => productos.find(x => x.id === +id)).length;
+      if (validos > 0) {
+        lastHtml = `<div class="b-cd-last">
+          <div class="b-cd-last-h">Tu último pedido <span>· ${esc(fmtRelative(last.ts))}</span></div>
+          <div class="b-cd-last-info">${validos} ${validos === 1 ? "producto" : "productos"} · ${fmt(totalLast)}</div>
+          <button class="b-cd-last-btn" data-action="repetirOrden">↻ Repetir pedido</button>
+        </div>`;
+      }
+    }
     cont.innerHTML = `<div class="b-cd-empty">
       <div class="b-cd-empty-i">🛒</div>
       <p>Tu carrito está vacío</p>
       <button data-action="closeDrawer">Seguir comprando</button>
-    </div>`;
+    </div>
+    ${lastHtml}`;
     sub.textContent = "0 productos";
     foot.style.display = "none";
     return;
@@ -1879,6 +2398,8 @@ function enviarPedido() {
   const lineas = items.map(i => `• ${i.nombre} — ${i.cant} ${i.cant === 1 ? "pack" : "packs"} — ${fmt(i.precio * i.cant)}`).join("\n");
   const total = items.reduce((s, i) => s + i.precio * i.cant, 0);
   const msg = `¡Hola! 👋 Quiero hacer el siguiente pedido:\n\n${lineas}\n\n*Total estimado: ${fmt(total)}*\n_Los precios son por pack mínimo de venta._\n\n¿Tienen disponibilidad?`;
+  // Snapshot del pedido para "repetir" después
+  lastOrderSave();
   window.open(`https://wa.me/${CONFIG.whatsapp}?text=${encodeURIComponent(msg)}`, "_blank");
 }
 
@@ -2025,6 +2546,8 @@ function handleClick(e) {
   }
 
   if (action === "closeDrawer") { cerrarDrawer(); return; }
+  if (action === "repetirOrden") { repetirUltimoPedido(); return; }
+  if (action === "openFilters") { abrirFiltros(); return; }
 
   if (action === "heroGo") {
     e.stopPropagation();
@@ -2081,6 +2604,171 @@ document.getElementById("heroNext").addEventListener("click", () => { heroGo(her
 document.getElementById("buscador").addEventListener("input", e => {
   textoBusqueda = e.target.value;
   renderCatalogoFiltrado();
+});
+
+// ── Search modal (mobile) ──
+function abrirSearchModal() {
+  const modal = document.getElementById("searchModal");
+  modal.classList.add("on");
+  modal.setAttribute("aria-hidden", "false");
+  prevBodyOverflow = document.body.style.overflow;
+  document.body.style.overflow = "hidden";
+  setTimeout(() => document.getElementById("smInput").focus(), 100);
+  renderSearchModal();
+}
+function cerrarSearchModal() {
+  const modal = document.getElementById("searchModal");
+  modal.classList.remove("on");
+  modal.setAttribute("aria-hidden", "true");
+  document.body.style.overflow = prevBodyOverflow;
+}
+function renderSearchModal() {
+  const q = document.getElementById("smInput").value.trim().toLowerCase();
+  const cont = document.getElementById("smResults");
+  const clearBtn = document.getElementById("smClear");
+  clearBtn.classList.toggle("on", q.length > 0);
+
+  if (!q) {
+    // Estado vacío: chips de categorías sugeridas
+    const rubros = Array.from(new Set(productos.map(p => p.rubro))).filter(Boolean).slice(0, 8);
+    cont.innerHTML = `<div class="b-sm-suggest">
+      <div class="b-sm-suggest-h">Buscá por rubro</div>
+      <div class="b-sm-suggest-chips">
+        ${rubros.map(r => `<button class="b-sm-suggest-chip" data-action="smSuggest" data-rubro="${esc(r)}">${esc(r)}</button>`).join("")}
+      </div>
+    </div>`;
+    return;
+  }
+
+  const lista = productos.filter(p =>
+    p.nombre.toLowerCase().includes(q) || p.rubro.toLowerCase().includes(q)
+  ).slice(0, 50);
+
+  if (!lista.length) {
+    cont.innerHTML = `<div class="b-sm-empty">
+      <strong>Sin resultados</strong>
+      No encontramos "${esc(q)}".<br>
+      Probá con otra palabra o rubro.
+    </div>`;
+    return;
+  }
+
+  cont.innerHTML = lista.map(p => {
+    const safeEmoji = esc(getEmoji(p.rubro));
+    const thumb = p.foto
+      ? `<img src="${esc(p.foto)}" alt="${esc(p.nombre)}" data-fallback="${safeEmoji}" onerror="imgFail(this)">`
+      : safeEmoji;
+    return `<div class="b-sm-row" data-action="smPick" data-id="${p.id}">
+      <div class="b-sm-thumb">${thumb}</div>
+      <div class="b-sm-info">
+        <div class="b-sm-name">${esc(p.nombre)}</div>
+        <div class="b-sm-meta">
+          <span class="b-sm-meta-rubro">${esc(p.rubro)}</span>
+          <span class="b-sm-meta-precio">${fmt(p.precio)}</span>
+        </div>
+      </div>
+      <button class="b-sm-add" data-action="smAdd" data-id="${p.id}" aria-label="Agregar al carrito">+</button>
+    </div>`;
+  }).join("");
+}
+
+// ── Bottom-sheet de filtros ──
+function abrirFiltros() {
+  // Sincronizar UI con estado actual
+  document.querySelectorAll("#sortChips .b-bs-chip").forEach(c => c.classList.toggle("on", c.dataset.sort === filtros.sort));
+  document.querySelectorAll("#precioChips .b-bs-chip").forEach(c => c.classList.toggle("on", c.dataset.precio === filtros.precio));
+  document.getElementById("onlyOfertasSwitch").classList.toggle("on", filtros.onlyOfertas);
+  document.getElementById("onlyFotoSwitch").classList.toggle("on", filtros.onlyFoto);
+  document.getElementById("filtersSheet").classList.add("on");
+  document.getElementById("bsBack").classList.add("on");
+  document.getElementById("filtersSheet").setAttribute("aria-hidden", "false");
+  prevBodyOverflow = document.body.style.overflow;
+  document.body.style.overflow = "hidden";
+}
+function cerrarFiltros() {
+  document.getElementById("filtersSheet").classList.remove("on");
+  document.getElementById("bsBack").classList.remove("on");
+  document.getElementById("filtersSheet").setAttribute("aria-hidden", "true");
+  document.body.style.overflow = prevBodyOverflow;
+}
+function resetearFiltros() {
+  filtros.sort = "default";
+  filtros.onlyOfertas = false;
+  filtros.onlyFoto = false;
+  filtros.precio = "all";
+  abrirFiltros(); // re-sincroniza UI
+}
+document.getElementById("bsClose").addEventListener("click", cerrarFiltros);
+document.getElementById("bsBack").addEventListener("click", cerrarFiltros);
+document.getElementById("bsReset").addEventListener("click", () => { resetearFiltros(); });
+document.getElementById("bsApply").addEventListener("click", () => {
+  cerrarFiltros();
+  // Si no hay rubro/búsqueda activa, igual mostrar la vista filtrada para que se vea el sort
+  if (filtrosActivosCount() > 0 && rubroActivo === "Todos" && !textoBusqueda) {
+    rubroActivo = "Todos";
+  }
+  renderCatalogoFiltrado();
+});
+
+document.querySelectorAll("#sortChips .b-bs-chip").forEach(chip => {
+  chip.addEventListener("click", () => {
+    filtros.sort = chip.dataset.sort;
+    document.querySelectorAll("#sortChips .b-bs-chip").forEach(c => c.classList.toggle("on", c === chip));
+  });
+});
+document.querySelectorAll("#precioChips .b-bs-chip").forEach(chip => {
+  chip.addEventListener("click", () => {
+    filtros.precio = chip.dataset.precio;
+    document.querySelectorAll("#precioChips .b-bs-chip").forEach(c => c.classList.toggle("on", c === chip));
+  });
+});
+document.getElementById("onlyOfertasSwitch").addEventListener("click", e => {
+  filtros.onlyOfertas = !filtros.onlyOfertas;
+  e.currentTarget.classList.toggle("on", filtros.onlyOfertas);
+});
+document.getElementById("onlyFotoSwitch").addEventListener("click", e => {
+  filtros.onlyFoto = !filtros.onlyFoto;
+  e.currentTarget.classList.toggle("on", filtros.onlyFoto);
+});
+
+document.getElementById("btnSearchOpen").addEventListener("click", abrirSearchModal);
+document.getElementById("smBack").addEventListener("click", cerrarSearchModal);
+document.getElementById("smClear").addEventListener("click", () => {
+  document.getElementById("smInput").value = "";
+  renderSearchModal();
+  document.getElementById("smInput").focus();
+});
+document.getElementById("smInput").addEventListener("input", renderSearchModal);
+document.getElementById("smInput").addEventListener("keydown", e => {
+  if (e.key === "Escape") cerrarSearchModal();
+});
+
+document.addEventListener("click", e => {
+  const t = e.target.closest("[data-action]");
+  if (!t) return;
+  const action = t.dataset.action;
+  if (action === "smSuggest") {
+    rubroActivo = t.dataset.rubro || "Todos";
+    textoBusqueda = "";
+    document.getElementById("buscador").value = "";
+    cerrarSearchModal();
+    renderNav();
+    renderCatalogoFiltrado();
+    window.scrollTo({ top: 220, behavior: "smooth" });
+  } else if (action === "smPick") {
+    const id = parseInt(t.dataset.id, 10);
+    const p = productos.find(x => x.id === id);
+    if (p) {
+      cerrarSearchModal();
+      abrirLightbox(p);
+    }
+  } else if (action === "smAdd") {
+    const id = parseInt(t.dataset.id, 10);
+    if (Number.isFinite(id)) {
+      e.stopPropagation();
+      agregar(id);
+    }
+  }
 });
 
 // Boot
