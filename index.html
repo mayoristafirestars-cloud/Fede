@@ -471,25 +471,40 @@ a { color: inherit; text-decoration: none; }
 .b-section { padding: 56px 32px; max-width: 1280px; margin: 0 auto; }
 .b-section-head {
   display: flex;
-  justify-content: space-between;
-  align-items: baseline;
+  flex-direction: column;
+  align-items: flex-start;
   margin-bottom: 28px;
-  padding-bottom: 12px;
-  border-bottom: 2px solid var(--ink);
-  gap: 16px;
+  gap: 6px;
 }
 .b-section-head h2 {
   font-family: 'Archivo Black';
-  font-size: 28px;
+  font-size: 30px;
   letter-spacing: -0.02em;
   margin: 0;
+  background: var(--ink);
+  color: #fff !important;
+  padding: 10px 16px 8px;
+  display: inline-block;
+  text-transform: uppercase;
+  transform: rotate(-1.5deg);
+  box-shadow: 4px 4px 0 rgba(0,0,0,0.08);
 }
 .b-section-head span {
   font-family: 'JetBrains Mono', monospace;
   font-size: 12px;
   color: var(--muted);
   letter-spacing: 0.05em;
+  padding-left: 4px;
 }
+.b-section-head-filter {
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: stretch;
+}
+/* OFERTAS: header rojo */
+#secOfertas .b-section-head h2 { background: var(--red); }
+/* DESTACADOS: header gold con tinta negra */
+#secDestacados .b-section-head h2 { background: var(--gold); color: var(--ink) !important; }
 .b-section-head-filter > div { display: flex; flex-direction: column; gap: 4px; }
 .b-clear {
   background: transparent;
@@ -674,9 +689,28 @@ a { color: inherit; text-decoration: none; }
   cursor: pointer;
   position: relative;
   transition: transform 0.15s, box-shadow 0.15s;
-  padding: 16px;
+  padding: 18px 16px 16px;
+  --rubro-color: #1a1a1a;
 }
 .b-card:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,0.08); z-index: 1; }
+.b-card-stripe {
+  position: absolute; top: 0; left: 0; right: 0;
+  height: 4px;
+  background: var(--rubro-color);
+}
+.b-card-rubro-chip {
+  display: inline-block;
+  background: var(--rubro-color);
+  color: #fff;
+  font-family: 'Archivo Black';
+  font-size: 9.5px;
+  letter-spacing: 0.1em;
+  padding: 4px 8px 3px;
+  text-transform: uppercase;
+  align-self: flex-start;
+  margin-bottom: 8px;
+  border-radius: 2px;
+}
 .b-card-flags {
   position: absolute;
   top: 12px; left: 12px; right: 12px;
@@ -687,14 +721,21 @@ a { color: inherit; text-decoration: none; }
 }
 .b-flag {
   font-family: 'Archivo Black';
-  font-size: 10px;
-  letter-spacing: 0.05em;
-  padding: 4px 8px;
+  font-size: 12px;
+  letter-spacing: 0.04em;
+  padding: 6px 10px;
   text-transform: uppercase;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.18);
 }
-.b-flag-off { background: var(--red); color: #fff; }
+.b-flag-off {
+  background: var(--red); color: #fff;
+  font-size: 13px;
+  padding: 7px 11px;
+  transform: rotate(-3deg);
+  border: 2px solid #fff;
+}
 .b-flag-promo { background: var(--gold); color: var(--ink); }
-.b-flag-new { background: #fff; color: var(--ink); border: 1px solid var(--ink); padding: 2px 6px; }
+.b-flag-new { background: #fff; color: var(--ink); border: 1px solid var(--ink); padding: 3px 7px; }
 
 .b-card-img {
   display: grid;
@@ -741,10 +782,11 @@ a { color: inherit; text-decoration: none; }
 }
 .b-card-now {
   font-family: 'Archivo Black';
-  font-size: 22px;
+  font-size: 26px;
   letter-spacing: -0.03em;
   line-height: 1;
   margin: 2px 0;
+  color: var(--ink);
 }
 .b-card-pack {
   display: inline-block;
@@ -1411,7 +1453,7 @@ body.has-sticky { padding-bottom: 80px; }
   <!-- SECCIONES DINÁMICAS -->
   <section class="b-section" id="secOfertas" hidden>
     <div class="b-section-head">
-      <h2 style="color: var(--red)">OFERTAS</h2>
+      <h2>OFERTAS</h2>
       <span>Por tiempo limitado</span>
     </div>
     <div class="b-grid" id="gridOfertas"></div>
@@ -1736,6 +1778,23 @@ function parsePrice(raw) {
   const parts = cleaned.split(".");
   if (parts.length > 2 || (parts.length === 2 && parts[1].length === 3)) return parseFloat(cleaned.replace(/\./g, "")) || 0;
   return parseFloat(cleaned) || 0;
+}
+
+const RUBRO_COLOR = {
+  cerveza: "#0e6b3a", cervezas: "#0e6b3a",
+  vino: "#5a1518", vinos: "#5a1518",
+  espumante: "#7d2238", espumantes: "#7d2238",
+  destilado: "#3d1a06", destilados: "#3d1a06",
+  whisky: "#3d1a06", gin: "#1e5099", fernet: "#3a1a06", aperitivo: "#3a1a06", aperitivos: "#3a1a06",
+  "sin alcohol": "#1a4d8c", gaseosa: "#c0392b", gaseosas: "#c0392b",
+  agua: "#1a4d8c", jugo: "#e67e22", jugos: "#e67e22",
+  yerba: "#2d4a1f",
+  comestible: "#a8580f", comestibles: "#a8580f",
+  oferta: "#e63946", ofertas: "#e63946",
+  general: "#1a1a1a"
+};
+function rubroColor(rubro) {
+  return RUBRO_COLOR[String(rubro || "").toLowerCase().trim()] || "#1a1a1a";
 }
 
 const EMOJI_RUBRO = {
@@ -2218,12 +2277,14 @@ function cardCtrlHtml(p) {
 }
 
 function cardHtml(p) {
-  return `<article class="b-card" data-card-id="${p.id}" data-action="zoom" data-id="${p.id}">
+  const color = rubroColor(p.rubro);
+  return `<article class="b-card" data-card-id="${p.id}" data-action="zoom" data-id="${p.id}" style="--rubro-color:${color}">
+    <div class="b-card-stripe"></div>
     <div class="b-card-flags">${productoFlags(p)}</div>
     <div class="b-card-img">${productoImagen(p)}</div>
     <div class="b-card-body">
+      <div class="b-card-rubro-chip">${esc(p.rubro)}</div>
       <div class="b-card-name">${esc(p.nombre)}</div>
-      <div class="b-card-sub">${esc(p.rubro)}</div>
       <div class="b-card-prices">
         ${p.precioAntes > 0 ? `<div class="b-card-old">${fmt(p.precioAntes)}</div>` : ""}
         <div class="b-card-now">${fmt(p.precio)}</div>
