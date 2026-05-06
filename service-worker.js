@@ -6,7 +6,7 @@
  *  - Todo lo demás:         pasa al fetch real
  */
 
-const VERSION = "v3";
+const VERSION = "v4";
 const CACHE_RUNTIME = `tienda-bebidas-runtime-${VERSION}`;
 const CACHE_HTML    = `tienda-bebidas-html-${VERSION}`;
 const CACHE_ASSETS  = `tienda-bebidas-assets-${VERSION}`;
@@ -117,11 +117,12 @@ self.addEventListener("fetch", event => {
     return;
   }
 
-  // HTML / navegación → stale-while-revalidate
+  // HTML / navegación → network-first (siempre fresco si hay red, cache solo si offline)
+  // Evita que la PWA quede pegada a una versión vieja después de un deploy.
   if (request.mode === "navigate" || (url.origin === self.location.origin && url.pathname.endsWith("/")) ||
       (url.origin === self.location.origin && /\.html?$/.test(url.pathname)) ||
       url.pathname === "/" || url.pathname === "") {
-    event.respondWith(staleWhileRevalidate(request, CACHE_HTML));
+    event.respondWith(networkFirst(request, CACHE_HTML, 3000));
     return;
   }
 });

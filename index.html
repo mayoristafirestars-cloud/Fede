@@ -2934,9 +2934,29 @@ document.addEventListener("click", e => {
 cargarProductos();
 
 // Service Worker — habilita PWA + offline + cache agresivo en visitas repetidas
+// Si detecta una versión nueva del SW, fuerza recarga automática para mostrar el código nuevo
 if ("serviceWorker" in navigator) {
   window.addEventListener("load", () => {
-    navigator.serviceWorker.register("service-worker.js").catch(() => {/* silent */});
+    navigator.serviceWorker.register("service-worker.js").then(reg => {
+      reg.addEventListener("updatefound", () => {
+        const newSW = reg.installing;
+        if (!newSW) return;
+        newSW.addEventListener("statechange", () => {
+          // Hay un SW nuevo instalado y otro controlando la página → reload pisa al viejo
+          if (newSW.state === "installed" && navigator.serviceWorker.controller) {
+            newSW.postMessage("skipWaiting");
+          }
+        });
+      });
+    }).catch(() => {/* silent */});
+
+    // Cuando el SW nuevo toma control, recargar la página
+    let reloading = false;
+    navigator.serviceWorker.addEventListener("controllerchange", () => {
+      if (reloading) return;
+      reloading = true;
+      location.reload();
+    });
   });
 }
 
