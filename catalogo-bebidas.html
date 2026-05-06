@@ -8,6 +8,8 @@
 <title>Tienda de Bebidas · Santa Rosa La Pampa</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preconnect" href="https://images.weserv.nl">
+<link rel="preload" as="image" href="https://i.ibb.co/Z1gpP9SZ/Chat-GPT-Image-3-may-2026-06-14-08-p-m.png" fetchpriority="high">
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=Archivo+Black&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
 :root {
@@ -1751,6 +1753,24 @@ window.imgFail = function (img) {
   img.replaceWith(span);
 };
 
+// Image CDN proxy: redimensiona y sirve como WebP. Bajamos 5-10x el peso
+// vs servir el JPG/PNG original. Free tier de images.weserv.nl.
+function imgProxy(url, width = 400) {
+  if (!url) return "";
+  if (url.startsWith("data:")) return url;
+  // Si ya pasa por weserv, no doble-proxear
+  if (url.includes("images.weserv.nl")) return url;
+  const cleanUrl = url.replace(/^https?:\/\//, "");
+  const params = new URLSearchParams({
+    url: cleanUrl,
+    w: String(width),
+    output: "webp",
+    q: "78",
+    we: "" // skip-if-failed: si falla, sirve la original
+  });
+  return `https://images.weserv.nl/?${params.toString()}`;
+}
+
 // ══════════════════════════════════════════════════════════════
 //  CSV PARSER (RFC 4180)
 // ══════════════════════════════════════════════════════════════
@@ -1902,27 +1922,42 @@ function cacheSet(csv) {
   try { sessionStorage.setItem(CACHE_KEY, JSON.stringify({ csv, ts: Date.now(), url: CONFIG.sheetCSV })); } catch {}
 }
 
-const PROXIES = [
-  url => url,
-  url => `https://api.allorigins.win/raw?url=${encodeURIComponent(url)}`,
+// Proxy primario: allorigins suele ser el más rápido y estable para Google Sheets CSV
+const PROXY_PRIMARY = url => `https://api.allorigins.win/raw?url=${encodeURIComponent(url)}`;
+// Si el primario falla / es lento, racing entre los backups
+const PROXY_BACKUPS = [
   url => `https://corsproxy.io/?${encodeURIComponent(url)}`,
   url => `https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(url)}`,
 ];
 
+async function fetchProxy(proxyFn, signal) {
+  const r = await fetch(proxyFn(CONFIG.sheetCSV), { signal });
+  if (!r.ok) throw new Error("status " + r.status);
+  const t = await r.text();
+  if (!t || t.length <= 10) throw new Error("empty");
+  return t;
+}
+
 async function fetchCSVOnce() {
-  const ctrl = new AbortController();
-  const timer = setTimeout(() => ctrl.abort(), 10000);
+  // 1. Probar el primary primero — si responde rápido evitamos hacer N requests redundantes
+  const primaryCtrl = new AbortController();
+  const primaryTimer = setTimeout(() => primaryCtrl.abort(), 4000);
   try {
-    return await Promise.any(PROXIES.map(async proxy => {
-      const r = await fetch(proxy(CONFIG.sheetCSV), { signal: ctrl.signal });
-      if (!r.ok) throw new Error("status " + r.status);
-      const t = await r.text();
-      if (!t || t.length <= 10) throw new Error("empty");
-      return t;
-    }));
+    return await fetchProxy(PROXY_PRIMARY, primaryCtrl.signal);
+  } catch (e1) {
+    /* sigue al fallback */
   } finally {
-    clearTimeout(timer);
-    ctrl.abort();
+    clearTimeout(primaryTimer);
+  }
+
+  // 2. Fallback: racing entre los backups
+  const backupCtrl = new AbortController();
+  const backupTimer = setTimeout(() => backupCtrl.abort(), 8000);
+  try {
+    return await Promise.any(PROXY_BACKUPS.map(p => fetchProxy(p, backupCtrl.signal)));
+  } finally {
+    clearTimeout(backupTimer);
+    backupCtrl.abort();
   }
 }
 
@@ -2156,7 +2191,7 @@ function productoFlags(p) {
 
 function productoImagen(p) {
   if (p.foto) {
-    return `<img src="${esc(p.foto)}" alt="${esc(p.nombre)}" loading="lazy" data-fallback="${esc(getEmoji(p.rubro))}" onerror="imgFail(this)">`;
+    return `<img src="${esc(imgProxy(p.foto, 400))}" alt="${esc(p.nombre)}" loading="lazy" decoding="async" width="200" height="200" data-fallback="${esc(getEmoji(p.rubro))}" onerror="imgFail(this)">`;
   }
   return esc(getEmoji(p.rubro));
 }
@@ -2193,6 +2228,10 @@ function cardHtml(p) {
   </article>`;
 }
 
+let todosObserver = null;
+let todosBatchIdx = 0;
+const TODOS_BATCH_SIZE = 20;
+
 function renderHomeSecciones() {
   const ofertas = productos.filter(p => p.precioAntes > 0);
   const ofertasIds = new Set(ofertas.map(p => p.id));
@@ -2200,7 +2239,7 @@ function renderHomeSecciones() {
 
   renderSeccion("secOfertas", "gridOfertas", ofertas);
   renderSeccion("secDestacados", "gridDestacados", destacados);
-  renderSeccion("secTodos", "gridTodos", productos);
+  renderTodosLazy(productos);
 
   const todosCount = document.getElementById("todosCount");
   if (todosCount) todosCount.textContent = `${productos.length} ${productos.length === 1 ? "producto" : "productos"}`;
@@ -2209,6 +2248,55 @@ function renderHomeSecciones() {
 function renderSeccion(secId, gridId, lista) {
   document.getElementById(secId).hidden = lista.length === 0;
   document.getElementById(gridId).innerHTML = lista.map(cardHtml).join("");
+}
+
+function renderTodosLazy(lista) {
+  const sec = document.getElementById("secTodos");
+  const grid = document.getElementById("gridTodos");
+  sec.hidden = lista.length === 0;
+  if (!lista.length) return;
+
+  // Reset
+  if (todosObserver) { todosObserver.disconnect(); todosObserver = null; }
+  todosBatchIdx = 0;
+  grid.innerHTML = "";
+
+  const renderNext = () => {
+    const slice = lista.slice(todosBatchIdx, todosBatchIdx + TODOS_BATCH_SIZE);
+    if (!slice.length) {
+      if (todosObserver) { todosObserver.disconnect(); todosObserver = null; }
+      return;
+    }
+    grid.insertAdjacentHTML("beforeend", slice.map(cardHtml).join(""));
+    todosBatchIdx += slice.length;
+    return slice.length;
+  };
+
+  // Primer batch sincrono
+  renderNext();
+
+  // Sentinel + IntersectionObserver para los siguientes
+  if (todosBatchIdx < lista.length) {
+    let sentinel = grid.querySelector(".b-todos-sentinel");
+    if (!sentinel) {
+      sentinel = document.createElement("div");
+      sentinel.className = "b-todos-sentinel";
+      sentinel.style.cssText = "grid-column: 1/-1; height: 1px;";
+      grid.appendChild(sentinel);
+    }
+    todosObserver = new IntersectionObserver(entries => {
+      if (entries[0].isIntersecting) {
+        renderNext();
+        if (todosBatchIdx < lista.length) {
+          // Re-mover el sentinel al final
+          grid.appendChild(sentinel);
+        } else {
+          sentinel.remove();
+        }
+      }
+    }, { rootMargin: "400px 0px" });
+    todosObserver.observe(sentinel);
+  }
 }
 
 function filtrosActivosCount() {
@@ -2358,7 +2446,7 @@ function renderDrawerLista() {
   cont.innerHTML = items.map(item => {
     const safeEmoji = esc(getEmoji(item.rubro));
     const thumb = item.foto
-      ? `<img src="${esc(item.foto)}" alt="${esc(item.nombre)}" data-fallback="${safeEmoji}" onerror="imgFail(this)">`
+      ? `<img src="${esc(imgProxy(item.foto, 128))}" alt="${esc(item.nombre)}" loading="lazy" decoding="async" width="64" height="64" data-fallback="${safeEmoji}" onerror="imgFail(this)">`
       : safeEmoji;
     return `<div class="b-cd-item">
       <div class="b-cd-thumb">${thumb}</div>
@@ -2493,7 +2581,11 @@ heroAuto();
 let prevBodyOverflow = "";
 function abrirLightbox(p) {
   zoomProducto = p;
-  document.getElementById("lbImg").innerHTML = productoImagen(p);
+  // El lightbox usa imagen más grande (800px) que las cards (400px)
+  const lbImgHtml = p.foto
+    ? `<img src="${esc(imgProxy(p.foto, 800))}" alt="${esc(p.nombre)}" decoding="async" data-fallback="${esc(getEmoji(p.rubro))}" onerror="imgFail(this)">`
+    : esc(getEmoji(p.rubro));
+  document.getElementById("lbImg").innerHTML = lbImgHtml;
   document.getElementById("lbName").textContent = p.nombre;
   document.getElementById("lbRubro").textContent = p.rubro;
   document.getElementById("lbCat").textContent = p.rubro;
@@ -2656,7 +2748,7 @@ function renderSearchModal() {
   cont.innerHTML = lista.map(p => {
     const safeEmoji = esc(getEmoji(p.rubro));
     const thumb = p.foto
-      ? `<img src="${esc(p.foto)}" alt="${esc(p.nombre)}" data-fallback="${safeEmoji}" onerror="imgFail(this)">`
+      ? `<img src="${esc(imgProxy(p.foto, 112))}" alt="${esc(p.nombre)}" loading="lazy" decoding="async" width="56" height="56" data-fallback="${safeEmoji}" onerror="imgFail(this)">`
       : safeEmoji;
     return `<div class="b-sm-row" data-action="smPick" data-id="${p.id}">
       <div class="b-sm-thumb">${thumb}</div>
