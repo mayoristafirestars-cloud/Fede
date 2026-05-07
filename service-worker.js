@@ -6,7 +6,7 @@
  *  - Todo lo demás:         pasa al fetch real
  */
 
-const VERSION = "v4";
+const VERSION = "v5";
 const CACHE_RUNTIME = `tienda-bebidas-runtime-${VERSION}`;
 const CACHE_HTML    = `tienda-bebidas-html-${VERSION}`;
 const CACHE_ASSETS  = `tienda-bebidas-assets-${VERSION}`;
