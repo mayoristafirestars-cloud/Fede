@@ -1,0 +1,57 @@
+services:
+  - type: web
+    name: coronel-sur-bot
+    runtime: python
+    rootDir: chatbot
+    plan: starter           # USD 7/mes, siempre activo (el free tier duerme)
+    region: oregon          # la más cercana de las opciones de Render a AR
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn app.main:app --host 0.0.0.0 --port $PORT
+    healthCheckPath: /health
+    autoDeploy: true        # cada push a la branch dispara deploy
+
+    # Disco persistente para la DB de conversaciones (SQLite).
+    # Sin esto, cada deploy borra el historial de sesiones.
+    disk:
+      name: bot-data
+      mountPath: /opt/render/project/src/chatbot/data
+      sizeGB: 1
+
+    envVars:
+      - key: PYTHON_VERSION
+        value: "3.11.9"
+
+      # --- Secrets: se setean a mano desde la UI de Render ---
+      # (Dashboard > coronel-sur-bot > Environment)
+      # El sync:false evita que Render los borre en cada deploy.
+      - key: ANTHROPIC_API_KEY
+        sync: false
+      - key: GOOGLE_SHEET_ID
+        sync: false
+
+      # El JSON de la service account NO va como variable:
+      # se sube como "Secret File" desde la UI
+      # (Environment > Secret Files > Add) con el nombre
+      # google-service-account.json. Render lo monta en /etc/secrets/.
+      - key: GOOGLE_SERVICE_ACCOUNT_FILE
+        value: /etc/secrets/google-service-account.json
+
+      # --- Config no sensible (se puede versionar acá) ---
+      - key: GOOGLE_SHEET_TAB
+        value: ""            # vacío = primera pestaña (soporta nombre con fecha)
+      - key: SHEET_PUBLIC_COLUMNS
+        value: "Codigo,Descripción,Rubro,SubRubro,Marca,Proveedor,Precio Venta,Cantidad"
+      - key: CONVERSATIONS_DB
+        value: data/conversations.db
+
+      # --- Canales (se completan cuando conectemos Meta) ---
+      - key: META_VERIFY_TOKEN
+        sync: false
+      - key: META_APP_SECRET
+        sync: false
+      - key: WHATSAPP_PHONE_NUMBER_ID
+        sync: false
+      - key: WHATSAPP_ACCESS_TOKEN
+        sync: false
+      - key: INSTAGRAM_ACCESS_TOKEN
+        sync: false

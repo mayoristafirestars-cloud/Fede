@@ -1,0 +1,19 @@
+fastapi==0.115.0
+uvicorn==0.30.6
+python-multipart==0.0.9
+pydantic==2.8.2
+httpx==0.27.0
+fpdf2==2.8.1
+qrcode==7.4.2
+pillow==10.4.0
+psycopg2-binary==2.9.9
+
+# Seguridad (Fase 0)
+bcrypt==4.2.0
+cryptography==43.0.3
+itsdangerous==2.2.0
+
+# Backups (Fase 0): para subir la DB a Google Drive usando la misma
+# service account que el bot (scope drive.file).
+google-auth==2.35.0
+google-api-python-client==2.149.0

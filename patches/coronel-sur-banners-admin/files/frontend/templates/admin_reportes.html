@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin — Reportes por Hora</title>
+<link rel="icon" href="/static/logo-coronel.png" type="image/png">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Inter',system-ui,sans-serif;background:#FAFAFA;color:#1A1A1A;min-height:100vh}
+.topbar{background:#F08340;color:#fff;padding:14px 24px;display:flex;align-items:center;gap:16px;position:sticky;top:0;z-index:50}
+.topbar h1{font-size:18px;font-weight:800;flex:1}
+.topbar a{color:#fff;font-size:13px;font-weight:600;padding:8px 16px;border-radius:8px;background:rgba(255,255,255,.2);text-decoration:none}
+.topbar select{padding:8px 12px;border-radius:8px;border:none;font-size:13px;font-weight:600;background:#fff;color:#1A1A1A;cursor:pointer}
+.container{max-width:1100px;margin:24px auto;padding:0 16px}
+.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:24px}
+.kpi{background:#fff;border-radius:16px;padding:24px;box-shadow:0 2px 8px rgba(0,0,0,.04)}
+.kpi-label{font-size:12px;font-weight:700;color:#999;text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px}
+.kpi-val{font-size:32px;font-weight:900;letter-spacing:-.03em;color:#1A1A1A}
+.kpi-sub{font-size:12px;color:#999;margin-top:4px}
+.kpi-val.green{color:#00A650}.kpi-val.orange{color:#F08340}.kpi-val.red{color:#F23D4F}
+.card{background:#fff;border-radius:16px;padding:24px;box-shadow:0 2px 8px rgba(0,0,0,.04);margin-bottom:20px}
+.card h2{font-size:20px;font-weight:900;margin-bottom:16px;letter-spacing:-.02em;display:flex;align-items:center;gap:8px}
+.card h2::after{content:'';width:30px;height:3px;background:#F08340;border-radius:2px}
+.chart-hora{display:flex;align-items:flex-end;gap:4px;height:200px;padding:0 4px}
+.bar-wrap{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px}
+.bar{width:100%;border-radius:6px 6px 0 0;background:linear-gradient(180deg,#F08340,#F5A568);min-height:2px;transition:.3s;position:relative;cursor:pointer}
+.bar:hover{background:linear-gradient(180deg,#DA6F30,#F08340);transform:scaleY(1.05)}
+.bar.peak{background:linear-gradient(180deg,#E74C3C,#F08340)}
+.bar-label{font-size:9px;color:#999;font-weight:600;white-space:nowrap}
+.bar-tooltip{display:none;position:absolute;bottom:calc(100% + 8px);left:50%;transform:translateX(-50%);background:#1A1A1A;color:#fff;padding:6px 10px;border-radius:8px;font-size:11px;font-weight:600;white-space:nowrap;z-index:10}
+.bar:hover .bar-tooltip{display:block}
+.chart-days{display:grid;grid-template-columns:repeat(7,1fr);gap:8px}
+.day-bar{text-align:center;padding:16px 8px;border-radius:12px;background:#FAFAFA}
+.day-name{font-size:12px;font-weight:700;color:#555;margin-bottom:8px}
+.day-val{font-size:18px;font-weight:900;color:#1A1A1A}
+.day-bar.peak{background:#FFF3EB;border:2px solid #F08340}
+.table{width:100%;border-collapse:separate;border-spacing:0}
+.table th{text-align:left;font-size:11px;font-weight:700;color:#999;text-transform:uppercase;letter-spacing:.06em;padding:10px 12px;border-bottom:2px solid #F0F0F0}
+.table td{padding:12px;font-size:13px;border-bottom:1px solid #F8F8F8}
+.table tr:hover td{background:#FAFAFA}
+.table .val{font-weight:800;font-size:15px}
+.badge{display:inline-block;padding:3px 10px;border-radius:12px;font-size:10px;font-weight:700}
+.badge-gold{background:#FEF3C7;color:#92400E}
+.badge-green{background:#D1FAE5;color:#065F46}
+.mejor-hora-box{display:flex;gap:20px;align-items:center;padding:20px;background:linear-gradient(135deg,#FFF3EB,#FFF8F3);border-radius:12px;margin-bottom:20px}
+.mejor-hora-box .hora{font-size:48px;font-weight:900;color:#F08340;letter-spacing:-.03em}
+.mejor-hora-box .info{flex:1}
+.mejor-hora-box .info h3{font-size:16px;font-weight:800;margin-bottom:4px}
+.mejor-hora-box .info p{font-size:13px;color:#555}
+.login-box{max-width:360px;margin:80px auto;background:#fff;border-radius:16px;padding:32px;box-shadow:0 8px 24px rgba(0,0,0,.08);text-align:center}
+.login-box h2{font-size:20px;font-weight:800;margin-bottom:8px}
+.login-box p{font-size:13px;color:#999;margin-bottom:20px}
+.login-box input{width:100%;padding:12px;border:1px solid #E0E0E0;border-radius:8px;font-size:14px;margin-bottom:10px;outline:none}
+.login-box input:focus{border-color:#F08340}
+.login-box button{width:100%;padding:12px;background:#F08340;color:#fff;border:none;border-radius:8px;font-size:14px;font-weight:700;cursor:pointer}
+.login-box .err{color:#F23D4F;font-size:13px;margin-top:8px;display:none}
+.loading{text-align:center;padding:60px;color:#999;font-size:14px}
+@media(max-width:768px){.grid{grid-template-columns:repeat(2,1fr)}.chart-hora{height:140px}.chart-days{grid-template-columns:repeat(4,1fr)}}
+</style>
+</head>
+<body>
+<div id="app-login" style="display:none">
+  <div class="login-box">
+    <h2>Reportes</h2>
+    <p>Ingresá con tu usuario administrador</p>
+    <input type="text" id="lg-user" placeholder="Usuario">
+    <input type="password" id="lg-pass" placeholder="Contraseña">
+    <button onclick="doLogin()">Ingresar</button>
+    <div class="err" id="lg-err"></div>
+  </div>
+</div>
+<div id="app-main" style="display:none">
+  <div class="topbar">
+    <a href="/">← CRM</a>
+    <h1>Reportes de Ventas</h1>
+    <select id="periodo" onchange="cargar()">
+      <option value="mes">Este mes</option>
+      <option value="anterior">Mes anterior</option>
+      <option value="trimestre">Trimestre</option>
+      <option value="anio">Año</option>
+      <option value="todo">Todo</option>
+    </select>
+  </div>
+  <div class="container" id="content">
+    <div class="loading">Cargando datos...</div>
+  </div>
+</div>
+<script>
+var TOKEN='';
+function fmt(n){return'$ '+Math.round(n||0).toLocaleString('es-AR')}
+function getToken(){var keys=['cs_token','token','admin_token','crm_token'];for(var i=0;i<keys.length;i++){var t=localStorage.getItem(keys[i]);if(t)return t}return ''}
+async function doLogin(){var u=document.getElementById('lg-user').value.trim(),p=document.getElementById('lg-pass').value,e=document.getElementById('lg-err');e.style.display='none';if(!u||!p){e.textContent='Completá usuario y contraseña';e.style.display='block';return}try{var r=await fetch('/api/auth/login',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({username:u,password:p})});var d=await r.json();if(!r.ok){e.textContent=d.detail||'Error';e.style.display='block';return}TOKEN=d.token||d.access_token||'';if(!TOKEN){e.textContent='No se recibió token';e.style.display='block';return}localStorage.setItem('cs_token',TOKEN);showApp()}catch(err){e.textContent='Error de conexión';e.style.display='block'}}
+function showApp(){document.getElementById('app-login').style.display='none';document.getElementById('app-main').style.display='block';cargar()}
+async function cargar(){
+  var periodo=document.getElementById('periodo').value;
+  var c=document.getElementById('content');
+  c.innerHTML='<div class="loading">Cargando datos...</div>';
+  try{
+    var r=await fetch('/api/reportes/dashboard?periodo='+periodo,{headers:{'Authorization':'Bearer '+TOKEN}});
+    if(r.status===401||r.status===403){document.getElementById('app-main').style.display='none';document.getElementById('app-login').style.display='block';TOKEN='';return}
+    var d=await r.json();
+    render(d);
+  }catch(e){c.innerHTML='<div class="loading" style="color:#F23D4F">Error al cargar: '+e.message+'</div>'}
+}
+function render(d){
+  var c=document.getElementById('content');
+  var hoy=d.hoy||{},mes=d.mes||{},ph=d.por_hora||[],pd=d.por_dia_semana||[];
+  var mh=d.mejor_hora||{hora:'--',total:0,cant:0};
+  var maxH=Math.max.apply(null,ph.map(function(h){return h.total}))||1;
+  var maxD=Math.max.apply(null,pd.map(function(x){return x.total}))||1;
+  var html='';
+  // KPIs
+  html+='<div class="grid">';
+  html+='<div class="kpi"><div class="kpi-label">Ventas hoy</div><div class="kpi-val">'+fmt(hoy.total)+'</div><div class="kpi-sub">'+hoy.cant+' comprobantes</div></div>';
+  html+='<div class="kpi"><div class="kpi-label">Ventas del período</div><div class="kpi-val">'+fmt(mes.total)+'</div><div class="kpi-sub">Margen: '+mes.margen+'%</div></div>';
+  html+='<div class="kpi"><div class="kpi-label">Ganancia</div><div class="kpi-val green">'+fmt(mes.ganancia)+'</div><div class="kpi-sub">vs anterior: '+(mes.vs_anterior>0?'+':'')+mes.vs_anterior+'%</div></div>';
+  html+='<div class="kpi"><div class="kpi-label">Meta mensual</div><div class="kpi-val orange">'+mes.pct_meta+'%</div><div class="kpi-sub">'+fmt(mes.total)+' / '+fmt(mes.meta)+'</div></div>';
+  html+='</div>';
+  // Mejor hora
+  html+='<div class="mejor-hora-box"><div class="hora">'+mh.hora+'</div><div class="info"><h3>Franja más productiva</h3><p>'+fmt(mh.total)+' en '+mh.cant+' venta'+(mh.cant!==1?'s':'')+'</p></div></div>';
+  // Chart por hora
+  html+='<div class="card"><h2>Ventas por hora del día</h2><div class="chart-hora">';
+  for(var i=0;i<24;i++){
+    var h=ph[i]||{hora:i+':00',total:0,cant:0};
+    var pct=Math.max(2,h.total/maxH*100);
+    var isPeak=h.total===maxH&&h.total>0;
+    html+='<div class="bar-wrap"><div class="bar'+(isPeak?' peak':'')+'" style="height:'+pct+'%"><div class="bar-tooltip">'+h.hora+'<br>'+fmt(h.total)+' ('+h.cant+')</div></div><div class="bar-label">'+(i%2===0?i+'h':'')+'</div></div>';
+  }
+  html+='</div></div>';
+  // Chart por día
+  html+='<div class="card"><h2>Ventas por día de la semana</h2><div class="chart-days">';
+  for(var i=0;i<pd.length;i++){
+    var isPeak=pd[i].total===maxD&&pd[i].total>0;
+    html+='<div class="day-bar'+(isPeak?' peak':'')+'"><div class="day-name">'+pd[i].dia+'</div><div class="day-val">'+fmt(pd[i].total)+'</div></div>';
+  }
+  html+='</div></div>';
+  // Top productos
+  if(d.top_productos&&d.top_productos.length){
+    html+='<div class="card"><h2>Top 10 Productos</h2><table class="table"><thead><tr><th>Producto</th><th>Rubro</th><th>Uds</th><th>Facturado</th><th>Margen</th></tr></thead><tbody>';
+    d.top_productos.forEach(function(p,i){
+      html+='<tr><td><span class="badge badge-gold">#'+(i+1)+'</span> '+p.producto+'</td><td>'+p.rubro+'</td><td>'+Math.round(p.unidades)+'</td><td class="val">'+fmt(p.facturado)+'</td><td><span class="badge badge-green">'+p.margen+'%</span></td></tr>';
+    });
+    html+='</tbody></table></div>';
+  }
+  // Top clientes
+  if(d.top_clientes&&d.top_clientes.length){
+    html+='<div class="card"><h2>Top 5 Clientes</h2><table class="table"><thead><tr><th>Cliente</th><th>Total</th><th>Compras</th></tr></thead><tbody>';
+    d.top_clientes.forEach(function(cl){
+      html+='<tr><td>'+cl.nombre+'</td><td class="val">'+fmt(cl.total)+'</td><td>'+cl.compras+'</td></tr>';
+    });
+    html+='</tbody></table></div>';
+  }
+  // Por rubro
+  if(d.por_rubro&&d.por_rubro.length){
+    html+='<div class="card"><h2>Ventas por Rubro</h2><table class="table"><thead><tr><th>Rubro</th><th>Total</th><th>Ganancia</th><th>Margen</th></tr></thead><tbody>';
+    d.por_rubro.slice(0,10).forEach(function(r){
+      html+='<tr><td>'+r.rubro+'</td><td class="val">'+fmt(r.total)+'</td><td>'+fmt(r.ganancia)+'</td><td><span class="badge badge-green">'+r.margen+'%</span></td></tr>';
+    });
+    html+='</tbody></table></div>';
+  }
+  // Comisiones
+  if(d.comisiones&&d.comisiones.length){
+    html+='<div class="card"><h2>Comisiones</h2><table class="table"><thead><tr><th>Nombre</th><th>Nivel</th><th>%</th><th>Comisión</th></tr></thead><tbody>';
+    d.comisiones.forEach(function(cm){
+      html+='<tr><td>'+cm.nombre+'</td><td><span class="badge badge-gold">'+cm.nivel+'</span></td><td>'+cm.pct+'%</td><td class="val">'+fmt(cm.comision)+'</td></tr>';
+    });
+    html+='</tbody></table></div>';
+  }
+  c.innerHTML=html;
+}
+(function(){TOKEN=getToken();if(TOKEN){showApp()}else{document.getElementById('app-login').style.display='block'}})();
+</script>
+</body>
+</html>
