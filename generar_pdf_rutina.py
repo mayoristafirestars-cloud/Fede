@@ -40,9 +40,9 @@ def main():
     datos = [
         ("Vigente desde", "Lunes 21/04/2026"),
         ("Duracion", "4 semanas (S1–S4)"),
-        ("Frecuencia", "3 dias/semana (Lun / Mie / Vie)"),
+        ("Frecuencia", "4 dias/semana (Lun / Mar / Jue / Vie)"),
+        ("Formato", "A / B / A / B (Full Body Complexes)"),
         ("Horario", "08:00 AM"),
-        ("Formato", "Full Body — Complexes con barra"),
         ("FC maxima de trabajo", "121 lpm (hasta ECG)"),
         ("Restricciones activas", "Sin HIIT, sin sprints"),
         ("Monitoreo", "Apple Watch — FC en cada serie"),
@@ -87,15 +87,19 @@ def main():
         text_align="LEFT",
         headings_style=FontFace(emphasis="BOLD", color=(255, 255, 255), fill_color=RED),
     ) as table:
-        r = table.row(); r.cell("Dia"); r.cell("Foco"); r.cell("Patron de la cadena")
-        r = table.row(); r.cell("Lun — DIA A"); r.cell("Empuje + Bisagra"); r.cell("Sent. frontal → RDL → Remo pecho → Press pie → Good Morning")
-        r = table.row(); r.cell("Mie — DIA B"); r.cell("Tiron + Sentadilla"); r.cell("Sent. trasera → Remo supino → High Pull → RDL → Shrug")
-        r = table.row(); r.cell("Vie — DIA C"); r.cell("Full Body"); r.cell("Peso muerto → High Pull → Sent. frontal → Press → Sent. trasera → Remo")
+        r = table.row(); r.cell("Dia"); r.cell("Sesion"); r.cell("Foco")
+        r = table.row(); r.cell("Lunes"); r.cell("Dia A"); r.cell("Empuje + Bisagra")
+        r = table.row(); r.cell("Martes"); r.cell("Dia B"); r.cell("Tiron + Sentadilla")
+        r = table.row(); r.cell("Miercoles"); r.cell("DESCANSO"); r.cell("Caminata")
+        r = table.row(); r.cell("Jueves"); r.cell("Dia A"); r.cell("Empuje + Bisagra (igual lunes)")
+        r = table.row(); r.cell("Viernes"); r.cell("Dia B"); r.cell("Tiron + Sentadilla (igual martes)")
+        r = table.row(); r.cell("Sabado"); r.cell("DESCANSO"); r.cell("Caminata")
+        r = table.row(); r.cell("Domingo"); r.cell("DESCANSO"); r.cell("Caminata + batch cooking")
 
     pdf.ln(4)
     pdf.set_font("DejaVu", "", 9)
     pdf.set_text_color(*GRAY)
-    pdf.multi_cell(0, 5, "Mar / Jue / Sab / Dom: caminata normal, sin trabajo extra de fuerza.")
+    pdf.multi_cell(0, 5, "A/B/A/B: repetimos A y B dos veces en la semana. Mas volumen sin saturar grupos. El Dia C (Full Complex) lo sumamos al bloque 2 cuando tengas ECG y analisis.")
 
     # ===== CALENTAMIENTO =====
     pdf.add_page()
@@ -182,7 +186,7 @@ def main():
                     r.cell(ej); r.cell(str(se)); r.cell(str(re_)); r.cell(str(rir)); r.cell(carga)
 
     day_block(
-        "A", "Empuje + Bisagra", "Empuje + Bisagra de cadera",
+        "A", "Empuje + Bisagra (Lunes y Jueves)", "Empuje + Bisagra de cadera",
         "Sent. frontal → RDL → Remo pecho → Press pie → Good Morning",
         [
             ("Sentadilla frontal (barra en clavic.)", 6, "Talones al piso, rodillas siguen pie, pecho arriba"),
@@ -200,7 +204,7 @@ def main():
     )
 
     day_block(
-        "B", "Tiron + Sentadilla", "Tiron + Sentadilla",
+        "B", "Tiron + Sentadilla (Martes y Viernes)", "Tiron + Sentadilla",
         "Dominada/Jalon → Sent. trasera → Remo → Hip Thrust → Curl",
         [
             ("Sentadilla trasera (barra trapecios)", 6, "Profundidad paralela o hasta donde la movilidad permita"),
@@ -215,22 +219,6 @@ def main():
             ("Jalon al pecho en polea (agarre ancho)", 2, 10, 3, "45 kg"),
             ("Curl de biceps con mancuernas (alterno)", 2, "10 c/lado", 3, "10 kg por mano"),
         ],
-    )
-
-    day_block(
-        "C", "Full Complex (el mas exigente)", "Full Body — Complex total",
-        "Peso muerto → High Pull → Sent. frontal → Press → Sent. trasera → Remo",
-        [
-            ("Peso muerto convencional", 5, "Espalda neutra, empuja el piso, barra pegada a piernas"),
-            ("High Pull", 5, "Extension de caderas controlada. No mas de 110 lpm"),
-            ("Sentadilla frontal", 5, "Igual que dia A"),
-            ("Press de pie", 5, "Igual que dia A"),
-            ("Sentadilla trasera", 5, "Igual que dia B"),
-            ("Remo inclinado", 5, "Codos 45°, escapulas juntas al final"),
-        ],
-        "S1: 3 / S2: 3 / S3: 4 / S4: 4",
-        "25-30 kg. Al ser mas ejercicios, ir conservador. No superar 110 lpm en ninguna transicion.",
-        None,
     )
 
     # ===== PROGRESION =====
@@ -268,8 +256,8 @@ def main():
     deload = [
         "• Semana 5: DELOAD (40-50 % de la carga S4, mismas reps). Recuperacion activa.",
         "• Revision a los 28 dias: medir cintura, peso y FC en reposo.",
-        "• Si la FC baja de 121 lpm queda margen, se renueva bloque con nueva cadena.",
-        "• Tras ECG basal y analisis: evaluar levantar restriccion de FC y sumar HIIT corto.",
+        "• Si todo OK + ECG normal: proximo bloque suma Dia C (Full Complex) los miercoles -> 5 dias.",
+        "• Tras ECG basal y analisis: evaluar levantar restriccion de FC y sumar HIIT corto opcional.",
     ]
     for line in deload:
         pdf.multi_cell(0, 5, line)
