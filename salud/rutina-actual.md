@@ -11,15 +11,17 @@
 
 ## Distribución semanal
 
-| Día | Sesión | Foco |
-|---|---|---|
-| Lunes | Día A | Empuje + Bisagra |
-| Martes | Día B | Tirón + Sentadilla |
-| Miércoles | DESCANSO | Caminata normal, sin trabajo extra |
-| Jueves | Día A | Empuje + Bisagra (igual lunes) |
-| Viernes | Día B | Tirón + Sentadilla (igual martes) |
-| Sábado | DESCANSO | Caminata normal |
-| Domingo | DESCANSO | Caminata + batch cooking |
+| Día | Hora | Sesión | Foco |
+|---|---|---|---|
+| Lunes | **07:00** | Día A | Empuje + Bisagra |
+| Martes | **07:00** | Día B | Tirón + Sentadilla |
+| Miércoles | — | DESCANSO | Caminata normal, sin trabajo extra |
+| Jueves | **07:00** | Día A | Empuje + Bisagra (igual lunes) |
+| Viernes | **14:00** | Día B | Tirón + Sentadilla (igual martes) |
+| Sábado | — | DESCANSO | Caminata normal |
+| Domingo | — | DESCANSO | Caminata + batch cooking |
+
+**Nota sobre el viernes 14 hs:** comer un almuerzo LIVIANO o moverlo a las 17:00 (la dieta ya tiene esto resuelto). Pre-entreno a las 12:30 (banana + café). Llegá al gym con el estómago vacío.
 
 **Por qué A/B/A/B y no A/B/C:** con tu cuadro (sueño 6 h, FC 121 máx, primer mes), repetir A y B dos veces te consolida la técnica y te da volumen sin sobrecargar. El Día C (full complex) lo guardamos para el bloque 2 una vez que tengas ECG y análisis OK.
 

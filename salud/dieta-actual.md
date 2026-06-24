@@ -2,7 +2,8 @@
 
 **Vigente desde:** 2026-04-21 (lunes)
 **Tipo:** Low-carb estricto mediterraneo (60–80 g carbos/dia gym | 50 g descanso)
-**Frecuencia gym:** 4 dias/semana (Lun / Mar / Jue / Vie)
+**Frecuencia gym:** 4 dias/semana
+**Horarios gym:** Lun/Mar/Jue **07:00 AM** | Vie **14:00 hs**
 **Calorias objetivo:** 2.250 kcal (dias gym) | 2.050 kcal (dias descanso)
 **Macros dias gym:** P: 200 g / **C: 80 g** / G: 105 g
 **Macros dias descanso:** P: 185 g / **C: 55 g** / G: 105 g
@@ -32,19 +33,33 @@
 
 ---
 
-## TIMING DEL DIA DE GYM
+## TIMING DIA GYM 7 AM (Lun / Mar / Jue)
 
 | Hora | Momento | Kcal | P | C | G |
 |---|---|---|---|---|---|
-| 06:30 | Pre-entreno (banana + cafe) | 110 | 1 | 27 | 0 |
-| 08:00 | **Entreno (complex 50-60 min)** | — | — | — | — |
-| 09:15 | Post-entreno (whey + frutos rojos) | 200 | 32 | 12 | 3 |
-| 10:30 | Desayuno principal | 530 | 38 | 18 | 35 |
+| 05:30 | Pre-entreno (banana + cafe) | 110 | 1 | 27 | 0 |
+| 07:00 | **Entreno (complex 50-60 min)** | — | — | — | — |
+| 08:15 | Post-entreno (whey + frutos rojos) | 200 | 32 | 12 | 3 |
+| 09:30 | Desayuno principal | 530 | 38 | 18 | 35 |
 | 13:00 | Almuerzo | 580 | 50 | 12 | 35 |
 | 16:30 | Merienda | 220 | 20 | 5 | 13 |
 | 20:30 | Cena | 470 | 45 | 8 | 28 |
 | 22:00 | Snack nocturno | 140 | 15 | 6 | 6 |
 | **TOTAL** | | **~2.250** | **~200** | **~80** | **~105** |
+
+## TIMING DIA GYM 14 HS (Viernes)
+
+| Hora | Momento | Kcal | P | C | G |
+|---|---|---|---|---|---|
+| 07:30 | Desayuno normal | 480 | 38 | 12 | 32 |
+| 10:30 | Media manana | 200 | 20 | 5 | 12 |
+| 12:30 | Pre-entreno LIVIANO (banana + cafe) | 110 | 1 | 27 | 0 |
+| 14:00 | **Entreno (complex 50-60 min)** | — | — | — | — |
+| 15:15 | Post-entreno (whey + frutos rojos) | 200 | 32 | 12 | 3 |
+| 17:00 | Almuerzo-merienda (sustancial) | 580 | 50 | 12 | 35 |
+| 20:30 | **CENA LIBRE** | 600-900 | — | — | — |
+| 22:00 | Snack opcional | — | — | — | — |
+| **TOTAL** | | **~2.500-2.700** | | | |
 
 ## TIMING DEL DIA DE DESCANSO
 
@@ -60,19 +75,19 @@
 
 ---
 
-## LUNES (GYM 08:00 — Dia A: Empuje + Bisagra)
+## LUNES (GYM 07:00 — Dia A: Empuje + Bisagra)
 
-### 06:30 Pre-entreno (~110 kcal | P 1 / C 27 / G 0)
+### 05:30 Pre-entreno (~110 kcal | P 1 / C 27 / G 0)
 - Banana mediana: 100 g
 - Cafe negro sin azucar: 150 ml
 - Agua + pizca de sal: 300 ml
 
-### 09:15 Post-entreno (~200 kcal | P 32 / C 12 / G 3)
+### 08:15 Post-entreno (~200 kcal | P 32 / C 12 / G 3)
 - Whey protein: 35 g
 - Agua: 300 ml
 - Arandanos: 80 g (licuar todo)
 
-### 10:30 Desayuno — "Tostada proteica con palta" (~530 kcal | P 38 / C 18 / G 35)
+### 09:30 Desayuno — "Tostada proteica con palta" (~530 kcal | P 38 / C 18 / G 35)
 - Pan integral: 30 g (1 rebanada)
 - Huevos enteros: 3 unidades (150 g) revueltos sin aceite
 - Palta: 70 g
@@ -96,13 +111,14 @@
 - Nueces peladas: 12 g (5-6 mitades)
 - Canela: 1 g
 
-### 20:30 Cena — "Merluza con zapallitos y huevo" (~470 kcal | P 45 / C 8 / G 28)
-- Merluza al horno: 220 g (COCIDO)
+### 20:30 Cena — "Merluza con zapallitos y anchoas" (~470 kcal | P 45 / C 8 / G 28)
+- Merluza al horno: 200 g (COCIDO)
 - Zapallito verde rodajas: 150 g
 - Morron rojo: 70 g
 - Ajo: 1 diente (3 g)
+- **Anchoas en aceite (escurridas): 20 g (4 filetes)**
 - Huevo duro: 1 unidad (50 g)
-- Aceite oliva: 15 ml
+- Aceite oliva: 12 ml
 - Limon
 
 ### 22:00 Snack nocturno ANCLA (~140 kcal | P 15 / C 6 / G 6)
@@ -114,15 +130,15 @@
 
 ---
 
-## MARTES (GYM 08:00 — Dia B: Tiron + Sentadilla)
+## MARTES (GYM 07:00 — Dia B: Tiron + Sentadilla)
 
-### 06:30 Pre-entreno (igual lunes):
+### 05:30 Pre-entreno (igual lunes):
 - Banana: 100 g + cafe 150 ml + agua con sal 300 ml
 
-### 09:15 Post-entreno (rotamos a frutilla):
+### 08:15 Post-entreno (rotamos a frutilla):
 - Whey 35 g + agua 300 ml + frutilla 80 g
 
-### 10:30 Desayuno — "Omelette con queso y palta" (~530 kcal | P 38 / C 18 / G 35)
+### 09:30 Desayuno — "Omelette con queso y palta" (~530 kcal | P 38 / C 18 / G 35)
 - Huevos enteros: 2 unidades (100 g)
 - Claras pasteurizadas: 60 g (2 claras)
 - Queso port salut descremado: 30 g
@@ -196,15 +212,15 @@
 
 ---
 
-## JUEVES (GYM 08:00 — Dia A: Empuje + Bisagra)
+## JUEVES (GYM 07:00 — Dia A: Empuje + Bisagra)
 
-### 06:30 Pre-entreno (igual):
+### 05:30 Pre-entreno (igual):
 - Banana: 100 g + cafe 150 ml + agua con sal 300 ml
 
-### 09:15 Post-entreno (rotamos a frambuesa):
+### 08:15 Post-entreno (rotamos a frambuesa):
 - Whey 35 g + agua 300 ml + frambuesas o mix 80 g
 
-### 10:30 Desayuno — "Crepe proteico" (~530 kcal | P 38 / C 18 / G 35)
+### 09:30 Desayuno — "Crepe proteico" (~530 kcal | P 38 / C 18 / G 35)
 - Huevos enteros: 2 unidades (100 g)
 - Claras: 60 g
 - Ricota descremada: 100 g
@@ -226,11 +242,12 @@
 ### 16:30 Merienda (~220 kcal):
 - Yogur griego: 170 g + nueces 12 g + frutos rojos 20 g
 
-### 20:30 Cena — "Brotola con brocoli" (~470 kcal | P 45 / C 8 / G 28)
-- Brotola al horno: 220 g (COCIDO)
+### 20:30 Cena — "Brotola con brocoli y anchoas" (~470 kcal | P 45 / C 8 / G 28)
+- Brotola al horno: 200 g (COCIDO)
 - Brocoli al vapor: 200 g
 - Huevo duro: 1 unidad (50 g)
-- Aceite oliva: 15 ml + limon
+- **Anchoas (escurridas): 20 g (4 filetes) — encima del brocoli con limon**
+- Aceite oliva: 12 ml + limon
 
 ### 22:00 Snack nocturno: yogur griego 170 g + chia 10 g
 
@@ -238,34 +255,44 @@
 
 ---
 
-## VIERNES (GYM 08:00 — Dia B: Tiron + Sentadilla, CENA = COMIDA LIBRE)
+## VIERNES (GYM 14:00 — Dia B: Tiron + Sentadilla, CENA = COMIDA LIBRE)
 
-### 06:30 Pre-entreno (igual):
-- Banana: 100 g + cafe + agua con sal
+> Hoy el entreno es a la tarde. La estructura del dia cambia: desayuno y media manana normales, almuerzo se mueve POST-entreno, y la cena es LIBRE.
 
-### 09:15 Post-entreno (rotamos a mora):
-- Whey 35 g + agua 300 ml + frutos rojos mix 80 g
-
-### 10:30 Desayuno — "Omelette completo" (~530 kcal | P 38 / C 18 / G 35)
+### 07:30 Desayuno — "Omelette con queso y palta" (~480 kcal | P 38 / C 12 / G 32)
 - Huevos enteros: 2 unidades (100 g)
 - Claras: 60 g
 - Queso port salut descremado: 30 g
-- Espinaca: 80 g
-- Pan integral: 30 g (1 rebanada)
+- Espinaca: 60 g
 - Palta: 50 g + tomate 80 g
 - Aceite oliva: 5 ml
+- (Sin pan hoy — el pan integral lo "guardamos" para post-entreno)
 
-### 13:00 Almuerzo — "Salmon con ensalada verde" (~580 kcal | P 50 / C 12 / G 35)
+### 10:30 Media manana (~200 kcal):
+- Yogur griego proteico: 150 g
+- Nueces: 10 g
+- Arandanos: 30 g
+
+### 12:30 Pre-entreno LIVIANO (~110 kcal | P 1 / C 27 / G 0)
+- Banana mediana: 100 g
+- Cafe negro sin azucar: 150 ml
+- Agua + pizca de sal: 400 ml
+- **NO comer algo solido pesado entre 11:00 y 14:00. Estomago liviano para el complex.**
+
+### 15:15 Post-entreno (~200 kcal | P 32 / C 12 / G 3)
+- Whey protein: 35 g
+- Agua: 300 ml
+- Frutos rojos mix: 80 g (licuar todo)
+
+### 17:00 Almuerzo-merienda combinado — "Salmon con ensalada verde" (~580 kcal | P 50 / C 12 / G 35)
 - Salmon grille: 200 g (COCIDO)
 - Espinaca fresca: 80 g + rucula 50 g
 - Tomates cherry: 100 g
 - Palta: 60 g
 - Almendras fileteadas: 12 g
 - Queso feta o ricota: 30 g
+- Pan integral: 30 g (1 rebanada — el del desayuno se mueve aca)
 - Aceite oliva: 12 ml + limon
-
-### 16:30 Merienda (liviana — la cena va a ser abundante):
-- Yogur griego: 150 g + nueces 10 g
 
 ### 20:30 CENA LIBRE (~600-900 kcal)
 **Reglas:**
@@ -305,12 +332,13 @@
 - Tomate: 100 g + aceite oliva 5 ml
 - Almendras: 10 g
 
-### 20:30 Cena — "Omelette con vegetales y queso" (~470 kcal | P 40 / C 8 / G 28)
+### 20:30 Cena — "Omelette con vegetales, queso y anchoas" (~470 kcal | P 40 / C 8 / G 28)
 - Huevos enteros: 3 unidades (150 g)
 - Queso port salut descremado: 30 g
 - Espinaca salteada: 150 g
 - Champignones: 80 g
-- Aceite oliva: 12 ml
+- **Anchoas (escurridas): 15 g (3 filetes) — encima del omelette**
+- Aceite oliva: 10 ml
 
 ### 22:00 Snack nocturno: yogur griego 170 g + chia 10 g
 
@@ -347,7 +375,7 @@
 - Pechuga pollo grille: 180 g (COCIDO)
 - Lechuga romana: 100 g
 - Huevo duro: 1 unidad
-- Anchoas (opcional): 10 g
+- **Anchoas: 20 g (4 filetes) — algunas en el aderezo, otras encima**
 - Queso parmesano rallado: 15 g
 - Aceite oliva: 12 ml + limon + ajo + 1 yema (aderezo)
 
@@ -389,6 +417,7 @@ Rotacion COMPLETA de proteinas: pollo, pescado blanco, pescado graso, carne vacu
 - Salmon: 600 g (2 raciones)
 - Merluza o brotola: 600 g
 - Atun al natural: 5 latas
+- **Anchoas en aceite: 1 frasco grande (4 cenas: Lun, Jue, Sab, Dom)**
 - Huevos: 36 unidades
 - Yogur griego proteico sin azucar: 1,8 kg
 - Ricota descremada: 600 g

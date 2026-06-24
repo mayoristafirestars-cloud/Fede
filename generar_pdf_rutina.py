@@ -42,7 +42,7 @@ def main():
         ("Duracion", "4 semanas (S1–S4)"),
         ("Frecuencia", "4 dias/semana (Lun / Mar / Jue / Vie)"),
         ("Formato", "A / B / A / B (Full Body Complexes)"),
-        ("Horario", "08:00 AM"),
+        ("Horarios", "Lun/Mar/Jue 07:00 AM | Vie 14:00 hs"),
         ("FC maxima de trabajo", "121 lpm (hasta ECG)"),
         ("Restricciones activas", "Sin HIIT, sin sprints"),
         ("Monitoreo", "Apple Watch — FC en cada serie"),
@@ -82,24 +82,24 @@ def main():
 
     pdf.set_font("DejaVu", "", 9)
     with pdf.table(
-        col_widths=(25, 35, 120),
+        col_widths=(25, 18, 25, 112),
         line_height=5,
         text_align="LEFT",
         headings_style=FontFace(emphasis="BOLD", color=(255, 255, 255), fill_color=RED),
     ) as table:
-        r = table.row(); r.cell("Dia"); r.cell("Sesion"); r.cell("Foco")
-        r = table.row(); r.cell("Lunes"); r.cell("Dia A"); r.cell("Empuje + Bisagra")
-        r = table.row(); r.cell("Martes"); r.cell("Dia B"); r.cell("Tiron + Sentadilla")
-        r = table.row(); r.cell("Miercoles"); r.cell("DESCANSO"); r.cell("Caminata")
-        r = table.row(); r.cell("Jueves"); r.cell("Dia A"); r.cell("Empuje + Bisagra (igual lunes)")
-        r = table.row(); r.cell("Viernes"); r.cell("Dia B"); r.cell("Tiron + Sentadilla (igual martes)")
-        r = table.row(); r.cell("Sabado"); r.cell("DESCANSO"); r.cell("Caminata")
-        r = table.row(); r.cell("Domingo"); r.cell("DESCANSO"); r.cell("Caminata + batch cooking")
+        r = table.row(); r.cell("Dia"); r.cell("Hora"); r.cell("Sesion"); r.cell("Foco")
+        r = table.row(); r.cell("Lunes"); r.cell("07:00"); r.cell("Dia A"); r.cell("Empuje + Bisagra")
+        r = table.row(); r.cell("Martes"); r.cell("07:00"); r.cell("Dia B"); r.cell("Tiron + Sentadilla")
+        r = table.row(); r.cell("Miercoles"); r.cell("—"); r.cell("DESCANSO"); r.cell("Caminata")
+        r = table.row(); r.cell("Jueves"); r.cell("07:00"); r.cell("Dia A"); r.cell("Empuje + Bisagra")
+        r = table.row(); r.cell("Viernes"); r.cell("14:00"); r.cell("Dia B"); r.cell("Tiron + Sentadilla")
+        r = table.row(); r.cell("Sabado"); r.cell("—"); r.cell("DESCANSO"); r.cell("Caminata")
+        r = table.row(); r.cell("Domingo"); r.cell("—"); r.cell("DESCANSO"); r.cell("Caminata + batch")
 
     pdf.ln(4)
     pdf.set_font("DejaVu", "", 9)
     pdf.set_text_color(*GRAY)
-    pdf.multi_cell(0, 5, "A/B/A/B: repetimos A y B dos veces en la semana. Mas volumen sin saturar grupos. El Dia C (Full Complex) lo sumamos al bloque 2 cuando tengas ECG y analisis.")
+    pdf.multi_cell(0, 5, "A/B/A/B: repetimos A y B dos veces en la semana. Viernes a las 14 hs: pre-entreno LIVIANO 12:30 (banana + cafe), almuerzo se mueve a 17:00 post-entreno. El Dia C (Full Complex) lo sumamos al bloque 2.")
 
     # ===== CALENTAMIENTO =====
     pdf.add_page()
