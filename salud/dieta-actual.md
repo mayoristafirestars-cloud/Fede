@@ -5,7 +5,7 @@
 **Frecuencia gym:** 4 dias/semana
 **Horarios gym:** Lun/Mar/Jue **07:00 AM** | Vie **14:00 hs**
 **Calorias objetivo:** 2.250 kcal (dias gym) | 2.050 kcal (dias descanso)
-**Macros dias gym:** P: 200 g / **C: 80 g** / G: 105 g
+**Macros dias gym:** P: 200 g / **C: ~95 g** / G: 100 g
 **Macros dias descanso:** P: 185 g / **C: 55 g** / G: 105 g
 **Propuesta por:** @nutricionista (via coordinador)
 **Basada en:** TDEE 2.650–2.850 kcal, deficit ~400 kcal, alta sospecha resistencia insulina, obesidad grado II, complexes A/B/A/B 8 AM, sueno 6 h, corte alcohol, comerciante (batch cooking).
@@ -14,12 +14,16 @@
 
 ## Logica del plan (4 dias gym)
 
-- **Carbos peri-entreno LUN/MAR/JUE/VIE:** banana 100 g pre + frutos rojos 80 g post. Sin esto los complexes rinden mal.
-- **Carbos resto del dia:** vegetales no almidonados libres, 1 rebanada pan integral en desayuno (~15 g), frutos rojos, palta, limon.
-- **Dias descanso (MIE/SAB/DOM):** sin banana, sin pan, solo vegetales + frutos rojos. Carbos bajan a ~50 g.
-- **Proteina alta 200 g:** preservacion muscular en deficit + entreno 4x/semana.
-- **Grasas mediterraneas 105 g:** palta, oliva, frutos secos, pescado azul, huevo, queso descremado.
-- **Snack nocturno ancla** (yogur griego + chia): obligatorio TODOS los dias.
+- **Huevos: SIEMPRE hervidos.** No hay huevos revueltos, omelette, ni poche. Esto simplifica el batch cooking y la digestion (mas facil de transportar al local).
+- **Papa o boniato HERVIDO:** acompanamiento estandar en almuerzos de dias gym. Cocido al agua, sin manteca ni aceite caliente.
+- **Frutillas en lugar de banana** en pre-entreno y post-entreno.
+- **Pechuga de pollo** como base de proteina (batch cooking domingo).
+- **Carbos peri-entreno LUN/MAR/JUE/VIE:** frutillas + miel pre (~25 g) + frutillas post (~8 g) + papa/boniato hervido en almuerzo (~17 g).
+- **Carbos resto del dia:** vegetales no almidonados libres, 1 rebanada pan integral en desayuno (~15 g), frutos rojos, palta.
+- **Dias descanso (MIE/SAB/DOM):** sin frutillas pre/post, sin papa, solo vegetales + frutos rojos. Carbos bajan a ~50 g.
+- **Proteina alta 200 g:** preservacion muscular.
+- **Grasas mediterraneas 105 g:** palta, oliva, frutos secos, pescado azul, huevo duro, queso descremado.
+- **Snack nocturno ancla** (yogur griego + chia): TODOS los dias.
 - **Comida libre del viernes:** se mantiene.
 
 ---
@@ -77,8 +81,9 @@
 
 ## LUNES (GYM 07:00 — Dia A: Empuje + Bisagra)
 
-### 05:30 Pre-entreno (~110 kcal | P 1 / C 27 / G 0)
-- Banana mediana: 100 g
+### 05:30 Pre-entreno (~110 kcal | P 1 / C 25 / G 0)
+- Frutillas: 200 g
+- Miel: 10 g (1 cucharadita)
 - Cafe negro sin azucar: 150 ml
 - Agua + pizca de sal: 300 ml
 
@@ -87,24 +92,23 @@
 - Agua: 300 ml
 - Arandanos: 80 g (licuar todo)
 
-### 09:30 Desayuno — "Tostada proteica con palta" (~530 kcal | P 38 / C 18 / G 35)
+### 09:30 Desayuno — "Plato proteico con huevos duros" (~530 kcal | P 38 / C 18 / G 35)
+- Huevos duros: 3 unidades (150 g)
 - Pan integral: 30 g (1 rebanada)
-- Huevos enteros: 3 unidades (150 g) revueltos sin aceite
 - Palta: 70 g
 - Tomate: 100 g rodajas
 - Queso port salut descremado: 20 g
-- Aceite oliva: 5 ml
+- Aceite oliva: 5 ml (sobre la palta y el tomate)
 - Cafe o mate sin azucar
 
-### 13:00 Almuerzo — "Pollo con ensalada mediterranea" (~580 kcal | P 50 / C 12 / G 35)
+### 13:00 Almuerzo — "Pollo con papa hervida y ensalada" (~580 kcal | P 50 / C 30 / G 28)
 - Pechuga pollo grille: 220 g (COCIDO)
+- **Papa o boniato HERVIDO: 100 g (cocido al agua)**
 - Lechuga: 80 g + rucula 50 g
 - Tomate: 100 g + pepino 80 g
 - Palta: 60 g
 - Aceitunas negras: 20 g (7 unidades)
-- Almendras: 10 g
-- Queso feta o ricota descremada: 30 g
-- Aceite oliva: 15 ml + limon + oregano
+- Aceite oliva: 12 ml + limon + oregano
 
 ### 16:30 Merienda (~220 kcal | P 20 / C 5 / G 13)
 - Yogur griego proteico sin azucar: 170 g
@@ -133,26 +137,26 @@
 ## MARTES (GYM 07:00 — Dia B: Tiron + Sentadilla)
 
 ### 05:30 Pre-entreno (igual lunes):
-- Banana: 100 g + cafe 150 ml + agua con sal 300 ml
+- Frutillas: 200 g + miel 10 g + cafe 150 ml + agua con sal 300 ml
 
-### 08:15 Post-entreno (rotamos a frutilla):
-- Whey 35 g + agua 300 ml + frutilla 80 g
+### 08:15 Post-entreno:
+- Whey 35 g + agua 300 ml + frutillas 100 g
 
-### 09:30 Desayuno — "Omelette con queso y palta" (~530 kcal | P 38 / C 18 / G 35)
-- Huevos enteros: 2 unidades (100 g)
-- Claras pasteurizadas: 60 g (2 claras)
+### 09:30 Desayuno — "Huevos duros con queso y palta" (~530 kcal | P 38 / C 18 / G 35)
+- Huevos duros: 3 unidades (150 g)
 - Queso port salut descremado: 30 g
 - Pan integral: 30 g (1 rebanada)
 - Palta: 60 g + tomate 100 g
 - Aceite oliva: 5 ml
 
-### 13:00 Almuerzo — "Carne magra con ensalada completa" (~580 kcal | P 50 / C 12 / G 35)
-- Peceto o cuadrada al horno: 200 g (COCIDO)
+### 13:00 Almuerzo — "Pechuga de pollo con boniato hervido y ensalada" (~580 kcal | P 50 / C 30 / G 28)
+- Pechuga pollo grille: 220 g (COCIDO)
+- **Boniato HERVIDO: 100 g (cocido al agua)**
 - Lechuga: 80 g + rucula 50 g + tomate 100 g
-- Cebolla morada: 30 g + zanahoria 40 g
+- Cebolla morada: 30 g
 - Palta: 60 g
 - Aceitunas: 15 g + nueces 10 g
-- Aceite oliva: 15 ml + vinagre
+- Aceite oliva: 12 ml + vinagre o limon
 
 ### 16:30 Merienda (~220 kcal | P 20 / C 5 / G 13)
 - Queso cottage descremado: 200 g
@@ -174,25 +178,25 @@
 
 ## MIERCOLES (descanso — recuperacion)
 
-### 07:30 Desayuno — "Huevos con palta y ricota" (~480 kcal | P 38 / C 12 / G 32)
-- Huevos enteros: 3 unidades (150 g) revueltos sin aceite
+### 07:30 Desayuno — "Huevos duros con palta y ricota" (~480 kcal | P 38 / C 12 / G 32)
+- Huevos duros: 3 unidades (150 g)
 - Ricota descremada: 80 g
 - Palta: 60 g
 - Tomate: 100 g rodajas
-- Aceite oliva: 5 ml
+- Aceite oliva: 5 ml (sobre la palta)
 - (Sin pan hoy)
 
 ### 10:00 Media manana (~220 kcal):
 - Yogur griego proteico: 200 g + nueces 10 g + arandanos 20 g
 
-### 13:00 Almuerzo — "Tortilla de espinaca y atun" (~550 kcal | P 50 / C 10 / G 33)
-- Huevos enteros: 3 unidades (150 g)
-- Atun al natural escurrido: 100 g
-- Espinaca cocida: 150 g
-- Queso descremado rallado: 30 g
+### 13:00 Almuerzo — "Atun con espinaca y huevos duros" (~550 kcal | P 50 / C 10 / G 33)
+- Atun al natural escurrido: 180 g
+- Huevos duros: 2 unidades (100 g)
+- Espinaca cocida o cruda: 150 g
+- Queso descremado: 30 g
 - Cebolla: 30 g
-- Lechuga: 60 g + tomate 100 g + palta 40 g
-- Aceite oliva: 15 ml
+- Lechuga: 60 g + tomate 100 g + palta 60 g
+- Aceite oliva: 15 ml + limon
 
 ### 16:30 Merienda (~220 kcal):
 - Ricota descremada: 150 g
@@ -215,28 +219,27 @@
 ## JUEVES (GYM 07:00 — Dia A: Empuje + Bisagra)
 
 ### 05:30 Pre-entreno (igual):
-- Banana: 100 g + cafe 150 ml + agua con sal 300 ml
+- Frutillas: 200 g + miel 10 g + cafe 150 ml + agua con sal 300 ml
 
-### 08:15 Post-entreno (rotamos a frambuesa):
-- Whey 35 g + agua 300 ml + frambuesas o mix 80 g
+### 08:15 Post-entreno:
+- Whey 35 g + agua 300 ml + frutillas 100 g
 
-### 09:30 Desayuno — "Crepe proteico" (~530 kcal | P 38 / C 18 / G 35)
-- Huevos enteros: 2 unidades (100 g)
-- Claras: 60 g
-- Ricota descremada: 100 g
+### 09:30 Desayuno — "Yogur proteico con frutillas y huevos duros" (~530 kcal | P 38 / C 18 / G 35)
+- Yogur griego proteico sin azucar: 200 g
+- Frutillas: 100 g
+- Almendras: 15 g
 - Canela: 1 g
-- (Batir todo, sarten antiadherente. Hacer 2 panqueques)
-- Arandanos arriba: 60 g
-- Almendras: 10 g
+- + Huevos duros: 2 unidades (100 g) aparte
+- Pan integral: 30 g (1 rebanada)
 
-### 13:00 Almuerzo — "Ensalada nicoise (atun y huevo)" (~580 kcal | P 50 / C 12 / G 35)
-- Atun al natural escurrido: 180 g
-- Huevos duros: 2 unidades (100 g)
+### 13:00 Almuerzo — "Pollo con papa hervida y ensalada nicoise" (~580 kcal | P 50 / C 30 / G 28)
+- Pechuga pollo grille: 200 g (COCIDO)
+- **Papa o boniato HERVIDO: 100 g (cocido al agua)**
+- Huevos duros: 1 unidad (50 g)
 - Lechuga: 80 g + rucula 50 g
 - Tomate: 100 g + pepino 80 g + cebolla 30 g
 - Aceitunas negras: 20 g (7 unidades)
-- Palta: 60 g
-- Anchoas (opcional): 10 g
+- Palta: 50 g
 - Aceite oliva: 15 ml + limon
 
 ### 16:30 Merienda (~220 kcal):
@@ -259,22 +262,22 @@
 
 > Hoy el entreno es a la tarde. La estructura del dia cambia: desayuno y media manana normales, almuerzo se mueve POST-entreno, y la cena es LIBRE.
 
-### 07:30 Desayuno — "Omelette con queso y palta" (~480 kcal | P 38 / C 12 / G 32)
-- Huevos enteros: 2 unidades (100 g)
-- Claras: 60 g
+### 07:30 Desayuno — "Huevos duros con palta y queso" (~480 kcal | P 38 / C 12 / G 32)
+- Huevos duros: 3 unidades (150 g)
 - Queso port salut descremado: 30 g
-- Espinaca: 60 g
-- Palta: 50 g + tomate 80 g
+- Palta: 60 g
+- Tomate: 100 g
 - Aceite oliva: 5 ml
-- (Sin pan hoy — el pan integral lo "guardamos" para post-entreno)
+- (Sin pan hoy — el pan integral va al almuerzo post-entreno)
 
 ### 10:30 Media manana (~200 kcal):
 - Yogur griego proteico: 150 g
 - Nueces: 10 g
 - Arandanos: 30 g
 
-### 12:30 Pre-entreno LIVIANO (~110 kcal | P 1 / C 27 / G 0)
-- Banana mediana: 100 g
+### 12:30 Pre-entreno LIVIANO (~110 kcal | P 1 / C 25 / G 0)
+- Frutillas: 200 g
+- Miel: 10 g (1 cucharadita)
 - Cafe negro sin azucar: 150 ml
 - Agua + pizca de sal: 400 ml
 - **NO comer algo solido pesado entre 11:00 y 14:00. Estomago liviano para el complex.**
@@ -282,16 +285,15 @@
 ### 15:15 Post-entreno (~200 kcal | P 32 / C 12 / G 3)
 - Whey protein: 35 g
 - Agua: 300 ml
-- Frutos rojos mix: 80 g (licuar todo)
+- Frutillas: 100 g (licuar todo)
 
-### 17:00 Almuerzo-merienda combinado — "Salmon con ensalada verde" (~580 kcal | P 50 / C 12 / G 35)
-- Salmon grille: 200 g (COCIDO)
+### 17:00 Almuerzo-merienda combinado — "Pechuga de pollo con papa hervida" (~580 kcal | P 50 / C 30 / G 28)
+- Pechuga pollo grille: 220 g (COCIDO)
+- **Papa o boniato HERVIDO: 100 g (cocido al agua)**
 - Espinaca fresca: 80 g + rucula 50 g
 - Tomates cherry: 100 g
 - Palta: 60 g
 - Almendras fileteadas: 12 g
-- Queso feta o ricota: 30 g
-- Pan integral: 30 g (1 rebanada — el del desayuno se mueve aca)
 - Aceite oliva: 12 ml + limon
 
 ### 20:30 CENA LIBRE (~600-900 kcal)
@@ -308,36 +310,38 @@
 
 ## SABADO (descanso)
 
-### 07:30 Desayuno — "Revuelto Gramajo low-carb" (~480 kcal | P 38 / C 12 / G 32)
-- Huevos enteros: 3 unidades (150 g)
+### 07:30 Desayuno — "Huevos duros con jamon, queso y palta" (~480 kcal | P 38 / C 12 / G 32)
+- Huevos duros: 3 unidades (150 g)
 - Jamon cocido magro: 30 g (1 fetita)
 - Queso port salut descremado: 30 g
 - Palta: 50 g
 - Tomate: 100 g
-- Aceite oliva: 5 ml
+- Aceite oliva: 5 ml (sobre la palta)
 - (Sin pan hoy)
 
 ### 10:00 Media manana (~220 kcal):
 - Queso cottage: 150 g + arandanos 30 g + nueces 7 g
 
-### 13:00 Almuerzo — "Milanesa al horno (harina almendra)" (~550 kcal | P 50 / C 10 / G 33)
-- Pechuga pollo o cuadrada: 200 g (COCIDO)
-- Empanar: harina almendra 25 g + clara 30 g
-- Zapallitos asados: 150 g
+### 13:00 Almuerzo — "Pechuga de pollo con verduras al vapor" (~550 kcal | P 50 / C 10 / G 33)
+- Pechuga pollo grille: 220 g (COCIDO)
+- Brocoli al vapor: 150 g
+- Zapallitos hervidos o al vapor: 100 g
 - Lechuga: 60 g + tomate 100 g + aceitunas 15 g
-- Aceite oliva: 12 ml
+- Palta: 40 g
+- Aceite oliva: 12 ml + limon
 
 ### 16:30 Merienda (~220 kcal):
 - Huevo duro: 1 unidad
 - Tomate: 100 g + aceite oliva 5 ml
 - Almendras: 10 g
 
-### 20:30 Cena — "Omelette con vegetales, queso y anchoas" (~470 kcal | P 40 / C 8 / G 28)
-- Huevos enteros: 3 unidades (150 g)
-- Queso port salut descremado: 30 g
-- Espinaca salteada: 150 g
-- Champignones: 80 g
-- **Anchoas (escurridas): 15 g (3 filetes) — encima del omelette**
+### 20:30 Cena — "Pollo con vegetales al vapor y anchoas" (~470 kcal | P 40 / C 8 / G 28)
+- Pechuga pollo grille: 180 g (COCIDO)
+- Huevos duros: 2 unidades (100 g)
+- Espinaca hervida o al vapor: 150 g
+- Champignones: 80 g (hervidos o crudos en ensalada)
+- Queso port salut descremado: 25 g
+- **Anchoas (escurridas): 15 g (3 filetes)**
 - Aceite oliva: 10 ml
 
 ### 22:00 Snack nocturno: yogur griego 170 g + chia 10 g
@@ -348,24 +352,24 @@
 
 ## DOMINGO (descanso + BATCH COOKING 10–12 h)
 
-### 07:30 Desayuno — "Huevos poche con palta" (~480 kcal | P 38 / C 12 / G 32)
-- Huevos poche: 3 unidades (150 g)
+### 07:30 Desayuno — "Huevos duros con palta y queso" (~480 kcal | P 38 / C 12 / G 32)
+- Huevos duros: 3 unidades (150 g)
 - Palta: 60 g
 - Tomate: 100 g
 - Queso descremado: 30 g
-- Aceite oliva: 5 ml
+- Aceite oliva: 5 ml (sobre palta y tomate)
 - (Sin pan hoy)
 
 ### 10:00–12:00 BATCH COOKING (ver guia abajo)
 - Durante: mate sin azucar + arandanos 30 g
 
-### 13:30 Almuerzo — "Asado low-carb" (~550 kcal | P 50 / C 10 / G 33)
-- Bife de chorizo desgrasado o vacio magro: 220 g (COCIDO)
-- Provoleta chica (opcional): 30 g
+### 13:30 Almuerzo — "Pechuga de pollo al horno con ensalada" (~550 kcal | P 50 / C 10 / G 33)
+- Pechuga pollo al horno: 220 g (COCIDO)
 - Lechuga: 80 g + tomate 100 g + cebolla 30 g
-- Palta: 50 g
-- Aceite oliva: 10 ml
-- **SIN PAN. Sin chorizo. Sin chinchulines. Sin papa.**
+- Pepino: 80 g + zanahoria rallada 40 g
+- Palta: 60 g
+- Aceitunas: 15 g + nueces 10 g
+- Aceite oliva: 12 ml + limon + oregano
 
 ### 16:30 Merienda (~220 kcal):
 - Yogur griego proteico: 200 g
@@ -389,13 +393,13 @@
 
 | Dia | Tipo | Almuerzo | Cena |
 |---|---|---|---|
-| Lunes | GYM (A) | Pollo + ensalada mediterranea | Merluza + zapallitos |
-| Martes | GYM (B) | Carne magra + ensalada completa | Salmon con verduras |
-| Miercoles | DESCANSO | Tortilla espinaca + atun | Pollo a la mediterranea |
-| Jueves | GYM (A) | Ensalada nicoise (atun + huevo) | Brotola con brocoli |
-| Viernes | GYM (B) | Salmon + ensalada verde | **LIBRE** |
-| Sabado | DESCANSO | Milanesa al horno (almendra) | Omelette con verduras |
-| Domingo | DESCANSO | Asado low-carb | Ensalada Caesar low-carb |
+| Lunes | GYM (A) | Pollo + papa hervida + ensalada | Merluza + zapallitos + anchoas |
+| Martes | GYM (B) | Pollo + boniato hervido + ensalada | Salmon con verduras |
+| Miercoles | DESCANSO | Atun + espinaca + huevos duros | Pollo a la mediterranea |
+| Jueves | GYM (A) | Pollo + papa hervida + ensalada nicoise | Brotola con brocoli + anchoas |
+| Viernes | GYM (B) | Pollo + papa hervida (post-entreno 17h) | **LIBRE** |
+| Sabado | DESCANSO | Pollo con verduras al vapor | Pollo + huevos duros + anchoas |
+| Domingo | DESCANSO | Pollo al horno con ensalada | Ensalada Caesar low-carb |
 
 Rotacion COMPLETA de proteinas: pollo, pescado blanco, pescado graso, carne vacuna, huevos, atun, embutidos magros.
 
@@ -440,26 +444,30 @@ Rotacion COMPLETA de proteinas: pollo, pescado blanco, pescado graso, carne vacu
 - Limones: 12 unidades
 - Ajo
 
-### Frutas LIMITADAS
-- Bananas: 4 unidades (solo dias gym)
-- Arandanos: 350 g
-- Frutillas: 300 g
-- Frambuesas (opc): 150 g
+### Frutas
+- **Frutillas: 2 kg** (pre y post entreno 4 dias gym + meriendas y desayunos)
+- Arandanos: 200 g
+- Frambuesas (opc): 100 g
+
+### Almidonados (peri-entreno)
+- **Papa: 1 kg** (hervir, guardar en heladera)
+- **Boniato: 1 kg** (alternar con papa)
 
 ### Otros
 - Pan integral: 1 paquete (1 rebanada/dia gym = 4/semana)
-- Harina de almendra: 200 g (para milanesas)
+- Miel: 1 frasco chico (10 g pre-entreno x 4 dias)
 - Mate, cafe, canela, cacao amargo, oregano, sal marina
 
 ---
 
 ## BATCH COOKING DOMINGO (90 min)
 
-1. **Pollo al horno:** 1,4 kg pechuga con limon, oregano, ajo, oliva. 35 min a 180 °C. Portionar.
-2. **Huevos duros:** 12 huevos. Pelados en heladera.
-3. **Vegetales asados:** zapallito + morron + cebolla + champignones con oliva y ajo. 25 min a 200 °C.
-4. **Aderezo Caesar low-carb:** licuar 1 yema + 2 anchoas + 1 ajo + 30 ml oliva + limon + parmesano. Dura 5 dias.
-5. **Aderezo verde:** licuar palta + limon + ajo + oliva.
+1. **Pollo al horno:** 1,8 kg pechuga con limon, oregano, ajo, oliva. 35 min a 180 °C. Portionar en raciones de 200-220 g.
+2. **Huevos duros:** 20 huevos (3-4 por dia). Hervir 10 min, pelados en heladera. Duran 5 dias.
+3. **Papa y boniato hervidos:** 500 g de cada uno. Hervir 20 min, cortar en cubos. Guardar en tupper. Duran 4-5 dias.
+4. **Verduras al vapor:** brocoli + zapallitos + espinaca. Para varios dias.
+5. **Aderezo Caesar low-carb:** licuar 1 yema + 2 anchoas + 1 ajo + 30 ml oliva + limon + parmesano. Dura 5 dias.
+6. **Aderezo verde:** licuar palta + limon + ajo + oliva.
 
 ---
 

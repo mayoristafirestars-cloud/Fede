@@ -96,12 +96,15 @@ def main():
     datos = [
         ("Tipo", "Low-carb estricto mediterraneo"),
         ("Frecuencia gym", "4 dias/semana (Lun / Mar / Jue / Vie)"),
-        ("Carbos dias gym", "~80 g/dia"),
+        ("Carbos dias gym", "~95 g/dia"),
         ("Carbos dias descanso", "~50 g/dia"),
         ("Calorias dias gym", "2.250 kcal"),
         ("Calorias dias descanso", "2.050 kcal"),
-        ("Macros dias gym", "P 200 g | C 80 g | G 105 g"),
+        ("Macros dias gym", "P 200 g | C 95 g | G 100 g"),
         ("Macros dias descanso", "P 185 g | C 55 g | G 105 g"),
+        ("Huevos", "SIEMPRE hervidos"),
+        ("Almidon peri-entreno", "Papa o boniato HERVIDO 100 g"),
+        ("Carbos rapidos", "Frutillas + miel (no banana)"),
         ("Hidratacion dia gym", "3,2–3,5 L (con sal)"),
         ("Horario entreno", "Lun/Mar/Jue 07:00 AM | Vie 14:00 hs"),
         ("Comida libre", "Viernes a la noche"),
@@ -114,13 +117,15 @@ def main():
         pdf.cell(0, 6, v, border="B", new_x="LMARGIN", new_y="NEXT")
 
     pdf.ln(5)
-    H3(pdf, "Que cambia vs el plan anterior")
+    H3(pdf, "Reglas clave de este plan")
     cambios = [
-        "OUT: arroz, fideos, papa/batata diaria, avena, dulces.",
-        "IN: mas palta, oliva, frutos secos, pescado azul, huevo, queso descremado.",
-        "Mantenes: pan integral 1 rebanada en desayuno, yogur proteico, ricota, queso.",
-        "Frutas limitadas a frutos rojos + palta + limon. Banana SOLO pre-gym.",
-        "Sumar 2 g de sal extra/dia los primeros 7 dias (evitar low-carb flu).",
+        "HUEVOS: SIEMPRE hervidos. Cero revueltos, omelette, poche.",
+        "PAPA O BONIATO: HERVIDO (al agua, sin manteca ni aceite). En los 4 almuerzos de gym.",
+        "FRUTILLAS reemplazan a la banana pre y post entreno.",
+        "PECHUGA DE POLLO como proteina base (batch cooking domingo).",
+        "Carbos peri-entreno: frutillas + miel pre + frutillas post + papa hervida en almuerzo.",
+        "Snack nocturno (yogur + chia): no se discute, ancla anti-recaida.",
+        "Sumar 2 g de sal extra/dia los primeros 7 dias.",
         "Sumar magnesio glicinato 300 mg/noche desde el dia 1.",
     ]
     for c in cambios:
@@ -145,15 +150,15 @@ def main():
     H3(pdf, "Dia de gym (Lun/Mie/Vie)")
     table(pdf, [
         ["Hora", "Momento", "Kcal", "P", "C", "G"],
-        ["06:30", "Pre-entreno (banana + cafe)", "110", "1", "27", "0"],
-        ["08:00", "Entreno (complex 50-60 min)", "—", "—", "—", "—"],
-        ["09:15", "Post-entreno (whey + frutos rojos)", "200", "32", "12", "3"],
-        ["10:30", "Desayuno principal", "530", "38", "18", "35"],
-        ["13:00", "Almuerzo", "580", "50", "12", "35"],
+        ["05:30", "Pre-entreno (frutillas + miel + cafe)", "110", "1", "25", "0"],
+        ["07:00", "Entreno (complex 50-60 min)", "—", "—", "—", "—"],
+        ["08:15", "Post-entreno (whey + frutillas)", "200", "32", "12", "3"],
+        ["09:30", "Desayuno (huevos duros + pan + palta)", "530", "38", "18", "35"],
+        ["13:00", "Almuerzo (pollo + papa hervida + ensalada)", "580", "50", "30", "28"],
         ["16:30", "Merienda", "220", "20", "5", "13"],
         ["20:30", "Cena", "470", "45", "8", "28"],
         ["22:00", "Snack nocturno (yogur + chia)", "140", "15", "6", "6"],
-        ["TOTAL", "", "~2.250", "~200", "~80", "~105"],
+        ["TOTAL", "", "~2.250", "~200", "~95", "~100"],
     ])
     H3(pdf, "Dia de descanso")
     table(pdf, [
@@ -169,33 +174,31 @@ def main():
 
     # ===== LUNES =====
     H2(pdf, "Lunes — GYM 07:00 (Dia A)")
-    meal(pdf, "05:30", "Pre-entreno", "~110 kcal | P 1 / C 27 / G 0",
-         ["Banana mediana: 100 g (pesada sin cascara)",
+    meal(pdf, "05:30", "Pre-entreno", "~110 kcal | P 1 / C 25 / G 0",
+         ["Frutillas: 200 g",
+          "Miel: 10 g (1 cucharadita)",
           "Cafe negro sin azucar: 150 ml",
           "Agua + pizca de sal: 300 ml"])
     meal(pdf, "08:15", "Post-entreno", "~200 kcal | P 32 / C 12 / G 3",
          ["Whey protein: 35 g",
           "Agua: 300 ml",
-          "Arandanos o frutilla: 80 g (licuar todo)"])
-    meal(pdf, "09:30", "Desayuno — Tostada proteica con palta", "~530 kcal | P 38 / C 18 / G 35",
-         ["Pan integral: 30 g (1 rebanada)",
-          "Huevos enteros: 3 unidades (150 g) revueltos sin aceite",
+          "Frutillas: 100 g (licuar todo)"])
+    meal(pdf, "09:30", "Desayuno — Plato proteico con huevos duros", "~530 kcal | P 38 / C 18 / G 35",
+         ["Huevos DUROS: 3 unidades (150 g)",
+          "Pan integral: 30 g (1 rebanada)",
           "Palta: 70 g",
           "Tomate: 100 g rodajas",
           "Queso port salut descremado: 20 g",
-          "Aceite oliva: 5 ml",
+          "Aceite oliva: 5 ml (sobre palta y tomate)",
           "Cafe o mate sin azucar"])
-    meal(pdf, "13:00", "Almuerzo — Pollo con ensalada mediterranea", "~580 kcal | P 50 / C 12 / G 35",
+    meal(pdf, "13:00", "Almuerzo — Pollo con papa hervida y ensalada", "~580 kcal | P 50 / C 30 / G 28",
          ["Pechuga pollo grille: 220 g (peso COCIDO)",
-          "Lechuga: 80 g",
-          "Rucula: 50 g",
-          "Tomate: 100 g",
-          "Pepino: 80 g",
+          "Papa o boniato HERVIDO: 100 g (cocido al agua)",
+          "Lechuga: 80 g + rucula 50 g",
+          "Tomate: 100 g + pepino 80 g",
           "Palta: 60 g",
           "Aceitunas negras: 20 g (7 unidades)",
-          "Almendras: 10 g",
-          "Queso feta o ricota: 30 g",
-          "Aceite oliva: 15 ml + limon + oregano"])
+          "Aceite oliva: 12 ml + limon + oregano"])
     meal(pdf, "16:30", "Merienda", "~220 kcal | P 20 / C 5 / G 13",
          ["Yogur griego proteico sin azucar: 170 g",
           "Nueces peladas: 12 g (5-6 mitades)",
@@ -217,23 +220,23 @@ def main():
     # ===== MARTES (gym) =====
     H2(pdf, "Martes — GYM 07:00 (Dia B)")
     meal(pdf, "05:30", "Pre-entreno (igual lunes)", "~110 kcal",
-         ["Banana: 100 g", "Cafe negro: 150 ml", "Agua con sal: 300 ml"])
-    meal(pdf, "08:15", "Post-entreno (rotamos a frutilla)", "~200 kcal",
-         ["Whey: 35 g", "Agua: 300 ml", "Frutilla: 80 g"])
-    meal(pdf, "09:30", "Desayuno — Omelette con queso y palta", "~530 kcal | P 38 / C 18 / G 35",
-         ["Huevos enteros: 2 unidades (100 g)",
-          "Claras: 60 g (2 claras)",
+         ["Frutillas: 200 g + miel 10 g", "Cafe negro: 150 ml", "Agua con sal: 300 ml"])
+    meal(pdf, "08:15", "Post-entreno", "~200 kcal",
+         ["Whey: 35 g", "Agua: 300 ml", "Frutillas: 100 g"])
+    meal(pdf, "09:30", "Desayuno — Huevos duros con queso y palta", "~530 kcal | P 38 / C 18 / G 35",
+         ["Huevos DUROS: 3 unidades (150 g)",
           "Queso port salut descremado: 30 g",
           "Pan integral: 30 g (1 rebanada)",
           "Palta: 60 g + tomate 100 g",
           "Aceite oliva: 5 ml"])
-    meal(pdf, "13:00", "Almuerzo — Carne magra con ensalada", "~580 kcal | P 50 / C 12 / G 35",
-         ["Peceto o cuadrada al horno: 200 g (cocido)",
+    meal(pdf, "13:00", "Almuerzo — Pollo con boniato hervido y ensalada", "~580 kcal | P 50 / C 30 / G 28",
+         ["Pechuga pollo grille: 220 g (cocido)",
+          "Boniato HERVIDO: 100 g (cocido al agua)",
           "Lechuga: 80 g + rucula 50 g + tomate 100 g",
-          "Cebolla morada: 30 g + zanahoria 40 g",
+          "Cebolla morada: 30 g",
           "Palta: 60 g",
           "Aceitunas: 15 g + nueces 10 g",
-          "Aceite oliva: 15 ml + vinagre"])
+          "Aceite oliva: 12 ml + vinagre o limon"])
     meal(pdf, "16:30", "Merienda", "~220 kcal",
          ["Queso cottage descremado: 200 g",
           "Frutos rojos mix: 30 g",
@@ -249,25 +252,25 @@ def main():
 
     # ===== MIERCOLES (descanso) =====
     H2(pdf, "Miercoles — descanso")
-    meal(pdf, "07:30", "Desayuno — Huevos con palta y ricota", "~480 kcal | P 38 / C 12 / G 32",
-         ["Huevos enteros: 3 unidades (150 g) revueltos sin aceite",
+    meal(pdf, "07:30", "Desayuno — Huevos duros con palta y ricota", "~480 kcal | P 38 / C 12 / G 32",
+         ["Huevos DUROS: 3 unidades (150 g)",
           "Ricota descremada: 80 g",
           "Palta: 60 g",
           "Tomate: 100 g rodajas",
-          "Aceite oliva: 5 ml",
+          "Aceite oliva: 5 ml (sobre la palta)",
           "(Sin pan hoy)"])
     meal(pdf, "10:00", "Media manana", "~220 kcal",
          ["Yogur griego proteico: 200 g",
           "Nueces: 10 g",
-          "Arandanos: 20 g"])
-    meal(pdf, "13:00", "Almuerzo — Tortilla de espinaca y atun", "~550 kcal | P 50 / C 10 / G 33",
-         ["Huevos enteros: 3 unidades (150 g)",
-          "Atun al natural escurrido: 100 g",
-          "Espinaca cocida: 150 g",
-          "Queso descremado rallado: 30 g",
+          "Frutillas: 30 g"])
+    meal(pdf, "13:00", "Almuerzo — Atun con espinaca y huevos duros", "~550 kcal | P 50 / C 10 / G 33",
+         ["Atun al natural escurrido: 180 g",
+          "Huevos DUROS: 2 unidades (100 g)",
+          "Espinaca cocida o cruda: 150 g",
+          "Queso descremado: 30 g",
           "Cebolla: 30 g",
-          "Lechuga: 60 g + tomate 100 g + palta 40 g",
-          "Aceite oliva: 15 ml"])
+          "Lechuga: 60 g + tomate 100 g + palta 60 g",
+          "Aceite oliva: 15 ml + limon"])
     meal(pdf, "16:30", "Merienda", "~220 kcal",
          ["Ricota descremada: 150 g",
           "Almendras: 10 g",
@@ -284,26 +287,25 @@ def main():
     # ===== JUEVES (gym) =====
     H2(pdf, "Jueves — GYM 07:00 (Dia A)")
     meal(pdf, "05:30", "Pre-entreno (igual lunes)", "~110 kcal",
-         ["Banana: 100 g + cafe 150 ml + agua con sal 300 ml"])
-    meal(pdf, "08:15", "Post-entreno (rotamos a frambuesa)", "~200 kcal",
-         ["Whey 35 g + agua 300 ml + frambuesas o mix 80 g"])
-    meal(pdf, "09:30", "Desayuno — Crepe proteico", "~530 kcal | P 38 / C 18 / G 35",
-         ["Huevos enteros: 2 unidades (100 g)",
-          "Claras: 60 g",
-          "Ricota descremada: 100 g",
+         ["Frutillas: 200 g + miel 10 g + cafe 150 ml + agua con sal 300 ml"])
+    meal(pdf, "08:15", "Post-entreno", "~200 kcal",
+         ["Whey 35 g + agua 300 ml + frutillas 100 g"])
+    meal(pdf, "09:30", "Desayuno — Yogur proteico con frutillas + huevos duros", "~530 kcal | P 38 / C 18 / G 35",
+         ["Yogur griego proteico sin azucar: 200 g",
+          "Frutillas: 100 g",
+          "Almendras: 15 g",
           "Canela: 1 g",
-          "(Batir todo, sarten antiadherente, 2 panqueques)",
-          "Arandanos arriba: 60 g",
-          "Almendras: 10 g"])
-    meal(pdf, "13:00", "Almuerzo — Ensalada nicoise (atun y huevo)", "~580 kcal | P 50 / C 12 / G 35",
-         ["Atun al natural escurrido: 180 g",
-          "Huevos duros: 2 unidades (100 g)",
+          "+ Huevos DUROS: 2 unidades (100 g) aparte",
+          "Pan integral: 30 g (1 rebanada)"])
+    meal(pdf, "13:00", "Almuerzo — Pollo con papa hervida y ensalada nicoise", "~580 kcal | P 50 / C 30 / G 28",
+         ["Pechuga pollo grille: 200 g (cocido)",
+          "Papa o boniato HERVIDO: 100 g",
+          "Huevo duro: 1 unidad (50 g)",
           "Lechuga: 80 g + rucula 50 g",
           "Tomate: 100 g + pepino 80 g + cebolla 30 g",
           "Aceitunas negras: 20 g (7 unidades)",
-          "Palta: 60 g",
-          "Anchoas (opcional): 10 g",
-          "Aceite oliva: 15 ml + limon"])
+          "Palta: 50 g",
+          "Aceite oliva: 12 ml + limon"])
     meal(pdf, "16:30", "Merienda", "~220 kcal",
          ["Yogur griego: 170 g + nueces 12 g + frutos rojos 20 g"])
     meal(pdf, "20:30", "Cena — Brotola con brocoli y anchoas", "~470 kcal | P 45 / C 8 / G 28",
@@ -317,35 +319,34 @@ def main():
 
     # ===== VIERNES =====
     H2(pdf, "Viernes — GYM 14:00 (Dia B, cena = COMIDA LIBRE)")
-    meal(pdf, "07:30", "Desayuno — Omelette con queso y palta", "~480 kcal | P 38 / C 12 / G 32",
-         ["Huevos enteros: 2 unidades (100 g)",
-          "Claras: 60 g",
+    meal(pdf, "07:30", "Desayuno — Huevos duros con palta y queso", "~480 kcal | P 38 / C 12 / G 32",
+         ["Huevos DUROS: 3 unidades (150 g)",
           "Queso port salut descremado: 30 g",
-          "Espinaca: 60 g",
-          "Palta: 50 g + tomate 80 g",
+          "Palta: 60 g",
+          "Tomate: 100 g",
           "Aceite oliva: 5 ml",
-          "(Sin pan hoy — se mueve al post-entreno)"])
+          "(Sin pan hoy — se mueve al almuerzo post-entreno)"])
     meal(pdf, "10:30", "Media manana", "~200 kcal",
          ["Yogur griego proteico: 150 g",
           "Nueces: 10 g",
-          "Arandanos: 30 g"])
-    meal(pdf, "12:30", "Pre-entreno LIVIANO", "~110 kcal | P 1 / C 27 / G 0",
-         ["Banana mediana: 100 g",
+          "Frutillas: 30 g"])
+    meal(pdf, "12:30", "Pre-entreno LIVIANO", "~110 kcal | P 1 / C 25 / G 0",
+         ["Frutillas: 200 g",
+          "Miel: 10 g",
           "Cafe negro sin azucar: 150 ml",
           "Agua + pizca de sal: 400 ml",
-          "NO comer solido pesado entre 11:00 y 14:00. Estomago liviano para el complex."])
+          "NO comer solido pesado entre 11:00 y 14:00."])
     meal(pdf, "15:15", "Post-entreno", "~200 kcal | P 32 / C 12 / G 3",
          ["Whey protein: 35 g",
           "Agua: 300 ml",
-          "Frutos rojos mix: 80 g (licuar)"])
-    meal(pdf, "17:00", "Almuerzo-merienda — Salmon con ensalada verde", "~580 kcal | P 50 / C 12 / G 35",
-         ["Salmon grille: 200 g (cocido)",
+          "Frutillas: 100 g (licuar)"])
+    meal(pdf, "17:00", "Almuerzo-merienda — Pollo con papa hervida", "~580 kcal | P 50 / C 30 / G 28",
+         ["Pechuga pollo grille: 220 g (cocido)",
+          "Papa o boniato HERVIDO: 100 g",
           "Espinaca fresca: 80 g + rucula 50 g",
           "Tomates cherry: 100 g",
           "Palta: 60 g",
           "Almendras fileteadas: 12 g",
-          "Queso feta o ricota: 30 g",
-          "Pan integral: 30 g (1 rebanada — se mueve aca desde el desayuno)",
           "Aceite oliva: 12 ml + limon"])
     meal(pdf, "20:30", "CENA LIBRE", "~600-900 kcal",
          ["Porcion normal, no hasta reventar.",
@@ -356,30 +357,32 @@ def main():
 
     # ===== SABADO =====
     H2(pdf, "Sabado — descanso")
-    meal(pdf, "07:30", "Desayuno — Revuelto Gramajo low-carb", "~480 kcal | P 38 / C 12 / G 32",
-         ["Huevos enteros: 3 unidades (150 g)",
+    meal(pdf, "07:30", "Desayuno — Huevos duros con jamon, queso y palta", "~480 kcal | P 38 / C 12 / G 32",
+         ["Huevos DUROS: 3 unidades (150 g)",
           "Jamon cocido magro: 30 g (1 fetita)",
           "Queso port salut descremado: 30 g",
           "Palta: 50 g",
           "Tomate: 100 g",
-          "Aceite oliva: 5 ml",
+          "Aceite oliva: 5 ml (sobre la palta)",
           "(Sin pan hoy)"])
     meal(pdf, "10:00", "Media manana", "",
-         ["Queso cottage: 150 g + arandanos 50 g + nueces 7 g"])
-    meal(pdf, "13:00", "Almuerzo — Milanesa al horno (harina almendra)", "~550 kcal",
-         ["Pechuga pollo o cuadrada: 200 g (cocido)",
-          "Empanar con: harina almendra 25 g + clara 30 g",
-          "Zapallitos asados: 150 g",
+         ["Queso cottage: 150 g + frutillas 50 g + nueces 7 g"])
+    meal(pdf, "13:00", "Almuerzo — Pollo con verduras al vapor", "~550 kcal",
+         ["Pechuga pollo grille: 220 g (cocido)",
+          "Brocoli al vapor: 150 g",
+          "Zapallitos hervidos: 100 g",
           "Lechuga: 60 g + tomate 100 g + aceitunas 15 g",
-          "Aceite oliva: 12 ml"])
+          "Palta: 40 g",
+          "Aceite oliva: 12 ml + limon"])
     meal(pdf, "16:30", "Merienda", "",
-         ["Huevo duro: 1 unidad",
+         ["Huevo DURO: 1 unidad",
           "Tomate: 100 g + aceite oliva 5 ml",
           "Almendras: 10 g"])
-    meal(pdf, "20:30", "Cena — Omelette con vegetales, queso y anchoas", "~470 kcal",
-         ["Huevos enteros: 3 unidades (150 g)",
-          "Queso port salut descremado: 30 g",
-          "Espinaca salteada: 150 g",
+    meal(pdf, "20:30", "Cena — Pollo con vegetales al vapor y anchoas", "~470 kcal",
+         ["Pechuga pollo grille: 180 g (cocido)",
+          "Huevos DUROS: 2 unidades (100 g)",
+          "Queso port salut descremado: 25 g",
+          "Espinaca al vapor: 150 g",
           "Champignones: 80 g",
           "Anchoas (escurridas): 15 g (3 filetes) — encima",
           "Aceite oliva: 10 ml"])
@@ -388,21 +391,21 @@ def main():
 
     # ===== DOMINGO =====
     H2(pdf, "Domingo — descanso + BATCH COOKING")
-    meal(pdf, "07:30", "Desayuno — Huevos poche con palta", "~480 kcal",
-         ["Huevos poche: 3 unidades (150 g)",
+    meal(pdf, "07:30", "Desayuno — Huevos duros con palta y queso", "~480 kcal",
+         ["Huevos DUROS: 3 unidades (150 g)",
           "Palta: 60 g",
           "Tomate: 100 g",
           "Queso descremado: 30 g",
-          "Aceite oliva: 5 ml",
+          "Aceite oliva: 5 ml (sobre palta y tomate)",
           "(Sin pan hoy)"])
     P(pdf, "10:00–12:00 BATCH COOKING (ver guia abajo). Durante: mate sin azucar + arandanos 40 g.", color=GRAY)
-    meal(pdf, "13:30", "Almuerzo — Asado low-carb", "~550 kcal",
-         ["Bife de chorizo desgrasado o vacio magro: 220 g (cocido)",
-          "Provoleta chica (opcional): 30 g",
+    meal(pdf, "13:30", "Almuerzo — Pechuga de pollo al horno con ensalada", "~550 kcal",
+         ["Pechuga pollo al horno: 220 g (cocido)",
           "Lechuga: 80 g + tomate 100 g + cebolla 30 g",
-          "Palta: 50 g",
-          "Aceite oliva: 10 ml",
-          "SIN PAN. Sin chorizo. Sin chinchulines. Sin papa."])
+          "Pepino: 80 g + zanahoria rallada 40 g",
+          "Palta: 60 g",
+          "Aceitunas: 15 g + nueces 10 g",
+          "Aceite oliva: 12 ml + limon + oregano"])
     meal(pdf, "16:30", "Merienda", "",
          ["Yogur griego proteico: 200 g",
           "Nueces: 10 g + cacao amargo 3 g"])
@@ -420,13 +423,13 @@ def main():
     H2(pdf, "Resumen rotacion semanal")
     table(pdf, [
         ["Dia", "Tipo", "Almuerzo", "Cena"],
-        ["Lunes", "GYM (A)", "Pollo + ensalada mediterranea", "Merluza + zapallitos"],
-        ["Martes", "GYM (B)", "Carne magra + ensalada", "Salmon con verduras"],
-        ["Miercoles", "DESCANSO", "Tortilla espinaca + atun", "Pollo a la mediterranea"],
-        ["Jueves", "GYM (A)", "Ensalada nicoise (atun + huevo)", "Brotola con brocoli"],
-        ["Viernes", "GYM (B)", "Salmon + ensalada verde", "LIBRE"],
-        ["Sabado", "DESCANSO", "Milanesa al horno (almendra)", "Omelette con verduras"],
-        ["Domingo", "DESCANSO", "Asado low-carb", "Ensalada Caesar low-carb"],
+        ["Lunes", "GYM (A)", "Pollo + papa hervida + ensalada", "Merluza + zapallitos + anchoas"],
+        ["Martes", "GYM (B)", "Pollo + boniato hervido + ensalada", "Salmon con verduras"],
+        ["Miercoles", "DESCANSO", "Atun + espinaca + huevos duros", "Pollo a la mediterranea"],
+        ["Jueves", "GYM (A)", "Pollo + papa hervida + ensalada", "Brotola + brocoli + anchoas"],
+        ["Viernes", "GYM (B)", "Pollo + papa hervida (17h post)", "LIBRE"],
+        ["Sabado", "DESCANSO", "Pollo + vegetales al vapor", "Pollo + huevos duros + anchoas"],
+        ["Domingo", "DESCANSO", "Pollo al horno con ensalada", "Caesar low-carb"],
     ])
 
     # ===== REGLAS Y LISTA =====
@@ -442,23 +445,26 @@ def main():
 
     H3(pdf, "Lista de compras semanal")
     P(pdf, "Proteinas:", size=10)
-    P(pdf, "• Pollo 1,5 kg | Carne magra 600 g | Salmon 400 g | Merluza/brotola 600 g | Atun 4 latas | Huevos 30 | Yogur griego proteico 1,5 kg | Ricota 500 g | Port salut descremado 250 g | Cottage 350 g | Parmesano 50 g | Whey protein.", indent=2)
+    P(pdf, "• Pechuga de pollo 2 kg (BASE) | Merluza/brotola 600 g | Salmon 200 g | Atun al natural 4 latas | Anchoas 1 frasco | Huevos 30 | Jamon cocido magro 100 g | Yogur griego proteico 1,5 kg | Ricota descremada 500 g | Port salut descremado 250 g | Cottage 350 g | Parmesano 50 g | Whey protein.", indent=2)
     P(pdf, "Grasas buenas:", size=10)
-    P(pdf, "• Palta 6-7 unidades | Oliva extra virgen 500 ml | Aceitunas 250 g | Almendras 100 g | Nueces 100 g | Chia 200 g.", indent=2)
+    P(pdf, "• Palta 7-8 unidades | Oliva extra virgen 500 ml | Aceitunas 250 g | Almendras 100 g | Nueces 100 g | Chia 200 g.", indent=2)
     P(pdf, "Vegetales (libres):", size=10)
     P(pdf, "• Lechuga, rucula, espinaca | Tomate, pepino, morron, cebolla, zanahoria, zapallitos, brocoli, champignones | Limones 10 | Ajo.", indent=2)
-    P(pdf, "Frutas LIMITADAS:", size=10)
-    P(pdf, "• Bananas: 3 unidades (solo dias gym) | Arandanos 300 g | Frutillas 250 g.", indent=2)
+    P(pdf, "Frutas:", size=10)
+    P(pdf, "• Frutillas 2 kg (pre + post entreno + meriendas) | Arandanos 200 g | Frambuesas opc 100 g.", indent=2)
+    P(pdf, "Almidonados (peri-entreno):", size=10)
+    P(pdf, "• Papa 1 kg + Boniato 1 kg (hervir el domingo).", indent=2)
     P(pdf, "Otros:", size=10)
-    P(pdf, "• Pan integral (1 rebanada/dia) | Harina de almendra 200 g | Mate, cafe, canela, cacao amargo, oregano, sal marina.", indent=2)
+    P(pdf, "• Pan integral (1 rebanada por dia gym = 4/semana) | Miel 1 frasco chico | Mate, cafe, canela, oregano, sal marina.", indent=2)
 
     H3(pdf, "Batch cooking domingo (90 min)")
     batch = [
-        "1. Pollo al horno: 1,2 kg pechuga con limon, oregano, ajo, oliva. 35 min a 180 °C. Portionar.",
-        "2. Huevos duros: 10 huevos. Pelados en heladera.",
-        "3. Vegetales asados: zapallito + morron + cebolla + champignones con oliva y ajo. 25 min a 200 °C.",
-        "4. Aderezo Caesar low-carb: licuar 1 yema + 2 anchoas + 1 ajo + 30 ml oliva + limon + parmesano. Dura 5 dias.",
-        "5. Aderezo verde: licuar palta + limon + ajo + oliva.",
+        "1. Pollo al horno: 1,8 kg pechuga con limon, oregano, ajo, oliva. 35 min a 180 °C. Portionar 200-220 g.",
+        "2. Huevos DUROS: 20 huevos. Hervir 10 min, pelados en heladera. Duran 5 dias.",
+        "3. Papa y boniato HERVIDOS: 500 g de cada uno. Hervir 20 min, cortar en cubos. Duran 4-5 dias.",
+        "4. Verduras al vapor: brocoli + zapallitos + espinaca para varios dias.",
+        "5. Aderezo Caesar low-carb: licuar 1 yema + 2 anchoas + 1 ajo + 30 ml oliva + limon + parmesano. Dura 5 dias.",
+        "6. Aderezo verde: licuar palta + limon + ajo + oliva.",
     ]
     for b in batch:
         P(pdf, b, indent=2)
