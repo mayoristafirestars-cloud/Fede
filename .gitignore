@@ -28,3 +28,8 @@ build/
 # Logs
 *.log
 logs/
+
+# Node / WhatsApp bridge
+node_modules/
+.wwebjs_auth/
+.wwebjs_cache/

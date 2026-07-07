@@ -1,0 +1,13 @@
+{
+  "name": "max-whatsapp-bridge",
+  "version": "1.0.0",
+  "description": "Conecta el WhatsApp del bot (via WhatsApp Web) con Max",
+  "main": "bridge.js",
+  "scripts": {
+    "start": "node bridge.js"
+  },
+  "dependencies": {
+    "whatsapp-web.js": "^1.26.0",
+    "qrcode-terminal": "^0.12.0"
+  }
+}
