@@ -19,10 +19,21 @@
  */
 const { Client, LocalAuth } = require('whatsapp-web.js');
 const qrcode = require('qrcode-terminal');
+const fs = require('fs');
+const path = require('path');
 
 const MAX_API_URL = process.env.MAX_API_URL || 'http://127.0.0.1:8002/api/max';
-const ALLOWED = (process.env.WHATSAPP_ALLOWED || '')
-  .split(',')
+
+// Numeros permitidos: variable de entorno WHATSAPP_ALLOWED o archivo allowed.txt
+let allowedRaw = process.env.WHATSAPP_ALLOWED || '';
+if (!allowedRaw) {
+  const allowedFile = path.join(__dirname, 'allowed.txt');
+  if (fs.existsSync(allowedFile)) {
+    allowedRaw = fs.readFileSync(allowedFile, 'utf8');
+  }
+}
+const ALLOWED = allowedRaw
+  .split(/[\n,]/)
   .map((n) => n.trim().replace(/[^0-9]/g, ''))
   .filter(Boolean);
 
