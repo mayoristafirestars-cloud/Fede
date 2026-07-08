@@ -124,10 +124,6 @@ client.on('message', async (msg) => {
     }
     busy.add(msg.from);
 
-    if (texto.toLowerCase() !== 'reset') {
-      await msg.reply('Dale, me pongo con eso. Dame 1-2 minutos 🔎');
-    }
-
     const respuesta = await preguntarAMax(msg.from, texto);
     for (const parte of partir(respuesta)) {
       await client.sendMessage(msg.from, parte);

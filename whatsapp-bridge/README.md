@@ -47,3 +47,25 @@ WhatsApp y Max responde.
 
 - `reset` — borra la memoria y empieza conversación nueva
 - Cualquier otro texto — es un encargo para Max
+
+## Solución de problemas (aprendidos en producción)
+
+**El bot ignora mensajes de un número que SÍ está en allowed.txt**
+WhatsApp suele identificar a los remitentes con un ID interno (`@lid`)
+distinto del número real. Mirá la consola del bridge: cada mensaje
+loguea `Mensaje entrante de XXXX@lid`. Agregá esos dígitos como una
+línea más en `allowed.txt` (mantené también los números reales) y
+reiniciá.
+
+**El bot deja de responder de golpe (Windows)**
+Si hacés click adentro de una consola, Windows la pone en modo
+"Seleccionar" (se ve en el título) y CONGELA el proceso. Apretá ESC
+en esa ventana para descongelar. No dejes las consolas en modo
+selección.
+
+**Error 400 pelado (sin detalle) de la API**
+Casi siempre es la API key mal guardada en `.env` (cortada o con
+caracteres extra). Verificá con `type .env` que la línea esté completa.
+
+**Los mensajes recibidos mientras el bridge estaba caído no se procesan**
+Solo se procesan mensajes que llegan con el bridge conectado.
