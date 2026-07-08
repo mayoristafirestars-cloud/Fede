@@ -87,7 +87,9 @@ client.on('message', async (msg) => {
 
     for (const foto of data.fotos || []) {
       try {
-        const media = MessageMedia.fromFilePath(foto);
+        const media = foto.startsWith('http')
+          ? await MessageMedia.fromUrl(foto, { unsafeMime: true })
+          : MessageMedia.fromFilePath(foto);
         await client.sendMessage(msg.from, media);
       } catch (e) {
         console.error('No pude mandar la foto', foto, e.message);

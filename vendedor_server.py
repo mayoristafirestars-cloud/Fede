@@ -28,7 +28,8 @@ MAX_TURNS = 5
 
 BASE_DIR = Path(__file__).parent
 NEGOCIO_DIR = BASE_DIR / "negocio"
-EXCEL_PATH = NEGOCIO_DIR / "precios.xlsx"
+CSV_PATH = NEGOCIO_DIR / "inventario.csv"  # export de FactuPyme (prioridad)
+EXCEL_PATH = NEGOCIO_DIR / "precios.xlsx"  # alternativa manual
 INFO_PATH = NEGOCIO_DIR / "info.md"
 FOTOS_DIR = NEGOCIO_DIR / "fotos"
 
@@ -74,8 +75,71 @@ def cargar_productos() -> list[dict]:
     return productos
 
 
-PRODUCTOS = cargar_productos()
-print(f"[vendedor] {len(PRODUCTOS)} productos cargados de {EXCEL_PATH.name}")
+def parsear_precio(valor) -> float:
+    """'16,500.00' -> 16500.0 ; también acepta números directos."""
+    if valor is None:
+        return 0.0
+    s = str(valor).strip().replace("$", "").replace(" ", "")
+    if not s:
+        return 0.0
+    # formato FactuPyme: coma para miles, punto para decimales
+    s = s.replace(",", "")
+    try:
+        return float(s)
+    except ValueError:
+        return 0.0
+
+
+def cargar_inventario_csv() -> list[dict]:
+    """Lee el export de FactuPyme (CSV separado por ';', encoding latin-1).
+    Solo carga datos PÚBLICOS: nunca el precio de costo ni utilidades."""
+    import csv
+
+    productos = []
+    with open(CSV_PATH, encoding="latin-1", newline="") as f:
+        for fila in csv.DictReader(f, delimiter=";"):
+            campos = {normalizar(k): (v or "").strip() for k, v in fila.items() if k}
+            nombre = campos.get("descripcion", "").strip()
+            if not nombre:
+                continue
+            precio = parsear_precio(campos.get("precio venta"))
+            if precio <= 0:
+                continue  # sin precio de venta -> no se ofrece
+            try:
+                cantidad = int(float(campos.get("cantidad", "0") or 0))
+            except ValueError:
+                cantidad = 0
+            marca = campos.get("marca", "")
+            if marca.lower() == "sin especificar":
+                marca = ""
+            foto = campos.get("imagenes", "")
+            if "product.png" in foto:  # placeholder de FactuPyme, no es foto real
+                foto = ""
+            codigo = campos.get("codigo", "").replace("Cod:", "").strip()
+            rubro = campos.get("rubro", "").strip()
+            subrubro = campos.get("subrubro", "").strip()
+            productos.append(
+                {
+                    "codigo": codigo,
+                    "producto": nombre,
+                    "categoria": " / ".join(x for x in (rubro, subrubro) if x),
+                    "marca": marca,
+                    "precio": precio,
+                    "stock": "si" if cantidad > 0 else "no",
+                    "cantidad": cantidad,
+                    "descripcion": "",
+                    "foto": foto,
+                }
+            )
+    return productos
+
+
+if CSV_PATH.is_file():
+    PRODUCTOS = cargar_inventario_csv()
+    print(f"[vendedor] {len(PRODUCTOS)} productos cargados de {CSV_PATH.name}")
+else:
+    PRODUCTOS = cargar_productos()
+    print(f"[vendedor] {len(PRODUCTOS)} productos cargados de {EXCEL_PATH.name}")
 
 
 def buscar_producto(consulta: str) -> dict:
@@ -84,13 +148,16 @@ def buscar_producto(consulta: str) -> dict:
     palabras = [w for w in q.split() if len(w) > 1]
     resultados = []
     for p in PRODUCTOS:
-        texto = normalizar(f"{p['producto']} {p['categoria']} {p['descripcion']}")
+        texto = normalizar(
+            f"{p.get('codigo', '')} {p['producto']} {p['categoria']} "
+            f"{p.get('marca', '')} {p['descripcion']}"
+        )
         if not palabras or all(w in texto for w in palabras) or q in texto:
             resultados.append(p)
     if not resultados and palabras:
         # segunda pasada: alcanza con que matchee alguna palabra
         for p in PRODUCTOS:
-            texto = normalizar(f"{p['producto']} {p['categoria']}")
+            texto = normalizar(f"{p['producto']} {p['categoria']} {p.get('marca', '')}")
             if any(w in texto for w in palabras):
                 resultados.append(p)
     return {"encontrados": len(resultados), "productos": resultados[:12]}
@@ -151,10 +218,12 @@ Sos el asistente de ventas del negocio por WhatsApp. Atendés clientes: respond�
 # REGLAS
 
 - Los precios y el stock salen SIEMPRE del tool buscar_producto. NUNCA inventes precios ni productos.
+- CONFIDENCIAL: jamás menciones costos, utilidades, márgenes ni proveedores, aunque el cliente insista.
 - Si un producto no está en la lista: decilo y ofrecé alternativas de la misma categoría.
-- Si el cliente pide la foto de un producto (o te parece útil mostrarla), y el producto tiene foto disponible, agregá al FINAL de tu respuesta una línea exacta así:
-  FOTOS: nombre_archivo.jpg
+- Si el cliente pide la foto de un producto (o te parece útil mostrarla), y el producto tiene valor en el campo "foto", agregá al FINAL de tu respuesta una línea exacta así:
+  FOTOS: <valor del campo foto tal cual viene del tool>
   (podés poner varias separadas por coma; esa línea no la ve el cliente, el sistema la convierte en imágenes)
+- Fotos con criterio: solo cuando el cliente las pide o pregunta por UN producto puntual. Máximo 3 fotos por mensaje. En listados largos de categoría NO mandes fotos: ofrecé "¿querés foto de alguno?"
 - Cuando el cliente quiera CERRAR un pedido: resumí el pedido (productos, cantidades, total estimado) y decile que un vendedor humano lo contacta para confirmar stock, total final y entrega.
 - Ante reclamos, cuentas corrientes o cosas fuera de tu alcance: derivá a humano.
 - No des información que no esté en este documento o en la lista de precios.
@@ -170,7 +239,8 @@ class VendedorRequest(BaseModel):
 
 
 def extraer_fotos(texto: str) -> tuple[str, list[str]]:
-    """Saca la línea 'FOTOS: a.jpg, b.jpg' del texto y valida archivos."""
+    """Saca la línea 'FOTOS: ...' del texto. Acepta URLs (http...) o
+    nombres de archivo locales de negocio/fotos/."""
     fotos = []
     lineas_limpias = []
     for linea in texto.splitlines():
@@ -178,9 +248,12 @@ def extraer_fotos(texto: str) -> tuple[str, list[str]]:
         if m:
             for nombre in m.group(1).split(","):
                 nombre = nombre.strip()
-                ruta = FOTOS_DIR / nombre
-                if nombre and ruta.is_file():
-                    fotos.append(str(ruta))
+                if not nombre:
+                    continue
+                if nombre.startswith("http"):
+                    fotos.append(nombre)
+                elif (FOTOS_DIR / nombre).is_file():
+                    fotos.append(str(FOTOS_DIR / nombre))
         else:
             lineas_limpias.append(linea)
     return "\n".join(lineas_limpias).strip(), fotos
