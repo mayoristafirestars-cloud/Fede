@@ -17,6 +17,9 @@ const qrcode = require('qrcode-terminal');
 
 const API_URL = process.env.VENDEDOR_API_URL || 'http://127.0.0.1:8003/api/vendedor';
 
+// WhatsApp del vendedor humano que recibe los pedidos confirmados (Malcom).
+const VENDEDOR_HUMANO = (process.env.VENDEDOR_HUMANO || '5492954829943') + '@c.us';
+
 const busy = new Set();
 
 const client = new Client({
@@ -93,6 +96,20 @@ client.on('message', async (msg) => {
         await client.sendMessage(msg.from, media);
       } catch (e) {
         console.error('No pude mandar la foto', foto, e.message);
+      }
+    }
+
+    // Pedido confirmado -> avisar al vendedor humano (Malcom)
+    if (data.pedido) {
+      try {
+        const numeroCliente = msg.from.replace('@c.us', '').replace('@lid', '');
+        await client.sendMessage(
+          VENDEDOR_HUMANO,
+          `🛒 *NUEVO PEDIDO* (via asistente)\nCliente: ${numeroCliente}\n\n${data.pedido}`
+        );
+        console.log('Pedido reenviado a Malcom.');
+      } catch (e) {
+        console.error('No pude avisar al vendedor humano:', e.message);
       }
     }
   } catch (e) {

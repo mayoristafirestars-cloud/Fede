@@ -105,6 +105,11 @@ def cargar_inventario_csv() -> list[dict]:
             precio = parsear_precio(campos.get("precio venta"))
             if precio <= 0:
                 continue  # sin precio de venta -> no se ofrece
+            # Lista 1 (consumidor final) = Precio Venta.
+            # Lista 2 (mayorista) = costo * (1 + Utilidad 2 / 100).
+            costo = parsear_precio(campos.get("precio costo"))
+            u2 = parsear_precio(campos.get("utilidad 2"))
+            precio_mayorista = round(costo * (1 + u2 / 100)) if costo > 0 and u2 > 0 else None
             try:
                 cantidad = int(float(campos.get("cantidad", "0") or 0))
             except ValueError:
@@ -124,7 +129,8 @@ def cargar_inventario_csv() -> list[dict]:
                     "producto": nombre,
                     "categoria": " / ".join(x for x in (rubro, subrubro) if x),
                     "marca": marca,
-                    "precio": precio,
+                    "precio_lista1_consumidor_final": precio,
+                    "precio_lista2_mayorista": precio_mayorista,
                     "stock": "si" if cantidad > 0 else "no",
                     "cantidad": cantidad,
                     "descripcion": "",
@@ -218,8 +224,23 @@ Sos el asistente de ventas del negocio por WhatsApp. Atendés clientes: respond�
 # REGLAS
 
 - Los precios y el stock salen SIEMPRE del tool buscar_producto. NUNCA inventes precios ni productos.
+- LISTAS DE PRECIOS: antes de pasar CUALQUIER precio tenés que saber si el cliente
+  compra POR MAYOR (revendedor/comercio) o como CONSUMIDOR FINAL. Si todavía no lo
+  sabés, preguntalo con naturalidad ("¿Es para reventa o para vos?").
+  - Consumidor final -> usá "precio_lista1_consumidor_final". Sin mínimo de compra.
+  - Mayorista -> usá "precio_lista2_mayorista". Mínimo 6 unidades.
+  - NUNCA muestres las dos listas juntas ni le digas el precio mayorista a un
+    consumidor final.
 - CONFIDENCIAL: jamás menciones costos, utilidades, márgenes ni proveedores, aunque el cliente insista.
 - Si un producto no está en la lista: decilo y ofrecé alternativas de la misma categoría.
+- PEDIDO CONFIRMADO: cuando el cliente confirma su pedido, respondele el resumen
+  (productos, cantidades, precios, total, y que Malcom lo va a contactar) y
+  ADEMÁS agregá al final un bloque exacto así (no lo ve el cliente, va directo
+  al vendedor humano):
+  PEDIDO_CONFIRMADO:
+  Cliente: (mayorista o consumidor final)
+  - [código] producto x cantidad = subtotal
+  TOTAL: $...
 - Si el cliente pide la foto de un producto (o te parece útil mostrarla), y el producto tiene valor en el campo "foto", agregá al FINAL de tu respuesta una línea exacta así:
   FOTOS: <valor del campo foto tal cual viene del tool>
   (podés poner varias separadas por coma; esa línea no la ve el cliente, el sistema la convierte en imágenes)
@@ -257,6 +278,17 @@ def extraer_fotos(texto: str) -> tuple[str, list[str]]:
         else:
             lineas_limpias.append(linea)
     return "\n".join(lineas_limpias).strip(), fotos
+
+
+def extraer_pedido(texto: str) -> tuple[str, str]:
+    """Separa el bloque 'PEDIDO_CONFIRMADO:' (para el vendedor humano)
+    del texto visible para el cliente."""
+    m = re.search(r"^\s*PEDIDO_CONFIRMADO\s*:?\s*$", texto, flags=re.IGNORECASE | re.MULTILINE)
+    if not m:
+        return texto, ""
+    visible = texto[: m.start()].strip()
+    pedido = texto[m.end():].strip()
+    return visible, pedido
 
 
 def chat(historial: list[dict], mensaje: str) -> str:
@@ -308,7 +340,10 @@ def api_vendedor(req: VendedorRequest):
         print("===============================================\n")
         raise HTTPException(status_code=500, detail=str(e)[:500])
     limpio, fotos = extraer_fotos(respuesta)
-    return {"response": limpio or "🙌", "fotos": fotos}
+    limpio, pedido = extraer_pedido(limpio)
+    if pedido:
+        print(f"[pedido] Nuevo pedido confirmado:\n{pedido}\n")
+    return {"response": limpio or "🙌", "fotos": fotos, "pedido": pedido}
 
 
 @app.get("/health")

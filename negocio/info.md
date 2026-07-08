@@ -1,43 +1,56 @@
-# Información del negocio
+# Dist Coronel Sur
 
-> EDITÁ ESTE ARCHIVO con los datos reales de tu negocio.
-> El bot usa todo lo que escribas acá para responder a los clientes.
+## Datos del negocio
 
-## Datos básicos
+- **Nombre:** Dist Coronel Sur
+- **Rubro:** Distribuidora mayorista y minorista (bazar, regalería, hogar, textil, juguetería y más)
+- **Dirección:** Roque Sáenz Peña 1297, Santa Rosa, La Pampa
+- **Teléfono fijo:** 2954-701980
+- **Horarios:** Lunes a sábado de 8:30 a 12:30 y de 16:30 a 20:30
 
-- **Nombre del negocio:** Distribuidora Coronel (EDITAR)
-- **Rubro:** Distribuidora mayorista de bebidas (EDITAR)
-- **Zona de cobertura:** Santa Rosa, La Pampa y alrededores (EDITAR)
-- **Dirección:** (EDITAR - o poné "solo reparto, sin local de atención")
-- **Horarios:** Lunes a viernes 8 a 17hs, sábados 8 a 13hs (EDITAR)
+## Tipos de cliente y listas de precios
 
-## Cómo comprar
+Vendemos **por mayor y por menor**. Hay DOS listas de precios:
 
-- **Pedido mínimo:** $50.000 (EDITAR)
-- **Formas de pago:** Efectivo contra entrega, transferencia, Mercado Pago (EDITAR)
-- **Entregas:** Reparto propio, 24-48hs según zona (EDITAR)
-- **Cómo se hace un pedido:** El cliente pasa la lista de productos por WhatsApp,
-  confirmamos stock y total, coordinamos entrega. (EDITAR)
+- **Lista 1 (consumidor final):** para quien compra para uso propio. Sin mínimo de compra.
+- **Lista 2 (mayorista):** para revendedores/comercios. Compra mínima: **6 unidades**.
 
-## Política de precios
+**IMPORTANTE:** siempre hay que saber si el cliente compra POR MAYOR o como
+CONSUMIDOR FINAL antes de pasar precios. Si no lo dijo, preguntárselo primero.
 
-- Los precios de la lista son mayoristas + IVA (EDITAR según corresponda)
-- Descuentos por volumen: consultar (EDITAR)
-- Los precios pueden cambiar sin aviso; el total se confirma al cerrar el pedido.
+Los precios son **siempre por unidad**.
 
-## Preguntas frecuentes
+## Descuentos
 
-**¿Venden a consumidor final?**
-(EDITAR: sí/no y condiciones)
+- Descuentos por cantidad/volumen: NO los maneja el asistente.
+  El cliente debe hablar con un vendedor humano (se lo deriva).
 
-**¿Hacen envíos fuera de la ciudad?**
-(EDITAR)
+## Formas de pago
 
-**¿Tienen facturación A/B?**
-(EDITAR)
+- Efectivo
+- Transferencia bancaria
+- Tarjeta de crédito
 
-## Cuándo pasar con un humano
+## Facturación
 
-Si el cliente quiere: cerrar un pedido grande, un reclamo, una cuenta corriente,
-o algo que no está en esta información → el bot avisa que un vendedor humano
-lo va a contactar y deja registrado el pedido del cliente.
+- Hacemos factura A o B según corresponda.
+
+## Envíos
+
+- Hacemos envíos a **todo el país por Vía Cargo**.
+- También se puede **retirar por el local** (Roque Sáenz Peña 1297, Santa Rosa).
+
+## Pedidos
+
+Cuando el cliente CONFIRMA un pedido:
+1. Armar el resumen bien claro: productos con código, cantidades, precios
+   unitarios según su lista, y total.
+2. El pedido se pasa automáticamente a **Malcom (vendedor)**, que lo contacta
+   para coordinar pago y entrega.
+
+## Derivar a un vendedor humano cuando:
+
+- Piden descuento por cantidad
+- Reclamos o problemas con un pedido ya hecho
+- Cuenta corriente u otras condiciones especiales
+- Cualquier cosa que no esté en esta información
