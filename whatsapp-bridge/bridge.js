@@ -83,6 +83,21 @@ async function preguntarAMax(sessionId, mensaje) {
   return data.response;
 }
 
+async function mandarAudioAMax(sessionId, audioB64, mimetype) {
+  const url = MAX_API_URL.replace('/api/max', '/api/audio');
+  const res = await fetch(url, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ session_id: sessionId, audio_b64: audioB64, mimetype }),
+  });
+  if (!res.ok) {
+    const err = await res.text();
+    throw new Error(`Max API ${res.status}: ${err.slice(0, 200)}`);
+  }
+  const data = await res.json();
+  return data.response;
+}
+
 function partir(texto, maxLen = 3500) {
   const partes = [];
   for (let i = 0; i < texto.length; i += maxLen) {
@@ -96,10 +111,15 @@ client.on('message', async (msg) => {
     // Ignorar grupos y estados; solo chats directos.
     if (msg.from.endsWith('@g.us') || msg.from === 'status@broadcast') return;
 
+    const esAudio = msg.type === 'ptt' || msg.type === 'audio';
     const texto = (msg.body || '').trim();
-    if (!texto) return;
+    if (!texto && !esAudio) return;
 
-    console.log(`Mensaje entrante de ${msg.from}: "${texto.slice(0, 60)}"`);
+    console.log(
+      esAudio
+        ? `Audio entrante de ${msg.from}`
+        : `Mensaje entrante de ${msg.from}: "${texto.slice(0, 60)}"`
+    );
 
     if (ALLOWED.length) {
       // WhatsApp a veces identifica al contacto con un ID interno (@lid)
@@ -124,7 +144,22 @@ client.on('message', async (msg) => {
     }
     busy.add(msg.from);
 
-    const respuesta = await preguntarAMax(msg.from, texto);
+    let respuesta;
+    if (esAudio) {
+      const media = await msg.downloadMedia();
+      if (!media || !media.data) {
+        respuesta = 'No pude descargar el audio 😕 ¿Me lo mandás de nuevo?';
+      } else {
+        respuesta = await mandarAudioAMax(
+          msg.from,
+          media.data,
+          media.mimetype || 'audio/ogg'
+        );
+      }
+    } else {
+      respuesta = await preguntarAMax(msg.from, texto);
+    }
+
     for (const parte of partir(respuesta)) {
       await client.sendMessage(msg.from, parte);
     }
