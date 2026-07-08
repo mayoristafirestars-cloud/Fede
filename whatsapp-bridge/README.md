@@ -69,3 +69,9 @@ caracteres extra). Verificá con `type .env` que la línea esté completa.
 
 **Los mensajes recibidos mientras el bridge estaba caído no se procesan**
 Solo se procesan mensajes que llegan con el bridge conectado.
+
+**Error "The browser is already running for ...wwebjs_auth"**
+El Chromium del bot quedó corriendo de fondo tras cerrar la consola.
+Matalo con:
+`wmic process where "CommandLine like '%wwebjs_auth%'" call terminate`
+(o reiniciá la máquina) y volvé a arrancar.
