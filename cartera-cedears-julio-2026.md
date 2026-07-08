@@ -1,5 +1,7 @@
 # Cartera Final en CEDEARs — versión Argentina (3 de julio de 2026)
 
+> **ACTUALIZACIÓN (3-jul-2026, decisión del inversor):** Nike (NKE) queda FUERA de la cartera por decisión propia (tesis: descreimiento estructural en las marcas). Su 2% se reasigna: **TJX pasa de 4% a 5%** (el ganador directo de esa misma tesis: vende el producto sin pagar la marca) y **Nu pasa de 3% a 4%**. La cartera queda en 19 posiciones + watchlist. Detalle en seguimiento-cartera.md.
+
 *Adaptación de la Cartera Final de 20 para comprarla íntegramente desde Argentina vía BYMA (CEDEARs + acciones locales + renta fija local). Ratios verificados contra la tabla BYMA/Comafi vía fuentes indexadas (jun-jul 2026) — **los ratios cambian: verificar el ratio del día en Comafi o con tu broker antes de cada orden**. No es asesoramiento financiero ni impositivo.*
 
 ---

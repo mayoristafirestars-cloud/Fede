@@ -46,6 +46,20 @@
 
 **Nota MSFT:** el precio implícito de la compra sugiere que Microsoft en NY puede estar ya dentro de la zona de tramo 2 (375-385 USD). Verificar el precio en NY: si está ≤385, el plan permite ejecutar el tramo 2 ya (comprar el segundo tercio) en vez de esperar.
 
+## Decisión del inversor — 3 de julio de 2026: Nike fuera
+
+**Fede decide no comprar NKE** (tesis propia: las empresas de marca van a desaparecer). Decisión coherente con el estudio de nuevos consumidores — Nike era justamente la posición en la zona de mayor riesgo del fenómeno (marca media de moda en turnaround) y la de menor convicción del plan (2%, tipo opción).
+
+**Reasignación del 2%:**
+- **TJX: 4% → 5%** — el ganador directo de la misma tesis: vende el producto de marca sin cobrar la prima de marca.
+- **NU: 3% → 4%** — nuevo consumidor puro (banca sin marca heredada), el mayor recorrido a consenso de la cartera.
+
+**Matiz registrado (para revisiones futuras):** el estudio muestra colapso *selectivo*, no extinción total — sobreviven las marcas con valor verificable (ecosistema Apple, escasez Hermès, performance On/Hoka). La tesis fuerte de Fede aplica de lleno al segmento medio (Nike, CPG, lujo aspiracional). Implicancia de vigilancia: **PEP queda bajo el mismo escrutinio** — su stop de tesis por volúmenes (4+ trimestres cayendo) pasa a ser el más importante de la Capa 1.
+
+**Cartera vigente: 19 posiciones** (Capa 1: 11 · Capa 2: 8) + watchlist (COST 850-880, GE ≤350).
+
+### Ola 1 pendiente actualizada: NU (~10.600 ARS), PEP (~12.300 ARS), GLD (consultar), SPY (~59.000 ARS). NKE eliminada.
+
 ### Próximos hitos del calendario
 
 - **Mid-julio:** resultados de Schwab y TSMC → habilitan sus compras (ola 3). GE reporta el 16-jul (si cae bajo 350 USD, se activa la watchlist).
