@@ -96,11 +96,27 @@ client.on('message', async (msg) => {
     // Ignorar grupos y estados; solo chats directos.
     if (msg.from.endsWith('@g.us') || msg.from === 'status@broadcast') return;
 
-    const numero = msg.from.replace(/[^0-9]/g, '');
-    if (ALLOWED.length && !ALLOWED.includes(numero)) return;
-
     const texto = (msg.body || '').trim();
     if (!texto) return;
+
+    console.log(`Mensaje entrante de ${msg.from}: "${texto.slice(0, 60)}"`);
+
+    if (ALLOWED.length) {
+      // WhatsApp a veces identifica al contacto con un ID interno (@lid)
+      // distinto del numero visible; chequeamos las dos formas.
+      let permitido = ALLOWED.includes(msg.from.replace(/[^0-9]/g, ''));
+      if (!permitido) {
+        try {
+          const contacto = await msg.getContact();
+          const numReal = (contacto.number || '').replace(/[^0-9]/g, '');
+          permitido = ALLOWED.includes(numReal);
+        } catch (_) {}
+      }
+      if (!permitido) {
+        console.log('  -> Ignorado: numero no permitido.');
+        return;
+      }
+    }
 
     if (busy.has(msg.from)) {
       await msg.reply('Para un toque, todavia estoy con tu encargo anterior 🙏');

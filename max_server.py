@@ -5,6 +5,8 @@ POST /api/max  {"session_id": "...", "message": "..."}  -> {"response": "..."}
 
 Correr: uvicorn max_server:app --port 8002
 """
+import traceback
+
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 
@@ -32,7 +34,10 @@ def api_max(req: MaxRequest):
     try:
         respuesta = chat(historial, texto)
     except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
+        print("\n===== ERROR COMPLETO (sacale foto a esto) =====")
+        traceback.print_exc()
+        print("===============================================\n")
+        raise HTTPException(status_code=500, detail=str(e)[:500])
     return {"response": respuesta}
 
 
