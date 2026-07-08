@@ -1,0 +1,8 @@
+Poné acá las fotos de tus productos (formato .jpg o .png).
+
+El nombre del archivo tiene que coincidir con la columna "foto"
+del Excel de precios. Ejemplo:
+  - En el Excel, fila "Fernet Branca 750ml", columna foto: fernet750.jpg
+  - Acá adentro: fernet750.jpg
+
+Cuando un cliente pida ver un producto, el bot manda la foto automaticamente.
