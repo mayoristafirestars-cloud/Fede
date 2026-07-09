@@ -23,6 +23,7 @@ from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 
 from memoria import cargar_sesiones, guardar_sesiones, recortar_historial
+from pagos import crear_link_pago, hay_pagos
 
 load_dotenv()
 
@@ -516,6 +517,15 @@ def procesar_mensaje(session_id: str, texto: str, telefono: str = "",
     if pedido:
         print(f"[pedido] Nuevo pedido confirmado:\n{pedido}\n")
         notificar_coronel(pedido, session_id, telefono)
+        # Link de pago Mercado Pago (si está configurado)
+        if hay_pagos():
+            datos = parsear_pedido(pedido)
+            link = crear_link_pago(datos["items"], referencia=telefono or session_id)
+            if link:
+                limpio += (
+                    f"\n\n💳 *Pagá online al instante acá:*\n{link}\n"
+                    "_La mercadería queda reservada cuando se acredita el pago._"
+                )
     registrar_conversacion(session_id, telefono, texto, limpio, es_audio)
     guardar_sesiones(sessions, SESIONES_PATH)
     return {"response": limpio or "🙌", "fotos": fotos, "pedido": pedido}

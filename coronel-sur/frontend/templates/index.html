@@ -364,7 +364,21 @@ a{text-decoration:none;color:inherit}button{cursor:pointer;font-family:var(--F)}
     <div id="ag-conversaciones"><p style="color:var(--text3);font-size:12px">Cargando...</p></div>
   </div>
 </div>
-<div class="page" id="page-tienda"><div style="display:flex;align-items:center;justify-content:center;flex:1;flex-direction:column;gap:8px;color:var(--text3)"><span style="font-size:48px">🛒</span><p style="font-size:16px;font-weight:600;color:var(--text)">Tienda Online</p><p>En construcción</p></div></div>
+<div class="page" id="page-tienda">
+  <div style="max-width:640px;margin:0 auto;padding:20px">
+    <h2 style="color:var(--text);font-size:18px;margin-bottom:8px">🛒 Tienda Online</h2>
+    <p style="color:var(--text2);font-size:13px;margin-bottom:18px">Catálogo público con tu inventario real. Los clientes eligen productos, arman el carrito y el pedido llega al WhatsApp de Eva.</p>
+    <div style="background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:18px">
+      <p style="color:var(--text2);font-size:12px;text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px">Link de tu tienda</p>
+      <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+        <code id="tienda-url" style="background:var(--surface2);padding:8px 12px;border-radius:8px;color:var(--accent);font-size:13px;flex:1;min-width:200px;overflow:auto"></code>
+        <button class="btn-sm" onclick="copiarTienda()">Copiar</button>
+        <a class="btn-sm" id="tienda-abrir" target="_blank" style="text-decoration:none">Abrir</a>
+      </div>
+      <p style="color:var(--text3);font-size:12px;margin-top:14px">💡 Compartí este link en tus redes, ponelo en tu bio de Instagram, o generá un QR para el mostrador. Requiere que el sistema esté online (VPS con dominio).</p>
+    </div>
+  </div>
+</div>
 <div class="page" id="page-reportes">
   <div style="display:flex;gap:8px;align-items:center;margin-bottom:14px">
     <h2 style="color:var(--text);font-size:16px">📊 Reportes</h2>
@@ -422,7 +436,17 @@ function goPage(id,el){
   if(id==='inventario')cargarInventario();
   if(id==='agente')cargarAgente();
   if(id==='reportes')cargarReportes(30);
+  if(id==='tienda')cargarTienda();
   if(id==='facturacion')setTimeout(()=>document.getElementById('buscador').focus(),50);
+}
+
+function cargarTienda(){
+  const url=location.origin+'/tienda';
+  document.getElementById('tienda-url').textContent=url;
+  document.getElementById('tienda-abrir').href=url;
+}
+function copiarTienda(){
+  navigator.clipboard.writeText(location.origin+'/tienda').then(()=>alert('¡Link copiado!'));
 }
 
 function setTipo(tipo,btn){
