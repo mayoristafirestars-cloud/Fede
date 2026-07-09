@@ -54,7 +54,10 @@ client.on('qr', (qr) => {
   qrcode.generate(qr, { small: true });
 });
 
+let conectado = false;
+
 client.on('ready', () => {
+  conectado = true;
   console.log('✅ Bridge conectado. Max esta escuchando WhatsApp.');
   if (ALLOWED.length) {
     console.log('Numeros permitidos:', ALLOWED.join(', '));
@@ -65,9 +68,35 @@ client.on('ready', () => {
 
 client.on('auth_failure', (msg) => console.error('❌ Fallo de auth:', msg));
 client.on('disconnected', (reason) => {
+  conectado = false;
   console.error('❌ Desconectado:', reason, '- reiniciando en 10s');
   setTimeout(() => client.initialize(), 10000);
 });
+
+// ---- Latido para el vigilante (watchdog.py) + envio de alertas ----
+const ALERTA_WHATSAPP = (process.env.ALERTA_WHATSAPP || '').replace(/[^0-9]/g, '');
+const RAIZ = path.join(__dirname, '..');
+const LATIDO = path.join(RAIZ, 'max-bridge.alive');
+const COLA_ALERTAS = path.join(RAIZ, 'alertas.txt');
+
+async function procesarColaAlertas() {
+  if (!conectado || !ALERTA_WHATSAPP) return;
+  const mio = COLA_ALERTAS + '.max';
+  try { fs.renameSync(COLA_ALERTAS, mio); } catch (_) { return; }
+  try {
+    const contenido = fs.readFileSync(mio, 'utf8').trim();
+    fs.unlinkSync(mio);
+    if (contenido) {
+      await client.sendMessage(ALERTA_WHATSAPP + '@c.us', '🚨 *ALERTA DEL SISTEMA*\n\n' + contenido);
+      console.log('Alerta(s) del vigilante enviada(s).');
+    }
+  } catch (e) { console.error('No pude enviar alertas:', e.message); }
+}
+
+setInterval(() => {
+  if (conectado) { try { fs.writeFileSync(LATIDO, String(Date.now())); } catch (_) {} }
+  procesarColaAlertas();
+}, 30000);
 
 async function preguntarAMax(sessionId, mensaje) {
   const res = await fetch(MAX_API_URL, {

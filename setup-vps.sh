@@ -98,9 +98,10 @@ make_service "eva-server" "$DIR" "/usr/bin/python3 -m uvicorn vendedor_server:ap
 make_service "max-bridge" "$DIR/whatsapp-bridge" "/usr/bin/node bridge.js"
 make_service "eva-bridge" "$DIR/vendedor-bridge" "/usr/bin/node bridge.js"
 make_service "coronel-sur" "$DIR/coronel-sur" "/usr/bin/python3 backend/main.py"
+make_service "vigilante" "$DIR" "/usr/bin/python3 watchdog.py"
 
 systemctl daemon-reload
-systemctl enable --now max-server eva-server coronel-sur >/dev/null
+systemctl enable --now max-server eva-server coronel-sur vigilante >/dev/null
 
 IP=$(hostname -I | awk '{print $1}')
 echo ""

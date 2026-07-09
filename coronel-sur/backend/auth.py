@@ -21,7 +21,7 @@ _SECRET = hashlib.sha256(f"coronel-sur|{CLAVE}".encode()).hexdigest()
 SESION_DIAS = 30
 
 # Rutas que no requieren login
-ABIERTAS = ("/login", "/static/", "/favicon")
+ABIERTAS = ("/login", "/static/", "/favicon", "/health")
 # Rutas máquina-a-máquina (requieren header X-Token) — match EXACTO
 MAQUINA = ("/api/agente/pedido", "/api/agente/conversacion", "/api/agente/resumen-diario")
 

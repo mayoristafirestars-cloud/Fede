@@ -14,6 +14,8 @@
  */
 const { Client, LocalAuth, MessageMedia } = require('whatsapp-web.js');
 const qrcode = require('qrcode-terminal');
+const fs = require('fs');
+const path = require('path');
 
 const API_URL = process.env.VENDEDOR_API_URL || 'http://127.0.0.1:8003/api/vendedor';
 
@@ -120,15 +122,43 @@ client.on('qr', (qr) => {
   qrcode.generate(qr, { small: true });
 });
 
+let conectado = false;
+
 client.on('ready', () => {
+  conectado = true;
   console.log('✅ Vendedor conectado. Atendiendo clientes por WhatsApp.');
 });
 
 client.on('auth_failure', (msg) => console.error('❌ Fallo de auth:', msg));
 client.on('disconnected', (reason) => {
+  conectado = false;
   console.error('❌ Desconectado:', reason, '- reiniciando en 10s');
   setTimeout(() => client.initialize(), 10000);
 });
+
+// ---- Latido para el vigilante (watchdog.py) + envio de alertas ----
+const RAIZ = path.join(__dirname, '..');
+const LATIDO = path.join(RAIZ, 'eva-bridge.alive');
+const COLA_ALERTAS = path.join(RAIZ, 'alertas.txt');
+
+async function procesarColaAlertas() {
+  if (!conectado || !ALERTA_WHATSAPP) return;
+  const mio = COLA_ALERTAS + '.eva';
+  try { fs.renameSync(COLA_ALERTAS, mio); } catch (_) { return; } // vacia u otro la tomo
+  try {
+    const contenido = fs.readFileSync(mio, 'utf8').trim();
+    fs.unlinkSync(mio);
+    if (contenido) {
+      await client.sendMessage(ALERTA_WHATSAPP + '@c.us', '🚨 *ALERTA DEL SISTEMA*\n\n' + contenido);
+      console.log('Alerta(s) del vigilante enviada(s).');
+    }
+  } catch (e) { console.error('No pude enviar alertas:', e.message); }
+}
+
+setInterval(() => {
+  if (conectado) { try { fs.writeFileSync(LATIDO, String(Date.now())); } catch (_) {} }
+  procesarColaAlertas();
+}, 30000);
 
 // Cache: id de WhatsApp -> numero real del contacto
 const numerosReales = new Map();
@@ -147,30 +177,39 @@ async function numeroRealDe(msg) {
   return numero;
 }
 
-async function preguntarAlVendedor(sessionId, mensaje, telefono) {
-  const res = await fetch(API_URL, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ session_id: sessionId, message: mensaje, telefono }),
-  });
-  if (!res.ok) {
-    const err = await res.text();
-    throw new Error(`Vendedor API ${res.status}: ${err.slice(0, 200)}`);
+// POST con un reintento automático: si la API tuvo un hipo momentáneo,
+// el cliente ni se entera.
+async function postConReintento(url, body) {
+  let ultimoError;
+  for (let intento = 1; intento <= 2; intento++) {
+    try {
+      const res = await fetch(url, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body),
+      });
+      if (res.ok) return res.json();
+      const err = await res.text();
+      ultimoError = new Error(`Vendedor API ${res.status}: ${err.slice(0, 200)}`);
+    } catch (e) {
+      ultimoError = e;
+    }
+    if (intento === 1) {
+      console.log('Fallo la API, reintento en 3s...');
+      await new Promise((r) => setTimeout(r, 3000));
+    }
   }
-  return res.json(); // {response, fotos, pedido}
+  throw ultimoError;
 }
 
-async function mandarAudioAlVendedor(sessionId, audioB64, mimetype, telefono) {
-  const res = await fetch(API_URL + '/audio', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ session_id: sessionId, audio_b64: audioB64, mimetype, telefono }),
+function preguntarAlVendedor(sessionId, mensaje, telefono) {
+  return postConReintento(API_URL, { session_id: sessionId, message: mensaje, telefono });
+}
+
+function mandarAudioAlVendedor(sessionId, audioB64, mimetype, telefono) {
+  return postConReintento(API_URL + '/audio', {
+    session_id: sessionId, audio_b64: audioB64, mimetype, telefono,
   });
-  if (!res.ok) {
-    const err = await res.text();
-    throw new Error(`Vendedor API ${res.status}: ${err.slice(0, 200)}`);
-  }
-  return res.json();
 }
 
 function partir(texto, maxLen = 3500) {

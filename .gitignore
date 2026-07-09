@@ -36,3 +36,5 @@ node_modules/
 allowed.txt
 negocio/inventario.csv
 sesiones_*.json
+*.alive
+alertas.txt*

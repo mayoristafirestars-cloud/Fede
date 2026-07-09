@@ -77,6 +77,11 @@ def raiz():
     with open(TEMPLATE, "r", encoding="utf-8") as f:
         return f.read()
 
+@app.get("/health")
+def health():
+    return {"ok": True}
+
+
 @app.get("/api/estado")
 def estado_db():
     conn = conectar()
