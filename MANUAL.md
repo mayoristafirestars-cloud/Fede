@@ -140,6 +140,40 @@ Antes de difundir el número de Eva a todos:
 
 ---
 
+## 8b. Migrar Eva al WhatsApp OFICIAL de Meta (cuando venda en serio)
+
+El método actual (no-oficial) funciona pero tiene riesgo de ban. El código del
+puente oficial YA ESTÁ ESCRITO (`eva_cloud_bridge.py`) — solo faltan los
+trámites de Meta:
+
+1. Crear cuenta en **developers.facebook.com** → app tipo "Business"
+2. Agregar el producto **WhatsApp** a la app
+3. Registrar y verificar el número del negocio
+4. Generar un **token permanente** y anotar el **Phone Number ID**
+5. En el `.env` del VPS agregar: `WA_TOKEN=...`, `WA_PHONE_ID=...`,
+   `WA_VERIFY_TOKEN=una-palabra-secreta`
+6. Correr el puente: `uvicorn eva_cloud_bridge:app --port 8010` (como servicio)
+7. En Meta, configurar el webhook: `https://TU-DOMINIO/webhook` con la misma
+   palabra secreta (requiere el VPS con dominio y HTTPS)
+8. Apagar el bridge no-oficial (`systemctl disable --now eva-bridge`)
+
+Ventajas: cero riesgo de ban, tilde verde posible, gratis hasta ~1000
+conversaciones/mes. Limitación: para escribirle a Malcom, él tiene que haberle
+escrito al número en las últimas 24hs (los pedidos igual llegan siempre a la
+pestaña Agente).
+
+## 8c. Hacer privado el repositorio de GitHub
+
+Hoy el código está público (cualquiera ve la dirección, teléfonos y lógica).
+
+1. github.com/mayoristafirestars-cloud/Fede → **Settings** → bajar hasta
+   "Danger Zone" → **Change visibility** → Private
+2. ⚠️ Después de esto, los links de descarga del ZIP piden login de GitHub
+   (usá tu cuenta) y el VPS necesita un token para hacer `git pull`:
+   GitHub → Settings → Developer settings → Fine-grained tokens → generar uno
+   con acceso de lectura al repo → en el VPS:
+   `git remote set-url origin https://TOKEN@github.com/mayoristafirestars-cloud/Fede.git`
+
 ## 9. Qué NO tocar (a menos que sepas lo que hacés)
 
 - Los archivos `.py`, `.js` y las carpetas `node_modules`, `.wwebjs_auth`

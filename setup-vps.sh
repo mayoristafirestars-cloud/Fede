@@ -103,6 +103,26 @@ make_service "vigilante" "$DIR" "/usr/bin/python3 watchdog.py"
 systemctl daemon-reload
 systemctl enable --now max-server eva-server coronel-sur vigilante >/dev/null
 
+# HTTPS automático con Caddy (opcional, requiere un dominio apuntando a este VPS)
+echo ""
+read -rp "¿Tenes un dominio apuntando a este servidor? (ej gestion.tudominio.com, ENTER para saltar): " DOMINIO < /dev/tty
+if [ -n "$DOMINIO" ]; then
+    echo "=== Instalando Caddy (HTTPS automatico) ==="
+    apt-get install -y -qq debian-keyring debian-archive-keyring apt-transport-https curl >/dev/null
+    curl -1sLf 'https://dl.cloudsmith.io/public/caddy/stable/gpg.key' \
+        | gpg --dearmor -o /usr/share/keyrings/caddy-stable-archive-keyring.gpg 2>/dev/null
+    curl -1sLf 'https://dl.cloudsmith.io/public/caddy/stable/debian.deb.txt' \
+        > /etc/apt/sources.list.d/caddy-stable.list
+    apt-get update -qq && apt-get install -y -qq caddy >/dev/null
+    cat > /etc/caddy/Caddyfile <<CADDY
+$DOMINIO {
+    reverse_proxy 127.0.0.1:8000
+}
+CADDY
+    systemctl reload caddy 2>/dev/null || systemctl restart caddy
+    echo "HTTPS configurado: https://$DOMINIO (el certificado se emite solo en ~1 min)"
+fi
+
 IP=$(hostname -I | awk '{print $1}')
 echo ""
 echo "============================================================"

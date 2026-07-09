@@ -7,10 +7,11 @@ SCHEMA   = os.path.join(os.path.dirname(os.path.abspath(__file__)), "schema.sql"
 
 
 def conectar() -> sqlite3.Connection:
-    conn = sqlite3.connect(DB_PATH)
+    conn = sqlite3.connect(DB_PATH, timeout=10)
     conn.row_factory = sqlite3.Row          # devuelve dicts en vez de tuplas
     conn.execute("PRAGMA foreign_keys = ON")
     conn.execute("PRAGMA journal_mode = WAL") # mejor rendimiento concurrente
+    conn.execute("PRAGMA busy_timeout = 10000") # esperar en vez de fallar si esta ocupada
     return conn
 
 
