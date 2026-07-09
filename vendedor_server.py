@@ -273,12 +273,14 @@ SYSTEM_PROMPT = build_system_prompt()
 class VendedorRequest(BaseModel):
     session_id: str
     message: str
+    telefono: str = ""  # número real del contacto (el bridge lo resuelve)
 
 
 class AudioRequest(BaseModel):
     session_id: str
     audio_b64: str
     mimetype: str = "audio/ogg"
+    telefono: str = ""
 
 
 def extraer_fotos(texto: str) -> tuple[str, list[str]]:
@@ -352,7 +354,7 @@ def parsear_pedido(pedido: str) -> dict:
     return {"tipo_cliente": tipo, "items": items, "total": total}
 
 
-def notificar_coronel(pedido_texto: str, session_id: str) -> None:
+def notificar_coronel(pedido_texto: str, session_id: str, telefono_real: str = "") -> None:
     """Crea el presupuesto en el sistema Coronel Sur (si está configurado)."""
     if not CORONEL_URL:
         return
@@ -363,7 +365,8 @@ def notificar_coronel(pedido_texto: str, session_id: str) -> None:
         if not datos["items"]:
             print("[pedido] No pude parsear items; no se envió al sistema.")
             return
-        telefono = re.sub(r"[^0-9]", "", session_id)
+        # Preferimos el número real del contacto; si no vino, los dígitos del ID.
+        telefono = re.sub(r"[^0-9]", "", telefono_real) or re.sub(r"[^0-9]", "", session_id)
         r = httpx.post(
             f"{CORONEL_URL}/api/agente/pedido",
             json={"telefono": telefono, "texto_original": pedido_texto, **datos},
@@ -421,7 +424,7 @@ def chat(historial: list[dict], mensaje: str) -> str:
     return "Dame un segundo que lo reviso y te confirmo 🙌"
 
 
-def procesar_mensaje(session_id: str, texto: str) -> dict:
+def procesar_mensaje(session_id: str, texto: str, telefono: str = "") -> dict:
     """Flujo completo: chat -> fotos -> pedido -> notificación al sistema."""
     if texto.lower() == "reset":
         sessions.pop(session_id, None)
@@ -438,7 +441,7 @@ def procesar_mensaje(session_id: str, texto: str) -> dict:
     limpio, pedido = extraer_pedido(limpio)
     if pedido:
         print(f"[pedido] Nuevo pedido confirmado:\n{pedido}\n")
-        notificar_coronel(pedido, session_id)
+        notificar_coronel(pedido, session_id, telefono)
     return {"response": limpio or "🙌", "fotos": fotos, "pedido": pedido}
 
 
@@ -447,7 +450,7 @@ def api_vendedor(req: VendedorRequest):
     texto = req.message.strip()
     if not texto:
         raise HTTPException(status_code=400, detail="Mensaje vacío.")
-    return procesar_mensaje(req.session_id, texto)
+    return procesar_mensaje(req.session_id, texto, req.telefono)
 
 
 @app.post("/api/vendedor/audio")
@@ -477,7 +480,7 @@ def api_vendedor_audio(req: AudioRequest):
             "fotos": [], "pedido": "", "transcript": "",
         }
     print(f"[audio] Cliente dijo: {texto[:120]}")
-    resultado = procesar_mensaje(req.session_id, texto)
+    resultado = procesar_mensaje(req.session_id, texto, req.telefono)
     resultado["transcript"] = texto
     return resultado
 

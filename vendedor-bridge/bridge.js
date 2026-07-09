@@ -47,11 +47,28 @@ client.on('disconnected', (reason) => {
   setTimeout(() => client.initialize(), 10000);
 });
 
-async function preguntarAlVendedor(sessionId, mensaje) {
+// Cache: id de WhatsApp -> numero real del contacto
+const numerosReales = new Map();
+
+async function numeroRealDe(msg) {
+  if (numerosReales.has(msg.from)) return numerosReales.get(msg.from);
+  let numero = '';
+  try {
+    const contacto = await msg.getContact();
+    numero = (contacto && contacto.number ? contacto.number : '').replace(/[^0-9]/g, '');
+  } catch (_) {}
+  if (!numero && msg.from.endsWith('@c.us')) {
+    numero = msg.from.replace(/[^0-9]/g, '');
+  }
+  numerosReales.set(msg.from, numero);
+  return numero;
+}
+
+async function preguntarAlVendedor(sessionId, mensaje, telefono) {
   const res = await fetch(API_URL, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ session_id: sessionId, message: mensaje }),
+    body: JSON.stringify({ session_id: sessionId, message: mensaje, telefono }),
   });
   if (!res.ok) {
     const err = await res.text();
@@ -60,11 +77,11 @@ async function preguntarAlVendedor(sessionId, mensaje) {
   return res.json(); // {response, fotos, pedido}
 }
 
-async function mandarAudioAlVendedor(sessionId, audioB64, mimetype) {
+async function mandarAudioAlVendedor(sessionId, audioB64, mimetype, telefono) {
   const res = await fetch(API_URL + '/audio', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ session_id: sessionId, audio_b64: audioB64, mimetype }),
+    body: JSON.stringify({ session_id: sessionId, audio_b64: audioB64, mimetype, telefono }),
   });
   if (!res.ok) {
     const err = await res.text();
@@ -110,6 +127,8 @@ client.on('message', async (msg) => {
       return;
     }
 
+    const telefono = await numeroRealDe(msg);
+
     let data;
     if (esAudio) {
       const media = await msg.downloadMedia();
@@ -118,10 +137,10 @@ client.on('message', async (msg) => {
         busy.delete(msg.from);
         return;
       }
-      data = await mandarAudioAlVendedor(msg.from, media.data, media.mimetype || 'audio/ogg');
+      data = await mandarAudioAlVendedor(msg.from, media.data, media.mimetype || 'audio/ogg', telefono);
     } else {
       // Si mandó foto CON texto, procesamos el texto y aclaramos lo de la foto.
-      data = await preguntarAlVendedor(msg.from, texto);
+      data = await preguntarAlVendedor(msg.from, texto, telefono);
       if (esOtroMedio && data.response) {
         data.response = '(La foto no la puedo ver 🙈, pero leí tu mensaje 👇)\n\n' + data.response;
       }
@@ -147,10 +166,10 @@ client.on('message', async (msg) => {
     // Pedido confirmado -> avisar al vendedor humano (Malcom)
     if (data.pedido) {
       try {
-        const numeroCliente = msg.from.replace('@c.us', '').replace('@lid', '');
+        const numeroCliente = telefono || msg.from.replace('@c.us', '').replace('@lid', '');
         await client.sendMessage(
           VENDEDOR_HUMANO,
-          `🛒 *NUEVO PEDIDO* (via asistente)\nCliente: ${numeroCliente}\n\n${data.pedido}`
+          `🛒 *NUEVO PEDIDO* (via asistente)\nCliente: +${numeroCliente}\nWhatsApp: https://wa.me/${numeroCliente}\n\n${data.pedido}`
         );
         console.log('Pedido reenviado a Malcom.');
       } catch (e) {
