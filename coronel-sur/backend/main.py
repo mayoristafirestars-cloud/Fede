@@ -12,6 +12,10 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from db.database import inicializar_db, conectar
 from routers.facturacion import router as router_facturacion
 from routers.clientes import router as router_clientes
+from routers.inventario import router as router_inventario
+from routers.reportes import router as router_reportes
+from routers.agente import router as router_agente
+from auth import AuthMiddleware, registrar_rutas as registrar_auth
 
 app = FastAPI(title="Coronel Sur", version="1.0.0")
 
@@ -24,6 +28,11 @@ os.makedirs(STATIC, exist_ok=True)
 app.mount("/static", StaticFiles(directory=STATIC), name="static")
 app.include_router(router_facturacion)
 app.include_router(router_clientes)
+app.include_router(router_inventario)
+app.include_router(router_reportes)
+app.include_router(router_agente)
+app.add_middleware(AuthMiddleware)
+registrar_auth(app)
 
 @app.on_event("startup")
 def startup():

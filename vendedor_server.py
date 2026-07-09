@@ -10,6 +10,7 @@ POST /api/vendedor {"session_id": "...", "message": "..."}
 Correr: uvicorn vendedor_server:app --port 8003
 """
 import json
+import os
 import re
 import traceback
 import unicodedata
@@ -295,6 +296,82 @@ def extraer_fotos(texto: str) -> tuple[str, list[str]]:
     return "\n".join(lineas_limpias).strip(), fotos
 
 
+# Sistema de gestión Coronel Sur (opcional): si estas variables están en
+# el .env, cada pedido confirmado se crea como presupuesto en el sistema.
+CORONEL_URL = os.getenv("CORONEL_URL", "").rstrip("/")
+AGENTE_TOKEN = os.getenv("AGENTE_TOKEN", "eva-coronel-2026")
+
+
+def _num_ar(s: str) -> float:
+    """'157.080' -> 157080 ; '13.006,50' -> 13006.5 ; '6' -> 6"""
+    s = s.strip().replace("$", "").replace(" ", "")
+    if "," in s:
+        s = s.replace(".", "").replace(",", ".")
+    elif s.count(".") == 1 and len(s.split(".")[1]) == 3:
+        s = s.replace(".", "")
+    elif s.count(".") > 1:
+        s = s.replace(".", "")
+    try:
+        return float(s)
+    except ValueError:
+        return 0.0
+
+
+def parsear_pedido(pedido: str) -> dict:
+    """Convierte el bloque PEDIDO_CONFIRMADO en datos estructurados."""
+    tipo = ""
+    m = re.search(r"Cliente\s*:\s*(.+)", pedido, flags=re.IGNORECASE)
+    if m:
+        tipo = m.group(1).strip()
+    items = []
+    for linea in pedido.splitlines():
+        m = re.match(
+            r"^\s*[-•]\s*(?:\[(\w+)\])?\s*(.+?)\s*[xX×]\s*([\d.,]+)\s*=\s*\$?\s*([\d.,]+)",
+            linea,
+        )
+        if m:
+            codigo, desc, cant, sub = m.groups()
+            cantidad = _num_ar(cant) or 1
+            subtotal = _num_ar(sub)
+            items.append({
+                "codigo": codigo or None,
+                "descripcion": desc.strip(),
+                "cantidad": cantidad,
+                "precio_unitario": round(subtotal / cantidad, 2) if cantidad else subtotal,
+            })
+    total = 0.0
+    m = re.search(r"TOTAL\s*:?\s*\$?\s*([\d.,]+)", pedido, flags=re.IGNORECASE)
+    if m:
+        total = _num_ar(m.group(1))
+    return {"tipo_cliente": tipo, "items": items, "total": total}
+
+
+def notificar_coronel(pedido_texto: str, session_id: str) -> None:
+    """Crea el presupuesto en el sistema Coronel Sur (si está configurado)."""
+    if not CORONEL_URL:
+        return
+    try:
+        import httpx
+
+        datos = parsear_pedido(pedido_texto)
+        if not datos["items"]:
+            print("[pedido] No pude parsear items; no se envió al sistema.")
+            return
+        telefono = re.sub(r"[^0-9]", "", session_id)
+        r = httpx.post(
+            f"{CORONEL_URL}/api/agente/pedido",
+            json={"telefono": telefono, "texto_original": pedido_texto, **datos},
+            headers={"X-Token": AGENTE_TOKEN},
+            timeout=5,
+        )
+        if r.status_code == 200:
+            print(f"[pedido] Presupuesto creado en el sistema: {r.json().get('numero')}")
+        else:
+            print(f"[pedido] El sistema respondió {r.status_code}: {r.text[:120]}")
+    except Exception as e:
+        print(f"[pedido] No se pudo notificar al sistema: {e}")
+
+
 def extraer_pedido(texto: str) -> tuple[str, str]:
     """Separa el bloque 'PEDIDO_CONFIRMADO:' (para el vendedor humano)
     del texto visible para el cliente."""
@@ -358,6 +435,7 @@ def api_vendedor(req: VendedorRequest):
     limpio, pedido = extraer_pedido(limpio)
     if pedido:
         print(f"[pedido] Nuevo pedido confirmado:\n{pedido}\n")
+        notificar_coronel(pedido, req.session_id)
     return {"response": limpio or "🙌", "fotos": fotos, "pedido": pedido}
 
 
