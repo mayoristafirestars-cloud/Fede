@@ -109,7 +109,7 @@ def cargar_inventario_csv() -> list[dict]:
             # Lista 2 (mayorista) = costo * (1 + Utilidad 2 / 100).
             costo = parsear_precio(campos.get("precio costo"))
             u2 = parsear_precio(campos.get("utilidad 2"))
-            precio_mayorista = round(costo * (1 + u2 / 100)) if costo > 0 and u2 > 0 else None
+            precio_mayorista = round(costo * (1 + u2 / 100), 2) if costo > 0 and u2 > 0 else None
             try:
                 cantidad = int(float(campos.get("cantidad", "0") or 0))
             except ValueError:
