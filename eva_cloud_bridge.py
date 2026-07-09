@@ -129,11 +129,20 @@ def procesar(numero: str, payload: dict) -> None:
         else:
             return
 
-        if data.get("response"):
-            enviar_texto(numero, data["response"])
-        for foto in data.get("fotos", []):
-            if foto.startswith("http"):
-                enviar_imagen(numero, foto)
+        secuencia = data.get("secuencia") or []
+        if secuencia:
+            # Orden natural: producto -> su foto -> producto -> su foto -> ...
+            for parte in secuencia:
+                if parte.get("tipo") == "texto" and parte.get("contenido"):
+                    enviar_texto(numero, parte["contenido"])
+                elif parte.get("tipo") == "foto" and str(parte.get("url", "")).startswith("http"):
+                    enviar_imagen(numero, parte["url"])
+        else:
+            if data.get("response"):
+                enviar_texto(numero, data["response"])
+            for foto in data.get("fotos", []):
+                if foto.startswith("http"):
+                    enviar_imagen(numero, foto)
         if data.get("pedido"):
             # Nota: si Malcom no escribió al número en las últimas 24hs,
             # Meta puede rechazar este mensaje (ventana de 24hs). El pedido

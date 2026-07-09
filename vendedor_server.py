@@ -294,10 +294,27 @@ Sos **Eva**, la asistente de ventas de Dist Coronel Sur por WhatsApp. Atendés c
   Cliente: (mayorista o consumidor final)
   - [código] producto x cantidad = subtotal
   TOTAL: $...
-- Si el cliente pide la foto de un producto (o te parece útil mostrarla), y el producto tiene valor en el campo "foto", agregá al FINAL de tu respuesta una línea exacta así:
-  FOTOS: <valor del campo foto tal cual viene del tool>
-  (podés poner varias separadas por coma; esa línea no la ve el cliente, el sistema la convierte en imágenes)
-- REGLA DE FOTOS: cada vez que hables de un producto puntual (precio, stock, recomendación), SIEMPRE acompañá la respuesta con su foto (si el campo "foto" tiene valor). Máximo 5 fotos por mensaje. En listados largos de categoría mandá las fotos de los 3 primeros y ofrecé "¿querés ver fotos de los demás?"
+- FORMATO CON FOTOS (MUY IMPORTANTE): cada producto va SEGUIDO INMEDIATAMENTE de su
+  foto. Es decir: datos del producto A, después su foto; datos del producto B, después
+  su foto; y así. NO juntes todas las fotos al final.
+  La foto se marca con una línea propia, JUSTO DEBAJO de ese producto, así:
+  FOTO: <valor del campo foto tal cual viene del tool>
+  (el sistema convierte esa línea en la imagen; el cliente no ve el texto "FOTO:")
+  Ejemplo de cómo tenés que responder cuando mostrás 2 productos:
+
+  *SHAKER STANLEY ACTIVATE 591ml* (cód. 37822)
+  • Precio: *$59.840* · ✅ hay stock
+  FOTO: https://.../shaker.jpg
+
+  *BOTELLA HOPPE 650* (cód. 37797)
+  • Precio: *$16.490* · ✅ hay stock
+  FOTO: https://.../botella.jpg
+
+  ¿Te interesa alguno? También tengo otros modelos de vaso térmico si querés.
+
+- Poné la foto solo si el producto trae valor en el campo "foto". Máximo 5 productos-con-foto por mensaje.
+- Las ALTERNATIVAS o SUGERENCIAS van AL FINAL, después de todos los productos con
+  sus fotos, y normalmente SIN foto (salvo que el cliente pida ver esas también).
 - Cuando el cliente quiera CERRAR un pedido: resumí el pedido (productos, cantidades, total estimado) y decile que un vendedor humano lo contacta para confirmar stock, total final y entrega.
 - Ante reclamos, cuentas corrientes o cosas fuera de tu alcance: derivá a humano.
 - No des información que no esté en este documento o en la lista de precios.
@@ -320,25 +337,59 @@ class AudioRequest(BaseModel):
     telefono: str = ""
 
 
-def extraer_fotos(texto: str) -> tuple[str, list[str]]:
-    """Saca la línea 'FOTOS: ...' del texto. Acepta URLs (http...) o
-    nombres de archivo locales de negocio/fotos/."""
-    fotos = []
-    lineas_limpias = []
+def _resolver_foto(nombre: str) -> str:
+    """Devuelve la URL o ruta de una foto válida, o '' si no existe."""
+    nombre = nombre.strip()
+    if not nombre:
+        return ""
+    if nombre.startswith("http"):
+        return nombre
+    if (FOTOS_DIR / nombre).is_file():
+        return str(FOTOS_DIR / nombre)
+    return ""
+
+
+def construir_secuencia(texto: str) -> tuple[str, list[str], list[dict]]:
+    """Convierte la respuesta en una SECUENCIA ordenada de partes, para que
+    cada producto se muestre seguido de SU foto:
+      texto del producto A -> foto A -> texto del producto B -> foto B -> ...
+      -> texto final (alternativas/sugerencias)
+
+    Eva marca las fotos con líneas 'FOTO: <valor>' justo después de cada
+    producto. Devuelve:
+      - texto_plano: todo el texto sin las líneas FOTO (para log/fallback)
+      - fotos: lista de todas las fotos (fallback)
+      - secuencia: [{"tipo": "texto", "contenido": "..."} | {"tipo": "foto", "url": "..."}]
+    """
+    secuencia: list[dict] = []
+    fotos: list[str] = []
+    buffer: list[str] = []
+
+    def flush_texto():
+        contenido = "\n".join(buffer).strip()
+        buffer.clear()
+        if contenido:
+            secuencia.append({"tipo": "texto", "contenido": contenido})
+
     for linea in texto.splitlines():
         m = re.match(r"^\s*FOTOS?\s*:\s*(.+)$", linea, flags=re.IGNORECASE)
         if m:
-            for nombre in m.group(1).split(","):
-                nombre = nombre.strip()
-                if not nombre:
-                    continue
-                if nombre.startswith("http"):
-                    fotos.append(nombre)
-                elif (FOTOS_DIR / nombre).is_file():
-                    fotos.append(str(FOTOS_DIR / nombre))
+            # una línea FOTO puede traer varias separadas por coma
+            resueltas = [_resolver_foto(n) for n in m.group(1).split(",")]
+            resueltas = [r for r in resueltas if r]
+            if resueltas:
+                flush_texto()  # el texto acumulado (el producto) va ANTES de su foto
+                for url in resueltas:
+                    secuencia.append({"tipo": "foto", "url": url})
+                    fotos.append(url)
         else:
-            lineas_limpias.append(linea)
-    return "\n".join(lineas_limpias).strip(), fotos
+            buffer.append(linea)
+    flush_texto()
+
+    texto_plano = "\n".join(
+        p["contenido"] for p in secuencia if p["tipo"] == "texto"
+    ).strip()
+    return texto_plano, fotos, secuencia
 
 
 # Sistema de gestión Coronel Sur (opcional): si estas variables están en
@@ -512,23 +563,32 @@ def procesar_mensaje(session_id: str, texto: str, telefono: str = "",
         traceback.print_exc()
         print("===============================================\n")
         raise HTTPException(status_code=500, detail=str(e)[:500])
-    limpio, fotos = extraer_fotos(respuesta)
-    limpio, pedido = extraer_pedido(limpio)
+    # Separar el bloque del pedido (va al vendedor humano, no al cliente)
+    respuesta, pedido = extraer_pedido(respuesta)
+    # Armar la secuencia ordenada: producto -> su foto -> producto -> su foto...
+    limpio, fotos, secuencia = construir_secuencia(respuesta)
     if pedido:
         print(f"[pedido] Nuevo pedido confirmado:\n{pedido}\n")
         notificar_coronel(pedido, session_id, telefono)
-        # Link de pago Mercado Pago (si está configurado)
+        # Link de pago Mercado Pago (si está configurado) -> última parte de texto
         if hay_pagos():
             datos = parsear_pedido(pedido)
             link = crear_link_pago(datos["items"], referencia=telefono or session_id)
             if link:
-                limpio += (
-                    f"\n\n💳 *Pagá online al instante acá:*\n{link}\n"
+                pago = (
+                    f"💳 *Pagá online al instante acá:*\n{link}\n"
                     "_La mercadería queda reservada cuando se acredita el pago._"
                 )
+                secuencia.append({"tipo": "texto", "contenido": pago})
+                limpio += "\n\n" + pago
     registrar_conversacion(session_id, telefono, texto, limpio, es_audio)
     guardar_sesiones(sessions, SESIONES_PATH)
-    return {"response": limpio or "🙌", "fotos": fotos, "pedido": pedido}
+    return {
+        "response": limpio or "🙌",
+        "fotos": fotos,
+        "secuencia": secuencia,
+        "pedido": pedido,
+    }
 
 
 @app.post("/api/vendedor")

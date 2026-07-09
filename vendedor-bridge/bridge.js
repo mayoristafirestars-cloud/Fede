@@ -294,21 +294,38 @@ client.on('message', async (msg) => {
       }
     }
 
-    if (data.response) {
-      for (const parte of partir(data.response)) {
-        await client.sendMessage(msg.from, parte);
+    async function enviarFoto(ref) {
+      try {
+        const media = ref.startsWith('http')
+          ? await MessageMedia.fromUrl(ref, { unsafeMime: true })
+          : MessageMedia.fromFilePath(ref);
+        await client.sendMessage(msg.from, media);
+      } catch (e) {
+        console.error('No pude mandar la foto', ref, e.message);
       }
     }
 
-    for (const foto of data.fotos || []) {
-      try {
-        const media = foto.startsWith('http')
-          ? await MessageMedia.fromUrl(foto, { unsafeMime: true })
-          : MessageMedia.fromFilePath(foto);
-        await client.sendMessage(msg.from, media);
-      } catch (e) {
-        console.error('No pude mandar la foto', foto, e.message);
+    if (Array.isArray(data.secuencia) && data.secuencia.length) {
+      // Orden natural: producto -> su foto -> producto -> su foto -> ... -> alternativas
+      let prefijoAplicado = false;
+      for (const parte of data.secuencia) {
+        if (parte.tipo === 'texto' && parte.contenido) {
+          let txt = parte.contenido;
+          if (esOtroMedio && !prefijoAplicado) {
+            txt = '(La foto no la puedo ver 🙈, pero leí tu mensaje 👇)\n\n' + txt;
+            prefijoAplicado = true;
+          }
+          for (const p of partir(txt)) await client.sendMessage(msg.from, p);
+        } else if (parte.tipo === 'foto' && parte.url) {
+          await enviarFoto(parte.url);
+        }
       }
+    } else {
+      // Fallback (versiones viejas): texto y después fotos
+      if (data.response) {
+        for (const parte of partir(data.response)) await client.sendMessage(msg.from, parte);
+      }
+      for (const foto of data.fotos || []) await enviarFoto(foto);
     }
 
     // Pedido confirmado -> avisar al vendedor humano (Malcom)
