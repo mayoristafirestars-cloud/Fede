@@ -1,6 +1,6 @@
 #!/bin/bash
 # ============================================================
-#  Instalador de Eva + Max en un VPS Ubuntu (22.04 / 24.04)
+#  Instalador de Eva + Max en un VPS Ubuntu (22.04 / 24.04 / 26.04)
 #  Uso:  curl -fsSL https://raw.githubusercontent.com/mayoristafirestars-cloud/Fede/claude/build-ai-agent-H9XwU/setup-vps.sh | bash
 # ============================================================
 set -e
@@ -13,7 +13,7 @@ echo ""
 echo "=== [1/6] Instalando paquetes del sistema ==="
 export DEBIAN_FRONTEND=noninteractive
 apt-get update -qq
-apt-get install -y -qq git curl python3 python3-pip ca-certificates gnupg >/dev/null
+apt-get install -y -qq git curl python3 python3-venv python3-full ca-certificates gnupg build-essential ffmpeg >/dev/null
 
 # Node.js 20 (NodeSource)
 if ! command -v node >/dev/null || [ "$(node -v | cut -c2-3)" -lt 18 ]; then
@@ -36,11 +36,13 @@ else
 fi
 cd "$DIR"
 
-echo "=== [3/6] Instalando dependencias de Python ==="
-pip3 install -q -r requirements.txt --break-system-packages 2>/dev/null \
-    || pip3 install -q -r requirements.txt
-pip3 install -q -r coronel-sur/requirements.txt --break-system-packages 2>/dev/null \
-    || pip3 install -q -r coronel-sur/requirements.txt
+echo "=== [3/6] Instalando dependencias de Python (entorno virtual) ==="
+VENV="$DIR/venv"
+python3 -m venv "$VENV"
+"$VENV/bin/pip" install -q --upgrade pip
+"$VENV/bin/pip" install -q -r requirements.txt
+"$VENV/bin/pip" install -q -r coronel-sur/requirements.txt
+PY="$VENV/bin/python"
 
 echo "=== [4/6] Instalando dependencias de Node (puede tardar) ==="
 (cd whatsapp-bridge && npm install --no-fund --no-audit --loglevel=error)
@@ -93,12 +95,12 @@ WantedBy=multi-user.target
 EOF
 }
 
-make_service "max-server" "$DIR" "/usr/bin/python3 -m uvicorn max_server:app --host 127.0.0.1 --port 8002"
-make_service "eva-server" "$DIR" "/usr/bin/python3 -m uvicorn vendedor_server:app --host 127.0.0.1 --port 8003"
+make_service "max-server" "$DIR" "$VENV/bin/python -m uvicorn max_server:app --host 127.0.0.1 --port 8002"
+make_service "eva-server" "$DIR" "$VENV/bin/python -m uvicorn vendedor_server:app --host 127.0.0.1 --port 8003"
 make_service "max-bridge" "$DIR/whatsapp-bridge" "/usr/bin/node bridge.js"
 make_service "eva-bridge" "$DIR/vendedor-bridge" "/usr/bin/node bridge.js"
-make_service "coronel-sur" "$DIR/coronel-sur" "/usr/bin/python3 backend/main.py"
-make_service "vigilante" "$DIR" "/usr/bin/python3 watchdog.py"
+make_service "coronel-sur" "$DIR/coronel-sur" "$VENV/bin/python backend/main.py"
+make_service "vigilante" "$DIR" "$VENV/bin/python watchdog.py"
 
 systemctl daemon-reload
 systemctl enable --now max-server eva-server coronel-sur vigilante >/dev/null
