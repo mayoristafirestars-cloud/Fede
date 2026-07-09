@@ -36,6 +36,7 @@ node_modules/
 allowed.txt
 negocio/inventario.csv
 sesiones_*.json
+sesiones_*.json.tmp
 *.alive
 alertas.txt*
 negocio/productos_extra.csv
