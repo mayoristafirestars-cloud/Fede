@@ -38,3 +38,4 @@ negocio/inventario.csv
 sesiones_*.json
 *.alive
 alertas.txt*
+negocio/productos_extra.csv

@@ -133,9 +133,21 @@ def cargar_inventario_csv() -> list[dict]:
             codigo = campos.get("codigo", "").replace("Cod:", "").strip()
             rubro = campos.get("rubro", "").strip()
             subrubro = campos.get("subrubro", "").strip()
-            # Productos de Nexo: se pueden grabar con logo/marca del cliente (mayoristas)
+            # Grabable: productos Nexo, EXCEPTO electrónica (no se puede grabar
+            # un drone, un cargador, auriculares, etc.). Se puede sobrescribir
+            # producto por producto desde negocio/productos_extra.csv.
             proveedor = campos.get("provedor", "") or campos.get("proveedor", "")
-            personalizable = "nexo" in proveedor.lower()
+            es_nexo = "nexo" in proveedor.lower()
+            texto_prod = normalizar(f"{nombre} {rubro} {subrubro}")
+            NO_GRABABLE = (
+                "drone", "cargador", "cable", "auricular", "airpad", "airpod",
+                "parlante", "speaker", "bateria", "pila ", "power bank", "powerbank",
+                "radio", "receptor", "mouse", "aro de led", "aros de led",
+                "luz de noche", "humificador", "humidificador", "aspiradora",
+                "reloj", "calculadora", "linterna", "walkie", "microfono", "usb",
+                "fuente ", "adaptador", "led para cel",
+            )
+            personalizable = es_nexo and not any(k in texto_prod for k in NO_GRABABLE)
             productos.append(
                 {
                     "codigo": codigo,
@@ -149,9 +161,54 @@ def cargar_inventario_csv() -> list[dict]:
                     "descripcion": "",
                     "foto": foto,
                     "personalizable": personalizable,
+                    "unidades_por_bulto": None,
                 }
             )
+    _aplicar_overlay(productos)
     return productos
+
+
+EXTRA_PATH = NEGOCIO_DIR / "productos_extra.csv"
+
+
+def _aplicar_overlay(productos: list[dict]) -> None:
+    """Aplica datos que NO vienen de FactuPyme, cargados a mano en
+    negocio/productos_extra.csv. Columnas (por código de producto):
+      codigo, unidades_por_bulto, grabable
+    - unidades_por_bulto: cuántas unidades trae la caja/bulto (número)
+    - grabable: si/no  (fuerza si un producto se graba o no, más allá del automático)
+    Solo hace falta cargar los productos que quieras ajustar; el resto
+    queda con los valores automáticos."""
+    if not EXTRA_PATH.is_file():
+        return
+    import csv
+
+    por_codigo = {p["codigo"]: p for p in productos if p["codigo"]}
+    aplicados = 0
+    try:
+        with open(EXTRA_PATH, encoding="utf-8-sig", newline="") as f:
+            for fila in csv.DictReader(f):
+                campos = {
+                    normalizar(k).replace("_", " "): (v or "").strip()
+                    for k, v in fila.items() if k
+                }
+                cod = campos.get("codigo", "").replace("Cod:", "").strip()
+                p = por_codigo.get(cod)
+                if not p:
+                    continue
+                bulto = campos.get("unidades por bulto", "") or campos.get("bulto", "")
+                if bulto.isdigit():
+                    p["unidades_por_bulto"] = int(bulto)
+                grab = campos.get("grabable", "").lower()
+                if grab in ("si", "sí", "true", "1"):
+                    p["personalizable"] = True
+                elif grab in ("no", "false", "0"):
+                    p["personalizable"] = False
+                aplicados += 1
+        if aplicados:
+            print(f"[vendedor] {aplicados} productos ajustados desde productos_extra.csv")
+    except Exception as e:
+        print(f"[vendedor] No pude leer productos_extra.csv: {e}")
 
 
 _csv_mtime: float | None = None
@@ -295,11 +352,14 @@ Sos **Eva**, la asistente de ventas de Dist Coronel Sur por WhatsApp. Atendés c
   (o pregunta por grabado/logo/personalización), ofrecele las dos opciones:
     1) Comprarlo *liso* (sin grabar) al precio de lista, para que lo grabe él mismo.
     2) Que se lo grabemos nosotros con su logo/marca.
-  El grabado tiene condiciones (cantidad mínima, costo del grabado y armado del arte
-  según el logo) que las coordina un vendedor humano: NO inventes precios ni mínimos de
-  grabado. Si el cliente quiere avanzar con el grabado, tomá el dato (qué producto, qué
-  logo/marca, cantidad aprox) y decile que un vendedor lo contacta para cerrar los
-  detalles. A los clientes CONSUMIDOR FINAL no les ofrezcas grabado (es un servicio mayorista).
+  La cantidad mínima de grabado es POR BULTO: si el producto trae "unidades_por_bulto"
+  con un número, aclarale que el grabado es por bulto de esa cantidad (ej: "el grabado
+  es por bulto de 12 unidades"). Si "unidades_por_bulto" viene vacío/None, no inventes
+  la cantidad: decí que el mínimo por bulto lo confirma el vendedor.
+  El costo del grabado y el armado del arte del logo los coordina un vendedor humano:
+  NO inventes precios de grabado. Si el cliente quiere avanzar, tomá el dato (qué
+  producto, qué logo/marca, cantidad aprox) y decile que un vendedor lo contacta.
+  A los clientes CONSUMIDOR FINAL no les ofrezcas grabado (es un servicio mayorista).
 - Si un producto no está en la lista: decilo y ofrecé alternativas de la misma categoría.
 - PEDIDO CONFIRMADO: cuando el cliente confirma su pedido, respondele el resumen
   (productos, cantidades, precios, total, y que Malcom lo va a contactar) y
