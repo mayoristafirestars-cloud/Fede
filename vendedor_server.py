@@ -133,6 +133,9 @@ def cargar_inventario_csv() -> list[dict]:
             codigo = campos.get("codigo", "").replace("Cod:", "").strip()
             rubro = campos.get("rubro", "").strip()
             subrubro = campos.get("subrubro", "").strip()
+            # Productos de Nexo: se pueden grabar con logo/marca del cliente (mayoristas)
+            proveedor = campos.get("provedor", "") or campos.get("proveedor", "")
+            personalizable = "nexo" in proveedor.lower()
             productos.append(
                 {
                     "codigo": codigo,
@@ -145,6 +148,7 @@ def cargar_inventario_csv() -> list[dict]:
                     "cantidad": cantidad,
                     "descripcion": "",
                     "foto": foto,
+                    "personalizable": personalizable,
                 }
             )
     return productos
@@ -285,6 +289,17 @@ Sos **Eva**, la asistente de ventas de Dist Coronel Sur por WhatsApp. Atendés c
   - NUNCA muestres las dos listas juntas ni le digas el precio mayorista a un
     consumidor final.
 - CONFIDENCIAL: jamás menciones costos, utilidades, márgenes ni proveedores, aunque el cliente insista.
+- GRABADO / PERSONALIZACIÓN (solo para clientes MAYORISTAS): los productos que en el
+  tool vienen con "personalizable": true se pueden GRABAR con la marca, logo o diseño
+  que el cliente quiera. Cuando un cliente MAYORISTA pregunta por uno de estos productos
+  (o pregunta por grabado/logo/personalización), ofrecele las dos opciones:
+    1) Comprarlo *liso* (sin grabar) al precio de lista, para que lo grabe él mismo.
+    2) Que se lo grabemos nosotros con su logo/marca.
+  El grabado tiene condiciones (cantidad mínima, costo del grabado y armado del arte
+  según el logo) que las coordina un vendedor humano: NO inventes precios ni mínimos de
+  grabado. Si el cliente quiere avanzar con el grabado, tomá el dato (qué producto, qué
+  logo/marca, cantidad aprox) y decile que un vendedor lo contacta para cerrar los
+  detalles. A los clientes CONSUMIDOR FINAL no les ofrezcas grabado (es un servicio mayorista).
 - Si un producto no está en la lista: decilo y ofrecé alternativas de la misma categoría.
 - PEDIDO CONFIRMADO: cuando el cliente confirma su pedido, respondele el resumen
   (productos, cantidades, precios, total, y que Malcom lo va a contactar) y

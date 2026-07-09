@@ -24,6 +24,16 @@ Los precios son **siempre por unidad**.
 
 - Descuentos por cantidad/volumen: los maneja un vendedor humano (derivar).
 
+## Grabado / personalización (servicio mayorista)
+
+- Muchos productos de la línea Nexo se pueden **grabar con la marca o logo** que el
+  cliente quiera (regalería empresarial, merchandising, etc.).
+- Dos opciones para el cliente mayorista:
+  1. Comprar el producto **liso** al precio de lista y grabarlo por su cuenta.
+  2. Que se lo grabemos nosotros con su logo/diseño.
+- El grabado tiene cantidad mínima y un costo según el logo/arte. Eso lo coordina
+  un vendedor humano (Eva ofrece la opción y toma el pedido, no cotiza el grabado).
+
 ## Formas de pago
 
 - Efectivo
