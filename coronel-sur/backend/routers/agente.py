@@ -95,6 +95,102 @@ def recibir_pedido(data: PedidoEva):
         conn.close()
 
 
+class ConversacionIn(BaseModel):
+    session: str
+    telefono: str = ""
+    mensaje: str
+    respuesta: str
+    es_audio: int = 0
+
+
+@router.post("/conversacion")
+def guardar_conversacion(data: ConversacionIn):
+    """Eva registra acá cada intercambio con un cliente."""
+    conn = conectar()
+    try:
+        conn.execute("""
+            INSERT INTO conversaciones_eva (session, telefono, mensaje, respuesta, es_audio)
+            VALUES (?, ?, ?, ?, ?)""",
+            (data.session, data.telefono, data.mensaje[:2000],
+             data.respuesta[:4000], data.es_audio))
+        conn.commit()
+        return {"ok": True}
+    finally:
+        conn.close()
+
+
+@router.get("/conversaciones")
+def listar_conversaciones(telefono: str = "", limit: int = 80):
+    conn = conectar()
+    try:
+        query = "SELECT * FROM conversaciones_eva"
+        params = []
+        if telefono:
+            query += " WHERE telefono LIKE ? OR session LIKE ?"
+            params = [f"%{telefono}%"] * 2
+        query += " ORDER BY id DESC LIMIT ?"
+        params.append(limit)
+        filas = [dict(f) for f in conn.execute(query, params).fetchall()]
+        hoy = conn.execute("""
+            SELECT COUNT(*), COUNT(DISTINCT session) FROM conversaciones_eva
+             WHERE date(creado_en) = date('now', 'localtime')""").fetchone()
+        return {"conversaciones": filas, "hoy_mensajes": hoy[0], "hoy_clientes": hoy[1]}
+    finally:
+        conn.close()
+
+
+class EstadoIn(BaseModel):
+    estado: str
+
+
+ESTADOS_VALIDOS = {"activo", "facturado", "entregado", "cancelado"}
+
+
+@router.post("/pedido/{comprobante_id}/estado")
+def cambiar_estado(comprobante_id: int, data: EstadoIn):
+    """Cambia el estado de un pedido de Eva (pendiente/facturado/entregado/cancelado)."""
+    if data.estado not in ESTADOS_VALIDOS:
+        raise HTTPException(status_code=400, detail=f"Estado inválido. Válidos: {ESTADOS_VALIDOS}")
+    conn = conectar()
+    try:
+        row = conn.execute(
+            "SELECT id FROM comprobantes WHERE id = ? AND origen = 'eva'",
+            (comprobante_id,)).fetchone()
+        if not row:
+            raise HTTPException(status_code=404, detail="Pedido no encontrado")
+        conn.execute("UPDATE comprobantes SET estado = ? WHERE id = ?",
+                     (data.estado, comprobante_id))
+        conn.commit()
+        return {"ok": True}
+    finally:
+        conn.close()
+
+
+@router.get("/resumen-diario")
+def resumen_diario():
+    """Resumen del día para el reporte automático por WhatsApp."""
+    conn = conectar()
+    try:
+        conv = conn.execute("""
+            SELECT COUNT(*), COUNT(DISTINCT session) FROM conversaciones_eva
+             WHERE date(creado_en) = date('now', 'localtime')""").fetchone()
+        ped = conn.execute("""
+            SELECT COUNT(*), COALESCE(SUM(total),0) FROM comprobantes
+             WHERE origen = 'eva' AND estado != 'cancelado'
+               AND date(creado_en) = date('now', 'localtime')""").fetchone()
+        top = conn.execute("""
+            SELECT mensaje FROM conversaciones_eva
+             WHERE date(creado_en) = date('now', 'localtime')
+             ORDER BY id DESC LIMIT 5""").fetchall()
+        return {
+            "mensajes": conv[0], "clientes": conv[1],
+            "pedidos": ped[0], "total_pedidos": round(ped[1], 2),
+            "ultimas_consultas": [t[0][:80] for t in top],
+        }
+    finally:
+        conn.close()
+
+
 @router.get("/pedidos")
 def listar_pedidos(limit: int = 50):
     """Pedidos que entraron por Eva, más recientes primero."""
@@ -111,7 +207,7 @@ def listar_pedidos(limit: int = 50):
                 (p["id"],)).fetchall()]
         kpi = conn.execute("""
             SELECT COUNT(*), COALESCE(SUM(total),0) FROM comprobantes
-             WHERE origen = 'eva' AND estado != 'anulado'""").fetchone()
+             WHERE origen = 'eva' AND estado NOT IN ('anulado', 'cancelado')""").fetchone()
         return {"pedidos": pedidos, "cantidad": kpi[0], "total": round(kpi[1], 2)}
     finally:
         conn.close()

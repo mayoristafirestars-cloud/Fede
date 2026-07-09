@@ -26,11 +26,18 @@ const LIMITE_GLOBAL_DIA = parseInt(process.env.LIMITE_GLOBAL_DIA || '400', 10);
 // Numero del dueño para avisarle si se alcanza el tope global (opcional)
 const ALERTA_WHATSAPP = (process.env.ALERTA_WHATSAPP || '').replace(/[^0-9]/g, '');
 
+// Resumen diario por WhatsApp al dueño (necesita ALERTA_WHATSAPP)
+const RESUMEN_HORA = parseInt(process.env.RESUMEN_HORA || '21', 10);
+const CORONEL_URL = (process.env.CORONEL_URL || '').replace(/\/$/, '');
+const AGENTE_TOKEN = process.env.AGENTE_TOKEN || 'eva-coronel-2026';
+
 const ventanasPorNumero = new Map(); // from -> [timestamps ultima hora]
 const yaAvisados = new Set();        // numeros ya avisados de que se pasaron
+const clientesHoy = new Set();       // numeros distintos que escribieron hoy
 let diaActual = new Date().toDateString();
 let mensajesHoy = 0;
 let alertaGlobalEnviada = false;
+let resumenEnviadoHoy = false;
 
 function chequearLimites(from) {
   const ahora = Date.now();
@@ -39,6 +46,8 @@ function chequearLimites(from) {
     diaActual = hoy;
     mensajesHoy = 0;
     alertaGlobalEnviada = false;
+    resumenEnviadoHoy = false;
+    clientesHoy.clear();
   }
   if (mensajesHoy >= LIMITE_GLOBAL_DIA) return { ok: false, motivo: 'global' };
 
@@ -50,8 +59,49 @@ function chequearLimites(from) {
   recientes.push(ahora);
   ventanasPorNumero.set(from, recientes);
   mensajesHoy++;
+  clientesHoy.add(from);
   return { ok: true };
 }
+
+// ---- Resumen diario al dueño ----
+async function enviarResumenDiario() {
+  if (!ALERTA_WHATSAPP) return;
+  let extra = '';
+  if (CORONEL_URL) {
+    try {
+      const r = await fetch(CORONEL_URL + '/api/agente/resumen-diario', {
+        headers: { 'X-Token': AGENTE_TOKEN },
+      });
+      if (r.ok) {
+        const d = await r.json();
+        extra =
+          `\n🛒 Pedidos confirmados: *${d.pedidos}* por *$${Number(d.total_pedidos).toLocaleString('es-AR')}*` +
+          (d.ultimas_consultas && d.ultimas_consultas.length
+            ? '\n\nÚltimas consultas:\n' + d.ultimas_consultas.map((c) => '· ' + c).join('\n')
+            : '');
+      }
+    } catch (_) {}
+  }
+  const texto =
+    `📊 *RESUMEN DEL DÍA — EVA*\n` +
+    `💬 Mensajes atendidos: *${mensajesHoy}*\n` +
+    `👥 Clientes distintos: *${clientesHoy.size}*` +
+    extra;
+  try {
+    await client.sendMessage(ALERTA_WHATSAPP + '@c.us', texto);
+    console.log('Resumen diario enviado.');
+  } catch (e) {
+    console.error('No pude enviar el resumen diario:', e.message);
+  }
+}
+
+setInterval(() => {
+  const ahora = new Date();
+  if (ahora.getHours() === RESUMEN_HORA && !resumenEnviadoHoy) {
+    resumenEnviadoHoy = true;
+    enviarResumenDiario();
+  }
+}, 60000);
 
 const busy = new Set();
 

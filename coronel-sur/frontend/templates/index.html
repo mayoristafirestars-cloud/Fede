@@ -355,8 +355,13 @@ a{text-decoration:none;color:inherit}button{cursor:pointer;font-family:var(--F)}
     <button class="btn-sm" style="margin-left:auto" onclick="cargarAgente()">↻ Actualizar</button>
   </div>
   <div id="ag-stats" style="display:flex;gap:14px;margin-bottom:12px;color:var(--text2);font-size:12px"></div>
-  <div style="flex:1;overflow-y:auto" id="ag-lista">
-    <p style="text-align:center;padding:40px;color:var(--text3)">Cargando...</p>
+  <div style="flex:1;overflow-y:auto">
+    <div id="ag-lista"><p style="text-align:center;padding:40px;color:var(--text3)">Cargando...</p></div>
+    <p style="color:var(--text2);font-size:12px;margin:18px 0 8px;text-transform:uppercase;letter-spacing:.5px">💬 Últimas conversaciones
+      <input id="ag-conv-buscar" placeholder="filtrar por teléfono..." oninput="agConvDebounced()"
+        style="margin-left:10px;background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:4px 10px;color:var(--text);font-size:12px;outline:none">
+    </p>
+    <div id="ag-conversaciones"><p style="color:var(--text3);font-size:12px">Cargando...</p></div>
   </div>
 </div>
 <div class="page" id="page-tienda"><div style="display:flex;align-items:center;justify-content:center;flex:1;flex-direction:column;gap:8px;color:var(--text3)"><span style="font-size:48px">🛒</span><p style="font-size:16px;font-weight:600;color:var(--text)">Tienda Online</p><p>En construcción</p></div></div>
@@ -880,6 +885,9 @@ async function invGuardar(id){
 }
 
 /* ============ AGENTE (pedidos de Eva) ============ */
+const EST_COLORES={activo:'var(--orange)',facturado:'var(--blue)',entregado:'var(--green)',cancelado:'var(--red)'};
+const EST_LABEL={activo:'pendiente',facturado:'facturado',entregado:'entregado',cancelado:'cancelado'};
+
 async function cargarAgente(){
   const box=document.getElementById('ag-lista');
   try{
@@ -888,20 +896,54 @@ async function cargarAgente(){
       '<span><b style="color:var(--text)">'+d.cantidad+'</b> pedidos recibidos</span>'+
       '<span>Total: <b style="color:var(--green)">'+fmt$(d.total)+'</b></span>';
     if(!d.pedidos.length){
-      box.innerHTML='<div style="text-align:center;padding:60px 20px;color:var(--text3)"><div style="font-size:40px;margin-bottom:10px">🤖</div>'+
+      box.innerHTML='<div style="text-align:center;padding:40px 20px;color:var(--text3)"><div style="font-size:40px;margin-bottom:10px">🤖</div>'+
         '<p style="color:var(--text)">Todavía no entraron pedidos por Eva.</p>'+
         '<p style="font-size:12px;margin-top:6px">Cuando un cliente confirme un pedido por WhatsApp, aparece acá automáticamente.</p></div>';
+    }else{
+      box.innerHTML=d.pedidos.map(p=>{
+        const items=p.items.map(i=>'<div style="display:flex;justify-content:space-between;font-size:12px;color:var(--text2);padding:2px 0"><span>'+i.producto_desc+' × '+i.cantidad+'</span><span>'+fmt$(i.subtotal)+'</span></div>').join('');
+        const botones=['facturado','entregado','cancelado'].filter(e=>e!==p.estado).map(e=>
+          '<button class="btn-sm" style="font-size:11px" onclick="agEstado('+p.id+',\''+e+'\')">'+EST_LABEL[e]+'</button>').join('');
+        return '<div style="background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:14px;margin-bottom:10px">'+
+          '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;flex-wrap:wrap;gap:6px">'+
+            '<div><b style="color:var(--accent)">'+p.numero+'</b> <span style="color:var(--text2);font-size:12px">· '+p.fecha+' · '+p.cliente_nombre+'</span></div>'+
+            '<div style="display:flex;gap:8px;align-items:center"><b style="color:var(--green)">'+fmt$(p.total)+'</b>'+
+            '<span style="font-size:11px;padding:2px 8px;border-radius:99px;background:var(--surface2);color:'+(EST_COLORES[p.estado]||'var(--text2)')+'">'+(EST_LABEL[p.estado]||p.estado)+'</span></div></div>'+
+          items+
+          '<div style="display:flex;gap:6px;margin-top:10px;justify-content:flex-end">'+botones+'</div></div>';
+      }).join('');
+    }
+  }catch(e){box.innerHTML='<p style="text-align:center;padding:30px;color:var(--red)">Error: '+e.message+'</p>';}
+  cargarConversaciones();
+}
+
+async function agEstado(id,estado){
+  if(estado==='cancelado'&&!confirm('¿Marcar este pedido como cancelado?'))return;
+  const r=await fetch('/api/agente/pedido/'+id+'/estado',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({estado})});
+  if(!r.ok)return alert('No se pudo cambiar el estado');
+  cargarAgente();
+}
+
+let agConvTimer=null;
+function agConvDebounced(){clearTimeout(agConvTimer);agConvTimer=setTimeout(cargarConversaciones,300);}
+
+async function cargarConversaciones(){
+  const box=document.getElementById('ag-conversaciones');
+  try{
+    const q=document.getElementById('ag-conv-buscar').value.trim();
+    const d=await(await fetch('/api/agente/conversaciones?telefono='+encodeURIComponent(q))).json();
+    if(!d.conversaciones.length){
+      box.innerHTML='<p style="color:var(--text3);font-size:12px;padding:14px">Sin conversaciones registradas todavía. (Requiere CORONEL_URL configurada en el .env de Eva.)</p>';
       return;
     }
-    box.innerHTML=d.pedidos.map(p=>{
-      const items=p.items.map(i=>'<div style="display:flex;justify-content:space-between;font-size:12px;color:var(--text2);padding:2px 0"><span>'+i.producto_desc+' × '+i.cantidad+'</span><span>'+fmt$(i.subtotal)+'</span></div>').join('');
-      return '<div style="background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:14px;margin-bottom:10px">'+
-        '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">'+
-          '<div><b style="color:var(--accent)">'+p.numero+'</b> <span style="color:var(--text2);font-size:12px">· '+p.fecha+' · '+p.cliente_nombre+'</span></div>'+
-          '<div style="display:flex;gap:8px;align-items:center"><b style="color:var(--green)">'+fmt$(p.total)+'</b>'+
-          '<span style="font-size:11px;padding:2px 8px;border-radius:99px;background:var(--surface2);color:'+(p.estado==='activo'?'var(--orange)':'var(--green)')+'">'+p.estado+'</span></div></div>'+items+'</div>';
-    }).join('');
-  }catch(e){box.innerHTML='<p style="text-align:center;padding:30px;color:var(--red)">Error: '+e.message+'</p>';}
+    box.innerHTML='<table class="hist-table"><thead><tr><th>Hora</th><th>Cliente</th><th>Mensaje</th><th>Respuesta de Eva</th></tr></thead><tbody>'+
+      d.conversaciones.map(c=>
+        '<tr><td style="white-space:nowrap;color:var(--text3)">'+(c.creado_en||'').slice(5,16)+'</td>'+
+        '<td style="white-space:nowrap">'+(c.telefono||c.session.replace(/@.*/,''))+(c.es_audio?' 🎙️':'')+'</td>'+
+        '<td style="max-width:260px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="'+String(c.mensaje).replace(/"/g,'&quot;')+'">'+c.mensaje+'</td>'+
+        '<td style="max-width:340px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--text2)" title="'+String(c.respuesta).replace(/"/g,'&quot;')+'">'+c.respuesta+'</td></tr>'
+      ).join('')+'</tbody></table>';
+  }catch(e){box.innerHTML='<p style="color:var(--red);font-size:12px">Error: '+e.message+'</p>';}
 }
 
 /* ============ REPORTES ============ */

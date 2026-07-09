@@ -34,9 +34,42 @@ app.include_router(router_agente)
 app.add_middleware(AuthMiddleware)
 registrar_auth(app)
 
+def backup_diario():
+    """Copia la base una vez por día a db/backups/, conservando las últimas 14."""
+    import shutil, time, threading
+    from datetime import datetime
+    from db.database import DB_PATH
+
+    backups_dir = os.path.join(os.path.dirname(DB_PATH), "backups")
+    os.makedirs(backups_dir, exist_ok=True)
+
+    def ciclo():
+        while True:
+            try:
+                destino = os.path.join(
+                    backups_dir,
+                    f"coronel_sur_{datetime.now().strftime('%Y%m%d')}.db",
+                )
+                if not os.path.exists(destino) and os.path.exists(DB_PATH):
+                    shutil.copy2(DB_PATH, destino)
+                    print(f"💾 Backup diario: {destino}")
+                    viejos = sorted(
+                        f for f in os.listdir(backups_dir)
+                        if f.startswith("coronel_sur_") and f.endswith(".db")
+                    )
+                    for f in viejos[:-14]:
+                        os.remove(os.path.join(backups_dir, f))
+            except Exception as e:
+                print(f"⚠️ Backup falló: {e}")
+            time.sleep(3600)  # chequea una vez por hora
+
+    threading.Thread(target=ciclo, daemon=True).start()
+
+
 @app.on_event("startup")
 def startup():
     inicializar_db()
+    backup_diario()
     print("🚀 Coronel Sur en http://localhost:8000")
 
 @app.get("/", response_class=HTMLResponse)

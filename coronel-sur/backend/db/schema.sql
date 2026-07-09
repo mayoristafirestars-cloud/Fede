@@ -83,3 +83,23 @@ CREATE INDEX IF NOT EXISTS idx_ventas_producto       ON ventas_historicas(produc
 CREATE INDEX IF NOT EXISTS idx_ventas_rubro          ON ventas_historicas(rubro);
 CREATE INDEX IF NOT EXISTS idx_comprobantes_fecha    ON comprobantes(fecha);
 CREATE INDEX IF NOT EXISTS idx_comprobantes_cliente  ON comprobantes(cliente_id);
+
+-- CONVERSACIONES DE EVA (log de lo que habla con los clientes)
+CREATE TABLE IF NOT EXISTS conversaciones_eva (
+    id              INTEGER PRIMARY KEY AUTOINCREMENT,
+    session         TEXT,
+    telefono        TEXT,
+    mensaje         TEXT,           -- lo que dijo el cliente
+    respuesta       TEXT,           -- lo que respondió Eva
+    es_audio        INTEGER DEFAULT 0,
+    creado_en       TEXT DEFAULT (datetime('now', 'localtime'))
+);
+
+-- ÍNDICES (rendimiento con miles de clientes y ventas)
+CREATE INDEX IF NOT EXISTS idx_vh_cliente  ON ventas_historicas(cliente);
+CREATE INDEX IF NOT EXISTS idx_vh_producto ON ventas_historicas(producto);
+CREATE INDEX IF NOT EXISTS idx_comp_cli    ON comprobantes(cliente_id);
+CREATE INDEX IF NOT EXISTS idx_comp_origen ON comprobantes(origen);
+CREATE INDEX IF NOT EXISTS idx_items_comp  ON comprobante_items(comprobante_id);
+CREATE INDEX IF NOT EXISTS idx_cli_tel     ON clientes(telefono);
+CREATE INDEX IF NOT EXISTS idx_conv_tel    ON conversaciones_eva(telefono);

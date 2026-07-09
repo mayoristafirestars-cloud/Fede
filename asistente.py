@@ -25,6 +25,10 @@ PROMPT_PATH = BASE_DIR / "prompts" / "asistente_prompt.md"
 
 client = Anthropic()
 SYSTEM_PROMPT = PROMPT_PATH.read_text(encoding="utf-8")
+# Cacheado en la API: se cobra completo 1 vez cada 5 min, después ~10%.
+SYSTEM_CACHEADO = [
+    {"type": "text", "text": SYSTEM_PROMPT, "cache_control": {"type": "ephemeral"}}
+]
 
 # Búsqueda web server-side: la ejecuta Anthropic, no hace falta código local.
 TOOLS = [
@@ -46,7 +50,7 @@ def chat(historial: list[dict], mensaje_usuario: str) -> str:
         response = client.messages.create(
             model=MODEL,
             max_tokens=MAX_TOKENS,
-            system=SYSTEM_PROMPT,
+            system=SYSTEM_CACHEADO,
             tools=TOOLS,
             messages=historial,
         )

@@ -12,6 +12,7 @@ Correr: uvicorn vendedor_server:app --port 8003
 import json
 import os
 import re
+import threading
 import traceback
 import unicodedata
 from pathlib import Path
@@ -383,6 +384,34 @@ def notificar_coronel(pedido_texto: str, session_id: str, telefono_real: str = "
         print(f"[pedido] No se pudo notificar al sistema: {e}")
 
 
+def registrar_conversacion(session_id: str, telefono: str, mensaje: str,
+                           respuesta: str, es_audio: bool = False) -> None:
+    """Guarda el intercambio en el sistema (en segundo plano, no bloquea)."""
+    if not CORONEL_URL:
+        return
+
+    def _enviar():
+        try:
+            import httpx
+
+            httpx.post(
+                f"{CORONEL_URL}/api/agente/conversacion",
+                json={
+                    "session": session_id,
+                    "telefono": telefono,
+                    "mensaje": mensaje,
+                    "respuesta": respuesta,
+                    "es_audio": 1 if es_audio else 0,
+                },
+                headers={"X-Token": AGENTE_TOKEN},
+                timeout=5,
+            )
+        except Exception:
+            pass  # el log nunca debe romper la atención al cliente
+
+    threading.Thread(target=_enviar, daemon=True).start()
+
+
 def extraer_pedido(texto: str) -> tuple[str, str]:
     """Separa el bloque 'PEDIDO_CONFIRMADO:' (para el vendedor humano)
     del texto visible para el cliente."""
@@ -394,6 +423,14 @@ def extraer_pedido(texto: str) -> tuple[str, str]:
     return visible, pedido
 
 
+# El system prompt (personalidad + info del negocio) se cachea en la API:
+# se cobra completo una vez cada 5 minutos y las reutilizaciones cuestan
+# ~10% — con clientes activos baja el costo a una fracción.
+SYSTEM_CACHEADO = [
+    {"type": "text", "text": SYSTEM_PROMPT, "cache_control": {"type": "ephemeral"}}
+]
+
+
 def chat(historial: list[dict], mensaje: str) -> str:
     recortar_historial(historial, max_mensajes=30)
     historial.append({"role": "user", "content": mensaje})
@@ -401,7 +438,7 @@ def chat(historial: list[dict], mensaje: str) -> str:
         response = client.messages.create(
             model=MODEL,
             max_tokens=MAX_TOKENS,
-            system=SYSTEM_PROMPT,
+            system=SYSTEM_CACHEADO,
             tools=TOOLS,
             messages=historial,
         )
@@ -427,8 +464,9 @@ def chat(historial: list[dict], mensaje: str) -> str:
     return "Dame un segundo que lo reviso y te confirmo 🙌"
 
 
-def procesar_mensaje(session_id: str, texto: str, telefono: str = "") -> dict:
-    """Flujo completo: chat -> fotos -> pedido -> notificación al sistema."""
+def procesar_mensaje(session_id: str, texto: str, telefono: str = "",
+                     es_audio: bool = False) -> dict:
+    """Flujo completo: chat -> fotos -> pedido -> notificación y log al sistema."""
     if texto.lower() == "reset":
         sessions.pop(session_id, None)
         return {"response": "Conversación reiniciada.", "fotos": [], "pedido": ""}
@@ -445,6 +483,7 @@ def procesar_mensaje(session_id: str, texto: str, telefono: str = "") -> dict:
     if pedido:
         print(f"[pedido] Nuevo pedido confirmado:\n{pedido}\n")
         notificar_coronel(pedido, session_id, telefono)
+    registrar_conversacion(session_id, telefono, texto, limpio, es_audio)
     return {"response": limpio or "🙌", "fotos": fotos, "pedido": pedido}
 
 
@@ -483,7 +522,7 @@ def api_vendedor_audio(req: AudioRequest):
             "fotos": [], "pedido": "", "transcript": "",
         }
     print(f"[audio] Cliente dijo: {texto[:120]}")
-    resultado = procesar_mensaje(req.session_id, texto, req.telefono)
+    resultado = procesar_mensaje(req.session_id, texto, req.telefono, es_audio=True)
     resultado["transcript"] = texto
     return resultado
 
