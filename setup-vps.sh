@@ -39,6 +39,8 @@ cd "$DIR"
 echo "=== [3/6] Instalando dependencias de Python ==="
 pip3 install -q -r requirements.txt --break-system-packages 2>/dev/null \
     || pip3 install -q -r requirements.txt
+pip3 install -q -r coronel-sur/requirements.txt --break-system-packages 2>/dev/null \
+    || pip3 install -q -r coronel-sur/requirements.txt
 
 echo "=== [4/6] Instalando dependencias de Node (puede tardar) ==="
 (cd whatsapp-bridge && npm install --no-fund --no-audit --loglevel=error)
@@ -48,8 +50,17 @@ echo "=== [5/6] Configuracion ==="
 if [ ! -f .env ]; then
     echo ""
     read -rp "Pega tu API key de Anthropic (sk-ant-...): " KEY < /dev/tty
-    echo "ANTHROPIC_API_KEY=$KEY" > .env
-    echo "API key guardada en $DIR/.env"
+    read -rp "Tu numero de WhatsApp para alertas y resumen diario (ej 5492954525928): " ALERTA < /dev/tty
+    read -rp "Clave para entrar al sistema de gestion (inventa una): " CLAVE < /dev/tty
+    cat > .env <<ENV
+ANTHROPIC_API_KEY=$KEY
+CORONEL_URL=http://127.0.0.1:8000
+AGENTE_TOKEN=eva-$(head -c 16 /dev/urandom | md5sum | cut -c1-16)
+CORONEL_CLAVE=$CLAVE
+ALERTA_WHATSAPP=$ALERTA
+RESUMEN_HORA=21
+ENV
+    echo "Configuracion guardada en $DIR/.env"
 fi
 if [ ! -f whatsapp-bridge/allowed.txt ]; then
     echo ""
@@ -75,6 +86,7 @@ ExecStart=$cmd
 Restart=always
 RestartSec=10
 Environment=PYTHONUNBUFFERED=1
+EnvironmentFile=-$DIR/.env
 
 [Install]
 WantedBy=multi-user.target
@@ -85,15 +97,20 @@ make_service "max-server" "$DIR" "/usr/bin/python3 -m uvicorn max_server:app --h
 make_service "eva-server" "$DIR" "/usr/bin/python3 -m uvicorn vendedor_server:app --host 127.0.0.1 --port 8003"
 make_service "max-bridge" "$DIR/whatsapp-bridge" "/usr/bin/node bridge.js"
 make_service "eva-bridge" "$DIR/vendedor-bridge" "/usr/bin/node bridge.js"
+make_service "coronel-sur" "$DIR/coronel-sur" "/usr/bin/python3 backend/main.py"
 
 systemctl daemon-reload
-systemctl enable --now max-server eva-server >/dev/null
+systemctl enable --now max-server eva-server coronel-sur >/dev/null
 
+IP=$(hostname -I | awk '{print $1}')
 echo ""
 echo "============================================================"
 echo " INSTALACION BASE COMPLETA"
 echo ""
-echo " Los cerebros (max-server y eva-server) ya estan corriendo."
+echo " Ya corriendo:"
+echo "  - Cerebro de Max     (puerto 8002, interno)"
+echo "  - Cerebro de Eva     (puerto 8003, interno)"
+echo "  - Sistema Coronel Sur: http://$IP:8000  (entra con tu clave)"
 echo ""
 echo " FALTA: subir el inventario y escanear los QR de WhatsApp."
 echo " Segui las instrucciones que te da Claude."

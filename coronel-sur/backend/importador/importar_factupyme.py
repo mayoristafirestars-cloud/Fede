@@ -199,7 +199,16 @@ def importar_todo(
     conn = conectar()
 
     total = 0
-    total += importar_inventario(conn, os.path.join(DATA_DIR, inventario))
+    # Fuente única: si no hay inventario en csv_originales, usar el MISMO
+    # archivo que lee Eva (negocio/inventario.csv en la raíz del proyecto).
+    ruta_inventario = os.path.join(DATA_DIR, inventario)
+    if not os.path.exists(ruta_inventario):
+        raiz = os.path.dirname(os.path.dirname(DATA_DIR))
+        alternativa = os.path.join(os.path.dirname(raiz), "negocio", "inventario.csv")
+        if os.path.exists(alternativa):
+            print(f"ℹ️  Usando el inventario compartido con Eva: {alternativa}")
+            ruta_inventario = alternativa
+    total += importar_inventario(conn, ruta_inventario)
     total += importar_ventas(conn, os.path.join(DATA_DIR, ventas), origen="factura")
     total += importar_ventas(conn, os.path.join(DATA_DIR, presupuestos), origen="presupuesto")
 

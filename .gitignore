@@ -35,3 +35,4 @@ node_modules/
 .wwebjs_cache/
 allowed.txt
 negocio/inventario.csv
+sesiones_*.json

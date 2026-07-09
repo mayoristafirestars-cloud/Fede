@@ -96,6 +96,19 @@ button{width:100%;margin-top:12px;background:#f0c93a;color:#111;border:none;
 </div></body></html>"""
 
 
+# Anti fuerza bruta: máximo 5 intentos fallidos por IP cada 15 minutos
+_intentos_fallidos: dict = {}
+MAX_INTENTOS = 5
+VENTANA_SEG = 900
+
+
+def _bloqueado(ip: str) -> bool:
+    ahora = time.time()
+    recientes = [t for t in _intentos_fallidos.get(ip, []) if ahora - t < VENTANA_SEG]
+    _intentos_fallidos[ip] = recientes
+    return len(recientes) >= MAX_INTENTOS
+
+
 def registrar_rutas(app):
     from fastapi import Form
 
@@ -104,14 +117,24 @@ def registrar_rutas(app):
         return LOGIN_HTML.replace("{ERROR}", "")
 
     @app.post("/login")
-    def login_post(clave: str = Form(...)):
+    def login_post(request: Request, clave: str = Form(...)):
+        ip = request.client.host if request.client else "?"
+        if _bloqueado(ip):
+            return HTMLResponse(
+                LOGIN_HTML.replace(
+                    "{ERROR}", "Demasiados intentos. Esperá 15 minutos."
+                ),
+                status_code=429,
+            )
         if hmac.compare_digest(clave, CLAVE):
+            _intentos_fallidos.pop(ip, None)
             resp = RedirectResponse("/", status_code=303)
             resp.set_cookie(
                 "coronel_sesion", crear_token(),
                 max_age=SESION_DIAS * 86400, httponly=True, samesite="lax",
             )
             return resp
+        _intentos_fallidos.setdefault(ip, []).append(time.time())
         return HTMLResponse(LOGIN_HTML.replace("{ERROR}", "Clave incorrecta"))
 
     @app.get("/logout")

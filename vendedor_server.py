@@ -22,11 +22,13 @@ from dotenv import load_dotenv
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 
-from memoria import recortar_historial
+from memoria import cargar_sesiones, guardar_sesiones, recortar_historial
 
 load_dotenv()
 
-MODEL = "claude-sonnet-4-6"
+# Modelo configurable: para recortar costo se puede usar
+# EVA_MODEL=claude-haiku-4-5-20251001 (~4x más barato, respuestas más simples)
+MODEL = os.getenv("EVA_MODEL", "claude-sonnet-4-6")
 MAX_TOKENS = 1024
 MAX_TURNS = 5
 
@@ -39,7 +41,8 @@ FOTOS_DIR = NEGOCIO_DIR / "fotos"
 
 client = Anthropic()
 app = FastAPI(title="Vendedor virtual")
-sessions: dict[str, list[dict]] = {}
+SESIONES_PATH = BASE_DIR / "sesiones_eva.json"
+sessions: dict[str, list[dict]] = cargar_sesiones(SESIONES_PATH)
 
 
 def normalizar(s: str) -> str:
@@ -146,16 +149,39 @@ def cargar_inventario_csv() -> list[dict]:
     return productos
 
 
-if CSV_PATH.is_file():
-    PRODUCTOS = cargar_inventario_csv()
-    print(f"[vendedor] {len(PRODUCTOS)} productos cargados de {CSV_PATH.name}")
-else:
-    PRODUCTOS = cargar_productos()
-    print(f"[vendedor] {len(PRODUCTOS)} productos cargados de {EXCEL_PATH.name}")
+_csv_mtime: float | None = None
+
+
+def _cargar_inventario() -> list[dict]:
+    global _csv_mtime
+    if CSV_PATH.is_file():
+        _csv_mtime = CSV_PATH.stat().st_mtime
+        productos = cargar_inventario_csv()
+        print(f"[vendedor] {len(productos)} productos cargados de {CSV_PATH.name}")
+        return productos
+    productos = cargar_productos()
+    print(f"[vendedor] {len(productos)} productos cargados de {EXCEL_PATH.name}")
+    return productos
+
+
+def _refrescar_si_cambio() -> None:
+    """Si el CSV fue reemplazado (nueva exportación de FactuPyme),
+    recarga el inventario al vuelo — sin reiniciar a Eva."""
+    global PRODUCTOS
+    try:
+        if CSV_PATH.is_file() and CSV_PATH.stat().st_mtime != _csv_mtime:
+            PRODUCTOS = _cargar_inventario()
+            print("[vendedor] Inventario actualizado en caliente ✔")
+    except Exception as e:
+        print(f"[vendedor] No pude recargar el inventario: {e}")
+
+
+PRODUCTOS = _cargar_inventario()
 
 
 def buscar_producto(consulta: str) -> dict:
     """Busca productos por texto (nombre o categoría)."""
+    _refrescar_si_cambio()
     q = normalizar(consulta)
     palabras = [w for w in q.split() if len(w) > 1]
     resultados = []
@@ -176,6 +202,7 @@ def buscar_producto(consulta: str) -> dict:
 
 
 def listar_categorias() -> dict:
+    _refrescar_si_cambio()
     cats = sorted({p["categoria"] for p in PRODUCTOS if p["categoria"]})
     return {"categorias": cats, "total_productos": len(PRODUCTOS)}
 
@@ -484,6 +511,7 @@ def procesar_mensaje(session_id: str, texto: str, telefono: str = "",
         print(f"[pedido] Nuevo pedido confirmado:\n{pedido}\n")
         notificar_coronel(pedido, session_id, telefono)
     registrar_conversacion(session_id, telefono, texto, limpio, es_audio)
+    guardar_sesiones(sessions, SESIONES_PATH)
     return {"response": limpio or "🙌", "fotos": fotos, "pedido": pedido}
 
 

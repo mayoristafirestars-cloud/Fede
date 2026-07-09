@@ -9,16 +9,19 @@ Correr: uvicorn max_server:app --port 8002
 """
 import base64
 import traceback
+from pathlib import Path
 
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 
 from asistente import chat
+from memoria import cargar_sesiones, guardar_sesiones
 from transcripcion import transcribir, sufijo_por_mime
 
 app = FastAPI(title="Max - API")
 
-sessions: dict[str, list[dict]] = {}
+SESIONES_PATH = Path(__file__).parent / "sesiones_max.json"
+sessions: dict[str, list[dict]] = cargar_sesiones(SESIONES_PATH)
 
 
 class MaxRequest(BaseModel):
@@ -35,9 +38,12 @@ class AudioRequest(BaseModel):
 def responder(session_id: str, texto: str) -> str:
     if texto.lower() == "reset":
         sessions.pop(session_id, None)
+        guardar_sesiones(sessions, SESIONES_PATH)
         return "Listo, empezamos de cero. ¿Qué necesitás?"
     historial = sessions.setdefault(session_id, [])
-    return chat(historial, texto)
+    respuesta = chat(historial, texto)
+    guardar_sesiones(sessions, SESIONES_PATH)
+    return respuesta
 
 
 @app.post("/api/max")

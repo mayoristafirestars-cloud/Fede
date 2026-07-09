@@ -15,7 +15,9 @@ from memoria import recortar_historial
 
 load_dotenv()
 
-MODEL = "claude-sonnet-4-6"
+import os
+
+MODEL = os.getenv("MAX_MODEL", "claude-sonnet-4-6")
 MAX_TOKENS = 4096
 MAX_WEB_SEARCHES = 8  # tope de búsquedas por respuesta (controla costo)
 MAX_TURNS = 10  # tope de continuaciones por respuesta
