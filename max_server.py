@@ -8,51 +8,17 @@ POST /api/audio  {"session_id": "...", "audio_b64": "...", "mimetype": "..."}
 Correr: uvicorn max_server:app --port 8002
 """
 import base64
-import os
-import tempfile
 import traceback
 
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 
 from asistente import chat
+from transcripcion import transcribir, sufijo_por_mime
 
 app = FastAPI(title="Max - API")
 
 sessions: dict[str, list[dict]] = {}
-
-# Modelo de transcripción (se carga la primera vez que llega un audio).
-# 'small' = buen balance calidad/velocidad en español. Otras opciones:
-# 'base' (más rápido, menos preciso), 'medium' (mejor, más lento).
-WHISPER_MODEL = os.getenv("WHISPER_MODEL", "small")
-_whisper = None
-
-
-def get_whisper():
-    global _whisper
-    if _whisper is None:
-        from faster_whisper import WhisperModel
-
-        print(f"[audio] Cargando modelo de transcripcion '{WHISPER_MODEL}' "
-              "(la primera vez descarga el modelo, puede tardar varios minutos)...")
-        _whisper = WhisperModel(WHISPER_MODEL, device="cpu", compute_type="int8")
-        print("[audio] Modelo listo.")
-    return _whisper
-
-
-def transcribir(audio_bytes: bytes, suffix: str = ".ogg") -> str:
-    model = get_whisper()
-    with tempfile.NamedTemporaryFile(suffix=suffix, delete=False) as f:
-        f.write(audio_bytes)
-        ruta = f.name
-    try:
-        segments, _info = model.transcribe(ruta, language="es", vad_filter=True)
-        return " ".join(s.text.strip() for s in segments).strip()
-    finally:
-        try:
-            os.unlink(ruta)
-        except OSError:
-            pass
 
 
 class MaxRequest(BaseModel):
@@ -97,9 +63,8 @@ def api_audio(req: AudioRequest):
     if not audio:
         raise HTTPException(status_code=400, detail="Audio vacío.")
 
-    suffix = ".mp3" if "mp3" in req.mimetype or "mpeg" in req.mimetype else ".ogg"
     try:
-        texto = transcribir(audio, suffix=suffix)
+        texto = transcribir(audio, suffix=sufijo_por_mime(req.mimetype))
     except Exception as e:
         print("\n===== ERROR DE TRANSCRIPCION =====")
         traceback.print_exc()

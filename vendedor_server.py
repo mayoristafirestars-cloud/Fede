@@ -275,6 +275,12 @@ class VendedorRequest(BaseModel):
     message: str
 
 
+class AudioRequest(BaseModel):
+    session_id: str
+    audio_b64: str
+    mimetype: str = "audio/ogg"
+
+
 def extraer_fotos(texto: str) -> tuple[str, list[str]]:
     """Saca la línea 'FOTOS: ...' del texto. Acepta URLs (http...) o
     nombres de archivo locales de negocio/fotos/."""
@@ -415,15 +421,12 @@ def chat(historial: list[dict], mensaje: str) -> str:
     return "Dame un segundo que lo reviso y te confirmo 🙌"
 
 
-@app.post("/api/vendedor")
-def api_vendedor(req: VendedorRequest):
-    texto = req.message.strip()
-    if not texto:
-        raise HTTPException(status_code=400, detail="Mensaje vacío.")
+def procesar_mensaje(session_id: str, texto: str) -> dict:
+    """Flujo completo: chat -> fotos -> pedido -> notificación al sistema."""
     if texto.lower() == "reset":
-        sessions.pop(req.session_id, None)
-        return {"response": "Conversación reiniciada.", "fotos": []}
-    historial = sessions.setdefault(req.session_id, [])
+        sessions.pop(session_id, None)
+        return {"response": "Conversación reiniciada.", "fotos": [], "pedido": ""}
+    historial = sessions.setdefault(session_id, [])
     try:
         respuesta = chat(historial, texto)
     except Exception as e:
@@ -435,8 +438,48 @@ def api_vendedor(req: VendedorRequest):
     limpio, pedido = extraer_pedido(limpio)
     if pedido:
         print(f"[pedido] Nuevo pedido confirmado:\n{pedido}\n")
-        notificar_coronel(pedido, req.session_id)
+        notificar_coronel(pedido, session_id)
     return {"response": limpio or "🙌", "fotos": fotos, "pedido": pedido}
+
+
+@app.post("/api/vendedor")
+def api_vendedor(req: VendedorRequest):
+    texto = req.message.strip()
+    if not texto:
+        raise HTTPException(status_code=400, detail="Mensaje vacío.")
+    return procesar_mensaje(req.session_id, texto)
+
+
+@app.post("/api/vendedor/audio")
+def api_vendedor_audio(req: AudioRequest):
+    """Audio de WhatsApp: se transcribe y sigue el flujo normal."""
+    import base64
+
+    from transcripcion import transcribir, sufijo_por_mime
+
+    try:
+        audio = base64.b64decode(req.audio_b64)
+    except Exception:
+        raise HTTPException(status_code=400, detail="Audio inválido (base64).")
+    if not audio:
+        raise HTTPException(status_code=400, detail="Audio vacío.")
+    try:
+        texto = transcribir(audio, suffix=sufijo_por_mime(req.mimetype))
+    except Exception as e:
+        print("\n===== ERROR DE TRANSCRIPCION =====")
+        traceback.print_exc()
+        print("==================================\n")
+        raise HTTPException(status_code=500, detail=f"Transcripción: {str(e)[:300]}")
+
+    if not texto:
+        return {
+            "response": "No llegué a entender el audio 😅 ¿Me lo repetís o me lo escribís?",
+            "fotos": [], "pedido": "", "transcript": "",
+        }
+    print(f"[audio] Cliente dijo: {texto[:120]}")
+    resultado = procesar_mensaje(req.session_id, texto)
+    resultado["transcript"] = texto
+    return resultado
 
 
 @app.get("/health")

@@ -57,7 +57,20 @@ async function preguntarAlVendedor(sessionId, mensaje) {
     const err = await res.text();
     throw new Error(`Vendedor API ${res.status}: ${err.slice(0, 200)}`);
   }
-  return res.json(); // {response, fotos}
+  return res.json(); // {response, fotos, pedido}
+}
+
+async function mandarAudioAlVendedor(sessionId, audioB64, mimetype) {
+  const res = await fetch(API_URL + '/audio', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ session_id: sessionId, audio_b64: audioB64, mimetype }),
+  });
+  if (!res.ok) {
+    const err = await res.text();
+    throw new Error(`Vendedor API ${res.status}: ${err.slice(0, 200)}`);
+  }
+  return res.json();
 }
 
 function partir(texto, maxLen = 3500) {
@@ -68,19 +81,51 @@ function partir(texto, maxLen = 3500) {
   return partes;
 }
 
+const MSG_NO_VEO =
+  'Por ahora no puedo ver fotos ni archivos 🙈 Contame por texto qué producto ' +
+  'buscás y te paso precio y foto al toque.';
+
 client.on('message', async (msg) => {
   try {
     if (msg.from.endsWith('@g.us') || msg.from === 'status@broadcast') return;
 
+    const esAudio = msg.type === 'ptt' || msg.type === 'audio';
+    const esOtroMedio = ['image', 'video', 'document', 'sticker'].includes(msg.type);
     const texto = (msg.body || '').trim();
-    if (!texto) return;
+    if (!texto && !esAudio && !esOtroMedio) return;
 
-    console.log(`Cliente ${msg.from}: "${texto.slice(0, 60)}"`);
+    console.log(
+      esAudio
+        ? `Cliente ${msg.from}: [audio]`
+        : `Cliente ${msg.from}: ${esOtroMedio ? '[' + msg.type + '] ' : ''}"${texto.slice(0, 60)}"`
+    );
 
     if (busy.has(msg.from)) return;
     busy.add(msg.from);
 
-    const data = await preguntarAlVendedor(msg.from, texto);
+    // Foto/archivo sin texto: avisar amablemente y listo.
+    if (esOtroMedio && !texto) {
+      await client.sendMessage(msg.from, MSG_NO_VEO);
+      busy.delete(msg.from);
+      return;
+    }
+
+    let data;
+    if (esAudio) {
+      const media = await msg.downloadMedia();
+      if (!media || !media.data) {
+        await client.sendMessage(msg.from, 'No me llegó bien el audio 😅 ¿Me lo mandás de nuevo o me escribís?');
+        busy.delete(msg.from);
+        return;
+      }
+      data = await mandarAudioAlVendedor(msg.from, media.data, media.mimetype || 'audio/ogg');
+    } else {
+      // Si mandó foto CON texto, procesamos el texto y aclaramos lo de la foto.
+      data = await preguntarAlVendedor(msg.from, texto);
+      if (esOtroMedio && data.response) {
+        data.response = '(La foto no la puedo ver 🙈, pero leí tu mensaje 👇)\n\n' + data.response;
+      }
+    }
 
     if (data.response) {
       for (const parte of partir(data.response)) {
