@@ -20,6 +20,39 @@ const API_URL = process.env.VENDEDOR_API_URL || 'http://127.0.0.1:8003/api/vende
 // WhatsApp del vendedor humano que recibe los pedidos confirmados (Malcom).
 const VENDEDOR_HUMANO = (process.env.VENDEDOR_HUMANO || '5492954829943') + '@c.us';
 
+// ---- Límites anti-abuso (que nadie queme el crédito de la API) ----
+const LIMITE_POR_NUMERO_HORA = parseInt(process.env.LIMITE_POR_NUMERO_HORA || '20', 10);
+const LIMITE_GLOBAL_DIA = parseInt(process.env.LIMITE_GLOBAL_DIA || '400', 10);
+// Numero del dueño para avisarle si se alcanza el tope global (opcional)
+const ALERTA_WHATSAPP = (process.env.ALERTA_WHATSAPP || '').replace(/[^0-9]/g, '');
+
+const ventanasPorNumero = new Map(); // from -> [timestamps ultima hora]
+const yaAvisados = new Set();        // numeros ya avisados de que se pasaron
+let diaActual = new Date().toDateString();
+let mensajesHoy = 0;
+let alertaGlobalEnviada = false;
+
+function chequearLimites(from) {
+  const ahora = Date.now();
+  const hoy = new Date().toDateString();
+  if (hoy !== diaActual) {
+    diaActual = hoy;
+    mensajesHoy = 0;
+    alertaGlobalEnviada = false;
+  }
+  if (mensajesHoy >= LIMITE_GLOBAL_DIA) return { ok: false, motivo: 'global' };
+
+  const recientes = (ventanasPorNumero.get(from) || []).filter((t) => ahora - t < 3600000);
+  if (recientes.length >= LIMITE_POR_NUMERO_HORA) {
+    ventanasPorNumero.set(from, recientes);
+    return { ok: false, motivo: 'numero' };
+  }
+  recientes.push(ahora);
+  ventanasPorNumero.set(from, recientes);
+  mensajesHoy++;
+  return { ok: true };
+}
+
 const busy = new Set();
 
 const client = new Client({
@@ -116,6 +149,32 @@ client.on('message', async (msg) => {
         ? `Cliente ${msg.from}: [audio]`
         : `Cliente ${msg.from}: ${esOtroMedio ? '[' + msg.type + '] ' : ''}"${texto.slice(0, 60)}"`
     );
+
+    // Límites anti-abuso
+    const permiso = chequearLimites(msg.from);
+    if (!permiso.ok) {
+      console.log(`Rate limit (${permiso.motivo}): ${msg.from}`);
+      if (permiso.motivo === 'numero' && !yaAvisados.has(msg.from)) {
+        yaAvisados.add(msg.from);
+        setTimeout(() => yaAvisados.delete(msg.from), 3600000);
+        await msg.reply(
+          'Recibí muchos mensajes tuyos muy seguido 🙏 Dame un respiro y en un rato seguimos. ' +
+          'Si es urgente, llamanos al 2954-701980.'
+        );
+      }
+      if (permiso.motivo === 'global' && ALERTA_WHATSAPP && !alertaGlobalEnviada) {
+        alertaGlobalEnviada = true;
+        try {
+          await client.sendMessage(
+            ALERTA_WHATSAPP + '@c.us',
+            `⚠️ *ALERTA EVA*: se alcanzó el límite de ${LIMITE_GLOBAL_DIA} mensajes en el día. ` +
+            'Eva dejó de responder hasta mañana. Si es tráfico real, subí LIMITE_GLOBAL_DIA; ' +
+            'si no, puede ser un ataque: revisá la ventana del bridge.'
+          );
+        } catch (_) {}
+      }
+      return;
+    }
 
     if (busy.has(msg.from)) return;
     busy.add(msg.from);
