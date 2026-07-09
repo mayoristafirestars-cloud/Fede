@@ -11,6 +11,8 @@ from pathlib import Path
 from anthropic import Anthropic
 from dotenv import load_dotenv
 
+from memoria import recortar_historial
+
 load_dotenv()
 
 MODEL = "claude-sonnet-4-6"
@@ -36,6 +38,8 @@ TOOLS = [
 
 def chat(historial: list[dict], mensaje_usuario: str) -> str:
     """Turno completo del asistente, con búsquedas web incluidas."""
+    # Las investigaciones de Max generan mensajes largos: tope más generoso.
+    recortar_historial(historial, max_mensajes=40)
     historial.append({"role": "user", "content": mensaje_usuario})
 
     for _ in range(MAX_TURNS):

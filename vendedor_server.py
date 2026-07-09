@@ -21,6 +21,8 @@ from dotenv import load_dotenv
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 
+from memoria import recortar_historial
+
 load_dotenv()
 
 MODEL = "claude-sonnet-4-6"
@@ -393,6 +395,7 @@ def extraer_pedido(texto: str) -> tuple[str, str]:
 
 
 def chat(historial: list[dict], mensaje: str) -> str:
+    recortar_historial(historial, max_mensajes=30)
     historial.append({"role": "user", "content": mensaje})
     for _ in range(MAX_TURNS):
         response = client.messages.create(
