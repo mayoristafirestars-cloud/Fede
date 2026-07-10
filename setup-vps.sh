@@ -102,8 +102,13 @@ make_service "eva-bridge" "$DIR/vendedor-bridge" "/usr/bin/node bridge.js"
 make_service "coronel-sur" "$DIR/coronel-sur" "$VENV/bin/python backend/main.py"
 make_service "vigilante" "$DIR" "$VENV/bin/python watchdog.py"
 
+# enable = arrancan solos en cada reinicio del servidor.
+# Los cerebros y el vigilante se inician ya; los bridges se habilitan para
+# el arranque automático pero se inician a mano la primera vez (hay que
+# escanear el QR de WhatsApp).
 systemctl daemon-reload
 systemctl enable --now max-server eva-server coronel-sur vigilante >/dev/null
+systemctl enable max-bridge eva-bridge >/dev/null
 
 # HTTPS automático con Caddy (opcional, requiere un dominio apuntando a este VPS)
 echo ""
