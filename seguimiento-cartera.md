@@ -60,6 +60,22 @@
 
 ### Ola 1 pendiente actualizada: NU (~10.600 ARS), PEP (~12.300 ARS), GLD (consultar), SPY (~59.000 ARS). NKE eliminada.
 
+## Método de aporte: rebalanceo hacia pesos objetivo (3-jul-2026)
+
+Regla de cada nueva tanda: **la plata nueva va a las posiciones más por DEBAJO de su peso objetivo en ARS**, nunca a promediar lo que ya está sobreponderado.
+
+Diagnóstico al 3-jul (base ≈ 146.000 ARS = 93.700 comprado + 52.448 nuevo): las 4 tenencias (AVGO, AMZN, MSFT, SPGI) están TODAS por encima de su objetivo en ARS (tech adelantado). → Todo aporte nuevo va a posiciones no poseídas, priorizando mayor peso objetivo entre las NO-tech.
+
+### Tanda #2 recomendada (52.448 ARS) — 4 sectores nuevos
+| Ticker | Cant. | ARS aprox. | Peso obj. | Sector |
+|---|---|---|---|---|
+| TJX | 1 | ~10.900 | 5% | Retail off-price (tesis anti-marca) |
+| SCHW | 1 | ~11.150 | 4% | Financiero |
+| NU | 1 | ~10.640 | 4% | Fintech |
+| GLD | 2 | ~19.740 | 4% | Oro (lastre) |
+
+Diferidas por ticket grande (ratios chicos): XOM (~22.500/CEDEAR), V (~30.400), UNH (~19.800, además esperar 380-390), TSM (~76.700), SPY (~59.000), VIST (~36.000). Entran en tandas siguientes.
+
 ### Próximos hitos del calendario
 
 - **Mid-julio:** resultados de Schwab y TSMC → habilitan sus compras (ola 3). GE reporta el 16-jul (si cae bajo 350 USD, se activa la watchlist).
