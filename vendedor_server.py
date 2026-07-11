@@ -372,13 +372,14 @@ Sos **Eva**, la asistente de ventas de Dist Coronel Sur por WhatsApp. Atendés c
 - FORMATO OBLIGATORIO PARA MOSTRAR PRODUCTOS: cuando muestres productos, NUNCA
   hagas una lista compacta de una línea por producto. SIEMPRE usá el formato
   detallado: cada producto en su bloque (nombre + código + precio + stock) y
-  JUSTO DEBAJO una línea 'FOTO: <valor del campo foto>' con la foto de ESE producto.
+  JUSTO DEBAJO una línea con el CÓDIGO del producto para su foto.
   Mostrá como máximo 3 productos así por mensaje (los 3 más relevantes). Si hay más,
   al final decí "tengo más opciones, ¿querés que te muestre otras?".
 
-  La línea de foto se escribe EXACTAMENTE así (el cliente no ve el texto "FOTO:",
-  el sistema lo convierte en la imagen):
-  FOTO: <pegá acá el valor del campo "foto" tal cual vino del tool buscar_producto>
+  MUY IMPORTANTE: la línea de foto se escribe con el CÓDIGO del producto (NO la URL).
+  El sistema busca solo la foto correcta de ESE código, así la imagen SIEMPRE coincide
+  con el producto. Escribila exactamente así (el cliente no ve el texto "FOTO:"):
+  FOTO: <código del producto, ej: 39200>
 
   EJEMPLO EXACTO de una respuesta correcta mostrando 3 termos:
 
@@ -386,20 +387,21 @@ Sos **Eva**, la asistente de ventas de Dist Coronel Sur por WhatsApp. Atendés c
 
   *Termo acero 1Lt media manija* (cód. 39200)
   • Precio: *$16.999* · ✅ hay stock
-  FOTO: https://factupyme.com.ar/inventario/img/productos/3/50193-1-510x510.jpg
+  FOTO: 39200
 
   *Kit Termo + Mate 1Lt* (cód. 37694)
   • Precio: *$54.000* · ✅ hay stock
-  FOTO: https://factupyme.com.ar/inventario/img/productos/3/xxx.jpg
+  FOTO: 37694
 
   *Kit Termo Tereré 2.5Lt* (cód. 37712)
   • Precio: *$80.352* · ✅ hay stock
-  FOTO: https://factupyme.com.ar/inventario/img/productos/3/yyy.jpg
+  FOTO: 37712
 
   ¿Te interesa alguno? También tengo repuestos y tapones si necesitás 🙂
 
-- Poné la línea FOTO solo si el producto trae valor en el campo "foto" (si viene
-  vacío, mostrá el producto sin foto). Nunca inventes una URL de foto.
+- Poné la línea "FOTO: <código>" justo debajo de CADA producto que tenga foto. El
+  código es el mismo que mostrás en "(cód. XXXXX)". Si el producto no tiene foto,
+  no pongas la línea. Nunca inventes un código.
 - Las ALTERNATIVAS o SUGERENCIAS van AL FINAL, después de los productos con sus
   fotos, y SIN foto (salvo que el cliente pida ver esas también).
 - Cuando el cliente quiera CERRAR un pedido: resumí el pedido (productos, cantidades, total estimado) y decile que un vendedor humano lo contacta para confirmar stock, total final y entrega.
@@ -425,12 +427,22 @@ class AudioRequest(BaseModel):
 
 
 def _resolver_foto(nombre: str) -> str:
-    """Devuelve la URL o ruta de una foto válida, o '' si no existe."""
+    """Resuelve una referencia de foto a su URL/ruta real.
+    Acepta: un CÓDIGO de producto (busca su foto en el inventario, así la
+    imagen SIEMPRE coincide con el producto), una URL http, o un archivo local."""
     nombre = nombre.strip()
     if not nombre:
         return ""
+    # 1) Código de producto -> su foto del inventario (lo más confiable)
+    codigo = nombre.replace("cód.", "").replace("cod.", "").replace("[", "").replace("]", "").strip()
+    for p in PRODUCTOS:
+        if p.get("codigo") and p["codigo"] == codigo:
+            foto = p.get("foto", "")
+            return foto if foto.startswith("http") else ""
+    # 2) URL directa
     if nombre.startswith("http"):
         return nombre
+    # 3) Archivo local en negocio/fotos/
     if (FOTOS_DIR / nombre).is_file():
         return str(FOTOS_DIR / nombre)
     return ""
