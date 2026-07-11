@@ -88,11 +88,14 @@ def enviar_texto(a: str, texto: str) -> None:
             print(f"[cloud] Error enviando texto: {r.status_code} {r.text[:200]}")
 
 
-def enviar_imagen(a: str, url: str) -> None:
+def enviar_imagen(a: str, url: str, caption: str = "") -> None:
+    imagen = {"link": url}
+    if caption:
+        imagen["caption"] = caption[:1024]  # límite de caption de WhatsApp
     r = httpx.post(
         f"{GRAPH}/{WA_PHONE_ID}/messages", headers=_headers(),
         json={"messaging_product": "whatsapp", "to": a,
-              "type": "image", "image": {"link": url}},
+              "type": "image", "image": imagen},
         timeout=15,
     )
     if r.status_code != 200:
@@ -136,7 +139,7 @@ def procesar(numero: str, payload: dict) -> None:
                 if parte.get("tipo") == "texto" and parte.get("contenido"):
                     enviar_texto(numero, parte["contenido"])
                 elif parte.get("tipo") == "foto" and str(parte.get("url", "")).startswith("http"):
-                    enviar_imagen(numero, parte["url"])
+                    enviar_imagen(numero, parte["url"], parte.get("caption", ""))
         else:
             if data.get("response"):
                 enviar_texto(numero, data["response"])

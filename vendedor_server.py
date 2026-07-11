@@ -449,16 +449,20 @@ def _resolver_foto(nombre: str) -> str:
 
 
 def construir_secuencia(texto: str) -> tuple[str, list[str], list[dict]]:
-    """Convierte la respuesta en una SECUENCIA ordenada de partes, para que
-    cada producto se muestre seguido de SU foto:
-      texto del producto A -> foto A -> texto del producto B -> foto B -> ...
-      -> texto final (alternativas/sugerencias)
+    """Convierte la respuesta en una SECUENCIA ordenada de partes.
 
-    Eva marca las fotos con líneas 'FOTO: <valor>' justo después de cada
-    producto. Devuelve:
-      - texto_plano: todo el texto sin las líneas FOTO (para log/fallback)
+    CLAVE: cada foto se manda CON el texto de su producto como PIE (caption),
+    en un solo mensaje. Así la descripción y la foto van pegadas y NUNCA se
+    desordenan (en WhatsApp oficial, mensajes separados enviados rápido pueden
+    llegar en distinto orden). El texto que quede sin foto (intro, alternativas)
+    se manda como mensaje de texto normal.
+
+    Devuelve:
+      - texto_plano: todo el texto (para log/fallback)
       - fotos: lista de todas las fotos (fallback)
-      - secuencia: [{"tipo": "texto", "contenido": "..."} | {"tipo": "foto", "url": "..."}]
+      - secuencia: partes en orden. Cada parte es:
+          {"tipo": "texto", "contenido": "..."}                 -> mensaje de texto
+          {"tipo": "foto", "url": "...", "caption": "..."}       -> imagen con pie
     """
     secuencia: list[dict] = []
     fotos: list[str] = []
@@ -473,21 +477,31 @@ def construir_secuencia(texto: str) -> tuple[str, list[str], list[dict]]:
     for linea in texto.splitlines():
         m = re.match(r"^\s*FOTOS?\s*:\s*(.+)$", linea, flags=re.IGNORECASE)
         if m:
-            # una línea FOTO puede traer varias separadas por coma
             resueltas = [_resolver_foto(n) for n in m.group(1).split(",")]
             resueltas = [r for r in resueltas if r]
             if resueltas:
-                flush_texto()  # el texto acumulado (el producto) va ANTES de su foto
-                for url in resueltas:
-                    secuencia.append({"tipo": "foto", "url": url})
+                # El texto acumulado (la descripción de ESTE producto) se usa como
+                # pie de la primera foto -> descripción y foto van juntas.
+                caption = "\n".join(buffer).strip()
+                buffer.clear()
+                for i, url in enumerate(resueltas):
+                    secuencia.append({
+                        "tipo": "foto",
+                        "url": url,
+                        "caption": caption if i == 0 else "",
+                    })
                     fotos.append(url)
         else:
             buffer.append(linea)
     flush_texto()
 
-    texto_plano = "\n".join(
-        p["contenido"] for p in secuencia if p["tipo"] == "texto"
-    ).strip()
+    texto_plano_parts = []
+    for p in secuencia:
+        if p["tipo"] == "texto":
+            texto_plano_parts.append(p["contenido"])
+        elif p.get("caption"):
+            texto_plano_parts.append(p["caption"])
+    texto_plano = "\n".join(texto_plano_parts).strip()
     return texto_plano, fotos, secuencia
 
 

@@ -294,19 +294,21 @@ client.on('message', async (msg) => {
       }
     }
 
-    async function enviarFoto(ref) {
+    async function enviarFoto(ref, caption) {
       try {
         const media = ref.startsWith('http')
           ? await MessageMedia.fromUrl(ref, { unsafeMime: true })
           : MessageMedia.fromFilePath(ref);
-        await client.sendMessage(msg.from, media);
+        await client.sendMessage(msg.from, media, caption ? { caption } : {});
       } catch (e) {
         console.error('No pude mandar la foto', ref, e.message);
+        // Si falla la imagen, al menos mandar la descripción
+        if (caption) await client.sendMessage(msg.from, caption);
       }
     }
 
     if (Array.isArray(data.secuencia) && data.secuencia.length) {
-      // Orden natural: producto -> su foto -> producto -> su foto -> ... -> alternativas
+      // Cada foto va con su descripción como pie -> nunca se desordenan
       let prefijoAplicado = false;
       for (const parte of data.secuencia) {
         if (parte.tipo === 'texto' && parte.contenido) {
@@ -317,7 +319,7 @@ client.on('message', async (msg) => {
           }
           for (const p of partir(txt)) await client.sendMessage(msg.from, p);
         } else if (parte.tipo === 'foto' && parte.url) {
-          await enviarFoto(parte.url);
+          await enviarFoto(parte.url, parte.caption || '');
         }
       }
     } else {
