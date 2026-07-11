@@ -81,3 +81,26 @@ Diferidas por ticket grande (ratios chicos): XOM (~22.500/CEDEAR), V (~30.400), 
 - **Mid-julio:** resultados de Schwab y TSMC → habilitan sus compras (ola 3). GE reporta el 16-jul (si cae bajo 350 USD, se activa la watchlist).
 - **Fin de julio:** resultados de MSFT, GOOGL, AMZN → tramos 3.
 - **Pendientes de verificación con el broker:** ratio de XLRE, equivalencia PAMP↔ADR (~25:1). SPGI ✅ resuelto (45:1).
+
+---
+
+## Actualización 10-jul-2026 — pesos reales (total 194.710 ARS)
+
+| Posición | ARS | % real | % obj. | Estado |
+|---|---|---|---|---|
+| PAMP | 46.620 | **24%** | 3% | 🔴 8x pasado — ALERTA concentración |
+| AVGO | 32.100 | 16,5% | 7% | Pasado |
+| AMZN | 26.750 | 13,7% | 8% | Pasado |
+| GLD | 23.620 | 12,1% | 4% | Pasado (lastre, OK) |
+| MSFT | 20.120 | 10,3% | 9% | ✓ |
+| SPY | 19.720 | 10,1% | 3% | Pasado (índice, OK) |
+| SPGI | 15.010 | 7,7% | 5% | Leve |
+| NU | 10.770 | 5,5% | 4% | ✓ |
+
+**Alerta principal:** PAMP al 24% (9 nominales @ 5.180). Posición de 3% objetivo, bloque de mayor riesgo (petrolera argentina, riesgo político, salida programada 1S-2027). Recomendación: FRENAR (no agregar), opción de trim a ~13% (vender 4 nominales), todo aporte nuevo a los faltantes.
+
+**Faltan 12 de 20:** GOOGL, TSM, V, UNH, TJX, MELI, PEP, XOM, SCHW, XLRE, VIST, TXR. Prioridad no-tech: XOM (6%), V (6%), TJX (5%), MELI (4%), SCHW (4%).
+
+**Corrección de dato:** SPY CEDEAR salió ~19.700 ARS/nominal (accesible), no ~59.000 como se había estimado — el ratio real es mayor. Sumar SPY es viable en tandas chicas.
+
+**Buen avance:** ya entraron los diversificadores clave (GLD oro, SPY índice, NU fintech). Cartera plana en la semana (+745 ARS).
