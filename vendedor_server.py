@@ -526,8 +526,28 @@ def _num_ar(s: str) -> float:
         return 0.0
 
 
+def _precio_real(codigo: str, tipo_cliente: str) -> float | None:
+    """Precio VERDADERO de un producto según la lista del cliente, tomado del
+    inventario (NO de lo que escribió el modelo). Devuelve None si no se ubica
+    el producto por código."""
+    if not codigo:
+        return None
+    codigo = codigo.strip()
+    es_mayor = "mayor" in (tipo_cliente or "").lower()
+    for p in PRODUCTOS:
+        if p.get("codigo") == codigo:
+            if es_mayor and p.get("precio_lista2_mayorista"):
+                return float(p["precio_lista2_mayorista"])
+            return float(p.get("precio_lista1_consumidor_final") or 0) or None
+    return None
+
+
 def parsear_pedido(pedido: str) -> dict:
-    """Convierte el bloque PEDIDO_CONFIRMADO en datos estructurados."""
+    """Convierte el bloque PEDIDO_CONFIRMADO en datos estructurados.
+
+    IMPORTANTE: el precio de cada ítem se RECALCULA contra el inventario real
+    (por código + lista del cliente), NO se confía en lo que escribió el modelo.
+    Así lo que se factura/cobra siempre coincide con la lista de precios."""
     tipo = ""
     m = re.search(r"Cliente\s*:\s*(.+)", pedido, flags=re.IGNORECASE)
     if m:
@@ -541,17 +561,23 @@ def parsear_pedido(pedido: str) -> dict:
         if m:
             codigo, desc, cant, sub = m.groups()
             cantidad = _num_ar(cant) or 1
-            subtotal = _num_ar(sub)
+            subtotal_texto = _num_ar(sub)
+            # Precio real de la base; si no se ubica el producto, cae al del texto.
+            precio_real = _precio_real(codigo, tipo)
+            if precio_real is not None:
+                precio_unitario = precio_real
+            else:
+                precio_unitario = round(subtotal_texto / cantidad, 2) if cantidad else subtotal_texto
+                print(f"[pedido] ⚠️ Sin código en inventario ({desc.strip()[:30]}), uso precio del texto")
             items.append({
                 "codigo": codigo or None,
                 "descripcion": desc.strip(),
                 "cantidad": cantidad,
-                "precio_unitario": round(subtotal / cantidad, 2) if cantidad else subtotal,
+                "precio_unitario": round(precio_unitario, 2),
+                "subtotal": round(precio_unitario * cantidad, 2),
             })
-    total = 0.0
-    m = re.search(r"TOTAL\s*:?\s*\$?\s*([\d.,]+)", pedido, flags=re.IGNORECASE)
-    if m:
-        total = _num_ar(m.group(1))
+    # El total SIEMPRE se recalcula sumando los ítems ya validados
+    total = round(sum(i["subtotal"] for i in items), 2)
     return {"tipo_cliente": tipo, "items": items, "total": total}
 
 

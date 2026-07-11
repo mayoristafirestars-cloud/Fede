@@ -22,6 +22,8 @@ Correr: uvicorn eva_cloud_bridge:app --port 8010
 El cerebro de Eva (vendedor_server, puerto 8003) debe estar corriendo.
 """
 import base64
+import hashlib
+import hmac
 import os
 import threading
 import time
@@ -35,7 +37,42 @@ load_dotenv()
 WA_TOKEN = os.getenv("WA_TOKEN", "")
 WA_PHONE_ID = os.getenv("WA_PHONE_ID", "")
 WA_VERIFY_TOKEN = os.getenv("WA_VERIFY_TOKEN", "coronel-sur-verify")
+# App Secret de Meta: valida que el webhook viene DE VERDAD de Meta (firma HMAC).
+# Si está vacío, no se valida (se avisa por log) — cargarlo en producción.
+WA_APP_SECRET = os.getenv("WA_APP_SECRET", "")
 GRAPH = "https://graph.facebook.com/v21.0"
+
+# Deduplicación: message.id ya procesados (evita responder/cobrar dos veces
+# si Meta reenvía el mismo evento).
+_vistos: "OrderedDict[str, float]" = None
+from collections import OrderedDict
+_vistos = OrderedDict()
+_vistos_lock = threading.Lock()
+
+
+def ya_procesado(msg_id: str) -> bool:
+    """True si este message.id ya fue procesado (y lo registra si es nuevo)."""
+    if not msg_id:
+        return False
+    with _vistos_lock:
+        if msg_id in _vistos:
+            return True
+        _vistos[msg_id] = time.time()
+        while len(_vistos) > 500:  # conservar los últimos 500
+            _vistos.popitem(last=False)
+        return False
+
+
+def firma_valida(cuerpo: bytes, cabecera: str) -> bool:
+    """Verifica el header X-Hub-Signature-256 con el App Secret."""
+    if not WA_APP_SECRET:
+        return True  # sin secret configurado, no se valida (log lo avisa)
+    if not cabecera or not cabecera.startswith("sha256="):
+        return False
+    esperado = "sha256=" + hmac.new(
+        WA_APP_SECRET.encode(), cuerpo, hashlib.sha256
+    ).hexdigest()
+    return hmac.compare_digest(esperado, cabecera)
 
 EVA_API = os.getenv("VENDEDOR_API_URL", "http://127.0.0.1:8003/api/vendedor")
 VENDEDOR_HUMANO = os.getenv("VENDEDOR_HUMANO", "5492954829943")
@@ -176,12 +213,28 @@ def verificar(request: Request):
 @app.post("/webhook")
 async def recibir(request: Request, background_tasks: BackgroundTasks):
     """Recibe los mensajes entrantes de WhatsApp."""
-    body = await request.json()
+    cuerpo = await request.body()
+    # 1) Validar que el POST viene DE VERDAD de Meta (firma HMAC)
+    if not firma_valida(cuerpo, request.headers.get("X-Hub-Signature-256", "")):
+        print("[cloud] Webhook rechazado: firma inválida")
+        return Response(status_code=403)
+    if not WA_APP_SECRET:
+        print("[cloud] ⚠️ WA_APP_SECRET vacío: el webhook NO valida firma (cargalo en .env)")
+
+    import json as _json
+    try:
+        body = _json.loads(cuerpo)
+    except Exception:
+        return {"status": "ok"}
+
     try:
         for entry in body.get("entry", []):
             for change in entry.get("changes", []):
                 for msg in change.get("value", {}).get("messages", []):
                     numero = msg.get("from", "")
+                    # 2) Deduplicar: no procesar dos veces el mismo mensaje
+                    if ya_procesado(msg.get("id", "")):
+                        continue
                     if not numero or not permitido(numero):
                         continue
                     background_tasks.add_task(procesar, numero, msg)
