@@ -315,6 +315,10 @@ TOOL_FUNCTIONS = {
 }
 
 
+# URL pública de la tienda online (para que Eva la difunda de vez en cuando).
+TIENDA_URL = os.getenv("TIENDA_URL", "coronelsur.com.ar")
+
+
 def build_system_prompt() -> str:
     info = INFO_PATH.read_text(encoding="utf-8")
     return f"""# IDENTIDAD
@@ -379,6 +383,15 @@ Sos **Eva**, la asistente de ventas de Dist Coronel Sur por WhatsApp. Atendés c
   producto, qué logo/marca, cantidad aprox) y decile que un vendedor lo contacta.
   A los clientes CONSUMIDOR FINAL no les ofrezcas grabado (es un servicio mayorista).
 - Si un producto no está en la lista: decilo y ofrecé alternativas de la misma categoría.
+- TIENDA ONLINE (difundir, pero con moderación): tenemos catálogo web en {TIENDA_URL},
+  con fotos y precios, y un carrito que termina en este mismo WhatsApp. CADA TANTO invitá
+  al cliente a conocerla — pero como MUCHO UNA vez por conversación, y solo en un momento
+  natural: cuando pregunta "¿qué tenés?" o por variedad, cuando hay más productos de los
+  que entran en el chat, o al cerrar/despedirte. Ejemplo: "Si querés ver TODO el catálogo
+  con fotos, entrá a {TIENDA_URL} 🛍️". NO la menciones en cada mensaje ni la repitas si ya
+  la nombraste antes en esta charla. Y si el cliente CLARAMENTE ya viene de la web (te llega
+  un pedido ya armado tipo carrito, o menciona la página), NO hace falta invitarlo: ya la
+  conoce, seguí con su pedido.
 - PEDIDO CONFIRMADO: cuando el cliente confirma su pedido, respondele el resumen
   (productos, cantidades, precios, total, y que Malcom lo va a contactar) y
   ADEMÁS agregá al final un bloque exacto así (no lo ve el cliente, va directo
