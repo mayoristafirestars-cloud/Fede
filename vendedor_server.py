@@ -45,6 +45,21 @@ app = FastAPI(title="Vendedor virtual")
 SESIONES_PATH = BASE_DIR / "sesiones_eva.json"
 sessions: dict[str, list[dict]] = cargar_sesiones(SESIONES_PATH)
 
+# Un lock por número: si el mismo cliente manda dos mensajes casi juntos,
+# se procesan uno después del otro. Sin esto, dos hilos podrían mutar el
+# mismo historial a la vez y romper el pareo tool_use/tool_result (la API
+# lo rechaza con 400 y el cliente se queda sin respuesta).
+_session_locks: dict[str, threading.Lock] = {}
+_session_locks_guard = threading.Lock()
+
+
+def _lock_sesion(session_id: str) -> threading.Lock:
+    with _session_locks_guard:
+        lk = _session_locks.get(session_id)
+        if lk is None:
+            lk = _session_locks[session_id] = threading.Lock()
+        return lk
+
 
 def normalizar(s: str) -> str:
     """minúsculas y sin acentos, para búsquedas tolerantes"""
@@ -690,38 +705,44 @@ def chat(historial: list[dict], mensaje: str) -> str:
 
 def procesar_mensaje(session_id: str, texto: str, telefono: str = "",
                      es_audio: bool = False) -> dict:
-    """Flujo completo: chat -> fotos -> pedido -> notificación y log al sistema."""
+    """Flujo completo: chat -> fotos -> pedido -> notificación y log al sistema.
+
+    Todo el manejo de la sesión va bajo un lock POR NÚMERO (ver _lock_sesion):
+    dos mensajes casi simultáneos del mismo cliente se procesan en orden y
+    nunca corrompen el historial."""
     if texto.lower() == "reset":
-        sessions.pop(session_id, None)
+        with _lock_sesion(session_id):
+            sessions.pop(session_id, None)
         return {"response": "Conversación reiniciada.", "fotos": [], "pedido": ""}
-    historial = sessions.setdefault(session_id, [])
-    try:
-        respuesta = chat(historial, texto)
-    except Exception as e:
-        print("\n===== ERROR COMPLETO (sacale foto a esto) =====")
-        traceback.print_exc()
-        print("===============================================\n")
-        raise HTTPException(status_code=500, detail=str(e)[:500])
-    # Separar el bloque del pedido (va al vendedor humano, no al cliente)
-    respuesta, pedido = extraer_pedido(respuesta)
-    # Armar la secuencia ordenada: producto -> su foto -> producto -> su foto...
-    limpio, fotos, secuencia = construir_secuencia(respuesta)
-    if pedido:
-        print(f"[pedido] Nuevo pedido confirmado:\n{pedido}\n")
-        notificar_coronel(pedido, session_id, telefono)
-        # Link de pago Mercado Pago (si está configurado) -> última parte de texto
-        if hay_pagos():
-            datos = parsear_pedido(pedido)
-            link = crear_link_pago(datos["items"], referencia=telefono or session_id)
-            if link:
-                pago = (
-                    f"💳 *Pagá online al instante acá:*\n{link}\n"
-                    "_La mercadería queda reservada cuando se acredita el pago._"
-                )
-                secuencia.append({"tipo": "texto", "contenido": pago})
-                limpio += "\n\n" + pago
-    registrar_conversacion(session_id, telefono, texto, limpio, es_audio)
-    guardar_sesiones(sessions, SESIONES_PATH)
+    with _lock_sesion(session_id):
+        historial = sessions.setdefault(session_id, [])
+        try:
+            respuesta = chat(historial, texto)
+        except Exception as e:
+            print("\n===== ERROR COMPLETO (sacale foto a esto) =====")
+            traceback.print_exc()
+            print("===============================================\n")
+            raise HTTPException(status_code=500, detail=str(e)[:500])
+        # Separar el bloque del pedido (va al vendedor humano, no al cliente)
+        respuesta, pedido = extraer_pedido(respuesta)
+        # Armar la secuencia ordenada: producto -> su foto -> producto -> su foto...
+        limpio, fotos, secuencia = construir_secuencia(respuesta)
+        if pedido:
+            print(f"[pedido] Nuevo pedido confirmado:\n{pedido}\n")
+            notificar_coronel(pedido, session_id, telefono)
+            # Link de pago Mercado Pago (si está configurado) -> última parte de texto
+            if hay_pagos():
+                datos = parsear_pedido(pedido)
+                link = crear_link_pago(datos["items"], referencia=telefono or session_id)
+                if link:
+                    pago = (
+                        f"💳 *Pagá online al instante acá:*\n{link}\n"
+                        "_La mercadería queda reservada cuando se acredita el pago._"
+                    )
+                    secuencia.append({"tipo": "texto", "contenido": pago})
+                    limpio += "\n\n" + pago
+        registrar_conversacion(session_id, telefono, texto, limpio, es_audio)
+        guardar_sesiones(sessions, SESIONES_PATH)
     return {
         "response": limpio or "🙌",
         "fotos": fotos,

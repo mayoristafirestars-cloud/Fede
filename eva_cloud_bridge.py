@@ -76,6 +76,8 @@ def firma_valida(cuerpo: bytes, cabecera: str) -> bool:
 
 EVA_API = os.getenv("VENDEDOR_API_URL", "http://127.0.0.1:8003/api/vendedor")
 VENDEDOR_HUMANO = os.getenv("VENDEDOR_HUMANO", "5492954829943")
+# Tu número, para avisarte si Eva toca el tope global del día.
+ALERTA_WHATSAPP = os.getenv("ALERTA_WHATSAPP", "")
 
 LIMITE_POR_NUMERO_HORA = int(os.getenv("LIMITE_POR_NUMERO_HORA", "20"))
 LIMITE_GLOBAL_DIA = int(os.getenv("LIMITE_GLOBAL_DIA", "400"))
@@ -87,25 +89,62 @@ _ventanas: dict[str, list[float]] = {}
 _dia = time.strftime("%Y-%m-%d")
 _hoy = 0
 _lock = threading.Lock()
+_aviso_tope: dict[str, float] = {}   # numero -> último aviso "mucha demanda"
+_aviso_global_dia = ""               # día en que ya avisé al dueño del tope global
 
 
-def permitido(numero: str) -> bool:
+def estado_limite(numero: str) -> str:
+    """Devuelve 'ok', 'numero' (tope por número/hora) o 'global' (tope del día)."""
     global _dia, _hoy
     with _lock:
         dia = time.strftime("%Y-%m-%d")
         if dia != _dia:
             _dia, _hoy = dia, 0
         if _hoy >= LIMITE_GLOBAL_DIA:
-            return False
+            return "global"
         ahora = time.time()
         recientes = [t for t in _ventanas.get(numero, []) if ahora - t < 3600]
         if len(recientes) >= LIMITE_POR_NUMERO_HORA:
             _ventanas[numero] = recientes
-            return False
+            return "numero"
         recientes.append(ahora)
         _ventanas[numero] = recientes
         _hoy += 1
-        return True
+        return "ok"
+
+
+def avisar_tope(numero: str, motivo: str) -> None:
+    """Cuando un cliente pega contra un tope, NO lo dejamos mudo: le mandamos
+    UN aviso (como mucho 1 por hora por número, para no spamear) y, si es el
+    tope global del día, te avisamos a vos una sola vez."""
+    ahora = time.time()
+    with _lock:
+        avisar_cliente = (ahora - _aviso_tope.get(numero, 0)) > 3600
+        if avisar_cliente:
+            _aviso_tope[numero] = ahora
+    if avisar_cliente:
+        try:
+            enviar_texto(numero,
+                         "¡Estamos con mucha demanda en este momento! 🙌 "
+                         "Un vendedor te va a escribir enseguida para ayudarte.")
+        except Exception:
+            pass
+    if motivo == "global" and ALERTA_WHATSAPP:
+        global _aviso_global_dia
+        with _lock:
+            hoy = time.strftime("%Y-%m-%d")
+            avisar_duenio = _aviso_global_dia != hoy
+            if avisar_duenio:
+                _aviso_global_dia = hoy
+        if avisar_duenio:
+            try:
+                enviar_texto(
+                    ALERTA_WHATSAPP,
+                    f"⚠️ Eva alcanzó el tope de {LIMITE_GLOBAL_DIA} mensajes de hoy. "
+                    "Los clientes están recibiendo un aviso de 'mucha demanda'. "
+                    "Si es tráfico real, avisame y subimos el tope.")
+            except Exception:
+                pass
 
 
 # ---- envío por la Cloud API ----
@@ -204,20 +243,25 @@ def descargar_audio(media_id: str) -> tuple[bytes, str]:
 
 # ---- procesamiento ----
 def procesar(numero: str, payload: dict) -> None:
+    algo_enviado = False  # ¿le mandamos ALGO al cliente? Si no, nunca lo dejamos mudo.
     try:
         tipo = payload.get("type")
         if tipo == "text":
-            data = httpx.post(EVA_API, json={
+            r = httpx.post(EVA_API, json={
                 "session_id": numero, "message": payload["text"]["body"],
                 "telefono": numero,
-            }, timeout=180).json()
+            }, timeout=180)
+            r.raise_for_status()  # 500 del cerebro -> excepción -> fallback (no silencio)
+            data = r.json()
         elif tipo == "audio":
             contenido, mime = descargar_audio(payload["audio"]["id"])
-            data = httpx.post(EVA_API + "/audio", json={
+            r = httpx.post(EVA_API + "/audio", json={
                 "session_id": numero,
                 "audio_b64": base64.b64encode(contenido).decode(),
                 "mimetype": mime, "telefono": numero,
-            }, timeout=300).json()
+            }, timeout=300)
+            r.raise_for_status()
+            data = r.json()
         elif tipo in ("image", "video", "document", "sticker"):
             enviar_texto(numero,
                          "Por ahora no puedo ver fotos ni archivos 🙈 Contame por "
@@ -232,14 +276,22 @@ def procesar(numero: str, payload: dict) -> None:
             for parte in secuencia:
                 if parte.get("tipo") == "texto" and parte.get("contenido"):
                     enviar_texto(numero, parte["contenido"])
+                    algo_enviado = True
                 elif parte.get("tipo") == "foto" and str(parte.get("url", "")).startswith("http"):
                     enviar_imagen(numero, parte["url"], parte.get("caption", ""))
+                    algo_enviado = True
         else:
             if data.get("response"):
                 enviar_texto(numero, data["response"])
+                algo_enviado = True
             for foto in data.get("fotos", []):
                 if foto.startswith("http"):
                     enviar_imagen(numero, foto)
+                    algo_enviado = True
+        # El cerebro respondió 200 pero sin nada visible: igual contestamos algo.
+        if not algo_enviado:
+            enviar_texto(numero, "Dame un segundito que lo reviso y te confirmo 🙌")
+            algo_enviado = True
         if data.get("pedido"):
             # Nota: si Malcom no escribió al número en las últimas 24hs,
             # Meta puede rechazar este mensaje (ventana de 24hs). El pedido
@@ -251,10 +303,13 @@ def procesar(numero: str, payload: dict) -> None:
             )
     except Exception as e:
         print(f"[cloud] Error procesando mensaje de {numero}: {e}")
-        try:
-            enviar_texto(numero, "Disculpá, tuve un problema técnico. Probá de nuevo en un ratito 🙏")
-        except Exception:
-            pass
+        # Solo mandamos el aviso de error si el cliente no recibió NADA todavía
+        # (si ya le mandamos medio pedido, no lo asustamos con un "error").
+        if not algo_enviado:
+            try:
+                enviar_texto(numero, "Disculpá, tuve un problema técnico. Probá de nuevo en un ratito 🙏")
+            except Exception:
+                pass
 
 
 @app.get("/webhook")
@@ -292,7 +347,12 @@ async def recibir(request: Request, background_tasks: BackgroundTasks):
                     # 2) Deduplicar: no procesar dos veces el mismo mensaje
                     if ya_procesado(msg.get("id", "")):
                         continue
-                    if not numero or not permitido(numero):
+                    if not numero:
+                        continue
+                    # 3) Topes: si se pasó, NO lo dejamos mudo -> le avisamos.
+                    estado = estado_limite(numero)
+                    if estado != "ok":
+                        background_tasks.add_task(avisar_tope, numero, estado)
                         continue
                     background_tasks.add_task(procesar, numero, msg)
     except Exception as e:
