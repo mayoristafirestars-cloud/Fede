@@ -11,6 +11,7 @@ from fastapi.responses import HTMLResponse
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from db.database import conectar
+from sincronizador import sincronizar_si_cambio
 
 router = APIRouter(tags=["tienda"])
 
@@ -21,6 +22,7 @@ NEGOCIO_NOMBRE = os.getenv("NEGOCIO_NOMBRE", "Dist Coronel Sur")
 
 @router.get("/api/tienda/productos")
 def productos_publicos(buscar: str = "", rubro: str = "", limit: int = 60, offset: int = 0):
+    sincronizar_si_cambio()  # mantiene el catálogo en lockstep con lo que lee Eva
     conn = conectar()
     try:
         query = "SELECT codigo, descripcion, rubro, precio_venta, stock FROM productos WHERE activo = 1 AND precio_venta > 0"

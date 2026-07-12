@@ -10,7 +10,8 @@ CREATE TABLE IF NOT EXISTS productos (
     rubro           TEXT,
     proveedor       TEXT,
     stock           REAL DEFAULT 0,
-    precio_venta    REAL DEFAULT 0,
+    precio_venta    REAL DEFAULT 0,   -- Lista 1 (consumidor final, público)
+    precio_mayorista REAL DEFAULT 0,  -- Lista 2 (mayorista, interno)
     precio_costo    REAL DEFAULT 0,
     fecha_ingreso   TEXT,   -- Fecha Modificado del CSV (ingreso real de stock)
     activo          INTEGER DEFAULT 1,

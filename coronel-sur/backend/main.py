@@ -71,6 +71,12 @@ def backup_diario():
 @app.on_event("startup")
 def startup():
     inicializar_db()
+    # Fuente única: dejar la tabla productos en lockstep con el CSV que lee Eva.
+    try:
+        from sincronizador import sincronizar
+        print(f"[sync inventario] arranque -> {sincronizar()}")
+    except Exception as e:
+        print(f"[sync inventario] no pude sincronizar al arrancar: {e}")
     backup_diario()
     print("🚀 Coronel Sur en http://localhost:8000")
 
