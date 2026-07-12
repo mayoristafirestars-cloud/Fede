@@ -125,8 +125,54 @@ def enviar_texto(a: str, texto: str) -> None:
             print(f"[cloud] Error enviando texto: {r.status_code} {r.text[:200]}")
 
 
+# Caché de imágenes ya subidas a Meta: url -> (media_id, timestamp).
+# Meta conserva el media ~30 días; re-subimos pasados 25 por las dudas.
+_media_cache: dict[str, tuple[str, float]] = {}
+_media_lock = threading.Lock()
+_MEDIA_TTL = 25 * 86400
+
+
+def subir_media(url: str) -> str:
+    """Descarga la imagen (el servidor SÍ puede leer FactuPyme aunque Meta no)
+    y la sube a Meta. Devuelve el media_id, o '' si falla. Cachea el resultado."""
+    with _media_lock:
+        cache = _media_cache.get(url)
+        if cache and (time.time() - cache[1]) < _MEDIA_TTL:
+            return cache[0]
+    try:
+        img = httpx.get(url, timeout=20, follow_redirects=True)
+        if img.status_code != 200 or not img.content:
+            print(f"[cloud] No pude descargar la imagen ({img.status_code}): {url[:60]}")
+            return ""
+        mime = img.headers.get("content-type", "image/jpeg").split(";")[0]
+        if mime not in ("image/jpeg", "image/png"):
+            mime = "image/jpeg"
+        r = httpx.post(
+            f"{GRAPH}/{WA_PHONE_ID}/media",
+            headers=_headers(),
+            data={"messaging_product": "whatsapp", "type": mime},
+            files={"file": ("foto.jpg", img.content, mime)},
+            timeout=30,
+        )
+        if r.status_code == 200:
+            media_id = r.json().get("id", "")
+            if media_id:
+                with _media_lock:
+                    _media_cache[url] = (media_id, time.time())
+                return media_id
+        print(f"[cloud] Error subiendo media: {r.status_code} {r.text[:150]}")
+    except Exception as e:
+        print(f"[cloud] subir_media falló: {e}")
+    return ""
+
+
 def enviar_imagen(a: str, url: str, caption: str = "") -> None:
-    imagen = {"link": url}
+    # 1) Intentar por media_id (servidor descarga + sube -> Meta siempre puede enviarla)
+    media_id = subir_media(url)
+    if media_id:
+        imagen = {"id": media_id}
+    else:
+        imagen = {"link": url}  # fallback: link directo
     if caption:
         imagen["caption"] = caption[:1024]  # límite de caption de WhatsApp
     r = httpx.post(
@@ -137,6 +183,17 @@ def enviar_imagen(a: str, url: str, caption: str = "") -> None:
     )
     if r.status_code != 200:
         print(f"[cloud] Error enviando imagen: {r.status_code} {r.text[:200]}")
+        # Si falló con media_id, reintentar con link como último recurso
+        if media_id:
+            imagen2 = {"link": url}
+            if caption:
+                imagen2["caption"] = caption[:1024]
+            httpx.post(
+                f"{GRAPH}/{WA_PHONE_ID}/messages", headers=_headers(),
+                json={"messaging_product": "whatsapp", "to": a,
+                      "type": "image", "image": imagen2},
+                timeout=15,
+            )
 
 
 def descargar_audio(media_id: str) -> tuple[bytes, str]:
