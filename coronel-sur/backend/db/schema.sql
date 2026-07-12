@@ -109,6 +109,17 @@ CREATE TABLE IF NOT EXISTS busquedas_eva (
 CREATE INDEX IF NOT EXISTS idx_busq_norm  ON busquedas_eva(termino_norm);
 CREATE INDEX IF NOT EXISTS idx_busq_fecha ON busquedas_eva(creado_en);
 
+-- PAGOS DE MERCADO PAGO (webhook: cierra el pedido cuando se acredita)
+CREATE TABLE IF NOT EXISTS pagos_mp (
+    id             INTEGER PRIMARY KEY AUTOINCREMENT,
+    payment_id     TEXT UNIQUE,      -- id del pago en MP (idempotencia)
+    referencia     TEXT,             -- external_reference = número de pedido (EVA-xxxxx)
+    comprobante_id INTEGER REFERENCES comprobantes(id),
+    monto          REAL DEFAULT 0,
+    estado         TEXT,             -- approved
+    creado_en      TEXT DEFAULT (datetime('now', 'localtime'))
+);
+
 -- ÍNDICES (rendimiento con miles de clientes y ventas)
 CREATE INDEX IF NOT EXISTS idx_vh_cliente  ON ventas_historicas(cliente);
 CREATE INDEX IF NOT EXISTS idx_vh_producto ON ventas_historicas(producto);

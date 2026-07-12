@@ -628,17 +628,18 @@ def registrar_busqueda(consulta: str, resultados: int, con_stock: bool) -> None:
     threading.Thread(target=_enviar, daemon=True).start()
 
 
-def notificar_coronel(pedido_texto: str, session_id: str, telefono_real: str = "") -> None:
-    """Crea el presupuesto en el sistema Coronel Sur (si está configurado)."""
+def notificar_coronel(pedido_texto: str, session_id: str, telefono_real: str = "") -> str:
+    """Crea el presupuesto en el sistema Coronel Sur (si está configurado).
+    Devuelve el número de pedido (ej: EVA-00007) o '' si no se pudo crear."""
     if not CORONEL_URL:
-        return
+        return ""
     try:
         import httpx
 
         datos = parsear_pedido(pedido_texto)
         if not datos["items"]:
             print("[pedido] No pude parsear items; no se envió al sistema.")
-            return
+            return ""
         # Preferimos el número real del contacto; si no vino, los dígitos del ID.
         telefono = re.sub(r"[^0-9]", "", telefono_real) or re.sub(r"[^0-9]", "", session_id)
         r = httpx.post(
@@ -648,11 +649,13 @@ def notificar_coronel(pedido_texto: str, session_id: str, telefono_real: str = "
             timeout=5,
         )
         if r.status_code == 200:
-            print(f"[pedido] Presupuesto creado en el sistema: {r.json().get('numero')}")
-        else:
-            print(f"[pedido] El sistema respondió {r.status_code}: {r.text[:120]}")
+            numero = r.json().get("numero", "")
+            print(f"[pedido] Presupuesto creado en el sistema: {numero}")
+            return numero
+        print(f"[pedido] El sistema respondió {r.status_code}: {r.text[:120]}")
     except Exception as e:
         print(f"[pedido] No se pudo notificar al sistema: {e}")
+    return ""
 
 
 def registrar_conversacion(session_id: str, telefono: str, mensaje: str,
@@ -761,11 +764,14 @@ def procesar_mensaje(session_id: str, texto: str, telefono: str = "",
         limpio, fotos, secuencia = construir_secuencia(respuesta)
         if pedido:
             print(f"[pedido] Nuevo pedido confirmado:\n{pedido}\n")
-            notificar_coronel(pedido, session_id, telefono)
-            # Link de pago Mercado Pago (si está configurado) -> última parte de texto
+            numero_pedido = notificar_coronel(pedido, session_id, telefono)
+            # Link de pago Mercado Pago (si está configurado) -> última parte de texto.
+            # La referencia es el número de pedido (EVA-xxxxx): así, cuando MP
+            # avisa que se acreditó el pago, el sistema sabe qué pedido cerrar.
             if hay_pagos():
                 datos = parsear_pedido(pedido)
-                link = crear_link_pago(datos["items"], referencia=telefono or session_id)
+                link = crear_link_pago(
+                    datos["items"], referencia=numero_pedido or telefono or session_id)
                 if link:
                     pago = (
                         f"💳 *Pagá online al instante acá:*\n{link}\n"

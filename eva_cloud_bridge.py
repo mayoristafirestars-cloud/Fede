@@ -78,6 +78,8 @@ EVA_API = os.getenv("VENDEDOR_API_URL", "http://127.0.0.1:8003/api/vendedor")
 VENDEDOR_HUMANO = os.getenv("VENDEDOR_HUMANO", "5492954829943")
 # Tu número, para avisarte si Eva toca el tope global del día.
 ALERTA_WHATSAPP = os.getenv("ALERTA_WHATSAPP", "")
+# Token compartido con el sistema para pedidos máquina-a-máquina (ej: aviso de pago).
+AGENTE_TOKEN = os.getenv("AGENTE_TOKEN", "eva-coronel-2026")
 
 LIMITE_POR_NUMERO_HORA = int(os.getenv("LIMITE_POR_NUMERO_HORA", "20"))
 LIMITE_GLOBAL_DIA = int(os.getenv("LIMITE_GLOBAL_DIA", "400"))
@@ -358,6 +360,29 @@ async def recibir(request: Request, background_tasks: BackgroundTasks):
     except Exception as e:
         print(f"[cloud] Webhook con formato inesperado: {e}")
     return {"status": "ok"}  # siempre 200 rápido, si no Meta reintenta
+
+
+@app.post("/notificar")
+async def notificar_interno(request: Request):
+    """Endpoint INTERNO (localhost): el sistema Coronel Sur pide enviar un
+    WhatsApp por Eva — ej: avisar que un pago se acreditó. Protegido por X-Token
+    (el mismo AGENTE_TOKEN máquina-a-máquina)."""
+    if request.headers.get("X-Token") != AGENTE_TOKEN:
+        return Response(status_code=401)
+    try:
+        data = await request.json()
+    except Exception:
+        return Response(status_code=400)
+    a = str(data.get("a", "")).strip()
+    texto = str(data.get("texto", "")).strip()
+    if not a or not texto:
+        return {"ok": False}
+    try:
+        enviar_texto(a, texto)
+        return {"ok": True}
+    except Exception as e:
+        print(f"[cloud] /notificar falló: {e}")
+        return {"ok": False}
 
 
 @app.get("/health")

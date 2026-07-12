@@ -14,6 +14,10 @@ import os
 
 MP_ACCESS_TOKEN = os.getenv("MP_ACCESS_TOKEN", "")
 MP_API = "https://api.mercadopago.com/checkout/preferences"
+# A dónde avisa Mercado Pago cuando el pago se acredita (el webhook del sistema).
+MP_NOTIF_URL = os.getenv(
+    "MP_NOTIF_URL", "https://coronelsur.com.ar/api/pagos/webhook"
+)
 
 
 def hay_pagos() -> bool:
@@ -49,6 +53,9 @@ def crear_link_pago(items: list[dict], referencia: str = "") -> str:
             },
             "statement_descriptor": "CORONEL SUR",
         }
+        # Si hay webhook configurado, MP nos avisa cuando el pago se acredita.
+        if MP_NOTIF_URL:
+            payload["notification_url"] = MP_NOTIF_URL
         r = httpx.post(
             MP_API,
             headers={"Authorization": f"Bearer {MP_ACCESS_TOKEN}"},

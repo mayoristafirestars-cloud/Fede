@@ -16,6 +16,7 @@ from routers.inventario import router as router_inventario
 from routers.reportes import router as router_reportes
 from routers.agente import router as router_agente
 from routers.tienda import router as router_tienda
+from routers.pagos import router as router_pagos
 from auth import AuthMiddleware, registrar_rutas as registrar_auth
 
 app = FastAPI(title="Coronel Sur", version="1.0.0")
@@ -33,6 +34,7 @@ app.include_router(router_inventario)
 app.include_router(router_reportes)
 app.include_router(router_agente)
 app.include_router(router_tienda)
+app.include_router(router_pagos)
 app.add_middleware(AuthMiddleware)
 registrar_auth(app)
 

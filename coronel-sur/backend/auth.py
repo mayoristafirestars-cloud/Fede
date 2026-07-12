@@ -21,7 +21,9 @@ _SECRET = hashlib.sha256(f"coronel-sur|{CLAVE}".encode()).hexdigest()
 SESION_DIAS = 30
 
 # Rutas que no requieren login (incluye la tienda online pública)
-ABIERTAS = ("/login", "/static/", "/favicon", "/health", "/tienda", "/api/tienda/")
+ABIERTAS = ("/login", "/static/", "/favicon", "/health", "/tienda", "/api/tienda/",
+            "/api/pagos/webhook")  # webhook de MP: no puede autenticar; se valida
+                                   # reconsultando el pago a MP (autoritativo)
 # Rutas máquina-a-máquina (requieren header X-Token) — match EXACTO
 MAQUINA = ("/api/agente/pedido", "/api/agente/conversacion",
            "/api/agente/resumen-diario", "/api/agente/busqueda")
