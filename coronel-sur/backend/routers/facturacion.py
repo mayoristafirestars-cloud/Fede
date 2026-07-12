@@ -84,7 +84,12 @@ def crear_comprobante(data: NuevoComprobante):
               fecha, subtotal, data.descuento, total))
         comprobante_id = cur.lastrowid
 
-        # Insertar ítems y actualizar stock
+        # Insertar ítems.
+        # NOTA: el stock NO se descuenta acá. FactuPyme es el único dueño del
+        # stock (el CSV que exporta es la verdad); el sincronizador lo refleja
+        # en la tabla productos. Si el sistema también descontara, el próximo
+        # sync pisaría ese descuento y los números quedarían mal (oscilando
+        # entre lo del sistema y lo de FactuPyme).
         for item in data.items:
             item_subtotal = item.cantidad * item.precio_unitario
             conn.execute("""
@@ -94,15 +99,6 @@ def crear_comprobante(data: NuevoComprobante):
                 VALUES (?, ?, ?, ?, ?, ?, ?)
             """, (comprobante_id, item.producto_id, item.producto_desc,
                   item.cantidad, item.precio_unitario, item.precio_costo, item_subtotal))
-
-            # Descontar stock si es factura y tiene producto_id
-            if data.tipo == "factura" and item.producto_id:
-                conn.execute("""
-                    UPDATE productos SET
-                        stock = stock - ?,
-                        actualizado_en = datetime('now', 'localtime')
-                    WHERE id = ?
-                """, (item.cantidad, item.producto_id))
 
         conn.commit()
         return {
@@ -167,18 +163,7 @@ def anular_comprobante(comprobante_id: int):
         if comp["estado"] == "anulado":
             raise HTTPException(status_code=400, detail="Ya está anulado")
 
-        # Revertir stock si era factura
-        if comp["tipo"] == "factura":
-            items = conn.execute(
-                "SELECT * FROM comprobante_items WHERE comprobante_id = ?", (comprobante_id,)
-            ).fetchall()
-            for item in items:
-                if item["producto_id"]:
-                    conn.execute(
-                        "UPDATE productos SET stock = stock + ? WHERE id = ?",
-                        (item["cantidad"], item["producto_id"])
-                    )
-
+        # No se revierte stock: FactuPyme es el dueño del stock (ver crear_comprobante).
         conn.execute(
             "UPDATE comprobantes SET estado = 'anulado' WHERE id = ?", (comprobante_id,)
         )

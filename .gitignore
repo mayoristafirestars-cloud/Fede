@@ -5,6 +5,13 @@
 *.key
 *.pem
 
+# Bases de datos y backups (datos de clientes — NUNCA commitear)
+*.db
+*.db-wal
+*.db-shm
+db/backups/
+**/backups/
+
 # Python
 __pycache__/
 *.py[cod]

@@ -64,9 +64,12 @@ def ya_procesado(msg_id: str) -> bool:
 
 
 def firma_valida(cuerpo: bytes, cabecera: str) -> bool:
-    """Verifica el header X-Hub-Signature-256 con el App Secret."""
+    """Verifica el header X-Hub-Signature-256 con el App Secret.
+    A prueba de fallas: si no hay App Secret configurado, se RECHAZA el webhook
+    (antes se aceptaba cualquier POST, que era un agujero de seguridad)."""
     if not WA_APP_SECRET:
-        return True  # sin secret configurado, no se valida (log lo avisa)
+        print("[cloud] ⚠️ WA_APP_SECRET vacío: rechazo el webhook por seguridad. Cargalo en .env.")
+        return False
     if not cabecera or not cabecera.startswith("sha256="):
         return False
     esperado = "sha256=" + hmac.new(

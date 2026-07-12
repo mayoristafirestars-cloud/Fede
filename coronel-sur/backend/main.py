@@ -137,4 +137,7 @@ if __name__ == "__main__":
     import uvicorn
     import os
     port = int(os.environ.get("PORT", 8000))
-    uvicorn.run("main:app", host="0.0.0.0", port=port, reload=False)
+    # Escuchar SOLO en localhost: el acceso público entra por Caddy (HTTPS).
+    # Así el puerto 8000 no queda expuesto por IP directa sin cifrar.
+    host = os.environ.get("HOST", "127.0.0.1")
+    uvicorn.run("main:app", host=host, port=port, reload=False)
