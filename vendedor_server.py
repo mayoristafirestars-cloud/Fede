@@ -275,6 +275,9 @@ def buscar_producto(consulta: str) -> dict:
             texto = normalizar(f"{p['producto']} {p['categoria']} {p.get('marca', '')}")
             if any(w in texto for w in palabras):
                 resultados.append(p)
+    # Inteligencia de demanda: registrar qué buscó el cliente y si había stock.
+    con_stock = any(p.get("cantidad", 0) > 0 for p in resultados)
+    registrar_busqueda(consulta, len(resultados), con_stock)
     return {"encontrados": len(resultados), "productos": resultados[:12]}
 
 
@@ -594,6 +597,35 @@ def parsear_pedido(pedido: str) -> dict:
     # El total SIEMPRE se recalcula sumando los ítems ya validados
     total = round(sum(i["subtotal"] for i in items), 2)
     return {"tipo_cliente": tipo, "items": items, "total": total}
+
+
+def registrar_busqueda(consulta: str, resultados: int, con_stock: bool) -> None:
+    """Registra en el sistema qué producto buscó un cliente (inteligencia de
+    demanda). En segundo plano; nunca bloquea ni rompe la atención."""
+    if not CORONEL_URL:
+        return
+    termino = (consulta or "").strip()
+    if len(termino) < 2:
+        return
+
+    def _enviar():
+        try:
+            import httpx
+
+            httpx.post(
+                f"{CORONEL_URL}/api/agente/busqueda",
+                json={
+                    "termino": termino,
+                    "resultados": resultados,
+                    "con_stock": 1 if con_stock else 0,
+                },
+                headers={"X-Token": AGENTE_TOKEN},
+                timeout=5,
+            )
+        except Exception:
+            pass
+
+    threading.Thread(target=_enviar, daemon=True).start()
 
 
 def notificar_coronel(pedido_texto: str, session_id: str, telefono_real: str = "") -> None:

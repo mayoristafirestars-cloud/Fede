@@ -96,6 +96,19 @@ CREATE TABLE IF NOT EXISTS conversaciones_eva (
     creado_en       TEXT DEFAULT (datetime('now', 'localtime'))
 );
 
+-- BÚSQUEDAS DE EVA (inteligencia de demanda: qué piden los clientes)
+CREATE TABLE IF NOT EXISTS busquedas_eva (
+    id           INTEGER PRIMARY KEY AUTOINCREMENT,
+    termino      TEXT,           -- lo que buscó, tal cual
+    termino_norm TEXT,           -- normalizado (sin acentos, minúsculas) para agrupar
+    resultados   INTEGER DEFAULT 0,  -- cuántos productos matchearon
+    con_stock    INTEGER DEFAULT 0,  -- 1 si al menos un resultado tenía stock
+    telefono     TEXT,
+    creado_en    TEXT DEFAULT (datetime('now', 'localtime'))
+);
+CREATE INDEX IF NOT EXISTS idx_busq_norm  ON busquedas_eva(termino_norm);
+CREATE INDEX IF NOT EXISTS idx_busq_fecha ON busquedas_eva(creado_en);
+
 -- ÍNDICES (rendimiento con miles de clientes y ventas)
 CREATE INDEX IF NOT EXISTS idx_vh_cliente  ON ventas_historicas(cliente);
 CREATE INDEX IF NOT EXISTS idx_vh_producto ON ventas_historicas(producto);

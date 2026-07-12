@@ -362,6 +362,8 @@ a{text-decoration:none;color:inherit}button{cursor:pointer;font-family:var(--F)}
         style="margin-left:10px;background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:4px 10px;color:var(--text);font-size:12px;outline:none">
     </p>
     <div id="ag-conversaciones"><p style="color:var(--text3);font-size:12px">Cargando...</p></div>
+    <p style="color:var(--text2);font-size:12px;margin:22px 0 8px;text-transform:uppercase;letter-spacing:.5px">🛒 Qué comprar — lo que más te piden los clientes (últimos 30 días)</p>
+    <div id="ag-demanda"><p style="color:var(--text3);font-size:12px">Cargando...</p></div>
   </div>
 </div>
 <div class="page" id="page-tienda">
@@ -939,6 +941,31 @@ async function cargarAgente(){
     }
   }catch(e){box.innerHTML='<p style="text-align:center;padding:30px;color:var(--red)">Error: '+e.message+'</p>';}
   cargarConversaciones();
+  cargarDemanda();
+}
+
+async function cargarDemanda(){
+  const box=document.getElementById('ag-demanda');
+  try{
+    const d=await(await fetch('/api/agente/demanda?dias=30')).json();
+    if(!d.total_busquedas){
+      box.innerHTML='<p style="color:var(--text3);font-size:12px;padding:14px">Todavía no hay búsquedas registradas. A medida que los clientes le consulten productos a Eva, acá vas a ver qué piden — y qué te conviene comprar o reponer.</p>';
+      return;
+    }
+    const col=(titulo,sub,filas,color)=>'<div style="flex:1;min-width:250px">'+
+      '<p style="color:var(--text);font-size:13px;font-weight:600;margin-bottom:1px">'+titulo+'</p>'+
+      '<p style="color:var(--text3);font-size:11px;margin-bottom:8px">'+sub+'</p>'+
+      (filas&&filas.length?'<table class="hist-table"><tbody>'+filas.map(t=>
+        '<tr><td style="text-transform:capitalize">'+t.termino+
+        (t.clientes>1?' <span style="color:var(--text3);font-size:11px">· '+t.clientes+' clientes</span>':'')+'</td>'+
+        '<td style="text-align:right;color:'+color+';white-space:nowrap;font-weight:600">'+t.veces+'×</td></tr>').join('')+'</tbody></table>'
+        :'<p style="color:var(--text3);font-size:12px">Sin datos</p>')+'</div>';
+    box.innerHTML='<div style="display:flex;gap:22px;flex-wrap:wrap">'+
+      col('❌ Piden y no tengo','Productos que buscan y no están en el catálogo. Candidatos a incorporar.',d.sin_resultado,'var(--red)')+
+      col('📦 Sin stock','Están en el catálogo pero se pidieron sin stock. A reponer.',d.sin_stock,'var(--orange)')+
+      col('🔎 Más buscado','Lo más consultado en general.',d.mas_buscado,'var(--text2)')+
+    '</div>';
+  }catch(e){box.innerHTML='<p style="color:var(--red);font-size:12px">Error: '+e.message+'</p>';}
 }
 
 async function agEstado(id,estado){

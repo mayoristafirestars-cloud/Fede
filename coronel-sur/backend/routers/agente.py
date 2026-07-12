@@ -9,7 +9,7 @@ from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel
 from typing import Optional
 from datetime import datetime
-import os, sys
+import os, sys, unicodedata
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from db.database import conectar
@@ -182,11 +182,87 @@ def resumen_diario():
             SELECT mensaje FROM conversaciones_eva
              WHERE date(creado_en) = date('now', 'localtime')
              ORDER BY id DESC LIMIT 5""").fetchall()
+        # Inteligencia de demanda del día: lo que pidieron y no tenemos.
+        piden = conn.execute("""
+            SELECT termino_norm, COUNT(*) AS veces FROM busquedas_eva
+             WHERE date(creado_en) = date('now', 'localtime')
+               AND resultados = 0 AND termino_norm != ''
+          GROUP BY termino_norm ORDER BY veces DESC LIMIT 5""").fetchall()
         return {
             "mensajes": conv[0], "clientes": conv[1],
             "pedidos": ped[0], "total_pedidos": round(ped[1], 2),
             "ultimas_consultas": [t[0][:80] for t in top],
+            "piden_y_no_tengo": [{"termino": p[0], "veces": p[1]} for p in piden],
         }
+    finally:
+        conn.close()
+
+
+def _norm_termino(s: str) -> str:
+    s = unicodedata.normalize("NFKD", s or "").encode("ascii", "ignore").decode()
+    return " ".join(s.lower().split())
+
+
+class BusquedaIn(BaseModel):
+    termino: str
+    resultados: int = 0
+    con_stock: int = 0
+    telefono: str = ""
+
+
+@router.post("/busqueda")
+def registrar_busqueda(data: BusquedaIn):
+    """Eva registra acá cada búsqueda de producto de un cliente. Esto alimenta
+    la inteligencia de demanda (qué piden y no tengo / qué tengo sin stock)."""
+    termino = data.termino.strip()
+    if len(termino) < 2:
+        return {"ok": False}
+    conn = conectar()
+    try:
+        conn.execute(
+            "INSERT INTO busquedas_eva (termino, termino_norm, resultados, con_stock, telefono) "
+            "VALUES (?, ?, ?, ?, ?)",
+            (termino[:120], _norm_termino(termino)[:120], int(data.resultados),
+             1 if data.con_stock else 0, (data.telefono or "")[:40]))
+        conn.commit()
+        return {"ok": True}
+    finally:
+        conn.close()
+
+
+@router.get("/demanda")
+def demanda(dias: int = 30, limit: int = 20):
+    """Reporte de demanda a partir de las búsquedas de los clientes:
+    - sin_resultado: lo que piden y NO está en el catálogo → candidato a comprar.
+    - sin_stock: lo que está en el catálogo pero se pidió siempre sin stock → reponer.
+    - mas_buscado: lo más consultado en general.
+    """
+    desde = f"-{int(dias)} days"
+    conn = conectar()
+    try:
+        def agrupar(where: str, having: str = ""):
+            return [dict(r) for r in conn.execute(f"""
+                SELECT termino_norm AS termino,
+                       COUNT(*)                AS veces,
+                       COUNT(DISTINCT telefono) AS clientes,
+                       MAX(creado_en)          AS ultima
+                  FROM busquedas_eva
+                 WHERE creado_en >= datetime('now', ?, 'localtime')
+                   AND termino_norm != '' {where}
+              GROUP BY termino_norm {having}
+              ORDER BY veces DESC, clientes DESC
+                 LIMIT ?""", (desde, limit)).fetchall()]
+
+        sin_resultado = agrupar("AND resultados = 0")
+        # Se buscó SIEMPRE sin stock (nunca hubo un resultado con stock disponible)
+        sin_stock = agrupar("AND resultados > 0", "HAVING MAX(con_stock) = 0")
+        mas_buscado = agrupar("")
+        total = conn.execute(
+            "SELECT COUNT(*) FROM busquedas_eva "
+            "WHERE creado_en >= datetime('now', ?, 'localtime')", (desde,)).fetchone()[0]
+        return {"dias": dias, "total_busquedas": total,
+                "sin_resultado": sin_resultado, "sin_stock": sin_stock,
+                "mas_buscado": mas_buscado}
     finally:
         conn.close()
 

@@ -23,7 +23,8 @@ SESION_DIAS = 30
 # Rutas que no requieren login (incluye la tienda online pública)
 ABIERTAS = ("/login", "/static/", "/favicon", "/health", "/tienda", "/api/tienda/")
 # Rutas máquina-a-máquina (requieren header X-Token) — match EXACTO
-MAQUINA = ("/api/agente/pedido", "/api/agente/conversacion", "/api/agente/resumen-diario")
+MAQUINA = ("/api/agente/pedido", "/api/agente/conversacion",
+           "/api/agente/resumen-diario", "/api/agente/busqueda")
 
 
 def firmar(valor: str) -> str:
