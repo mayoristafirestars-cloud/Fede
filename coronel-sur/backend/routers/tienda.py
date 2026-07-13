@@ -6,7 +6,7 @@ foto y si hay stock. El carrito termina en un mensaje a WhatsApp de Eva.
 import os
 import sys
 
-from fastapi import APIRouter
+from fastapi import APIRouter, Response
 from fastapi.responses import HTMLResponse
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -74,25 +74,33 @@ def _card_html(p: dict) -> str:
     """Una tarjeta de producto renderizada en el servidor (misma estructura
     que la que arma el JS), con todo escapado."""
     nom = _esc(p["descripcion"])
-    sin = "" if p["hay_stock"] else '<div class="sinstock">Sin stock — consultá</div>'
-    return (
-        f'<div class="prod"><div class="nom">{nom}</div>'
-        f'<div class="precio">{_precio_ar(p["precio"])}</div>{sin}'
-        f'<button class="add" data-codigo="{_esc(p["codigo"])}" data-nom="{nom}" '
-        f'data-precio="{float(p["precio"]):.2f}" aria-label="Agregar {nom}">Agregar</button></div>'
-    )
+    if p["hay_stock"]:
+        sin = ""
+        boton = (f'<button class="add" data-codigo="{_esc(p["codigo"])}" data-nom="{nom}" '
+                 f'data-precio="{float(p["precio"]):.2f}" aria-label="Agregar {nom}">Agregar</button>')
+    else:
+        # Sin stock: se muestra pero NO se puede agregar (evita pedidos incumplibles).
+        sin = '<div class="sinstock">Sin stock — consultá</div>'
+        boton = '<button disabled aria-label="Sin stock, consultá por WhatsApp">Sin stock</button>'
+    return (f'<div class="prod"><div class="nom">{nom}</div>'
+            f'<div class="precio">{_precio_ar(p["precio"])}</div>{sin}{boton}</div>')
 
 
 @router.get("/api/tienda/productos")
-def productos_publicos(buscar: str = "", rubro: str = "", limit: int = 60, offset: int = 0):
+def productos_publicos(response: Response, buscar: str = "", rubro: str = "",
+                       limit: int = 60, offset: int = 0):
     sincronizar_si_cambio()  # mantiene el catálogo en lockstep con lo que lee Eva
     limit = max(1, min(int(limit), 100))  # tope: nadie vuelca el catálogo entero
     prods, total = _consultar_productos(buscar, rubro, limit, max(0, int(offset)))
+    # El catálogo es igual para todos y se actualiza por sync: cachear unos
+    # segundos alivia la base cuando muchos clientes navegan a la vez.
+    response.headers["Cache-Control"] = "public, max-age=60"
     return {"productos": prods, "total": total}
 
 
 @router.get("/api/tienda/rubros")
-def rubros_publicos():
+def rubros_publicos(response: Response):
+    response.headers["Cache-Control"] = "public, max-age=300"
     conn = conectar()
     try:
         return [
@@ -113,6 +121,10 @@ def tienda_home():
     )
     with open(ruta, encoding="utf-8") as f:
         html = f.read()
+
+    if not WA_TIENDA:
+        print("[tienda] ⚠️ WA_TIENDA vacío: los pedidos de la tienda NO tienen a "
+              "dónde ir. Configurá WA_TIENDA en el .env para no perder ventas.")
 
     # Render server-side de la primera página + rubros, para que Google y los
     # bots de WhatsApp/redes vean productos reales (no una página vacía) y para

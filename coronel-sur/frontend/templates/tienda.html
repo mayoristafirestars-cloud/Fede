@@ -22,7 +22,7 @@
 <meta name="twitter:image" content="{{BASE_URL}}/static/og-tienda.png">
 <style>
   *{box-sizing:border-box;margin:0;padding:0}
-  :root{--bg:#f4f4f5;--card:#fff;--txt:#18181b;--txt2:#71717a;--acc:#16a34a;--acc2:#15803d;--bord:#e4e4e7}
+  :root{--bg:#f4f4f5;--card:#fff;--txt:#18181b;--txt2:#71717a;--acc:#15803d;--acc2:#166534;--bord:#e4e4e7}
   body{font-family:system-ui,-apple-system,sans-serif;background:var(--bg);color:var(--txt);padding-bottom:80px}
   header{background:var(--card);border-bottom:1px solid var(--bord);padding:14px 16px;position:sticky;top:0;z-index:10}
   header h1{font-size:18px}
@@ -46,11 +46,13 @@
   #carrito-bar{position:fixed;bottom:0;left:0;right:0;background:var(--acc);color:#fff;padding:14px 16px;display:none;justify-content:space-between;align-items:center;cursor:pointer;font-weight:600;box-shadow:0 -2px 12px rgba(0,0,0,.15)}
   #overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);display:none;z-index:20;align-items:flex-end}
   #panel{background:var(--card);width:100%;max-height:80vh;border-radius:20px 20px 0 0;padding:18px;overflow-y:auto}
-  #panel h2{font-size:17px;margin-bottom:12px}
+  .pcab{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+  #panel h2{font-size:17px}
+  .cerrar{background:var(--bg);border:1px solid var(--bord);border-radius:10px;width:40px;height:40px;font-size:20px;cursor:pointer;color:var(--txt)}
   .item{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--bord)}
   .item .n{flex:1;font-size:13px}
-  .item .qty{display:flex;align-items:center;gap:8px}
-  .item .qty button{width:26px;height:26px;border:1px solid var(--bord);background:var(--bg);border-radius:6px;font-size:16px;cursor:pointer}
+  .item .qty{display:flex;align-items:center;gap:10px}
+  .item .qty button{width:40px;height:40px;border:1px solid var(--bord);background:var(--bg);border-radius:8px;font-size:18px;cursor:pointer}
   #total{font-size:19px;font-weight:700;margin:14px 0}
   #enviar{width:100%;background:var(--acc);color:#fff;border:none;border-radius:12px;padding:14px;font-size:15px;font-weight:700;cursor:pointer}
   .empty{text-align:center;padding:40px;color:var(--txt2)}
@@ -68,16 +70,16 @@
 <button id="mas" type="button" style="display:{{MAS_STYLE}}">Ver más</button>
 <div class="empty" id="empty" style="display:{{EMPTY_STYLE}}">No encontramos productos.</div>
 
-<div id="carrito-bar" onclick="abrir()">
+<div id="carrito-bar" role="button" tabindex="0" aria-label="Ver tu pedido">
   <span id="cb-items">0 productos</span><span id="cb-total">$0</span>
 </div>
 
-<div id="overlay" onclick="if(event.target===this)cerrar()">
-  <div id="panel">
-    <h2>Tu pedido</h2>
+<div id="overlay">
+  <div id="panel" role="dialog" aria-modal="true" aria-label="Tu pedido">
+    <div class="pcab"><h2>Tu pedido</h2><button class="cerrar" id="cerrar-panel" type="button" aria-label="Cerrar">✕</button></div>
     <div id="items"></div>
     <div id="total">Total: $0</div>
-    <button id="enviar" onclick="enviarWhatsapp()">Enviar pedido por WhatsApp 📲</button>
+    <button id="enviar" type="button">Enviar pedido por WhatsApp 📲</button>
   </div>
 </div>
 
@@ -89,6 +91,10 @@ const fmt=n=>'$'+Number(n||0).toLocaleString('es-AR',{maximumFractionDigits:0});
 const esc=s=>String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 let offset={{OFFSET_INICIAL}}, total={{TOTAL}}, cargando=false, fin=(offset>=total && SSR_OK);
 const carrito={}; // codigo -> {nom, precio, cant}
+// Carrito persistente: no se pierde al recargar o cambiar de app.
+const CART_KEY='carrito_cs';
+try{Object.assign(carrito,JSON.parse(localStorage.getItem(CART_KEY)||'{}'));}catch(e){}
+function guardarCarrito(){try{localStorage.setItem(CART_KEY,JSON.stringify(carrito));}catch(e){}}
 
 function reset(){offset=0;fin=false;$('grid').innerHTML='';$('empty').style.display='none';cargar();}
 let debT=null;function buscarDeb(){clearTimeout(debT);debT=setTimeout(reset,350);}
@@ -98,9 +104,14 @@ function crearCard(p){
   const nom=document.createElement('div');nom.className='nom';nom.textContent=p.descripcion;div.appendChild(nom);
   const pr=document.createElement('div');pr.className='precio';pr.textContent=fmt(p.precio);div.appendChild(pr);
   if(!p.hay_stock){const s=document.createElement('div');s.className='sinstock';s.textContent='Sin stock — consultá';div.appendChild(s);}
-  const b=document.createElement('button');b.className='add';b.type='button';b.textContent='Agregar';
-  b.dataset.codigo=p.codigo;b.dataset.nom=p.descripcion;b.dataset.precio=p.precio;
-  b.setAttribute('aria-label','Agregar '+p.descripcion);
+  const b=document.createElement('button');b.type='button';
+  if(p.hay_stock){
+    b.className='add';b.textContent='Agregar';
+    b.dataset.codigo=p.codigo;b.dataset.nom=p.descripcion;b.dataset.precio=p.precio;
+    b.setAttribute('aria-label','Agregar '+p.descripcion);
+  }else{
+    b.disabled=true;b.textContent='Sin stock';b.setAttribute('aria-label','Sin stock, consultá por WhatsApp');
+  }
   div.appendChild(b);return div;
 }
 function estado(cual){$('cargando').style.display=cual==='cargando'?'block':'none';$('error').style.display=cual==='error'?'block':'none';}
@@ -144,6 +155,7 @@ function cambiar(cod,delta){
   render();
 }
 function render(){
+  guardarCarrito();
   const cods=Object.keys(carrito);
   const nItems=cods.reduce((s,c)=>s+carrito[c].cant,0);
   const tot=cods.reduce((s,c)=>s+carrito[c].cant*carrito[c].precio,0);
@@ -158,8 +170,15 @@ function render(){
     :'<p class="empty">Carrito vacío</p>';
 }
 $('items').addEventListener('click',e=>{const b=e.target.closest('button.q');if(!b)return;cambiar(b.dataset.c,Number(b.dataset.d));});
-function abrir(){$('overlay').style.display='flex';}
-function cerrar(){$('overlay').style.display='none';}
+let ultimoFoco=null;
+function abrir(){ultimoFoco=document.activeElement;$('overlay').style.display='flex';const c=$('cerrar-panel');if(c)c.focus();}
+function cerrar(){$('overlay').style.display='none';if(ultimoFoco&&ultimoFoco.focus)ultimoFoco.focus();}
+$('carrito-bar').addEventListener('click',abrir);
+$('carrito-bar').addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();abrir();}});
+$('cerrar-panel').addEventListener('click',cerrar);
+$('enviar').addEventListener('click',enviarWhatsapp);
+$('overlay').addEventListener('click',e=>{if(e.target===$('overlay'))cerrar();});
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&$('overlay').style.display==='flex')cerrar();});
 
 function enviarWhatsapp(){
   const cods=Object.keys(carrito);
@@ -168,10 +187,14 @@ function enviarWhatsapp(){
   let tot=0;
   cods.forEach(c=>{const it=carrito[c];tot+=it.cant*it.precio;msg+='• '+it.nom+' x'+it.cant+' = '+fmt(it.cant*it.precio)+'\n';});
   msg+='\nTotal aprox: '+fmt(tot);
-  if(WA){window.open('https://wa.me/'+WA+'?text='+encodeURIComponent(msg),'_blank');}
-  else{alert('El WhatsApp de la tienda no está configurado. Avisale al administrador.');}
+  if(WA){window.open('https://wa.me/'+WA+'?text='+encodeURIComponent(msg),'_blank');return;}
+  // Sin WhatsApp configurado: no dejamos al cliente en la nada — copiamos el pedido.
+  try{navigator.clipboard.writeText(msg);}catch(e){}
+  alert('¡Copiamos tu pedido! 📋 Mandánoslo por WhatsApp o Instagram y te lo confirmamos. ¡Gracias!');
 }
 
+// Mostrar el carrito persistido (si el cliente ya había armado un pedido).
+render();
 // Si el servidor no pudo pre-renderizar (ej. DB caída al abrir la página), el
 // cliente carga la primera página por API como respaldo.
 if(!SSR_OK){cargar();}
