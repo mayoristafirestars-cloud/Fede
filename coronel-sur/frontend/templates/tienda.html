@@ -3,7 +3,23 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>{{NEGOCIO}} — Tienda Online</title>
+<title>{{NEGOCIO}} — Tienda Online · Santa Rosa, La Pampa</title>
+<meta name="description" content="{{DESCRIPCION}}">
+<link rel="canonical" href="{{BASE_URL}}/tienda">
+<link rel="icon" href="/static/favicon.png">
+<!-- Open Graph / Twitter: para que el link se vea con imagen y título al compartir por WhatsApp/redes -->
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="{{NEGOCIO}}">
+<meta property="og:title" content="{{NEGOCIO}} — Tienda Online">
+<meta property="og:description" content="{{DESCRIPCION}}">
+<meta property="og:url" content="{{BASE_URL}}/tienda">
+<meta property="og:image" content="{{BASE_URL}}/static/og-tienda.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="{{NEGOCIO}} — Tienda Online">
+<meta name="twitter:description" content="{{DESCRIPCION}}">
+<meta name="twitter:image" content="{{BASE_URL}}/static/og-tienda.png">
 <style>
   *{box-sizing:border-box;margin:0;padding:0}
   :root{--bg:#f4f4f5;--card:#fff;--txt:#18181b;--txt2:#71717a;--acc:#16a34a;--acc2:#15803d;--bord:#e4e4e7}
@@ -12,7 +28,12 @@
   header h1{font-size:18px}
   header p{font-size:12px;color:var(--txt2)}
   .filtros{display:flex;gap:8px;padding:12px 16px;position:sticky;top:56px;background:var(--bg);z-index:9;flex-wrap:wrap}
-  .filtros input,.filtros select{padding:9px 12px;border:1px solid var(--bord);border-radius:10px;font-size:14px;background:var(--card);color:var(--txt);outline:none}
+  .filtros input,.filtros select{padding:9px 12px;border:1px solid var(--bord);border-radius:10px;font-size:16px;background:var(--card);color:var(--txt)}
+  /* Foco de teclado siempre visible (accesibilidad) */
+  a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,[tabindex]:focus-visible{outline:3px solid #1d4ed8;outline-offset:2px;border-radius:8px}
+  .estado{text-align:center;padding:28px 16px;color:var(--txt2);font-size:14px}
+  .estado.err{color:#b91c1c}
+  .estado.err button{margin-left:8px;background:var(--acc2);color:#fff;border:none;border-radius:8px;padding:8px 16px;font-size:14px;font-weight:600;cursor:pointer}
   .filtros input{flex:1;min-width:160px}
   .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px;padding:0 16px}
   .prod{background:var(--card);border:1px solid var(--bord);border-radius:14px;padding:12px;display:flex;flex-direction:column;gap:6px}
@@ -38,12 +59,14 @@
 <body>
 <header><h1>🛒 {{NEGOCIO}}</h1><p>Tienda online — elegí, armá tu pedido y lo terminás por WhatsApp</p></header>
 <div class="filtros">
-  <input id="q" placeholder="Buscar producto..." oninput="buscarDeb()">
-  <select id="rubro" onchange="reset()"><option value="">Todos los rubros</option></select>
+  <input id="q" placeholder="Buscar producto..." aria-label="Buscar producto" oninput="buscarDeb()">
+  <select id="rubro" aria-label="Filtrar por rubro" onchange="reset()"><option value="">Todos los rubros</option>{{RUBROS_HTML}}</select>
 </div>
-<div class="grid" id="grid"></div>
-<button id="mas" onclick="cargar()" style="display:none">Ver más</button>
-<div class="empty" id="empty" style="display:none">No encontramos productos.</div>
+<div class="grid" id="grid">{{PRODUCTOS_HTML}}</div>
+<div class="estado" id="cargando" style="display:none">Cargando productos…</div>
+<div class="estado err" id="error" style="display:none">No pudimos cargar los productos. <button id="reintentar" type="button">Reintentar</button></div>
+<button id="mas" type="button" style="display:{{MAS_STYLE}}">Ver más</button>
+<div class="empty" id="empty" style="display:{{EMPTY_STYLE}}">No encontramos productos.</div>
 
 <div id="carrito-bar" onclick="abrir()">
   <span id="cb-items">0 productos</span><span id="cb-total">$0</span>
@@ -60,43 +83,59 @@
 
 <script>
 const WA="{{WA_TIENDA}}";
+const SSR_OK={{SSR_OK}};
+const $=id=>document.getElementById(id);
 const fmt=n=>'$'+Number(n||0).toLocaleString('es-AR',{maximumFractionDigits:0});
-let offset=0, cargando=false, fin=false;
+const esc=s=>String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+let offset={{OFFSET_INICIAL}}, total={{TOTAL}}, cargando=false, fin=(offset>=total && SSR_OK);
 const carrito={}; // codigo -> {nom, precio, cant}
 
-async function initRubros(){
-  const rs=await(await fetch('/api/tienda/rubros')).json();
-  const sel=document.getElementById('rubro');
-  rs.forEach(r=>{const o=document.createElement('option');o.value=r;o.textContent=r;sel.appendChild(o);});
-}
-function reset(){offset=0;fin=false;document.getElementById('grid').innerHTML='';cargar();}
+function reset(){offset=0;fin=false;$('grid').innerHTML='';$('empty').style.display='none';cargar();}
 let debT=null;function buscarDeb(){clearTimeout(debT);debT=setTimeout(reset,350);}
+
+function crearCard(p){
+  const div=document.createElement('div');div.className='prod';
+  const nom=document.createElement('div');nom.className='nom';nom.textContent=p.descripcion;div.appendChild(nom);
+  const pr=document.createElement('div');pr.className='precio';pr.textContent=fmt(p.precio);div.appendChild(pr);
+  if(!p.hay_stock){const s=document.createElement('div');s.className='sinstock';s.textContent='Sin stock — consultá';div.appendChild(s);}
+  const b=document.createElement('button');b.className='add';b.type='button';b.textContent='Agregar';
+  b.dataset.codigo=p.codigo;b.dataset.nom=p.descripcion;b.dataset.precio=p.precio;
+  b.setAttribute('aria-label','Agregar '+p.descripcion);
+  div.appendChild(b);return div;
+}
+function estado(cual){$('cargando').style.display=cual==='cargando'?'block':'none';$('error').style.display=cual==='error'?'block':'none';}
 
 async function cargar(){
   if(cargando||fin)return;cargando=true;
-  const q=document.getElementById('q').value.trim();
-  const rubro=document.getElementById('rubro').value;
-  const d=await(await fetch('/api/tienda/productos?buscar='+encodeURIComponent(q)+'&rubro='+encodeURIComponent(rubro)+'&limit=30&offset='+offset)).json();
-  const grid=document.getElementById('grid');
-  document.getElementById('empty').style.display=(offset===0&&!d.productos.length)?'block':'none';
-  d.productos.forEach(p=>{
-    const div=document.createElement('div');div.className='prod';
-    div.innerHTML='<div class="nom">'+p.descripcion+'</div>'+
-      '<div class="precio">'+fmt(p.precio)+'</div>'+
-      (p.hay_stock?'':'<div class="sinstock">Sin stock — consultá</div>')+
-      '<button onclick=\'add("'+p.codigo+'",'+JSON.stringify(p.descripcion)+','+p.precio+')\'>Agregar</button>';
-    grid.appendChild(div);
-  });
-  offset+=d.productos.length;
-  if(offset>=d.total||!d.productos.length)fin=true;
-  document.getElementById('mas').style.display=fin?'none':'block';
-  cargando=false;
+  estado(offset===0?'cargando':'');
+  const q=$('q').value.trim(), rubro=$('rubro').value;
+  try{
+    const ctrl=new AbortController();
+    const tId=setTimeout(()=>ctrl.abort(),8000);
+    const resp=await fetch('/api/tienda/productos?buscar='+encodeURIComponent(q)+'&rubro='+encodeURIComponent(rubro)+'&limit=30&offset='+offset,{signal:ctrl.signal});
+    clearTimeout(tId);
+    if(!resp.ok)throw new Error('HTTP '+resp.status);
+    const d=await resp.json();
+    $('empty').style.display=(offset===0&&!d.productos.length)?'block':'none';
+    d.productos.forEach(p=>$('grid').appendChild(crearCard(p)));
+    offset+=d.productos.length;total=d.total;
+    if(offset>=total||!d.productos.length)fin=true;
+    $('mas').style.display=fin?'none':'block';
+    estado('');
+  }catch(err){
+    estado('error'); // nunca dejamos la pantalla en blanco sin explicación
+  }finally{cargando=false;}
 }
+
+// Delegación: sirve para las tarjetas del servidor Y las que agrega el JS, y no
+// se rompe si un nombre o código trae comillas/apóstrofes.
+$('grid').addEventListener('click',e=>{const b=e.target.closest('button.add');if(!b)return;add(b.dataset.codigo,b.dataset.nom,Number(b.dataset.precio));});
+$('mas').addEventListener('click',cargar);
+$('reintentar').addEventListener('click',cargar);
 
 function add(cod,nom,precio){
   if(!carrito[cod])carrito[cod]={nom,precio,cant:0};
-  carrito[cod].cant++;
-  render();
+  carrito[cod].cant++;render();
 }
 function cambiar(cod,delta){
   if(!carrito[cod])return;
@@ -107,42 +146,36 @@ function cambiar(cod,delta){
 function render(){
   const cods=Object.keys(carrito);
   const nItems=cods.reduce((s,c)=>s+carrito[c].cant,0);
-  const total=cods.reduce((s,c)=>s+carrito[c].cant*carrito[c].precio,0);
-  const bar=document.getElementById('carrito-bar');
-  bar.style.display=nItems?'flex':'none';
-  document.getElementById('cb-items').textContent=nItems+(nItems===1?' producto':' productos');
-  document.getElementById('cb-total').textContent=fmt(total);
-  document.getElementById('total').textContent='Total: '+fmt(total);
-  document.getElementById('items').innerHTML=cods.length?cods.map(c=>
-    '<div class="item"><div class="n">'+carrito[c].nom+'<br><b>'+fmt(carrito[c].precio)+'</b></div>'+
-    '<div class="qty"><button onclick="cambiar(\''+c+'\',-1)">−</button>'+carrito[c].cant+
-    '<button onclick="cambiar(\''+c+'\',1)">+</button></div></div>').join('')
+  const tot=cods.reduce((s,c)=>s+carrito[c].cant*carrito[c].precio,0);
+  $('carrito-bar').style.display=nItems?'flex':'none';
+  $('cb-items').textContent=nItems+(nItems===1?' producto':' productos');
+  $('cb-total').textContent=fmt(tot);
+  $('total').textContent='Total: '+fmt(tot);
+  $('items').innerHTML=cods.length?cods.map(c=>
+    '<div class="item"><div class="n">'+esc(carrito[c].nom)+'<br><b>'+fmt(carrito[c].precio)+'</b></div>'+
+    '<div class="qty"><button type="button" class="q" data-c="'+esc(c)+'" data-d="-1" aria-label="Quitar uno">−</button>'+carrito[c].cant+
+    '<button type="button" class="q" data-c="'+esc(c)+'" data-d="1" aria-label="Sumar uno">+</button></div></div>').join('')
     :'<p class="empty">Carrito vacío</p>';
 }
-function abrir(){document.getElementById('overlay').style.display='flex';}
-function cerrar(){document.getElementById('overlay').style.display='none';}
+$('items').addEventListener('click',e=>{const b=e.target.closest('button.q');if(!b)return;cambiar(b.dataset.c,Number(b.dataset.d));});
+function abrir(){$('overlay').style.display='flex';}
+function cerrar(){$('overlay').style.display='none';}
 
 function enviarWhatsapp(){
   const cods=Object.keys(carrito);
   if(!cods.length)return;
-  let msg='Hola! Quiero hacer este pedido desde la tienda online:%0A%0A';
-  let total=0;
-  cods.forEach(c=>{
-    const it=carrito[c];total+=it.cant*it.precio;
-    msg+='• '+it.nom+' x'+it.cant+' = '+fmt(it.cant*it.precio)+'%0A';
-  });
-  msg+='%0ATotal aprox: '+fmt(total);
-  if(WA){
-    window.open('https://wa.me/'+WA+'?text='+msg,'_blank');
-  }else{
-    alert('El WhatsApp de la tienda no está configurado. Avisale al administrador.');
-  }
+  let msg='Hola! Quiero hacer este pedido desde la tienda online:\n\n';
+  let tot=0;
+  cods.forEach(c=>{const it=carrito[c];tot+=it.cant*it.precio;msg+='• '+it.nom+' x'+it.cant+' = '+fmt(it.cant*it.precio)+'\n';});
+  msg+='\nTotal aprox: '+fmt(tot);
+  if(WA){window.open('https://wa.me/'+WA+'?text='+encodeURIComponent(msg),'_blank');}
+  else{alert('El WhatsApp de la tienda no está configurado. Avisale al administrador.');}
 }
 
-initRubros();cargar();
-window.addEventListener('scroll',()=>{
-  if(window.innerHeight+window.scrollY>=document.body.offsetHeight-300)cargar();
-});
+// Si el servidor no pudo pre-renderizar (ej. DB caída al abrir la página), el
+// cliente carga la primera página por API como respaldo.
+if(!SSR_OK){cargar();}
+window.addEventListener('scroll',()=>{if(window.innerHeight+window.scrollY>=document.body.offsetHeight-300)cargar();});
 </script>
 </body>
 </html>
