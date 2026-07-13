@@ -13,6 +13,7 @@ CREATE TABLE IF NOT EXISTS productos (
     precio_venta    REAL DEFAULT 0,   -- Lista 1 (consumidor final, público)
     precio_mayorista REAL DEFAULT 0,  -- Lista 2 (mayorista, interno)
     precio_costo    REAL DEFAULT 0,
+    foto            TEXT DEFAULT '',  -- URL de imagen (pública)
     fecha_ingreso   TEXT,   -- Fecha Modificado del CSV (ingreso real de stock)
     activo          INTEGER DEFAULT 1,
     creado_en       TEXT DEFAULT (datetime('now', 'localtime')),

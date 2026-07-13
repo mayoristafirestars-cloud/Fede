@@ -5,6 +5,7 @@ foto y si hay stock. El carrito termina en un mensaje a WhatsApp de Eva.
 """
 import os
 import sys
+import json
 
 from fastapi import APIRouter, Response
 from fastapi.responses import HTMLResponse
@@ -53,7 +54,8 @@ def _consultar_productos(buscar: str, rubro: str, limit: int, offset: int):
             base += " AND rubro = ?"
             params.append(rubro)
         total = conn.execute("SELECT COUNT(*) " + base, params).fetchone()[0]
-        q = ("SELECT codigo, descripcion, rubro, precio_venta, stock " + base +
+        q = ("SELECT codigo, descripcion, rubro, precio_venta, stock, "
+             "COALESCE(foto,'') AS foto " + base +
              " ORDER BY (stock > 0) DESC, descripcion COLLATE NOCASE LIMIT ? OFFSET ?")
         prods = [
             {
@@ -62,6 +64,7 @@ def _consultar_productos(buscar: str, rubro: str, limit: int, offset: int):
                 "rubro": r["rubro"],
                 "precio": r["precio_venta"],
                 "hay_stock": r["stock"] > 0,
+                "foto": r["foto"] if str(r["foto"]).startswith("http") else "",
             }
             for r in conn.execute(q, params + [limit, offset])
         ]
@@ -74,6 +77,10 @@ def _card_html(p: dict) -> str:
     """Una tarjeta de producto renderizada en el servidor (misma estructura
     que la que arma el JS), con todo escapado."""
     nom = _esc(p["descripcion"])
+    foto = str(p.get("foto") or "")
+    img = (f'<img class="pfoto" src="{_esc(foto)}" alt="{nom}" loading="lazy" '
+           f'onerror="this.style.display=&#39;none&#39;">' if foto.startswith("http")
+           else '<div class="pfoto sinfoto" aria-hidden="true"></div>')
     if p["hay_stock"]:
         sin = ""
         boton = (f'<button class="add" data-codigo="{_esc(p["codigo"])}" data-nom="{nom}" '
@@ -82,8 +89,8 @@ def _card_html(p: dict) -> str:
         # Sin stock: se muestra pero NO se puede agregar (evita pedidos incumplibles).
         sin = '<div class="sinstock">Sin stock — consultá</div>'
         boton = '<button disabled aria-label="Sin stock, consultá por WhatsApp">Sin stock</button>'
-    return (f'<div class="prod"><div class="nom">{nom}</div>'
-            f'<div class="precio">{_precio_ar(p["precio"])}</div>{sin}{boton}</div>')
+    return (f'<li class="prod">{img}<div class="nom">{nom}</div>'
+            f'<div class="precio">{_precio_ar(p["precio"])}</div>{sin}{boton}</li>')
 
 
 @router.get("/api/tienda/productos")
@@ -154,6 +161,38 @@ def tienda_home():
                    "electrónica y mucho más — Santa Rosa, La Pampa.")
     hay_mas = offset_inicial < total
 
+    # Datos estructurados (schema.org): Google entiende que sos un comercio y
+    # puede mostrar tu ficha + productos con precio en los resultados.
+    tienda_schema = {
+        "@context": "https://schema.org", "@type": "Store",
+        "name": NEGOCIO_NOMBRE, "url": f"{BASE_URL}/tienda",
+        "image": f"{BASE_URL}/static/og-tienda.png", "description": descripcion,
+        "address": {"@type": "PostalAddress", "addressLocality": "Santa Rosa",
+                    "addressRegion": "La Pampa", "addressCountry": "AR"},
+        "areaServed": "AR",
+    }
+    if WA_TIENDA:
+        tienda_schema["telephone"] = "+" + WA_TIENDA
+    bloques = [tienda_schema]
+    if ssr_ok and prods:
+        bloques.append({
+            "@context": "https://schema.org", "@type": "ItemList",
+            "itemListElement": [
+                {"@type": "ListItem", "position": i + 1, "item": {
+                    "@type": "Product", "name": p["descripcion"],
+                    "image": p.get("foto") or f"{BASE_URL}/static/og-tienda.png",
+                    "offers": {"@type": "Offer", "priceCurrency": "ARS",
+                               "price": round(float(p["precio"])),
+                               "availability": "https://schema.org/InStock" if p["hay_stock"]
+                               else "https://schema.org/OutOfStock"}}}
+                for i, p in enumerate(prods[:20])
+            ],
+        })
+    jsonld = "".join(
+        '<script type="application/ld+json">'
+        + json.dumps(b, ensure_ascii=False).replace("<", "\\u003c")
+        + "</script>" for b in bloques)
+
     reemplazos = {
         "{{WA_TIENDA}}": WA_TIENDA,
         "{{NEGOCIO}}": _esc(NEGOCIO_NOMBRE),
@@ -166,6 +205,7 @@ def tienda_home():
         "{{SSR_OK}}": "true" if ssr_ok else "false",
         "{{EMPTY_STYLE}}": "block" if (ssr_ok and total == 0) else "none",
         "{{MAS_STYLE}}": "block" if hay_mas else "none",
+        "{{JSONLD}}": jsonld,
     }
     for k, v in reemplazos.items():
         html = html.replace(k, v)

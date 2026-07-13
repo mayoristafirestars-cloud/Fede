@@ -9,14 +9,29 @@ Autenticación simple por clave única + cookie firmada.
 import hashlib
 import hmac
 import os
+import secrets
 import time
 
 from fastapi import Request
 from fastapi.responses import HTMLResponse, JSONResponse, RedirectResponse
 from starlette.middleware.base import BaseHTTPMiddleware
 
-CLAVE = os.getenv("CORONEL_CLAVE", "coronel2026")
-AGENTE_TOKEN = os.getenv("AGENTE_TOKEN", "eva-coronel-2026")
+# Defaults inseguros que circularon en versiones viejas del código: NO se aceptan.
+_DEF_CLAVE = "coronel2026"
+_DEF_TOKEN = "eva-coronel-2026"
+CLAVE = os.getenv("CORONEL_CLAVE", "")
+AGENTE_TOKEN = os.getenv("AGENTE_TOKEN", "")
+# A prueba de fallas: si falta la clave o quedó el default conocido, NO arrancamos
+# con una clave adivinable — generamos una aleatoria (login queda inutilizable hasta
+# configurar bien) y avisamos fuerte. Así un deploy mal configurado no queda abierto.
+if not CLAVE or CLAVE == _DEF_CLAVE:
+    print("[auth] ⚠️ CRÍTICO: CORONEL_CLAVE sin configurar (o con el default inseguro). "
+          "Seteá CORONEL_CLAVE en el .env. Genero una aleatoria por ahora.")
+    CLAVE = secrets.token_urlsafe(24)
+if not AGENTE_TOKEN or AGENTE_TOKEN == _DEF_TOKEN:
+    print("[auth] ⚠️ CRÍTICO: AGENTE_TOKEN sin configurar (o con el default inseguro). "
+          "Seteá AGENTE_TOKEN en el .env (el mismo que usa Eva).")
+    AGENTE_TOKEN = secrets.token_urlsafe(32)
 _SECRET = hashlib.sha256(f"coronel-sur|{CLAVE}".encode()).hexdigest()
 SESION_DIAS = 30
 

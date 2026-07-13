@@ -50,10 +50,12 @@ def _precio(s: str) -> float:
 
 
 def _asegurar_columna(conn) -> None:
-    """Agrega precio_mayorista (Lista 2) si la DB es de una versión previa."""
+    """Agrega columnas nuevas si la DB es de una versión previa."""
     cols = [r[1] for r in conn.execute("PRAGMA table_info(productos)")]
     if "precio_mayorista" not in cols:
         conn.execute("ALTER TABLE productos ADD COLUMN precio_mayorista REAL DEFAULT 0")
+    if "foto" not in cols:
+        conn.execute("ALTER TABLE productos ADD COLUMN foto TEXT DEFAULT ''")
 
 
 def _leer_csv() -> list[dict]:
@@ -75,6 +77,9 @@ def _leer_csv() -> list[dict]:
                 stock = int(float(c.get("cantidad", "0") or 0))
             except ValueError:
                 stock = 0
+            foto = c.get("imagenes", "")
+            if "product.png" in foto:  # placeholder de FactuPyme, no es foto real
+                foto = ""
             filas.append({
                 "codigo": cod,
                 "descripcion": desc,
@@ -84,6 +89,7 @@ def _leer_csv() -> list[dict]:
                 "precio_costo": costo,                            # interno, no se expone
                 "precio_mayorista": lista2,                       # Lista 2 (interno)
                 "stock": stock,
+                "foto": foto,
                 "fecha_ingreso": c.get("fecha modificado", ""),
             })
     return filas
@@ -112,23 +118,23 @@ def sincronizar() -> dict:
                         UPDATE productos SET
                             descripcion = ?, rubro = ?, proveedor = ?, stock = ?,
                             precio_venta = ?, precio_costo = ?, precio_mayorista = ?,
-                            fecha_ingreso = ?, activo = 1,
+                            foto = ?, fecha_ingreso = ?, activo = 1,
                             actualizado_en = datetime('now','localtime')
                         WHERE codigo = ?""",
                         (r["descripcion"], r["rubro"], r["proveedor"], r["stock"],
                          r["precio_venta"], r["precio_costo"], r["precio_mayorista"],
-                         r["fecha_ingreso"], r["codigo"]))
+                         r["foto"], r["fecha_ingreso"], r["codigo"]))
                     actualizados += 1
                 else:
                     conn.execute("""
                         INSERT INTO productos
                             (codigo, descripcion, rubro, proveedor, stock,
                              precio_venta, precio_costo, precio_mayorista,
-                             fecha_ingreso, activo)
-                        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, 1)""",
+                             foto, fecha_ingreso, activo)
+                        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 1)""",
                         (r["codigo"], r["descripcion"], r["rubro"], r["proveedor"],
                          r["stock"], r["precio_venta"], r["precio_costo"],
-                         r["precio_mayorista"], r["fecha_ingreso"]))
+                         r["precio_mayorista"], r["foto"], r["fecha_ingreso"]))
                     nuevos += 1
             # Baja lógica: lo que ya no está en el CSV deja de ofrecerse (no se
             # borra, para no romper referencias históricas de comprobantes).
