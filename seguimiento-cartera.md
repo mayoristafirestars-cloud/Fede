@@ -104,3 +104,24 @@ Diferidas por ticket grande (ratios chicos): XOM (~22.500/CEDEAR), V (~30.400), 
 **Corrección de dato:** SPY CEDEAR salió ~19.700 ARS/nominal (accesible), no ~59.000 como se había estimado — el ratio real es mayor. Sumar SPY es viable en tandas chicas.
 
 **Buen avance:** ya entraron los diversificadores clave (GLD oro, SPY índice, NU fintech). Cartera plana en la semana (+745 ARS).
+
+---
+
+## Actualización 14-jul-2026 — verificación (3 agentes) y tanda con $105.410
+
+**Contexto macro clave:** CPI junio blando (3,5%, bajó de 4,2%) PERO shock petrolero (Brent ~$86 por bloqueo de Ormuz) → viento de cola para Pampa+Exxon (~20% cartera), pero subió a ~46% la chance de suba de tipos Fed el 29-jul → headwind para tech. Bancos batieron (JPM/WFC/BAC). VIX ~15.
+
+**Compra recomendada hoy (~72k de los 105.410):**
+- TJX 3 (~32.250) — retail, volvió a ~$151, Strong Buy
+- SCHW 2 (~24.000) — correduría, viento de cola de bancos, reporta 21-jul
+- TXR 1 (~16.200) — Ternium, materiales, nuevo sector (NO confundir con TXAR)
+
+**Reserva (~33k) en money market:**
+- ~20k → UNH después del 16-jul (reporta ese día; corrió +10% a $429 pre-earnings, NO comprar antes del print)
+- ~13k → munición para día rojo
+
+**NO comprar:** más tech (MSFT ya 23%, Fed hawkish), más energía (ya beneficiado por oil), TSMC (CEDEAR ~75k/unidad, ticket muy grande).
+
+**Flags de tenencias:** PEP cayó a ~$138 (mín. 52 sem, analistas recortan targets post-Q2) → vigilancia reforzada de volúmenes (tesis anti-marca). AVGO -4% con selloff de chips. V subió a $358 (bien). Pampa: HSBC subió a Buy PT $97, beneficiada por oil, pero Milei en mínimo de popularidad 2 años y 2027 empatado → salida 1S-2027 sigue firme.
+
+**Próximo:** tras 16-jul (UNH y TSM reportan), cerrar con UNH. Faltan aún: UNH, GOOGL, TSM, XLRE, VIST y completar TJX/SCHW a target.
