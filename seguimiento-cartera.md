@@ -125,3 +125,17 @@ Diferidas por ticket grande (ratios chicos): XOM (~22.500/CEDEAR), V (~30.400), 
 **Flags de tenencias:** PEP cayó a ~$138 (mín. 52 sem, analistas recortan targets post-Q2) → vigilancia reforzada de volúmenes (tesis anti-marca). AVGO -4% con selloff de chips. V subió a $358 (bien). Pampa: HSBC subió a Buy PT $97, beneficiada por oil, pero Milei en mínimo de popularidad 2 años y 2027 empatado → salida 1S-2027 sigue firme.
 
 **Próximo:** tras 16-jul (UNH y TSM reportan), cerrar con UNH. Faltan aún: UNH, GOOGL, TSM, XLRE, VIST y completar TJX/SCHW a target.
+
+---
+
+## Actualización 15-jul-2026 — 15 nombres, total ~438.000 ARS
+
+Compras ejecutadas de la tanda: TJX 3 (33.900), TXR 1 (17.990), UNH 2 (39.760). Schwab AÚN pendiente. Cash restante ~13.760.
+
+**Nota de coaching:** compró UNH 2 ANTES del reporte del 16-jul (se había sugerido esperar). Pick correcto (salud era sector faltante) pero timing con riesgo binario. Registrar patrón: tiende a comprar lo que le atrae en el momento (Pampa, MSFT, ahora UNH pre-earnings). Si UNH cae post-earnings, NO vender (tesis: recuperación de márgenes + subió guía).
+
+**Pesos reales (total 438.055):** MSFT 18,9% (obj 9, diluyendo), PAMP 10,8% (obj 3, diluyendo), UNH 9,1% (obj 6), TJX 7,5%, AVGO 7,2%, V 7,1%, AMZN 6,3%, MELI 5,5%, GLD 5,3%, XOM 5,1%, SPY 4,5%, TXR 4,0%, SPGI 3,5%, PEP 2,7% (⚠ cae), NU 2,5%. Muy bien balanceada salvo MSFT.
+
+**Pendiente:** SCHW (1 con el cash restante ~13.760) → completaría 16 nombres. Opcionales: GOOGL, XLRE. Saltear: TSM (ticket enorme), VIST (ya pesado energía+Argentina).
+
+**PRÓXIMO CAPÍTULO (más importante que más acciones):** fondo de emergencia (3-6 meses, 50% FCI money market pesos T+0 / 50% USD MEP, separado) + arrancar renta fija ~20-25% en ONs USD (TGS/Pampa/YPF 6,5-8,5%). Pregunta abierta: ¿los 438k son todo su capital o hay ahorro aparte? ¿Tiene fondo de emergencia?
