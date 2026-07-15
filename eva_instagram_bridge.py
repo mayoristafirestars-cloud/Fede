@@ -205,6 +205,9 @@ async def recibir(request: Request, background_tasks: BackgroundTasks):
     except Exception:
         return {"status": "ok"}
 
+    # DEBUG temporal: logueamos el payload para entender el formato real de IG.
+    print(f"[ig] payload: {_json.dumps(body, ensure_ascii=False)[:1800]}")
+
     try:
         for entry in body.get("entry", []):
             for m in entry.get("messaging", []):
