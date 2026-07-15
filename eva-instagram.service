@@ -1,0 +1,13 @@
+[Unit]
+Description=eva-instagram (webhook de DMs de Instagram para Eva, :8012)
+After=network.target
+
+[Service]
+Type=simple
+WorkingDirectory=/opt/fede
+ExecStart=/opt/fede/venv/bin/python -m uvicorn eva_instagram_bridge:app --host 127.0.0.1 --port 8012
+Restart=always
+RestartSec=3
+
+[Install]
+WantedBy=multi-user.target
