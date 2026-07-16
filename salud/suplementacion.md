@@ -20,3 +20,12 @@
 
 - **Magnesio glicinato (200–300 mg nocturno):** podria mejorar calidad del sueno y reducir calambres post-entreno. Evidencia moderada. Bajo riesgo. Agregar en la proxima revision si el sueno sigue en 6 h sin mejora.
 - **Multivitaminico basico:** evaluar post-analisis de sangre. Si aparecen deficiencias especificas (hierro, zinc, B12), corregir con suplemento especifico, no multivitaminico generico.
+
+## FUERA DEL PLAN — no incluidos
+
+- **GLOW GHK-CU (ALLUVI Healthcare) — blend inyectable BPC-157 + TB-500 + GHK-Cu.** Fede consulto el 2026-04-19 si podia usarlo. **DECISION: no incluir en el plan.**
+  - Razones: (1) los 3 son "research use only", sin aprobacion ANMAT/FDA. (2) Cero estudios clinicos serios en humanos, toda la evidencia es en ratas. (3) GHK-Cu sistemico puede sobrecargar higado — Fede tiene sospecha alta de esteatosis, eco abdominal pendiente. (4) BPC-157 + TB-500 son angiogenicos: con antecedente familiar de cancer (abuela) es riesgo teorico. (5) Sin ECG basal ni analisis todavia. (6) Mercado gris, pureza no garantizada.
+  - **Condicion para reconsiderar:** tener analisis + ECG + eco abdominal en mano, y validacion presencial de medico clinico con la caja delante.
+- **Otros peptidos (semaglutida, tirzepatide, ipamorelin, etc.):** cualquier peptido inyectable requiere prescripcion medica presencial y estudios previos. No se sugieren desde este plan.
+- **NMN, resveratrol, "anti-aging pills":** sin evidencia solida en humanos. Fuera del plan.
+- **Quemadores de grasa / termogenicos:** contraindicados con el perfil cardiovascular actual.

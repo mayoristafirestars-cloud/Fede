@@ -12,6 +12,19 @@
 **Impacto:** qué archivos se tocaron
 ```
 
+## 2026-04-19 (noche)
+**Autor:** coordinador (con Fede)
+**Que:** Fede consulto sobre usar GLOW GHK-CU (ALLUVI Healthcare) — blend inyectable subcutaneo de BPC-157 + TB-500 + GHK-Cu que le habian ofrecido. **Decision conjunta: NO usarlo por ahora.**
+**Por que:** los 3 peptidos son "research use only", sin evidencia clinica seria en humanos. Riesgos especificos para el perfil de Fede:
+- GHK-Cu sistemico puede sobrecargar higado (esteatosis pendiente de descartar por eco).
+- BPC-157 + TB-500 son angiogenicos → riesgo teorico con antecedente familiar de cancer.
+- Sin ECG basal ni analisis en mano.
+- Mercado gris, pureza no garantizada.
+**Condicion para reconsiderar:** tener labs completos + ECG + eco abdominal, y validacion presencial con medico clinico llevando la caja.
+**Impacto:** `suplementacion.md` seccion nueva "FUERA DEL PLAN — no incluidos".
+
+---
+
 ## 2026-04-19 (tarde)
 **Autor:** @nutricionista (via coordinador)
 **Que:** Menu semanal detallado dia por dia con variedad agregado al final de `dieta-actual.md`. Timing ajustado al entreno 08:00 AM (pre 06:30 liviano, post 09:15 batido, desayuno principal 10:30). Distribucion de hidratacion por franja horaria (3 L dias gym, 2,7 L descanso). Variedad completa de proteinas: pollo, pescado blanco, pescado graso, carne vacuna, huevos, atun, legumbres. Viernes cena = comida libre.
