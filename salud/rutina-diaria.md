@@ -11,11 +11,11 @@ comidas, gym, suplementos, agua, sol, sueno, habitos.
 |---|---|---|
 | **05:30** | Despertar | Vaso agua 300 ml + pizca sal |
 | **05:35** | Bano rapido, ropa gym | |
-| **05:45** | Pre-entreno | Frutillas 200 g + miel 10 g + cafe negro 150 ml + agua 300 ml |
+| **05:45** | Pre-entreno | **Media banana 80 g** + cafe negro 150 ml + agua con sal 300 ml |
 | **06:30** | Salir al gym | |
 | **06:50** | Llegar + calentamiento | 8 min: cinta 5km/h + movilidad + barra vacia |
 | **07:00** | **ENTRENO Dia A** | Complex A: sent. frontal → RDL → remo pecho → press pie → good morning (ver PDF rutina) |
-| **08:00** | Post-entreno | Whey 35 g + agua 300 ml + frutillas 100 g |
+| **08:00** | Post-entreno | Whey 35 g + agua 300 ml (sin fruta) |
 | **08:15** | Volver a casa, ducha | |
 | **09:00** | Sol 15 min mientras desayuno | Ventana o balcon, cara y brazos |
 | **09:30** | **Desayuno principal** | 3 huevos duros + pan integral 30g + palta 70g + tomate 100g + queso port salut 20g + oliva 5ml + cafe/mate |
@@ -51,10 +51,10 @@ comidas, gym, suplementos, agua, sol, sueno, habitos.
 | Hora | Que hacer | Detalle |
 |---|---|---|
 | **05:30** | Despertar | Agua 300 ml + sal |
-| **05:45** | Pre-entreno | Frutillas 200 g + miel 10 g + cafe + agua |
+| **05:45** | Pre-entreno | **Pasas de uva 30 g** (puñadito) + cafe + agua con sal |
 | **06:30** | Salir al gym | |
 | **07:00** | **ENTRENO Dia B** | Complex B: sent. trasera → remo supino → power clean → RDL → shrug |
-| **08:00** | Post-entreno | Whey + agua + frutillas 100 g |
+| **08:00** | Post-entreno | Whey + agua (sin fruta) |
 | **09:30** | **Desayuno** | 3 huevos duros + queso port salut 30g + pan integral 30g + palta 60g + tomate 100g + oliva 5ml |
 | **09:45** | Suplementos: Vit D3 + Omega-3 | |
 | **13:00** | **Almuerzo** | Pollo 220g + boniato hervido 100g + ensalada (lechuga 80g + rucula 50g + tomate 100g + cebolla morada 30g + palta 60g + aceitunas 15g + nueces 10g) + oliva 12ml + limon |
@@ -98,9 +98,9 @@ comidas, gym, suplementos, agua, sol, sueno, habitos.
 | Hora | Que hacer | Detalle |
 |---|---|---|
 | **05:30** | Despertar + agua con sal | |
-| **05:45** | Pre-entreno | Frutillas 200g + miel 10g + cafe + agua |
+| **05:45** | Pre-entreno | **Media banana 80 g** + cafe + agua con sal |
 | **07:00** | **ENTRENO Dia A** (igual lunes) | |
-| **08:00** | Post-entreno | Whey + agua + frutillas 100g |
+| **08:00** | Post-entreno | Whey + agua (sin fruta) |
 | **09:30** | **Desayuno diferente** | Yogur griego proteico 200g + frutillas 100g + almendras 15g + canela + huevos duros 2 aparte + pan integral 30g |
 | **09:45** | Suplementos: Vit D3 + Omega-3 | |
 | **13:00** | **Almuerzo** | Pollo 200g + papa hervida 100g + huevo duro 1 + lechuga 80g + rucula 50g + tomate 100g + pepino 80g + cebolla 30g + aceitunas 20g + palta 50g + oliva 12ml + limon |
@@ -124,10 +124,10 @@ comidas, gym, suplementos, agua, sol, sueno, habitos.
 | **07:30** | **Desayuno** | 3 huevos duros + queso port salut 30g + palta 60g + tomate 100g + oliva 5ml. Sin pan (se mueve al post-entreno) |
 | **07:45** | Suplementos: Vit D3 + Omega-3 | |
 | **10:30** | **Media manana** | Yogur griego 150g + nueces 10g + frutillas 30g |
-| **12:30** | **PRE-ENTRENO LIVIANO** | Frutillas 200g + miel 10g + cafe + agua con sal 400 ml. NO comer solido pesado entre 11-14 h |
+| **12:30** | **PRE-ENTRENO LIVIANO** | **Pasas de uva 30 g** (puñadito) + cafe + agua con sal 400 ml. NO comer solido pesado entre 11-14 h |
 | **13:30** | Salir al gym | |
 | **14:00** | **ENTRENO Dia B** | Complex B |
-| **15:15** | Post-entreno | Whey + agua + frutillas 100g |
+| **15:15** | Post-entreno | Whey + agua (sin fruta — el almuerzo viene a las 17h) |
 | **15:30** | Volver a casa, ducha | |
 | **17:00** | **Almuerzo-merienda combinado** | Pollo 220g + papa hervida 100g + espinaca 80g + rucula 50g + tomates cherry 100g + palta 60g + almendras 12g + pan integral 30g + oliva 12ml + limon |
 | **17:15** | ULTIMO MATE (ya paso 15h, hacer excepcion controlada por gym tarde) | Ideal: cafe descafeinado o infusion sin teina |

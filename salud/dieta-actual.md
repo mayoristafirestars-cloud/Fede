@@ -16,7 +16,8 @@
 
 - **Huevos: SIEMPRE hervidos.** No hay huevos revueltos, omelette, ni poche. Esto simplifica el batch cooking y la digestion (mas facil de transportar al local).
 - **Papa o boniato HERVIDO:** acompanamiento estandar en almuerzos de dias gym. Cocido al agua, sin manteca ni aceite caliente.
-- **Frutillas en lugar de banana** en pre-entreno y post-entreno.
+- **Pre-entreno alterna banana y pasas:** Lun/Jue media banana 80 g + café. Mar/Vie pasas de uva 30 g + café. Menos volumen, más práctico.
+- **Post-entreno:** solo whey + agua (sin fruta — se baja el volumen porque el desayuno viene 90 min después).
 - **Pechuga de pollo** como base de proteina (batch cooking domingo).
 - **Carbos peri-entreno LUN/MAR/JUE/VIE:** frutillas + miel pre (~25 g) + frutillas post (~8 g) + papa/boniato hervido en almuerzo (~17 g).
 - **Carbos resto del dia:** vegetales no almidonados libres, 1 rebanada pan integral en desayuno (~15 g), frutos rojos, palta.
@@ -81,16 +82,15 @@
 
 ## LUNES (GYM 07:00 — Dia A: Empuje + Bisagra)
 
-### 05:30 Pre-entreno (~110 kcal | P 1 / C 25 / G 0)
-- Frutillas: 200 g
-- Miel: 10 g (1 cucharadita)
+### 05:30 Pre-entreno LUNES (~90 kcal | P 1 / C 20 / G 0)
+- Banana chica: 80 g (media banana mediana, pesada sin cascara)
 - Cafe negro sin azucar: 150 ml
 - Agua + pizca de sal: 300 ml
 
-### 08:15 Post-entreno (~200 kcal | P 32 / C 12 / G 3)
+### 08:15 Post-entreno (~160 kcal | P 32 / C 3 / G 3)
 - Whey protein: 35 g
 - Agua: 300 ml
-- Arandanos: 80 g (licuar todo)
+- (Sin fruta hoy — el desayuno viene en 75 min con carbos)
 
 ### 09:30 Desayuno — "Plato proteico con huevos duros" (~530 kcal | P 38 / C 18 / G 35)
 - Huevos duros: 3 unidades (150 g)
@@ -136,11 +136,13 @@
 
 ## MARTES (GYM 07:00 — Dia B: Tiron + Sentadilla)
 
-### 05:30 Pre-entreno (igual lunes):
-- Frutillas: 200 g + miel 10 g + cafe 150 ml + agua con sal 300 ml
+### 05:30 Pre-entreno MARTES (~110 kcal | P 1 / C 25 / G 0)
+- Pasas de uva: 30 g (1 puñadito)
+- Cafe negro sin azucar: 150 ml
+- Agua + pizca de sal: 300 ml
 
 ### 08:15 Post-entreno:
-- Whey 35 g + agua 300 ml + frutillas 100 g
+- Whey 35 g + agua 300 ml (sin fruta)
 
 ### 09:30 Desayuno — "Huevos duros con queso y palta" (~530 kcal | P 38 / C 18 / G 35)
 - Huevos duros: 3 unidades (150 g)
@@ -218,11 +220,13 @@
 
 ## JUEVES (GYM 07:00 — Dia A: Empuje + Bisagra)
 
-### 05:30 Pre-entreno (igual):
-- Frutillas: 200 g + miel 10 g + cafe 150 ml + agua con sal 300 ml
+### 05:30 Pre-entreno JUEVES (~90 kcal | P 1 / C 20 / G 0)
+- Banana chica: 80 g (media banana mediana)
+- Cafe negro sin azucar: 150 ml
+- Agua + pizca de sal: 300 ml
 
 ### 08:15 Post-entreno:
-- Whey 35 g + agua 300 ml + frutillas 100 g
+- Whey 35 g + agua 300 ml (sin fruta)
 
 ### 09:30 Desayuno — "Yogur proteico con frutillas y huevos duros" (~530 kcal | P 38 / C 18 / G 35)
 - Yogur griego proteico sin azucar: 200 g
@@ -275,17 +279,16 @@
 - Nueces: 10 g
 - Arandanos: 30 g
 
-### 12:30 Pre-entreno LIVIANO (~110 kcal | P 1 / C 25 / G 0)
-- Frutillas: 200 g
-- Miel: 10 g (1 cucharadita)
+### 12:30 Pre-entreno VIERNES LIVIANO (~110 kcal | P 1 / C 25 / G 0)
+- Pasas de uva: 30 g (1 puñadito)
 - Cafe negro sin azucar: 150 ml
 - Agua + pizca de sal: 400 ml
 - **NO comer algo solido pesado entre 11:00 y 14:00. Estomago liviano para el complex.**
 
-### 15:15 Post-entreno (~200 kcal | P 32 / C 12 / G 3)
+### 15:15 Post-entreno (~160 kcal | P 32 / C 3 / G 3)
 - Whey protein: 35 g
 - Agua: 300 ml
-- Frutillas: 100 g (licuar todo)
+- (Sin fruta — el almuerzo viene a las 17:00 con carbos)
 
 ### 17:00 Almuerzo-merienda combinado — "Pechuga de pollo con papa hervida" (~580 kcal | P 50 / C 30 / G 28)
 - Pechuga pollo grille: 220 g (COCIDO)
@@ -444,8 +447,10 @@ Rotacion COMPLETA de proteinas: pollo, pescado blanco, pescado graso, carne vacu
 - Limones: 12 unidades
 - Ajo
 
-### Frutas
-- **Frutillas: 2 kg** (pre y post entreno 4 dias gym + meriendas y desayunos)
+### Frutas / carbos rapidos
+- **Bananas: 6 unidades** (Lun/Jue pre-gym + desayuno jueves + 1 de resguardo)
+- **Pasas de uva: 300 g** (Mar/Vie pre-gym + snacks)
+- **Frutillas: 500 g** (desayuno jueves + meriendas)
 - Arandanos: 200 g
 - Frambuesas (opc): 100 g
 
