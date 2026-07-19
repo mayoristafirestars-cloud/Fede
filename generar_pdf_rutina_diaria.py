@@ -220,7 +220,7 @@ def main():
     pdf.set_font("DejaVu", "B", 26); pdf.set_text_color(255, 255, 255)
     pdf.cell(0, 12, "Plan Fede", align="C", new_x="LMARGIN", new_y="NEXT")
     pdf.set_font("DejaVu", "", 12); pdf.set_text_color(148, 163, 184)
-    pdf.cell(0, 7, "Longevidad  ·  dieta  ·  gym  ·  rutina diaria", align="C", new_x="LMARGIN", new_y="NEXT")
+    pdf.cell(0, 7, "Longevidad  ·  dieta Primal  ·  gym  ·  rutina diaria", align="C", new_x="LMARGIN", new_y="NEXT")
 
     # Stat cards
     pdf.set_y(65)
@@ -313,7 +313,7 @@ def main():
                    ("08:00", "meal",   "Post-entreno", "Whey 35 g + agua 300 ml"),
                    ("08:15", "task",   "Volver + ducha", ""),
                    ("09:00", "task",   "Sol 15 min", "Ventana o balcon. Cara y brazos."),
-                   ("09:30", "meal",   "DESAYUNO", "3 huevos duros + pan 30 g + palta 70 g + tomate 100 g + queso 20 g + oliva 5 ml"),
+                   ("09:30", "meal",   "DESAYUNO Primal", "4 huevos duros + palta 90 g + tomate 100 g + queso 20 g + oliva 5 ml"),
                    ("09:45", "supp",   "Suplementos AM", "Vitamina D3 + Omega-3"),
                    ("13:00", "meal",   "ALMUERZO", "Pollo 220 g + papa hervida 100 g + ensalada (lechuga + rucula + tomate + pepino + palta + aceitunas) + oliva 12 ml"),
                    ("13:15", "supp",   "Omega-3 (2do)", ""),
@@ -337,7 +337,7 @@ def main():
                    ("06:30", "task",   "Salir al gym", ""),
                    ("07:00", "gym",    "ENTRENO Dia B", "Complex B: sent. trasera → remo supino → power clean → RDL → shrug"),
                    ("08:00", "meal",   "Post-entreno", "Whey 35 g + agua 300 ml"),
-                   ("09:30", "meal",   "DESAYUNO", "3 huevos duros + queso port salut 30 g + pan integral 30 g + palta 60 g + tomate 100 g + oliva 5 ml"),
+                   ("09:30", "meal",   "DESAYUNO Primal", "4 huevos duros + queso port salut 30 g + palta 80 g + tomate 100 g + oliva 5 ml"),
                    ("09:45", "supp",   "Suplementos AM", "Vitamina D3 + Omega-3"),
                    ("13:00", "meal",   "ALMUERZO", "Pollo 220 g + boniato hervido 100 g + ensalada + oliva 12 ml + limon"),
                    ("14:00", "task",   "ULTIMO MATE", ""),
@@ -379,7 +379,7 @@ def main():
                    ("05:45", "meal",   "Pre-entreno", "Media banana 80 g + cafe + agua con sal"),
                    ("07:00", "gym",    "ENTRENO Dia A", "Igual lunes"),
                    ("08:00", "meal",   "Post-entreno", "Whey 35 g + agua"),
-                   ("09:30", "meal",   "DESAYUNO diferente", "Yogur griego 200 g + frutillas 100 g + almendras 15 g + canela + 2 huevos duros aparte + pan 30 g"),
+                   ("09:30", "meal",   "DESAYUNO Primal", "Yogur griego 200 g + frutillas 100 g + almendras 15 g + canela + 3 huevos duros aparte"),
                    ("09:45", "supp",   "Suplementos AM", "Vit D3 + Omega-3"),
                    ("13:00", "meal",   "ALMUERZO", "Pollo 200 g + papa hervida 100 g + huevo duro + ensalada nicoise + palta 50 g + oliva 12 ml"),
                    ("14:00", "task",   "ULTIMO MATE", ""),
@@ -397,7 +397,7 @@ def main():
                "GYM 14:00  ·  Dia B  ·  CENA LIBRE",
                [
                    ("06:30", "water",  "Despertar", "Agua 400 ml"),
-                   ("07:30", "meal",   "DESAYUNO", "3 huevos duros + queso port salut 30 g + palta 60 g + tomate 100 g + oliva 5 ml. Sin pan."),
+                   ("07:30", "meal",   "DESAYUNO Primal", "4 huevos duros + queso port salut 30 g + palta 80 g + tomate 100 g + oliva 5 ml"),
                    ("07:45", "supp",   "Suplementos AM", "Vit D3 + Omega-3"),
                    ("10:30", "meal",   "MEDIA MANANA", "Yogur griego 150 g + nueces 10 g + frutillas 30 g"),
                    ("12:30", "meal",   "PRE-ENTRENO LIVIANO", "Pasas 30 g + cafe + agua con sal 400 ml. NO comer solido pesado 11-14 h."),
@@ -405,7 +405,7 @@ def main():
                    ("14:00", "gym",    "ENTRENO Dia B", ""),
                    ("15:15", "meal",   "Post-entreno", "Whey 35 g + agua (sin fruta — almuerzo viene a las 17 h)"),
                    ("15:30", "task",   "Volver casa + ducha", ""),
-                   ("17:00", "meal",   "ALMUERZO-MERIENDA", "Pollo 220 g + papa hervida 100 g + espinaca + rucula + tomates cherry + palta + almendras + pan 30 g + oliva 12 ml"),
+                   ("17:00", "meal",   "ALMUERZO-MERIENDA", "Pollo 220 g + papa hervida 150 g + espinaca + rucula + tomates cherry + palta 70 g + almendras + oliva 12 ml"),
                    ("20:30", "meal",   "CENA LIBRE", "UNA: pizza (2 porc) / parrilla (250 g magra) / sushi (12-15 p) / pasta (300 g). Sin alcohol o max 1 vino."),
                    ("22:00", "meal",   "Snack OPCIONAL", "Si la cena fue abundante, salteala. Sino: yogur 100 g"),
                    ("22:30", "sleep",  "DORMIR", ""),

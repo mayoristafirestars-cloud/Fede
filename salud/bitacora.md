@@ -12,6 +12,18 @@
 **Impacto:** qué archivos se tocaron
 ```
 
+## 2026-04-19 (noche 2)
+**Autor:** coordinador (con Fede)
+**Que:** Fede pidio cambiar de "low-carb mediterranea" a **PALEO + LACTEOS (Primal)** despues de mirar contenido sobre Marcos Llorente. Se acepto el cambio porque el 90% del plan actual ya cumplia (huevos, carne, pescado, verduras, tuberculos hervidos, frutos secos, palta, oliva, frutillas, banana, miel).
+**Cambios concretos:**
+- OUT: pan integral (los 4 desayunos de dias gym).
+- Compensacion: +1 huevo duro en cada desayuno + mas palta + mas papa hervida en el post-entreno del viernes.
+- Se descartan explicitamente los pilares no-evidence de Llorente: NO usar protector solar (riesgo cancer piel), NO gafas de sol (retina), excluir legumbres (contra la resistencia a insulina), excluir lacteos (Fede eligio mantenerlos).
+- Se aceptan opcionales bajo-riesgo si le gustan: modo nocturno del celular 21:00, ducha fresca al final, caminar descalzo en el pasto al sol los fines de semana.
+**Impacto:** `dieta-actual.md` renombrada a "Paleo + lacteos (Primal)". PDF Plan-Fede.pdf regenerado.
+
+---
+
 ## 2026-04-19 (noche)
 **Autor:** coordinador (con Fede)
 **Que:** Fede consulto sobre usar GLOW GHK-CU (ALLUVI Healthcare) — blend inyectable subcutaneo de BPC-157 + TB-500 + GHK-Cu que le habian ofrecido. **Decision conjunta: NO usarlo por ahora.**

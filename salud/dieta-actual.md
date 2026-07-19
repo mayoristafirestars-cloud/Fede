@@ -1,7 +1,7 @@
-# Dieta actual — LOW CARB MEDITERRANEA (4 dias gym)
+# Dieta actual — PALEO + LACTEOS (Primal), 4 dias gym
 
 **Vigente desde:** 2026-04-21 (lunes)
-**Tipo:** Low-carb estricto mediterraneo (60–80 g carbos/dia gym | 50 g descanso)
+**Tipo:** Paleo + lacteos (Primal) — sin cereales, sin legumbres, sin ultraprocesados, sin azucares refinados, sin aceites industriales. MANTIENE lacteos (yogur griego, ricota, queso) por eleccion del paciente.
 **Frecuencia gym:** 4 dias/semana
 **Horarios gym:** Lun/Mar/Jue **07:00 AM** | Vie **14:00 hs**
 **Calorias objetivo:** 2.250 kcal (dias gym) | 2.050 kcal (dias descanso)
@@ -14,6 +14,7 @@
 
 ## Logica del plan (4 dias gym)
 
+- **Paleo + lacteos (Primal):** sin cereales, sin legumbres, sin ultraprocesados, sin azucares refinados. Mantiene lacteos por eleccion.
 - **Huevos: SIEMPRE hervidos.** No hay huevos revueltos, omelette, ni poche. Esto simplifica el batch cooking y la digestion (mas facil de transportar al local).
 - **Papa o boniato HERVIDO:** acompanamiento estandar en almuerzos de dias gym. Cocido al agua, sin manteca ni aceite caliente.
 - **Pre-entreno alterna banana y pasas:** Lun/Jue media banana 80 g + café. Mar/Vie pasas de uva 30 g + café. Menos volumen, más práctico.
@@ -92,10 +93,9 @@
 - Agua: 300 ml
 - (Sin fruta hoy — el desayuno viene en 75 min con carbos)
 
-### 09:30 Desayuno — "Plato proteico con huevos duros" (~530 kcal | P 38 / C 18 / G 35)
-- Huevos duros: 3 unidades (150 g)
-- Pan integral: 30 g (1 rebanada)
-- Palta: 70 g
+### 09:30 Desayuno — "Plato proteico Primal" (~530 kcal | P 40 / C 8 / G 40)
+- Huevos duros: 4 unidades (200 g)
+- Palta: 90 g
 - Tomate: 100 g rodajas
 - Queso port salut descremado: 20 g
 - Aceite oliva: 5 ml (sobre la palta y el tomate)
@@ -144,11 +144,10 @@
 ### 08:15 Post-entreno:
 - Whey 35 g + agua 300 ml (sin fruta)
 
-### 09:30 Desayuno — "Huevos duros con queso y palta" (~530 kcal | P 38 / C 18 / G 35)
-- Huevos duros: 3 unidades (150 g)
+### 09:30 Desayuno — "Huevos duros con queso y palta" (~530 kcal | P 40 / C 8 / G 40)
+- Huevos duros: 4 unidades (200 g)
 - Queso port salut descremado: 30 g
-- Pan integral: 30 g (1 rebanada)
-- Palta: 60 g + tomate 100 g
+- Palta: 80 g + tomate 100 g
 - Aceite oliva: 5 ml
 
 ### 13:00 Almuerzo — "Pechuga de pollo con boniato hervido y ensalada" (~580 kcal | P 50 / C 30 / G 28)
@@ -228,13 +227,12 @@
 ### 08:15 Post-entreno:
 - Whey 35 g + agua 300 ml (sin fruta)
 
-### 09:30 Desayuno — "Yogur proteico con frutillas y huevos duros" (~530 kcal | P 38 / C 18 / G 35)
+### 09:30 Desayuno — "Yogur proteico con frutillas y huevos duros" (~530 kcal | P 40 / C 12 / G 38)
 - Yogur griego proteico sin azucar: 200 g
 - Frutillas: 100 g
 - Almendras: 15 g
 - Canela: 1 g
-- + Huevos duros: 2 unidades (100 g) aparte
-- Pan integral: 30 g (1 rebanada)
+- + Huevos duros: 3 unidades (150 g) aparte
 
 ### 13:00 Almuerzo — "Pollo con papa hervida y ensalada nicoise" (~580 kcal | P 50 / C 30 / G 28)
 - Pechuga pollo grille: 200 g (COCIDO)
@@ -290,12 +288,12 @@
 - Agua: 300 ml
 - (Sin fruta — el almuerzo viene a las 17:00 con carbos)
 
-### 17:00 Almuerzo-merienda combinado — "Pechuga de pollo con papa hervida" (~580 kcal | P 50 / C 30 / G 28)
+### 17:00 Almuerzo-merienda combinado — "Pechuga de pollo con papa hervida" (~580 kcal | P 50 / C 32 / G 30)
 - Pechuga pollo grille: 220 g (COCIDO)
-- **Papa o boniato HERVIDO: 100 g (cocido al agua)**
+- **Papa o boniato HERVIDO: 150 g (cocido al agua)** — aumentado por el pan que sale
 - Espinaca fresca: 80 g + rucula 50 g
 - Tomates cherry: 100 g
-- Palta: 60 g
+- Palta: 70 g
 - Almendras fileteadas: 12 g
 - Aceite oliva: 12 ml + limon
 
@@ -459,9 +457,9 @@ Rotacion COMPLETA de proteinas: pollo, pescado blanco, pescado graso, carne vacu
 - **Boniato: 1 kg** (alternar con papa)
 
 ### Otros
-- Pan integral: 1 paquete (1 rebanada/dia gym = 4/semana)
 - Miel: 1 frasco chico (10 g pre-entreno x 4 dias)
 - Mate, cafe, canela, cacao amargo, oregano, sal marina
+- **(Sin pan — Primal)**
 
 ---
 
