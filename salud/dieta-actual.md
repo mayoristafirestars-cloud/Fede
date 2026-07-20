@@ -49,7 +49,7 @@
 | 09:30 | Desayuno principal | 530 | 38 | 18 | 35 |
 | 13:00 | Almuerzo | 580 | 50 | 12 | 35 |
 | 16:30 | Merienda | 220 | 20 | 5 | 13 |
-| 20:30 | Cena | 470 | 45 | 8 | 28 |
+| 19:00 | Cena | 470 | 45 | 8 | 28 |
 | 22:00 | Snack nocturno | 140 | 15 | 6 | 6 |
 | **TOTAL** | | **~2.250** | **~200** | **~80** | **~105** |
 
@@ -62,8 +62,8 @@
 | 12:30 | Pre-entreno LIVIANO (banana + cafe) | 110 | 1 | 27 | 0 |
 | 14:00 | **Entreno (complex 50-60 min)** | — | — | — | — |
 | 15:15 | Post-entreno (whey + frutos rojos) | 200 | 32 | 12 | 3 |
-| 17:00 | Almuerzo-merienda (sustancial) | 580 | 50 | 12 | 35 |
-| 20:30 | **CENA LIBRE** | 600-900 | — | — | — |
+| 16:00 | Almuerzo-merienda (sustancial) | 580 | 50 | 12 | 35 |
+| 19:00 | **CENA LIBRE** | 600-900 | — | — | — |
 | 22:00 | Snack opcional | — | — | — | — |
 | **TOTAL** | | **~2.500-2.700** | | | |
 
@@ -75,7 +75,7 @@
 | 10:00 | Media manana | 220 | 22 | 5 | 12 |
 | 13:00 | Almuerzo | 550 | 50 | 10 | 33 |
 | 16:30 | Merienda | 220 | 20 | 5 | 13 |
-| 20:30 | Cena | 470 | 40 | 8 | 28 |
+| 19:00 | Cena | 470 | 40 | 8 | 28 |
 | 22:00 | Snack nocturno | 140 | 15 | 6 | 6 |
 | **TOTAL** | | **~2.080** | **~185** | **~46** | **~124** |
 
@@ -115,7 +115,7 @@
 - Nueces peladas: 12 g (5-6 mitades)
 - Canela: 1 g
 
-### 20:30 Cena — "Merluza con zapallitos y anchoas" (~470 kcal | P 45 / C 8 / G 28)
+### 19:00 Cena — "Merluza con zapallitos y anchoas" (~470 kcal | P 45 / C 8 / G 28)
 - Merluza al horno: 200 g (COCIDO)
 - Zapallito verde rodajas: 150 g
 - Morron rojo: 70 g
@@ -164,7 +164,7 @@
 - Frutos rojos mix: 30 g
 - Canela: 1 g
 
-### 20:30 Cena — "Salmon con verduras" (~470 kcal | P 45 / C 8 / G 28)
+### 19:00 Cena — "Salmon con verduras" (~470 kcal | P 45 / C 8 / G 28)
 - Salmon grille: 180 g (COCIDO)
 - Espinaca salteada: 150 g
 - Champignones: 80 g
@@ -204,7 +204,7 @@
 - Almendras: 10 g
 - Cacao amargo: 3 g (mezclar con ricota)
 
-### 20:30 Cena — "Pollo a la mediterranea" (~470 kcal | P 40 / C 8 / G 28)
+### 19:00 Cena — "Pollo a la mediterranea" (~470 kcal | P 40 / C 8 / G 28)
 - Pechuga pollo grille: 180 g (COCIDO)
 - Brocoli al vapor: 200 g
 - Champignones salteados: 80 g
@@ -247,7 +247,7 @@
 ### 16:30 Merienda (~220 kcal):
 - Yogur griego: 170 g + nueces 12 g + frutos rojos 20 g
 
-### 20:30 Cena — "Brotola con brocoli y anchoas" (~470 kcal | P 45 / C 8 / G 28)
+### 19:00 Cena — "Brotola con brocoli y anchoas" (~470 kcal | P 45 / C 8 / G 28)
 - Brotola al horno: 200 g (COCIDO)
 - Brocoli al vapor: 200 g
 - Huevo duro: 1 unidad (50 g)
@@ -288,7 +288,7 @@
 - Agua: 300 ml
 - (Sin fruta — el almuerzo viene a las 17:00 con carbos)
 
-### 17:00 Almuerzo-merienda combinado — "Pechuga de pollo con papa hervida" (~580 kcal | P 50 / C 32 / G 30)
+### 16:00 Almuerzo-merienda combinado — "Pechuga de pollo con papa hervida" (~580 kcal | P 50 / C 32 / G 30)
 - Pechuga pollo grille: 220 g (COCIDO)
 - **Papa o boniato HERVIDO: 150 g (cocido al agua)** — aumentado por el pan que sale
 - Espinaca fresca: 80 g + rucula 50 g
@@ -297,7 +297,7 @@
 - Almendras fileteadas: 12 g
 - Aceite oliva: 12 ml + limon
 
-### 20:30 CENA LIBRE (~600-900 kcal)
+### 19:00 CENA LIBRE (~600-900 kcal)
 **Reglas:**
 - Porcion normal, no hasta reventar.
 - Elegi UNA: parrilla (250 g carne magra + ensalada, sin achuras ni choripan), sushi (12-15 piezas sin tempura), milanesa al horno + ensalada, pizza (2 porciones masa fina).
@@ -336,7 +336,7 @@
 - Tomate: 100 g + aceite oliva 5 ml
 - Almendras: 10 g
 
-### 20:30 Cena — "Pollo con vegetales al vapor y anchoas" (~470 kcal | P 40 / C 8 / G 28)
+### 19:00 Cena — "Pollo con vegetales al vapor y anchoas" (~470 kcal | P 40 / C 8 / G 28)
 - Pechuga pollo grille: 180 g (COCIDO)
 - Huevos duros: 2 unidades (100 g)
 - Espinaca hervida o al vapor: 150 g
@@ -376,7 +376,7 @@
 - Yogur griego proteico: 200 g
 - Nueces: 10 g + cacao amargo 3 g
 
-### 20:30 Cena liviana — "Ensalada Caesar low-carb" (~470 kcal | P 40 / C 8 / G 28)
+### 19:00 Cena liviana — "Ensalada Caesar low-carb" (~470 kcal | P 40 / C 8 / G 28)
 - Pechuga pollo grille: 180 g (COCIDO)
 - Lechuga romana: 100 g
 - Huevo duro: 1 unidad
