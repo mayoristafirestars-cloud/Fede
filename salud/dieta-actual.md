@@ -43,7 +43,7 @@
 
 | Hora | Momento | Kcal | P | C | G |
 |---|---|---|---|---|---|
-| 05:30 | Pre-entreno (banana + cafe) | 110 | 1 | 27 | 0 |
+| 06:30 | Pre-entreno (banana + cafe) | 110 | 1 | 27 | 0 |
 | 07:00 | **Entreno (complex 50-60 min)** | — | — | — | — |
 | 08:15 | Post-entreno (whey + frutos rojos) | 200 | 32 | 12 | 3 |
 | 09:30 | Desayuno principal | 530 | 38 | 18 | 35 |
@@ -57,7 +57,7 @@
 
 | Hora | Momento | Kcal | P | C | G |
 |---|---|---|---|---|---|
-| 07:30 | Desayuno normal | 480 | 38 | 12 | 32 |
+| 06:30 | Desayuno normal | 480 | 38 | 12 | 32 |
 | 10:30 | Media manana | 200 | 20 | 5 | 12 |
 | 12:30 | Pre-entreno LIVIANO (banana + cafe) | 110 | 1 | 27 | 0 |
 | 14:00 | **Entreno (complex 50-60 min)** | — | — | — | — |
@@ -71,7 +71,7 @@
 
 | Hora | Momento | Kcal | P | C | G |
 |---|---|---|---|---|---|
-| 07:30 | Desayuno | 480 | 38 | 12 | 32 |
+| 06:30 | Desayuno | 480 | 38 | 12 | 32 |
 | 10:00 | Media manana | 220 | 22 | 5 | 12 |
 | 13:00 | Almuerzo | 550 | 50 | 10 | 33 |
 | 16:30 | Merienda | 220 | 20 | 5 | 13 |
@@ -83,7 +83,7 @@
 
 ## LUNES (GYM 07:00 — Dia A: Empuje + Bisagra)
 
-### 05:30 Pre-entreno LUNES (~90 kcal | P 1 / C 20 / G 0)
+### 06:30 Pre-entreno LUNES (~90 kcal | P 1 / C 20 / G 0)
 - Banana chica: 80 g (media banana mediana, pesada sin cascara)
 - Cafe negro sin azucar: 150 ml
 - Agua + pizca de sal: 300 ml
@@ -136,7 +136,7 @@
 
 ## MARTES (GYM 07:00 — Dia B: Tiron + Sentadilla)
 
-### 05:30 Pre-entreno MARTES (~110 kcal | P 1 / C 25 / G 0)
+### 06:30 Pre-entreno MARTES (~110 kcal | P 1 / C 25 / G 0)
 - Pasas de uva: 30 g (1 puñadito)
 - Cafe negro sin azucar: 150 ml
 - Agua + pizca de sal: 300 ml
@@ -179,7 +179,7 @@
 
 ## MIERCOLES (descanso — recuperacion)
 
-### 07:30 Desayuno — "Huevos duros con palta y ricota" (~480 kcal | P 38 / C 12 / G 32)
+### 06:30 Desayuno — "Huevos duros con palta y ricota" (~480 kcal | P 38 / C 12 / G 32)
 - Huevos duros: 3 unidades (150 g)
 - Ricota descremada: 80 g
 - Palta: 60 g
@@ -219,7 +219,7 @@
 
 ## JUEVES (GYM 07:00 — Dia A: Empuje + Bisagra)
 
-### 05:30 Pre-entreno JUEVES (~90 kcal | P 1 / C 20 / G 0)
+### 06:30 Pre-entreno JUEVES (~90 kcal | P 1 / C 20 / G 0)
 - Banana chica: 80 g (media banana mediana)
 - Cafe negro sin azucar: 150 ml
 - Agua + pizca de sal: 300 ml
@@ -264,7 +264,7 @@
 
 > Hoy el entreno es a la tarde. La estructura del dia cambia: desayuno y media manana normales, almuerzo se mueve POST-entreno, y la cena es LIBRE.
 
-### 07:30 Desayuno — "Huevos duros con palta y queso" (~480 kcal | P 38 / C 12 / G 32)
+### 06:30 Desayuno — "Huevos duros con palta y queso" (~480 kcal | P 38 / C 12 / G 32)
 - Huevos duros: 3 unidades (150 g)
 - Queso port salut descremado: 30 g
 - Palta: 60 g
@@ -311,7 +311,7 @@
 
 ## SABADO (descanso)
 
-### 07:30 Desayuno — "Huevos duros con jamon, queso y palta" (~480 kcal | P 38 / C 12 / G 32)
+### 06:30 Desayuno — "Huevos duros con jamon, queso y palta" (~480 kcal | P 38 / C 12 / G 32)
 - Huevos duros: 3 unidades (150 g)
 - Jamon cocido magro: 30 g (1 fetita)
 - Queso port salut descremado: 30 g
@@ -353,7 +353,7 @@
 
 ## DOMINGO (descanso + BATCH COOKING 10–12 h)
 
-### 07:30 Desayuno — "Huevos duros con palta y queso" (~480 kcal | P 38 / C 12 / G 32)
+### 06:30 Desayuno — "Huevos duros con palta y queso" (~480 kcal | P 38 / C 12 / G 32)
 - Huevos duros: 3 unidades (150 g)
 - Palta: 60 g
 - Tomate: 100 g
