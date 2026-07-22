@@ -139,3 +139,23 @@ Compras ejecutadas de la tanda: TJX 3 (33.900), TXR 1 (17.990), UNH 2 (39.760). 
 **Pendiente:** SCHW (1 con el cash restante ~13.760) → completaría 16 nombres. Opcionales: GOOGL, XLRE. Saltear: TSM (ticket enorme), VIST (ya pesado energía+Argentina).
 
 **PRÓXIMO CAPÍTULO (más importante que más acciones):** fondo de emergencia (3-6 meses, 50% FCI money market pesos T+0 / 50% USD MEP, separado) + arrancar renta fija ~20-25% en ONs USD (TGS/Pampa/YPF 6,5-8,5%). Pregunta abierta: ¿los 438k son todo su capital o hay ahorro aparte? ¿Tiene fondo de emergencia?
+
+---
+
+## HITO — Cartera completa terminada (~22-jul-2026)
+
+Fede completó la construcción tras la auditoría de 3 agentes. Aporte final de 364.109 fue todo a la parte defensiva.
+
+**Balance final (~903.000 total):**
+- **Fondo de emergencia ~140.000** (separado): USD 85.000 + Money Market Pesos BCMMA 55.000.
+- **Cartera de inversión ~763.000:**
+  - Acciones ~539.000 = **71%** (16 CEDEARs + PAMP, ~9 sectores + internacional EFA)
+  - Renta fija ~224.000 = **29%** (FCI BAHUSDA — ONs corporativas en dólares, ~7-10% USD)
+
+**Logrado:** 71/29 acciones/renta fija (objetivo era 75/25 ✓). Salieron PEP y TX. Entraron GOOGL, EFA (internacional), y el sleeve defensivo completo. Concentraciones (MSFT ~15%, TSM ~13%, PAMP ~9%) a diluir con aportes futuros.
+
+**Fondos Balanz usados:** BCMMA (Money Market Pesos, emergencia), BAHUSDA (Corporativo en dólares, renta fija). Ambos verificados. Evitados: BCRFD (Dólar Linked), BCRDolar/BCRDolarA (Soberano).
+
+**Modo mantenimiento:** aportes a mantener equilibrio + sectores atrasados (nunca MSFT/TSM/PAMP); rebalanceo trimestral; no toquetear; no vender en las caídas (para eso está el 29% en dólares).
+
+**Pendiente de confirmar:** que el fondo de emergencia (~140k) cubra 3-6 meses de gastos reales de Fede.
