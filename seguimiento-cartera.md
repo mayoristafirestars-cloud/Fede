@@ -159,3 +159,23 @@ Fede completó la construcción tras la auditoría de 3 agentes. Aporte final de
 **Modo mantenimiento:** aportes a mantener equilibrio + sectores atrasados (nunca MSFT/TSM/PAMP); rebalanceo trimestral; no toquetear; no vender en las caídas (para eso está el 29% en dólares).
 
 **Pendiente de confirmar:** que el fondo de emergencia (~140k) cubra 3-6 meses de gastos reales de Fede.
+
+---
+
+## Compra planificada — lunes (aporte $200.000) · decisión: CONGELAR TSM (Opción A)
+
+**Contexto:** Fede triplicó TSM a 3 nominales (~16% de la cartera, cluster tech ~30%) contra el estudio de largo plazo. Ante la elección congelar (A) vs recortar 1 nominal (B), **eligió A: congelar TSM** — ni un peso más, se diluye solo con aportes. NO se vende.
+
+**Aporte $200.000 dirigido 100% a huecos + atrasados (nada de tech/Pampa/TSM):**
+
+| Prioridad | Instrumento | Monto ARS | Motivo |
+|---|---|---|---|
+| 1 | SCHW (Schwab) | 70.000 | Hueco banco — CERO exposición bancaria desde el plan original |
+| 2 | EEM (emergentes) | 45.000 | Estudio LP: EE.UU. caro, EM barato |
+| 3 | EFA (internacional) | 45.000 | Estudio LP: fuera de EE.UU., value |
+| 4 | BAHUSDA (ONs USD) | 40.000 | 20% renta fija del aporte (~7% USD) |
+| **Total** | | **200.000** | ~80/20 acciones/renta fija |
+
+**Ejecución:** orden limitada en punta vendedora, mercado NY abierto (~después 11:30 AR). SCHW/EEM poco líquidos → paciencia. Verificar precios en Balanz (SCHW/EEM/EFA estimados).
+
+**Regla activa:** TSM congelado. Todo aporte nuevo va a banco (SCHW) primero, luego EM/internacional y atrasados. NUNCA a MSFT/TSM/AVGO/GOOGL/PAMP.
