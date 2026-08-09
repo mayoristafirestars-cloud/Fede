@@ -196,3 +196,15 @@ Creado `cartera-objetivo-anillos-agosto-2026.md/.pdf` — el norte final. Estruc
 **Recorrido pendiente:** cluster IA ~30% → 17% objetivo (congelar + diluir, no vender). TSM 16% → 5% es el que más debe diluirse.
 
 **Prioridad de aportes:** 1) SCHW hasta 3% (banco). 2) EFA/EEM. 3) atrasados de calidad (NU/XOM/JNJ/SPGI). NUNCA a MSFT/TSM/AVGO/GOOGL/NVDA; no agrandar PAMP/UNH.
+
+---
+
+## CORRECCIÓN — hueco banco: SCHW ❌ (ilíquido) → JPM ✅ (9-ago-2026)
+
+Fede revisó SCHW en Balanz: **última operación 28/07/2025** (>1 año) → CEDEAR muerto, NO comprar. Bien detectado por él.
+
+**Test de liquidez adoptado:** mirar campo "Fecha" de Últimos datos — si es de hoy = líquido; si es vieja = descartar. Chequear también volumen del día.
+
+**Sustitución:** el hueco BANCO se tapa con **JPMorgan (JPM)** en lugar de Schwab. Mejor negocio (banco dominante real vs bróker) y CEDEAR más líquido. Cúpula: Jamie Dimon (CEO 2005, ~20 años, gran asignador, alineado). Anillo 3, objetivo 3%. Plan B: Bank of America (BAC). Si ambos ilíquidos, redirigir a EFA/EEM.
+
+**Buy list lunes $200.000 (revisada):** JPM 70.000 (verificar liquidez) · EEM 45.000 · EFA 45.000 · BAHUSDA 40.000.
