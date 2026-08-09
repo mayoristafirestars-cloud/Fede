@@ -179,3 +179,20 @@ Fede completó la construcción tras la auditoría de 3 agentes. Aporte final de
 **Ejecución:** orden limitada en punta vendedora, mercado NY abierto (~después 11:30 AR). SCHW/EEM poco líquidos → paciencia. Verificar precios en Balanz (SCHW/EEM/EFA estimados).
 
 **Regla activa:** TSM congelado. Todo aporte nuevo va a banco (SCHW) primero, luego EM/internacional y atrasados. NUNCA a MSFT/TSM/AVGO/GOOGL/PAMP.
+
+---
+
+## MAPA OBJETIVO por anillos de moat (9-ago-2026)
+
+Creado `cartera-objetivo-anillos-agosto-2026.md/.pdf` — el norte final. Estructura: 78% acciones / 22% renta fija (BAHUSDA), fondo emergencia aparte. Ninguna posición >6-7%.
+
+**Objetivos por posición (% de la capa de inversión):**
+- Anillo 1 (monopolios, 17%): SPGI 6, V 6, TSM 5 ❄️, NVDA 0 (radar).
+- Anillo 2 (oligopolios, 20%): MSFT 6 ❄️, AMZN 5, MELI 4, GOOGL 3 ❄️, AVGO 3 ❄️.
+- Anillo 3 (competitivos/regulados/commodity, 24%): JNJ 4, XOM 4, PAMP 4 ✂️(salida 2027), SCHW 3 ➕hueco, NU 3, UNH 3 ⚠️no agrandar, TJX 3.
+- Diversificadores (17%): EFA 5, GLD 5, EEM 4, SPY 3.
+- Renta fija: BAHUSDA 22% (dejar diluir).
+
+**Recorrido pendiente:** cluster IA ~30% → 17% objetivo (congelar + diluir, no vender). TSM 16% → 5% es el que más debe diluirse.
+
+**Prioridad de aportes:** 1) SCHW hasta 3% (banco). 2) EFA/EEM. 3) atrasados de calidad (NU/XOM/JNJ/SPGI). NUNCA a MSFT/TSM/AVGO/GOOGL/NVDA; no agrandar PAMP/UNH.
