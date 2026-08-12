@@ -220,3 +220,20 @@ Barrido del panel argentino buscando castigadas con tesis sana. Ganadoras: IRSA 
 **Reglas:** IRSA ~2% + TGS ~2%, TECHO. Salida antes de elecciones 2027 (igual que Pampa). Argentina total (Pampa+IRSA+TGS) techo ~7%. Horizonte 18-24 meses. Son ACCIONES LOCALES en pesos (no CEDEAR), sección Acciones — IRSA / TGS (ticker local puede ser TGSU2). Líquidas (Merval).
 
 **Compra planificada (mañana, mercado abierto) — $200.000:** SPGI 55.000 (~4) · V 55.000 (~2) · IRSA 30.000 · TGS 30.000 · XOM 30.000. GLD queda para el próximo. Prioridad sigue siendo monopolios (SPGI/V) + renta fija pendiente.
+
+---
+
+## INVESTIGACIÓN GLOBAL de CEDEARs (12-ago-2026, 6 agentes) — candidatas nuevas
+
+Barrido de ~60 empresas + ETFs mundiales comprables por CEDEAR. Doc: `investigacion-global-cedears-agosto-2026.md/.pdf`.
+
+**Lista corta recomendada (tapan hueco + castigadas + no duplican):**
+1. SAP (software lock-in, 28% bajo su múltiplo) 2. Merck (farma calidad, fwd 12x) 3. Lockheed (DEFENSA, -25%) 4. Ambev (consumo LatAm con moat) 5. UPS (logística, div 6.25%) 6. Ferrari (lujo, Anillo 1).
+**Joya cara:** ASML (monopolio EUV, ~45x, se solapa con semis).
+**Ruta ETF elegante (de-concentra US):** RSP (equiponderado), SPHQ (calidad), XLV (salud), IVE (value).
+**Descartar por DUPLICAR:** Mastercard(=Visa), Meta(=ads Google), Moody's/ICE(=SPGI, sin CEDEAR), Petrobras(=Exxon), Bradesco(=Nu), Barrick/Newmont(=GLD), TotalEnergies/Shell(=Exxon), QQQ/XLK/VEA/EWZ(=redundantes).
+**Descartar por CARAS:** ARM(>100x), Costco, Apple, Caterpillar/Deere, Coca/Starbucks/UnionPacific.
+**Tesis en duda:** Nike, 3M, PDD/JD/Baidu.
+**China:** quedarse con EEM (ya tiene China ~25% adentro). Si una individual: Tencent (OTC frágil). Sin China: Infosys (India, div 4.7%).
+
+**Disciplina:** es MENÚ, no lista de compras. Prioridades del mapa (renta fija, SPGI/Visa) van ANTES. Sumar 1-2 nombres nuevos en meses, o 1 ETF (RSP/SPHQ/XLV) que tapa varios huecos. Techo ~3% por posición nueva.
