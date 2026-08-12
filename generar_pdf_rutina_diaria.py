@@ -355,7 +355,7 @@ def main():
                "DESCANSO  ·  Dia clave para longevidad",
                [
                    ("06:00", "water",  "Despertar", "Agua 300 ml (sin sal, no entrenas)"),
-                   ("07:15", "cardio", "CAMINATA ZONA 2", "30-40 min ritmo firme (post-desayuno, ayuda glucemia). Al sol."),
+                   ("14:00", "cardio", "CAMINATA ZONA 2", "30-40 min ritmo firme (post-almuerzo, reduce pico glucemico). Al sol."),
                    ("06:30", "meal",   "DESAYUNO", "3 huevos duros + ricota 80 g + palta 60 g + tomate 100 g + oliva 5 ml. Sin pan."),
                    ("06:45", "supp",   "Suplementos AM", "Vit D3 + Omega-3 + Creatina 5 g"),
                    ("10:00", "meal",   "MEDIA MANANA", "Yogur griego 200 g + nueces 10 g + frutillas 30 g"),
@@ -418,7 +418,7 @@ def main():
                "DESCANSO  ·  Familia + hobby",
                [
                    ("06:00", "water",  "Despertar", "Agua 300 ml"),
-                   ("07:15", "cardio", "CAMINATA ZONA 2", "30-40 min ritmo firme (post-desayuno). Al sol."),
+                   ("14:00", "cardio", "CAMINATA ZONA 2", "30-40 min ritmo firme (post-almuerzo). Al sol."),
                    ("06:30", "meal",   "DESAYUNO", "3 huevos duros + jamon magro 30 g + queso port salut 30 g + palta 50 g + tomate 100 g + oliva 5 ml"),
                    ("06:45", "supp",   "Suplementos AM", "Vit D3 + Omega-3 + Creatina 5 g"),
                    ("10:00", "meal",   "MEDIA MANANA", "Cottage 150 g + frutillas 50 g + nueces 7 g"),
@@ -439,7 +439,7 @@ def main():
                "DESCANSO  ·  BATCH COOKING",
                [
                    ("06:00", "water",  "Despertar", "Agua 300 ml"),
-                   ("07:15", "cardio", "CAMINATA Z2", "30-40 min al sol (post-desayuno)"),
+                   ("14:00", "cardio", "CAMINATA Z2", "30-40 min al sol (post-almuerzo)"),
                    ("06:30", "meal",   "DESAYUNO", "3 huevos duros + palta 60 g + tomate 100 g + queso descremado 30 g + oliva 5 ml. Sin pan."),
                    ("06:45", "supp",   "Suplementos AM", "Vit D3 + Omega-3 + Creatina 5 g"),
                    ("10:00", "task",   "BATCH COOKING 90 min", "1) Pollo 1,8 kg horno  2) 20 huevos duros  3) Papa+boniato hervidos  4) Verduras vapor  5) Aderezos"),
