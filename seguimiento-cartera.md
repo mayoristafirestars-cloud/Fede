@@ -208,3 +208,15 @@ Fede revisó SCHW en Balanz: **última operación 28/07/2025** (>1 año) → CED
 **Sustitución:** el hueco BANCO se tapa con **JPMorgan (JPM)** en lugar de Schwab. Mejor negocio (banco dominante real vs bróker) y CEDEAR más líquido. Cúpula: Jamie Dimon (CEO 2005, ~20 años, gran asignador, alineado). Anillo 3, objetivo 3%. Plan B: Bank of America (BAC). Si ambos ilíquidos, redirigir a EFA/EEM.
 
 **Buy list lunes $200.000 (revisada):** JPM 70.000 (verificar liquidez) · EEM 45.000 · EFA 45.000 · BAHUSDA 40.000.
+
+---
+
+## Satélites argentinos tácticos: IRSA + TGS (análisis 12-ago-2026, 3 agentes)
+
+Barrido del panel argentino buscando castigadas con tesis sana. Ganadoras: IRSA (mejor encaje: real estate, macro AR, div ~9.6%, beta baja, P/E ~5, corregida) y TGS (energía midstream, -23% por corte de dividendo sano, RIGI aprobado). Descartadas: Globant (-89%, cuchillo cayendo, IA le come el modelo), YPF/CAAP (en máximos), Central Puerto (value trap político), BBVA/Supervielle (débiles), Cresud/Telecom/Ternium/Aluar (ruido).
+
+**Decisión de Fede:** sumar "un poquito de las 2" como satélites tácticos.
+
+**Reglas:** IRSA ~2% + TGS ~2%, TECHO. Salida antes de elecciones 2027 (igual que Pampa). Argentina total (Pampa+IRSA+TGS) techo ~7%. Horizonte 18-24 meses. Son ACCIONES LOCALES en pesos (no CEDEAR), sección Acciones — IRSA / TGS (ticker local puede ser TGSU2). Líquidas (Merval).
+
+**Compra planificada (mañana, mercado abierto) — $200.000:** SPGI 55.000 (~4) · V 55.000 (~2) · IRSA 30.000 · TGS 30.000 · XOM 30.000. GLD queda para el próximo. Prioridad sigue siendo monopolios (SPGI/V) + renta fija pendiente.
