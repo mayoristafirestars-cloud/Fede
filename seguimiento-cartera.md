@@ -237,3 +237,17 @@ Barrido de ~60 empresas + ETFs mundiales comprables por CEDEAR. Doc: `investigac
 **China:** quedarse con EEM (ya tiene China ~25% adentro). Si una individual: Tencent (OTC frágil). Sin China: Infosys (India, div 4.7%).
 
 **Disciplina:** es MENÚ, no lista de compras. Prioridades del mapa (renta fija, SPGI/Visa) van ANTES. Sumar 1-2 nombres nuevos en meses, o 1 ETF (RSP/SPHQ/XLV) que tapa varios huecos. Techo ~3% por posición nueva.
+
+---
+
+## FOTO 12-ago-2026 (~$1,70M invertido) — llenó monopolios atrasados
+
+Ejecutó SPGI 2→6 (~5%), V 1→3 (~5,6%), XOM 1→3 (4,5% obj), GLD 2→4 (3%). Disciplina correcta: fue a lo atrasado de calidad, nada a tech congelada.
+
+**Cedears (19) total $1.433.975 + PAMP $45.450 = acciones $1.479.425. Renta fija BAHUSDA ~$224k (u$s147). Total inversión ~$1.70M.**
+
+**Pesos:** MSFT 6,1% (obj✓), V 5,6%, SPGI 5,1%, JNJ 4,9%, XOM 4,5%✓, JPM 4,6%, GLD 3%, PAMP 2,7%, IBIT 2,7%, SPY 2,4%, UNH 2,3%, AVGO 2%, TJX 2%, AMZN 1,7%, MELI 1,4%, GOOGL 1,1%. TSM 13,4% ❄️ (diluyendo desde 15%). Pasadas: EFA 8,5%, EEM 7,5%, NU 5,7%.
+
+**DESBALANCE CLAVE:** acciones 87% / renta fija 13% (objetivo 78/22). Renta fija (BAHUSDA 13% vs 22%) es el HUECO #1 ahora, lejos.
+
+**PRÓXIMO APORTE = RENTA FIJA:** comprar ~US$100+ dólar MEP → suscribir BAHUSDA. Nombres nuevos (Lockheed/SAP/Ambev) y satélites AR (IRSA/TGS) quedan DESPUÉS. No ejecutó IRSA/TGS ni Lockheed todavía.
