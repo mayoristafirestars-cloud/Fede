@@ -251,3 +251,11 @@ Ejecutó SPGI 2→6 (~5%), V 1→3 (~5,6%), XOM 1→3 (4,5% obj), GLD 2→4 (3%)
 **DESBALANCE CLAVE:** acciones 87% / renta fija 13% (objetivo 78/22). Renta fija (BAHUSDA 13% vs 22%) es el HUECO #1 ahora, lejos.
 
 **PRÓXIMO APORTE = RENTA FIJA:** comprar ~US$100+ dólar MEP → suscribir BAHUSDA. Nombres nuevos (Lockheed/SAP/Ambev) y satélites AR (IRSA/TGS) quedan DESPUÉS. No ejecutó IRSA/TGS ni Lockheed todavía.
+
+---
+
+## RENTA FIJA CERRADA (ago 2026)
+
+Fede suscribió ~US$130 más a BAHUSDA (vía dólar MEP con $200.000; quedaron $5.000 pesos de vuelto → BCMMA). BAHUSDA pasó de ~US$147 a ~US$277. Renta fija ahora ~22% (objetivo cumplido). Balance ~78/22 acciones/renta fija logrado. HUECO DE RENTA FIJA CERRADO.
+
+Próximo: nombres nuevos de calidad (Lockheed/SAP/Ambev) o satélites AR (IRSA/TGS), o seguir emparejando atrasados (AMZN/MELI/GLD). Ya no hay hueco urgente.
