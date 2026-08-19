@@ -259,3 +259,19 @@ Ejecutó SPGI 2→6 (~5%), V 1→3 (~5,6%), XOM 1→3 (4,5% obj), GLD 2→4 (3%)
 Fede suscribió ~US$130 más a BAHUSDA (vía dólar MEP con $200.000; quedaron $5.000 pesos de vuelto → BCMMA). BAHUSDA pasó de ~US$147 a ~US$277. Renta fija ahora ~22% (objetivo cumplido). Balance ~78/22 acciones/renta fija logrado. HUECO DE RENTA FIJA CERRADO.
 
 Próximo: nombres nuevos de calidad (Lockheed/SAP/Ambev) o satélites AR (IRSA/TGS), o seguir emparejando atrasados (AMZN/MELI/GLD). Ya no hay hueco urgente.
+
+---
+
+## INVESTIGACIÓN IA (ago 2026, 5 agentes) — proyecciones + China + por qué comprar/no
+
+Doc: `investigacion-ia-agosto-2026.md/.pdf`. Barrido ~30 empresas IA (chips/hyperscalers/software/China) + tesis burbuja.
+
+**El dato que gobierna todo:** capex hyperscalers ~US$700.000M 2026 vs ~US$80.000M ingreso apps IA (gap 4-13x). Financiamiento circular >US$800.000M. Depreciación GPU 5-6a vs 2-3a real (~US$176.000M ganancias infladas).
+
+**Veredictos clave:**
+- Chips: TSM (mejor, ya la tiene) y NVDA (líder, ~22-25x, radar, escalonado) las 2 mejores. EVITAR: Micron (commodity, P/E bajo=techo ciclo), Arista (49x), Marvell (#2 sin CEDEAR).
+- Hyperscalers: GOOGL mejor monetización; MSFT (dependencia OpenAI circular); AMZN (EPS maquillado Anthropic); META NO vende IA (su ausencia coherente, no hueco).
+- Software: ServiceNow (premium justificado), Salesforce (~13x value), Adobe (~10x contrarian). BURBUJA: Palantir (74x ventas). Caras: Snowflake/CrowdStrike.
+- China: si UNA, BABA (CEDEAR 9:1, no es su top del EEM). Tencent DUPLICA su EEM. Resto sin CEDEAR. Default: quedarse con EEM.
+
+**LA BAJADA:** Fede ya tiene ~30% en IA de calidad = concentración ALTA. NO sumar más IA. Nada de la lista es prioridad (o ya la tiene, o cara, o duplica). Plata nueva va FUERA de IA (defensa/consumo/internacional). 5 señales de alerta para reducir (recorte capex, depreciación sincerada, estrés crédito, OpenAI incumple, ingreso apps se estanca). Si suma IA: NVDA escalonado o BABA chica, techo cluster 30-35%.
