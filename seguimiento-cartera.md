@@ -275,3 +275,13 @@ Doc: `investigacion-ia-agosto-2026.md/.pdf`. Barrido ~30 empresas IA (chips/hype
 - China: si UNA, BABA (CEDEAR 9:1, no es su top del EEM). Tencent DUPLICA su EEM. Resto sin CEDEAR. Default: quedarse con EEM.
 
 **LA BAJADA:** Fede ya tiene ~30% en IA de calidad = concentración ALTA. NO sumar más IA. Nada de la lista es prioridad (o ya la tiene, o cara, o duplica). Plata nueva va FUERA de IA (defensa/consumo/internacional). 5 señales de alerta para reducir (recorte capex, depreciación sincerada, estrés crédito, OpenAI incumple, ingreso apps se estanca). Si suma IA: NVDA escalonado o BABA chica, techo cluster 30-35%.
+
+---
+
+## DECISIÓN: SAP como próximo nombre nuevo de calidad (ago 2026)
+
+Tras la determinación de la élite (doc `determinacion-elite`), Fede eligió sumar SAP. Plan para el próximo aporte:
+- **SAP** (CEDEAR 6:1) — nuevo nombre: lock-in ERP europeo, ~22x (28% bajo su múltiplo histórico), Tier B+. El mejor combo calidad+precio+hueco (software empresarial que casi no tiene). Verificar liquidez/ratio en Balanz.
+- **Rematar S&P Global** hasta 6% (está ~5%) — sumar a la élite que ya tiene, sin cluster IA, valuación razonable.
+- Recordatorio: sobre las Tier S — solo se pueden AGRANDAR SPGI y Visa (hasta 6%). MSFT y TSM NO (congeladas/sobrepeso), pese a ser elite.
+- Pendientes en cola de aportes previos (no ejecutados aún): oro GLD (hedge), Lockheed (defensa), Ambev (consumo), IRSA/TGS (satélites AR), MELI atrasada.
