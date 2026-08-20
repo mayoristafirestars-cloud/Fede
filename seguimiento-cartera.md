@@ -285,3 +285,17 @@ Tras la determinación de la élite (doc `determinacion-elite`), Fede eligió su
 - **Rematar S&P Global** hasta 6% (está ~5%) — sumar a la élite que ya tiene, sin cluster IA, valuación razonable.
 - Recordatorio: sobre las Tier S — solo se pueden AGRANDAR SPGI y Visa (hasta 6%). MSFT y TSM NO (congeladas/sobrepeso), pese a ser elite.
 - Pendientes en cola de aportes previos (no ejecutados aún): oro GLD (hedge), Lockheed (defensa), Ambev (consumo), IRSA/TGS (satélites AR), MELI atrasada.
+
+---
+
+## FOTO 19-ago-2026 (~$2,08M) — SAP adentro, balance 80/20 logrado
+
+Ejecutó el plan de $200k: SAP 1 nom ($57.200) NUEVO, SPGI 6→10, GLD 4→7, MELI 1→2. BAHUSDA confirmado u$s277 (renta fija cerrada).
+
+Cedears (20) total $1.617.340 (+$52.285) + PAMP $45.540 (-855). Renta fija BAHUSDA ~$420k. Total inversión ~$2,08M. **Balance acciones 80% / renta fija 20% ≈ objetivo 78/22 LOGRADO.**
+
+Rendimiento: +$51.400 pesos (+3,3%). En USD sigue ~parejo (devaluación). IBIT rebotó +5%.
+
+**Pesos:** TSM 10,5% ❄️(diluyendo desde 13%), SPGI 7,3% (⚠ SE PASÓ de 6% - NO sumar más), EFA 6,8%, EEM 6,1%, MSFT 4,9%❄️, NU 4,9%, GLD 4,4%✓, JNJ 4,1%, XOM 3,8%, JPM 3,6%, SAP 2,7%🆕, IBIT 2,5%, MELI 2,4%, PAMP 2,2%, SPY 1,9%, UNH 1,8%, TJX 1,5%, AVGO 1,4%, AMZN 1,4%(⬇obj5), GOOGL 0,9%❄️.
+
+**Élite agrandable restante: solo Visa (hasta 6%).** SPGI ya topeado. **Cola de huecos:** Lockheed (defensa), Ambev (consumo), IRSA/TGS (satélites AR), emparejar AMZN/MELI.
