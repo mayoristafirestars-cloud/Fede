@@ -122,33 +122,46 @@ def escape(s: str) -> str:
     return s.replace("\\", "\\\\").replace(";", "\\;").replace(",", "\\,").replace("\n", "\\n")
 
 
+DTSTAMP_FIXED = "20260101T000000Z"
+
+
 def make_event(idx: int, dia: str, hora: str, summary: str, description: str) -> str:
     fecha = BASE_DATES[dia]  # YYYYMMDD
     hh, mm = hora[:2], hora[2:]
-    end_mm = str(int(mm) + 5).zfill(2)
-    end_hh = hh
-    if int(end_mm) >= 60:
-        end_hh = str(int(hh) + 1).zfill(2)
-        end_mm = "00"
-    dtstart = f"{fecha}T{hh}{mm}00"
-    dtend = f"{fecha}T{end_hh}{end_mm}00"
-    uid = f"plan-fede-{dia}-{hora}-{idx}@fede"
+    end_mm = int(mm) + 15
+    end_hh = int(hh)
+    if end_mm >= 60:
+        end_hh += 1
+        end_mm -= 60
+    end_hh_s = str(end_hh).zfill(2)
+    end_mm_s = str(end_mm).zfill(2)
+    # UTC (Argentina = UTC-3, entonces sumamos 3 horas al hora local)
+    dtstart_utc_hh = str((int(hh) + 3) % 24).zfill(2)
+    dtend_utc_hh = str((end_hh + 3) % 24).zfill(2)
+    dtstart = f"{fecha}T{dtstart_utc_hh}{mm}00Z"
+    dtend = f"{fecha}T{dtend_utc_hh}{end_mm_s}00Z"
+    uid = f"plan-fede-{dia}-{hora}-{idx}@planfede"
 
-    return "\n".join([
+    lines = [
         "BEGIN:VEVENT",
         f"UID:{uid}",
-        f"DTSTART;TZID={TZ}:{dtstart}",
-        f"DTEND;TZID={TZ}:{dtend}",
+        f"DTSTAMP:{DTSTAMP_FIXED}",
+        f"DTSTART:{dtstart}",
+        f"DTEND:{dtend}",
         f"SUMMARY:{escape(summary)}",
         f"DESCRIPTION:{escape(description)}",
         f"RRULE:FREQ=WEEKLY;BYDAY={dia}",
+        "STATUS:CONFIRMED",
+        "TRANSP:OPAQUE",
+        "SEQUENCE:0",
         "BEGIN:VALARM",
         "ACTION:DISPLAY",
         f"DESCRIPTION:{escape(summary)}",
         "TRIGGER:-PT0M",
         "END:VALARM",
         "END:VEVENT",
-    ])
+    ]
+    return "\r\n".join(lines)
 
 
 def main():
@@ -158,18 +171,8 @@ def main():
         "PRODID:-//Plan Fede//ES",
         "CALSCALE:GREGORIAN",
         "METHOD:PUBLISH",
-        "X-WR-CALNAME:Plan Fede — Comidas y rutina",
-        "X-WR-TIMEZONE:" + TZ,
-        # Timezone de Argentina
-        "BEGIN:VTIMEZONE",
-        f"TZID:{TZ}",
-        "BEGIN:STANDARD",
-        "DTSTART:19700101T000000",
-        "TZOFFSETFROM:-0300",
-        "TZOFFSETTO:-0300",
-        "TZNAME:ART",
-        "END:STANDARD",
-        "END:VTIMEZONE",
+        "X-WR-CALNAME:Plan Fede",
+        "X-WR-TIMEZONE:America/Argentina/Buenos_Aires",
     ]
 
     for i, (dia, hora, summary, desc) in enumerate(EVENTS):
@@ -177,7 +180,9 @@ def main():
 
     parts.append("END:VCALENDAR")
 
-    OUT.write_text("\n".join(parts) + "\n", encoding="utf-8")
+    # Line endings CRLF (RFC 5545)
+    content = "\r\n".join(parts) + "\r\n"
+    OUT.write_text(content, encoding="utf-8")
     print(f"Archivo generado: {OUT}")
     print(f"Eventos: {len(EVENTS)}")
     print(f"Tamaño: {OUT.stat().st_size / 1024:.1f} KB")
