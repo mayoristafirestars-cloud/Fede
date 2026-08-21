@@ -511,33 +511,53 @@ def parse_kcal_prot(text):
 # ============ POLLING ============
 
 def polling_loop():
-    # Skip backlog al arrancar
+    # Descartar backlog al arrancar: pedir el último y avanzar offset
     try:
         r = requests.get(
             f"{API}/getUpdates", params={"offset": -1, "timeout": 0}, timeout=10
         )
-        results = r.json().get("result", [])
+        j = r.json()
+        results = j.get("result", []) if j.get("ok") else []
         offset = results[-1]["update_id"] + 1 if results else 0
-    except Exception:
+    except Exception as e:
+        log.error("polling startup: %s", e)
         offset = 0
     log.info("polling iniciado desde offset=%d", offset)
 
     esperando_edit = {}  # chat_id -> key
+    iter_count = 0
 
     while True:
+        iter_count += 1
         try:
             r = requests.get(
                 f"{API}/getUpdates",
-                params={"offset": offset, "timeout": 30},
-                timeout=35,
+                params={"offset": offset, "timeout": 25},
+                timeout=30,
             )
             data = r.json()
-            for update in data.get("result", []):
+            if not data.get("ok"):
+                log.warning("Telegram no-ok en iter %d: %s", iter_count, data)
+                time.sleep(3)
+                continue
+            results = data.get("result", [])
+            if results:
+                log.info("iter %d: %d updates recibidos", iter_count, len(results))
+            elif iter_count % 20 == 0:
+                # Heartbeat cada ~20 iters (~10 min) para saber que sigue vivo
+                log.info("polling vivo (iter %d, offset=%d)", iter_count, offset)
+            for update in results:
                 offset = update["update_id"] + 1
-                _handle_update(update, esperando_edit)
+                try:
+                    _handle_update(update, esperando_edit)
+                except Exception as e:
+                    log.error("handle update fail: %s | update=%s", e, update)
+        except requests.Timeout:
+            # Timeout es normal en long-poll cuando no hay updates
+            continue
         except Exception as e:
-            log.error("polling: %s", e)
-            time.sleep(5)
+            log.error("polling iter %d: %s", iter_count, e)
+            time.sleep(3)
 
 
 def _handle_update(update, esperando_edit):
@@ -577,7 +597,11 @@ def _handle_update(update, esperando_edit):
     chat_id = str(msg.get("chat", {}).get("id", ""))
     if not text or not chat_id:
         return
+    log.info("msg recibido de chat=%s: %r", chat_id, text[:100])
 
+    if text.startswith("/ping"):
+        enviar("🏓 pong")
+        return
     if text.startswith("/start"):
         enviar(
             "👋 Bot Plan Fede activo.\n\n"
