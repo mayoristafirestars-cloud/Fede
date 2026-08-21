@@ -18,6 +18,7 @@ Variables de entorno:
 Zona horaria: America/Argentina/Buenos_Aires
 """
 
+import base64
 import json
 import logging
 import os
@@ -35,6 +36,14 @@ BOT_TOKEN = os.environ["TELEGRAM_BOT_TOKEN"]
 CHAT_ID = str(os.environ["TELEGRAM_CHAT_ID"])
 BITACORA = Path("/opt/coronel-sur/backend/bot/bitacora_fede.jsonl")
 API = f"https://api.telegram.org/bot{BOT_TOKEN}"
+
+# GitHub sync (opcional — si GITHUB_TOKEN no está seteado, no sincroniza)
+GITHUB_TOKEN = os.environ.get("GITHUB_TOKEN", "")
+GITHUB_OWNER = os.environ.get("GITHUB_OWNER", "mayoristafirestars-cloud")
+GITHUB_REPO = os.environ.get("GITHUB_REPO", "Fede")
+GITHUB_BRANCH = os.environ.get(
+    "GITHUB_BRANCH", "claude/add-doctor-nutritionist-generation-FeC6Q"
+)
 
 DIAS = ["Lun", "Mar", "Mié", "Jue", "Vie", "Sáb", "Dom"]
 OBJETIVO_KCAL = 2100
@@ -356,6 +365,134 @@ def resumen_semana():
     return "\n".join(lineas)
 
 
+# ============ GITHUB SYNC ============
+
+def generar_reporte_dia_md(events, fecha):
+    """Genera markdown legible del día para que agentes lo lean."""
+    stats = calcular_dia(events)
+    pct = int(100 * stats["ok"] / stats["sent"]) if stats["sent"] else 0
+    dow = DIAS[fecha.weekday()]
+
+    lineas = [
+        f"# Bitácora Fede — {fecha.isoformat()} ({dow})",
+        "",
+        "## Resumen",
+        f"- **Adherencia**: {stats['ok']}/{stats['sent']} recordatorios ({pct}%)",
+        f"- **Skips**: {stats['skip']} · **Modificadas**: {stats['edit']}",
+        f"- **Kcal ingeridas**: {stats['kcal_in']} / {OBJETIVO_KCAL}",
+        f"- **Proteína**: {stats['prot']} g / {OBJETIVO_PROT} g",
+        f"- **Kcal quemadas**: {stats['quema']}",
+        f"- **Balance neto**: {stats['neto']} kcal",
+        "",
+        "## Detalle recordatorios",
+        "",
+        "| Hora | Recordatorio | Estado | Kcal | Prot |",
+        "|---|---|---|---|---|",
+    ]
+
+    estados = {}
+    for e in events:
+        k = e.get("kind")
+        key = e.get("key", "")
+        if k in ("ok", "skip", "edit") and key:
+            estados[key] = k
+
+    dia_num = fecha.weekday()
+    dia_recordatorios = [
+        (h, m, kk, pp) for d, h, m, kk, pp, qq in RECORDATORIOS if d == dia_num
+    ]
+    emoji_map = {"ok": "✅", "skip": "⏭️", "edit": "✏️", "-": "—"}
+    for h, m, kk, pp in dia_recordatorios:
+        key = f"{DIAS[dia_num]}-{h}"
+        estado = estados.get(key, "-")
+        emoji = emoji_map[estado]
+        m_short = (m[:70] + "…") if len(m) > 70 else m
+        kcal_show = kk if estado == "ok" else "-"
+        prot_show = pp if estado == "ok" else "-"
+        lineas.append(f"| {h} | {m_short} | {emoji} | {kcal_show} | {prot_show} |")
+
+    lineas.append("")
+
+    edits = [e for e in events if e.get("kind") == "edit" and e.get("comentario")]
+    if edits:
+        lineas.append("## Cambios anotados (✏️)")
+        for e in edits:
+            k_str = (
+                f" — {e['kcal']} kcal · {e['prot']}g p"
+                if e.get("kcal") else ""
+            )
+            lineas.append(f"- **{e.get('key', '')}**: {e['comentario']}{k_str}")
+        lineas.append("")
+
+    libres = [e for e in events if e.get("kind") == "libre" and e.get("comentario")]
+    if libres:
+        lineas.append("## Notas libres (comidas extra, comentarios)")
+        for e in libres:
+            k_str = (
+                f" — {e['kcal']} kcal · {e['prot']}g p"
+                if e.get("kcal") else ""
+            )
+            lineas.append(f"- {e['comentario']}{k_str}")
+        lineas.append("")
+
+    lineas.append("---")
+    lineas.append("*Generado automáticamente por el bot Plan Fede.*")
+    return "\n".join(lineas)
+
+
+def _github_put_file(path, contenido_str, mensaje_commit):
+    """Sube o actualiza un archivo en el repo via GitHub API."""
+    url = f"https://api.github.com/repos/{GITHUB_OWNER}/{GITHUB_REPO}/contents/{path}"
+    headers = {
+        "Authorization": f"Bearer {GITHUB_TOKEN}",
+        "Accept": "application/vnd.github+json",
+        "X-GitHub-Api-Version": "2022-11-28",
+    }
+    r = requests.get(
+        url, params={"ref": GITHUB_BRANCH}, headers=headers, timeout=15
+    )
+    sha = r.json().get("sha") if r.status_code == 200 else None
+    body = {
+        "message": mensaje_commit,
+        "content": base64.b64encode(contenido_str.encode("utf-8")).decode("ascii"),
+        "branch": GITHUB_BRANCH,
+    }
+    if sha:
+        body["sha"] = sha
+    r = requests.put(url, json=body, headers=headers, timeout=30)
+    if r.ok:
+        log.info("sync %s OK", path)
+        return True
+    log.error("sync %s FAIL %d: %s", path, r.status_code, r.text[:200])
+    return False
+
+
+def sync_a_github(fecha):
+    """Genera reporte + jsonl y los sube al repo GitHub."""
+    if not GITHUB_TOKEN:
+        log.warning("GITHUB_TOKEN no configurado, saltando sync")
+        return False
+
+    ini = datetime.combine(fecha, datetime.min.time(), tzinfo=TZ)
+    fin = ini + timedelta(days=1)
+    todos = bitacora_read(desde=ini)
+    events = [e for e in todos if e.get("ts", "") < fin.isoformat()]
+
+    if not events:
+        log.info("sync %s: sin eventos, saltando", fecha)
+        return False
+
+    md = generar_reporte_dia_md(events, fecha)
+    jsonl_body = "\n".join(json.dumps(e, ensure_ascii=False) for e in events) + "\n"
+
+    msg = f"bot: bitácora {fecha.isoformat()}"
+    ok1 = _github_put_file(f"salud/bitacora/{fecha.isoformat()}.md", md, msg)
+    ok2 = _github_put_file(
+        f"salud/bitacora/raw/{fecha.isoformat()}.jsonl", jsonl_body, msg
+    )
+    return ok1 and ok2
+
+
 # ============ PARSE ============
 
 _num_re = re.compile(r"\b(\d+)\b")
@@ -447,16 +584,27 @@ def _handle_update(update, esperando_edit):
             "Comandos:\n"
             "/resumen — resumen de HOY (kcal, proteína, adherencia)\n"
             "/semana — últimos 7 días\n"
+            "/sync — subir bitácora de hoy a GitHub ya\n"
             "/nota <texto> — anotación libre\n"
             "/comi <texto> <kcal> <prot> — anotar comida extra\n\n"
             "En cada recordatorio tenés los botones:\n"
             "✅ Hecho · ⏭️ Skip · ✏️ Cambio\n\n"
-            "El botón ✏️ te pregunta qué cambiaste."
+            "Auto-sync a GitHub todas las noches 23:30.\n"
+            "Los agentes Nutri y Médico leen esa carpeta."
         )
     elif text.startswith("/resumen"):
         enviar(resumen_hoy())
     elif text.startswith("/semana"):
         enviar(resumen_semana())
+    elif text.startswith("/sync"):
+        if not GITHUB_TOKEN:
+            enviar("❌ GITHUB_TOKEN no configurado en el service.")
+        else:
+            hoy = datetime.now(TZ).date()
+            if sync_a_github(hoy):
+                enviar(f"✅ Sync a GitHub OK: salud/bitacora/{hoy.isoformat()}.md")
+            else:
+                enviar("❌ Sync falló. Ver logs del service.")
     elif text.startswith("/nota "):
         nota = text[6:].strip()
         kcal, prot = parse_kcal_prot(nota)
@@ -504,6 +652,7 @@ def scheduler_loop():
     )
     ya_enviados = cargar_enviados_hoy()
     ultimo_dia = datetime.now(TZ).weekday()
+    ultimo_sync = None
     while True:
         ahora = datetime.now(TZ)
         dia = ahora.weekday()
@@ -511,6 +660,18 @@ def scheduler_loop():
         if dia != ultimo_dia:
             ya_enviados = set()
             ultimo_dia = dia
+
+        # Sync diario a GitHub a partir de las 23:30
+        if (ahora.hour == 23 and ahora.minute >= 30) or ahora.hour >= 0 and ahora.hour < 5:
+            hoy_date = ahora.date()
+            if ultimo_sync != hoy_date and GITHUB_TOKEN:
+                try:
+                    if sync_a_github(hoy_date):
+                        ultimo_sync = hoy_date
+                        log.info("sync diario OK para %s", hoy_date)
+                except Exception as e:
+                    log.error("sync diario error: %s", e)
+
         for d, hora, mensaje, *_ in RECORDATORIOS:
             key = f"{DIAS[d]}-{hora}"
             if d == dia and hora == hhmm and key not in ya_enviados:
