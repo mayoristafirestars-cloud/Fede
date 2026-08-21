@@ -37,7 +37,7 @@ RECORDATORIOS = [
     # ----- LUNES (gym A) -----
     (0, "05:30", "💧 En 30 min a despertar. Vaso 300 ml + pizca de sal."),
     (0, "06:00", "🍌 Pre-entreno en 30 min: media banana (80 g) + café 150 ml + agua con sal 300 ml."),
-    (0, "07:30", "🥤 Post-entreno en 30 min: whey 35 g + agua 300 ml."),
+    (0, "07:30", "🥤 Post-entreno en 30 min: whey 35 g + creatina 5 g + agua 300 ml."),
     (0, "09:00", "🍳 Desayuno en 30 min: 4 huevos duros + palta 90 g + tomate 100 g + queso port salut 20 g + oliva 5 ml."),
     (0, "09:15", "💊 Suplementos en 30 min: Vit D3 + Omega-3."),
     (0, "12:30", "🍽️ Almuerzo en 30 min: pollo 220 g + papa hervida 100 g + ensalada + oliva 12 ml + limón."),
@@ -50,7 +50,7 @@ RECORDATORIOS = [
     # ----- MARTES (gym B) -----
     (1, "05:30", "💧 En 30 min a despertar. Vaso 300 ml + sal."),
     (1, "06:00", "🍇 Pre-entreno en 30 min: pasas 30 g + café 150 ml + agua con sal 300 ml."),
-    (1, "07:30", "🥤 Post-entreno en 30 min: whey 35 g + agua 300 ml."),
+    (1, "07:30", "🥤 Post-entreno en 30 min: whey 35 g + creatina 5 g + agua 300 ml."),
     (1, "09:00", "🍳 Desayuno en 30 min: 4 huevos duros + queso port salut 30 g + palta 80 g + tomate 100 g + oliva 5 ml."),
     (1, "09:15", "💊 Suplementos: Vit D3 + Omega-3."),
     (1, "12:30", "🍽️ Almuerzo en 30 min: pollo 220 g + boniato hervido 100 g + ensalada + oliva 12 ml."),
@@ -77,7 +77,7 @@ RECORDATORIOS = [
     # ----- JUEVES (gym A) -----
     (3, "05:30", "💧 En 30 min a despertar. Agua + sal."),
     (3, "06:00", "🍌 Pre-entreno en 30 min: media banana 80 g + café + agua con sal."),
-    (3, "07:30", "🥤 Post-entreno en 30 min: whey 35 g + agua."),
+    (3, "07:30", "🥤 Post-entreno en 30 min: whey 35 g + creatina 5 g + agua."),
     (3, "09:00", "🍳 Desayuno diferente en 30 min: yogur griego 200 g + frutillas 100 g + almendras 15 g + canela + 3 huevos duros aparte."),
     (3, "09:15", "💊 Suplementos: Vit D3 + Omega-3."),
     (3, "12:30", "🍽️ Almuerzo en 30 min: pollo 200 g + papa hervida 100 g + huevo duro + ensalada nicoise + palta 50 g + oliva 12 ml."),
@@ -94,7 +94,7 @@ RECORDATORIOS = [
     (4, "10:00", "🥛 Media mañana en 30 min: yogur griego 150 g + nueces 10 g + frutillas 30 g."),
     (4, "12:00", "🍇 Pre-entreno LIVIANO en 30 min: pasas 30 g + café + agua con sal 400 ml. NO comer sólido pesado 11-14 h."),
     (4, "13:30", "🏋️ ¡Gym en 30 min! Complex B."),
-    (4, "14:45", "🥤 Post-entreno en 30 min: whey 35 g + agua."),
+    (4, "14:45", "🥤 Post-entreno en 30 min: whey 35 g + creatina 5 g + agua."),
     (4, "15:30", "🍽️ Almuerzo-merienda en 30 min: pollo 220 g + papa hervida 150 g + ensalada + palta 70 g + almendras + oliva."),
     (4, "18:30", "🎉 CENA LIBRE en 30 min. Elegí UNA: pizza 2 porciones / parrilla 250 g magra / sushi 12-15 piezas / pasta 300 g. Máx 1 vino tinto."),
     (4, "22:00", "😴 A dormir."),
