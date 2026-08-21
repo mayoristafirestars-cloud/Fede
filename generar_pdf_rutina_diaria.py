@@ -267,11 +267,11 @@ def main():
     dias_resumen = [
         ("LUN", "GYM 07:00", "Dia A — Empuje + Bisagra", (5, 150, 105)),
         ("MAR", "GYM 07:00", "Dia B — Tiron + Sentadilla", (5, 150, 105)),
-        ("MIE", "DESCANSO",  "Caminata Z2 + hobby", (37, 99, 235)),
+        ("MIE", "DESCANSO",  "Bici 40 min + hobby", (37, 99, 235)),
         ("JUE", "GYM 07:00", "Dia A — Empuje + Bisagra", (5, 150, 105)),
         ("VIE", "GYM 14:00", "Dia B — Cena LIBRE", (124, 58, 237)),
-        ("SAB", "DESCANSO",  "Caminata Z2 + familia", (37, 99, 235)),
-        ("DOM", "DESCANSO",  "Caminata + Batch cooking", (37, 99, 235)),
+        ("SAB", "DESCANSO",  "Bici 40 min + familia", (37, 99, 235)),
+        ("DOM", "DESCANSO",  "Bici 40 min + Batch cooking", (37, 99, 235)),
     ]
     for d, tag, desc, color in dias_resumen:
         y0 = pdf.get_y()
@@ -355,7 +355,7 @@ def main():
                "DESCANSO  ·  Dia clave para longevidad",
                [
                    ("06:00", "water",  "Despertar", "Agua 300 ml (sin sal, no entrenas)"),
-                   ("14:00", "cardio", "CAMINATA ZONA 2", "30-40 min ritmo firme (post-almuerzo, reduce pico glucemico). Al sol."),
+                   ("13:30", "cardio", "BICI 40 min ZONA 2", "40 min ritmo firme (FC 105-118 lpm). Ruta plana. Post-almuerzo, reduce pico glucemico."),
                    ("06:30", "meal",   "DESAYUNO", "3 huevos duros + ricota 80 g + palta 60 g + tomate 100 g + oliva 5 ml. Sin pan."),
                    ("06:45", "supp",   "Suplementos AM", "Vit D3 + Omega-3 + Creatina 5 g"),
                    ("10:00", "meal",   "MEDIA MANANA", "Yogur griego 200 g + nueces 10 g + frutillas 30 g"),
@@ -368,7 +368,7 @@ def main():
                    ("22:00", "supp",   "Magnesio 300 mg", ""),
                    ("22:30", "sleep",  "DORMIR", ""),
                ],
-               ["Caminata Z2 30-40 min HECHA", "Hobby minimo 30 min",
+               ["Bici 40 min zona 2 HECHA", "Hobby minimo 30 min",
                 "Agua ~2,7 L", "Sol 15+ min",
                 "Sin alcohol", "Acostado 22:30"])
 
@@ -418,7 +418,7 @@ def main():
                "DESCANSO  ·  Familia + hobby",
                [
                    ("06:00", "water",  "Despertar", "Agua 300 ml"),
-                   ("14:00", "cardio", "CAMINATA ZONA 2", "30-40 min ritmo firme (post-almuerzo). Al sol."),
+                   ("13:30", "cardio", "BICI 40 min ZONA 2", "40 min ritmo firme (FC 105-118 lpm). Ruta plana. Al mediodia."),
                    ("06:30", "meal",   "DESAYUNO", "3 huevos duros + jamon magro 30 g + queso port salut 30 g + palta 50 g + tomate 100 g + oliva 5 ml"),
                    ("06:45", "supp",   "Suplementos AM", "Vit D3 + Omega-3 + Creatina 5 g"),
                    ("10:00", "meal",   "MEDIA MANANA", "Cottage 150 g + frutillas 50 g + nueces 7 g"),
@@ -431,7 +431,7 @@ def main():
                    ("22:00", "supp",   "Magnesio 300 mg", ""),
                    ("22:30", "sleep",  "DORMIR", ""),
                ],
-               ["Caminata Z2 HECHA", "Hobby / familia >30 min",
+               ["Bici 40 min HECHA", "Hobby / familia >30 min",
                 "Agua ~2,7 L", "Sol 15+ min",
                 "Sin alcohol", "Acostado 22:30"])
 
@@ -439,7 +439,7 @@ def main():
                "DESCANSO  ·  BATCH COOKING",
                [
                    ("06:00", "water",  "Despertar", "Agua 300 ml"),
-                   ("14:00", "cardio", "CAMINATA Z2", "30-40 min al sol (post-almuerzo)"),
+                   ("13:30", "cardio", "BICI 40 min ZONA 2", "40 min al sol post-almuerzo (FC 105-118 lpm)"),
                    ("06:30", "meal",   "DESAYUNO", "3 huevos duros + palta 60 g + tomate 100 g + queso descremado 30 g + oliva 5 ml. Sin pan."),
                    ("06:45", "supp",   "Suplementos AM", "Vit D3 + Omega-3 + Creatina 5 g"),
                    ("10:00", "task",   "BATCH COOKING 90 min", "1) Pollo 1,8 kg horno  2) 20 huevos duros  3) Papa+boniato hervidos  4) Verduras vapor  5) Aderezos"),

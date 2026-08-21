@@ -42,7 +42,7 @@ Tono: directo, corto, cálido, argentino rioplatense. Sin adornos innecesarios. 
 
 - Lun / Mar / Jue → 07:00 AM (Complexes A/B)
 - Vie → 14:00 PM (Complex B)
-- Mie / Sab / Dom → descanso + caminata Z2 30-40 min post-almuerzo
+- Mie / Sab / Dom → descanso + BICI 40 min zona 2 al mediodia 13:30 (post-almuerzo, ruta plana, FC 105-118 lpm)
 
 ---
 
@@ -85,7 +85,8 @@ Tono: directo, corto, cálido, argentino rioplatense. Sin adornos innecesarios. 
 - **06:45 Suplementos:** Vit D3 + Omega-3 + Creatina 5 g
 - **10:00 Media manana:** yogur griego 200 g + nueces 10 g + arandanos 20 g
 - **13:00 Almuerzo:** atun al natural 180 g + 2 huevos duros + espinaca 150 g + queso descremado 30 g + cebolla 30 g + lechuga 60 g + tomate 100 g + palta 60 g + oliva 15 ml
-- **14:00** ULTIMO mate + CAMINATA Z2 (30-40 min ritmo firme, post-almuerzo)
+- **13:30** BICI 40 min zona 2 (FC 105-118 lpm, ruta plana, post-almuerzo)
+- **14:00** ULTIMO mate
 - **16:30 Merienda:** ricota descremada 150 g + almendras 10 g + cacao amargo 3 g
 - **17:00** Hobby (30-45 min)
 - **19:00 Cena SARDINAS:** sardinas en oliva 120 g + tomate 100 g + palta 60 g + aceitunas 15 g + oliva 5 ml + limon
@@ -128,7 +129,8 @@ Tono: directo, corto, cálido, argentino rioplatense. Sin adornos innecesarios. 
 - **06:45 Suplementos:** Vit D3 + Omega-3 + Creatina 5 g
 - **10:00 Media manana:** cottage 150 g + frutillas 50 g + nueces 7 g
 - **13:00 Almuerzo:** pollo 220 g + brocoli 150 g + zapallitos hervidos 100 g + lechuga 60 g + tomate 100 g + aceitunas 15 g + palta 40 g + oliva 12 ml
-- **14:00** ULTIMO mate + CAMINATA Z2 30-40 min
+- **13:30** BICI 40 min zona 2
+- **14:00** ULTIMO mate
 - **16:30 Merienda SARDINAS:** sardinas en oliva 100 g + palta 50 g + tomate cherry 80 g + galleta de arroz 1
 - **17:00** Hobby / familia
 - **19:00 Cena:** pollo 180 g + 2 huevos duros + queso port salut 25 g + espinaca al vapor 150 g + champignones 80 g + anchoas 15 g + oliva 10 ml
@@ -142,7 +144,8 @@ Tono: directo, corto, cálido, argentino rioplatense. Sin adornos innecesarios. 
 - **06:45 Suplementos:** Vit D3 + Omega-3 + Creatina 5 g
 - **10:00-12:00 BATCH COOKING:** pollo al horno 1,8 kg + 20 huevos duros + papa+boniato hervidos + verduras al vapor + aderezos
 - **13:30 Almuerzo:** pollo al horno 220 g + lechuga 80 g + tomate 100 g + cebolla 30 g + pepino 80 g + zanahoria 40 g + palta 60 g + aceitunas 15 g + nueces 10 g + oliva 12 ml
-- **14:30** ULTIMO mate + CAMINATA Z2 30-40 min al sol
+- **13:30** BICI 40 min zona 2
+- **14:00** ULTIMO mate
 - **16:30 Merienda:** yogur griego 200 g + nueces 10 g + cacao amargo 3 g
 - **17:00** Hobby / hijos
 - **19:00 Cena Caesar:** pollo 180 g + lechuga romana 100 g + huevo duro + anchoas 20 g + parmesano 15 g + aderezo (oliva + limon + ajo + yema)
@@ -174,7 +177,8 @@ Tono: directo, corto, cálido, argentino rioplatense. Sin adornos innecesarios. 
 - **06:15** 💊 Suplementos AM en 30 min: Vit D3 + Omega-3 + Creatina 5 g.
 - **09:30** 🥛 Media manana en 30 min. Ver menu.
 - **12:30** 🍽️ Almuerzo en 30 min. Ver menu.
-- **13:30** ☕ Ultimo mate + caminata Z2 en 30 min. 30-40 min ritmo firme post-almuerzo.
+- **13:00** 🚴 Bici 40 min en 30 min. Zona 2 (FC 105-118 lpm), ruta plana, post-almuerzo.
+- **13:30** ☕ Ultimo mate del dia en 30 min.
 - **16:00** 🥛 Merienda en 30 min.
 - **16:30** ⭐ Momento hobby (30-45 min).
 - **18:30** 🍽️ Cena en 30 min.
