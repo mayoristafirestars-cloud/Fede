@@ -1,30 +1,44 @@
 #!/usr/bin/env python3
 """
-Recordatorios del Plan Fede via Telegram.
+Bot interactivo Plan Fede via Telegram.
 
-Deploy:
-  /opt/coronel-sur/backend/bot/recordatorios_plan_fede.py
+Deploy: /opt/coronel-sur/backend/bot/recordatorios_plan_fede.py
 
-Uso: se ejecuta como daemon con systemd. Chequea cada 60 seg si
-corresponde disparar algun recordatorio y lo manda por Telegram.
+Funcionalidad:
+- Recordatorios programados con botones inline (Hecho/Skip/Cambio).
+- Long-polling para recibir botones apretados y mensajes de texto.
+- Bitácora JSONL con eventos (sent/ok/skip/edit/libre).
+- Trackeo automático de kcal, proteína y quema.
+- Comandos: /start /resumen /semana /nota /comi.
 
-Variables de entorno requeridas (usar el mismo bot ya configurado):
-  TELEGRAM_BOT_TOKEN   -> token del BotFather
-  TELEGRAM_CHAT_ID     -> id del chat privado de Fede
+Variables de entorno:
+  TELEGRAM_BOT_TOKEN
+  TELEGRAM_CHAT_ID
 
 Zona horaria: America/Argentina/Buenos_Aires
 """
 
-import os
-import time
+import json
 import logging
-from datetime import datetime
+import os
+import re
+import threading
+import time
+from datetime import datetime, timedelta
+from pathlib import Path
 from zoneinfo import ZoneInfo
+
 import requests
 
 TZ = ZoneInfo("America/Argentina/Buenos_Aires")
 BOT_TOKEN = os.environ["TELEGRAM_BOT_TOKEN"]
-CHAT_ID = os.environ["TELEGRAM_CHAT_ID"]
+CHAT_ID = str(os.environ["TELEGRAM_CHAT_ID"])
+BITACORA = Path("/opt/coronel-sur/backend/bot/bitacora_fede.jsonl")
+API = f"https://api.telegram.org/bot{BOT_TOKEN}"
+
+DIAS = ["Lun", "Mar", "Mié", "Jue", "Vie", "Sáb", "Dom"]
+OBJETIVO_KCAL = 2100
+OBJETIVO_PROT = 190
 
 logging.basicConfig(
     format="%(asctime)s [%(levelname)s] %(message)s",
@@ -32,135 +46,493 @@ logging.basicConfig(
 )
 log = logging.getLogger("recordatorios-fede")
 
-# Dia (0=lunes ... 6=domingo), hora "HH:MM", mensaje.
+# (dia, "HH:MM", mensaje, kcal_ingerida, proteina_g, kcal_quemada)
 RECORDATORIOS = [
-    # ----- LUNES (gym A) -----
-    (0, "05:30", "💧 En 30 min a despertar. Vaso 300 ml + pizca de sal."),
-    (0, "06:00", "🍌 Pre-entreno en 30 min: media banana (80 g) + café 150 ml + agua con sal 300 ml."),
-    (0, "07:30", "🥤 Post-entreno en 30 min: whey 35 g + creatina 5 g + agua 300 ml."),
-    (0, "09:00", "🍳 Desayuno en 30 min: 4 huevos duros + palta 90 g + tomate 100 g + queso port salut 20 g + oliva 5 ml."),
-    (0, "09:15", "💊 Suplementos en 30 min: Vit D3 + Omega-3."),
-    (0, "12:30", "🍽️ Almuerzo en 30 min: pollo 220 g + papa hervida 100 g + ensalada + oliva 12 ml + limón."),
-    (0, "13:30", "☕ ¡Último mate del día en 30 min! Después solo agua o infusiones sin cafeína."),
-    (0, "16:00", "🥛 Merienda en 30 min: yogur griego 170 g + nueces 12 g + canela."),
-    (0, "18:30", "🐟 Cena en 30 min: merluza 200 g + zapallito 150 g + morrón 70 g + anchoas 20 g + huevo duro + oliva 12 ml."),
-    (0, "21:30", "🌙 Snack ancla en 30 min: yogur griego 170 g + chía 10 g + magnesio 300 mg. Bajá luces."),
-    (0, "22:00", "😴 A dormir en 30 min. Celular afuera del cuarto."),
+    # ===== LUNES (gym A) =====
+    (0, "05:30", "💧 En 30 min a despertar. Vaso 300 ml + pizca de sal.", 0, 0, 0),
+    (0, "06:00", "🍌 Pre-entreno en 30 min: media banana (80 g) + café 150 ml + agua con sal 300 ml.", 70, 1, 0),
+    (0, "07:30", "🥤 Post-entreno + gym A hecho. En 30 min: whey 35 g + creatina 5 g + agua 300 ml.", 140, 28, 350),
+    (0, "09:00", "🍳 Desayuno en 30 min: 4 huevos duros + palta 90 g + tomate 100 g + queso port salut 20 g + oliva 5 ml.", 570, 32, 0),
+    (0, "09:15", "💊 Suplementos en 30 min: Vit D3 + Omega-3.", 0, 0, 0),
+    (0, "12:30", "🍽️ Almuerzo en 30 min: pollo 220 g + papa hervida 100 g + ensalada + oliva 12 ml + limón.", 555, 55, 0),
+    (0, "13:30", "☕ ¡Último mate del día en 30 min! Después solo agua o infusiones sin cafeína.", 0, 0, 0),
+    (0, "16:00", "🥛 Merienda en 30 min: yogur griego 170 g + nueces 12 g + canela.", 175, 15, 0),
+    (0, "18:30", "🐟 Cena en 30 min: merluza 200 g + zapallito 150 g + morrón 70 g + anchoas 20 g + huevo duro + oliva 12 ml.", 470, 55, 0),
+    (0, "21:30", "🌙 Snack ancla en 30 min: yogur griego 170 g + chía 10 g + magnesio 300 mg. Bajá luces.", 150, 12, 0),
+    (0, "22:00", "😴 A dormir en 30 min. Celular afuera del cuarto.", 0, 0, 0),
+    # Total lun: ~2130 kcal · 198g p · 350 quema · neto 1780
 
-    # ----- MARTES (gym B) -----
-    (1, "05:30", "💧 En 30 min a despertar. Vaso 300 ml + sal."),
-    (1, "06:00", "🍇 Pre-entreno en 30 min: pasas 30 g + café 150 ml + agua con sal 300 ml."),
-    (1, "07:30", "🥤 Post-entreno en 30 min: whey 35 g + creatina 5 g + agua 300 ml."),
-    (1, "09:00", "🍳 Desayuno en 30 min: 4 huevos duros + queso port salut 30 g + palta 80 g + tomate 100 g + oliva 5 ml."),
-    (1, "09:15", "💊 Suplementos: Vit D3 + Omega-3."),
-    (1, "12:30", "🍽️ Almuerzo en 30 min: pollo 220 g + boniato hervido 100 g + ensalada + oliva 12 ml."),
-    (1, "13:30", "☕ ¡Último mate del día en 30 min!"),
-    (1, "16:00", "🥛 Merienda en 30 min: cottage 200 g + frutillas 30 g + canela."),
-    (1, "18:30", "🐟 Cena en 30 min: salmón 180 g + espinaca salteada 150 g + champignones 80 g + oliva 12 ml."),
-    (1, "21:30", "🌙 Snack ancla + magnesio 300 mg."),
-    (1, "22:00", "😴 A dormir en 30 min."),
+    # ===== MARTES (gym B) =====
+    (1, "05:30", "💧 En 30 min a despertar. Vaso 300 ml + sal.", 0, 0, 0),
+    (1, "06:00", "🍇 Pre-entreno en 30 min: pasas 30 g + café 150 ml + agua con sal 300 ml.", 85, 1, 0),
+    (1, "07:30", "🥤 Post-entreno + gym B hecho. En 30 min: whey 35 g + creatina 5 g + agua 300 ml.", 140, 28, 400),
+    (1, "09:00", "🍳 Desayuno en 30 min: 4 huevos duros + queso port salut 30 g + palta 80 g + tomate 100 g + oliva 5 ml.", 590, 34, 0),
+    (1, "09:15", "💊 Suplementos: Vit D3 + Omega-3.", 0, 0, 0),
+    (1, "12:30", "🍽️ Almuerzo en 30 min: pollo 220 g + boniato hervido 100 g + ensalada + oliva 12 ml.", 530, 55, 0),
+    (1, "13:30", "☕ ¡Último mate del día en 30 min!", 0, 0, 0),
+    (1, "16:00", "🥛 Merienda en 30 min: cottage 200 g + frutillas 30 g + canela.", 180, 24, 0),
+    (1, "18:30", "🐟 Cena en 30 min: salmón 180 g + espinaca salteada 150 g + champignones 80 g + oliva 12 ml.", 430, 40, 0),
+    (1, "21:30", "🌙 Snack ancla + magnesio 300 mg.", 150, 12, 0),
+    (1, "22:00", "😴 A dormir en 30 min.", 0, 0, 0),
+    # Total mar: ~2105 kcal · 194g p · 400 quema · neto 1705
 
-    # ----- MIÉRCOLES (descanso + bici) -----
-    (2, "05:30", "💧 En 30 min a despertar. Vaso 300 ml de agua."),
-    (2, "06:00", "🍳 Desayuno en 30 min: 3 huevos duros + ricota 80 g + palta 60 g + tomate 100 g + oliva 5 ml."),
-    (2, "06:15", "💊 Suplementos: Vit D3 + Omega-3 + Creatina 5 g."),
-    (2, "09:30", "🥛 Media mañana en 30 min: yogur griego 200 g + nueces 10 g + arándanos 20 g."),
-    (2, "12:30", "🍽️ Almuerzo en 30 min: atún 180 g + 2 huevos duros + espinaca 150 g + queso 30 g + ensalada + palta 60 g + oliva 15 ml."),
-    (2, "13:00", "🚴 Bici 40 min en 30 min. Zona 2 (FC 105-118 lpm), ruta plana, post-almuerzo."),
-    (2, "13:30", "☕ Último mate del día en 30 min."),
-    (2, "16:00", "🥛 Merienda en 30 min: ricota 150 g + almendras 10 g + cacao amargo 3 g."),
-    (2, "16:30", "⭐ Momento hobby en 30 min (30-45 min)."),
-    (2, "18:30", "🐟 Cena SARDINAS en 30 min: sardinas 120 g + tomate 100 g + palta 60 g + aceitunas 15 g + oliva + limón."),
-    (2, "21:30", "🌙 Snack ancla + magnesio 300 mg."),
-    (2, "22:00", "😴 A dormir en 30 min."),
+    # ===== MIÉRCOLES (descanso + bici) =====
+    (2, "05:30", "💧 En 30 min a despertar. Vaso 300 ml de agua.", 0, 0, 0),
+    (2, "06:00", "🍳 Desayuno en 30 min: 3 huevos duros + ricota 80 g + palta 60 g + tomate 100 g + oliva 5 ml.", 550, 32, 0),
+    (2, "06:15", "💊 Suplementos: Vit D3 + Omega-3 + Creatina 5 g.", 0, 0, 0),
+    (2, "09:30", "🥛 Media mañana en 30 min: yogur griego 200 g + nueces 10 g + arándanos 20 g.", 250, 18, 0),
+    (2, "12:30", "🍽️ Almuerzo en 30 min: atún 180 g + 2 huevos duros + espinaca 150 g + queso 30 g + ensalada + palta 60 g + oliva 15 ml.", 620, 62, 0),
+    (2, "13:00", "🚴 Bici 40 min en 30 min. Zona 2 (FC 105-118 lpm), ruta plana, post-almuerzo.", 0, 0, 300),
+    (2, "13:30", "☕ Último mate del día en 30 min.", 0, 0, 0),
+    (2, "16:00", "🥛 Merienda en 30 min: ricota 150 g + almendras 10 g + cacao amargo 3 g.", 200, 20, 0),
+    (2, "16:30", "⭐ Momento hobby en 30 min (30-45 min).", 0, 0, 0),
+    (2, "18:30", "🐟 Cena SARDINAS en 30 min: sardinas 120 g + tomate 100 g + palta 60 g + aceitunas 15 g + oliva + limón.", 450, 40, 0),
+    (2, "21:30", "🌙 Snack ancla + magnesio 300 mg.", 150, 12, 0),
+    (2, "22:00", "😴 A dormir en 30 min.", 0, 0, 0),
+    # Total mie: ~2400 kcal · 204g p · 300 quema · neto 2100
 
-    # ----- JUEVES (gym A) -----
-    (3, "05:30", "💧 En 30 min a despertar. Agua + sal."),
-    (3, "06:00", "🍌 Pre-entreno en 30 min: media banana 80 g + café + agua con sal."),
-    (3, "07:30", "🥤 Post-entreno en 30 min: whey 35 g + creatina 5 g + agua."),
-    (3, "09:00", "🍳 Desayuno diferente en 30 min: yogur griego 200 g + frutillas 100 g + almendras 15 g + canela + 3 huevos duros aparte."),
-    (3, "09:15", "💊 Suplementos: Vit D3 + Omega-3."),
-    (3, "12:30", "🍽️ Almuerzo en 30 min: pollo 200 g + papa hervida 100 g + huevo duro + ensalada nicoise + palta 50 g + oliva 12 ml."),
-    (3, "13:30", "☕ ¡Último mate!"),
-    (3, "16:00", "🥛 Merienda en 30 min: yogur griego 170 g + nueces 12 g + frutos rojos 20 g."),
-    (3, "18:30", "🐟 Cena en 30 min: brótola 200 g + brócoli 200 g + huevo duro + anchoas 20 g + oliva 12 ml."),
-    (3, "21:30", "🌙 Snack ancla + magnesio 300 mg."),
-    (3, "22:00", "😴 A dormir."),
+    # ===== JUEVES (gym A) =====
+    (3, "05:30", "💧 En 30 min a despertar. Agua + sal.", 0, 0, 0),
+    (3, "06:00", "🍌 Pre-entreno en 30 min: media banana 80 g + café + agua con sal.", 70, 1, 0),
+    (3, "07:30", "🥤 Post-entreno + gym A hecho. En 30 min: whey 35 g + creatina 5 g + agua.", 140, 28, 350),
+    (3, "09:00", "🍳 Desayuno diferente en 30 min: yogur griego 200 g + frutillas 100 g + almendras 15 g + canela + 3 huevos duros aparte.", 550, 40, 0),
+    (3, "09:15", "💊 Suplementos: Vit D3 + Omega-3.", 0, 0, 0),
+    (3, "12:30", "🍽️ Almuerzo en 30 min: pollo 200 g + papa hervida 100 g + huevo duro + ensalada nicoise + palta 50 g + oliva 12 ml.", 620, 55, 0),
+    (3, "13:30", "☕ ¡Último mate!", 0, 0, 0),
+    (3, "16:00", "🥛 Merienda en 30 min: yogur griego 170 g + nueces 12 g + frutos rojos 20 g.", 180, 15, 0),
+    (3, "18:30", "🐟 Cena en 30 min: brótola 200 g + brócoli 200 g + huevo duro + anchoas 20 g + oliva 12 ml.", 450, 50, 0),
+    (3, "21:30", "🌙 Snack ancla + magnesio 300 mg.", 150, 12, 0),
+    (3, "22:00", "😴 A dormir.", 0, 0, 0),
+    # Total jue: ~2160 kcal · 201g p · 350 quema · neto 1810
 
-    # ----- VIERNES (gym 14:00, cena LIBRE) -----
-    (4, "05:30", "💧 En 30 min a despertar. Agua 400 ml."),
-    (4, "06:00", "🍳 Desayuno en 30 min: 4 huevos duros + queso 30 g + palta 80 g + tomate 100 g + oliva 5 ml."),
-    (4, "06:15", "💊 Suplementos: Vit D3 + Omega-3."),
-    (4, "10:00", "🥛 Media mañana en 30 min: yogur griego 150 g + nueces 10 g + frutillas 30 g."),
-    (4, "12:00", "🍇 Pre-entreno LIVIANO en 30 min: pasas 30 g + café + agua con sal 400 ml. NO comer sólido pesado 11-14 h."),
-    (4, "13:30", "🏋️ ¡Gym en 30 min! Complex B."),
-    (4, "14:45", "🥤 Post-entreno en 30 min: whey 35 g + creatina 5 g + agua."),
-    (4, "15:30", "🍽️ Almuerzo-merienda en 30 min: pollo 220 g + papa hervida 150 g + ensalada + palta 70 g + almendras + oliva."),
-    (4, "18:30", "🎉 CENA LIBRE en 30 min. Elegí UNA: pizza 2 porciones / parrilla 250 g magra / sushi 12-15 piezas / pasta 300 g. Máx 1 vino tinto."),
-    (4, "22:00", "😴 A dormir."),
+    # ===== VIERNES (gym 14:00 + cena LIBRE) =====
+    (4, "05:30", "💧 En 30 min a despertar. Agua 400 ml.", 0, 0, 0),
+    (4, "06:00", "🍳 Desayuno en 30 min: 4 huevos duros + queso 30 g + palta 80 g + tomate 100 g + oliva 5 ml.", 585, 35, 0),
+    (4, "06:15", "💊 Suplementos: Vit D3 + Omega-3.", 0, 0, 0),
+    (4, "10:00", "🥛 Media mañana en 30 min: yogur griego 150 g + nueces 10 g + frutillas 30 g.", 190, 15, 0),
+    (4, "12:00", "🍇 Pre-entreno LIVIANO en 30 min: pasas 30 g + café + agua con sal 400 ml. NO comer sólido pesado 11-14 h.", 85, 1, 0),
+    (4, "13:30", "🏋️ ¡Gym en 30 min! Complex B.", 0, 0, 0),
+    (4, "14:45", "🥤 Post-entreno en 30 min: whey 35 g + creatina 5 g + agua.", 140, 28, 400),
+    (4, "15:30", "🍽️ Almuerzo-merienda en 30 min: pollo 220 g + papa hervida 150 g + ensalada + palta 70 g + almendras + oliva.", 620, 55, 0),
+    (4, "18:30", "🎉 CENA LIBRE en 30 min. Elegí UNA: pizza 2 porciones / parrilla 250 g magra / sushi 12-15 piezas / pasta 300 g. Máx 1 vino tinto.", 700, 35, 0),
+    (4, "22:00", "😴 A dormir.", 0, 0, 0),
+    # Total vie: ~2320 kcal · 169g p · 400 quema · neto 1920
 
-    # ----- SÁBADO (descanso + bici) -----
-    (5, "05:30", "💧 En 30 min a despertar. Agua 300 ml."),
-    (5, "06:00", "🍳 Desayuno en 30 min: 3 huevos duros + jamón cocido magro 30 g + queso port salut 30 g + palta 50 g + tomate 100 g + oliva 5 ml."),
-    (5, "06:15", "💊 Suplementos: Vit D3 + Omega-3 + Creatina 5 g."),
-    (5, "09:30", "🥛 Media mañana en 30 min: cottage 150 g + frutillas 50 g + nueces 7 g."),
-    (5, "12:30", "🍽️ Almuerzo en 30 min: pollo 220 g + brócoli 150 g + zapallitos hervidos 100 g + ensalada + palta 40 g + oliva 12 ml."),
-    (5, "13:00", "🚴 Bici 40 min en 30 min. Zona 2, ruta plana."),
-    (5, "13:30", "☕ ¡Último mate!"),
-    (5, "16:00", "🐟 Merienda SARDINAS en 30 min: sardinas 100 g + palta 50 g + tomate cherry 80 g + galleta de arroz 1."),
-    (5, "16:30", "⭐ Hobby / familia."),
-    (5, "18:30", "🍽️ Cena en 30 min: pollo 180 g + 2 huevos duros + queso 25 g + espinaca al vapor 150 g + champignones + anchoas 15 g + oliva."),
-    (5, "21:30", "🌙 Snack ancla + magnesio."),
-    (5, "22:00", "😴 A dormir."),
+    # ===== SÁBADO (descanso + bici) =====
+    (5, "05:30", "💧 En 30 min a despertar. Agua 300 ml.", 0, 0, 0),
+    (5, "06:00", "🍳 Desayuno en 30 min: 3 huevos duros + jamón cocido magro 30 g + queso port salut 30 g + palta 50 g + tomate 100 g + oliva 5 ml.", 500, 32, 0),
+    (5, "06:15", "💊 Suplementos: Vit D3 + Omega-3 + Creatina 5 g.", 0, 0, 0),
+    (5, "09:30", "🥛 Media mañana en 30 min: cottage 150 g + frutillas 50 g + nueces 7 g.", 180, 22, 0),
+    (5, "12:30", "🍽️ Almuerzo en 30 min: pollo 220 g + brócoli 150 g + zapallitos hervidos 100 g + ensalada + palta 40 g + oliva 12 ml.", 500, 55, 0),
+    (5, "13:00", "🚴 Bici 40 min en 30 min. Zona 2, ruta plana.", 0, 0, 300),
+    (5, "13:30", "☕ ¡Último mate!", 0, 0, 0),
+    (5, "16:00", "🐟 Merienda SARDINAS en 30 min: sardinas 100 g + palta 50 g + tomate cherry 80 g + galleta de arroz 1.", 260, 22, 0),
+    (5, "16:30", "⭐ Hobby / familia.", 0, 0, 0),
+    (5, "18:30", "🍽️ Cena en 30 min: pollo 180 g + 2 huevos duros + queso 25 g + espinaca al vapor 150 g + champignones + anchoas 15 g + oliva.", 500, 55, 0),
+    (5, "21:30", "🌙 Snack ancla + magnesio.", 150, 12, 0),
+    (5, "22:00", "😴 A dormir.", 0, 0, 0),
+    # Total sab: ~2090 kcal · 198g p · 300 quema · neto 1790
 
-    # ----- DOMINGO (descanso + bici + batch cooking) -----
-    (6, "05:30", "💧 En 30 min a despertar. Agua 300 ml."),
-    (6, "06:00", "🍳 Desayuno en 30 min: 3 huevos duros + palta 60 g + tomate 100 g + queso 30 g + oliva 5 ml."),
-    (6, "06:15", "💊 Suplementos: Vit D3 + Omega-3 + Creatina 5 g."),
-    (6, "09:30", "🍳 BATCH COOKING en 30 min: pollo 1,8 kg horno + 20 huevos duros + papa/boniato hervidos + verduras al vapor + aderezos."),
-    (6, "13:00", "🍽️ Almuerzo en 30 min: pollo del horno 220 g + ensalada completa + palta 60 g + aceitunas + nueces + oliva."),
-    (6, "13:00", "🚴 Bici 40 min en 30 min. Zona 2, al sol."),
-    (6, "13:30", "☕ ¡Último mate!"),
-    (6, "16:00", "🥛 Merienda en 30 min: yogur griego 200 g + nueces 10 g + cacao amargo 3 g."),
-    (6, "16:30", "⭐ Hobby / hijos (30-45 min)."),
-    (6, "18:30", "🍽️ Cena Caesar en 30 min: pollo 180 g + lechuga romana + huevo duro + anchoas 20 g + parmesano 15 g + aderezo."),
-    (6, "21:30", "🌙 Snack ancla + magnesio."),
-    (6, "22:00", "😴 A dormir. Cargar tensiómetro para lunes."),
+    # ===== DOMINGO (descanso + bici + batch cooking) =====
+    (6, "05:30", "💧 En 30 min a despertar. Agua 300 ml.", 0, 0, 0),
+    (6, "06:00", "🍳 Desayuno en 30 min: 3 huevos duros + palta 60 g + tomate 100 g + queso 30 g + oliva 5 ml.", 500, 28, 0),
+    (6, "06:15", "💊 Suplementos: Vit D3 + Omega-3 + Creatina 5 g.", 0, 0, 0),
+    (6, "09:30", "🍳 BATCH COOKING en 30 min: pollo 1,8 kg horno + 20 huevos duros + papa/boniato hervidos + verduras al vapor + aderezos.", 0, 0, 0),
+    (6, "12:30", "🍽️ Almuerzo en 30 min: pollo del horno 220 g + ensalada completa + palta 60 g + aceitunas + nueces + oliva.", 620, 55, 0),
+    (6, "13:30", "☕ ¡Último mate!", 0, 0, 0),
+    (6, "14:00", "🚴 Bici 40 min en 30 min. Zona 2, al sol.", 0, 0, 300),
+    (6, "16:00", "🥛 Merienda en 30 min: yogur griego 200 g + nueces 10 g + cacao amargo 3 g.", 195, 15, 0),
+    (6, "16:30", "⭐ Hobby / hijos (30-45 min).", 0, 0, 0),
+    (6, "18:30", "🍽️ Cena Caesar en 30 min: pollo 180 g + lechuga romana + huevo duro + anchoas 20 g + parmesano 15 g + aderezo.", 470, 40, 0),
+    (6, "21:30", "🌙 Snack ancla + magnesio.", 150, 12, 0),
+    (6, "22:00", "😴 A dormir. Cargar tensiómetro para lunes.", 0, 0, 0),
+    # Total dom: ~1935 kcal · 150g p · 300 quema · neto 1635
 ]
 
-
-def enviar_telegram(mensaje: str) -> None:
-    url = f"https://api.telegram.org/bot{BOT_TOKEN}/sendMessage"
-    r = requests.post(url, json={"chat_id": CHAT_ID, "text": mensaje}, timeout=15)
-    r.raise_for_status()
-    log.info("enviado: %s", mensaje[:50])
+# Index por key = "Dia-HH:MM" para lookup rápido
+RECORDATORIOS_BY_KEY = {
+    f"{DIAS[d]}-{h}": (d, h, m, k, p, q) for d, h, m, k, p, q in RECORDATORIOS
+}
 
 
-def main() -> None:
-    log.info("iniciado — %d recordatorios cargados", len(RECORDATORIOS))
-    ya_enviados_hoy: set[tuple[int, str]] = set()
-    ultimo_dia = None
+# ============ BITÁCORA ============
+
+_lock = threading.Lock()
+
+
+def bitacora_append(kind, key="", texto="", comentario="", kcal=0, prot=0, quema=0):
+    BITACORA.parent.mkdir(parents=True, exist_ok=True)
+    entry = {
+        "ts": datetime.now(TZ).isoformat(),
+        "kind": kind,
+        "key": key,
+        "texto": texto,
+        "comentario": comentario,
+        "kcal": kcal,
+        "prot": prot,
+        "quema": quema,
+    }
+    with _lock:
+        with BITACORA.open("a", encoding="utf-8") as f:
+            f.write(json.dumps(entry, ensure_ascii=False) + "\n")
+
+
+def bitacora_read(desde=None):
+    if not BITACORA.exists():
+        return []
+    out = []
+    with BITACORA.open("r", encoding="utf-8") as f:
+        for line in f:
+            try:
+                e = json.loads(line)
+            except Exception:
+                continue
+            if desde and e.get("ts", "") < desde.isoformat():
+                continue
+            out.append(e)
+    return out
+
+
+# ============ TELEGRAM API ============
+
+def _post(method, payload):
+    try:
+        r = requests.post(f"{API}/{method}", json=payload, timeout=15)
+        if not r.ok:
+            log.error("%s fail: %s", method, r.text[:200])
+        return r
+    except Exception as e:
+        log.error("%s exc: %s", method, e)
+        return None
+
+
+def enviar(texto, reply_markup=None):
+    payload = {"chat_id": CHAT_ID, "text": texto}
+    if reply_markup:
+        payload["reply_markup"] = reply_markup
+    _post("sendMessage", payload)
+
+
+def enviar_recordatorio(key, mensaje):
+    kb = {
+        "inline_keyboard": [[
+            {"text": "✅ Hecho", "callback_data": f"ok|{key}"},
+            {"text": "⏭️ Skip", "callback_data": f"skip|{key}"},
+            {"text": "✏️ Cambio", "callback_data": f"edit|{key}"},
+        ]]
+    }
+    enviar(mensaje, reply_markup=kb)
+    d, h, m, k, p, q = RECORDATORIOS_BY_KEY[key]
+    bitacora_append("sent", key, mensaje, kcal=k, prot=p, quema=q)
+
+
+def answer_callback(cbq_id, texto=""):
+    _post("answerCallbackQuery", {"callback_query_id": cbq_id, "text": texto})
+
+
+# ============ CÁLCULO ============
+
+def calcular_dia(events):
+    """Totales del día basados en eventos ok + edits + libres."""
+    kcal_in = 0
+    prot = 0
+    quema = 0
+    ok_keys = set()
+    skip_keys = set()
+    edit_keys = set()
+    sent_keys = set()
+
+    for e in events:
+        k = e.get("kind")
+        if k == "sent":
+            sent_keys.add(e.get("key", ""))
+        elif k == "ok":
+            ok_keys.add(e.get("key", ""))
+            base = RECORDATORIOS_BY_KEY.get(e.get("key", ""))
+            if base:
+                _, _, _, kk, pp, qq = base
+                kcal_in += kk
+                prot += pp
+                quema += qq
+        elif k == "skip":
+            skip_keys.add(e.get("key", ""))
+        elif k == "edit":
+            edit_keys.add(e.get("key", ""))
+            kcal_in += e.get("kcal", 0) or 0
+            prot += e.get("prot", 0) or 0
+        elif k == "libre":
+            kcal_in += e.get("kcal", 0) or 0
+            prot += e.get("prot", 0) or 0
+
+    return {
+        "kcal_in": kcal_in,
+        "prot": prot,
+        "quema": quema,
+        "neto": kcal_in - quema,
+        "ok": len(ok_keys),
+        "skip": len(skip_keys),
+        "edit": len(edit_keys),
+        "sent": len(sent_keys),
+    }
+
+
+def resumen_hoy():
+    ahora = datetime.now(TZ)
+    hoy_ini = ahora.replace(hour=0, minute=0, second=0, microsecond=0)
+    events = bitacora_read(desde=hoy_ini)
+    stats = calcular_dia(events)
+    pct = int(100 * stats["ok"] / stats["sent"]) if stats["sent"] else 0
+
+    edits = [e for e in events if e.get("kind") == "edit" and e.get("comentario")]
+    libres = [e for e in events if e.get("kind") == "libre" and e.get("comentario")]
+
+    linea_edits = ""
+    if edits:
+        linea_edits = "\n\n✏️ Cambios:\n" + "\n".join(
+            f"• {e.get('key', '')}: {e.get('comentario', '')}" for e in edits[-5:]
+        )
+    linea_libres = ""
+    if libres:
+        linea_libres = "\n\n📝 Notas:\n" + "\n".join(
+            f"• {e.get('comentario', '')}" for e in libres[-5:]
+        )
+
+    return (
+        f"📊 HOY {DIAS[ahora.weekday()]} {ahora.strftime('%d/%m')}\n"
+        f"━━━━━━━━━━━━━━\n"
+        f"✅ Cumplidas: {stats['ok']}/{stats['sent']} ({pct}%)\n"
+        f"⏭️ Skips: {stats['skip']}\n"
+        f"✏️ Modificadas: {stats['edit']}\n\n"
+        f"🍽️ Kcal ingeridas: {stats['kcal_in']} / {OBJETIVO_KCAL}\n"
+        f"🥩 Proteína: {stats['prot']} g / {OBJETIVO_PROT} g\n"
+        f"🔥 Quemadas: {stats['quema']} kcal\n"
+        f"⚖️ Balance neto: {stats['neto']} kcal"
+        f"{linea_edits}{linea_libres}"
+    )
+
+
+def resumen_semana():
+    ahora = datetime.now(TZ)
+    desde = ahora - timedelta(days=7)
+    events = bitacora_read(desde=desde)
+
+    por_dia = {}
+    for e in events:
+        try:
+            d = datetime.fromisoformat(e["ts"]).date()
+        except Exception:
+            continue
+        por_dia.setdefault(d, []).append(e)
+
+    lineas = ["📈 ÚLTIMOS 7 DÍAS", "━━━━━━━━━━━━━━"]
+    total_kcal = 0
+    total_prot = 0
+    total_quema = 0
+    total_ok = 0
+    total_sent = 0
+    for d in sorted(por_dia.keys()):
+        s = calcular_dia(por_dia[d])
+        total_kcal += s["kcal_in"]
+        total_prot += s["prot"]
+        total_quema += s["quema"]
+        total_ok += s["ok"]
+        total_sent += s["sent"]
+        dow = DIAS[d.weekday()]
+        pct = int(100 * s["ok"] / s["sent"]) if s["sent"] else 0
+        lineas.append(
+            f"{dow} {d.strftime('%d/%m')}: {s['kcal_in']} kcal · {s['prot']}g p · {pct}% ✅"
+        )
+
+    n = len(por_dia) or 1
+    lineas.append("━━━━━━━━━━━━━━")
+    lineas.append(
+        f"Promedio: {total_kcal // n} kcal · {total_prot // n}g p · "
+        f"{total_quema // n} quema"
+    )
+    lineas.append(
+        f"Adherencia global: "
+        f"{int(100 * total_ok / total_sent) if total_sent else 0}%"
+    )
+    return "\n".join(lineas)
+
+
+# ============ PARSE ============
+
+_num_re = re.compile(r"\b(\d+)\b")
+
+
+def parse_kcal_prot(text):
+    """Extrae últimos 1-2 números como kcal, prot."""
+    nums = _num_re.findall(text)
+    if len(nums) >= 2:
+        return int(nums[-2]), int(nums[-1])
+    if len(nums) == 1:
+        return int(nums[-1]), 0
+    return 0, 0
+
+
+# ============ POLLING ============
+
+def polling_loop():
+    # Skip backlog al arrancar
+    try:
+        r = requests.get(
+            f"{API}/getUpdates", params={"offset": -1, "timeout": 0}, timeout=10
+        )
+        results = r.json().get("result", [])
+        offset = results[-1]["update_id"] + 1 if results else 0
+    except Exception:
+        offset = 0
+    log.info("polling iniciado desde offset=%d", offset)
+
+    esperando_edit = {}  # chat_id -> key
 
     while True:
+        try:
+            r = requests.get(
+                f"{API}/getUpdates",
+                params={"offset": offset, "timeout": 30},
+                timeout=35,
+            )
+            data = r.json()
+            for update in data.get("result", []):
+                offset = update["update_id"] + 1
+                _handle_update(update, esperando_edit)
+        except Exception as e:
+            log.error("polling: %s", e)
+            time.sleep(5)
+
+
+def _handle_update(update, esperando_edit):
+    # ---- callback_query (botón apretado) ----
+    if "callback_query" in update:
+        cq = update["callback_query"]
+        payload = cq.get("data", "")
+        if "|" in payload:
+            action, key = payload.split("|", 1)
+        else:
+            action, key = payload, ""
+        texto_orig = cq.get("message", {}).get("text", "")
+        base = RECORDATORIOS_BY_KEY.get(key)
+        if action == "ok":
+            k = base[3] if base else 0
+            p = base[4] if base else 0
+            q = base[5] if base else 0
+            bitacora_append("ok", key, texto_orig, kcal=k, prot=p, quema=q)
+            answer_callback(cq["id"], "✅ Registrado")
+        elif action == "skip":
+            bitacora_append("skip", key, texto_orig)
+            answer_callback(cq["id"], "⏭️ Salteado")
+        elif action == "edit":
+            answer_callback(cq["id"], "Contame el cambio")
+            esperando_edit[str(cq["from"]["id"])] = key
+            enviar(
+                f"✏️ Contame qué comiste/hiciste distinto para: {key}\n\n"
+                f"Formato opcional al final: <kcal> <proteína g>\n"
+                f"Ej: 'sándwich pollo 450 30' → 450 kcal, 30g proteína.\n"
+                f"Sin números → anota solo el texto."
+            )
+        return
+
+    # ---- mensaje de texto ----
+    msg = update.get("message", {})
+    text = (msg.get("text") or "").strip()
+    chat_id = str(msg.get("chat", {}).get("id", ""))
+    if not text or not chat_id:
+        return
+
+    if text.startswith("/start"):
+        enviar(
+            "👋 Bot Plan Fede activo.\n\n"
+            "Comandos:\n"
+            "/resumen — resumen de HOY (kcal, proteína, adherencia)\n"
+            "/semana — últimos 7 días\n"
+            "/nota <texto> — anotación libre\n"
+            "/comi <texto> <kcal> <prot> — anotar comida extra\n\n"
+            "En cada recordatorio tenés los botones:\n"
+            "✅ Hecho · ⏭️ Skip · ✏️ Cambio\n\n"
+            "El botón ✏️ te pregunta qué cambiaste."
+        )
+    elif text.startswith("/resumen"):
+        enviar(resumen_hoy())
+    elif text.startswith("/semana"):
+        enviar(resumen_semana())
+    elif text.startswith("/nota "):
+        nota = text[6:].strip()
+        kcal, prot = parse_kcal_prot(nota)
+        bitacora_append("libre", "", "", comentario=nota, kcal=kcal, prot=prot)
+        respuesta = f"📝 Anotado: {nota}"
+        if kcal:
+            respuesta += f"\n({kcal} kcal · {prot}g p)"
+        enviar(respuesta)
+    elif text.startswith("/comi "):
+        c = text[6:].strip()
+        kcal, prot = parse_kcal_prot(c)
+        bitacora_append("libre", "", "", comentario=c, kcal=kcal, prot=prot)
+        enviar(f"🍽️ Anotado: {c}\n{kcal} kcal · {prot}g p")
+    elif chat_id in esperando_edit:
+        key = esperando_edit.pop(chat_id)
+        kcal, prot = parse_kcal_prot(text)
+        bitacora_append("edit", key, "", comentario=text, kcal=kcal, prot=prot)
+        respuesta = f"✅ Cambio registrado en {key}: {text}"
+        if kcal:
+            respuesta += f"\n({kcal} kcal · {prot}g p)"
+        enviar(respuesta)
+    else:
+        kcal, prot = parse_kcal_prot(text)
+        bitacora_append("libre", "", "", comentario=text, kcal=kcal, prot=prot)
+        respuesta = f"📝 Anotado: {text}"
+        if kcal:
+            respuesta += f"\n({kcal} kcal · {prot}g p)"
+        respuesta += "\n\n(Comandos: /start)"
+        enviar(respuesta)
+
+
+# ============ SCHEDULER ============
+
+def cargar_enviados_hoy():
+    hoy_ini = datetime.now(TZ).replace(
+        hour=0, minute=0, second=0, microsecond=0
+    )
+    events = bitacora_read(desde=hoy_ini)
+    return {e.get("key", "") for e in events if e.get("kind") == "sent"}
+
+
+def scheduler_loop():
+    log.info(
+        "scheduler iniciado — %d recordatorios cargados", len(RECORDATORIOS)
+    )
+    ya_enviados = cargar_enviados_hoy()
+    ultimo_dia = datetime.now(TZ).weekday()
+    while True:
         ahora = datetime.now(TZ)
-        dia = ahora.weekday()   # 0 = lunes
+        dia = ahora.weekday()
         hhmm = ahora.strftime("%H:%M")
-
-        # Reset diario al pasar de un día a otro.
         if dia != ultimo_dia:
-            ya_enviados_hoy.clear()
+            ya_enviados = set()
             ultimo_dia = dia
-
-        for d, hora, mensaje in RECORDATORIOS:
-            key = (d, hora)
-            if d == dia and hora == hhmm and key not in ya_enviados_hoy:
+        for d, hora, mensaje, *_ in RECORDATORIOS:
+            key = f"{DIAS[d]}-{hora}"
+            if d == dia and hora == hhmm and key not in ya_enviados:
                 try:
-                    enviar_telegram(mensaje)
-                    ya_enviados_hoy.add(key)
+                    enviar_recordatorio(key, mensaje)
+                    ya_enviados.add(key)
                 except Exception as e:
-                    log.error("fallo enviando %s: %s", key, e)
+                    log.error("scheduler send fail %s: %s", key, e)
+        time.sleep(30)
 
-        time.sleep(30)  # tick cada 30 s → precisión de ±30 s
+
+# ============ MAIN ============
+
+def main():
+    try:
+        requests.post(f"{API}/deleteWebhook", timeout=10)
+    except Exception:
+        pass
+    log.info("iniciado — %d recordatorios cargados", len(RECORDATORIOS))
+    t = threading.Thread(target=polling_loop, daemon=True)
+    t.start()
+    scheduler_loop()
 
 
 if __name__ == "__main__":
