@@ -299,3 +299,15 @@ Rendimiento: +$51.400 pesos (+3,3%). En USD sigue ~parejo (devaluación). IBIT r
 **Pesos:** TSM 10,5% ❄️(diluyendo desde 13%), SPGI 7,3% (⚠ SE PASÓ de 6% - NO sumar más), EFA 6,8%, EEM 6,1%, MSFT 4,9%❄️, NU 4,9%, GLD 4,4%✓, JNJ 4,1%, XOM 3,8%, JPM 3,6%, SAP 2,7%🆕, IBIT 2,5%, MELI 2,4%, PAMP 2,2%, SPY 1,9%, UNH 1,8%, TJX 1,5%, AVGO 1,4%, AMZN 1,4%(⬇obj5), GOOGL 0,9%❄️.
 
 **Élite agrandable restante: solo Visa (hasta 6%).** SPGI ya topeado. **Cola de huecos:** Lockheed (defensa), Ambev (consumo), IRSA/TGS (satélites AR), emparejar AMZN/MELI.
+
+---
+
+## INVESTIGACIÓN ROBÓTICA (ago 2026, 5 agentes)
+
+Doc: `investigacion-robotica-agosto-2026.md/.pdf`. Barrido humanoides/industrial/médica/logística/China.
+
+**Conclusión:** tema real pero caro, temprano, y casi nada comprable por CEDEAR. Humanoides = privados (Figure US$39B sin facturar, Agility, Apptronik) o chinos inaccesibles (Unitree +540% IPO). Industrial = mejores (Keyence/Fanuc) sin CEDEAR; ABB vendió robótica a SoftBank; KUKA ya es china; solo Siemens (SIEGY 3:1) comprable pero no pure-play. Logística = pure-plays sin CEDEAR; Nvidia mejor pico-y-pala accesible pero concentra IA.
+
+**LA JOYA:** **Intuitive Surgical (ISRG, CEDEAR 90:1)** — único monopolio de robótica comprable: >80% share cirugía robótica, modelo hoja-de-afeitar (60% descartables recurrentes), balance US$8.625M caja CERO deuda, castigada -30/37% en 2026. Complementa J&J/UNH. Si suma robótica, es ESTA (chica, en debilidad).
+
+**Bajada:** ya tiene robótica vía TSMC (mismos chips). NO amerita asignación grande. Techo temático (IA+robótica) ~30-35%. Esperar es válido.
