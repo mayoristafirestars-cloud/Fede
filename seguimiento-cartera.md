@@ -311,3 +311,19 @@ Doc: `investigacion-robotica-agosto-2026.md/.pdf`. Barrido humanoides/industrial
 **LA JOYA:** **Intuitive Surgical (ISRG, CEDEAR 90:1)** — único monopolio de robótica comprable: >80% share cirugía robótica, modelo hoja-de-afeitar (60% descartables recurrentes), balance US$8.625M caja CERO deuda, castigada -30/37% en 2026. Complementa J&J/UNH. Si suma robótica, es ESTA (chica, en debilidad).
 
 **Bajada:** ya tiene robótica vía TSMC (mismos chips). NO amerita asignación grande. Techo temático (IA+robótica) ~30-35%. Esperar es válido.
+
+---
+
+## FOTO 24-ago-2026 (~$2,34M) — HITO: rompió el patrón + cartera madura
+
+**Comportamiento clave:** Fede mostró TSM en baja (-1,35%) y NO la compró (resistió el patrón Pampa→MSFT→TSM por 1ra vez). Metió los $221k en el plan diversificador.
+
+Ejecutó: ISRG 12 nom ($80.160) NUEVO (robótica joya), IRSA 17 + TGSU2 4 (satélites AR por fin), AMZN 10→31 (1,4%→3,9%).
+
+Acciones (3): IRSA $40.970 + PAMP $46.665 + TGSU2 $36.520 = $124.155. Cedears (21) = $1.791.345 (+$84.915). Renta fija BAHUSDA ~$420k. Total ~$2,34M.
+
+**Rendimiento: +$85.100 pesos (+4,6%).**
+
+**Pesos:** TSM 9,4%❄️(diluyó desde 13%), SPGI 6,6%, EFA 6,2%, EEM 5,4%, NU 4,5%, MSFT 4,4%❄️, V 4,4%, GLD 4,1%, AMZN 3,9%, JNJ 3,7%, ISRG 3,4%🆕, XOM 3,4%, JPM 3,3%, SAP 2,5%, IBIT 2,4%, MELI 2,2%, PAMP 2,0%, IRSA 1,8%🆕, SPY 1,7%, UNH 1,7%, TGS 1,6%🆕, TJX 1,3%, AVGO 1,3%, GOOGL 0,8%. Renta fija BAHUSDA ~18% (bajó de 22 por crecer acciones).
+
+**Cluster IA bajó a ~16%** (de ~20). Argentina total ~5,3% (<7% cap). **Cartera madura: ~24 posiciones, completa.** Modo mantener/emparejar. Pendiente eventual: reforzar renta fija (18→22). Cola: Lockheed, Ambev.
