@@ -35,6 +35,24 @@
 
 ---
 
+## 2026-08-27
+**Autor:** @nutricionista (via coordinador)
+**Que:** Ajuste de la dieta como contraparte del plan de fuerza 4x/semana (Lun/Mar/Jue/Vie A/B/A/B) + bici Zona 2 3x/semana (Mie/Sab/Dom, ya presente en los recordatorios del bot pero no reflejada en el calculo calorico de "dias descanso"). Cambios: (1) dias de descanso suben de 2.050 a 2.100-2.150 kcal y de 55 a 65-70 g de carbohidrato para cubrir el gasto de la bici; (2) se suma 20-25 g de carbohidrato (banana/miel) al shake post-entreno de Lunes y Martes, dias de fuerza consecutivos, para favorecer resintesis de glucogeno y aprovechar la ventana de sensibilidad a la insulina post-ejercicio (relevante por sospecha de resistencia a la insulina); (3) se sube la proteina de la merienda de ~15-20 g a ~25-30 g en todos los dias para cruzar el umbral de leucina tambien en esa comida; (4) se evaluaron beta-alanina y citrulina malato como suplementos nuevos — NO se incorporan (evidencia no aplica al tipo de esfuerzo del complex, y no es prioridad frente al objetivo actual de perdida de grasa).
+**Por que:** el requerimiento proteico (~1,9-2 g/kg) y el macro global ya estaban bien calibrados; el ajuste es de **distribucion y timing**, no de volumen total. Se detecto ademas que la bitacora automatica del bot (`salud/bitacora/2026-08-21` a `2026-08-27`) muestra 0% de adherencia registrada (0 kcal / 0 g proteina la mayoria de los dias) — no se pudo usar como evidencia de progreso real; se pide revisar si es un problema del bot (no llegan botones / no se togean) o desenganche real de Fede.
+**Impacto:** `dieta-actual.md` (header + nueva seccion "AJUSTE 2026-08-27"). Cambios al bot `recordatorios_plan_fede.py` **NO aplicados por mi** — quedan listados para que el coordinador los implemente (ver detalle en respuesta del agente).
+**Proxima revision:** pedir a Fede peso + cintura actualizados (mediciones.md no tiene registros desde 2026-04-17) antes de cualquier recalibracion calorica mayor.
+
+---
+
+## 2026-08-27
+**Autor:** @psicologo
+**Qué:** Diseño del sistema de adherencia para sostener el plan de gym 4×/semana (Complex A/B, Lun/Mar/Jue/Vie) durante 90 días: ritual pre-entreno, regla de mínimo viable ("nunca cero"), recompensa inmediata no-comida, streak físico (calendario en la cocina, NO delegado al bot), journal post-entreno de 3 preguntas, ritual de reencuadre ante sesión perdida, y bandera roja a los 3 días seguidos sin entrenar.
+**Por qué:** Fede arranca el plan formal. Se detectó al revisar `salud/bitacora/2026-08-21.md` a `2026-08-27.md` que la adherencia registrada a los recordatorios del bot fue **0% durante 7 días seguidos** (solo eventos "sent", ningún botón "Hecho"). Se decidió NO sumar más recordatorios al bot hasta entender esa causa con Fede directamente (fatiga de notificaciones vs. no estar cumpliendo el plan), y diseñar el sistema de streak con baja fricción y fuera del celular como precaución.
+**Impacto:** `salud/estado-animo.md` — nueva sección "Sistema de adherencia — Plan gym 4×/semana" + nota en "Temas recurrentes" sobre el patrón de 0% de interacción con el bot. No se tocó `recordatorios_plan_fede.py` (se dejan sugerencias para quien lo edite).
+**Próximo paso:** preguntarle a Fede directo por qué no está tocando los botones del bot; coordinar con @entrenador-fisico versión regresiva de cada Complex para días de bajón; pedirle al bot (si se decide) un solo comando de check-in post-gym en vez de más pings.
+
+---
+
 ## 2026-04-19 (noche 2)
 **Autor:** coordinador (con Fede)
 **Que:** Fede pidio cambiar de "low-carb mediterranea" a **PALEO + LACTEOS (Primal)** despues de mirar contenido sobre Marcos Llorente. Se acepto el cambio porque el 90% del plan actual ya cumplia (huevos, carne, pescado, verduras, tuberculos hervidos, frutos secos, palta, oliva, frutillas, banana, miel).
