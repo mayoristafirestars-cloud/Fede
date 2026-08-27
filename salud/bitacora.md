@@ -13,6 +13,13 @@
 ```
 
 ## 2026-08-27
+**Autor:** @entrenador-fisico
+**Qué:** Reemplazo completo del bloque de fuerza. Sale "Complexes A/B/A/B" (full body encadenado con barra, vigente desde 2026-04-21), entra bloque de 12 semanas **Torso-Pierna A/B** (Superior A lunes, Inferior A martes, Superior B jueves, Inferior B viernes), con periodización Adaptación (mes 1) → Acumulación (mes 2) → Intensificación (mes 3) y deload en semanas 4/8/12.
+**Por qué:** Fede pidió una investigación profunda + rediseño del plan de gym 4x/semana con foco en composición corporal + longevidad + salud CV. El cambio de formato se fundamenta en: (1) permitir progresión de carga limpia por ejercicio (los complexes atan 5 movimientos a una sola carga), (2) reducir el tiempo sostenido en FC alta por sesión (relevante por la restricción vigente de FC ≤121 lpm hasta ECG), (3) frecuencia 2x/semana por grupo muscular con volumen dosificado según meta-análisis de hipertrofia/fuerza (Schoenfeld, Grgic, Baz-Valle), (4) ejercicios más amigables articularmente para 47 años + obesidad grado II (prensa en vez de sentadilla trasera pesada como principal, trap bar en vez de barra recta, sin Olympic lifting balístico).
+**Alertas levantadas:** `mediciones.md` no se actualiza desde 2026-04-17 (sin dato de peso/cintura hace 4+ meses) — se pidió remedición antes del lunes 31/08. `agenda.md` sigue con ECG/análisis/TA sin tildar desde abril — restricción cardiovascular (FC ≤121, sin HIIT) se mantiene vigente en este bloque por falta de evidencia de que se haya levantado. Se escala a `@medico` como pedido urgente.
+**Impacto:** `rutina-actual.md` reescrito completo (bloque nuevo, racional científico, progresión mensual, cool-down, coordinación, próximos pasos). Sin cambios en `dieta-actual.md` ni `suplementacion.md` (horarios de entreno no cambiaron). Pendiente: ajustar textos de `recordatorios_plan_fede.py` (nombres de sesión "gym A/B" → "Superior A/B, Inferior A/B") — no editado directamente, se le pasa el detalle al dueño del repo.
+
+## 2026-08-27
 **Autor:** @medico
 **Qué:** Validación médica del plan de gym 4×/semana (Complexes A/B/A/B, hipertrofia) que se está formalizando con el entrenador. Screening preventivo pre-entreno.
 
