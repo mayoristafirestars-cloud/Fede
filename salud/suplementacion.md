@@ -16,6 +16,12 @@
 - No se sugiere ningun estimulante (cafeina en capsula, pre-entreno comercial) dado el perfil de sueno de 6 h y la restriccion de FC maxima. El mate y el cafe de la manana son suficientes.
 - No se sugiere ningun quemador de grasa ni termogenico. Contraindicado con el perfil cardiovascular hasta tener ECG y analisis.
 
+## Evaluados y descartados por ahora (2026-08-27)
+
+- **Beta-alanina:** evidencia solida para esfuerzos sostenidos de 1-4 min a alta intensidad (bufer de carnosina, mejora resistencia muscular). Los complexes de Fede son series de 6 reps a tempo controlado — no es el dominio donde rinde. No se agrega.
+- **Citrulina malato:** evidencia modesta (mas reps a submaximo, menos dolor muscular tardio). No prioritaria para el objetivo actual (perdida de grasa + salud cardiovascular, no rendimiento de fuerza). Riesgo de molestias digestivas. No se agrega por ahora.
+- Prioridad real en este momento: **cerrar la validacion medica pendiente desde abril 2026** de creatina, omega-3 y vitamina D3 (labs completos aun no cargados en `salud/estudios/`).
+
 ## A considerar / pendiente
 
 - **Magnesio glicinato (200–300 mg nocturno):** podria mejorar calidad del sueno y reducir calambres post-entreno. Evidencia moderada. Bajo riesgo. Agregar en la proxima revision si el sueno sigue en 6 h sin mejora.

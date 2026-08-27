@@ -1,14 +1,39 @@
-# Dieta actual — PALEO + LACTEOS (Primal), 4 dias gym
+# Dieta actual — PALEO + LACTEOS (Primal), 4 dias gym + 3 dias bici Z2
 
-**Vigente desde:** 2026-04-21 (lunes)
+**Vigente desde:** 2026-04-21 (lunes) | **Actualizado:** 2026-08-27
 **Tipo:** Paleo + lacteos (Primal) — sin cereales, sin legumbres, sin ultraprocesados, sin azucares refinados, sin aceites industriales. MANTIENE lacteos (yogur griego, ricota, queso) por eleccion del paciente.
-**Frecuencia gym:** 4 dias/semana
+**Frecuencia gym (fuerza):** 4 dias/semana (Lun/Mar/Jue/Vie, complexes A/B/A/B)
+**Frecuencia bici Zona 2:** 3 dias/semana (Mie/Sab/Dom, 40 min post-almuerzo, ~300 kcal)
 **Horarios gym:** Lun/Mar/Jue **07:00 AM** | Vie **14:00 hs**
-**Calorias objetivo:** 2.250 kcal (dias gym) | 2.050 kcal (dias descanso)
-**Macros dias gym:** P: 200 g / **C: ~95 g** / G: 100 g
-**Macros dias descanso:** P: 185 g / **C: 55 g** / G: 105 g
+**Calorias objetivo:** 2.250 kcal (dias gym) | **2.100-2.150 kcal (dias descanso CON bici Z2 — subido desde 2.050, ver ajuste 2026-08-27)**
+**Macros dias gym:** P: 200 g / **C: ~95-100 g** / G: 100-105 g
+**Macros dias descanso:** P: 190 g / **C: ~65-70 g (subido desde 55 g)** / G: 105-110 g
 **Propuesta por:** @nutricionista (via coordinador)
-**Basada en:** TDEE 2.650–2.850 kcal, deficit ~400 kcal, alta sospecha resistencia insulina, obesidad grado II, complexes A/B/A/B 8 AM, sueno 6 h, corte alcohol, comerciante (batch cooking).
+**Basada en:** TDEE 2.650–2.850 kcal (estimacion Apple Watch abril 2026, PENDIENTE actualizar con datos recientes), deficit ~400 kcal, alta sospecha resistencia insulina, obesidad grado II, complexes A/B/A/B, sueno 6 h, corte alcohol, comerciante (batch cooking).
+
+---
+
+## AJUSTE 2026-08-27 — contraparte nutricional del plan de fuerza 4x/semana + bici Z2
+
+**Motivo del ajuste:** el entrenador confirmo el esquema de fuerza A/B/A/B (Lun/Mar/Jue/Vie) y el bot de Telegram ya viene enviando recordatorios de **bici Zona 2, 40 min, post-almuerzo, los Mie/Sab/Dom** — actividad NO contemplada en el calculo calorico original de "dias descanso" (que asumia solo caminata basal). Se revisa la dieta con base cientifica para sostener 7 dias/semana de actividad estructurada (4 fuerza + 3 cardio Z2) en un hombre de 47 anos en deficit calorico.
+
+### Racional cientifico aplicado
+
+1. **Proteina (~1,9-2,0 g/kg peso actual, ~200 g/dia):** en deficit calorico + entrenamiento de fuerza, la evidencia (Helms et al. 2014; Morton et al. 2018, meta-analisis; Iraki et al. 2019) recomienda 1,6-2,2 g/kg para preservar masa magra, en el extremo alto cuando el deficit es mayor. A los 47 anos hay "resistencia anabolica" (se necesita mas proteina por comida para el mismo estimulo de sintesis proteica que a los 25). El plan actual (~200 g/dia) ya esta en el rango correcto — **no se sube mas**, se ordena mejor la distribucion.
+2. **Umbral de leucina por comida (~30-40 g proteina, ~2,5-3 g leucina):** las comidas principales (desayuno, almuerzo, cena) ya superan el umbral. Los puntos debiles son merienda (15-20 g) y snack nocturno (12-15 g) — se recomienda subir la merienda a ~25-30 g de proteina (ej: sumar un huevo o mas queso cottage) para maximizar estimulos de sintesis proteica a lo largo del dia, en vez de concentrar todo en 3 comidas.
+3. **Carbohidratos peri-entreno:** la "ventana anabolica" estricta de 30-60 min post-entreno **no tiene el respaldo que se penso hace 15 anos** (Aragon & Schoenfeld 2013) — lo que importa es el total diario y la proximidad razonable (horas, no minutos). PERO en un perfil con sospecha de resistencia a la insulina, el post-entreno SI es una ventana metabolicamente favorable: la contraccion muscular activa GLUT4 de forma insulino-independiente, mejorando la tolerancia a la glucosa en esa franja mas que en cualquier otro momento del dia. Por eso conviene mover algo de carbohidrato hacia el post-entreno en vez de dejar el shake "pelado" (solo whey + agua).
+4. **Dias consecutivos de fuerza (Lunes→Martes):** al entrenar dos dias seguidos, la resintesis de glucogeno muscular importa mas que en un esquema con descanso entre sesiones. Recomendacion: sumar 20-25 g de carbohidrato de rapida absorcion al shake post-entreno de Lunes y Martes (banana o miel), no solo proteina.
+5. **Bici Zona 2 (Mie/Sab/Dom):** es entrenamiento aerobico de baja-moderada intensidad (mejora mitocondrial, no depleciona glucogeno tanto como el complex de fuerza) pero sigue gastando ~300 kcal y requiere algo de sustrato. No hace falta "cargar carbos" como en un dia de fuerza, pero SI hay que reponer las ~300 kcal gastadas — de lo contrario el dia "descanso" termina siendo el de mayor deficit relativo de la semana (paradoja: el dia que menos deberia exigir es hoy el que mas hambre/fatiga genera). Se sube el objetivo calorico de estos dias de 2.050 a 2.100-2.150 kcal y los carbos de 55 a 65-70 g.
+6. **Cafeina:** el corte de mate/cafe a las 13:30 ya presente en el plan es correcto (evita interferir en las 8 h previas al sueno). No se agrega cafeina extra pre-entreno (pre-entreno comercial, capsulas) — contraindicado mientras el sueno siga en 6 h y la FC este topeada en 121 lpm. Unica fuente de cafeina del dia: cafe de la manana + mate hasta 13:30.
+7. **Suplementos nuevos (beta-alanina, citrulina malato):** evaluados y **NO se agregan por ahora**. Beta-alanina tiene evidencia solida para esfuerzos sostenidos de 1-4 min a alta intensidad (bufer de carnosina) — los complexes de Fede son series de 6 reps a tempo controlado (2-3 seg), no el dominio donde beta-alanina rinde. Citrulina malato tiene evidencia modesta (mas reps, menos dolor muscular) pero no es prioritaria con el objetivo actual (perdida de grasa + salud cardiovascular, no rendimiento de fuerza maxima) y puede dar molestias digestivas. Prioridad real: **cerrar la validacion medica pendiente desde abril** de creatina, omega-3 y vitamina D3 (ver seccion "Que le pido al medico").
+
+### Cambios concretos aplicados a la logica del plan
+
+- **Post-entreno (Lun/Mar/Jue 07:30 y Vie 14:45):** sumar 20-25 g carbohidrato al shake — banana chica (60-80 g) o miel (15-20 g) — especialmente Lunes y Martes por ser dias consecutivos. Pasa de "whey + agua" a "whey + banana/miel + agua".
+- **Dias de descanso con bici (Mie/Sab/Dom):** subir calorias de 2.050 a 2.100-2.150 kcal y carbos de 55 a 65-70 g. Sumar una porcion de fruta (80-100 g) en la merienda post-bici (bici es ~13:00-14:00, merienda 16:00).
+- **Domingo especificamente:** el dia venia quedando bajo en proteina (~150 g vs objetivo) y calorias (~1.935 vs objetivo) en el detalle del bot — corregir sumando 1 huevo duro extra + 20 g mas de pollo en la cena Caesar.
+- **Viernes:** la cena libre no tiene proteina fija — pedir a Fede que use `/comi` para registrar aunque sea aproximado, para no perder el track semanal de proteina.
+- **Merienda (todos los dias):** subir proteina de ~15-20 g a ~25-30 g (sumar huevo, mas queso cottage o mas yogur) para cruzar el umbral de leucina tambien en esta comida.
 
 ---
 
