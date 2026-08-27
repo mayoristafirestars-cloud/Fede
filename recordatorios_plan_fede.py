@@ -66,7 +66,7 @@ RECORDATORIOS = [
     (0, "12:30", "🍽️ Almuerzo en 30 min: pollo 220 g + papa hervida 100 g + ensalada + oliva 12 ml + limón.", 555, 55, 0),
     (0, "13:30", "☕ ¡Último mate del día en 30 min! Después solo agua o infusiones sin cafeína.", 0, 0, 0),
     (0, "16:00", "🥛 Merienda en 30 min: yogur griego 170 g + nueces 12 g + canela.", 175, 15, 0),
-    (0, "18:30", "🐟 Cena en 30 min: pescado merluza 200 g + verdura zapallo 150 g + verdura morrón 70 g + anchoa 20 g + huevo duro + oliva 12 ml.", 470, 55, 0),
+    (0, "18:30", "🐟 Cena en 30 min: pescado merluza 200 g + verdura zapallo 150 g + verdura morrón 70 g + anchoa 20 g + 1 huevo duro + oliva 12 ml.", 470, 55, 0),
     (0, "21:30", "🌙 Snack ancla en 30 min: yogur griego 170 g + chía 10 g + magnesio 300 mg. Bajá luces.", 150, 12, 0),
     (0, "22:00", "😴 A dormir en 30 min. Celular afuera del cuarto.", 0, 0, 0),
     # Total lun: ~2130 kcal · 198g p · 350 quema · neto 1780
@@ -106,10 +106,10 @@ RECORDATORIOS = [
     (3, "07:30", "🥤 Post-entreno + gym A hecho. En 30 min: whey 35 g + creatina 5 g + agua.", 140, 28, 350),
     (3, "09:00", "🍳 Desayuno diferente en 30 min: yogur griego 200 g + fruta frutillas 100 g + almendras 15 g + canela + 3 huevos duros aparte.", 550, 40, 0),
     (3, "09:15", "💊 Suplementos: Vit D3 + Omega-3.", 0, 0, 0),
-    (3, "12:30", "🍽️ Almuerzo en 30 min: pollo 200 g + papa hervida 100 g + huevo duro + ensalada nicoise (hojas verdes + verdura tomate) + palta 50 g + oliva 12 ml.", 620, 55, 0),
+    (3, "12:30", "🍽️ Almuerzo en 30 min: pollo 200 g + papa hervida 100 g + 1 huevo duro + ensalada nicoise (hojas verdes + verdura tomate) + palta 50 g + oliva 12 ml.", 620, 55, 0),
     (3, "13:30", "☕ ¡Último mate!", 0, 0, 0),
     (3, "16:00", "🥛 Merienda en 30 min: yogur griego 170 g + nueces 12 g + fruta arándanos 20 g.", 180, 15, 0),
-    (3, "18:30", "🐟 Cena en 30 min: pescado merluza 200 g + verdura brócoli 200 g + huevo duro + anchoa 20 g + oliva 12 ml.", 450, 50, 0),
+    (3, "18:30", "🐟 Cena en 30 min: pescado merluza 200 g + verdura brócoli 200 g + 1 huevo duro + anchoa 20 g + oliva 12 ml.", 450, 50, 0),
     (3, "21:30", "🌙 Snack ancla + magnesio 300 mg.", 150, 12, 0),
     (3, "22:00", "😴 A dormir.", 0, 0, 0),
     # Total jue: ~2160 kcal · 201g p · 350 quema · neto 1810
@@ -152,7 +152,7 @@ RECORDATORIOS = [
     (6, "14:00", "🚴 Bici 40 min en 30 min. Zona 2, al sol.", 0, 0, 300),
     (6, "16:00", "🥛 Merienda en 30 min: yogur griego 200 g + nueces 10 g + cacao amargo 3 g.", 195, 15, 0),
     (6, "16:30", "⭐ Hobby / hijos (30-45 min).", 0, 0, 0),
-    (6, "18:30", "🍽️ Cena Caesar en 30 min: pollo 180 g + hojas verdes lechuga romana + huevo duro + anchoa 20 g + parmesano 15 g + aderezo.", 470, 40, 0),
+    (6, "18:30", "🍽️ Cena Caesar en 30 min: pollo 180 g + hojas verdes lechuga romana + 1 huevo duro + anchoa 20 g + parmesano 15 g + aderezo.", 470, 40, 0),
     (6, "21:30", "🌙 Snack ancla + magnesio.", 150, 12, 0),
     (6, "22:00", "😴 A dormir. Cargar tensiómetro para lunes.", 0, 0, 0),
     # Total dom: ~1935 kcal · 150g p · 300 quema · neto 1635
