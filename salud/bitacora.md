@@ -12,6 +12,29 @@
 **Impacto:** qué archivos se tocaron
 ```
 
+## 2026-08-27
+**Autor:** @medico
+**Qué:** Validación médica del plan de gym 4×/semana (Complexes A/B/A/B, hipertrofia) que se está formalizando con el entrenador. Screening preventivo pre-entreno.
+
+**Contexto revisado:** perfil.md, historia-familiar.md, lesiones.md, mediciones.md (única fila, 17/04), suplementacion.md, plan-longevidad.md, agenda.md, carpeta estudios/ (vacía — sin ECG ni análisis todavía) y bitácora automática del bot (21/08 al 27/08).
+
+**Hallazgo crítico:** a 4 meses de la evaluación inicial (17/04) sigue sin hacerse NINGÚN estudio de la lista de prioridad alta: sin ECG, sin análisis de sangre, sin TA registrada (ni en farmacia ni en casa), sin repetir cintura/mediciones desde el 17/04 (una sola fila cargada). Fede viene entrenando desde el 21/04 bajo el límite autoimpuesto de FC 121 lpm, pero esto es una aproximación, no un dato clínico real de FC máxima ni de respuesta cardíaca al esfuerzo.
+
+**Nota sobre bitácora del bot (21/08–27/08):** todos los días muestran adherencia 0% y kcal/proteína en 0, con la columna "Estado" en "—" (sin respuesta) para prácticamente todos los recordatorios, salvo textos narrativos tipo "gym A hecho" dentro del recordatorio de post-entreno (que es el texto programado, no una confirmación real). Esto **no debe leerse como que Fede dejó de comer o de entrenar** — todo indica una falla de registro del bot (botones no capturados) más que un cambio real de conducta. Marcado para que el usuario corra `/sync` en Telegram o revise el servicio. No cambia la recomendación médica, pero impide usar estos 7 días como base objetiva de adherencia/déficit para evaluar fatiga o rendimiento.
+
+**Diagnóstico:**
+1. El plan de 4×/semana con complexes/hipertrofia **puede continuar**, pero bajo las mismas restricciones vigentes en `lesiones.md` (tope de FC 121 lpm = 70% de FC máx estimada, sin HIIT/Tabata/sprints, sin trabajo al fallo con Valsalva sostenida) hasta tener ECG.
+2. FC máx estimada (fórmula Tanaka, más precisa que 220-edad en adultos con sobrepeso): 208 − (0,7×47) ≈ **174 lpm**. Zona de trabajo en fuerza/complexes hasta ECG: **≤ 70% (≈121 lpm)** sostenido, tolerando picos breves hasta 75% (≈131 lpm) en series cortas, nunca sostenido. Zona 2 (cardio): 60–70% = **105–122 lpm** (coincide con lo que ya usa el entrenador en bici, 105–118 lpm — correcto).
+3. No se recomienda test de 1RM verdadero (esfuerzo máximo con Valsalva, obesidad grado II + riesgo CV sin ECG = mala combinación). Sí sirve un baseline de fuerza vía RM estimado a partir de series de 8–10 reps a RPE 8 (submáximo), más plancha/flexiones (ya en plan-longevidad.md) y opcionalmente dinamometría de mano (sin estrés cardiovascular, buen marcador de fuerza global y longevidad).
+4. Señales de alarma — suspender el entreno YA y consultar guardia si aparecen: dolor u opresión en el pecho, dificultad respiratoria desproporcionada al esfuerzo, palpitaciones sostenidas o irregulares, mareo/presíncope, visión en túnel, sudoración fría fuera de lo esperable, dolor irradiado a brazo/mandíbula/espalda, taquicardia que no cede con el reposo.
+5. Señales de sobreentrenamiento — bajar volumen si aparecen: FC de reposo matinal +5–7 lpm sostenida varios días sobre el basal, sueño que empeora (ya de por sí en 6 h, objetivo 7 h), irritabilidad/ánimo bajo, caída de rendimiento sesión a sesión, dolor articular persistente >48–72 h, apetito descontrolado o al revés inapetencia.
+
+**Impacto:** `agenda.md` — nueva sección de alerta al tope marcando el bloqueo de progresión de intensidad hasta ECG + análisis + TA. No se tocaron `perfil.md`, `lesiones.md`, `rutina-actual.md` (restricciones ya vigentes desde 17/04 se mantienen sin cambios).
+
+**Próximo paso:** turno con clínico esta semana para ECG + orden de análisis. Pedir al usuario que revise el bot de Telegram (posible falla de registro de adherencia).
+
+---
+
 ## 2026-04-19 (noche 2)
 **Autor:** coordinador (con Fede)
 **Que:** Fede pidio cambiar de "low-carb mediterranea" a **PALEO + LACTEOS (Primal)** despues de mirar contenido sobre Marcos Llorente. Se acepto el cambio porque el 90% del plan actual ya cumplia (huevos, carne, pescado, verduras, tuberculos hervidos, frutos secos, palta, oliva, frutillas, banana, miel).

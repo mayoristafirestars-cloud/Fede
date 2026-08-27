@@ -7,6 +7,12 @@
 
 ## Estudios pendientes de hacer
 
+### ⚠️ ALERTA 2026-08-27 (@medico) — validación plan gym 4×/semana
+
+Se está formalizando con el entrenador un plan de gym 4×/semana (Complexes A/B/A/B, hipertrofia). **A la fecha (27/08/2026, +4 meses desde la evaluación inicial del 17/04) NINGÚN estudio de la lista de abajo fue realizado**: no hay ECG, no hay análisis de sangre, no hay registro de TA. Fede ya viene entrenando desde el 21/04 con el límite de FC 121 lpm autoimpuesto (sin validación por ECG), lo cual mitigaba el riesgo pero no lo elimina.
+
+**Decisión clínica:** el plan 4×/semana puede CONTINUAR de forma condicionada (ver bitácora 2026-08-27 para el detalle completo), pero el ECG + análisis de sangre + TA en casa pasan a ser **bloqueantes para cualquier progresión de intensidad** (más carga, más volumen, trabajo cerca del fallo, complexes con HR sostenida alta, o levantar el tope de 121 lpm). Sacar turno con clínico esta semana.
+
 ### Prioridad ALTA — hacer antes de arrancar entrenamiento serio
 
 - [ ] **Análisis de sangre completo** — glucemia en ayunas, insulina basal (HOMA-IR), hemoglobina glicosilada (HbA1c), colesterol total, LDL, HDL, triglicéridos, hepatograma, urea, creatinina, ácido úrico, hemograma completo, TSH, ferritina, vitamina D. Pedir además: perfil tiroideo completo dado obesidad.
