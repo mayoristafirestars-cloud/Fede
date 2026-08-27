@@ -156,6 +156,21 @@ RECORDATORIOS = [
     (6, "21:30", "🌙 Snack ancla + magnesio.", 150, 12, 0),
     (6, "22:00", "😴 A dormir. Cargar tensiómetro para lunes.", 0, 0, 0),
     # Total dom: ~1935 kcal · 150g p · 300 quema · neto 1635
+
+    # ===== WELLNESS: mindfulness, hidratación, movimiento =====
+    # Diarios (todos los días): respiración, agua, journal, meditación
+    *[(d, "05:35", "🌬️ Respiración 2 min + estiramiento 3 min al despertar (después del agua).", 0, 0, 0) for d in range(7)],
+    *[(d, "10:30", "💧 Hidratación: 500 ml de agua entre desayuno y almuerzo.", 0, 0, 0) for d in range(7)],
+    *[(d, "13:05", "🌬️ Respiración box breathing 3 min post-almuerzo (4 inhalo · 4 retengo · 4 exhalo · 4 pausa).", 0, 0, 0) for d in range(7)],
+    *[(d, "15:00", "💧 Hidratación: 500 ml de agua entre almuerzo y merienda.", 0, 0, 0) for d in range(7)],
+    *[(d, "21:00", "📔 Journal + gratitud 2 min. Escribí 3 cosas del día + 1 gratitud.", 0, 0, 0) for d in range(7)],
+    *[(d, "21:45", "🧘 Meditación 10 min pre-sueño. App: Insight Timer / Calm / YouTube (10 min sleep).", 0, 0, 0) for d in range(7)],
+    # Días laborales (Lun-Vie): micro-pausa de tarde
+    *[(d, "17:00", "🧠 Micro-pausa 3 min. Lejos del celular. Cuello, hombros, mirada lejos.", 0, 0, 0) for d in range(5)],
+    # Días de descanso (Mié, Sáb, Dom): sol matinal para ritmo circadiano
+    *[(d, "07:00", "☀️ 10 min al sol / aire libre. Vit D natural y ritmo circadiano.", 0, 0, 0) for d in [2, 5, 6]],
+    # Caminatas post-almuerzo en días sin bici (Lun, Mar, Jue)
+    *[(d, "13:15", "🚶 Caminata 10 min post-almuerzo. Zona 2 tranquila, al aire libre si podés.", 0, 0, 0) for d in [0, 1, 3]],
 ]
 
 # Index por key = "Dia-HH:MM" para lookup rápido
