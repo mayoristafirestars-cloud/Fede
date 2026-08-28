@@ -6,3 +6,10 @@
 {"ts": "2026-08-27T12:30:38.114740-03:00", "kind": "sent", "key": "Jue-12:30", "texto": "🍽️ Almuerzo en 30 min: pollo 200 g + papa hervida 100 g + huevo duro + ensalada nicoise + palta 50 g + oliva 12 ml.", "comentario": "", "kcal": 620, "prot": 55, "quema": 0}
 {"ts": "2026-08-27T13:30:08.308463-03:00", "kind": "sent", "key": "Jue-13:30", "texto": "☕ ¡Último mate!", "comentario": "", "kcal": 0, "prot": 0, "quema": 0}
 {"ts": "2026-08-27T16:00:08.691123-03:00", "kind": "sent", "key": "Jue-16:00", "texto": "🥛 Merienda en 30 min: yogur griego 170 g + nueces 12 g + frutos rojos 20 g.", "comentario": "", "kcal": 180, "prot": 15, "quema": 0}
+{"ts": "2026-08-27T18:03:44.695693-03:00", "kind": "skip", "key": "Jue-18:30", "texto": "🐟 Cena en 30 min: brótola 200 g + brócoli 200 g + huevo duro + anchoas 20 g + oliva 12 ml.", "comentario": "", "kcal": 0, "prot": 0, "quema": 0}
+{"ts": "2026-08-27T18:05:52.536932-03:00", "kind": "edit", "key": "Jue-18:30", "texto": "", "comentario": "voy a cenar .. costeleta .. con tarta de choclo con queso", "kcal": 0, "prot": 0, "quema": 0}
+{"ts": "2026-08-27T18:30:16.513967-03:00", "kind": "sent", "key": "Jue-18:30", "texto": "🐟 Cena en 30 min: pescado merluza 200 g + verdura brócoli 200 g + 1 huevo duro + anchoa 20 g + oliva 12 ml.", "comentario": "", "kcal": 450, "prot": 50, "quema": 0}
+{"ts": "2026-08-27T21:00:15.265308-03:00", "kind": "sent", "key": "Jue-21:00", "texto": "📔 Journal + gratitud 2 min. Escribí 3 cosas del día + 1 gratitud.", "comentario": "", "kcal": 0, "prot": 0, "quema": 0}
+{"ts": "2026-08-27T21:30:15.542414-03:00", "kind": "sent", "key": "Jue-21:30", "texto": "🌙 Snack ancla + magnesio 300 mg.", "comentario": "", "kcal": 150, "prot": 12, "quema": 0}
+{"ts": "2026-08-27T21:45:15.893051-03:00", "kind": "sent", "key": "Jue-21:45", "texto": "🧘 Meditación 10 min pre-sueño. App: Insight Timer / Calm / YouTube (10 min sleep).", "comentario": "", "kcal": 0, "prot": 0, "quema": 0}
+{"ts": "2026-08-27T22:00:16.158781-03:00", "kind": "sent", "key": "Jue-22:00", "texto": "😴 A dormir.", "comentario": "", "kcal": 0, "prot": 0, "quema": 0}
