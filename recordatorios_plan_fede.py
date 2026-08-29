@@ -60,6 +60,7 @@ RECORDATORIOS = [
     # ===== LUNES (gym A) =====
     (0, "05:30", "💧 En 30 min a despertar. Vaso 300 ml + pizca de sal.", 0, 0, 0),
     (0, "06:00", "🍌 Pre-entreno en 30 min: media banana (80 g) + café 150 ml + agua con sal 300 ml.", 70, 1, 0),
+    (0, "06:30", "🏋️ Superior A empieza en 30 min\n\n1. Press banca 3×8-10 RIR3-4 · 120s\n2. Remo mancuerna a un brazo 3×8-10 RIR3 · 90s\n3. Press militar sentado (mancuernas) 3×8-10 RIR3 · 90s\n4. Jalón al pecho neutro 2×10-12 RIR3 · 75s\n5. Elev laterales 2×12-15 RIR2 · 60s\n6. Superserie: curl bíceps + tríceps polea 2×10-12 · 60s\n7. Plancha 3× máx sostenible · 45s\n\nCalent 6-8 min · FC ≤121 · Exhalar en el esfuerzo · RIR nunca 0\nDuración: 50-55 min", 0, 0, 0),
     (0, "07:30", "🥤 Post-entreno + Superior A hecho. En 30 min: whey 35 g + creatina 5 g + banana chica 80 g (carbo rápido).", 210, 28, 350),
     (0, "09:00", "🍳 Desayuno en 30 min: 4 huevos duros + palta 90 g + verdura tomate 100 g + queso port salut 20 g + oliva 5 ml.", 570, 32, 0),
     (0, "09:15", "💊 Suplementos en 30 min: Vit D3 + Omega-3.", 0, 0, 0),
@@ -74,6 +75,7 @@ RECORDATORIOS = [
     # ===== MARTES (gym B) =====
     (1, "05:30", "💧 En 30 min a despertar. Vaso 300 ml + sal.", 0, 0, 0),
     (1, "06:00", "🍇 Pre-entreno en 30 min: pasas 30 g + café 150 ml + agua con sal 300 ml.", 85, 1, 0),
+    (1, "06:30", "🏋️ Inferior A empieza en 30 min\n\n1. Prensa de piernas 45° 3×8-10 RIR3-4 · 120s\n2. Sentadilla goblet 2×8-10 RIR3 · 90s\n3. Peso muerto rumano con mancuernas 3×8-10 RIR3 · 90s\n4. Zancada búlgara (pie trasero elevado) 2×8/lado RIR3 · 75s\n5. Curl femoral 2×10-12 RIR2 · 60s\n6. Elev talones de pie 2×12-15 · 45s\n7. Dead bug 3×10/lado · 45s\n\nCalent 6-8 min · FC ≤121 · Exhalar en el esfuerzo · RIR nunca 0\nDuración: 55-60 min", 0, 0, 0),
     (1, "07:30", "🥤 Post-entreno + Inferior A hecho. En 30 min: whey 35 g + creatina 5 g + banana chica 80 g (carbo rápido).", 210, 28, 400),
     (1, "09:00", "🍳 Desayuno en 30 min: 4 huevos duros + queso port salut 30 g + palta 80 g + verdura tomate 100 g + oliva 5 ml.", 590, 34, 0),
     (1, "09:15", "💊 Suplementos: Vit D3 + Omega-3.", 0, 0, 0),
@@ -103,6 +105,7 @@ RECORDATORIOS = [
     # ===== JUEVES (gym A) =====
     (3, "05:30", "💧 En 30 min a despertar. Agua + sal.", 0, 0, 0),
     (3, "06:00", "🍌 Pre-entreno en 30 min: media banana 80 g + café + agua con sal.", 70, 1, 0),
+    (3, "06:30", "🏋️ Superior B empieza en 30 min\n\n1. Jalón al pecho supino / dominada asistida 3×8-10 RIR3-4 · 120s\n2. Press inclinado mancuernas 30° 3×8-10 RIR3 · 90s\n3. Remo en polea sentado, agarre neutro 3×10-12 RIR3 · 90s\n4. Face pull en polea alta 3×15-20 RIR2 · 60s\n5. Curl martillo con mancuernas 2×10-12 RIR2 · 60s\n6. Extensión tríceps overhead 2×10-12 · 60s\n7. Plancha lateral 2×20-30s/lado · 45s\n\nCalent 6-8 min · FC ≤121 · Exhalar en el esfuerzo · RIR nunca 0\nDuración: 50-55 min", 0, 0, 0),
     (3, "07:30", "🥤 Post-entreno + Superior B hecho. En 30 min: whey 35 g + creatina 5 g + banana chica 80 g (carbo rápido).", 210, 28, 350),
     (3, "09:00", "🍳 Desayuno diferente en 30 min: yogur griego 200 g + fruta frutillas 100 g + almendras 15 g + canela + 3 huevos duros aparte.", 550, 40, 0),
     (3, "09:15", "💊 Suplementos: Vit D3 + Omega-3.", 0, 0, 0),
@@ -120,7 +123,7 @@ RECORDATORIOS = [
     (4, "06:15", "💊 Suplementos: Vit D3 + Omega-3.", 0, 0, 0),
     (4, "10:00", "🥛 Media mañana en 30 min: yogur griego 150 g + nueces 10 g + fruta frutillas 30 g.", 190, 15, 0),
     (4, "12:00", "🍇 Pre-entreno LIVIANO en 30 min: pasas 30 g + café + agua con sal 400 ml. NO comer sólido pesado 11-14 h.", 85, 1, 0),
-    (4, "13:30", "🏋️ ¡Gym en 30 min! Inferior B.", 0, 0, 0),
+    (4, "13:30", "🏋️ Inferior B empieza en 30 min\n\n1. Peso muerto Trap bar (hex) 3×6-8 RIR3-4 · 150s\n2. Sentadilla búlgara con mancuernas 2×8/lado RIR3 · 90s\n3. Hip thrust con barra 3×8-10 RIR3 · 90s\n4. Curl femoral tumbado 2×10-12 RIR2 · 60s\n5. Step-up en banco con mancuernas 2×8-10/lado RIR2 · 75s\n6. Elev talones sentado (soleo) 2×15 · 45s\n7. Plancha con toque de hombro 3×10/lado · 45s\n\nCalent 6-8 min · FC ≤121 · Exhalar en el esfuerzo · RIR nunca 0\nTrap bar: menor cizalla lumbar que barra recta\nDuración: 55-60 min", 0, 0, 0),
     (4, "14:45", "🥤 Post-entreno + Inferior B hecho. En 30 min: whey 35 g + creatina 5 g + banana chica 80 g (carbo rápido).", 210, 28, 400),
     (4, "15:30", "🍽️ Almuerzo-merienda en 30 min: pollo 220 g + papa hervida 150 g + ensalada + palta 70 g + almendras + oliva.", 620, 55, 0),
     (4, "18:30", "🎉 CENA LIBRE en 30 min. Elegí UNA: pizza 2 porciones / parrilla 250 g magra / sushi 12-15 piezas / pasta 300 g. Máx 1 vino tinto.", 700, 35, 0),
