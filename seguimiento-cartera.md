@@ -327,3 +327,19 @@ Acciones (3): IRSA $40.970 + PAMP $46.665 + TGSU2 $36.520 = $124.155. Cedears (2
 **Pesos:** TSM 9,4%❄️(diluyó desde 13%), SPGI 6,6%, EFA 6,2%, EEM 5,4%, NU 4,5%, MSFT 4,4%❄️, V 4,4%, GLD 4,1%, AMZN 3,9%, JNJ 3,7%, ISRG 3,4%🆕, XOM 3,4%, JPM 3,3%, SAP 2,5%, IBIT 2,4%, MELI 2,2%, PAMP 2,0%, IRSA 1,8%🆕, SPY 1,7%, UNH 1,7%, TGS 1,6%🆕, TJX 1,3%, AVGO 1,3%, GOOGL 0,8%. Renta fija BAHUSDA ~18% (bajó de 22 por crecer acciones).
 
 **Cluster IA bajó a ~16%** (de ~20). Argentina total ~5,3% (<7% cap). **Cartera madura: ~24 posiciones, completa.** Modo mantener/emparejar. Pendiente eventual: reforzar renta fija (18→22). Cola: Lockheed, Ambev.
+
+---
+
+## MANUAL DE OPERACIÓN: costos + impuestos + protocolo de venta (30-ago-2026, 3 agentes)
+
+Doc: `manual-operacion-costos-impuestos-agosto-2026.md/.pdf`. Reglas nuevas al método (pedido de Fede: sugerir ventas, contar comisiones, optimizar impuestos).
+
+**COMISIONES Balanz:** CEDEAR ~0,67% por compra, ~1,3-1,6% ida y vuelta. Acciones locales igual. Dólar MEP ~0,55-0,70%. FCI money market/renta fija 0%. Custodia $0. Regla: necesita subir >1,5% para empatar compra+venta → operar POCO y GRANDE.
+
+**IMPUESTOS (validar con contador):**
+- Venta CEDEARs y acciones AR: EXENTA de Ganancias (incl. dif cambio). ✅ Estrategia ya eficiente.
+- Dividendos: CEDEARs US 30% retención origen + escala (por eso mejor growth de bajo dividendo); acciones AR 7%.
+- Bienes Personales: NO aplica (MNI ~$385M, cartera ~$2,3M muy por debajo). A futuro: acciones locales > CEDEARs.
+- Dólar MEP sin PAIS ni percepción. Money market pesos exento. Operar por cuenta comitente (evita impuesto al cheque).
+
+**PROTOCOLO DE VENTA:** NO predecir crashes, NO vender núcleo en pánico. Vender SOLO por: (1) tesis rota (precedente Pepsi/Ternium), (2) satélite táctico en objetivo (Pampa pre-2027, IRSA/TGS, IBIT sobre 5%), (3) rebalanceo extremo (>7-8%, primero diluir con aportes). ANTE CRASH >20%: NO huir, desplegar colchón (renta fija+oro+emergencia) comprando lo castigado. Vender por el negocio o el plan, nunca por precio/miedo. Cada venta+recompra ~1,3%.
