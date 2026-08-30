@@ -78,15 +78,55 @@ prolijidad interna del feed. Una grilla impecable pero ajena a su público rinde
 
 ---
 
+## Qué pedir antes de analizar
+
+**Pedir siempre, antes de mirar fotos.** Ordenado por valor medido, no por lo que parece
+útil. Detalle en `references/limites-y-evidencia.md`.
+
+| Prioridad | Qué | Por qué |
+|---|---|---|
+| 1 | **Datos de venta o conversión** | Elasticidad de ventas 0,353 vs. engagement 0,137 — y las dos implican **prescripciones de contenido opuestas**. Optimizar likes aleja de optimizar ventas |
+| 2 | **Insights de la cuenta** — guardados, compartidos, alcance, visitas al perfil | Los likes son la métrica más ruidosa y la única visible desde afuera. Los guardados son la señal de intención |
+| 3 | **6–12 meses de historial** | Separa lo estacional de lo estructural |
+| 4 | **Texto de los comentarios** | El contenido propio no mueve la intención de compra; el ganado sí |
+| 5 | **3–5 cuentas del mismo rubro** | Sin línea de base no hay escala, solo adjetivos |
+| 6 | **El objetivo declarado** | Sin criterio de éxito no hay diagnóstico, hay descripción |
+
+**La asimetría que hay que decir en voz alta:** guardados y compartidos existen **solo
+para la cuenta propia**. Sobre una cuenta ajena, la API oficial da seguidores, posts,
+likes y comentarios, y nada más. El modo B siempre va a ser más pobre que el modo A — por
+arquitectura de la plataforma, no por falta de método. Cualquier herramienta que ofrezca
+guardados de un tercero los está estimando.
+
+**Y si el sujeto está disponible: preguntarle.** Diez ítems, sesenta segundos, r ≈
+0,77–0,83. Eso está unos 0,6 por encima de lo que dan las fotos. Una sola persona cercana
+respondiendo diez ítems da r = 0,46–0,49, y como su información es casi disjunta de la
+del modelo, **promediar los dos le gana a cualquiera por separado**. Todo el aparato de
+inferencia visual existe para los casos donde no se puede preguntar.
+
+---
+
 ## Requisitos mínimos de material
+
+Hay que separar dos cosas que se confunden:
+
+**Para contar** (pilares, cadencia, formatos, categorías) más material siempre ayuda,
+porque es medición directa:
 
 | Cantidad de posts | Qué se puede decir |
 |---|---|
-| < 10 | Nada más que descripción literal. Sin perfil. |
-| 10–29 | Pilares de contenido tentativos, cadencia, categorías. Todo con confianza baja. |
-| **30–60** | **Mínimo real para un perfil.** |
-| 60–90 | Rango recomendado. |
-| > 90 | Saturación; el rendimiento marginal cae fuerte. |
+| < 10 | Nada más que descripción literal |
+| 10–29 | Pilares tentativos, cadencia, categorías. Confianza baja |
+| **30–60** | **Mínimo real** |
+| 60–90 | Rango recomendado |
+
+**Para inferir** (impresión, posicionamiento, estilo) los retornos son logarítmicos y se
+aplanan rapidísimo. El óptimo de eficiencia en thin slices está en 60 segundos de
+material; **500 posts no son mejores que 60 de manera significativa.** Y el dato que hay
+que tener presente: pasar de 1 foto a 200 fotos movió la exactitud de 0,55 a **0,54**.
+
+O sea: pedir más posts para contar mejor, no para inferir mejor. Pasado el rango
+recomendado, lo que falta no es volumen — es otro canal de datos.
 
 Un perfil armado sobre 12 posts es ruido con formato de informe. Si no hay material,
 decirlo y parar — no compensar con prosa.
@@ -159,6 +199,32 @@ interpretativo si se rotula como tal, nunca como medición).
 
 ---
 
+## El marco: validez de la señal ≠ uso de la señal
+
+Todo juicio desde imágenes es una cadena de dos eslabones **independientes**: si la señal
+covaría de verdad con lo que se quiere saber, y si el observador la usa. Que sean
+independientes significa que hay dos modos de falla — ignorar señales válidas, y usar
+señales inválidas. **La segunda es la que produce informes confiados y equivocados.**
+
+De ahí sale la regla más importante de todas:
+
+> **Que dos análisis coincidan no es evidencia de que ninguno sea correcto.** Es evidencia
+> de que comparten el mismo estereotipo.
+
+Un sistema puede ser perfectamente consistente y perfectamente inválido. Es exactamente
+lo que pasa hoy: los modelos coinciden entre sí a r = 0,58–0,83 y con la persona a
+r = 0,18–0,31.
+
+**Corolario para el producto:** la gente sabe cuán extravertida parece (meta-exactitud
+0,45) y **no sabe casi nada del resto** (0,06–0,18). Ahí está el valor —
+**vender el espejo, no el diagnóstico.** Decirle a alguien cómo lo lee un desconocido es
+información que genuinamente no tiene, se mide con techo alto, y no requiere afirmar nada
+sobre quién es.
+
+Marco completo en `references/teoria-del-juicio.md`.
+
+---
+
 ## El techo honesto
 
 De acá sale la disciplina del resto. Detalle en `references/limites-y-evidencia.md`.
@@ -177,6 +243,14 @@ De acá sale la disciplina del resto. Detalle en `references/limites-y-evidencia
 - **Casi ningún vínculo color→rasgo replica.** Dos estudios de Instagram con las mismas
   features y n comparable dan **signos opuestos** en saturación, temperatura, arousal y
   dominancia. Lo único que se sostiene es "poca saturación ↔ neuroticismo".
+- **Las imágenes no aportan nada medible sobre otros canales.** El meta-análisis lo
+  confirma: las fotos no mostraron efecto significativo en ningún rasgo. Fusionar cuatro
+  familias de features visuales suma +0,00–0,01 de exactitud sobre n = 11.736. Y una
+  década de deep learning tampoco movió la aguja: el año de publicación como predictor da
+  β ≈ 0,00.
+- **Distintas fotos de la misma persona producen más varianza de impresión que fotos de
+  personas distintas.** Lo que se mide al "leer" una foto es, en buena medida, cuál foto
+  tocó.
 - **Todo está calibrado sobre datos de EE.UU. en inglés.** La valencia de las
   asociaciones se da vuelta entre rubros dentro de un mismo país. Asumir que sobrevive
   el salto a PyMEs argentinas es el supuesto más grande y menos validado de cualquier
@@ -201,6 +275,17 @@ observadores r ≈ 0,4–0,68. Algo mejor que eso a partir de fotos solas es un 
 7. **Belleza no es estrategia.** La calidad de producción levanta la demanda ~9%, pero
    prometer de más por imagen la destruye después vía reseñas. Recomendar "hacelo más
    lindo" sin mirar la oferta que hay abajo está contradicho por la evidencia.
+8. **Restringir cada conclusión al dominio del costo de la señal.** Una foto de un
+   producto premium prueba acceso a ese producto ese día. No prueba posicionamiento, ni
+   poder adquisitivo, ni identidad.
+9. **Buscar el residuo, no la afirmación.** Una grilla es afirmación de identidad
+   dirigida a otros, de punta a punta. El residuo involuntario está en la **cadencia**, la
+   **consistencia** y los **fondos** — nadie los curó. Por eso la varianza suele ser mejor
+   señal que el contenido.
+10. **Rechazar la heurística compensatoria.** "Se muestra lo que falta" no tiene respaldo:
+    la correlación narcisismo–selfies es r = 0,11–0,20, y el efecto de inseguridad
+    documentado es **intra-persona y diario**, no un diagnóstico entre personas. Además es
+    infalsable — cualquier observación lo confirma.
 
 ---
 
@@ -240,6 +325,8 @@ observadores r ≈ 0,4–0,68. Algo mejor que eso a partir de fotos solas es un 
 
 - `references/guardrails.md` — taxonomía 🔴🟡🟢, Ley 25.326, términos de Meta, checklist PyME
 - `references/inferencias.md` — tabla completa de inferencias con evidencia y modos de falla
-- `references/limites-y-evidencia.md` — techos de exactitud, qué replica y qué no
+- `references/limites-y-evidencia.md` — techos de exactitud, qué canal de datos aporta cuánto
+- `references/teoria-del-juicio.md` — modelo de lente, RAM, thin slices, reflejo vs. actuación
 - `references/protocolo-por-foto.md` — esquema por foto, anclas ordinales, patrones de prompting
-- `research/raw/` — los cinco informes de literatura completos, con bibliografía
+- `references/recursos.md` — libros, código open source, herramientas comerciales
+- `research/raw/` — los diez informes de literatura completos, con bibliografía

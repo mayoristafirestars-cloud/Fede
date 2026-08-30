@@ -114,6 +114,62 @@ que más se venden.
 
 ---
 
+## Qué canal de datos aporta cuánto
+
+De `research/raw/08-que-datos-mejoran.md`. Esta tabla es la respuesta a "¿qué le doy al
+sistema para que mejore?", y reordena bastante la intuición.
+
+### Ganancias categóricas (Δr ≥ +0,15)
+
+| Canal | Valor | Nota |
+|---|---|---|
+| **Autoinforme de 10 ítems** (TIPI/BFI-10, 60 segundos) | r ≈ 0,77–0,83 | **+0,25 sobre el mejor canal pasivo, +0,6 sobre las fotos.** Ninguna cantidad de datos pasivos cierra esa brecha |
+| **Un informante** (alguien cercano, 10 ítems) | r = 0,46–0,49 | La correlación *parcial* modelo–humano es 0,07: capturan información casi disjunta. **Promediar los dos le gana a cualquiera solo, p < 0,001 en los cinco rasgos** |
+| **Likes / follows / listas guardadas** | r = 0,56 con 227 likes; 0,66 arriba de 500 | El único canal que rompe el techo de 0,30–0,40 |
+| **Historial musical** | Apertura 0,30 · Extraversión 0,21 standalone | Incremental sobre demografía: +0,20 (O), +0,15 (E), +0,12 (A). El canal incremental mejor documentado del campo |
+| **Instrumento de medición más largo** | 100 ítems vs. 20 ítems → r = 0,41 vs. 0,34 | +0,07 sobre los mismos datos, y es gratis |
+
+### Aporte moderado (+0,05–0,15)
+
+Texto de ≥1.000 palabras (r = 0,38) · edad y género (β ≈ 0,25) · *cualquier* segundo tipo
+de huella digital (β = 0,21–0,27) · más likes hasta ~300 · registros de comunicación
+(solo extraversión, r = 0,35).
+
+### Aporte marginal
+
+Historial de compras — Big Five r = 0,15, inútil. **Pero materialismo r = 0,33**: si el
+constructo es comercial en vez de psicológico, sube de categoría. Estructura de red: solo
+extraversión.
+
+### Verificado que no aporta nada
+
+- **Las fotos.** El moderador del meta-análisis está confirmado: sin efecto significativo
+  en ningún rasgo.
+- **Fusionar familias de features visuales:** +0,00–0,01 sobre n = 11.736.
+- **Agregar imágenes al texto:** −2,8% de RMSE, sobre n = 62.
+- **Una década de deep learning:** el año de publicación como predictor da β ≈ 0,00.
+- **Uso de apps y sensores:** todos con p ≥ 0,11.
+- **El humano corrigiendo la salida del modelo: g = −0,27**, y g = −0,54 cuando el modelo
+  ya era mejor. Ver la nota sobre esto en `guardrails.md`.
+
+### Curvas de volumen
+
+- **Likes:** log-lineal. 10 / 70 / 150 / 300 likes igualan a un colega / un amigo / un
+  familiar / un cónyuge. Inflexión en 150–300.
+- **Texto:** tiene un *umbral* (1.000 palabras), no una curva.
+- **Imágenes:** de 1 a 200 fotos, la exactitud fue de 0,55 a **0,54**.
+
+### Para el caso cuenta comercial
+
+1. **Datos de venta.** Elasticidad 0,353 contra 0,137 del engagement — y las dos implican
+   **prescripciones de contenido opuestas**.
+2. **Insights.** Guardados 37 por carrusel contra 25 comentarios. Invisibles desde afuera.
+3. **6–12 meses de historial.**
+4. **Texto ganado** (comentarios). El contenido propio no mueve intención de compra.
+5. **Los seguidores son un resultado, no una palanca** — medido sobre n > 14.000.
+
+---
+
 ## Regla de una línea
 
 > Si la afirmación es sobre **lo que la cuenta comunica**, la evidencia probablemente la

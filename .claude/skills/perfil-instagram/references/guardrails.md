@@ -103,6 +103,13 @@ objetivas de la API oficial.
 12. Canal de derechos con SLA legal: acceso 10 días corridos (art. 14), rectificación/supresión 5 días hábiles (art. 16), opt-out publicitario inmediato (art. 27).
 13. Revisión humana obligatoria antes de cualquier acción con efecto sobre una persona o un negocio. Ningún perfil puede ser el único fundamento de una valoración (LPDP art. 20).
 
+> **Matiz importante, y contraintuitivo.** La revisión humana es obligatoria sobre la
+> **decisión**, no sobre la **estimación**. Medido: el humano corrigiendo la salida del
+> modelo empeora la exactitud (g = −0,27; g = −0,54 cuando el modelo ya era mejor). O sea:
+> la persona decide qué hacer con el análisis y responde por eso — pero "el modelo dijo
+> 0,4 y a mí me parece 0,7" no es supervisión, es ruido con firma. Si el número está mal,
+> se arregla el método o se suprime la dimensión; no se lo pisa a ojo.
+
 ---
 
 ## Checklist PyME argentina
