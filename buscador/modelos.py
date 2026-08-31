@@ -166,7 +166,13 @@ class Oferta:
         return (self.vuelta.salida.date() - self.ida.llegada.date()).days
 
     def clave_dedupe(self) -> tuple:
-        """Identidad del itinerario, para descartar duplicados entre proveedores."""
+        """Identidad de la oferta, para descartar duplicados entre proveedores.
+
+        El itinerario no alcanza: la misma aerolínea vende el mismo vuelo en
+        varias tarifas (con equipaje, sin equipaje, flexible). Son opciones
+        distintas y el usuario tiene que poder elegir, así que la tarifa entra
+        en la identidad.
+        """
         def firma(it: Optional[Itinerario]) -> tuple:
             if it is None:
                 return ()
@@ -175,7 +181,13 @@ class Oferta:
                 for s in it.segmentos
             )
 
-        return (firma(self.ida), firma(self.vuelta), self.cabina)
+        return (
+            firma(self.ida),
+            firma(self.vuelta),
+            self.cabina,
+            self.equipaje.mano_incluido,
+            self.equipaje.bodega_incluidas,
+        )
 
 
 @dataclass
