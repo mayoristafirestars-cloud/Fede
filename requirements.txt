@@ -1,0 +1,3 @@
+# El núcleo del buscador corre con la librería estándar.
+# requests se usa para hablar con las APIs de vuelos.
+requests>=2.31.0
