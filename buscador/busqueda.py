@@ -194,6 +194,7 @@ def buscar(
     radio_terrestre_km: int = 0,
     solo_proveedores: list[str] | None = None,
     hilos: int = 4,
+    max_combinaciones: int = 60,
 ) -> Resultado:
     """Ejecuta la búsqueda completa y devuelve las ofertas sin rankear."""
     disponibles = proveedores_disponibles(solo_proveedores)
@@ -222,9 +223,25 @@ def buscar(
     log.info("plan: %d combinaciones, presupuesto %d requests",
              len(combinaciones), presupuesto_requests)
 
+    # Dos topes distintos, porque miden cosas distintas:
+    #
+    # - `presupuesto_requests` cuida la cuota de las APIs pagas.
+    # - `max_combinaciones` cuida el tiempo y el ruido. Un proveedor gratis
+    #   tiene costo cero y por sí solo nunca agotaría el presupuesto, así que
+    #   sin este segundo tope una consulta con flexibilidad y aeropuertos
+    #   alternativos dispara cientos de búsquedas: 7 fechas de ida x 7 de
+    #   vuelta x 14 pares de aeropuertos son 686. Devuelve miles de ofertas
+    #   casi idénticas y tarda una eternidad, sin mejorar el resultado.
+    tope = min(len(combinaciones), max(max_combinaciones, 1))
+    if tope < len(combinaciones):
+        resultado.sondeo.append(
+            f"plan recortado: {len(combinaciones)} combinaciones posibles, "
+            f"se consultan las {tope} más prometedoras"
+        )
+
     gastado = 0
     tareas: list[tuple[Proveedor, Combinacion]] = []
-    for comb in combinaciones:
+    for comb in combinaciones[:tope]:
         for proveedor in usar:
             costo = max(proveedor.costo_por_busqueda, 0)
             if gastado + costo > presupuesto_requests and tareas:

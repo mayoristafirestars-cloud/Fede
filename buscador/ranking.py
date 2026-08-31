@@ -27,7 +27,7 @@ from __future__ import annotations
 
 import math
 from dataclasses import dataclass, field
-from datetime import datetime, timedelta
+from datetime import date, datetime, timedelta
 from typing import Optional
 
 from buscador.aeropuertos import AEROPUERTOS
@@ -461,6 +461,44 @@ def rankear(
         ofertas,
         key=lambda o: (desgloses[id(o)].total, o.precio_comparable, o.duracion_total_min),
     )
+
+
+def agrupar_equivalentes(ofertas: list[Oferta]) -> list[Oferta]:
+    """Colapsa opciones que son la misma decisión con otra fecha de vuelta.
+
+    Cuando se busca con flexibilidad, el mismo vuelo de ida al mismo precio
+    aparece una vez por cada fecha de vuelta posible. Mostrar cinco filas
+    idénticas que sólo difieren en un día de regreso llena la pantalla y no
+    agrega información: es una sola opción con varias fechas disponibles.
+
+    Se conserva la mejor de cada grupo —la lista ya viene ordenada— y se
+    anotan las otras fechas de vuelta en `datos_proveedor` para poder
+    mostrarlas en una línea.
+    """
+    mejores: dict[tuple, Oferta] = {}
+    alternativas: dict[tuple, list[date]] = {}
+
+    for o in ofertas:
+        clave = (
+            tuple((s.aerolinea, s.numero_vuelo, s.salida.isoformat())
+                  for s in o.ida.segmentos),
+            round(o.precio_comparable),
+            o.equipaje.bodega_incluidas,
+            o.equipaje.mano_incluido,
+        )
+        if clave not in mejores:
+            mejores[clave] = o
+            alternativas[clave] = []
+        elif o.vuelta is not None:
+            alternativas[clave].append(o.vuelta.salida.date())
+
+    agrupadas = []
+    for clave, o in mejores.items():
+        otras = sorted(set(alternativas[clave]))
+        if otras:
+            o.datos_proveedor["otras_fechas_de_vuelta"] = otras
+        agrupadas.append(o)
+    return agrupadas
 
 
 def mas_barata(ofertas: list[Oferta]) -> Oferta | None:

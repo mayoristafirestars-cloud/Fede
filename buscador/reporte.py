@@ -124,6 +124,12 @@ def render_consola(
             lineas.append(_c("    VUELTA (el precio incluye la vuelta; el horario "
                              "se elige al reservar)", "tenue", color))
 
+        otras = o.datos_proveedor.get("otras_fechas_de_vuelta")
+        if otras:
+            fechas = ", ".join(f"{d:%d/%m}" for d in otras[:6])
+            lineas.append(_c(f"    También al mismo precio volviendo el {fechas}",
+                             "tenue", color))
+
         extras = [_etiqueta_equipaje(o)]
         if o.asientos_restantes is not None and o.asientos_restantes <= 3:
             extras.append(f"¡quedan {o.asientos_restantes}!")

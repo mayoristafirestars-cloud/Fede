@@ -256,3 +256,52 @@ class TestSondeoDeFechas:
         r = buscar(consulta, presupuesto_requests=100)
         assert r.combinaciones_consultadas < sin_sondeo
         assert r.sondeo, "el resumen tiene que contar que hubo sondeo"
+
+
+class TestTopeDeCombinaciones:
+    """Un proveedor gratis no gasta cuota, pero igual no puede correr sin freno."""
+
+    def test_un_proveedor_sin_costo_igual_respeta_el_tope(self, consulta, monkeypatch):
+        consulta.flex_dias = 3
+        gratis = ProveedorFalso()
+        gratis.costo_por_busqueda = 0
+        monkeypatch.setattr("buscador.busqueda.proveedores_disponibles", lambda solo=None: [gratis])
+
+        r = buscar(consulta, presupuesto_requests=40, max_combinaciones=10)
+        assert len(gratis.llamadas) <= 10
+
+    def test_sin_el_tope_una_consulta_flexible_explota(self, consulta):
+        # 7 fechas de ida x 7 de vuelta x los pares de aeropuertos cercanos.
+        consulta.flex_dias = 3
+        assert len(planificar(consulta, radio_terrestre_km=600)) > 200
+
+    def test_el_recorte_se_informa(self, consulta, monkeypatch):
+        consulta.flex_dias = 3
+        gratis = ProveedorFalso()
+        gratis.costo_por_busqueda = 0
+        monkeypatch.setattr("buscador.busqueda.proveedores_disponibles", lambda solo=None: [gratis])
+
+        r = buscar(consulta, max_combinaciones=5)
+        assert any("plan recortado" in nota for nota in r.sondeo)
+
+    def test_lo_que_pidio_el_usuario_sobrevive_al_recorte(self, consulta, monkeypatch):
+        consulta.flex_dias = 3
+        gratis = ProveedorFalso()
+        gratis.costo_por_busqueda = 0
+        monkeypatch.setattr("buscador.busqueda.proveedores_disponibles", lambda solo=None: [gratis])
+
+        buscar(consulta, max_combinaciones=3)
+        assert ("AEP", "BRC", IDA, VUELTA) in [
+            (o, d, i, v) for o, d, i, v in gratis.llamadas
+        ]
+
+    def test_el_presupuesto_de_requests_sigue_mandando_en_proveedores_pagos(
+        self, consulta, monkeypatch
+    ):
+        consulta.flex_dias = 3
+        pago = ProveedorFalso()
+        pago.costo_por_busqueda = 1
+        monkeypatch.setattr("buscador.busqueda.proveedores_disponibles", lambda solo=None: [pago])
+
+        buscar(consulta, presupuesto_requests=4, max_combinaciones=100)
+        assert len(pago.llamadas) <= 4

@@ -16,7 +16,13 @@ from buscador.busqueda import buscar
 from buscador.config import env_int
 from buscador.modelos import Consulta
 from buscador.precios_ar import aplicar_costo_real, cotizaciones
-from buscador.ranking import Preferencias, mas_barata, mas_rapida, rankear
+from buscador.ranking import (
+    Preferencias,
+    agrupar_equivalentes,
+    mas_barata,
+    mas_rapida,
+    rankear,
+)
 from buscador.reporte import render_consola, render_markdown
 
 log = logging.getLogger("buscador")
@@ -234,7 +240,9 @@ def main(argv: list[str] | None = None) -> int:
         Preferencias.solo_precio(moneda="ARS") if args.perfil == "solo-precio"
         else Preferencias.perfil(args.perfil, tipo_cambio=tipo_cambio, moneda="ARS")
     )
-    ofertas = rankear(resultado.ofertas, consulta, preferencias)
+    # Se rankea todo y recién después se agrupa, para que el representante
+    # de cada grupo sea el mejor y no uno cualquiera.
+    ofertas = agrupar_equivalentes(rankear(resultado.ofertas, consulta, preferencias))
 
     if args.json:
         print(_a_json(ofertas, consulta, resultado.resumen()))

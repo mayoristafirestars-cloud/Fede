@@ -240,3 +240,65 @@ def test_atajos_de_mas_barata_y_mas_rapida():
     assert mas_barata(ofertas) is lento
     assert mas_rapida(ofertas) is veloz
     assert mas_barata([]) is None
+
+
+class TestAgruparEquivalentes:
+    """La misma ida al mismo precio con otra vuelta es una opción, no cinco."""
+
+    def _con_vuelta(self, precio, dia_vuelta, hora_ida=10):
+        ida = Itinerario([tramo("AEP", "BRC", datetime(2026, 11, 10, hora_ida, 0), 140, "AR")])
+        vuelta = Itinerario([tramo("BRC", "AEP", datetime(2026, 11, dia_vuelta, 7, 0), 140, "AR")])
+        return Oferta(proveedor="t", precio=precio, moneda="USD", ida=ida, vuelta=vuelta)
+
+    def test_colapsa_las_que_solo_cambian_la_fecha_de_vuelta(self):
+        from buscador.ranking import agrupar_equivalentes
+
+        ofertas = [self._con_vuelta(200, d) for d in (20, 21, 22)]
+        agrupadas = agrupar_equivalentes(ofertas)
+        assert len(agrupadas) == 1
+
+    def test_anota_las_otras_fechas_disponibles(self):
+        from buscador.ranking import agrupar_equivalentes
+
+        agrupadas = agrupar_equivalentes([self._con_vuelta(200, d) for d in (20, 21, 22)])
+        otras = agrupadas[0].datos_proveedor["otras_fechas_de_vuelta"]
+        assert otras == [date(2026, 11, 21), date(2026, 11, 22)]
+
+    def test_conserva_la_primera_que_es_la_mejor_rankeada(self):
+        from buscador.ranking import agrupar_equivalentes
+
+        mejor = self._con_vuelta(200, 20)
+        agrupadas = agrupar_equivalentes([mejor, self._con_vuelta(200, 21)])
+        assert agrupadas[0] is mejor
+
+    def test_no_agrupa_precios_distintos(self):
+        from buscador.ranking import agrupar_equivalentes
+
+        assert len(agrupar_equivalentes([self._con_vuelta(200, 20),
+                                         self._con_vuelta(260, 21)])) == 2
+
+    def test_no_agrupa_idas_distintas(self):
+        from buscador.ranking import agrupar_equivalentes
+
+        assert len(agrupar_equivalentes([self._con_vuelta(200, 20, hora_ida=8),
+                                         self._con_vuelta(200, 20, hora_ida=18)])) == 2
+
+    def test_no_agrupa_tarifas_con_distinto_equipaje(self):
+        from buscador.ranking import agrupar_equivalentes
+
+        sin_bodega = self._con_vuelta(200, 20)
+        con_bodega = self._con_vuelta(200, 21)
+        con_bodega.equipaje = Equipaje(mano_incluido=True, bodega_incluidas=1)
+        assert len(agrupar_equivalentes([sin_bodega, con_bodega])) == 2
+
+    def test_solo_ida_no_se_agrupa_entre_si(self):
+        from buscador.ranking import agrupar_equivalentes
+
+        a = directo(200, hora=8)
+        b = directo(200, hora=18)
+        assert len(agrupar_equivalentes([a, b])) == 2
+
+    def test_lista_vacia(self):
+        from buscador.ranking import agrupar_equivalentes
+
+        assert agrupar_equivalentes([]) == []
