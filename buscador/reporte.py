@@ -150,7 +150,9 @@ def _linea_desglose(o: Oferta) -> str:
     d = o.desglose_precio
     partes = []
     if d.get("percepcion_rg5617"):
-        partes.append(f"percepción 30%: {fmt_precio(d['percepcion_rg5617'], 'ARS')}")
+        adentro = " (ya incluida)" if d.get("percepcion_ya_incluida") else ""
+        partes.append(
+            f"percepción 30%{adentro}: {fmt_precio(d['percepcion_rg5617'], 'ARS')}")
     if d.get("equipaje"):
         partes.append(f"equipaje: {fmt_precio(d['equipaje'], 'ARS')}")
     if d.get("diferencia_vs_mejor"):

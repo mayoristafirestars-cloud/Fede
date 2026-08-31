@@ -190,3 +190,69 @@ def test_mismo_vuelo_con_y_sin_equipaje_son_ofertas_distintas(consulta, monkeypa
 
     r = buscar(consulta, presupuesto_requests=5)
     assert sorted(o.precio for o in r.ofertas) == [100, 180]
+
+
+class TestSondeoDeFechas:
+    """Fase 1: preguntar gratis dónde mirar antes de gastar créditos."""
+
+    def _proveedor_con_calendario(self, calendario):
+        prov = ProveedorFalso()
+        prov.fechas_mas_baratas = lambda consulta, origen, destino: calendario  # type: ignore[method-assign]
+        return prov
+
+    def test_sin_flexibilidad_no_hay_nada_que_sondear(self, consulta):
+        from buscador.busqueda import sondear_fechas
+
+        prov = self._proveedor_con_calendario({IDA: 100.0})
+        fechas, avisos = sondear_fechas(consulta, [prov])
+        assert fechas == set() and avisos == []
+
+    def test_elige_las_fechas_mas_baratas(self, consulta):
+        from buscador.busqueda import sondear_fechas
+
+        consulta.flex_dias = 3
+        calendario = {IDA + timedelta(days=d): 1000.0 - d * 10 for d in range(-3, 4)}
+        fechas, _ = sondear_fechas(consulta, [self._proveedor_con_calendario(calendario)],
+                                   top=3)
+        # Las tres más baratas son las de mayor desplazamiento hacia adelante.
+        assert {IDA + timedelta(days=d) for d in (1, 2, 3)} <= fechas
+
+    def test_la_fecha_pedida_siempre_se_consulta(self, consulta):
+        from buscador.busqueda import sondear_fechas
+
+        consulta.flex_dias = 3
+        calendario = {IDA + timedelta(days=d): 100.0 for d in range(1, 4)}
+        calendario[IDA] = 999_999.0        # carísima, el sondeo la descartaría
+        fechas, _ = sondear_fechas(consulta, [self._proveedor_con_calendario(calendario)],
+                                   top=2)
+        assert IDA in fechas
+
+    def test_ignora_fechas_fuera_del_rango_pedido(self, consulta):
+        from buscador.busqueda import sondear_fechas
+
+        consulta.flex_dias = 1
+        calendario = {IDA + timedelta(days=d): 100.0 for d in (-30, 0, 30)}
+        fechas, _ = sondear_fechas(consulta, [self._proveedor_con_calendario(calendario)])
+        assert fechas == {IDA}
+
+    def test_un_sondeo_que_falla_no_rompe_la_busqueda(self, consulta):
+        from buscador.busqueda import sondear_fechas
+
+        consulta.flex_dias = 2
+        roto = ProveedorFalso()
+        roto.fechas_mas_baratas = lambda *a, **kw: (_ for _ in ()).throw(  # type: ignore[method-assign]
+            ErrorProveedor("no soportado"))
+        fechas, avisos = sondear_fechas(consulta, [roto])
+        assert fechas == set()
+        assert any("no soportado" in a for a in avisos)
+
+    def test_el_sondeo_recorta_el_plan(self, consulta, monkeypatch):
+        consulta.flex_dias = 3
+        calendario = {IDA + timedelta(days=d): 1000.0 + abs(d) for d in range(-3, 4)}
+        prov = self._proveedor_con_calendario(calendario)
+        monkeypatch.setattr("buscador.busqueda.proveedores_disponibles", lambda solo=None: [prov])
+
+        sin_sondeo = len(planificar(consulta))
+        r = buscar(consulta, presupuesto_requests=100)
+        assert r.combinaciones_consultadas < sin_sondeo
+        assert r.sondeo, "el resumen tiene que contar que hubo sondeo"

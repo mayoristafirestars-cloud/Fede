@@ -151,9 +151,13 @@ def oferta_es_internacional(o: Oferta) -> bool:
 class CostoReal:
     """Lo que sale el pasaje según cómo se pague, todo en pesos."""
 
-    publicado_ars: float                 # lo que muestra el buscador
+    publicado_ars: float                 # lo que muestra el buscador, en pesos
     equipaje_ars: float = 0.0            # lo que hay que sumar para llevar lo que se lleva
-    percepcion_ars: float = 0.0          # RG 5617, sólo internacional pagado en pesos
+    percepcion_ars: float = 0.0          # RG 5617, sólo en pasajes al exterior
+    #: True cuando la percepción ya viene adentro de `publicado_ars`. Pasa
+    #: cuando el precio venía en dólares y se convirtió al dólar tarjeta, que
+    #: la lleva incorporada. Si no se distinguiera, se sumaría dos veces.
+    percepcion_ya_incluida: bool = False
     internacional: bool = False
     forma_de_pago: FormaDePago = "tarjeta_pesos"
     detalle_equipaje: list[str] = field(default_factory=list)
@@ -162,7 +166,8 @@ class CostoReal:
     @property
     def total_hoy(self) -> float:
         """La plata que sale del bolsillo el día de la compra."""
-        return self.publicado_ars + self.equipaje_ars + self.percepcion_ars
+        a_sumar = 0.0 if self.percepcion_ya_incluida else self.percepcion_ars
+        return self.publicado_ars + self.equipaje_ars + a_sumar
 
     @property
     def total_recuperable(self) -> float:
@@ -179,6 +184,7 @@ class CostoReal:
             "publicado": round(self.publicado_ars, 2),
             "equipaje": round(self.equipaje_ars, 2),
             "percepcion_rg5617": round(self.percepcion_ars, 2),
+            "percepcion_ya_incluida": float(self.percepcion_ya_incluida),
             "total_hoy": round(self.total_hoy, 2),
             "total_neto": round(self.total_neto, 2),
         }
@@ -211,13 +217,22 @@ def calcular_costo_real(
         tc = cotiz.tarjeta if forma_de_pago == "tarjeta_pesos" else cotiz.mep
         publicado = oferta.precio * tc
 
-    # 2) La percepción, cuando el precio venía en pesos y no la traía.
+    # 2) La percepción del 30%, que sólo alcanza a los pasajes al exterior
+    #    pagados en pesos con tarjeta.
     percepcion = 0.0
-    if internacional and forma_de_pago == "tarjeta_pesos" and oferta.moneda == "ARS":
-        # Google Flights publica la tarifa con las tasas del ticket (DNT 7%,
-        # aeroestación, seguridad) pero sin la percepción, que es un cargo del
-        # medio de pago y aparece recién en el resumen de la tarjeta.
-        percepcion = publicado * PERCEPCION_RG5617
+    ya_incluida = False
+    if internacional and forma_de_pago == "tarjeta_pesos":
+        if oferta.moneda == "ARS":
+            # Los buscadores publican la tarifa con las tasas del ticket
+            # (DNT 7%, aeroestación, seguridad) pero sin la percepción, que es
+            # un cargo del medio de pago y aparece recién en el resumen.
+            percepcion = publicado * PERCEPCION_RG5617
+        else:
+            # El precio se convirtió al dólar tarjeta, que ya la trae adentro.
+            # Se calcula igual para poder mostrarla y para que el consejo de
+            # pagar en dólares tenga un número concreto, pero no se suma.
+            percepcion = oferta.precio * (cotiz.tarjeta - cotiz.oficial)
+            ya_incluida = True
 
     # 3) El equipaje que la tarifa no incluye.
     tramos = 2 if oferta.vuelta else 1
@@ -236,6 +251,7 @@ def calcular_costo_real(
         publicado_ars=publicado,
         equipaje_ars=equipaje,
         percepcion_ars=percepcion,
+        percepcion_ya_incluida=ya_incluida,
         internacional=internacional,
         forma_de_pago=forma_de_pago,
         detalle_equipaje=detalle,

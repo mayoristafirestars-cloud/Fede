@@ -80,11 +80,19 @@ class TestInternacional:
         assert c.total_neto == pytest.approx(1_000_000)
 
     def test_precio_en_dolares_con_tarjeta_usa_el_dolar_tarjeta(self):
-        # El dólar tarjeta ya trae la percepción adentro: no se suma dos veces.
         c = calcular_costo_real(oferta(800, "USD", "EZE", "MAD"),
                                 forma_de_pago="tarjeta_pesos", cotiz=COTIZ)
         assert c.publicado_ars == pytest.approx(800 * 1950)
-        assert c.percepcion_ars == 0
+        # El dólar tarjeta ya trae la percepción adentro: se informa para que
+        # el usuario la vea, pero no se vuelve a sumar.
+        assert c.percepcion_ya_incluida
+        assert c.percepcion_ars == pytest.approx(800 * (1950 - 1500))
+        assert c.total_hoy == pytest.approx(800 * 1950)
+
+    def test_la_percepcion_embebida_tambien_se_recupera(self):
+        c = calcular_costo_real(oferta(800, "USD", "EZE", "MAD"), cotiz=COTIZ)
+        assert c.total_recuperable == pytest.approx(800 * (1950 - 1500))
+        assert c.total_neto == pytest.approx(800 * 1500)
 
     def test_pagando_en_dolares_se_liquida_al_mep(self):
         c = calcular_costo_real(oferta(800, "USD", "EZE", "MAD"),
