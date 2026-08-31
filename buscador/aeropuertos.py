@@ -171,9 +171,26 @@ VECINOS_TERRESTRES: dict[str, list[tuple[str, int]]] = {
 
 
 def normalizar(texto: str) -> str:
-    """Minúsculas sin acentos, para buscar 'cordoba' y encontrar 'Córdoba'."""
+    """Minúsculas, sin acentos y con separadores unificados.
+
+    Sirve para que 'cordoba' encuentre 'Córdoba' y para que dé lo mismo
+    escribir 'buenos aires', 'Buenos-Aires' o 'BUENOS_AIRES': en la línea de
+    comandos los espacios son incómodos y el guion es lo natural.
+    """
     limpio = unicodedata.normalize("NFKD", texto.strip().lower())
-    return "".join(c for c in limpio if not unicodedata.combining(c))
+    sin_acentos = "".join(c for c in limpio if not unicodedata.combining(c))
+    for separador in ("-", "_", "."):
+        sin_acentos = sin_acentos.replace(separador, " ")
+    return " ".join(sin_acentos.split())
+
+
+def _nombre_de_ciudad(ciudad: str) -> str:
+    """'Santa Rosa (La Pampa)' -> 'santa rosa'.
+
+    El paréntesis desambigua para quien lee, pero nadie lo escribe al buscar.
+    """
+    normalizada = normalizar(ciudad)
+    return normalizada.split("(")[0].strip()
 
 
 def buscar_aeropuerto(texto: str) -> list[Aeropuerto]:
@@ -187,10 +204,10 @@ def buscar_aeropuerto(texto: str) -> list[Aeropuerto]:
 
     exactos, parciales = [], []
     for ap in AEROPUERTOS.values():
-        ciudad = normalizar(ap.ciudad)
+        ciudad = _nombre_de_ciudad(ap.ciudad)
         if ciudad == t:
             exactos.append(ap)
-        elif t in ciudad or t in normalizar(ap.nombre):
+        elif t in normalizar(ap.ciudad) or t in normalizar(ap.nombre):
             parciales.append(ap)
     return exactos + parciales
 

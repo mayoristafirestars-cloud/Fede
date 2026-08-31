@@ -86,3 +86,28 @@ def test_multiaeropuerto_se_considera_alternativo_mutuo():
 def test_nombre_legible_y_fallback():
     assert nombre("brc") == "San Carlos de Bariloche (BRC)"
     assert nombre("zzz") == "ZZZ"
+
+
+class TestNombresEscritosAMano:
+    """En la línea de comandos nadie escribe los nombres como en el catálogo."""
+
+    def test_los_guiones_valen_como_espacios(self):
+        assert [a.iata for a in buscar_aeropuerto("santa-rosa")] == ["RSA"]
+        assert set(a.iata for a in buscar_aeropuerto("Buenos-Aires")) == {"AEP", "EZE"}
+
+    def test_el_guion_bajo_tambien(self):
+        assert [a.iata for a in buscar_aeropuerto("santa_rosa")] == ["RSA"]
+
+    def test_no_hace_falta_escribir_el_parentesis_que_desambigua(self):
+        # El catálogo dice "Santa Rosa (La Pampa)"; el usuario escribe "santa rosa".
+        assert [a.iata for a in buscar_aeropuerto("santa rosa")] == ["RSA"]
+
+    def test_espacios_de_mas_no_molestan(self):
+        assert [a.iata for a in buscar_aeropuerto("  mar   del  plata ")] == ["MDQ"]
+
+    def test_sigue_encontrando_por_nombre_de_aeropuerto(self):
+        assert "EZE" in [a.iata for a in buscar_aeropuerto("pistarini")]
+
+    def test_normalizar_unifica_separadores(self):
+        assert normalizar("São-Paulo") == "sao paulo"
+        assert normalizar(" EL  CALAFATE ") == "el calafate"
