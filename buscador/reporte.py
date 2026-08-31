@@ -71,6 +71,8 @@ def render_consola(
     top: int = 10,
     color: bool = True,
     resumen_busqueda: Optional[dict] = None,
+    barata: Optional[Oferta] = None,
+    rapida: Optional[Oferta] = None,
 ) -> str:
     if not ofertas:
         return _c("No se encontraron vuelos con esos criterios.", "rojo", color)
@@ -83,48 +85,95 @@ def render_consola(
     lineas.append(_c(cab, "negrita", color))
     if resumen_busqueda:
         lineas.append(_c(
-            f"{resumen_busqueda.get('combinaciones', 0)} combinaciones consultadas · "
+            f"{resumen_busqueda.get('combinaciones', 0)} búsquedas · "
             f"{resumen_busqueda.get('ofertas_crudas', 0)} ofertas · "
-            f"proveedores: {', '.join(resumen_busqueda.get('proveedores', [])) or '—'}",
+            f"vía {', '.join(resumen_busqueda.get('proveedores', [])) or '—'}",
             "tenue", color))
+        for nota in resumen_busqueda.get("sondeo", []):
+            lineas.append(_c(nota, "tenue", color))
     lineas.append("─" * 78)
 
-    mas_barata = min(ofertas, key=lambda o: o.precio_comparable)
+    barata = barata or min(ofertas, key=lambda o: o.precio_comparable)
+    rapida = rapida or min(ofertas, key=lambda o: o.duracion_total_min)
+
     for i, o in enumerate(ofertas[:top], start=1):
-        marca = ""
+        etiquetas = []
         if o is ofertas[0]:
-            marca = _c(" ★ MEJOR OPCIÓN", "verde", color)
-        if o is mas_barata:
-            marca += _c(" 💲 MÁS BARATO", "amarillo", color)
+            etiquetas.append(_c("★ MEJOR OPCIÓN", "verde", color))
+        if o is barata and o is not ofertas[0]:
+            etiquetas.append(_c("💲 EL MÁS BARATO", "amarillo", color))
+        if o is rapida and o is not ofertas[0] and o is not barata:
+            etiquetas.append(_c("⚡ EL MÁS RÁPIDO", "cyan", color))
 
         precio = fmt_precio(o.precio_comparable, o.moneda_comparable)
+        cabecera = f"{i:>2}. {_c(precio, 'negrita', color)}"
+        if o.precio_ars_final is not None and o.moneda != "ARS":
+            cabecera += _c(f"  ({fmt_precio(o.precio, o.moneda)})", "tenue", color)
+        cabecera += f"  {_c('·', 'tenue', color)} {'+'.join(o.aerolineas)}"
+        if o.puntaje is not None:
+            cabecera += _c(f"  {o.puntaje:g}/100", "tenue", color)
+        if etiquetas:
+            cabecera += "  " + " ".join(etiquetas)
+
         lineas.append("")
-        lineas.append(f"{i:>2}. {_c(precio, 'negrita', color)}"
-                      f"  {_c('·', 'tenue', color)} {'+'.join(o.aerolineas)}"
-                      f"{marca}")
+        lineas.append(cabecera)
         lineas.append(f"    IDA    {describir_itinerario(o.ida)}")
         if o.vuelta:
             lineas.append(f"    VUELTA {describir_itinerario(o.vuelta)}")
+        elif o.datos_proveedor.get("falta_tramo_de_vuelta"):
+            lineas.append(_c("    VUELTA (el precio incluye la vuelta; el horario "
+                             "se elige al reservar)", "tenue", color))
 
         extras = [_etiqueta_equipaje(o)]
         if o.asientos_restantes is not None and o.asientos_restantes <= 3:
             extras.append(f"¡quedan {o.asientos_restantes}!")
         if o.self_transfer:
-            extras.append("⚠ tramos separados (sin protección de conexión)")
-        if o.precio_ars_final and o.moneda != "ARS":
-            extras.append(f"≈ {fmt_precio(o.precio_ars_final, 'ARS')} finales")
+            extras.append("⚠ tramos separados")
+        if o.indicativo:
+            extras.append("≈ precio de referencia, no cotización en vivo")
         lineas.append(_c("    " + "  ·  ".join(extras), "tenue", color))
 
+        desglose = _linea_desglose(o)
+        if desglose:
+            lineas.append(_c("    " + desglose, "tenue", color))
         if o.motivos:
             lineas.append(_c("    " + " ".join(o.motivos), "cyan", color))
 
     lineas.append("")
     lineas.append("─" * 78)
-    lineas.append(_c(
-        f"Precios verificados al {datetime.now():%d/%m/%Y %H:%M}. "
-        "La tarifa se confirma recién al pagar en el sitio de la aerolínea.",
-        "tenue", color))
+    lineas.extend(_pie(ofertas[0], color))
     return "\n".join(lineas)
+
+
+def _linea_desglose(o: Oferta) -> str:
+    """Muestra de qué está hecho el precio cuando hay algo que no se ve."""
+    d = o.desglose_precio
+    partes = []
+    if d.get("percepcion_rg5617"):
+        partes.append(f"percepción 30%: {fmt_precio(d['percepcion_rg5617'], 'ARS')}")
+    if d.get("equipaje"):
+        partes.append(f"equipaje: {fmt_precio(d['equipaje'], 'ARS')}")
+    if d.get("diferencia_vs_mejor"):
+        partes.append(f"+{fmt_precio(d['diferencia_vs_mejor'], 'ARS')} de costo total vs. la mejor")
+    return "  ·  ".join(partes)
+
+
+def _pie(mejor: Oferta, color: bool) -> list[str]:
+    """Cierre con los avisos que cambian la decisión de compra."""
+    pie = []
+    d = mejor.desglose_precio
+    if d.get("percepcion_rg5617"):
+        pie.append(_c(
+            f"💡 Pagando en dólares (MEP, débito en USD o stop debit) te ahorrás la "
+            f"percepción del 30%: {fmt_precio(d['percepcion_rg5617'], 'ARS')}.",
+            "verde", color))
+        pie.append(_c(
+            "   Si igual pagás en pesos, la percepción es a cuenta de Ganancias y "
+            "Bienes Personales: se recupera vía ARCA o SIRADIG.", "tenue", color))
+    pie.append(_c(
+        f"Consultado el {datetime.now():%d/%m/%Y %H:%M}. La tarifa se confirma recién "
+        "al pagar en el sitio de la aerolínea.", "tenue", color))
+    return pie
 
 
 def render_markdown(ofertas: list[Oferta], consulta: Consulta, top: int = 10) -> str:

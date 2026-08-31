@@ -50,6 +50,7 @@ class Resultado:
     ofertas_crudas: int = 0
     proveedores: list[str] = field(default_factory=list)
     errores: list[str] = field(default_factory=list)
+    sondeo: list[str] = field(default_factory=list)
 
     def resumen(self) -> dict:
         return {
@@ -57,14 +58,71 @@ class Resultado:
             "ofertas_crudas": self.ofertas_crudas,
             "proveedores": self.proveedores,
             "errores": self.errores,
+            "sondeo": self.sondeo,
         }
 
 
-def planificar(consulta: Consulta, radio_terrestre_km: int = 0) -> list[Combinacion]:
+def sondear_fechas(
+    consulta: Consulta,
+    proveedores: list[Proveedor],
+    top: int = 5,
+) -> tuple[set[date], list[str]]:
+    """Fase 1: pregunta gratis en qué fechas conviene mirar.
+
+    Algunos proveedores devuelven un mes entero de precios mínimos en una
+    sola llamada y sin consumir cuota. Con eso se eligen las `top` fechas más
+    baratas del rango que pidió el usuario, y la fase cara sólo consulta
+    ésas. Es la diferencia entre 49 requests y 5.
+
+    Devuelve el conjunto de fechas de ida a priorizar (vacío si ningún
+    proveedor pudo sondear) y los avisos para el resumen.
+    """
+    if consulta.flex_dias <= 0:
+        return set(), []
+
+    permitidas = {ida for ida, _ in consulta.fechas_a_probar()}
+    calendario: dict[date, float] = {}
+    avisos: list[str] = []
+
+    for proveedor in proveedores:
+        try:
+            parcial = proveedor.fechas_mas_baratas(consulta, consulta.origen, consulta.destino)
+        except ErrorProveedor as e:
+            avisos.append(f"sondeo con {proveedor.nombre}: {e}")
+            continue
+        except Exception as e:
+            log.exception("fallo inesperado sondeando con %s", proveedor.nombre)
+            avisos.append(f"sondeo con {proveedor.nombre}: {e.__class__.__name__}")
+            continue
+
+        for dia, precio in parcial.items():
+            if dia in permitidas and (dia not in calendario or precio < calendario[dia]):
+                calendario[dia] = precio
+
+    if not calendario:
+        return set(), avisos
+
+    mejores = sorted(calendario.items(), key=lambda kv: kv[1])[:top]
+    elegidas = {dia for dia, _ in mejores}
+    # La fecha que pidió el usuario siempre se consulta, aunque el sondeo la
+    # haya descartado: puede tener un motivo para viajar ese día.
+    elegidas.add(consulta.fecha_ida)
+    avisos.append(
+        f"sondeo: {len(calendario)} fechas con precio, se consultan {len(elegidas)}"
+    )
+    return elegidas, avisos
+
+
+def planificar(
+    consulta: Consulta,
+    radio_terrestre_km: int = 0,
+    fechas_permitidas: set[date] | None = None,
+) -> list[Combinacion]:
     """Arma la lista ordenada de búsquedas a ejecutar.
 
     El orden importa: si el presupuesto se agota a mitad de camino, queremos
     haber consultado primero lo que el usuario efectivamente pidió.
+    `fechas_permitidas` es el recorte que dejó la fase de sondeo.
     """
     from buscador.aeropuertos import alternativos
 
@@ -83,6 +141,8 @@ def planificar(consulta: Consulta, radio_terrestre_km: int = 0) -> list[Combinac
 
     combinaciones: list[Combinacion] = []
     for (ida, vuelta) in consulta.fechas_a_probar():
+        if fechas_permitidas and ida not in fechas_permitidas:
+            continue
         desfase_fecha = abs((ida - consulta.fecha_ida).days)
         if vuelta and consulta.fecha_vuelta:
             desfase_fecha += abs((vuelta - consulta.fecha_vuelta).days)
@@ -152,7 +212,13 @@ def buscar(
         )
         return resultado
 
-    combinaciones = planificar(consulta, radio_terrestre_km)
+    # Fase 1: sondeo gratis para no gastar créditos en fechas que no valen.
+    fechas, avisos = sondear_fechas(consulta, usar)
+    resultado.errores.extend(a for a in avisos if "sondeo con" in a)
+    resultado.sondeo = [a for a in avisos if not a.startswith("sondeo con")]
+
+    # Fase 2: la búsqueda cara, sólo sobre lo que sobrevivió al sondeo.
+    combinaciones = planificar(consulta, radio_terrestre_km, fechas or None)
     log.info("plan: %d combinaciones, presupuesto %d requests",
              len(combinaciones), presupuesto_requests)
 

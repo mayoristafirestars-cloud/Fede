@@ -48,7 +48,7 @@ AEROPUERTOS: dict[str, Aeropuerto] = dict([
     _a("PMY", "El Tehuelche", "Puerto Madryn", "AR", -42.7592, -65.1027),
     _a("RGL", "Piloto Civil N. Fernández", "Río Gallegos", "AR", -51.6089, -69.3126),
     _a("RGA", "Hermes Quijada", "Río Grande", "AR", -53.7777, -67.7494),
-    _a("POS", "Libertador Gral. San Martín", "Posadas", "AR", -27.3858, -55.9707),
+    _a("PSS", "Libertador Gral. San Martín", "Posadas", "AR", -27.3858, -55.9707),
     _a("CNQ", "Doctor Fernando Piragine", "Corrientes", "AR", -27.4455, -58.7619),
     _a("RES", "Resistencia", "Resistencia", "AR", -27.4500, -59.0561),
     _a("SDE", "Vicecomodoro Á. de la Paz", "Santiago del Estero", "AR", -27.7656, -64.3100),
@@ -61,11 +61,10 @@ AEROPUERTOS: dict[str, Aeropuerto] = dict([
     _a("PRA", "General Justo J. de Urquiza", "Paraná", "AR", -31.7948, -60.4804),
     _a("VDM", "Gobernador Castello", "Viedma", "AR", -40.8692, -63.0004),
     _a("ESQ", "Esquel", "Esquel", "AR", -42.9080, -71.1394),
-    _a("CRV", "Caleta Olivia", "Caleta Olivia", "AR", -46.4363, -67.4611),
+    _a("CVI", "Caleta Olivia", "Caleta Olivia", "AR", -46.4363, -67.4611),
     _a("RCQ", "Reconquista", "Reconquista", "AR", -29.2103, -59.6800),
     _a("TDL", "Héroes de Malvinas", "Tandil", "AR", -37.2374, -59.2279),
     _a("OYA", "Goya", "Goya", "AR", -29.1058, -59.2189),
-    _a("SIS", "San Rafael", "San Rafael", "AR", -34.5883, -68.4039),
     _a("AFA", "Suboficial Ay. Santiago Germano", "San Rafael", "AR", -34.5883, -68.4039),
     _a("RHD", "Termas de Río Hondo", "Termas de Río Hondo", "AR", -27.4966, -64.9360),
 
@@ -154,15 +153,19 @@ CIUDADES_MULTIAEROPUERTO: dict[str, list[str]] = {
 VECINOS_TERRESTRES: dict[str, list[tuple[str, int]]] = {
     # Santa Rosa (La Pampa) tiene aeropuerto propio pero con poquísimas
     # frecuencias: casi siempre conviene manejar a alguna de estas.
-    "RSA": [("BHI", 320), ("NQN", 520), ("AEP", 615), ("EZE", 640), ("MDQ", 620), ("COR", 700)],
-    "BHI": [("RSA", 320), ("NQN", 540), ("AEP", 680), ("MDQ", 480)],
-    "NQN": [("RSA", 520), ("BRC", 425), ("BHI", 540)],
+    # Distancias medidas sobre ruta real. Santa Rosa tiene aeropuerto propio
+    # (RSA) pero con una sola ruta comercial —AR a Aeroparque, ~4 frecuencias
+    # semanales— y sin competencia. BHI y NQN sí tienen low-cost, así que
+    # casi siempre hay que compararlos.
+    "RSA": [("BHI", 345), ("NQN", 542), ("AEP", 600), ("EZE", 600), ("MDQ", 620), ("COR", 700)],
+    "BHI": [("RSA", 345), ("NQN", 540), ("AEP", 680), ("MDQ", 480)],
+    "NQN": [("RSA", 542), ("BRC", 425), ("BHI", 540)],
     "AEP": [("EZE", 45), ("ROS", 300), ("MDQ", 400)],
     "EZE": [("AEP", 45), ("ROS", 320), ("MDQ", 385)],
     "ROS": [("AEP", 300), ("EZE", 320), ("COR", 400), ("SFN", 170)],
     "MDQ": [("AEP", 400), ("EZE", 385), ("TDL", 175), ("BHI", 480)],
     "COR": [("ROS", 400), ("SDE", 420), ("TUC", 570)],
-    "MDZ": [("UAQ", 170), ("SIS", 235)],
+    "MDZ": [("UAQ", 170), ("AFA", 235)],
     "BRC": [("NQN", 425), ("ESQ", 290)],
 }
 

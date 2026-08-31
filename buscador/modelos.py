@@ -113,6 +113,9 @@ class Oferta:
     url_reserva: str = ""
     id_externo: str = ""
     self_transfer: bool = False      # tramos comprados por separado, sin protección
+    #: True cuando el precio viene de un caché de búsquedas ajenas y no de una
+    #: cotización en vivo: sirve para orientar la búsqueda, no para comprar.
+    indicativo: bool = False
     obtenida_en: datetime = field(default_factory=datetime.now)
 
     # --- Campos derivados que completa la capa de precios / ranking ---
@@ -120,6 +123,10 @@ class Oferta:
     desglose_precio: dict[str, float] = field(default_factory=dict)
     puntaje: Optional[float] = None
     motivos: list[str] = field(default_factory=list)
+
+    #: Datos que sólo entiende el proveedor que trajo la oferta: tokens para
+    #: pedir el tramo de vuelta, contexto de precio histórico, etc.
+    datos_proveedor: dict = field(default_factory=dict)
 
     @property
     def tipo_viaje(self) -> TipoViaje:
