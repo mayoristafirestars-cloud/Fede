@@ -2913,3 +2913,769 @@ Este checklist se recorre **en obra, con el electricista, con el plano en la man
 > **[C] La foto de las paredes abiertas es un entregable.** Se guarda en la carpeta del proyecto y se le entrega al cliente en el manual de uso.
 
 ---
+
+# 6. MATERIALES Y REVESTIMIENTOS DE INTERIOR
+
+## 6.1 Criterios objetivos de selección
+
+Un material no se elige "porque queda lindo". Se elige contra una **matriz de criterios**, y la estética es uno de ellos —importante, pero uno.
+
+### Los diez criterios
+
+| # | Criterio | Cómo se mide | Norma / referencia |
+|---|---|---|---|
+| 1 | **Resistencia al agua / absorción** | % de absorción de agua | ISO 10545-3 (cerámicos). Porcelanato: ≤ 0,5% |
+| 2 | **Resistencia a la abrasión** | Clase PEI (I–V) para esmaltados; MOHS para superficies | ISO 10545-7 |
+| 3 | **Resistencia al deslizamiento** | Clase R9–R13 (rampa con calzado); clase A/B/C (pie descalzo); coeficiente dinámico DCOF | **DIN 51130** (R), DIN 51097 (A/B/C), ANSI A326.3 (DCOF) |
+| 4 | **Resistencia a manchas** | Clase 1–5 | ISO 10545-14 |
+| 5 | **Resistencia química** | Clase A–C | ISO 10545-13 |
+| 6 | **Reacción al fuego** | Euroclase A1–F + s (humo) + d (goteo) | EN 13501-1 |
+| 7 | **Mantenimiento** | Frecuencia y tipo de producto requerido; ¿necesita sellador periódico? | Ficha del fabricante |
+| 8 | **Huella ambiental** | Origen, transporte, contenido reciclado, COV, EPD | EPD / Declaración Ambiental de Producto |
+| 9 | **Costo total de propiedad** | Material + colocación + mantenimiento a 10 años | Cómputo propio |
+| 10 | **Disponibilidad real en Argentina** | Stock, lead time, riesgo de discontinuación, riesgo de partida | Consulta al proveedor |
+
+> **[C] El criterio 10 es el que más proyectos rompe en Argentina.** Un material especificado que no llega, o que llega en otra partida y con otro tono, arruina una obra. **Regla del estudio: verificar stock y reservar partida ANTES de poner el material en el pliego.**
+
+### La matriz de decisión por local
+
+| Local | Agua | Abrasión | Antideslizante | Manchas | Fuego | Confort térmico | Acústica |
+|---|---|---|---|---|---|---|---|
+| **Estar / comedor** | Baja | **Alta** | Media | Media | Media | Alta | **Alta** |
+| **Dormitorio** | Baja | Media | Baja | Media | Media | **Alta** | **Alta** |
+| **Cocina** | **Alta** | **Alta** | **Alta (R10–R11)** | **Alta** | **Alta** | Media | Media |
+| **Baño** | **Muy alta** | Media | **Muy alta (R10–R11 / clase B)** | **Alta** | Media | Media | Baja |
+| **Lavadero** | **Muy alta** | Media | **Alta** | Alta | Media | Baja | Media |
+| **Circulación** | Media | **Muy alta** | Media | Media | **Alta** | Media | Media |
+| **Escalera** | Media | **Muy alta** | **Muy alta** | Media | **Alta** | Baja | Media |
+| **Balcón / galería** | **Muy alta** | Alta | **Muy alta (R11)** | Alta | Media | Baja | Baja |
+| **Cochera** | Alta | **Muy alta** | **Alta** | **Muy alta** | Alta | Baja | Baja |
+| **Espacios comunes** | Media-alta | **Muy alta** | **Alta** | **Alta** | **Muy alta** | Media | **Alta** |
+
+### Clases antideslizantes: qué exigir dónde
+
+> **[E]** Clasificación según **DIN 51130** (método del plano inclinado con calzado):
+> - **R9**: ángulo 6°–10°. Resistencia mínima. Interiores secos, poco tránsito, riesgo de derrame nulo o muy bajo.
+> - **R10**: ángulo 10°–19°. Resistencia normal. **Mínimo exigible para muchas áreas interiores con humedad ocasional o derrames.**
+> - **R11**: ángulo 19°–27°. Resistencia alta. Zonas con más riesgo de humedad, grasa o pendientes suaves.
+> - **R12–R13**: industrial, cocinas comerciales.
+>
+> Para exteriores y áreas húmedas se recomienda **R10 o R11 como mínimo**, según la normativa local aplicable.
+
+| Ubicación | Clase mínima recomendada por el estudio |
+|---|---|
+| Estar, comedor, dormitorio, circulación seca | R9 |
+| **Cocina** | **R10** (R11 si hay chicos o adultos mayores) |
+| **Baño — piso general** | **R10** |
+| **Baño — interior de ducha** | **R11** (o clase **B/C** descalzo, DIN 51097) |
+| Lavadero | R10 |
+| **Escalera interior** | **R10** + nariz antideslizante |
+| **Balcón, galería, exterior** | **R11** |
+| Borde de piscina | **R11–R12** / clase C descalzo |
+| Cochera | R11 |
+| **Espacios comunes: hall, palier, escalera** | **R10–R11** (entra agua de la calle) |
+| **Rampa** | **R11–R12** |
+
+> **[C] Advertencia práctica:** un porcelanato R11 es **más difícil de limpiar** que un R9 (la rugosidad retiene la mugre). No hay que exagerar: se especifica el R que corresponde al riesgo, ni más ni menos. En un baño de adultos sin problemas de movilidad, un R10 bien elegido más una alfombra de baño resuelve mejor que un R12 imposible de limpiar.
+
+### Clase PEI: qué significa realmente
+
+> **[E]** **PEI (Porcelain Enamel Institute)** clasifica la resistencia a la abrasión **del esmalte** en piezas esmaltadas. Va de I a V. **No aplica a porcelanato de masa homogénea (técnico/full body), donde el desgaste no expone otra capa.**
+
+| PEI | Uso |
+|---|---|
+| **I** | Solo paredes, o pisos sin tránsito con calzado (baño de dormitorio) |
+| **II** | Tránsito ligero: dormitorios, baños |
+| **III** | Tránsito medio: **toda la vivienda** |
+| **IV** | Tránsito alto: cocinas, halls, comercios chicos, viviendas con mascotas grandes |
+| **V** | Tránsito muy alto: espacios comerciales, espacios comunes de edificio |
+
+**Criterio del estudio:** PEI **IV** para toda la vivienda (no cuesta mucho más y evita problemas), PEI **V** para espacios comunes de edificio.
+
+> **[M] MITO:** *"El PEI mide la dureza del piso."* No. Mide la resistencia del **esmalte** al desgaste por tránsito. Un PEI V puede rayarse con una llave (eso es dureza MOHS) y puede mancharse (eso es resistencia a manchas). **Son tres propiedades distintas y hay que mirar las tres.**
+
+---
+
+## 6.2 Pisos
+
+### Tabla comparativa general
+
+| Material | Resistencia al agua | Abrasión | Antidesliz. típico | Mantenimiento | Confort térmico/acústico | Reparabilidad | Costo relativo | Vida útil |
+|---|---|---|---|---|---|---|---|---|
+| **Porcelanato** | **Excelente** (≤0,5% abs.) | **Excelente** | R9–R11 según acabado | Muy bajo | Frío y duro; malo acústicamente | Difícil (cortar y reponer pieza) | 3–6 | 30+ años |
+| **Cerámico esmaltado** | Buena (3–6% abs.) | Media (según PEI) | R9–R10 | Bajo | Frío y duro | Media | 1,5–3 | 15–25 años |
+| **Vinílico SPC / LVT click** | **Excelente** (el SPC es 100% impermeable) | Buena (según capa de uso) | R9–R10 | Muy bajo | **Cálido, silencioso** | **Fácil** (se reemplaza una tabla) | 2–4 | 10–20 años |
+| **Vinílico pegado (LVT dryback)** | Excelente | Buena | R9–R10 | Muy bajo | Cálido, silencioso | Media | 1,5–3 | 10–15 años |
+| **Madera maciza** | **Mala** | Buena (se puede lijar) | — | **Alto** (lustre cada 5–10 años) | **Excelente** | **Excelente** (se lija y se renueva) | 6–12 | 50+ años |
+| **Madera de ingeniería (multilaminado)** | Regular | Buena (1–3 lijadas) | — | Medio-alto | Excelente | Buena | 5–9 | 25–40 años |
+| **Piso flotante laminado (HDF)** | **Mala** (salvo los "aqua") | Media-buena (AC3–AC5) | — | Bajo | Bueno | Nula (se reemplaza) | 1–2,5 | 8–15 años |
+| **Microcemento** | Buena si está bien sellado | Media | Según acabado, R9–R10 | **Medio-alto** (resellado periódico) | Frío y duro | **Difícil** (los parches se ven) | 4–7 | 10–20 años |
+| **Alfombra (mural / bucle)** | **Mala** | Media | Alta | **Alto** | **Excelente acústico y térmico** | Media | 2–4 | 7–12 años |
+| **Hormigón alisado / pulido** | Buena si está sellado | **Excelente** | R9–R10 | Medio | Frío y duro | Difícil | 2–5 | 30+ años |
+
+> **[V]** Los "costos relativos" son índices comparativos (base 1 = el más barato de la lista), **material más colocación, orden de magnitud**. Se deben recalibrar con precios reales de Santa Rosa cada 3 meses.
+
+---
+
+### 6.2.1 Porcelanato
+
+**Es el piso por defecto en Argentina** y con buenas razones: excelente relación prestación/precio, oferta amplia, muy resistente.
+
+| Aspecto | Detalle técnico |
+|---|---|
+| **Definición** | Baldosa cerámica de muy baja absorción (**≤ 0,5%**), prensada y cocida a alta temperatura |
+| **Rectificado vs. no rectificado** | **Rectificado:** las piezas se cortan mecánicamente después de la cocción, quedando todas exactamente de la misma medida y con canto vivo. Permite **junta de 1,5–2 mm**. **No rectificado:** hay variación dimensional, requiere junta de 3–5 mm |
+| **Junta mínima recomendada** | **[C]** 1,5–2 mm en rectificado (nunca 0: el material dilata y se necesita tolerancia); 3 mm en no rectificado; **exteriores: 4–6 mm** |
+| **Formatos** | 30×60 · 45×45 · 60×60 · 60×120 · 80×80 · 90×90 · 120×120 · 120×260 y mayores (gran formato) |
+| **Acabados** | Pulido (brillante, resbaladizo, marca todo) · Semipulido/lapado · **Mate/natural** (el más versátil) · Texturado/estructurado (exterior) · Flameado |
+| **Espesores** | 8–10 mm habitual; 6 mm en gran formato de pared; 20 mm en exterior sobre grava |
+
+**Reglas de proyecto para porcelanato:**
+
+1. **Formato grande = menos juntas = más limpio, pero exige piso perfectamente plano.** Con formatos ≥ 60×120 la tolerancia de planitud del contrapiso debe ser ≤ 3 mm bajo regla de 2 m. **[C]** Si el contrapiso no está a nivel, el formato grande "cabecea" y se ve horrible.
+2. **Nunca especificar pulido en zonas húmedas ni en circulaciones.** Es resbaladizo (R9 o menos) y marca cada pisada.
+3. **Reservar 10% de material adicional** por roturas, cortes y reposición futura. Guardar 4–6 piezas de la misma partida en la baulera.
+4. **Verificar la partida (lote y tono).** Dos partidas del mismo modelo pueden tener tonos distintos. Comprar todo junto.
+5. **Definir el despiece en plano** (§9): sentido de colocación, punto de arranque, alineación de juntas con puertas y con el mueble de cocina.
+6. **Especificar el color de la pastina.** Es una decisión de diseño, no del colocador. Pastina del mismo tono que la pieza = piso continuo. Pastina contrastante = se lee la grilla.
+7. En **gran formato**, exigir **doble encolado** (mortero en el contrapiso y en el dorso de la pieza) y sistema de nivelación (cuñas y clips).
+
+**Sentido de colocación:**
+
+| Objetivo | Sentido |
+|---|---|
+| Alargar visualmente un ambiente | Piezas rectangulares en el sentido largo |
+| Ensanchar | En el sentido corto |
+| Continuidad entre ambientes | Mismo sentido en toda la casa, arrancando desde el eje visual principal (típicamente la puerta de entrada) |
+| Disimular desnivel | Nunca. El desnivel se corrige, no se disimula |
+
+---
+
+### 6.2.2 Cerámico esmaltado
+
+Más barato, más absorbente, esmalte más frágil.
+
+| Cuándo sí | Cuándo no |
+|---|---|
+| Presupuesto ajustado | Zonas de mucho tránsito |
+| Locales de servicio, lavadero, baulera | Cocinas de uso intensivo |
+| Paredes (donde el PEI no importa) | **Exteriores** (por absorción y riesgo de heladas: en La Pampa hay heladas) |
+| Alquiler temporario de bajo costo | Espacios comunes de edificio |
+
+> **[E]** En clima con **ciclos de hielo-deshielo** (La Pampa los tiene), un cerámico de alta absorción colocado en exterior **se descascara**: el agua absorbida se congela, expande y revienta el esmalte. **En exterior, porcelanato o piezas específicamente antiheladas.**
+
+---
+
+### 6.2.3 Vinílico SPC / LVT
+
+Es la gran incorporación de la última década y **resuelve muchísimos casos en reforma**.
+
+| Tipo | Estructura | Característica |
+|---|---|---|
+| **LVT dryback** (pegado) | Lámina de PVC pegada al contrapiso | Muy delgada (2–3 mm); requiere base perfecta |
+| **LVT click** | Lámina con sistema de encastre | Flotante |
+| **SPC** (Stone Plastic Composite) | Núcleo rígido mineral + PVC + capa de uso + a veces manta acústica | **Muy estable dimensionalmente, 100% impermeable, no se dilata con el calor.** Es el mejor de la familia |
+| **WPC** (Wood Plastic Composite) | Núcleo con madera | Más blando y cálido, menos estable |
+
+**Datos clave:**
+
+| Aspecto | Detalle |
+|---|---|
+| **Capa de uso (wear layer)** | **El dato que define la durabilidad.** 0,3 mm = uso residencial ligero; **0,5 mm = residencial estándar (mínimo recomendado)**; 0,7 mm+ = residencial intensivo/comercial |
+| **Espesor total** | 4–8 mm típico |
+| **Instalación** | Flotante sobre manta; **muy rápida** (un ambiente por día) |
+| **Sobre piso existente** | **SÍ, en muchos casos.** Es su gran ventaja en reforma: se coloca sobre el cerámico viejo si está bien adherido y nivelado. Sube 5–8 mm el nivel → **verificar puertas** |
+| **Impermeabilidad** | El SPC es impermeable; **pero las juntas y el perímetro no lo son en instalación flotante**. En baño y lavadero: usar formato pegado con sellado, o directamente porcelanato |
+| **Ventaja acústica** | **Notablemente mejor que el porcelanato.** Con manta acústica reduce el ruido de pisadas — importante en departamentos |
+| **Debilidad** | Se marca con calor (una olla caliente en el piso lo funde); se puede rayar con arena; **se decolora con sol directo intenso** (verificar resistencia UV en balcones y ventanales al oeste) |
+
+> **[C] Regla del estudio:** SPC es una excelente opción para **dormitorios, escritorios y circulaciones**, especialmente en reforma. **No** es la primera opción para cocina (calor), baño (juntas), ni ventanales al oeste (UV).
+
+---
+
+### 6.2.4 Madera
+
+| Tipo | Estructura | Estabilidad | Lijadas posibles | Piso radiante | Zonas húmedas |
+|---|---|---|---|---|---|
+| **Maciza** | Tabla íntegra de madera | Baja (se mueve con humedad) | Muchas (5–10) | **No recomendable** | No |
+| **De ingeniería / multilaminado** | Capa noble sobre contrachapado | **Alta** | 1–3, según espesor de capa noble | **Sí** | No |
+| **Flotante laminado (HDF)** | Papel decorativo sobre HDF | Media | **Ninguna** | Sí (con restricciones) | No (salvo versiones "aqua") |
+
+**Especies argentinas habituales:**
+
+| Especie | Dureza | Color | Notas |
+|---|---|---|---|
+| **Roble americano/eslavo** (importado) | Media-alta | Claro-medio | El estándar del mercado premium |
+| **Guatambú** | Media | Muy claro, casi blanco | Nacional, buena disponibilidad |
+| **Petiribí** | Media | Rosado-marrón | Nacional |
+| **Lapacho** | **Muy alta** | Oliva-marrón oscuro | Muy duro; nacional |
+| **Incienso** | Alta | Marrón medio | Nacional |
+| **Anchico** | Alta | Rojizo | Nacional |
+| **Curupay** | **Muy alta** | Marrón rojizo oscuro | Nacional |
+| **Algarrobo** | Media-alta | Marrón con vetas | **Muy identitario del noroeste y del centro del país.** Excelente para mobiliario |
+| **Pinotea (recuperada)** | Media | Miel | De demolición; muy valorada |
+
+**Terminaciones:**
+
+| Terminación | Aspecto | Resistencia | Reparabilidad | Mantenimiento |
+|---|---|---|---|---|
+| **Poliuretánico (lustre) brillante** | Brillante, "plastificado" | Alta | **Mala** (hay que lijar todo el paño) | Baja frecuencia |
+| **Poliuretánico mate/satinado** | Natural | Alta | Mala | Baja frecuencia |
+| **Aceite / aceite-cera (hardwax oil)** | **Muy natural, mate, se toca la madera** | Media | **Excelente** (se repara localmente) | **Alta** (reaceitado cada 1–3 años) |
+| **Barniz al agua** | Natural, bajo olor | Media-alta | Media | Media |
+
+> **[C]** El aceite es la mejor terminación estética y la peor en mantenimiento. Se especifica solo si el cliente **entiende y acepta** el mantenimiento. En una casa con perros y chicos, poliuretánico mate.
+
+**Humedad de la madera:** debe aclimatarse **al ambiente donde se va a colocar, 7–14 días antes**, en el mismo local, con la casa cerrada y a temperatura de uso. **[C]** En La Pampa, con baja humedad ambiente y gran amplitud térmica, este paso es más crítico que en el litoral.
+
+---
+
+### 6.2.5 Microcemento
+
+Es un revestimiento continuo, decorativo, de **espesor muy fino (aprox. 3 mm en total, en varias capas)**, aplicable en horizontales y verticales, y sin juntas.
+
+**Ventajas:** continuidad visual total; se aplica sobre pisos existentes; adapta a curvas; muy bajo espesor (no sube el nivel).
+
+**PATOLOGÍAS FRECUENTES — para conocer y prevenir**
+
+| Patología | Causa | Prevención |
+|---|---|---|
+| **Fisuración** | **La causa #1.** El microcemento **no tiene juntas de dilatación ni de retracción**, por lo que los movimientos del soporte (dilatación térmica, tensiones estructurales, asentamientos) se transmiten directamente y lo fisuran | **El soporte debe estar sano, estable, curado y libre de fisuras.** Si el soporte está mal y no se repara, la aparición de fisuras es prácticamente segura. Respetar juntas estructurales: **si el soporte tiene una junta, el microcemento la tiene que tener también** |
+| **Fisuración sobre madera / parquet** | La madera se dilata y contrae con la humedad; el microcemento no acompaña | **No aplicar sobre madera** salvo con sistema desolidarizado específico y malla, según indicación del fabricante |
+| **Fisuración sobre cerámico existente** | Las juntas del cerámico "espejan" a través | Requiere puente de adherencia + malla de refuerzo en toda la superficie. **Aun así hay riesgo** |
+| **Relieves e irregularidades** | Aplicación descuidada con llana; capas de espesor desparejo | Lijado entre capas; revisión al tacto; **aplicador experimentado** |
+| **Manchas** | Aplicación del sellador poliuretánico antes de tiempo, sin respetar el secado | Respetar tiempos de curado del fabricante, sin excepción |
+| **Desgaste y pérdida de sellado** | El sellador es la capa de sacrificio | **Resellado periódico** (1–5 años según tránsito). **Debe estar en el manual de uso** |
+| **Manchas de agua / bordes de humedad** | Sellado insuficiente en zona húmeda | En baños: sellador específico de alta prestación, y **membrana impermeable debajo** |
+| **Diferencias de tono entre paños** | Distintas partidas, distintos aplicadores, distintas condiciones de secado | Un solo aplicador, una sola partida, condiciones controladas |
+
+> **[C] Regla del estudio sobre microcemento:**
+> 1. **El aplicador importa más que la marca.** Pedir obras hechas y visitarlas, no fotos.
+> 2. **Se hace muestra en obra** de al menos 1 m², con el mismo sistema completo, y se aprueba antes de arrancar.
+> 3. **Se advierte por escrito al cliente** que el microcemento puede fisurar, que es un material vivo, y que requiere resellado. **Esta advertencia firmada evita el 100% de los reclamos.**
+> 4. **No usarlo en pisos sobre losas con mucho movimiento ni sobre madera.**
+> 5. En baños: sí en paredes y en piso, con impermeabilización previa. En **interior de ducha**: solo con sistema específico del fabricante y aplicador certificado.
+
+---
+
+### 6.2.6 Alfombra
+
+| Tipo | Descripción | Uso |
+|---|---|---|
+| **Mural (wall to wall)** | Pegada o tensada, cubre todo el piso | Dormitorios, salas de reunión, cines en casa. Poco usada hoy en Argentina en vivienda |
+| **Suelta (área)** | Pieza sobre otro piso | La opción habitual. Ver medidas en §7.4 |
+| **Modular (carpet tiles)** | Placas de 50×50 cm | Oficinas, coworking, espacios comunes. **Ventaja: se reemplaza la placa manchada** |
+
+**Fibras:**
+
+| Fibra | Durabilidad | Manchas | Precio | Notas |
+|---|---|---|---|---|
+| **Lana** | **Excelente** | Buena resistencia natural (lanolina) | Alto | Cálida, resiliente, se recupera de la marca de los muebles. **Alergénica para algunos** |
+| **Nylon (poliamida)** | **Excelente** | Buena si está tratada | Medio-alto | La mejor sintética. Alta recuperación |
+| **Polipropileno (olefina)** | Media | **Excelente** (se puede limpiar con lavandina diluida) | Bajo | Se aplasta. Buena para exteriores y mascotas |
+| **Poliéster (PET)** | Media | Muy buena | Bajo-medio | Suave; se aplasta |
+| **Viscosa / bambú** | **Mala** | **Muy mala** (se mancha con agua) | Medio | **No usar en zonas de tránsito ni donde haya líquidos.** Muy linda y muy problemática |
+| **Yute / sisal / fibras naturales** | Media | **Mala** | Medio | Textura excelente; se mancha; áspera |
+
+> **[C]** Con mascotas o chicos: **polipropileno o nylon**, pelo corto, preferentemente con patrón o textura que disimule. **Nunca viscosa.**
+
+---
+
+### 6.2.7 Hormigón alisado / llaneado
+
+| Aspecto | Detalle |
+|---|---|
+| Ventajas | Muy resistente, continuo, económico si ya existe, estética industrial honesta |
+| Desventajas | Fisura (se controla con juntas de retracción, que hay que **diseñar en planta**); frío; duro; poroso si no se sella |
+| Juntas | **Deben proyectarse:** paños máximos y relación de lados definida por el proyectista estructural. **[V] verificar con el especialista** |
+| Sellado | Endurecedor superficial + sellador. Requiere mantenimiento |
+| Piso radiante | Excelente compatibilidad (alta inercia térmica) |
+
+---
+
+## 6.3 Paredes
+
+### Tabla comparativa
+
+| Revestimiento | Costo relativo | Durabilidad | Lavable | Acústico | Instalación | Reversibilidad |
+|---|---|---|---|---|---|---|
+| **Pintura** | 1 | 3–7 años | Según acabado | No | Muy simple | Total |
+| **Empapelado (vinílico)** | 2–4 | 8–15 años | Sí (vinílico) | Leve | Media (requiere pared perfecta) | Media |
+| **Empapelado (papel/no tejido)** | 2–5 | 8–12 años | No | Leve | Media | Media |
+| **Revestimiento de madera (listones/lamas)** | 4–8 | 20+ años | Sí | **Sí, si es acústico** | Media | Media |
+| **Lamas acústicas (MDF + fieltro PET)** | 3–6 | 15+ años | Limitada | **Sí, medible** | Simple | Media |
+| **Piedra natural** | 6–12 | 30+ años | Sí | No | Compleja, pesada | Baja |
+| **Símil piedra / piedra reconstituida** | 3–6 | 15–25 años | Sí | No | Media | Baja |
+| **Porcelanato de gran formato** | 5–10 | 30+ años | **Sí** | No | **Compleja** (peso, corte, planitud) | Baja |
+| **Microcemento** | 4–7 | 10–20 años | Sí (sellado) | No | Compleja, artesanal | Baja |
+| **Azulejo / cerámica** | 2–5 | 20+ años | **Sí** | No | Media | Baja |
+| **Venecitas / mosaico** | 4–9 | 25+ años | Sí | No | **Muy laboriosa** | Baja |
+| **Boiserie / molduras de MDF** | 3–6 | 15+ años | Sí (pintado) | No | Media | Media |
+
+---
+
+### 6.3.1 Pintura
+
+Ver §4.7 para acabados. Puntos técnicos adicionales:
+
+| Aspecto | Criterio |
+|---|---|
+| **Preparación del soporte** | Es el 70% del resultado. Enduído a 2 manos + lijado + fijador. **Un látex premium sobre una pared mal enduída se ve peor que un látex económico sobre una pared perfecta** |
+| **Cantidad de manos** | Fijador + **2 manos** como mínimo. 3 manos si hay cambio de color fuerte |
+| **COV (compuestos orgánicos volátiles)** | Especificar **bajo COV** siempre que exista la opción, y obligatorio si hay alérgicos, asmáticos, embarazadas o bebés |
+| **Antihongo** | En baños, lavaderos, y en muros al **sur** (los más fríos y propensos a condensación en La Pampa) |
+| **Poder cubritivo** | Los látex económicos requieren más manos: el "ahorro" desaparece |
+
+---
+
+### 6.3.2 Empapelado
+
+| Tipo | Características | Uso |
+|---|---|---|
+| **Vinílico sobre papel** | Lavable, resistente | Baños (fuera de zona húmeda), cocinas, alto tránsito |
+| **No tejido (non-woven)** | Se encola la pared, no el papel; se retira en seco de una pieza | **El más fácil de instalar y de sacar.** Recomendado |
+| **Textil / fibra natural** | Muy noble; caro; frágil | Dormitorios, ambientes de baja exposición |
+| **Autoadhesivo** | Temporal | Alquileres, dormitorios de chicos |
+| **Mural / fotomural a medida** | Impresión personalizada | Muro protagonista |
+
+**Reglas:**
+1. **La pared debe estar perfecta.** El empapelado no disimula, **exagera**.
+2. **Comprar todos los rollos de la misma partida** y verificar el número de lote.
+3. Calcular **repetición del dibujo (rapport)**: aumenta el desperdicio, a veces un 20–30%.
+4. **No usar en zona húmeda directa** (ducha, salpicadero de cocina).
+5. En muros exteriores fríos con riesgo de condensación (sur), **verificar que no haya humedad** antes de empapelar: el papel la encierra y aparecen hongos.
+
+---
+
+### 6.3.3 Revestimiento de madera y lamas acústicas
+
+| Sistema | Descripción | Función |
+|---|---|---|
+| **Listones/lamas sobre bastidor** | Tiras de madera maciza o MDF enchapado, sobre estructura, con separación | Estético + parcialmente acústico si hay cámara con absorbente |
+| **Panel de lamas acústicas** (MDF ranurado + fieltro PET) | Panel prefabricado, lamas sobre fieltro | **Absorción acústica medible.** Muy usado 2020–2026 |
+| **Machimbre** | Tablas encastradas | Rústico, cielorrasos, galerías |
+| **Paneles enchapados** | Placa de MDF con enchapado de madera natural | Boiserie contemporánea |
+
+> **[E]** La absorción acústica de un panel de lamas **depende del material absorbente detrás y del espesor de la cámara de aire**, no de la madera. Un panel de lamas pegado directamente al muro absorbe muy poco. **Exigir al fabricante el coeficiente de absorción α por banda de frecuencia o el NRC/αw, medido según ISO 354.** Sin ese dato, es decoración, no acústica.
+
+**Cuándo la acústica importa de verdad:**
+
+| Situación | Problema | Solución |
+|---|---|---|
+| Living con piso duro, muros lisos y cielorraso de yeso | Reverberación, "eco", conversaciones incómodas, TV que no se entiende | Alfombra + cortinas de tela + un muro absorbente + biblioteca llena |
+| Home office con videollamadas | La voz del usuario suena "en un baño" | Panel absorbente detrás y a los costados del usuario + alfombra |
+| Departamento con vecinos | Ruido aéreo y de impacto | **El revestimiento decorativo NO lo resuelve.** Requiere tratamiento constructivo (masa, desolidarización) |
+| SUM / coworking de edificio | Ininteligibilidad | Tratamiento acústico proyectado con cálculo de tiempo de reverberación |
+
+> **[M] MITO frecuente:** *"Poner paneles acústicos en una pared aísla del ruido del vecino."* **Falso.** Los materiales absorbentes controlan la reverberación **dentro** del ambiente; **no aíslan** del ruido que viene de afuera. Aislar requiere **masa, discontinuidad y estanqueidad**, que es un problema constructivo, no decorativo. Hay que decírselo al cliente antes de que gaste.
+
+---
+
+### 6.3.4 Piedra y porcelanato de gran formato en pared
+
+| Aspecto | Criterio |
+|---|---|
+| **Peso** | Verificar la capacidad del soporte. **Un muro de placa de yeso estándar NO soporta piedra ni porcelanato de gran formato** sin refuerzo estructural |
+| **Sistema de fijación** | Adhesivo específico de alta prestación (C2TE S1/S2) + anclaje mecánico en piezas grandes y en altura |
+| **Planitud del soporte** | Crítica en gran formato |
+| **Despiece** | **Se dibuja en plano.** Dónde caen las juntas, cómo resuelven los encuentros, dónde van los cortes |
+| **Encuentro en esquina** | **Ingletado a 45°** (elegante, frágil, caro) o con perfil (más simple, se ve la línea). **Decisión de proyecto, se documenta en detalle 1:2** |
+| **Aplicación estrella** | Salpicadero de cocina continuo con la mesada (mismo material, junta mínima) — resuelve limpieza y estética simultáneamente |
+
+---
+
+### 6.3.5 Azulejo: formatos y despieces
+
+| Despiece | Descripción | Efecto | Complejidad de colocación | Cuidado |
+|---|---|---|---|---|
+| **A junta corrida / paño recto** | Piezas alineadas en grilla | Neutro, ordenado | Baja | Requiere piezas muy calibradas: cualquier desvío se ve |
+| **Trabado / subway (a la mitad)** | Ladrillo tradicional, desplazamiento 50% | Clásico, seguro | Baja | En piezas grandes y alabeadas, el desplazamiento del 50% genera "labio". **Con piezas > 40 cm usar trabado al 1/3 o 1/4** |
+| **Trabado 1/3** | Desplazamiento 33% | Más contemporáneo | Baja | Recomendado para formatos largos |
+| **Espiga / chevron** | Piezas en V, cortadas en ángulo | Dinámico, elegante | **Alta** | Chevron requiere corte de cada pieza; **espiga (herringbone)** no. Cuidado: son cosas distintas |
+| **Espiga (herringbone)** | Piezas en L, sin cortar | Dinámico | Media-alta | Mucho desperdicio en los bordes |
+| **Vertical** | Piezas rectangulares en vertical | **Aumenta la altura percibida** | Baja | Muy efectivo en baños de techo bajo |
+| **Hexagonal** | Panal | Contemporáneo, gráfico | Media | El corte perimetral es laborioso |
+| **Escama / fish scale** | Piezas curvas superpuestas | Muy decorativo | Alta | Muy fechable |
+| **Damero / tablero de ajedrez** | Dos colores alternados | Clásico revisitado | Baja | Fuerte contenido de moda (pico 2023–2026) |
+
+> **[C] Regla del despiece:** el despiece **siempre se dibuja**, con el arranque definido y con las juntas relacionadas a los elementos del ambiente (eje de la bacha, borde del espejo, línea de la mesada). **Nunca dejarlo a criterio del colocador**, porque el colocador arranca desde la esquina y termina con un corte de 2 cm en el lugar más visible.
+
+**Venecitas / mosaico:**
+
+| Aspecto | Detalle |
+|---|---|
+| Formatos | 1,5×1,5 · 2×2 · 2,5×2,5 cm, en malla de 30×30 cm |
+| Uso ideal | Superficies curvas, nichos, piletas, zócalo de ducha, salpicadero pequeño |
+| Cuidado | **Mucha junta = mucha limpieza.** No usar en superficies grandes de zona húmeda sin pastina epoxi |
+| Pastina | **Epoxi** en zonas húmedas y de grasa: no se mancha ni se pudre, pero es más cara y más difícil de aplicar |
+
+---
+
+## 6.4 Cielorrasos
+
+| Sistema | Descripción | Espesor perdido | Registrable | Costo relativo | Uso |
+|---|---|---|---|---|---|
+| **Yeso aplicado (a la cal / proyectado)** | Sobre losa | ~1–2 cm | No | 1 | Cuando no hay instalaciones que ocultar |
+| **Placa de yeso (durlock) suspendido** | Estructura + placa | **8–20 cm** | No (salvo tapas) | 1,5–2,5 | **El estándar.** Permite ocultar instalaciones, embutir artefactos, hacer gargantas |
+| **Placa de yeso aplicado (a la losa)** | Placa atornillada a estructura pegada a la losa | 3–5 cm | No | 1,3 | Cuando hay poca altura |
+| **Desmontable (placas 60×60)** | Perfilería T con placas apoyadas | 10–25 cm | **Sí, total** | 1,2–2 | Sala técnica, comercial, oficinas. **No en vivienda de calidad** |
+| **Acústico (placa perforada, lana mineral, baffles)** | Placa con perforaciones + absorbente | 10–25 cm | Parcial | 3–6 | SUM, coworking, home theatre, restaurantes |
+| **Madera (machimbre, lamas, casetonado)** | Madera sobre estructura | 5–15 cm | No | 3–6 | Galerías, quinchos, ambientes especiales |
+| **PVC / plástico** | Placas machimbradas | 3–6 cm | Parcial | 0,8 | **Evitar.** Se ve barato, mala reacción al fuego |
+
+### Alturas mínimas
+
+> **[V] CRÍTICO:** la altura libre mínima de locales habitables está fijada por el **Código de Edificación de la Municipalidad de Santa Rosa**. **Verificar antes de proyectar un cielorraso suspendido.** Como referencia habitual en códigos argentinos: **2,40 m** para locales de primera clase y **2,20–2,30 m** para locales de servicio, pero **esto DEBE verificarse localmente**.
+
+**Regla práctica del estudio:** en departamentos con altura libre de 2,50–2,60 m, un cielorraso suspendido general de 12 cm deja 2,38–2,48 m, que es agobiante. **Solución: cielorraso suspendido solo donde hace falta (perímetro, franja de baño y cocina) y losa a la vista o yeso aplicado en el centro.** Se gana altura donde importa.
+
+### Buñas y molduras
+
+| Elemento | Función | Medida típica | Cuándo |
+|---|---|---|---|
+| **Buña perimetral (junta seca)** | Separa el cielorraso del muro con una sombra continua; absorbe el movimiento diferencial y **evita la fisura del encuentro** | 10–20 mm de ancho × 10–15 mm de profundidad | **[C] Recomendada casi siempre en placa de yeso.** Es la solución contemporánea al encuentro |
+| **Encuentro a filo** | Cielorraso y muro se encuentran sin transición | — | Requiere ejecución impecable; **fisura con facilidad** |
+| **Moldura clásica (cornisa)** | Transición ornamental | 5–15 cm | Solo en clásico contemporáneo, y con proporción correcta |
+| **Garganta / cove de luz** | Cavidad perimetral que aloja el perfil LED | **Mín. 10 cm de profundidad, con el labio a ≥15 cm de la superficie iluminada** | Luz indirecta (§5.7) |
+| **Cambio de nivel / cajón** | Baja el cielorraso en una franja | Según instalaciones | Para ocultar conductos de aire, vigas, campanas |
+
+> **[C] Detalle que separa a un buen proyecto:** **la buña perimetral y la cortina.** Si el cielorraso tiene una **gola para cortina** (un retranqueo de 12–20 cm de ancho × 15–20 cm de profundidad en el perímetro de la ventana), el rollo de la cortina desaparece y la tela cae desde el cielorraso. Es un detalle de bajo costo y altísimo impacto, **pero hay que decidirlo antes de hacer el cielorraso y hay que conocer el diámetro real del rollo de la cortina** (que depende del ancho y de la tela).
+
+---
+
+## 6.5 MESADAS — tabla comparativa técnica
+
+| Material | Composición | Dureza / rayado | Resistencia a manchas | Resistencia al calor | Espesor típico | Junta | Costo relativo | Mantenimiento | Riesgo específico |
+|---|---|---|---|---|---|---|---|---|---|
+| **Granito** | Roca ígnea natural | **Muy alta** (7 MOHS) | Media — **es poroso**, requiere sellador | **Excelente** (se puede apoyar una olla caliente) | 2 · 3 cm | Visible, se rellena con resina | **2–4** | Sellar cada 1–3 años | Variabilidad natural: **hay que elegir la plancha en el depósito** |
+| **Mármol** | Roca metamórfica (carbonato) | Media (3–4 MOHS) | **Mala** — se mancha y se graba con ácidos (limón, vinagre, vino) | Buena | 2 · 3 cm | Visible | 4–8 | Sellado frecuente; se acepta la pátina | **No recomendable en cocina de uso real.** Sí en baño o barra decorativa |
+| **Cuarzo aglomerado** (Silestone, Caesarstone, Compac) | ~90% cuarzo molido + resina polimérica + pigmentos | Alta (7 MOHS) | **Excelente** — no poroso, no requiere sellador | **Media — NO apoyar ollas calientes**: la resina se daña por encima de ~150 °C | 1,2 · 2 · 3 cm | **Muy discreta** (se pega con resina del mismo color) | 4–7 | Muy bajo | **SILICOSIS — ver advertencia abajo** |
+| **Superficie sinterizada / porcelánico técnico** (Neolith, Dekton, Laminam) | Minerales sinterizados a alta presión y temperatura, sin resina | **Muy alta** | **Excelente** — no poroso | **Excelente** (resiste el calor directo) | 0,6 · 1,2 · 2 cm | Discreta; el canto se resuelve con inglete | **6–10** | Muy bajo | **Frágil al corte y al impacto puntual**; requiere fabricante especializado. Muy caro |
+| **Porcelanato de gran formato** | Cerámica de baja absorción | Alta | Excelente | Excelente | 0,6 · 1,2 cm | Discreta con inglete | 3–6 | Muy bajo | El canto ingletado es delicado; el borde puede saltar con un golpe |
+| **Acero inoxidable** | AISI 304 / 316 | Media (se raya) | **Excelente** (no poroso, higiénico) | **Excelente** | Chapa 1–1,5 mm sobre soporte | Soldada, invisible | 3–6 | Muy bajo | **Se raya y se marca con huellas.** Estéticamente frío. Ideal en cocina profesional |
+| **Madera maciza** | Tablas encoladas | Baja | **Mala** (mancha, absorbe) | **Mala** | 3–4 cm | Visible | 2–4 | **Alto**: aceitado periódico | Higiene: no apta para zona de bacha sin tratamiento específico. **Se raya y se puede lijar** |
+| **Corian / superficie sólida** (acrílico + ATH) | Resina acrílica + trihidrato de alúmina | Media-baja (se raya) | Excelente (no poroso) | **Mala** (se deforma con calor) | 1,2 cm sobre soporte | **INVISIBLE — junta termofusionada** | 5–8 | Bajo; **se repara puliendo** | **Su gran ventaja: es reparable y la junta desaparece.** Permite bacha integrada del mismo material |
+| **Hormigón / microcemento** | Cementicio | Media | Media (poroso, requiere sellador) | Buena | 3–5 cm | Sin junta (in situ) | 2–4 | Medio-alto | Fisuración; manchas |
+| **Laminado postformado (fórmica sobre aglomerado)** | Melamina de alta presión sobre placa | Baja-media | Buena en superficie, **pésima en cantos y juntas** | Mala | 3,8 cm | Visible | **1** | Bajo | **El agua en las juntas hincha la placa.** Opción económica de vida corta |
+
+### ⚠️ ADVERTENCIA SOBRE SILICOSIS EN CUARZO AGLOMERADO
+
+> **[E] DATO VERIFICADO Y GRAVE.**
+>
+> El cuarzo aglomerado (*engineered stone*) contiene un porcentaje muy alto de **sílice cristalina**. Su **corte, pulido y perforación en seco** genera polvo de **sílice cristalina respirable**, causante de **silicosis**: una enfermedad pulmonar irreversible, progresiva, sin cura, que produce cicatrización y endurecimiento del tejido pulmonar y frecuentemente muerte prematura. La exposición también se asocia a cáncer de pulmón, enfermedad renal y EPOC.
+>
+> En los últimos años se registró un aumento marcado de casos de silicosis **entre trabajadores de la piedra de ingeniería, muchos de ellos jóvenes**, con progresión rápida de la enfermedad y alta mortalidad.
+>
+> **Australia se convirtió, el 1 de julio de 2024, en el primer país del mundo en prohibir la fabricación, suministro, procesamiento e instalación de mesadas, paneles y planchas de piedra de ingeniería**, tras una recomendación de Safe Work Australia.
+>
+> *(Fuentes: Safe Work Australia — Engineered stone ban; Standards Australia; editorial en The Lancet, enero 2024; ETUI.)*
+
+**Qué significa esto para el estudio:**
+
+| Acción | Detalle |
+|---|---|
+| **NO significa que haya que dejar de especificar cuarzo en Argentina** | El riesgo es **ocupacional**, para quien corta y pule, no para quien usa la mesada terminada en su casa. Una mesada instalada no emite sílice |
+| **SÍ significa una responsabilidad profesional** | El estudio debe **exigir al marmolista** que trabaje con **corte en húmedo, extracción localizada y protección respiratoria adecuada**, y verificarlo |
+| **Preguntar al proveedor** | ¿Cortan en húmedo? ¿Tienen extracción? ¿Los operarios usan protección respiratoria? ¿Hacen controles médicos? **Un marmolista serio responde bien a esta pregunta.** |
+| **Informar al cliente** | Cuando el cliente elige entre granito, cuarzo y porcelánico, corresponde informarle que existe esta discusión internacional. Es información, no alarmismo |
+| **Alternativas de menor sílice** | Existen productos de "baja sílice" (verificar contenido declarado) y las superficies sinterizadas, el granito y el porcelanato como alternativas |
+| **[V]** | **Verificar la normativa argentina vigente sobre exposición a sílice cristalina respirable: Ley 19.587, Decreto 351/79 (concentraciones máximas permisibles), Resoluciones SRT sobre agentes de riesgo y la lista de enfermedades profesionales (Decreto 658/96).** |
+
+### Reglas de proyecto para mesadas
+
+| Regla | Detalle |
+|---|---|
+| **Elegir la plancha física** en materiales naturales (granito, mármol) | El catálogo miente. Ir al depósito, marcar la plancha con cinta, fotografiarla |
+| **Plantillar en obra** | La mesada se mide **después** de que los muebles están montados, con una plantilla física o escáner láser. **Nunca con las medidas del plano.** Esto agrega 2–4 semanas al cronograma: hay que preverlo |
+| **Definir el canto** | Recto · biselado · **ingletado** (parece maciza siendo de 1,2 cm) · redondeado · escurridor. **El canto ingletado es el detalle que hace que una mesada de 1,2 cm parezca de 4 cm.** Cuesta más y es delicado |
+| **Definir el tipo de bacha** | **Bajo mesada** (limpio, se barre hacia adentro, requiere canto pulido — **la mejor opción**) · Sobre mesada (más barata, junta que junta mugre) · Integrada (mismo material, solo en Corian y acero) |
+| **Definir el zócalo/salpicadero** | Sin zócalo (llega el revestimiento) · Zócalo del mismo material de 5–10 cm · **Salpicadero completo hasta la alacena** (la mejor solución de limpieza) |
+| **Perforaciones** | Cantidad y posición de agujeros para grifería, dispensador de jabón, purificador, toma de aire. **Se define ANTES del corte y no se puede corregir** |
+| **Espesor y voladizo** | Voladizo máximo sin apoyo: **[V] verificar con el marmolista según material y espesor**. Como referencia: en 3 cm de granito, ~25–30 cm; más que eso requiere ménsula o refuerzo |
+| **Junta de dos planchas** | Definir **dónde** cae la junta. Nunca sobre la bacha ni sobre el anafe |
+
+---
+
+## 6.6 Herrajes y sistemas de guardado
+
+### Herrajes: la inversión con mejor retorno del proyecto
+
+> **[C]** El herraje es lo que el cliente **toca todos los días**. Un mueble de melamina económica con herrajes Blum se siente mejor que un mueble laqueado con herrajes malos. **Es el último lugar donde ahorrar** (§2.4).
+
+| Herraje | Marcas de referencia | Qué exigir | Notas |
+|---|---|---|---|
+| **Bisagra de cazoleta** | Blum (Clip Top), Hettich (Sensys), Häfele, Salice; nacionales: Ducasse, Currao, Sidañez | **Cierre suave (soft close) integrado**, apertura 110°, regulación en 3 ejes, acero niquelado | Cantidad: 2 hasta 90 cm de alto, 3 hasta 150 cm, 4 hasta 200 cm |
+| **Corredera de cajón** | Blum (Tandembox, Legrabox, Movento), Hettich (Innotech, Quadro), Häfele | **Extracción total, cierre suave, capacidad ≥ 30 kg** (40–70 kg en cacerolero) | La corredera de rodillo lateral (la barata) es la peor decisión de una cocina |
+| **Sistemas de elevación** (alacenas) | Blum Aventos, Hettich Lift | Amortiguado, regulable, con freno en cualquier posición | Excelente en alacenas sobre mesada: la puerta no golpea la cabeza |
+| **Push / apertura sin tirador** | Blum Tip-On / Tip-On Blumotion, Hettich Push to open | **Verificar compatibilidad con soft close** | Muy usado en estética minimalista. Requiere ajuste fino y mantenimiento |
+| **Perfil "gola" / uñero** | Perfil de aluminio continuo en lugar de tirador | Define la estética contemporánea de cocina | Alternativa al push, más confiable |
+| **Herrajes de placard** | Correderas para puertas corredizas, colgadores extraíbles, pantaloneras, zapateras | Rodamiento superior (mejor que inferior: no junta mugre) | — |
+| **Bisagra de puerta de paso** | Pomelas, bisagras a tornillo | 3 por hoja mínimo | — |
+| **Amortiguadores** | — | En todas las puertas y cajones | — |
+
+**Distribuidores en Argentina [V — verificar cobertura en La Pampa]:**
+- **Montoya Herrajes SRL** — distribuidor exclusivo autorizado Blum, con showroom oficial; también Häfele, Ducasse, Currao, Sidañez. → montoyaherrajes.com.ar
+- **Herraturr Herrajes** — distribuidor oficial Häfele, Blum, Hettich, Ducasse, Salice. → herraturrherrajes.com.ar
+- **Bisagra OH** — representante Blum desde 1992. → bisagraoh.com.ar
+- **Häfele Argentina** — → hafele.com.ar
+- **Blum** — → blum.com
+
+### Sistemas de guardado: reglas de dimensionamiento
+
+| Elemento | Medida | Nota |
+|---|---|---|
+| **Profundidad de placard de ropa colgada** | **58–60 cm** libres interiores | **Es la medida crítica.** Menos de 55 cm y la ropa toca la puerta |
+| Profundidad total de placard (con puerta corrediza) | 62–68 cm | La corrediza roba 6–8 cm |
+| **Altura de barral de colgado (ropa larga)** | 165–180 cm | Espacio libre debajo: 150–160 cm |
+| **Altura de barral (ropa corta, doble barral)** | Superior a 200–210 cm; inferior a 100–110 cm | Duplica la capacidad de colgado |
+| Ancho de módulo de placard | 45–90 cm; ideal 60–80 cm | Módulos > 90 cm requieren refuerzo de estante |
+| **Estante: luz máxima sin apoyo** | **80–90 cm** en melamina de 18 mm; **60–70 cm** si va cargado (libros, vajilla) | Más allá, **flecha visible**. Usar 25 mm o agregar apoyo |
+| Altura de estante de vajilla | 30–35 cm | |
+| Altura de estante de libros | 28–35 cm | |
+| Espacio para zapatos | Estante de 30–35 cm de profundidad, 18–20 cm de altura por fila | |
+| Cajón de ropa interior | 12–18 cm de altura interior | |
+| Cajón de remeras/pulóveres | 20–28 cm | |
+| **Cacerolero** | 25–35 cm de altura interior | Con corredera de ≥40 kg |
+| Módulo de horno empotrado | 60 cm de ancho; hueco según modelo | **Verificar el modelo real antes de fabricar** |
+
+> **[C] Regla del 30%:** dimensionar el guardado con **30% de holgura** sobre lo que el cliente tiene hoy (medido en el briefing, pregunta 31). Si el placard entra justo, en 6 meses hay cosas afuera.
+
+---
+
+## 6.7 Textiles
+
+### 6.7.1 Cortinas
+
+| Sistema | Descripción | Ventajas | Desventajas | Uso ideal |
+|---|---|---|---|---|
+| **Roller screen** | Tela técnica enrollable, con % de apertura | Control solar con visión al exterior; limpio; ocupa poco | No da privacidad de noche (con luz adentro se ve desde afuera) | Living, escritorio, cocina |
+| **Roller blackout** | Tela opaca enrollable | Oscurece; térmica | Deja "filtraciones" de luz por los laterales salvo con guías | **Dormitorios** |
+| **Roller doble (screen + blackout)** | Dos rollos en un soporte | **La solución completa** | Ocupa más profundidad (12–18 cm) | Dormitorios, TV room |
+| **Roller traslúcido / voile** | Tela liviana | Suaviza la luz, da privacidad diurna | Poco control solar | Complemento |
+| **Cortina tradicional (riel u vara + tela)** | Paños de tela plegados | **Aporta calidez, textura y absorción acústica**; puede cubrir todo un muro | Ocupa espacio; junta polvo; costo de tela y confección | Living, dormitorio principal, comedor |
+| **Panel japonés (paneles deslizantes)** | Paños planos que corren | Contemporáneo, ordena; buena para ventanales muy anchos | Menos aislación; menos textura | Ventanales grandes, división de ambientes |
+| **Veneciana de aluminio** | Lamas horizontales | Control preciso del ángulo de luz | Junta polvo; estética de oficina | Baños, servicio, oficinas |
+| **Veneciana de madera** | Lamas anchas de madera | Muy cálida y elegante | Cara; pesada | Escritorio, dormitorio |
+| **Cortina romana** | Tela que se pliega horizontalmente | Textura de tela + compacidad | Confección compleja | Baños con ventana, cocinas |
+| **Persiana / roller exterior** | Del lado de afuera | **Control solar 5–10× más eficaz** (detiene el sol antes del vidrio) | Costo, obra | **La mejor solución en orientación oeste y norte** |
+
+### % de apertura del screen: qué elegir
+
+> **[E]** El **factor de apertura** es el porcentaje de espacio abierto entre las fibras del tejido. A mayor porcentaje, más luz pasa y más visibilidad al exterior; a menor porcentaje, más protección solar y más privacidad.
+
+| Apertura | Luz que pasa | Visión al exterior | Privacidad diurna | Uso recomendado |
+|---|---|---|---|---|
+| **1%** | Muy poca | Muy limitada | **Muy alta** | Orientación **oeste** con sol intenso; salas con pantallas; planta baja con vecinos cerca |
+| **3%** | Poca-media | Buena | Alta | **El más versátil.** Buena protección solar y privacidad sin oscurecer. Orientación norte y oeste |
+| **5%** | Media | Muy buena | Media | Cuando se prioriza la luz y la vista. Orientación este y sur |
+| **10%** | Mucha | Excelente | **Baja** | Ambientes que necesitan máxima luminosidad; pisos altos sin vecinos enfrente |
+
+> **[E]** Para fachadas con incidencia solar directa y prolongada se recomienda un tejido de **menor porcentaje de apertura (3–5%)** para maximizar la protección térmica. **Aplicado al hemisferio sur: NORTE y OESTE = 1–3%. SUR y ESTE = 5–10%.**
+
+**Otros parámetros del screen:**
+
+| Parámetro | Qué es | Criterio |
+|---|---|---|
+| **Color de la tela** | Claro / oscuro | **Tela clara:** refleja más calor hacia afuera (mejor térmicamente), pero produce más deslumbramiento y menos visión al exterior. **Tela oscura:** mejor visión al exterior y menos deslumbramiento, pero absorbe más calor. **[C] Solución habitual: screen de doble faz, oscuro adentro / claro afuera** |
+| **Factor solar (g)** | Fracción de energía solar que atraviesa el conjunto vidrio+cortina | Cuanto menor, mejor control térmico. **Pedirlo al fabricante** |
+| **Composición** | PVC sobre fibra de vidrio (el estándar) o poliéster | La fibra de vidrio es más estable dimensionalmente |
+| **Reacción al fuego** | Clase | Exigir clasificación en espacios comunes |
+
+### Reglas de medición y montaje de cortinas
+
+| Regla | Detalle |
+|---|---|
+| **Montaje al cielorraso, no al dintel** | La cortina que arranca en el cielorraso hace que la ventana se lea más alta y el ambiente más amplio. **[C] Es el truco más efectivo y barato del interiorismo** |
+| **Ancho: sobrepasar la ventana** | 15–25 cm de cada lado. Deja pasar toda la luz al abrir y hace la ventana más ancha |
+| **Cortina de tela: largo** | Al piso, "besando" el piso (0,5–1 cm) o **quebrada** (2–4 cm sobre el piso, en estilos clásicos). **Nunca "flotando" a 10 cm del piso**: es el error visual más común |
+| **Amplitud de la tela (fullness)** | **[C]** 2 a 2,5 veces el ancho del vano para cortina tradicional. Menos de 2× se ve "pobre" |
+| **Roller: dentro o fuera del vano** | Dentro: más limpio, pero deja filtración lateral. **Fuera + guías laterales:** blackout real |
+| **Gola de cortina en el cielorraso** | Ver §6.4. Requiere conocer el **diámetro real del rollo** |
+| **Motorización** | Prever alimentación en el dintel (§5.12). Muy valorado en ventanales grandes y alturas dobles |
+
+---
+
+### 6.7.2 Tapizados
+
+**Martindale: el dato que hay que exigir**
+
+> **[E]** El ensayo **Martindale** mide la resistencia a la abrasión frotando la tela contra un abrasivo estándar en un movimiento en forma de ocho, hasta que aparecen signos visibles de desgaste. Se expresa en **ciclos (rubs)**.
+
+| Ciclos Martindale | Clasificación | Uso adecuado |
+|---|---|---|
+| **10.000–15.000** | Doméstico ligero | Almohadones decorativos, muebles de uso ocasional |
+| **15.000–25.000** | Doméstico general | Sofás y sillas de uso diario |
+| **25.000–30.000** | **Doméstico intensivo / comercial ligero** | **Mínimo recomendado para un sofá de uso diario** |
+| **> 30.000** | Comercial / alto tránsito | Asientos públicos, oficinas, restaurantes, SUM de edificio |
+| **> 50.000** | Contract severo | Espacios comunes de edificio, hotelería |
+
+**Criterio del estudio:**
+
+| Situación | Martindale mínimo |
+|---|---|
+| Almohadones decorativos | 15.000 |
+| Sofá de uso normal, sin chicos ni mascotas | **25.000** |
+| **Sofá con chicos o mascotas** | **40.000** |
+| Sillas de comedor | **30.000** |
+| Silla de escritorio | 40.000 |
+| **SUM, coworking, espacios comunes de edificio** | **50.000+** |
+
+**Otros parámetros a exigir:**
+
+| Parámetro | Qué es | Criterio |
+|---|---|---|
+| **Solidez del color a la luz** | Escala 1–8 (azul de lana) | ≥ 5 en general; **≥ 6 si el mueble recibe sol** (ventanal al norte u oeste) |
+| **Solidez del color al frote** | Escala 1–5 | ≥ 4 |
+| **Pilling** | Formación de bolitas | Escala 1–5; ≥ 4 |
+| **Tratamiento antimanchas** | Teflón, Scotchgard, Aquaclean, Easy Clean | **Muy recomendable con chicos** |
+| **Composición** | — | Ver tabla abajo |
+
+**Fibras de tapicería:**
+
+| Fibra | Durabilidad | Manchas | Mascotas | Tacto | Notas |
+|---|---|---|---|---|---|
+| **Poliéster** | Alta | Buena | **Buena** | Variable | El caballo de batalla. Buena relación precio/prestación |
+| **Poliéster reciclado / performance fabric** | Alta | **Excelente** | **Excelente** | Bueno | Telas tipo Aquaclean, Crypton: se limpian con agua |
+| **Acrílico (Sunbrella y similares)** | **Muy alta** | Excelente | Excelente | Medio | **Resistente a UV.** Para exterior y ventanales |
+| **Algodón** | Media | **Mala** | Mala | **Muy bueno** | Se ensucia y se arruga. Bueno si es desenfundable y lavable |
+| **Lino** | Media-baja | **Mala** | **Mala** | Excelente | Precioso; se arruga; se engancha; **con gatos es un desastre** |
+| **Lana** | Alta | Buena | Media | Excelente | Cara, noble, resiliente |
+| **Terciopelo (poliéster)** | Alta | Buena | **Buena** (pelo corto y denso: las uñas no enganchan) | Excelente | Sorprendentemente práctico si es sintético |
+| **Bouclé** | Media | Media | **MALA** — las uñas enganchan y desarman el bucle | Excelente | **No especificar con gatos ni perros.** Moda 2020–2026 |
+| **Chenille** | Alta | Media | Media | Muy bueno | Clásico argentino, muy durable |
+| **Cuero natural** | **Muy alta** | Buena (se limpia) | **Buena** (aunque se raya, y la pátina puede ser deseable) | Excelente | Caro; envejece bien; frío en invierno |
+| **Cuero sintético / eco-cuero** | Variable | Excelente | Media (se descascara con uñas) | Medio | Verificar calidad: los baratos se pelan a los 3 años |
+
+> **[C] Con mascotas:** pelo corto y denso, sintético, **de color similar al del pelo del animal**, con tratamiento antimanchas y **fundas desenfundables y lavables**. Y una manta encima del lugar donde duerme el perro: es la solución más efectiva y nadie la especifica.
+
+---
+
+### 6.7.3 Alfombras: medidas correctas
+
+> **[C]** La regla más importante: **la alfombra debe ser suficientemente grande.** El error más frecuente y más visible del interiorismo amateur es la alfombra chica flotando en el medio del living, que empequeñece todo el ambiente.
+
+**Las tres disposiciones válidas en un living:**
+
+```
+A) TODAS LAS PATAS ADENTRO (la mejor, requiere la alfombra más grande)
+
+   ┌────────────────────────────────────┐
+   │  ┌──────────┐                      │
+   │  │  SOFÁ    │        ┌───────┐     │
+   │  └──────────┘        │SILLÓN │     │
+   │        ┌──────┐      └───────┘     │
+   │        │ MESA │                    │
+   │        └──────┘                    │
+   │              ┌──────────┐          │
+   │              │  SOFÁ 2  │          │
+   │              └──────────┘          │
+   └────────────────────────────────────┘
+     ← la alfombra pasa 15-20 cm por fuera de todo →
+
+
+B) PATAS DELANTERAS ADENTRO (la más usada, buen equilibrio)
+
+        ┌──────────┐
+        │  SOFÁ    │
+   ┌────┴──────────┴────────────────┐
+   │  (patas delanteras sobre       │
+   │   la alfombra)                 │
+   │        ┌──────┐                │
+   │        │ MESA │                │
+   │        └──────┘                │
+   └────────────────────────────────┘
+
+
+C) TODAS LAS PATAS AFUERA (solo si la alfombra es chica y la
+   mesa ratona está completamente adentro con margen)
+   → Es la opción menos recomendable, y solo funciona si la
+     alfombra sobrepasa la mesa ratona con generosidad.
+```
+
+**Reglas verificadas:**
+
+| Regla | Medida | Fuente |
+|---|---|---|
+| Lo ideal: **las cuatro patas** de los sillones sobre la alfombra; como mínimo, **las dos delanteras** | — | [C] consenso de fuentes de decoración |
+| La alfombra debe **sobrepasar el sofá al menos 15 cm de cada lado**; otras fuentes indican 20 cm | **15–20 cm** por lado | [C] |
+| Dejar un margen entre el borde de la alfombra y la pared | **≥ 45 cm** | [C] |
+| La alfombra debe ser **más larga que el sofá** | — | [C] |
+
+**Tabla de medidas por situación:**
+
+| Situación | Medida de alfombra recomendada |
+|---|---|
+| Sofá de 2 cuerpos (~160–180 cm) | **140×200** o **160×230** cm |
+| Sofá de 3 cuerpos (~200–220 cm) | **160×230** o **200×300** cm |
+| Living amplio con sofá + 2 sillones | **200×290** o **240×340** cm |
+| Living muy amplio / esquinero grande | **250×350** o **300×400** cm |
+| **Bajo mesa de comedor** | La alfombra debe sobrepasar el borde de la mesa **60–75 cm por lado**, para que las sillas queden adentro al correrse. Para una mesa de 90×180: alfombra de **200×300** mínimo |
+| Alfombra de cama (una sola, cruzada bajo la cama) | Sobrepasar **60–75 cm** a los pies y a los lados. Cama de 2 plazas (140): alfombra de **200×300** |
+| Corredores laterales de cama (dos) | **70–80 × 200–240** cm cada uno |
+| Corredor de pasillo | Ancho: dejar **10–15 cm** de piso a la vista de cada lado |
+| Alfombra de entrada | Ancho de la puerta + 20 cm |
+
+**Manta antideslizante:** obligatoria bajo toda alfombra suelta sobre piso duro. Es seguridad, no confort.
+
+---
+
+### 6.7.4 Ropa de cama
+
+| Ítem | Medidas argentinas estándar | Notas |
+|---|---|---|
+| Colchón 1 plaza | 80 × 190 cm | |
+| Colchón 1½ plaza | 100 × 190 cm | |
+| Colchón 2 plazas | 140 × 190 cm | |
+| Colchón Queen | 160 × 200 cm | |
+| Colchón King | 180 × 200 cm | |
+| Colchón Súper King | 200 × 200 cm | |
+| **Sábana bajera** | Medida del colchón + **altura del colchón × 2 + 15 cm** de dobladillo | **Verificar la altura real del colchón**: los colchones de alta gama tienen 30–35 cm y no entran en sábanas estándar |
+| **Sábana encimera / acolchado** | Debe sobrepasar el colchón **35–45 cm de cada lado** | Un acolchado que no cae bien arruina la cama |
+| **Almohadas** | 50×70 (estándar) · 50×90 (King) | |
+
+> **[C] Densidad de hilos (thread count):** entre 200 y 400 hilos es el rango de calidad real en algodón. Por encima de 600 suele ser marketing (hilos multi-cabo contados varias veces). **Importa más el tipo de algodón y el tejido (percal vs. satén) que el número.**
+> - **Percal:** tejido cruzado 1×1, mate, fresco, "crujiente". Ideal para verano y para quien transpira.
+> - **Satén:** tejido con más hilos en superficie, sedoso, brillante, más abrigado.
+
+---
+
+## 6.8 Reacción al fuego de materiales de terminación
+
+> **[E]** La clasificación europea **EN 13501-1** ordena los productos de construcción por su reacción al fuego con tres parámetros:
+> - **Letra (A1, A2, B, C, D, E, F):** contribución al fuego. A1 = incombustible; **B = combustible con muy baja contribución**; F = sin clasificar / no ensayado.
+> - **s1, s2, s3:** producción de humo. **s1 = baja velocidad y cantidad de emisión de humo.**
+> - **d0, d1, d2:** caída de gotas o partículas inflamadas. **d0 = ninguna gota inflamada durante más de 600 segundos.**
+>
+> Por lo tanto, **B-s1,d0** = material combustible de baja contribución al fuego, con muy baja emisión de humo y sin goteo inflamado. Es una clasificación de buen desempeño para revestimientos de muros y cielorrasos interiores.
+
+### Clasificación aproximada de materiales de terminación habituales
+
+| Material | Euroclase típica [V — verificar la ficha del producto específico] |
+|---|---|
+| Porcelanato, cerámico, piedra natural, vidrio, yeso desnudo | **A1** |
+| Placa de yeso con papel, mortero, lana mineral revestida | **A2-s1,d0** |
+| Madera ignifugada / tratada con retardante certificado | **B-s1,d0** o **B-s2,d0** |
+| Madera maciza sin tratar (según especie y espesor) | **D-s2,d0** aprox. |
+| MDF sin tratar | **D-s2,d0** aprox. |
+| Papel pintado vinílico sobre soporte A2 | **B-s1,d0** aprox. |
+| Alfombra sintética | **Bfl / Cfl** (clasificación de pisos, con sufijo `fl`) |
+| Espuma de poliuretano sin protección | **E / F** — **muy peligrosa: emite humo tóxico** |
+| Poliestireno expandido sin protección | **E / F** |
+| Placas de PVC | **B / C** con mucho humo |
+
+### Dónde importa de verdad
+
+| Ámbito | Exigencia |
+|---|---|
+| **Vivienda unifamiliar** | La normativa suele ser laxa. **Pero el criterio profesional no debería serlo**, especialmente en vías de escape (pasillos, escaleras) |
+| **Vías de evacuación de edificios** (pasillos, escaleras, palieres, hall) | **Es donde la normativa es estricta.** Los revestimientos de muros y cielorrasos deben tener clasificación alta |
+| **Espacios comunes de alta ocupación** (SUM, gimnasio, coworking) | Estricta |
+| **Cocinas** | Materiales próximos a la fuente de calor |
+
+> **[V] CRÍTICO.** En Argentina la reacción al fuego de materiales de construcción se rige por las normas **IRAM 11910** (partes 1, 2 y 3: "Acondicionamiento térmico y comportamiento al fuego de materiales de construcción" / clasificación de materiales según su reacción al fuego), y por lo que exija el **Código de Edificación de la Municipalidad de Santa Rosa**, la **Ley 19.587 y su Decreto 351/79 (Anexo VII, protección contra incendios)**, y las normas de la Superintendencia de Bomberos que resulten aplicables.
+>
+> **El estudio DEBE verificar la clasificación exigible antes de especificar cualquier revestimiento combustible en vías de escape o en espacios comunes de edificio.** No usar equivalencias directas entre IRAM y EN 13501-1 sin confirmarlas: **no son sistemas equivalentes.**
+>
+> Consultar: **IRAM (iram.org.ar)**, Cuerpo de Bomberos local, y la Dirección de Obras Particulares municipal.
+
+---

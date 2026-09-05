@@ -337,11 +337,16 @@ suelos loéssicos argentinos en `docs/09-biblioteca/biblioteca-y-papers.md`.
 
 | Tema | Dato | Estado |
 |---|---|---|
-| Colegio de Arquitectos de la Provincia de La Pampa (CALP) | Actúa bajo la **Ley provincial 2.878**; el art. 14 inc. e) lo faculta a fijar aportes profesionales y proponer actualizaciones de honorarios | Verificado |
+| Marco legal del Colegio de Arquitectos de La Pampa (CALP) | **Ley provincial 2.878** — creación del CALP · **Ley provincial 2.881** — visado previo y aportes por tareas profesionales de arquitectos · **Ley provincial 1.163** — honorarios mínimos y aranceles profesionales de los matriculados del Consejo Profesional de Ingeniería y Arquitectura de La Pampa | Verificado en la sección "Marco Legal" del CALP |
 | Régimen de visado y aportes | **Resolución N° 03/2016** — Visado y Aportes Profesionales + Sistema de Gestión Integral para el cálculo de aportes y honorarios | Verificado |
+| Normativa interna del CALP | Reglamento Interno (Estatuto), Código de Ética y Disciplina, Reglamento de concursos del CALP y Reglamento de Concursos de FADEA | Verificado |
 | Valor de referencia del m² de construcción | **Resolución N° 09/2024**: $ 913.336/m², vigente desde el **1/4/2024**, sobre el costo de construcción unitario referenciado de una **vivienda unifamiliar tipo de 120 m² cubiertos**. Surge del promedio de los índices CAMARCO e INDEC (enero–febrero 2024: índice 1,2921 = 29,21 % de actualización). Aporte mínimo profesional: **$ 8.100** | Verificado — **dato de abril 2024, desactualizado por inflación: pedir la resolución vigente al CALP antes de cotizar** |
 | Resolución de actualización previa | **Resolución N° 10/2023** — Actualización del Valor de Referencia del Costo de Construcción, ratificada por Asamblea Ordinaria | Verificado |
 | Otros colegios intervinientes | Consejo Profesional de Ingeniería y **CPITLP** (Colegio Profesional de la Ingeniería y la Técnica de La Pampa) — participaron en la evaluación del Código Urbanístico y publican el nuevo Código Urbano Ambiental | Verificado |
+
+> **Cuidado con la homonimia:** `colegioarquitectos.org.ar` **no es** el Colegio de La Pampa —
+> es otro colegio provincial y sus resoluciones (p. ej. Res. 1806/22) **no aplican acá**. El
+> sitio del CALP es **`colegioarqlapampa.org.ar`**.
 
 **Método de actualización del valor de referencia:** promedio de los índices publicados por
 **CAMARCO** e **INDEC**. Sirve tanto para honorarios como para **actualizar presupuestos de obra

@@ -2666,3 +2666,492 @@ Con viento medio de 10–14 km/h y ráfagas muy superiores, **la succión de vie
 | **Verificación del sistema de sujeción de la membrana** en cubiertas fijadas mecánicamente | Ídem |
 
 ---
+
+# 7. Carpinterías y vidrios
+
+> En una vivienda bien aislada, **las ventanas pasan a ser el punto más débil de la envolvente**. Con muros a K = 0,34 y ventanas a K = 5,86 (aluminio sin RPT con vidrio simple), una ventana de 2 m² pierde lo mismo que 34 m² de muro. Y con el viento pampeano, la infiltración por una carpintería mal sellada puede superar la pérdida por conducción de toda la ventana.
+
+## 7.1 Perfilería: materiales y líneas
+
+### Tabla 7.1 — Comparación de materiales de carpintería
+
+| Material | λ del material (W/m·K) | K del perfil (W/m²K) | Mantenimiento | Vida útil | Costo relativo | Observaciones |
+|---|---|---|---|---|---|---|
+| **Aluminio sin RPT** | **204** | **6,02** *(verificado, IRAM 11507-4 Tabla A.3)* | Muy bajo | 40+ años | 100 | El perfil es un puente térmico absoluto. **Condensa sobre el marco** en invierno |
+| **Aluminio con RPT** (ruptura de puente térmico) | 204 (con inserto de poliamida) | **2,85** *(verificado, IRAM 11507-4)* | Muy bajo | 40+ años | 160–220 | **Reduce el K del perfil a menos de la mitad.** Es la opción correcta para Zona IV |
+| **PVC** | **0,16** | *verificar en ficha del fabricante; el orden de magnitud usual es 1,3–2,0* | Bajo | ~50 años *(dato citado por INCoSe)* | 130–200 | **No conductor**: no produce condensación ni efecto de muro frío. Actúa como ruptura de puente térmico por sí mismo. Material ignífugo y reciclable |
+| **Madera** | 0,13–0,19 (perpendicular a fibras) | *verificar; orden de magnitud 1,8–2,2* | **Alto** (repintado cada 2–4 años en exterior expuesto) | 30–80 años con mantenimiento | 150–300 | Excelente térmicamente. **El clima pampeano (UV alto, amplitud térmica, viento seco) es duro con la madera exterior** |
+| **Hierro / acero** | **58** | *muy alto; verificar* | Alto (anticorrosivo) | 30+ años | 70–110 | **Térmicamente el peor.** Uso justificado en aberturas de seguridad, industriales o de gran porte |
+| **Madera-aluminio** | — | *verificar* | Bajo (aluminio afuera, madera adentro) | 40+ años | 250–400 | Lo mejor de ambos; poco difundido en Argentina |
+
+### 7.1.1 Líneas de aluminio del mercado argentino
+
+Las siguientes son denominaciones comerciales de líneas de perfilería de aluminio de uso corriente en Argentina. **Sus prestaciones exactas (K del perfil, clasificación IRAM 11507-1/-2/-4, espesor máximo de vidrio, dimensiones máximas de hoja) deben verificarse en el catálogo técnico vigente del extrusor (Aluar) y del fabricante de la abertura.**
+
+| Línea | Tipología | Uso corriente | Notas de desempeño |
+|---|---|---|---|
+| **Herrero** | Corrediza y de abrir, perfil liviano, económico | Vivienda económica, aberturas interiores, reposición | **Sin RPT.** Prestación de estanqueidad e infiltración baja. **No recomendable para la envolvente térmica de un proyecto que deba verificar norma en Zona IV** |
+| **Módena** | Corrediza de dos y tres hojas, línea intermedia | Vivienda estándar | **Sin RPT.** Admite DVH en algunas variantes: **verificar espesor máximo de vidrio en catálogo** |
+| **A30 / línea 3000** | Corrediza de mayor porte y prestación | Vivienda media y alta | **Sin RPT.** Mayor sección, mejor estanqueidad, admite DVH |
+| **Rotonda** | Línea de abrir/proyectante con burlete perimetral | Vivienda media/alta, edificios | Mejor estanqueidad al aire por burlete continuo. **Verificar si la variante especificada tiene RPT** |
+| **Líneas con RPT** (varias denominaciones comerciales según extrusor y fabricante) | Abrir, corrediza elevable, oscilobatiente | **Proyectos con exigencia térmica** | **K del perfil ≈ 2,85 W/m²K** (valor de IRAM 11507-4). **Es la familia a especificar en Santa Rosa** |
+
+> **Criterio del estudio:** para cualquier abertura de la envolvente térmica de un proyecto en Santa Rosa, especificar **carpintería con ruptura de puente térmico (aluminio RPT) o PVC**, con **DVH**. Las líneas sin RPT quedan reservadas para aberturas interiores, cerramientos de galería no calefaccionada, o cuando el comitente asume expresamente la limitación.
+
+### 7.1.2 Ventanas de abrir vs. corredizas: la diferencia que nadie discute
+
+| | **De abrir / oscilobatiente / proyectante** | **Corrediza** |
+|---|---|---|
+| Cierre | **Compresión** de un burlete perimetral continuo contra el marco | **Deslizamiento** de felpas entre hojas y contra el marco |
+| Estanqueidad al aire | **Muy alta** (puede alcanzar las clasificaciones más exigentes) | **Limitada por diseño**: el encuentro de las dos hojas nunca cierra por compresión |
+| Estanqueidad al agua | Alta | Limitada |
+| Clasificación IRAM alcanzable | A2/A3, E3/E4, V3 (*verificar por producto*) | Habitualmente inferior (*verificar por producto*) |
+| Superficie de paso | 50 % o 100 % del vano | Máximo 50 % del vano |
+| Espacio interior requerido | La hoja barre hacia adentro | Ninguno |
+| **Recomendación para Santa Rosa** | **Preferible siempre que sea posible.** Con viento fuerte, la infiltración de una corrediza es un problema real y permanente | Aceptable en vanos grandes hacia galería protegida, o con líneas corredizas de alta prestación (elevables con burlete perimetral) |
+
+> **La corrediza elevable (lift-and-slide)** resuelve el problema: al bajar la manija, la hoja desciende y comprime un burlete perimetral, comportándose como una ventana de abrir. Es más cara, pero es la única corrediza que alcanza clasificaciones altas de estanqueidad.
+
+## 7.2 Clasificación IRAM de carpinterías
+
+### Tabla 7.2 — Sistema de clasificación IRAM 11507
+
+| Parte | Contenido | Designación |
+|---|---|---|
+| **IRAM 11507-1** | Requisitos básicos y clasificación: **infiltración de aire (A)**, **estanqueidad al agua (E)**, **resistencia al viento (V)** | A1, A2, A3… / E1, E2… / V1, V2, V3 |
+| **IRAM 11507-2** | Requisitos básicos: resistencia mecánica | — |
+| **IRAM 11507-3** | Requisitos complementarios: **aislación acústica** | — |
+| **IRAM 11507-4** | Requisitos complementarios: **aislación térmica** | **K1 a K5** |
+| **IRAM 11507-5** | Metodología de los ensayos, orden cronológico y criterios | — |
+| **IRAM 11507-6** | **Etiquetado de eficiencia energética de ventanas exteriores** (vigente desde mayo de 2018, **de carácter voluntario**; condición excluyente: cumplir la infiltración de aire) | — |
+
+**Normas de ensayo asociadas:** IRAM 11523 (infiltración de aire), IRAM 11591 (estanqueidad al agua), IRAM 11590 (resistencia al viento).
+
+### Tabla 7.3 — IRAM 11507-4: categorías de aislación térmica — **verificado**
+
+| Categoría | Transmitancia térmica K (W/m²K) |
+|---|---|
+| **K1** | K < 1,0 |
+| **K2** | 1,0 ≤ K ≤ 1,5 |
+| **K3** | 1,5 < K ≤ 2,0 |
+| **K4** | 2,0 < K ≤ 3,0 |
+| **K5** | 3,0 < K ≤ 4,0 |
+| **No clasificable** | **K > 4,0** |
+
+**Requisito de la norma (verificado):** *"Las ventanas verificadas según IRAM 11601, con todos sus componentes incluyendo sus herrajes y burletes, deben presentar un valor de transmitancia térmica total menor que 4,0 W/m²K."*
+
+> **Consecuencia inmediata:** **una ventana de aluminio sin RPT con vidrio simple (K = 5,86) NO ES CLASIFICABLE según IRAM 11507-4.** No es que tenga una categoría baja: está fuera de la norma.
+
+### Ejemplo de designación completa (verificado, nota de IRAM 11507-4)
+
+```
+[IRAM A1; IRAM E2; V3; K3]
+```
+Significa una ventana que:
+- **A1**: resistencia a la infiltración de aire equivalente a **4 a 6 m³/(h·m)**
+- **E2**: estanqueidad al agua suficiente para controlar un caudal de **2,00 dm³/(min·m²)** bajo una presión estática de **200 Pa (65 km/h)**
+- **V3**: resistencia a la acción del viento de **1500 Pa** (ensayo de deformación), **1200 Pa** (presión/depresión repetidas) y **2400 Pa** (ensayo de seguridad)
+- **K3**: transmitancia térmica total entre **1,5 y 2,0 W/m²K**
+
+> **Las tablas completas de las categorías A, E y V (todos los niveles) están en IRAM 11507-1: verificar allí los valores de cada categoría antes de especificar.**
+
+### Exigencia por altura (criterio de la Ley 13.059 PBA — referencia aplicable)
+
+| Altura de la ventana sobre el nivel del terreno (medida hasta el dintel) | Clasificación mínima de infiltración de aire |
+|---|---|
+| **Hasta 10 m** | **IRAM A1** |
+| **Más de 10 m** | **IRAM A2** |
+
+> **Aplicación a Santa Rosa:** *verificar si el Código de Edificación de Santa Rosa o la normativa provincial de La Pampa establecen exigencias. En ausencia de ellas, adoptar el criterio bonaerense como piso contractual.* Y considerar que **La Pampa tiene régimen de vientos más severo que el AMBA**: para un edificio PB+9 en Santa Rosa, A2 es un mínimo, no un objetivo.
+
+## 7.3 Vidrios
+
+### Tabla 7.4 — Transmitancia térmica de vidrios — **verificado** (IRAM 11507-4 Tabla A.2, según manual de la Cámara del Vidrio Plano)
+
+| Tipología | K del vidrio (W/m²K) |
+|---|---|
+| **Vidrio simple incoloro de 6 mm** | **5,8** |
+| **DVH incoloro–incoloro 6-12-6** | **2,8** |
+| **DVH incoloro–Low-E 6-12-6** | **1,8** |
+| **DVH incoloro–Low-E con argón 4-15-4** | **1,3** |
+
+**Datos complementarios (manual INCoSe, versión 2025.01):**
+
+| Tipología | K (W/m²K) |
+|---|---|
+| Vidrio simple de 4 mm | 5,70 |
+| Vidrio simple de 3 a 19 mm | 5,8 a 5,2 |
+| DVH con cámara de 6 mm | 3,20 |
+| DVH con cámara de 9 mm | 3,00 |
+| **DVH con cámara de 12 mm** | **2,80** |
+| **DVH con Low-E, cámara 12 mm** | **1,80** |
+| **Triple vidriado (TVH) con cámara 6 mm** | **1,90** |
+| Vidrios de baja emisividad (referencia INCoSe) | 1,6 |
+
+### Tabla 7.5 — Transmitancia térmica de VENTANAS COMPLETAS con perfilería de aluminio — **verificado** (IRAM 11507-4, Tabla A.1)
+
+| Tipología de ventana | Vidrio simple 6 mm | DVH 6-12-6 | DVH Low-E 6-12-6 | DVH Low-E c/argón 4-15-4 |
+|---|---|---|---|---|
+| **Ventana simple SIN ruptor de puente térmico** | **5,86** | **3,82** | **3,14** | **2,80** |
+| **Ventana simple CON ruptor de puente térmico** | 4,86 | **2,82** | **2,13** | **1,79** |
+| **Doble ventana con ruptor de puente térmico** | 1,99 | 1,25 | 0,97 | 0,83 |
+| **Doble ventana con cortina de enrollar cerrada** | 1,52 | 1,05 | 0,84 | 0,74 |
+
+*Nota de la norma: los valores resultan de cálculos teóricos; cada fabricante debe aportar el valor correspondiente a su sistema y material.*
+
+### Tabla 7.6 — Interpretación de la Tabla 7.5 para el proyecto
+
+| Combinación | K ventana | Categoría IRAM 11507-4 | Veredicto para Santa Rosa |
+|---|---|---|---|
+| Aluminio sin RPT + vidrio simple | 5,86 | **NO CLASIFICABLE** | **Inadmisible** |
+| Aluminio sin RPT + DVH 6-12-6 | 3,82 | K5 | Mínimo tolerable. Aún condensa sobre el marco |
+| Aluminio sin RPT + DVH Low-E | 3,14 | K5 | Mejora el vidrio, el marco sigue siendo el problema |
+| **Aluminio CON RPT + DVH 6-12-6** | **2,82** | **K4** | **Piso recomendable del estudio** |
+| **Aluminio CON RPT + DVH Low-E 6-12-6** | **2,13** | **K4 (casi K3)** | **Objetivo de proyecto** |
+| Aluminio CON RPT + DVH Low-E c/argón 4-15-4 | 1,79 | **K3** | Excelente |
+| Doble ventana con RPT + DVH Low-E | 0,97 | **K1** | Nivel Passivhaus; sólo si el proyecto lo justifica |
+| **Cortina de enrollar cerrada (efecto nocturno)** | **reduce K entre 0,3 y 0,5 W/m²K** | — | **Confirma el valor térmico de la persiana**: ver 7.6 |
+
+> **Lectura clave de la tabla de la norma:** pasar de vidrio simple a DVH en un marco sin RPT baja K de 5,86 a 3,82 (–35 %). Agregar RPT al marco con DVH baja de 3,82 a 2,82 (–26 %). **Los dos movimientos son necesarios: el vidrio solo no alcanza, porque el marco representa entre el 20 % y el 30 % de la superficie de la ventana y conduce 6 W/m²K.**
+
+### Tabla 7.7 — Tipos de vidrio: prestaciones y seguridad — **verificado** (manual INCoSe)
+
+| Tipo | Aislación térmica | Aislación acústica | Seguridad ante roturas |
+|---|---|---|---|
+| **Monolítico (float/crudo)** | Despreciable (K 5,2–5,8) | Poca. Se necesitan espesores > 10 mm para alguna mejora | **NO es vidrio de seguridad** |
+| **Laminado** (dos vidrios + lámina de PVB) | Aumenta poco (por espesor) | **Buena, especialmente si es ASIMÉTRICO** (p. ej. 4+6 o 5+3, para evitar la coincidencia de frecuencias). La lámina PVB mejora cuando su espesor es **≥ 0,76 mm** | **SÍ.** Difícil de atravesar; los fragmentos quedan adheridos a la lámina |
+| **Templado** | Poca | Poca | **SÍ.** Se rompe en pequeños fragmentos |
+| **Termoendurecido** | Poca | Poca | **NO.** Se rompe en fragmentos grandes que pueden causar heridas |
+| **DVH** | **Grande** (ver tablas) | Mejora; aumenta con cámara > 12 mm o con argón; permite combinar vidrios distintos para cubrir varias frecuencias | Depende de los vidrios que lo componen: con un laminado, es de seguridad |
+| **TVH (triple)** | **Muy grande** (K 1,90 con cámara de 6 mm) | Ídem DVH acentuado | Ídem DVH. **El incremento de precio lo hace poco usado** |
+| **DVH con Low-E / control solar** | **Muy grande** (K 1,80 con cámara 12 mm) | Ídem DVH | Ídem DVH |
+
+**Normas de seguridad:** **IRAM 12595 y 12596** establecen las características que debe reunir un vidrio sometido a posibilidad de impacto humano accidental y **definen áreas de riesgo en las que deben emplearse vidrios de seguridad** (templados y/o laminados). **Normas de DVH: IRAM 12598-1, -2 y -3.**
+
+### 7.3.1 Control solar y factor solar
+
+El **factor solar (g o FS)** es la fracción de la energía solar incidente que atraviesa el vidrio (por transmisión directa más reabsorción y reemisión). Es **independiente de K**: un vidrio puede aislar muy bien del frío y dejar pasar mucho sol, o al revés.
+
+| Situación en Santa Rosa | Estrategia de vidrio |
+|---|---|
+| **Fachada NORTE** | **Alto factor solar + bajo K.** Se quiere la ganancia solar de invierno (heliofanía relativa 48 % en invierno). El control de verano se hace con **alero calculado**, no con el vidrio. **Especificar Low-E de "alta ganancia solar" (low-E blando de baja emisividad y g alto), no control solar** |
+| **Fachada OESTE** | **Bajo factor solar.** El sol de la tarde de verano entra con ángulo bajo y no lo detiene ningún alero. **Vidrio de control solar + protección móvil exterior** |
+| **Fachada ESTE** | Intermedio; el sol de la mañana es menos problemático |
+| **Fachada SUR** | Sin ganancia solar directa. **Sólo importa el K: DVH Low-E, superficie vidriada mínima** |
+| **Techo / claraboya / patio vidriado** | **Factor solar bajo obligatorio.** Un vidriado horizontal recibe la radiación máxima en verano. Vidrio de control solar + protección exterior |
+
+> **Los valores de factor solar (g) y de transmisión luminosa (TL) de cada producto deben tomarse de la ficha técnica del fabricante de vidrio (VASA/Blindex, y equivalentes). No se reproducen acá porque no se verificaron contra catálogo.**
+
+### 7.3.2 Cuándo se justifica económicamente el DVH
+
+El DVH tiene un sobrecosto respecto del vidrio simple. Su justificación depende de tres factores:
+
+1. **Grados-día:** con **GD18 = 1331** Santa Rosa está claramente en el rango donde el DVH se paga solo (*el cálculo de repago corresponde al agente de gestión, con el ahorro en kWh que da la fórmula de IRAM 11604 y el costo de la energía*).
+2. **Superficie vidriada:** cuanto mayor la proporción de vidrio, más rápido el repago. Un local con 30 % de fachada vidriada pierde por las ventanas más que por el muro.
+3. **Confort y condensación:** el DVH **elimina la condensación sobre el vidrio** en invierno (θ superficial interior muy superior) y elimina el efecto de "pared fría radiante" que hace que uno sienta frío sentado junto a la ventana aunque el aire esté a 20 °C.
+
+> **Criterio del estudio:** **en Santa Rosa el DVH se justifica siempre en locales de permanencia**. La discusión no es "DVH sí o no", sino "**DVH simple o DVH Low-E**", y ahí sí el análisis económico por orientación tiene sentido:
+> - **Sur y Oeste: DVH Low-E siempre** (el Low-E reduce la pérdida donde no hay ganancia que compense).
+> - **Norte: DVH con Low-E de alta ganancia solar**, o DVH simple si el presupuesto aprieta y el alero está bien resuelto.
+> - **Baños, lavaderos, depósitos: DVH simple** o incluso simple, según el caso.
+
+## 7.4 Herrajes y burletes
+
+| Componente | Requisito |
+|---|---|
+| **Burlete perimetral** | En ventanas de abrir: continuo, sin cortes en las esquinas (o con esquinas vulcanizadas). Material EPDM o TPE, **no espuma de poliuretano** (se degrada). Debe comprimirse uniformemente en todo el perímetro |
+| **Felpas (corredizas)** | Con **aleta central de polipropileno** (felpa "con aleta"), que mejora la estanqueidad respecto de la felpa simple. Reemplazables |
+| **Cierre multipunto** | En ventanas de abrir de más de 1,20 m de alto: **cierre en al menos 3 puntos** por hoja, para que la compresión del burlete sea uniforme. Con cierre en un solo punto, las esquinas no comprimen y filtran |
+| **Bisagras / brazos** | Regulables en los tres ejes, para poder ajustar la compresión del burlete en obra y a lo largo de la vida útil |
+| **Drenajes del marco** | **Orificios de drenaje en el perfil inferior del marco**, con tapa antiviento. **No taparlos con silicona durante la colocación** (error frecuentísimo: el marco se convierte en una batea) |
+| **Contacto aluminio–acero** | Evitar el **par galvánico**: interponer separador plástico o pintar el perfil de acero. Dato verificado en el manual INCoSe para el contacto perfil de acero galvanizado / marco de aluminio |
+
+## 7.5 Sellado perimetral y premarco — el detalle que casi siempre se hace mal
+
+> ### EL PUNTO MÁS DESCUIDADO DE LA CONSTRUCCIÓN ARGENTINA
+> Se especifica una carpintería A2/E3/K3, se paga el DVH, y después se la coloca con "un poco de mortero alrededor" y un cordón de silicona por fuera. **El resultado es una ventana de excelente prestación instalada en un vano que filtra aire y agua por todo su perímetro.** La prestación de una ventana no la da la ventana: la da **la ventana + su instalación**.
+
+### 7.5.1 Reglas de sellado (verificadas, manual INCoSe)
+
+| Regla | Especificación |
+|---|---|
+| **Holgura de fabricación** | La abertura debe ser **al menos 10 mm más chica en ancho y alto** que la menor medida del vano tomada para fabricación (PVC). Holgura mínima perimetral: **5 mm** |
+| **Relleno de la holgura** | **Espuma de poliuretano** de baja expansión, en todo el perímetro (relleno térmico y acústico, **NO es el sello**) |
+| **Sellador exterior** | **Silicona NEUTRA**, no acética. La neutra reacciona con alcoholes sin desprender olor, **no afecta al PVC**, es apta sobre superficies porosas y cerradas, y admite **dilatación/contracción de hasta 25 %** |
+| **RELACIÓN DE SELLADO 2:1** | **2 de ancho por 1 de profundidad.** Es la regla que asegura que el sellador pueda deformarse sin despegarse, romperse ni arrancarse |
+| **Fondo de junta** | **Cordón de espuma de celda cerrada de sección circular**, colocado en todo el perímetro entre marco y vano, para materializar la relación 2:1 y evitar la adherencia en tres caras (el sellador debe adherir sólo a dos caras, no al fondo) |
+| **Terminación exterior** | Pieza de **¼ de caña** adherida con la misma silicona: **incrementa la protección contra el ingreso de agua, protege la silicona de los rayos UV** y mejora la terminación |
+| **Terminación interior** | Contramarco o tapajunta atornillado |
+| **Ventanas con aleta de clavado** | Se instalan desde el exterior, antes del revestimiento. **Antes de colocar la terminación exterior es indispensable recubrir el total de la aleta con una cinta impermeable** destinada a tal fin |
+
+> **La adherencia en tres caras es el error técnico invisible.** Si el sellador adhiere también al fondo de la junta, cuando la junta se abre el sellador no puede deformarse en su sección y se desgarra. **El fondo de junta no es un relleno de ahorro: es un elemento funcional.**
+
+### 7.5.2 Premarco
+
+| Situación | ¿Premarco? | Observación |
+|---|---|---|
+| **Mampostería tradicional** | **Recomendado** | Permite construir el muro y revocar sin la carpintería puesta, garantiza escuadra y plomo, y protege la abertura durante la obra |
+| **Steel framing con EIFS** | Opcional: se usa un **taco/compensador** (madera, PVC o metálico con acabado superficial) para absorber el espesor del revestimiento | Dato verificado, manual INCoSe |
+| **Carpintería de aluminio sobre steel framing** | Sí, o placa separadora | **Para evitar el par galvánico** entre perfil de acero galvanizado y aluminio |
+| **Carpintería de PVC** | **No es necesario** | **El marco de PVC actúa como premarco**: se alinea, nivela, aploma, acuña, se agujerea y se atornilla a la estructura, y luego se rellena el perímetro con espuma de poliuretano. **Tampoco hay que cuidar el contacto con el acero: no se produce par galvánico** |
+
+**Premarco con corte térmico:** en proyectos de alta exigencia, el premarco de madera o de PVC (materiales de baja λ) **es en sí mismo una ruptura de puente térmico** entre el marco metálico y la mampostería. Un premarco de chapa doblada, en cambio, es un puente térmico adicional.
+
+### 7.5.3 Detalle térmico del encuentro (ver D-04)
+
+```
+       AISLACIÓN EXTERIOR (SATE)
+       ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓┐
+       ▓                  │◄── EL AISLANTE RETORNA hacia el vano,
+       ▓                  │    SOLAPANDO 20-30 mm SOBRE EL MARCO
+    ═══▓══════════════════╪═══
+    muro                  ║  ← marco de la ventana
+                          ║
+                    ↑ espuma PU en la holgura
+                    ↑ fondo de junta + sellador 2:1
+```
+**Si el aislante no retorna y no solapa sobre el marco, en ese anillo perimetral el K salta de 0,34 a 1,58 y aparece condensación en la jamba.** Es el puente térmico más frecuente de una fachada con SATE bien ejecutada en el paño.
+
+## 7.6 Persianas, cortinas de enrollar y protecciones solares
+
+### 7.6.1 El puente térmico de la caja de persiana
+
+**La caja de persiana de enrollar embutida es, simultáneamente:**
+1. Un **puente térmico** (hueco con paredes delgadas dentro del muro).
+2. Un **punto de infiltración de aire** (la tapa de acceso y el pasaje de la cinta).
+3. Un **puente acústico** (comunica el exterior con el interior por un hueco).
+
+| Solución | Desempeño térmico | Observación |
+|---|---|---|
+| **Persiana exterior con cajón montado por fuera del muro**, por delante de la aislación | **Óptimo**: no interrumpe la envolvente | Es la solución de referencia. Estéticamente requiere diseño |
+| **Cajón compacto integrado a la ventana** (monoblock), con aislación de fábrica | **Bueno**, si el fabricante declara el K del conjunto | *Verificar K del conjunto ventana+cajón en la ficha del fabricante* |
+| **Cajón embutido en el muro, aislado con 30–40 mm de EPS/XPS en todas sus caras interiores, con burlete en la tapa y pasacintas con cepillo** | **Aceptable** | Es la mínima solución admisible en obra tradicional |
+| **Cajón embutido sin aislar** | **Inaceptable** | Es lo que se hace por defecto. Produce condensación sobre el dintel interior y corriente de aire fría permanente |
+
+**Detalle mínimo exigible del cajón embutido:**
+- EPS/XPS de 30–40 mm en cara superior, posterior (hacia el interior) e inferior del cajón.
+- **Burlete de compresión en la tapa de registro.**
+- **Pasacintas con cepillo o con tapa de cierre automático.**
+- Continuidad de la aislación exterior del muro por delante del cajón.
+
+> **Dato verificado que refuerza el punto:** IRAM 11507-4 tabula "doble ventana con cortina de enrollar cerrada" con K de 1,52 a 0,74 según el vidrio, contra 1,99 a 0,83 sin ella. **La persiana cerrada aporta una mejora real del orden de 0,1–0,5 W/m²K en el conjunto.** Pero eso vale sólo si el cajón no arruina lo que la persiana aporta.
+
+### 7.6.2 Protecciones solares
+
+| Tipo | Ubicación | Eficacia de control solar | Aplicación en Santa Rosa |
+|---|---|---|---|
+| **Alero horizontal fijo** | Exterior | **Muy alta al NORTE**; nula al oeste | **La protección natural de la fachada norte.** Dimensionar geométricamente: debe sombrear en verano (sol alto) y dejar entrar en invierno (sol bajo) |
+| **Parasoles verticales fijos** | Exterior | Alta al ESTE y OESTE | Para fachadas E/O donde el sol entra con ángulo bajo |
+| **Celosías / persianas de librillo orientables** | Exterior | **Muy alta y regulable** | La mejor solución para el OESTE. Permite ventilar de noche con seguridad |
+| **Persiana de enrollar** | Exterior | **Muy alta cuando está cerrada** (bloquea 100 %), pero también bloquea la vista y la luz | Uso nocturno (térmico) y de bloqueo total |
+| **Toldo** | Exterior | Alta, regulable | Vulnerable al viento pampeano: **exigir sensor de viento y estructura sobredimensionada** |
+| **Vegetación caduca** (parral, árbol caduco al norte) | Exterior | Alta en verano, permeable en invierno | Solución bioclimática clásica; el pino y el eucalipto (perennes) hacen lo contrario de lo que se necesita al norte |
+| **Cortina o persiana interior** | Interior | **Baja**: el calor ya entró al local. Reduce el deslumbramiento, no la carga térmica | Complemento, nunca sustituto de la protección exterior |
+| **Vidrio de control solar** | En el vidrio | Media-alta, permanente (también en invierno) | Para fachadas donde no se puede poner protección exterior |
+| **Film de control solar aplicado** | En el vidrio | Media | Solución de rehabilitación; verificar compatibilidad con DVH (puede provocar rotura térmica) |
+
+> **La regla de oro de la protección solar:** **exterior siempre que sea posible.** Una vez que la radiación atravesó el vidrio, el calor está adentro y sólo se saca con energía. Una cortina interior devuelve al exterior una fracción pequeña de lo que entró.
+
+### 7.6.3 Dimensionamiento del alero norte
+
+Para Santa Rosa (latitud 36,6° S), la altura solar al mediodía solar es aproximadamente:
+```
+Solsticio de verano (21 dic):   h = 90° – 36,6° + 23,45° = 76,9°
+Equinoccios (21 mar / 21 sep):  h = 90° – 36,6°          = 53,4°
+Solsticio de invierno (21 jun): h = 90° – 36,6° – 23,45° = 30,0°
+```
+**Criterio de dimensionamiento (alero horizontal sobre ventana de fachada norte):**
+```
+Vuelo del alero (V) para sombrear totalmente una ventana de altura H
+en el solsticio de verano, con el alero al nivel del dintel:
+
+V = H / tan(76,9°) = H / 4,27 = 0,234 · H
+```
+Es decir: **un alero con vuelo igual a ~23 % de la altura de la ventana sombrea completamente al mediodía del solsticio de verano** y, con altura solar de 30° en invierno, deja entrar el sol hasta una profundidad de `V/tan(30°) = 0,234·H/0,577 = 0,41·H` dentro del local — es decir, entra prácticamente todo.
+
+**Ejemplo:** ventana de 2,00 m de alto → alero de **0,47 m** de vuelo mínimo. Para sombrear también en las horas próximas al mediodía (10 a 14 h) conviene aumentar el vuelo a **0,60–0,70 m** o agregar aletas laterales.
+
+> **Verificar con carta solar de la latitud 36,6° S** o con software (SketchUp con sombras, Ecotect, Ladybug) el comportamiento hora a hora, mes a mes. El cálculo del mediodía es una primera aproximación, no un diseño terminado.
+
+---
+
+# 8. Acústica constructiva
+
+## 8.1 Los dos problemas y los dos parámetros
+
+| | **RUIDO AÉREO** | **RUIDO DE IMPACTO** |
+|---|---|---|
+| Origen | Voces, TV, música, tránsito | Pisadas, arrastre de muebles, caída de objetos, golpes |
+| Se transmite por | El aire, poniendo en vibración el cerramiento | **Directamente a la estructura**, que la propaga a todo el edificio |
+| Parámetro | **Rw — índice de reducción sonora ponderado (dB)**. **Más alto = mejor** | **Ln,w — nivel de presión sonora de impacto normalizado ponderado (dB)**. **Más bajo = mejor** |
+| Se combate con | **MASA**, estanqueidad, y sistemas **masa-resorte-masa** | **DESACOPLE**: piso flotante, capa resiliente, cielorraso independiente |
+| Norma de ensayo/cálculo | ISO 717-1 (Rw); IRAM correspondientes | ISO 717-2 (Ln,w) |
+
+> **La distinción es fundamental porque las soluciones son opuestas.** Una losa de hormigón de 20 cm es excelente contra el ruido aéreo (mucha masa) y **pésima contra el ruido de impacto** (transmite la vibración perfectamente). El taco alto del vecino de arriba no se resuelve con más hormigón: se resuelve **desacoplando el piso de la losa**.
+
+## 8.2 Normativa argentina
+
+| Norma / documento | Contenido |
+|---|---|
+| **IRAM 4043** | Acústica. *Verificar título, alcance y valores exigidos en la edición vigente* |
+| **IRAM 4044** | Acústica. *Verificar título, alcance y valores exigidos en la edición vigente* |
+| **IRAM 12816** | Acústica. Aislamiento acústico en edificios. *Verificar título, alcance y valores exigidos en la edición vigente* |
+| **IRAM 11507-3** | Carpintería de obra. Ventanas exteriores. **Requisitos complementarios: aislación acústica** |
+| **Códigos de edificación municipales** | Varios municipios argentinos incorporan exigencias de aislamiento acústico entre unidades funcionales. **Verificar en el Código de Edificación de la Municipalidad de Santa Rosa** |
+| **Ley 1540 CABA** (control de la contaminación acústica) | Referencia de nivel sonoro ambiental; no es de aplicación en La Pampa |
+
+> **ADVERTENCIA IMPORTANTE:** **no se pudieron verificar contra la fuente primaria los valores de Rw y Ln,w exigidos por IRAM 4043, IRAM 4044 e IRAM 12816.** No se reproducen valores para no inventarlos. **Antes de especificar en pliego, verificar los valores exigidos en el texto vigente de esas normas y en el Código de Edificación de Santa Rosa.**
+>
+> Como **criterio de proyecto del estudio** (no como cita normativa) se pueden adoptar los valores de referencia internacional habituales, que están alineados con las prácticas europeas y con lo que el mercado argentino de calidad media-alta ofrece:
+>
+> | Elemento | Objetivo de proyecto sugerido |
+> |---|---|
+> | Muro divisorio entre unidades funcionales | **Rw ≥ 50 dB** |
+> | Muro entre unidad funcional y palier / circulación común | Rw ≥ 45 dB (y puerta de acceso con burlete perimetral y guardapolvo) |
+> | Entrepiso entre unidades funcionales — ruido aéreo | **Rw ≥ 50 dB** |
+> | Entrepiso entre unidades funcionales — ruido de impacto | **Ln,w ≤ 65 dB** (objetivo exigente: ≤ 55 dB) |
+> | Fachada (según ruido exterior) | Rw ≥ 30–38 dB |
+> | Muro entre dormitorio y baño de la misma unidad | Rw ≥ 40 dB |
+
+## 8.3 La ley de masa y sus límites
+
+Para un cerramiento simple y homogéneo, el aislamiento aéreo crece con la masa superficial:
+
+```
+Ley de masa (aproximación teórica, incidencia de campo):
+R ≈ 20 · log₁₀(m) + 20 · log₁₀(f) – 47        [dB]
+
+y de forma simplificada para el índice global:
+duplicar la masa superficial ≈ +5 a +6 dB
+```
+donde `m` es la masa superficial en kg/m² y `f` la frecuencia en Hz.
+
+**Consecuencias prácticas:**
+- Para ganar 6 dB hay que **duplicar la masa**. Para ganar 12 dB, cuadruplicarla. **La masa sola llega a un techo económico y estructural muy rápido.**
+- La **frecuencia crítica** (donde el cerramiento entra en coincidencia y su aislamiento se desploma) depende del espesor y la rigidez. Los materiales rígidos y delgados (vidrio, placa de yeso simple, chapa) tienen frecuencias críticas en el rango audible molesto.
+- Por eso los sistemas **masa–resorte–masa** (dos hojas separadas por una cavidad con material absorbente) **superan largamente a un muro macizo de la misma masa total**.
+
+### Tabla 8.1 — Masa superficial de cerramientos usuales (orientativa)
+
+| Cerramiento | Masa superficial aproximada (kg/m²) |
+|---|---|
+| Tabique de placa de yeso simple (12,5 mm por cara, sin lana) | 22–25 |
+| Muro de ladrillo hueco 12 revocado | 160–190 |
+| Muro de ladrillo hueco 18 revocado | 200–240 |
+| Muro de ladrillo macizo 20 revocado | 380–420 |
+| Muro de bloque de hormigón 20 lleno de grout | 350–450 |
+| Losa de HºAº de 12 cm | 288 |
+| Losa de HºAº de 20 cm | 480 |
+| Losa de viguetas y bovedilla cerámica | 250–300 |
+
+*Valores calculados con densidades de la Tabla 4.4. **Verificar con la masa real del mampuesto especificado.***
+
+## 8.4 Muros divisorios entre unidades funcionales
+
+### Tabla 8.2 — Soluciones de muro divisorio y Rw orientativo
+
+| Solución | Espesor total | Rw orientativo (dB) | Observaciones |
+|---|---|---|---|
+| Ladrillo hueco 12 revocado ambas caras | 17 cm | 38–42 | **Insuficiente entre unidades funcionales** |
+| Ladrillo hueco 18 revocado ambas caras | 23 cm | 42–46 | Insuficiente / al límite |
+| **Ladrillo macizo 20 revocado ambas caras** | 25 cm | **48–52** | Adecuado. Es la solución tradicional correcta |
+| **Bloque de hormigón 20 con huecos llenos, revocado** | 23 cm | **50–54** | Muy buena. El llenado de huecos es lo que la hace funcionar |
+| **Muro doble: hueco 12 + cámara 5 cm con lana de vidrio + hueco 12, revocado ambas caras, SIN vinculación rígida entre hojas** | 34 cm | **52–58** | **La mejor solución de mampostería.** Requiere que las hojas NO estén unidas (la unión rígida cortocircuita el desacople) |
+| Ladrillo hueco 18 + trasdosado de placa de yeso sobre perfilería independiente con lana de vidrio 50 mm | 30 cm | **52–58** | Excelente relación desempeño/espesor. Solución de rehabilitación |
+| **Tabique de placa de yeso: doble placa 12,5 por cara, perfil 70 mm, lana de vidrio 50 mm** | 12 cm | **48–52** | *Verificar el valor ensayado en la tabla de sistemas del fabricante (Durlock, Knauf)* |
+| **Tabique de placa de yeso con perfilería DOBLE independiente (dos estructuras separadas), doble placa por cara, lana en ambas cavidades** | 20–25 cm | **58–65** | **La solución de máximo desempeño por unidad de peso.** Salas de música, medianeras livianas |
+| **HCCA 20 cm** | 22 cm | 40–45 | **Insuficiente por baja masa.** El HCCA es térmico, no acústico. **No usarlo solo como divisorio entre unidades** |
+
+> **ADVERTENCIA:** los valores de Rw de esta tabla son **órdenes de magnitud de la práctica internacional**, no valores certificados. **Para especificar en pliego, exigir el valor Rw ENSAYADO del sistema concreto, publicado por el fabricante con su informe de ensayo (Durlock, Knauf y los fabricantes de mampuestos publican estos valores). Verificar en catálogo.**
+
+### Los cuatro principios de un muro acústico
+
+1. **MASA** — más kg/m², más aislamiento (pero con rendimiento decreciente).
+2. **DESACOPLE** — dos hojas independientes rinden mucho más que una hoja de la misma masa total. **Cualquier vínculo rígido entre las hojas (un ladrillo atravesado, un caño, una viga común, un mortero caído en la cámara) cortocircuita el desacople y anula la ventaja.**
+3. **ABSORCIÓN EN LA CAVIDAD** — lana de vidrio o de roca en la cámara amortigua las resonancias de la cavidad. **Sin absorción, la cavidad resuena y el conjunto puede rendir peor que una hoja simple** en la frecuencia de resonancia.
+4. **ESTANQUEIDAD** — un muro de Rw 55 dB con un 1 % de superficie abierta rinde como uno de 20 dB. **El sonido pasa por donde pasa el aire.** Sellar todos los encuentros, pases y cajas.
+
+## 8.5 Losas y pisos flotantes (ruido de impacto)
+
+### La solución: piso flotante
+
+```
+(arriba)
+1. SOLADO (porcelanato, madera, vinílico)
+2. CARPETA / LOSETA FLOTANTE de mortero armado con malla, ≥ 5 cm
+3. FILM DE POLIETILENO (impide que la lechada de la carpeta baje y puentee la lámina)
+4. LÁMINA RESILIENTE: polietileno reticulado 5-10 mm, lana de roca de alta
+   densidad 20-40 mm, corcho, caucho reciclado, o manta de fibras de poliéster
+5. ← LA LÁMINA SUBE POR EL PERÍMETRO 10-15 cm, contra TODOS los muros
+6. Contrapiso / losa estructural
+(abajo)
+7. (opcional) Cielorraso suspendido con lana y montaje elástico
+```
+
+**Regla absoluta:** **la loseta flotante NO debe tocar en ningún punto la estructura ni los muros.** Un solo punto de contacto (un clavo, un caño, un puente de mortero en el perímetro, el zócalo apoyado) **transmite la vibración y anula todo el sistema**.
+
+| Detalle | Requisito |
+|---|---|
+| **Perímetro** | La lámina resiliente sube 10–15 cm y se corta **al ras del solado terminado, después de colocarlo** |
+| **Zócalo** | **NO debe apoyar sobre el solado flotante NI atornillarse a través de él.** Se fija sólo al muro, con una **junta de 3–5 mm sellada con silicona** contra el solado |
+| **Pases de cañerías** | Con manguito elástico; nunca embutidos rígidamente atravesando la loseta |
+| **Puertas** | El marco no debe apoyar sobre la loseta flotante ni vincularla al muro |
+| **Espesor de la loseta** | ≥ 5 cm con malla, para que trabaje como placa rígida y distribuya la carga sobre la lámina |
+
+### Tabla 8.3 — Mejora del nivel de impacto (ΔLw) por solución (orientativo)
+
+| Solución | ΔLw orientativo (dB de mejora) |
+|---|---|
+| Alfombra de pelo largo con base | 20–30 |
+| Vinílico SPC con manta acústica incorporada | 15–20 |
+| Piso flotante de madera sobre manta de 3 mm | 15–20 |
+| **Loseta flotante de 5 cm sobre polietileno reticulado 10 mm** | **20–28** |
+| **Loseta flotante de 5 cm sobre lana de roca de alta densidad 30 mm** | **28–35** |
+| Cielorraso suspendido con montaje elástico y lana | 8–15 (adicional) |
+
+> **Valores orientativos de la práctica internacional. VERIFICAR el ΔLw ensayado del producto específico en la ficha técnica del fabricante.**
+
+## 8.6 Ruido de instalaciones
+
+Es el ruido que más quejas genera en edificios y el que menos se proyecta.
+
+### Tabla 8.4 — Fuentes y soluciones
+
+| Fuente | Mecanismo | Solución |
+|---|---|---|
+| **Montante de descarga cloacal (caída de agua)** | Ruido aéreo dentro del caño + vibración transmitida a las abrazaderas y al muro | **(1)** Caño de PP insonorizado (tricapa con carga mineral) en vez de PVC. **(2)** Abrazaderas con **goma antivibratoria**. **(3)** Encamisado del montante con lana mineral 50 mm + doble placa de yeso. **(4)** **Nunca montar el montante en el muro de un dormitorio** |
+| **Bomba de agua / presurizadora** | Vibración estructural + ruido aéreo | **(1)** Bancada con **aisladores de resorte o de neopreno**. **(2)** **Conexiones flexibles** en aspiración e impulsión (obligatorio: la vibración viaja por el caño). **(3)** Sala aislada con doble hoja y absorción interior. **(4)** No ubicar sala de bombas debajo o al lado de un dormitorio |
+| **Ascensor** | Vibración de la máquina + ruido de guías, puertas y contrapesos | **(1)** Máquina sobre bancada con aisladores. **(2)** **Muros del hueco desacoplados de los muros de las unidades funcionales** (nunca un muro compartido de una sola hoja entre hueco de ascensor y dormitorio). **(3)** Guías fijadas con elementos elásticos. **(4)** Puertas con cierre amortiguado |
+| **Unidad exterior de aire acondicionado** | Vibración del compresor + ruido del ventilador | **(1)** Soportes antivibratorios. **(2)** No fijar a muro de dormitorio (fijar a losa o a estructura independiente). **(3)** Cajón acústico ventilado si está cerca de aberturas. **(4)** Distancia a ventanas propias y del vecino |
+| **Conductos de aire acondicionado** | Ruido transmitido por el conducto (crosstalk entre locales) + ruido de flujo | **(1)** Conducto con **aislación acústica interior**. **(2)** **Atenuadores/silenciadores** en la derivación a cada local. **(3)** Velocidad de aire baja en las bocas. **(4)** El conducto que atraviesa dos locales los comunica acústicamente: usar codos y forro absorbente |
+| **Calderas y equipos de sala de máquinas** | Vibración + ruido aéreo | Sala con envolvente de alto Rw, puerta acústica, aisladores en todos los equipos, conexiones flexibles |
+| **Portero eléctrico, cerraduras, puertas de palier** | Ruido de impacto en el muro | Puerta con burlete perimetral y guardapolvo bajo; amortiguador de cierre |
+
+> **La regla de las instalaciones:** **todo equipo que vibra debe estar desacoplado de la estructura, y todo caño que lo conecta debe tener un tramo flexible.** Un aislador de resorte perfecto bajo una bomba no sirve de nada si el caño rígido que sale de ella está amurado al muro.
+
+## 8.7 Acondicionamiento vs. aislamiento
+
+| | **AISLAMIENTO acústico** | **ACONDICIONAMIENTO acústico** |
+|---|---|---|
+| Objetivo | **Que el sonido NO pase** de un local a otro (o de afuera adentro) | **Que el sonido dentro del local suene bien**: controlar reverberación, ecos, inteligibilidad |
+| Parámetro | Rw, Ln,w, D2m,nT,w | **Tiempo de reverberación T60**, coeficiente de absorción α |
+| Se logra con | **Masa, desacople, estanqueidad** | **Materiales absorbentes en las superficies del local**: paneles, cielorrasos acústicos, cortinas, alfombras, mobiliario |
+| Material típico | Mampostería pesada, doble placa, lana en cavidad, burletes | Paneles perforados, espumas acústicas, lana con velo, baffles |
+| **Confusión frecuente** | — | **Pegar espuma acústica en el muro NO aísla del vecino.** La espuma absorbe el sonido del propio local (mejora la acústica interior), pero **no aumenta el Rw del muro casi nada**. Es el error de consumo más difundido |
+
+## 8.8 Errores frecuentes de acústica constructiva
+
+| Error | Efecto | Corrección |
+|---|---|---|
+| **Cajas de electricidad enfrentadas en el mismo hueco** del muro divisorio | El muro queda reducido al espesor de las dos cajas: **puede perder 10–15 dB**. Se escucha la conversación del vecino literalmente por el enchufe | **Desplazar las cajas al menos 40–60 cm horizontalmente**, nunca enfrentadas. En tabique de placa, rellenar con lana el hueco detrás de la caja y sellar la caja perimetralmente |
+| **Puente acústico por la cámara del muro doble** (mortero caído, ladrillo atravesado, viga común) | Anula el desacople | Limpiar la cámara cada 4–5 hiladas; no vincular rígidamente las hojas |
+| **El muro divisorio no llega hasta la losa** (se detiene en el cielorraso) | El sonido pasa por el pleno del cielorraso | **El muro acústico debe llegar SIEMPRE de losa a losa**, y sellarse contra ella |
+| **Tabique de placa sin banda estanca en soleras** | Fuga de aire y de sonido en todo el perímetro | Banda de espuma de polietileno bajo solera y contra montantes de arranque; sellado con acrílico acústico |
+| **Zócalo apoyado sobre el piso flotante** | Cortocircuita el desacople de impacto | Zócalo fijado sólo al muro, con junta sellada |
+| **Montante cloacal en muro de dormitorio** | Ruido nocturno permanente | Reubicar; encamisar con lana + doble placa |
+| **Puerta de acceso a la unidad sin burlete ni guardapolvo** | Toda la aislación del muro se pierde por la rendija de la puerta | Burlete perimetral + guardapolvo retráctil |
+| **Ventana de alta prestación acústica con caja de persiana embutida sin tratar** | El ruido entra por el cajón | Cajón aislado y estanco (ver 7.6.1) |
+| **Rejilla de ventilación pasante en muro divisorio o de fachada** | Es un agujero acústico directo | Rejilla acústica con laberinto absorbente |
+| **Confundir absorción con aislación** | Se gasta en espuma y el problema persiste | Diagnosticar primero: ¿el problema es lo que entra o cómo suena adentro? |
+
+---

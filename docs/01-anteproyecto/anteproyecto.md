@@ -2939,3 +2939,574 @@ Es lo que más pide el cliente en una reforma, y lo que más impacto tiene sobre
 > **La fachada Sur es fría pero estable: servicios, circulaciones y aberturas chicas y muy bien aisladas.**
 
 ---
+
+# 8. Accesibilidad universal
+
+> La accesibilidad no se "agrega" al proyecto: **si no está en el anteproyecto, después no entra.** Un baño accesible necesita 4,50 m² y un giro de 1,50 m; conseguir eso cuando la planta ya está resuelta significa rehacerla.
+
+## 8.1 Marco legal argentino
+
+| Norma | Contenido | Alcance |
+|---|---|---|
+| **Ley 22.431** (1981) | Sistema de Protección Integral de las Personas Discapacitadas | Nacional |
+| **Ley 24.314** (1994) | **Accesibilidad de personas con movilidad reducida.** Modifica la 22.431 e incorpora los artículos 20 (barreras urbanas), 21 (barreras arquitectónicas) y 22 (barreras en el transporte) | Nacional |
+| **Decreto 914/1997** | **Reglamenta los artículos 20, 21 y 22 de la Ley 24.314.** Es el texto con las medidas concretas | Nacional |
+| **Ley 25.280** | Aprueba la Convención Interamericana para la Eliminación de todas las Formas de Discriminación contra las Personas con Discapacidad | Nacional |
+| **Ley 26.378** | Aprueba la Convención sobre los Derechos de las Personas con Discapacidad (ONU) — **rango constitucional** por Ley 27.044 | Nacional |
+| **Serie IRAM 111102** | Accesibilidad de las personas al medio físico. Normas técnicas (varias partes: circulaciones, rampas, escaleras, sanitarios, señalización, ascensores) | Norma técnica, no obligatoria salvo remisión expresa |
+| **Códigos de edificación municipales** | Adoptan y a veces amplían las exigencias | **[V] Verificar el Código de Edificación de Santa Rosa** |
+
+**[N] Definición de accesibilidad (Ley 24.314):**
+> "La posibilidad de las personas con movilidad reducida de gozar de las adecuadas condiciones de seguridad y autonomía como elemento primordial para el desarrollo de las actividades de la vida diaria, sin restricciones derivadas del ámbito físico urbano, arquitectónico o del transporte, para su integración y equiparación de oportunidades."
+
+**[N] Los tres niveles de la Ley 24.314:**
+- **Practicabilidad:** *"adaptación limitada a condiciones mínimas de los ámbitos básicos para ser utilizados por personas con movilidad reducida."*
+- **Visitabilidad:** *"accesibilidad estrictamente limitada al ingreso y uso de los espacios comunes y un local sanitario que permita la vida de relación."*
+- **Adaptabilidad:** *"la posibilidad de modificar en el tiempo el medio físico con el fin de hacerlo completa y fácilmente accesible."*
+
+## 8.2 Cuándo es obligatorio en Argentina
+
+**[N] Ley 24.314, art. 21**, alcanza a:
+- **Edificios de uso público**, sean de propiedad pública o privada.
+- **Edificios privados de uso público** (comercios, oficinas, consultorios, bancos, hoteles, restaurantes, salones).
+- **Edificios de vivienda colectiva**: se exige **itinerario accesible** desde la vía pública hasta las unidades y hasta los espacios comunes.
+- **Obras nuevas y remodelaciones**: los requisitos son **obligatorios en los planos que se aprueben**.
+- **Edificios existentes**: deben adecuarse en los plazos de la ley.
+
+**[R] Traducción práctica para el estudio:**
+
+| Tipo de obra | Nivel de accesibilidad exigible | Comentario |
+|---|---|---|
+| **Vivienda unifamiliar** | No exigible por la Ley 24.314; sujeta a códigos de edificación | **[R] Se recomienda siempre "visitabilidad": acceso sin escalones, una puerta de 0,80 m y un toilette accesible en planta baja.** Cuesta casi nada y le da 30 años más de vida útil a la casa |
+| **Vivienda colectiva** | **Itinerario accesible obligatorio** desde la vía pública hasta cada unidad y a los espacios comunes | Ascensor accesible; palier con giro de 1,50 m; puertas de 0,80 m; rampa o nivel en el acceso |
+| **Edificio con locales comerciales** | **Los locales son de uso público**: accesibilidad plena en el local y baño accesible | Se dibuja en el anteproyecto |
+| **Amenities de edificio** | Espacio común: **accesible** | SUM, gimnasio, terraza: al menos un baño accesible |
+| **Edificio de oficinas / consultorios** | Accesibilidad plena | |
+| **Estacionamiento** | **[N — Dec. 914/97]** 1 módulo especial cada 50 convencionales, exigible a partir de 20 módulos. **[N — CABA]** módulo de 3,50 m de ancho | |
+
+## 8.3 Itinerario accesible
+
+**[R] La cadena completa**, que hay que dibujar entera en el anteproyecto:
+
+```
+Vereda → rebaje / rampa de cordón → acceso al edificio (sin escalón o con rampa)
+→ hall / vestíbulo (giro de 1,50 m) → ascensor accesible → palier (giro de 1,50 m)
+→ puerta de la unidad (0,80 m de luz) → circulación interna (0,90–1,20 m)
+→ locales de uso
+```
+
+**Un solo escalón en cualquier punto de la cadena la anula por completo.**
+
+### 8.3.1 Senderos y veredas [N — Decreto 914/97]
+
+- **Pendiente transversal:** máxima **2 %**, mínima 1 %.
+- **Pendiente longitudinal:** menor a **4 %**; si supera ese valor, se trata como rampa.
+- Solado antideslizante, firme y sin resaltos mayores a 0,02 m (con canto biselado).
+- Franja de circulación libre de obstáculos entre 0,10 y 2,10 m de altura.
+
+## 8.4 Anchos de puertas y circulaciones
+
+| Elemento | **Mínimo normativo** | Fuente | Recomendado [R] |
+|---|---|---|---|
+| **Luz útil de paso de puerta** | **0,80 m** | Dec. 914/97 | **0,90 m** |
+| Puerta de acceso a edificio | 0,80 m (hoja o vano libre) | Dec. 914/97 | **0,90 – 1,00 m** |
+| **Pasillo de circulación horizontal (uso público)** | **1,20 m de lado mínimo** | Dec. 914/97 | 1,50 m |
+| **Pasillo de vivienda colectiva** | **1,10 m** | Dec. 914/97 | 1,20 m |
+| Circulación interna de vivienda | **1,00 m** (0,95 m en parcelas ≤ 8,66 m) | CE CABA | 1,10 m |
+| **Superficie de aproximación frente a una puerta (lado de tirar)** | 1,50 m de diámetro + 0,45 m laterales del lado de la manija | Dec. 914/97 / IRAM 111102 | — |
+| **Superficie de aproximación frente a una puerta (lado de empujar)** | 1,20 m + 0,30 m laterales | | — |
+| Espacio libre de giro (360°) | **Círculo de 1,50 m** | Dec. 914/97 | — |
+| Espacio libre de giro (90°) | 1,20 × 1,20 m | IRAM 111102 | — |
+| Altura de manija de puerta | 0,90 – 1,10 m, tipo palanca (no perilla) | Dec. 914/97 | 1,00 m |
+| Altura de mirilla / portero | ≤ 1,30 m | Dec. 914/97 | 1,20 m |
+
+**[R]** Puertas: **evitar puertas pesadas y cierrapuertas con mucha fuerza**; en baños accesibles, **puerta corrediza o de abrir hacia afuera** (una persona caída dentro del baño bloquea una puerta que abre hacia adentro).
+
+## 8.5 Baño accesible
+
+**[N — Decreto 914/97] y [R]:**
+
+| Parámetro | Valor |
+|---|---|
+| **Espacio libre de giro** | **Círculo de 1,50 m de diámetro** dentro del local |
+| **Superficie mínima práctica [R]** | **2,00 × 2,25 = 4,50 m²** (con inodoro, lavabo y ducha) |
+| Superficie de un toilette accesible [R] | **1,80 × 2,00 = 3,60 m²** (inodoro + lavabo) |
+| **Altura del inodoro (asiento con tabla)** | **0,50 a 0,53 m** desde el solado |
+| **Espacio de transferencia lateral al inodoro** | **0,80 m libres a un lado**, 0,30 m del otro |
+| **Espacio frontal al inodoro** | **0,90 m** |
+| **Barras de apoyo junto al inodoro** | Una fija y una rebatible, a **0,75–0,80 m** de altura, sobresaliendo 0,20 m del borde del artefacto |
+| **Lavabo** | Borde superior a **0,85 m ± 0,05 m**; espacio libre inferior de **0,70 m de alto × 0,25 m de profundidad** mínimo (mejor 0,60 m). **Sin pedestal, sin sifón expuesto que queme** |
+| **Grifería** | Monocomando de palanca larga o accionamiento electrónico |
+| **Espejo** | Borde inferior a **0,90 m**, o inclinado 10° |
+| **Ducha** | **Zona de duchado 0,90 × 0,90 m**; **zona seca de 0,80 a 1,20 m** contigua. **A nivel, sin receptáculo ni escalón**, con pendiente hacia la rejilla |
+| **Asiento de ducha** | Rebatible, a 0,45–0,50 m de altura, 0,40 × 0,40 m mínimo |
+| **Barras en la ducha** | Vertical + horizontal, a 0,75 m |
+| **Puerta** | **0,80 m de luz de paso**, corrediza o de abrir **hacia afuera** |
+| **Accesorios (toallero, perchero, dispensers)** | Entre 0,80 y 1,20 m de altura |
+| **Timbre de emergencia** | A 0,30 m del solado, accionable desde el piso |
+
+**[R] El baño accesible mínimo que realmente funciona:**
+```
+Planta de 2,00 × 2,25 m:
+  - Inodoro en un extremo, con 0,80 m libres de un lado para la transferencia
+  - Lavabo suspendido en la pared opuesta
+  - Ducha a nivel de 0,90 × 0,90 m en el otro extremo
+  - Círculo de giro de 1,50 m verificado en el centro, superponiéndose con las
+    áreas de aproximación de los artefactos (está permitido)
+  - Puerta corrediza de 0,80 m
+```
+
+## 8.6 Rampas peatonales
+
+**[N — Decreto 914/97 y CE CABA]** Las pendientes máximas dependen de la altura a salvar:
+
+**Rampas interiores:**
+
+| Altura a salvar "h" | Pendiente máxima | Relación h/l |
+|---|---|---|
+| h < 0,075 m | **20 %** | 1/5 |
+| 0,075 ≤ h < 0,20 m | **12,5 %** | 1/8 |
+| 0,20 ≤ h < 0,30 m | **10 %** | 1/10 |
+| 0,30 ≤ h < 0,50 m | **8,33 %** | 1/12 |
+| 0,50 ≤ h < 0,75 m | **8 %** | 1/12,5 |
+| 0,75 ≤ h < 1,00 m | **6,25 %** | 1/16 |
+| 1,00 ≤ h < 1,40 m | **6 %** | 1/16,6 |
+| **h ≥ 1,40 m** | **5 %** | **1/20** |
+
+**Rampas exteriores:**
+
+| Altura a salvar "h" | Pendiente máxima | Relación h/l |
+|---|---|---|
+| h < 0,075 m | **12,5 %** | 1/8 |
+| 0,075 ≤ h < 0,20 m | **10 %** | 1/10 |
+| 0,20 ≤ h < 0,30 m | **8,33 %** | 1/12 |
+| 0,30 ≤ h < 0,50 m | **8 %** | 1/12,5 |
+| 0,50 ≤ h < 0,75 m | **6,25 %** | 1/16 |
+| 0,75 ≤ h < 1,00 m | **6 %** | 1/16,6 |
+| 1,00 ≤ h < 1,40 m | **5 %** | 1/20 |
+| **h ≥ 1,40 m** | **4 %** | **1/25** |
+
+**Otras condiciones [N]:**
+- **Ancho libre entre zócalos: mínimo 1,10 m, máximo 1,30 m.** Para anchos mayores, pasamanos intermedios separados entre 1,10 y 1,30 m.
+- **No se admiten tramos con pendiente cuya proyección horizontal supere los 6,00 m sin descanso.**
+- **Superficie de rodamiento plana, nunca alabeada**; no se admiten cambios de dirección en pendiente.
+- **Pasamanos dobles y continuos**, a **0,90 m ± 0,05 m** (superior) y **0,75 m ± 0,05 m** (inferior).
+- **Zócalo de 0,10 m mínimo** en los lados libres.
+- Solado antideslizante.
+- **[N — CE CABA]** *"Toda rampa con diferencia superior a 1,40 m entre solados debe complementarse con medios alternativos de elevación."* Es decir: **por encima de 1,40 m, la rampa no sustituye al ascensor.**
+- **[N]** Pendientes ≤ 3 % (1:33) no reciben tratamiento de rampa.
+
+**Ejemplos de cálculo:**
+```
+Salvar 0,15 m (un escalón de entrada), rampa exterior:
+   pendiente 10 %  →  longitud 1,50 m       ← perfectamente resoluble
+Salvar 0,45 m (tres escalones), rampa exterior:
+   pendiente 8 %   →  longitud 5,63 m       ← ya empieza a ser un problema de espacio
+Salvar 1,20 m (planta baja elevada), rampa exterior:
+   pendiente 5 %   →  longitud 24,00 m + descansos cada 6,00 m (4 descansos de
+                      1,50 m) = 30,00 m de desarrollo total
+   → INVIABLE en un lote urbano. La solución correcta es NO elevar la planta baja,
+     o resolver con plataforma elevadora.
+```
+
+> **[R] La conclusión de proyecto es contundente: la accesibilidad se resuelve NIVELANDO, no con rampas.** El proyecto que evita el desnivel en el acceso resuelve el problema gratis. El que lo genera y después lo salva con rampa, gasta 30 m² y queda feo.
+
+## 8.7 Escaleras accesibles
+
+**[N — Decreto 914/97]:**
+- **Máximo 12 alzadas corridas** entre rellanos y descansos.
+- **Alzada: 0,14 a 0,16 m.** **Pedada: 0,28 a 0,30 m.**
+- Fórmula: **2a + p = 0,60 a 0,63 m**.
+- **Ancho mínimo: 1,20 m** en escaleras de uso común.
+- **Pasamanos de ambos lados**, a **0,90 m ± 0,05 m**, sección circular de 0,04 a 0,05 m de diámetro, **prolongados 0,30 m antes y después** del primer y último escalón.
+- **Narices de escalón sin voladizo**; contrahuella cerrada.
+- **Señalización podotáctil** al inicio y al final.
+- **Banda antideslizante y de contraste visual** en el borde de cada escalón.
+
+## 8.8 Ascensor accesible
+
+**[N — Decreto 914/97]:**
+
+| Tipo de cabina | Dimensiones interiores mínimas | Uso |
+|---|---|---|
+| **Cabina Tipo 1** | **1,10 × 1,30 m** | Vivienda colectiva; admite silla de ruedas con entrada y salida frontal |
+| **Cabina Tipo 2** | **1,50 × 1,50 m** | Uso público; admite el giro de la silla dentro de la cabina |
+
+- **Luz útil de paso de las puertas de cabina y de rellano: 0,80 m mínimo.**
+- **Tiempo de apertura: mínimo 3 segundos.**
+- **Botonera** entre **0,80 y 1,30 m** de altura, con **numeración en relieve y braille**, y **señal sonora** de piso.
+- **Pasamanos** en la cabina a 0,90 m.
+- **Espejo** en la pared opuesta a la puerta (permite ver hacia atrás al salir de espaldas).
+- **Nivelación de parada** con tolerancia de ± 0,02 m.
+- **Rellano frente al ascensor:** **[N — CE CABA]** cuando no hay comunicación directa con un medio exigido de salida, debe poder inscribirse un **círculo de 1,50 m** (o 2,30 m según el tipo de cabina).
+
+**[N — CE CABA]:** *"Cualquiera sea el número de ascensores en un edificio todos deben proporcionar accesibilidad. En edificios con un solo ascensor, éste debe brindar accesibilidad a todas las unidades."* Y: **altura interior de cabina ≥ 2,10 m**; capacidad de carga a razón de **75 kg por persona**.
+
+**[R] Consecuencia de anteproyecto:** el hueco de un ascensor accesible tipo 1 requiere aproximadamente **1,60 × 1,80 m de caja** (más si es hidráulico o con contrapeso lateral) y **un sobrerrecorrido de 3,60 m** y un **foso de 1,20–1,50 m**. **Esos números se dibujan en el anteproyecto**, no se estiman.
+
+## 8.9 Otros elementos
+
+| Elemento | Requisito |
+|---|---|
+| **Módulo de estacionamiento accesible** | **[N — Dec. 914/97]** 1 cada 50 convencionales, exigible a partir de 20 módulos. **[N — CE CABA]** ancho 3,50 m; de a pares 6,00 m con corredor central señalizado de 1,00 m. Ubicado lo más cerca posible del acceso accesible |
+| **Mostradores y mesadas de atención** | Sector de 0,90 m de ancho a 0,80 m de altura, con espacio libre inferior |
+| **Señalización** | Contraste visual, tipografía sin serif, altura de texto proporcional a la distancia de lectura, braille en botoneras y pasamanos |
+| **Timbres, porteros, tableros** | Entre 0,90 y 1,30 m |
+| **Solados** | Antideslizantes en seco y en mojado; sin cambios bruscos de textura que confundan; **evitar solados brillantes que deslumbren** |
+| **Alarma de incendio** | Señal **sonora y luminosa** |
+| **Zona de refugio** | En edificios en altura, un sector protegido junto a la escalera de escape donde una persona con movilidad reducida pueda esperar el rescate. **[V] Verificar exigencia local** |
+
+## 8.10 Diseño universal: más allá del mínimo legal
+
+**[R] Las siete decisiones que hacen accesible una vivienda sin que parezca "adaptada" y sin costo significativo, si se toman en el anteproyecto:**
+
+1. **Acceso a nivel**, sin escalón, desde la vereda hasta el interior.
+2. **Todas las puertas de 0,80 m de luz de paso** (cuesta lo mismo que 0,70 m).
+3. **Circulaciones de 1,10 m** en lugar de 0,90 m.
+4. **Un baño en planta baja con giro de 1,50 m** (aunque el resto no lo tenga).
+5. **Ducha a nivel, sin receptáculo**, en al menos un baño.
+6. **Refuerzos en los tabiques del baño** para colocar barras de apoyo cuando haga falta (una placa de madera embebida cuesta nada y evita romper todo a los 20 años).
+7. **Manijas de palanca**, interruptores a 1,10 m y tomacorrientes a 0,40 m.
+
+**El argumento comercial:** una casa así **se puede habitar hasta el final de la vida** y **se vende mejor**, porque el mercado de compradores incluye a personas mayores. Es una conversación que el estudio tiene en la primera reunión, no como imposición legal sino como valor.
+
+---
+
+# 9. Diseño bioclimático aplicado
+
+> **Todo lo que sigue se decide en el anteproyecto o no se decide nunca.** La orientación, la compacidad, el tamaño y la posición de las aberturas, la masa térmica, los aleros, la ventilación cruzada y la protección de viento son decisiones de partido. Agregar aislación en la etapa de proyecto es posible; corregir una orientación equivocada, no.
+
+## 9.1 Zona bioambiental de Santa Rosa
+
+**[N] IRAM 11603 — Acondicionamiento térmico de edificios. Clasificación bioambiental de la República Argentina.**
+
+Santa Rosa (departamento **Capital**, provincia de **La Pampa**) figura en el listado de la **Zona IV: templada fría**, junto con Atreucó, Catriló, Conhelo, Chapaleufú, Loventué, Maracó, Quemú Quemú, Rancul, Realicó, Toay y Trenel.
+
+**[N] Caracterización de la Zona IV (IRAM 11603, 4.4.4):**
+
+> "Esta zona tiene como límite superior la isolínea de **1.170 grados días** (coincidente con la isolínea de 22,9 °C de TEC), y como límite inferior la isolínea de **1.950 grados días**.
+> Los veranos no son rigurosos y presentan máximas promedio que rara vez son mayores que 30 °C. **Los inviernos son fríos, con valores medios comprendidos entre 4 °C y 8 °C, y las mínimas medias alcanzan muchas veces valores menores que 0 °C.**
+> Las presiones parciales de vapor de agua son bajas durante todo el año, alcanzando en verano sus valores máximos, con valores medios de 1.333 Pa (10 mm Hg) como máximo."
+
+**[N]** La zona se subdivide en cuatro subzonas según la amplitud térmica: **IVa (de montaña), IVb (de máxima irradiancia), IVc (de transición), IVd (marítima)**.
+
+**[V] Determinar la subzona exacta que corresponde a Santa Rosa en el texto vigente de la IRAM 11603** antes de citarla en una memoria. Lo que sí es seguro y suficiente para proyectar: **Santa Rosa está en Zona IV, con inviernos fríos, veranos no extremos pero con máximas altas puntuales, y grandes amplitudes térmicas.**
+
+### 9.1.1 Datos climáticos de referencia
+
+**[N]** Estación **Santa Rosa Aero**: latitud −36,57°, longitud −64,27°. **[N]** Ciudad: 36°37′ S, 64°17′ O, **175 m s.n.m.**
+
+| Dato | Valor | Fuente |
+|---|---|---|
+| Clasificación Köppen | **Cfa** (subtropical húmedo), en el límite con Cwa | Registro climatológico |
+| Media de máximas de enero | **31,5 °C** | Normales 1991–2020 |
+| Media de mínimas de enero | **16,5 °C** | Normales 1991–2020 |
+| Media de máximas de julio | **14,5 °C** | Normales 1991–2020 |
+| Media de mínimas de julio | **2,1 °C** | Normales 1991–2020 |
+| Temperatura media diaria de enero | ≈ 23,8 °C | |
+| Temperatura media diaria de julio | ≈ 7,4 °C | |
+| **Récord de máxima** | **45,7 °C** (6/1/1955) | |
+| **Récord de mínima** | **−12,7 °C** (13/6/1967) | |
+| **Precipitación anual** | **≈ 753 mm**, en ≈ 75 días | Normales 1991–2020 |
+| Precipitación de enero | 95 mm | |
+| Precipitación de julio | 19 mm | |
+| Humedad relativa | 53 % a 76 % según el mes | |
+
+**Lo que estos números significan para el proyecto:**
+
+1. **Amplitud térmica diaria muy alta.** Enero: 31,5 − 16,5 = **15 °C**; julio: 14,5 − 2,1 = **12,4 °C**. → **La masa térmica funciona muy bien acá.** Y la ventilación nocturna de verano es una estrategia de primer orden.
+2. **Inviernos con heladas.** Mínimas medias de julio de 2,1 °C, con récord de −12,7 °C. → **La aislación y el control de infiltraciones son prioritarios.** La calefacción es la mayor carga energética del año.
+3. **Veranos con picos muy altos.** Máximas medias de 31,5 °C pero con récord de 45,7 °C. → **La protección solar es obligatoria**, sobre todo al Oeste.
+4. **Clima seco.** Precipitación baja y humedad moderada. → **El enfriamiento evaporativo funciona** (patios con vegetación y agua). Y la condensación intersticial es menos crítica que en el litoral, pero **la condensación superficial en invierno sobre puentes térmicos sí es un problema real**, por la diferencia de temperatura.
+5. **Lluvia concentrada en el semestre cálido.** → Desagües pluviales dimensionados para eventos intensos; los 95 mm de enero pueden caer en dos tormentas.
+
+## 9.2 Las estrategias, en orden de impacto
+
+**[R] Jerarquía de decisiones bioclimáticas para Santa Rosa, de mayor a menor impacto y de menor a mayor costo:**
+
+| # | Estrategia | Costo incremental | Impacto | Etapa en que se decide |
+|---|---|---|---|---|
+| 1 | **Orientación correcta de los locales principales al Norte** | **CERO** | Muy alto | **Anteproyecto** |
+| 2 | **Compacidad del volumen** (mínimo factor de forma) | Negativo (ahorra) | Alto | **Anteproyecto** |
+| 3 | **Distribución de superficie vidriada por orientación** | Cero | Muy alto | **Anteproyecto** |
+| 4 | **Protección solar: aleros al Norte, protección vertical al Oeste** | Bajo | Alto | **Anteproyecto** |
+| 5 | **Ventilación cruzada y nocturna** | Cero | Alto (verano) | **Anteproyecto** |
+| 6 | **Protección del viento** (galería cerrada, barreras, esclusas) | Bajo | Alto (confort) | **Anteproyecto** |
+| 7 | **Masa térmica interior expuesta** | Bajo | Medio-alto | **Anteproyecto** |
+| 8 | **Aislación térmica de la envolvente** | Medio | Muy alto | Anteproyecto (espesores) / Proyecto (detalles) |
+| 9 | **Eliminación de puentes térmicos** | Bajo si se piensa; alto si se corrige | Alto | Proyecto |
+| 10 | **DVH y carpintería con ruptura de puente térmico** | Alto | Alto | Anteproyecto (decisión) / Proyecto (especificación) |
+| 11 | **Estanqueidad al aire (control de infiltraciones)** | Bajo | Alto | Proyecto / Obra |
+| 12 | **Energía solar térmica y fotovoltaica** | Alto | Medio | Anteproyecto (espacio y orientación) |
+
+**El mensaje para el cliente:** *"Las siete decisiones más importantes para que la casa sea cómoda y barata de mantener no cuestan plata. Cuestan que las tomemos ahora, no después."*
+
+## 9.3 Orientación y ganancia solar directa en invierno
+
+**[N] IRAM 11603, C.2.1.4** — Zona IV templada fría, latitudes > 30°: **la orientación favorable es NO-N-NE-E.**
+
+### 9.3.1 Distribución recomendada de superficie vidriada
+
+**[R] Para vivienda en Santa Rosa** (porcentaje de superficie vidriada respecto de la superficie de piso del local):
+
+| Orientación | Superficie vidriada recomendada | Justificación |
+|---|---|---|
+| **Norte** | **20 – 35 %** de la superficie del local | Ganancia solar de invierno. Con alero y con masa térmica interior, se puede llegar al 40 % |
+| **Este** | 12 – 18 % | Sol de mañana, agradable; poca ganancia neta |
+| **Oeste** | **≤ 10 %** | **Máximo control.** El sol de tarde de enero es el peor problema térmico de la casa |
+| **Sur** | 8 – 15 % | Solo lo necesario para iluminación y ventilación. Buena luz difusa; alta pérdida térmica |
+
+**Regla global [R]:** la superficie vidriada total de la vivienda debería estar entre el **12 % y el 18 % de la superficie cubierta**, con **más del 50 % de esa superficie orientada al Norte**.
+
+### 9.3.2 Ganancia solar directa: cómo se diseña
+
+**[R] Las cuatro condiciones para que la ganancia solar directa funcione:**
+
+1. **Vidrio al Norte, con acceso solar libre** (verificar que no haya sombra de vecinos, árboles perennes o del propio edificio entre 9 y 15 h el 21 de junio).
+2. **Masa térmica en el interior, expuesta y en contacto con el sol.** Un piso de hormigón, cerámico o piedra sobre contrapiso; un muro macizo interior. **El piso de madera flotante sobre poliestireno anula la masa térmica.**
+3. **Aislación térmica en el exterior de la masa** (aislación por fuera del muro, o muro doble con cámara aislada), para que la masa "mire" hacia adentro.
+4. **Protección nocturna del vidrio**: cortina de enrollar exterior, postigón o cortina pesada interior. **Un vidrio simple pierde de noche más de lo que ganó de día.** Con DVH y cortina de enrollar, la ganancia es neta positiva.
+
+**Superficie de masa térmica recomendada [R]:** entre **5 y 9 m² de superficie másica expuesta por cada m² de vidrio al Norte**, con un espesor efectivo de 8 a 15 cm de hormigón o mampostería maciza (más espesor no aporta: la onda térmica diaria no penetra más allá).
+
+## 9.4 Protección solar: cálculo de aleros
+
+### 9.4.1 Los ángulos solares de Santa Rosa (latitud 36,6° S)
+
+| Fecha | **Altura solar al mediodía** | tangente | Azimut de salida | Azimut de puesta |
+|---|---|---|---|---|
+| **21 de diciembre** | **76,8°** | 4,27 | ≈ 118° (SE) | ≈ 242° (SO) |
+| **21 de marzo / 23 de septiembre** | **53,4°** | 1,347 | 90° (E) | 270° (O) |
+| **21 de junio** | **29,9°** | 0,575 | ≈ 62° (NE) | ≈ 298° (NO) |
+
+### 9.4.2 Fórmula del alero horizontal en fachada Norte
+
+```
+Para sombrear COMPLETAMENTE la abertura al mediodía del solsticio de verano:
+
+        d = H / tan(α_verano)  =  H / 4,27
+
+   donde:  d = profundidad del alero, medida desde el plano del vidrio
+           H = altura de la abertura, medida desde el borde inferior del vano
+               hasta el nivel del alero
+
+Para verificar la penetración solar en invierno con ese mismo alero:
+
+        Sombra que cae sobre la fachada = d × tan(α_invierno) = d × 0,575
+        Altura de vidrio asoleada       = H − (d × 0,575)
+        Penetración horizontal en el local = (altura asoleada) / 0,575
+```
+
+### 9.4.3 Tabla de aleros para Santa Rosa [R]
+
+| Altura de abertura H (del piso al alero) | **Alero para sombra total el 21/12** | Sombra en fachada el 21/06 | **Penetración solar el 21/06** | Penetración el 21/03 |
+|---|---|---|---|---|
+| 1,50 m (ventana alta) | **0,35 m** | 0,20 m | **2,26 m** | 0,76 m |
+| 2,10 m (puerta-ventana estándar) | **0,49 m** | 0,28 m | **3,17 m** | 1,07 m |
+| 2,40 m | **0,56 m** | 0,32 m | **3,62 m** | 1,22 m |
+| **2,70 m (paño piso-techo)** | **0,63 m** | **0,36 m** | **4,07 m** | **1,37 m** |
+| 3,00 m (doble altura parcial) | **0,70 m** | 0,40 m | **4,52 m** | 1,52 m |
+
+**Lectura del proyectista:**
+- Un alero de **0,60 m** sobre una abertura de 2,70 m de altura al Norte **sombrea el 100 % del vidrio el 21 de diciembre al mediodía** y **deja entrar el sol 4,00 m dentro del local el 21 de junio.** Es una de las mejores relaciones costo/beneficio de toda la arquitectura.
+- **La galería de 3,50 m de profundidad** que se usa habitualmente en la casa pampeana **sobreprotege**: sombrea el vidrio también en invierno. Solución: **techo de galería con sector traslúcido o desmontable en la franja próxima a la fachada**, o **galería más baja que la abertura**, o galería desplazada.
+
+### 9.4.4 Limitaciones del alero horizontal
+
+**El alero horizontal solo funciona en la fachada Norte y alrededor del mediodía solar.** Fuera de eso:
+
+| Situación | Problema | Solución [R] |
+|---|---|---|
+| **Fachada Oeste, verano, 16–20 h** | Sol a 10–35° de altura, entra horizontal. **El alero no sirve para nada** | **Protección vertical**: aletas verticales, celosías, parasoles móviles, persianas exteriores, vegetación caduca, o simplemente **poca superficie vidriada** |
+| **Fachada Este, verano, 7–10 h** | Mismo problema, pero con menor carga (la masa del edificio está fría) | Menos crítico. Persiana o cortina exterior |
+| **Fachada Norte, mañana y tarde de verano** | El sol viene con azimut de 40–70° respecto del Norte; el alero horizontal sombrea parcialmente | **Aletas verticales combinadas con el alero** (parasol mixto), o alero más profundo con retorno lateral |
+| **Fachada Sur** | Sol solo en las primeras y últimas horas del verano, muy bajo | Poco crítico. Aletas verticales del lado Oeste del vano si se quiere |
+
+**[N] IRAM 11603, C.5:** *"Se aconseja para las zonas bioambientales I a IV y para las orientaciones SO-O-NO-N-NE-E-SE el uso de sistemas de protección solar, como por ejemplo parasoles horizontales y verticales, cortinas de enrollar de color claro. […] Se recomienda el uso de los parasoles para cuyo cálculo se aconseja el empleo de la carta solar en la definición de las medidas adecuadas."*
+
+**[R] La solución más eficaz y más barata para Oeste y Este: la cortina de enrollar exterior.** Detiene la radiación **antes** de que atraviese el vidrio. Una cortina interior detiene la luz pero la energía ya entró: reduce la ganancia apenas un 30 %, contra el 80 % de una protección exterior.
+
+### 9.4.5 Protección solar móvil vs. fija
+
+| | Fija (alero, parasol) | Móvil (cortina exterior, celosía corrediza, toldo) |
+|---|---|---|
+| Costo | Bajo | Medio-alto |
+| Mantenimiento | Nulo | Requiere mantenimiento |
+| Eficacia estacional | **Perfecta al Norte, nula al Oeste** | Perfecta en todas las orientaciones |
+| Adaptabilidad a días nublados de verano o soleados de otoño | Nula | Total |
+| Impacto en fachada | Define la arquitectura | Cambia la fachada según el uso: **puede ser un recurso expresivo potente** |
+
+**[R] Combinación recomendada para Santa Rosa:** **alero fijo al Norte + cortina de enrollar exterior o celosía móvil al Oeste y al Este.**
+
+## 9.5 Masa térmica
+
+**Principio:** la masa térmica no aísla, **retrasa y amortigua**. En un clima de gran amplitud térmica como el pampeano, eso es exactamente lo que hace falta.
+
+| Parámetro | Valor de referencia [R] |
+|---|---|
+| **Retardo térmico buscado** | **8 a 12 horas** (para que el calor de la tarde llegue al interior de madrugada, cuando ya se ventiló) |
+| Espesor efectivo de hormigón | 10 – 15 cm |
+| Espesor efectivo de mampostería maciza | 15 – 20 cm |
+| Espesor efectivo de piso de hormigón + solado cerámico | 8 – 12 cm |
+| **Superficie másica por m² de vidrio al Norte** | 5 – 9 m² |
+
+**Reglas [R]:**
+1. **La masa va por dentro de la aislación**, siempre. Muro de mampostería + aislación exterior + revoque, o muro doble con aislación en la cámara y hoja interior maciza.
+2. **La masa tiene que estar expuesta al aire interior**: sin alfombras, sin cielorrasos suspendidos continuos sobre toda la losa, sin pisos flotantes sobre aislante.
+3. **La masa sin ventilación nocturna en verano es contraproducente**: acumula calor y lo devuelve toda la noche. Masa térmica y ventilación nocturna van juntas, o no van.
+4. **Los sistemas constructivos livianos** (steel frame, wood frame) tienen poca masa: se compensan con **una losa de hormigón en el piso a la vista**, o con un muro interior macizo (un muro de ladrillo visto interior, una pared de hormigón, un muro trombe).
+
+## 9.6 Ventilación cruzada y ventilación nocturna
+
+### 9.6.1 Ventilación cruzada — reglas de dimensionamiento [R]
+
+| Parámetro | Valor |
+|---|---|
+| Superficie de abertura practicable de entrada | **≥ 5 % de la superficie del local** |
+| Superficie de abertura de salida | **≥ la de entrada** (idealmente 1,2 a 1,5 veces) |
+| **Profundidad efectiva con ventilación cruzada** | **≈ 5 × altura libre** (con h = 2,60 m → 13,00 m) |
+| **Profundidad efectiva con ventilación de un solo lado** | **≈ 2 a 2,5 × altura libre** (con h = 2,60 m → 5,20 a 6,50 m) |
+| Diferencia de altura entre entrada y salida (efecto chimenea) | **≥ 2,50 m** para que sea significativa |
+| Velocidad de aire confortable en verano | 0,5 a 1,5 m/s |
+| Renovaciones de aire buscadas en ventilación nocturna | **10 a 30 renovaciones/hora** |
+| Renovaciones de aire de higiene (todo el año) | 0,5 a 1 renovación/hora |
+
+**Tipos de abertura y su capacidad real de ventilación [R]:**
+
+| Tipo | % del vano que abre |
+|---|---|
+| **Corrediza de 2 hojas** | **50 %** |
+| Corrediza de 3 hojas (2 móviles) | 66 % |
+| **Batiente / de abrir** | **90 %** |
+| **Oscilobatiente** (posición batiente) | **90 %** |
+| Oscilobatiente (posición oscilante) | 8 – 12 % — **ideal para ventilación nocturna segura** |
+| Proyectante | 30 – 45 % |
+| Banderola | 30 – 45 % |
+| Paño fijo | 0 % |
+
+> **[R] Una decisión de anteproyecto que casi nadie toma: el tipo de apertura.** Dos ventanas del mismo tamaño, una corrediza y una oscilobatiente, ventilan **casi el doble** la segunda. Y la oscilobatiente en posición oscilante permite **dejar ventilando de noche con la casa cerrada y segura**, que es precisamente lo que hace falta para la ventilación nocturna de verano.
+
+### 9.6.2 Ventilación nocturna de verano: el protocolo
+
+Es **la estrategia de refrescamiento más potente y más barata para Santa Rosa**, por la amplitud térmica de 15 °C en enero.
+
+```
+DÍA (9 a 21 h):    CERRADO y con protección solar bajada.
+                   La masa térmica absorbe el calor interior y mantiene la
+                   temperatura por debajo de la exterior.
+
+NOCHE (21 a 8 h):  ABIERTO, con ventilación cruzada máxima.
+                   El aire exterior (16,5 °C de media de mínimas en enero)
+                   enfría la masa térmica, que queda "cargada de frío" para el
+                   día siguiente.
+```
+
+**Lo que el proyecto tiene que aportar para que esto sea posible:**
+1. **Aberturas en fachadas opuestas** en cada local principal.
+2. **Aberturas seguras para dejar abiertas de noche**: oscilobatientes, banderolas altas, ventanas con reja de diseño, patios internos.
+3. **Masa térmica expuesta.**
+4. **Protección solar eficaz** para el día.
+5. **Una ventana alta o un lucernario practicable** para el efecto chimenea, que funciona incluso sin viento.
+6. **Una circulación de aire interna sin obstrucciones**: puertas que se puedan dejar abiertas, o banderolas sobre las puertas de dormitorios, o rejillas de transferencia.
+
+**[R] Impacto esperable:** una vivienda con masa térmica, buena protección solar y ventilación nocturna bien diseñada puede mantener **entre 5 y 8 °C por debajo de la temperatura exterior máxima** en enero, sin ningún equipo. Es la diferencia entre 31 °C exteriores y 24 °C interiores.
+
+## 9.7 El viento pampeano como material de proyecto
+
+**[N] IRAM 11603, C.1.c:** *"en las zonas IV, V y VI, la protección contra el viento es de suma importancia."*
+
+**[R] Las estrategias, en orden de eficacia:**
+
+| Estrategia | Cómo | Efecto |
+|---|---|---|
+| **Volumetría compacta** | Minimizar el factor de forma (superficie de envolvente / volumen) | Menos superficie expuesta, menos infiltración, menos pérdida |
+| **Orientar el lado largo del volumen perpendicular al viento frío dominante** con pocas aberturas de ese lado | | Reduce la presión de viento sobre las aberturas |
+| **Esclusa en el acceso** (doble puerta o vestíbulo) | 1,50 × 1,50 m mínimo | Evita el golpe de aire frío al entrar |
+| **Galería con cierre lateral en el lado del viento** | Muro, paño vidriado fijo, celosía | **Convierte una expansión inutilizable en un ambiente** |
+| **Cerramiento móvil de galería** | Paños corredizos, cortinas de enrollar exteriores | Uso de 10 meses al año en lugar de 4 |
+| **Barrera vegetal** | 3 filas mínimo, perpendicular al viento dominante, con especies de la región y densidad media (no muros macizos, que generan turbulencia) | Protege a sotavento hasta **10–15 veces la altura de la barrera** |
+| **Patios protegidos** (casa en L o en U) | El patio se abre al Norte y se cierra hacia el viento | Microclima de varios grados de diferencia |
+| **Carpinterías con buen sellado y doble contacto** | Especificación | El viento es la principal causa de infiltración en La Pampa |
+| **Cubiertas con pendientes y aleros bien sujetos** | Detalle constructivo | **El viento arranca chapas y aleros mal fijados: es un problema real** |
+| **En edificios: balcones con paño lateral ciego o parcialmente cerrados** | Diseño de fachada | Un balcón abierto en un 8° piso con viento pampeano no se usa |
+
+**[R] Advertencia de fachada:** en edificios en altura, **el viento en la base genera efecto Venturi y remolinos** que hacen incómodo el acceso peatonal. Se mitiga con: marquesina sobre el acceso, retranqueo del acceso, vegetación, o un basamento que no genere un plano vertical continuo de gran altura sobre la vereda.
+
+## 9.8 Carta bioclimática: cómo se usa en el anteproyecto
+
+Las **cartas bioclimáticas de Olgyay** (temperatura de bulbo seco vs. humedad relativa, con la zona de confort y las correcciones por radiación, viento y evaporación) y de **Givoni** (sobre el diagrama psicrométrico, con las zonas de aplicabilidad de cada estrategia pasiva) sirven para una cosa concreta: **decidir qué estrategias pasivas conviene usar en un clima determinado, y en qué proporción del año.**
+
+**Procedimiento [R]:**
+
+1. Se toman los **datos horarios o mensuales** de temperatura y humedad de Santa Rosa (SMN, o archivos climáticos EPW disponibles públicamente).
+2. Se **grafican sobre la carta de Givoni**.
+3. Se lee qué porcentaje de las horas del año cae en cada zona:
+   - **Confort** (no hay que hacer nada)
+   - **Ventilación** (ventilación natural resuelve)
+   - **Masa térmica** (inercia resuelve)
+   - **Masa térmica + ventilación nocturna**
+   - **Enfriamiento evaporativo**
+   - **Ganancia solar pasiva**
+   - **Calefacción convencional** (ninguna estrategia pasiva alcanza)
+   - **Refrigeración convencional**
+4. Se **priorizan las estrategias** que cubren más horas.
+
+**[R] Resultado esperable para Santa Rosa** (a verificar con el archivo climático, pero robusto conceptualmente):
+- La **calefacción** (ganancia solar pasiva + aislación + masa) es la estrategia dominante: el clima demanda calefacción buena parte del año.
+- La **masa térmica con ventilación nocturna** cubre la mayor parte de las horas cálidas del verano.
+- El **enfriamiento evaporativo** es viable por la baja humedad, pero su aplicación arquitectónica (patios con agua y vegetación) es marginal comparada con las dos anteriores.
+- La **refrigeración mecánica** queda para los picos de ola de calor.
+
+**Herramientas gratuitas [R]:** Climate Consultant (UCLA), Ladybug Tools (Grasshopper), Andrew Marsh Solar/Psychro tools (online). **Un análisis de este tipo lleva medio día y da material de altísima calidad para la lámina de análisis del anteproyecto.**
+
+## 9.9 Aislación térmica: qué se decide en anteproyecto
+
+**[V]** La exigencia de aislación térmica es **normativa provincial o municipal**. En la provincia de Buenos Aires rige la **Ley 13.059** y su decreto reglamentario, que hace obligatorias las normas IRAM 11601/11603/11605/11625. **Verificar si La Pampa o el municipio de Santa Rosa tienen una exigencia equivalente vigente.** Independientemente de que sea obligatoria o no, **es una decisión técnica del estudio y se toma en el anteproyecto.**
+
+**Normas IRAM de referencia:**
+
+| Norma | Contenido |
+|---|---|
+| **IRAM 11601** | Propiedades térmicas de los materiales y cálculo de la transmitancia K |
+| **IRAM 11603** | Clasificación bioambiental y recomendaciones de diseño |
+| **IRAM 11604** | Coeficiente volumétrico G de pérdidas de calor del edificio |
+| **IRAM 11605** | Valores máximos admisibles de transmitancia térmica K — **niveles A (recomendado), B (medio) y C (mínimo)** |
+| **IRAM 11625 / 11630** | Verificación de riesgo de condensación intersticial y superficial |
+| **IRAM 11507-4** | Carpinterías: clasificación por transmitancia térmica |
+| **IRAM 11900** | Etiqueta de eficiencia energética de calefacción de viviendas |
+
+**[R] Lo que se decide en el ANTEPROYECTO (no en el proyecto):**
+
+1. **El espesor total de los muros exteriores.** Un muro con aislación de 5 cm de EPS tiene 8–10 cm más de espesor que uno sin aislación. **Si eso no está en las plantas del anteproyecto, después las superficies no cierran.**
+2. **Si la aislación va por fuera, por dentro o en la cámara.** Cambia el detalle de encuentro con las carpinterías, con las losas y con la fundación, y cambia el aspecto de la fachada.
+3. **El tipo de carpintería**: aluminio sin RPT / aluminio con ruptura de puente térmico / PVC / madera; vidrio simple / DVH. **Cambia el espesor del marco, el ancho del premarco y el precio en un 8–15 % del costo de obra.**
+4. **La resolución de los puentes térmicos**: bordes de losa, balcones, dinteles, encuentro de muro y cubierta, encuentro de muro y fundación. **El borde de losa de un balcón sin corte térmico es el puente térmico más grave de la arquitectura argentina, y se corrige en anteproyecto o no se corrige.**
+5. **La estrategia de la cubierta**: es por donde se pierde más calor. Aislación sobre losa (cubierta invertida) o bajo losa; espesor; barrera de vapor.
+6. **La superficie vidriada total** y su distribución por orientación (punto 9.3.1).
+
+**[R] Valores de referencia de partida para Zona IV** (a verificar con cálculo según IRAM 11605):
+
+| Elemento | K objetivo [W/m²K] |
+|---|---|
+| Muro exterior | **≤ 0,50** (nivel A) · ≤ 1,00 (nivel B) |
+| Cubierta | **≤ 0,32** (nivel A) · ≤ 0,70 (nivel B) |
+| Piso en contacto con el terreno | ≤ 0,80 en la faja perimetral |
+| Carpintería con vidrio simple | ≈ 5,8 |
+| Carpintería con DVH 4/9/4 | ≈ 2,9 |
+| Carpintería con DVH y RPT | ≈ 2,2 |
+
+**[V] Los valores de la IRAM 11605 dependen de la zona y de la temperatura exterior de diseño: se verifican con la norma vigente, no con esta tabla.**
+
+## 9.10 Cómo se comunica todo esto en el anteproyecto
+
+**[R] Una sola lámina, con cinco piezas:**
+
+1. **Rosa de orientaciones sobre la planta**, con las zonas día/noche/servicio coloreadas y las orientaciones favorables señaladas.
+2. **Diagrama de asoleamiento**: sombras arrojadas el 21/06 y el 21/12 a las 9, 12 y 15 h.
+3. **Corte bioclimático de invierno**: rayo de sol del 21/06 a 30° entrando por la abertura Norte, alero acotado, penetración acotada, masa térmica marcada, aislación de la envolvente marcada, flechas de calefacción.
+4. **Corte bioclimático de verano**: rayo de sol del 21/12 a 77° detenido por el alero, flechas de ventilación cruzada y nocturna, protección solar bajada.
+5. **Esquema de viento**: viento dominante, barreras, galería protegida, esclusa de acceso.
+
+**Estas dos secciones —el "corte de invierno" y el "corte de verano"— son, según nuestra experiencia, las dos láminas que más impresionan al cliente en toda la presentación**, porque le explican en 30 segundos por qué el proyecto está hecho así y le muestran que no es una decisión estética. Y son las que justifican el honorario.
+
+---

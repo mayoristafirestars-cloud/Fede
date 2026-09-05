@@ -2559,3 +2559,299 @@ Recibido por la Administración: Firma ____________ Fecha ____________
 - No dejar la unidad sin agua controlada durante la noche o el fin de semana con la instalación abierta.
 
 ---
+
+# PARTE V — MEJORAR EL DESEMPEÑO
+
+# 7. Retrofit energético
+
+> **Contexto Santa Rosa.** Zona bioambiental **IV (templada fría)** según IRAM 11603 — **verificar la subzona exacta en la norma**. Inviernos fríos con demanda de calefacción significativa, veranos calurosos y secos, **amplitud térmica diaria alta** y **vientos intensos**. El parque edilicio existente es, en su enorme mayoría, **sin aislación térmica**, con carpinterías de vidrio simple y con puentes térmicos generalizados. El potencial de mejora es enorme y el retorno es real.
+
+## 7.1 Auditoría energética del existente
+
+### Las tres fuentes de datos
+
+**1. Consumo histórico (lo primero, y es gratis).**
+```
+[ ] Reunir 24 meses de facturas de gas y electricidad.
+[ ] Volcar en planilla: consumo mensual en m³ de gas y kWh de electricidad.
+[ ] Normalizar por superficie: kWh/m²·año y m³/m²·año.
+[ ] Graficar el perfil anual: la diferencia entre el consumo de invierno y el consumo
+    de "base" (verano) es aproximadamente la DEMANDA DE CALEFACCIÓN. Ese es el número
+    sobre el que actúa el retrofit.
+[ ] Correlacionar con grados-día de calefacción de Santa Rosa (verificar valor en
+    IRAM 11603 o en datos del Servicio Meteorológico Nacional).
+[ ] Comparar con referencias: define si la vivienda es un caso extremo o normal.
+```
+**Este análisis define el techo del ahorro.** Si una casa gasta poco en calefacción porque el usuario se calefacciona mal (vive con frío), el "ahorro" del retrofit se va a manifestar como **más confort al mismo costo**, no como menos factura. **Hay que decirlo antes**, porque si no el cliente se decepciona. Se llama *takeback* o efecto rebote y es real.
+
+**2. Inspección de la envolvente.**
+```
+[ ] Composición y espesor de cada elemento: muros, cubierta, piso, carpinterías.
+    (Cateos: §2.10.)
+[ ] Superficies de cada elemento y superficie total de envolvente.
+[ ] Presencia y espesor de aislación existente (casi siempre: ninguna).
+[ ] Tipo de vidrio (simple/DVH), tipo de perfil (aluminio sin RPT / con RPT / PVC /
+    madera), estado de burletes y cierres.
+[ ] Puentes térmicos: encuentro muro-losa, columnas y vigas embebidas, cajas de
+    persiana, jambas y dinteles, balcones que atraviesan la envolvente, encuentro
+    con medianeras.
+[ ] Sistema de calefacción: tipo, antigüedad, rendimiento, control (¿hay termostato?
+    ¿zonificación?), estado de conductos.
+[ ] Agua caliente sanitaria: tipo, antigüedad, aislación del acumulador y de las cañerías.
+[ ] Iluminación: ¿ya está en LED?
+```
+
+**3. Ensayos.**
+
+| Ensayo | Qué revela | Cuándo |
+|---|---|---|
+| **Termografía** (según criterios de EN 13187 / ISO 6781: ΔT interior-exterior ≥ ~10 °C, sin radiación solar directa, preferentemente al amanecer en invierno) | Mapa de pérdidas: puentes térmicos, faltantes y discontinuidades de aislación, infiltraciones, humedades | Siempre que se pueda. Es el ensayo con mejor relación información/costo y **el que mejor le explica el problema al cliente** (una imagen vale más que un cálculo) |
+| **Blower door** (n50 = renovaciones/hora a 50 Pa) | Hermeticidad. Combinado con termografía o con generador de humo, **localiza** las infiltraciones | En proyectos con objetivo energético serio. **Valores de referencia:** viviendas existentes en bloque suelen superar **n50 > 5 h⁻¹**; el CTE español exige entre 3 y 6 h⁻¹ para vivienda nueva/rehabilitada según tipología; el estándar **EnerPHit** (Passivhaus para rehabilitación) exige **n50 ≤ 1,0 h⁻¹**. ⚠️ **Verificar si existe exigencia normativa aplicable en Argentina; a la fecha se usa como criterio de proyecto, no como obligación** |
+| **Registro de T° y HR con datalogger** (1–2 semanas) | Confort real, riesgo de condensación, comportamiento térmico | Muy barato, muy útil |
+| **Medición de consumo eléctrico por circuito** | Identifica consumos ocultos | Complementario |
+
+### Etiquetado de viviendas en Argentina
+
+- La norma **IRAM 11900** establece el procedimiento de cálculo y los criterios de evaluación y calificación energética de viviendas, con una **etiqueta de letras A a G** en orden decreciente de eficiencia, asociadas a rangos del **Índice de Prestación Energética (IPE)**. La edición de **diciembre de 2017** amplió el alcance respecto de la primera versión (que era solo de calefacción) e incorporó climatización, agua caliente sanitaria, iluminación y energía fotovoltaica, para viviendas unifamiliares y multifamiliares.
+- Existe un **Programa Nacional de Etiquetado de Viviendas**, con implementación progresiva y adhesiones provinciales y municipales.
+- ⚠️ **Su obligatoriedad depende de la jurisdicción y de la normativa vigente. Verificar en la Secretaría de Energía de la Nación y en la Provincia de La Pampa / Municipalidad de Santa Rosa si rige alguna exigencia local.**
+
+**Uso comercial:** aun cuando no sea obligatoria, la etiqueta es **una herramienta de venta del retrofit**: convierte una mejora abstracta ("va a estar más abrigada") en un salto de letra medible y comunicable, y agrega valor de mercado al inmueble.
+
+## 7.2 Orden de prioridad costo-beneficio
+
+### Principio: FÁBRICA PRIMERO, SISTEMAS DESPUÉS
+
+> **Reducir la demanda antes de mejorar el equipo que la satisface.** Cambiar la caldera de una casa sin aislación es comprar un equipo más grande y más caro para seguir calefaccionando la calle. El orden es: **hermeticidad → aislación → puentes térmicos → carpinterías → sistemas → generación renovable.**
+
+### Tabla de priorización
+
+| # | Medida | Inversión relativa | Impacto en demanda de calefacción | Payback relativo | Riesgo técnico | Comentario |
+|---|---|---|---|---|---|---|
+| **1** | **Sellado de infiltraciones** (burletes, encuentros de carpintería, pasos de instalaciones, cajas de persiana, chimeneas en desuso, tapas de tanque) | **Muy baja** | Medio (5–20%) | **El más corto de todos** | Bajo, **pero** ⚠️ | ⚠️ **Verificar SIEMPRE la ventilación de artefactos a gas después de sellar (§4.4.4). Sellar sin garantizar aire de combustión MATA.** Ver también §4.1.5: al sellar, aumenta el riesgo de condensación si no se agrega ventilación controlada |
+| **2** | **Aislación de cubierta / entretecho** | Baja | **Muy alto (20–35%)** | **Muy corto** | Bajo | ⚠️ **LA MEDIDA #1 en relación costo-beneficio.** El calor se va por arriba. En entretecho accesible: se despliega el aislante y listo, sin obra. En cubierta de losa: aislante sobre la losa bajo el paquete de cubierta (aprovechando una renovación de membrana) o cielorraso suspendido con aislante. **Requiere resolver la barrera de vapor** (§4.1.6) |
+| **3** | **Aislación de piso / contrapiso en contacto con el terreno o sobre local no calefaccionado** | Media | Medio | Medio | Medio | Solo viable si se rehace el piso. Aprovechar la obra |
+| **4** | **Corrección de puentes térmicos puntuales** (cajas de persiana, jambas, encuentro muro-losa, retorno de aislación en vanos) | Baja | Bajo-medio en demanda, **alto en confort y en eliminación de condensación** | Corto (si se hace junto con otra medida) | Medio | Es lo que **elimina el moho de los rincones**, que es lo que el cliente realmente quiere resolver |
+| **5** | **Cambio de carpinterías a DVH con perfil de bajo puente térmico** | **Alta** | Medio (10–20%) | Largo | Bajo | Alto costo, alto impacto en **confort percibido** (elimina la superficie fría, el vidrio empañado y el ruido). ⚠️ Se hace **después** de la aislación de la envolvente, no antes. Y **obliga a resolver la ventilación** (§4.1.5, §4.4.4) |
+| **6** | **Aislación de muros por el EXTERIOR** (tipo SATE/EIFS u otro sistema) | **Alta** | **Alto (15–30%)** | Medio-largo | Medio | **Técnicamente la mejor solución** (§7.4). Se justifica cuando además hay que rehacer la fachada. ⚠️ En PH: es intervención sobre fachada común (§6.2) |
+| **7** | **Aislación de muros por el INTERIOR** | Media | Alto (15–30%) | Medio | ⚠️ **ALTO** | Más barato y sin autorización de fachada, pero **con riesgo real de condensación intersticial** (§7.5). Requiere verificación obligatoria |
+| **8** | **Mejora del sistema de calefacción y su control** (equipos de mayor rendimiento, termostato programable, zonificación, aislación de cañerías y conductos) | Media | Impacto directo en consumo (no en demanda) | Medio | Bajo | **El termostato programable es la mejora más barata del listado**, y frecuentemente la más rentable. Aislar cañerías de agua caliente: casi gratis, efecto inmediato |
+| **9** | **Agua caliente sanitaria eficiente** (recambio de termotanques antiguos, aislación del acumulador, reducción de recorridos, aireadores de bajo caudal) | Baja-media | — (afecta ACS, no calefacción) | Corto-medio | Bajo | En muchas viviendas el ACS es la segunda partida de consumo de gas |
+| **10** | **Solar térmica para ACS** | Media-alta | — | Medio | Bajo-medio | Buen recurso solar en La Pampa. **Verificar radiación local y disponibilidad de cubierta con orientación adecuada**. ⚠️ Requiere apoyo auxiliar y verificación estructural del apoyo (§5.10) |
+| **11** | **Fotovoltaica** | **Alta** | — | Largo, **muy dependiente del marco regulatorio** | Bajo | ⚠️ **Verificar el régimen de generación distribuida vigente (Ley 27.424 y su reglamentación, y la adhesión y reglamentación de la Provincia de La Pampa / distribuidora local) antes de prometer inyección a la red o beneficios.** Se hace **último**: no tiene sentido generar energía para desperdiciarla en una casa sin aislación |
+| **12** | **Iluminación LED, electrodomésticos eficientes** | Muy baja | — | Muy corto | Nulo | Se hace siempre, pero su impacto en la factura de una vivienda con calefacción a gas es marginal |
+
+⚠️ **Sobre los paybacks:** en Argentina, con inflación, tarifas variables y subsidios cambiantes, **cualquier cálculo de payback en años tiene una incertidumbre enorme**. La forma honesta de presentarlo al cliente es:
+1. **Ranking relativo de medidas** (esta tabla), que es robusto.
+2. **Ahorro estimado en energía física** (m³ de gas/año, kWh/año), que **no depende de la tarifa**.
+3. **Payback calculado con la tarifa del día**, presentado como escenario y no como promesa, con sensibilidad a dos o tres tarifas.
+4. **Beneficios no monetarios**, que suelen ser los que deciden la compra: confort, eliminación de moho y humedad, silencio, valor de reventa.
+
+### Paquetes recomendados
+
+| Paquete | Contenido | Perfil de cliente |
+|---|---|---|
+| **Mínimo / "primeros auxilios"** | Sellado de infiltraciones + aislación de entretecho + termostato programable + aislación de cañerías + LED. ⚠️ Con verificación de ventilación de gas | Presupuesto acotado, resultado rápido y visible |
+| **Intermedio** | Mínimo + corrección de puentes térmicos + cambio de carpinterías críticas (las peores orientaciones y las más deterioradas) + mejora del equipo de calefacción | El más frecuente |
+| **Integral** | Todo lo anterior + aislación de muros (exterior si es posible) + carpinterías completas + ventilación controlada + ACS eficiente | Rehabilitación integral, cambio de dueño, obra grande |
+| **Alto desempeño** | Integral + hermeticidad verificada con blower door + ventilación mecánica con recuperador de calor + renovables | Cliente que busca desempeño y lo puede pagar |
+
+## 7.3 Carpinterías y DVH
+
+**Qué mejora un DVH:**
+- Reduce la transmitancia del hueco → menos pérdida y **superficie interior más caliente** → **desaparece la condensación sobre el vidrio**.
+- Reduce el ruido (parcialmente, ver §8.3).
+- El vidrio de baja emisividad (low-e) mejora sensiblemente el desempeño respecto de un DVH común.
+
+**Qué NO mejora automáticamente:**
+- ⚠️ **El perfil.** Un DVH montado en un perfil de aluminio **sin ruptura de puente térmico** deja el puente térmico del marco intacto: se sigue formando condensación **sobre el marco**, y el cliente siente que lo estafaron. Si se invierte en DVH, se invierte en perfil con RPT, PVC o madera.
+- ⚠️ **La infiltración**, si el burlete y el cierre son malos.
+- ⚠️ **El puente térmico de la jamba, el dintel y la caja de persiana**, que hay que resolver **en el mismo trabajo** (retorno de aislación en la mocheta, aislación de la caja de persiana, sellado perimetral). **Cambiar la ventana y no resolver la jamba es la mitad del trabajo.**
+
+**Decisiones de obra:**
+
+| Opción | Ventaja | Desventaja |
+|---|---|---|
+| **Recambio completo con retiro del marco** | Se resuelve todo: sellado, aislación de jamba, dimensiones | Rompe revoque, hay que reparar interior y exterior; más caro y sucio |
+| **Recambio con marco sobre marco (contramarco)** | Rápido, limpio, sin romper | ⚠️ **Reduce la luz libre del vano** (menos luz y menos ventilación: verificar que siga cumpliendo el mínimo reglamentario). No resuelve el puente térmico de la jamba. No verifica lo que hay debajo del marco viejo |
+| **Doble ventana (segunda hoja interior)** | Excelente para **acústica** (§8.3), conserva la carpintería original (útil en patrimonio), costo intermedio | Dos hojas que operar y limpiar; ⚠️ **riesgo de condensación en la cámara** si no se resuelve la ventilación entre hojas |
+| **Mejora de la carpintería existente** (burletes, sellado, contravidrio, herrajes) | Muy barato | Mejora limitada, pero **es el primer paso correcto** cuando no hay presupuesto para el recambio |
+
+⚠️⚠️ **Advertencia central del capítulo:** cambiar carpinterías viejas y permeables por carpinterías herméticas **elimina la ventilación involuntaria**. Consecuencias inmediatas y documentadas:
+1. **Aparece condensación y moho** donde antes no había (§4.1.5).
+2. ⚠️ **Los artefactos a gas de cámara abierta pueden quedarse sin aire de combustión → MONÓXIDO** (§4.4.4).
+
+**Por eso, todo recambio de carpinterías incluye obligatoriamente:** (a) verificación de la ventilación de artefactos a gas por gasista matriculado, y (b) una estrategia de ventilación de reemplazo (rejillas, microventilación de la carpintería, extractores, o ventilación mecánica).
+
+## 7.4 Aislar por afuera vs. aislar por adentro
+
+| Criterio | POR EL EXTERIOR (SATE/EIFS, fachada ventilada, etc.) | POR EL INTERIOR |
+|---|---|---|
+| **Puentes térmicos** | ✅ **Los elimina casi todos** (envuelve losas, columnas, vigas) | ❌ Los mantiene o los agrava (la losa y las columnas siguen conectando interior y exterior) |
+| **Inercia térmica** | ✅ El muro queda del lado caliente: amortigua la amplitud térmica diaria — **muy relevante en Santa Rosa, donde la amplitud térmica es alta** | ❌ Se pierde la inercia: la casa se calienta y se enfría rápido |
+| **Condensación intersticial** | ✅ **Riesgo muy bajo**: el muro queda caliente y no alcanza el punto de rocío | ⚠️ **RIESGO ALTO** (§7.5) |
+| **Superficie interior** | ✅ No se pierde | ❌ Se pierden 5–10 cm por muro exterior |
+| **Habitabilidad durante la obra** | ✅ Se hace desde afuera, con la casa habitada | ❌ Obra dentro de la casa, hay que mover todo |
+| **Fachada existente** | ❌ La tapa (⚠️ inaceptable en patrimonio, mampostería vista de valor, edificios catalogados) | ✅ La conserva |
+| **Costo** | Más alto (incluye andamios, terminación exterior completa) | Más bajo |
+| **PH / autorizaciones** | ⚠️ Interviene la fachada común: requiere autorización (§6.2) y es una obra del consorcio, no de una unidad | ✅ Se hace dentro de la unidad |
+| **Detalles críticos** | Encuentros con carpinterías, zócalo/arranque, aleros y cornisas, balcones (⚠️ los balcones son el puente térmico que el SATE no resuelve solo), remates de pretil | Encuentros con losa, tabiques interiores y carpinterías; **continuidad de la barrera de vapor** |
+
+**Conclusión del estudio:**
+> **Aislar por el exterior siempre que sea posible.** Es técnicamente superior y evita el riesgo higrotérmico. Se aísla por el interior cuando: es un departamento en PH sin obra de fachada, hay que conservar la fachada, o hay una sola habitación fría a resolver. **Y en ese caso, la verificación de §7.5 es obligatoria.**
+
+## 7.5 ⚠️ Riesgos de aislar por dentro — verificar SIEMPRE
+
+**El mecanismo del daño:**
+```
+ANTES: muro macizo sin aislar. Está frío por fuera, TIBIO por dentro.
+       El vapor lo atraviesa y sale al exterior sin condensar (o condensa poco).
+       Consecuencia: se pierde mucha energía, pero el muro está sano.
+
+DESPUÉS de aislar por dentro sin barrera de vapor:
+       El aislante impide que el calor interior llegue al muro.
+       El muro queda MÁS FRÍO QUE ANTES en todo su espesor.
+       El vapor interior atraviesa el aislante (que es permeable) y llega a la cara
+       fría del muro. Ahí condensa.
+       Consecuencia: AGUA LÍQUIDA en la interfaz aislante-muro, oculta, permanente.
+       → aislante mojado (que deja de aislar) → moho oculto → corrosión de la
+       estructura del tabique → pudrición de la madera → desprendimiento del revoque.
+       El cliente pagó por aislar y compró una patología invisible.
+```
+
+**Protocolo obligatorio antes de aislar por el interior:**
+
+```
+[ ] 1. VERIFICACIÓN HIGROTÉRMICA del cerramiento con la composición propuesta:
+       riesgo de condensación superficial e intersticial.
+       Referencia argentina: IRAM 11625 (verificación del riesgo de condensación
+       superficial e intersticial en paños centrales de muros) e IRAM 11630 (puentes
+       térmicos). Método clásico: diagrama de Glaser.
+       ⚠️ Nota técnica: Glaser es un método de régimen estacionario, hoy considerado
+       insuficiente para una evaluación fina; para casos críticos existe la simulación
+       higrotérmica dinámica. Glaser/IRAM 11625 es el MÍNIMO exigible, no el óptimo.
+[ ] 2. Si el cálculo da condensación: BARRERA DE VAPOR CONTINUA DEL LADO CALIENTE
+       (interior), con:
+         - solapes sellados con cinta específica
+         - sellado de todos los pasos de instalaciones (¡las cajas de luz!)
+         - continuidad resuelta en el encuentro con piso, cielorraso y tabiques
+           transversales
+         - protección durante la obra (una barrera de vapor perforada no sirve)
+[ ] 3. NO colocar una segunda barrera del lado exterior (revestimiento plástico,
+       pintura impermeable, film): el agua quedaría atrapada.
+[ ] 4. Verificar y resolver la HUMEDAD PREEXISTENTE del muro (§4.1) ANTES de aislar.
+       ⚠️ Aislar por dentro un muro con humedad ascendente es garantizar el desastre.
+[ ] 5. Resolver los PUENTES TÉRMICOS remanentes: retornos de aislación en jambas,
+       dinteles, encuentro con losa, tabiques transversales (al menos 40-60 cm de
+       "retorno" del aislante sobre el elemento transversal).
+[ ] 6. Aumentar la VENTILACIÓN del ambiente para bajar la humedad relativa interior.
+[ ] 7. Considerar sistemas de aislación interior "capilaramente activos" (paneles de
+       silicato de calcio, sistemas específicos de rehabilitación) que gestionan la
+       humedad en lugar de bloquearla, cuando la barrera de vapor no es viable.
+       Verificar disponibilidad y ficha técnica del producto en el mercado local.
+```
+
+## 7.6 Ventilación: la contrapartida obligatoria
+
+⚠️ **Toda medida de hermeticidad debe ir acompañada de una estrategia de ventilación. No es opcional.**
+
+| Estrategia | Cómo | Cuándo |
+|---|---|---|
+| **Ventilación natural manual** | Ventilación cruzada 10–15 min, 2–3 veces por día, ventanas opuestas abiertas de par en par y calefacción baja durante ese lapso | Siempre. Es gratis. **Educar al usuario es parte del trabajo** |
+| **Rejillas de ventilación permanente** | En locales con artefactos de combustión ⚠️ (obligatorio) y en locales húmedos | Obligatorio donde corresponda |
+| **Microventilación de carpintería** | Posición intermedia del herraje / aireadores en el perfil | Buen complemento en carpinterías nuevas |
+| **Extracción mecánica localizada** | Extractor en baño (con temporizador) y campana con descarga real al exterior en cocina | ⚠️ Verificar que no despresurice un local con artefacto de cámara abierta |
+| **Ventilación mecánica controlada (VMC) de simple flujo** | Extracción continua a bajo caudal desde locales húmedos, con entradas de aire en locales secos | Rehabilitación integral con buena hermeticidad |
+| **VMC de doble flujo con recuperador de calor** | Impulsión y extracción con intercambiador que recupera el calor del aire extraído | Alto desempeño. Recupera una fracción importante del calor que la ventilación se lleva; es lo que hace compatible una casa muy hermética con aire sano |
+
+---
+
+# 8. Acústica en reforma
+
+> **Regla de expectativas, para decir en la primera reunión:** *"En una reforma sin obra pesada podemos mejorar mucho el ruido aéreo (voces, TV, calle). El ruido de impacto (pasos, arrastre de sillas, caída de objetos) del piso de arriba solo se resuelve interviniendo en el piso de arriba, y eso no depende de nosotros."*
+
+## 8.1 Los tres problemas, que son distintos
+
+| Problema | Qué es | Se mide con | Cómo se combate |
+|---|---|---|---|
+| **Ruido aéreo** | Voces, TV, música, tránsito. Viaja por el aire y hace vibrar el cerramiento | Aislamiento a ruido aéreo (índices tipo Rw / DnT,w) | **Masa + desacople + absorción en la cámara + estanqueidad al aire** |
+| **Ruido de impacto** | Pasos, tacos, arrastre de muebles, caída de objetos, portazos. Se genera **en la estructura** y se transmite por ella | Nivel de presión de ruido de impacto (índices tipo Ln,w) | ⚠️ **Solo se resuelve en el origen**: piso flotante o manta amortiguadora **en la unidad de arriba** |
+| **Transmisiones indirectas (flancos)** | El sonido rodea el elemento aislado: pasa por la losa, por los muros laterales, por los montantes, por las cañerías, por las cajas de luz enfrentadas | — | Desacoples, sellados, discontinuidad, evitar elementos rígidos pasantes |
+
+⚠️ **La ley del eslabón más débil.** El aislamiento de un cerramiento lo determina su punto más débil. **Una rendija sin sellar arruina un tabique excelente.** El orden de trabajo es: **primero sellar, después agregar masa, después desacoplar.**
+
+## 8.2 Mejorar la aislación entre departamentos sin obra pesada
+
+### Ruido aéreo a través del muro divisorio: **contratabique desacoplado**
+
+**El sistema estándar y el que funciona:**
+```
+Muro existente
+  + CÁMARA DE AIRE (mínimo ~4-5 cm; cuanto mayor, mejor)
+  + estructura metálica AUTOPORTANTE, INDEPENDIENTE del muro
+    ⚠️ NO amurada al muro existente. Si se atornilla al muro, se transmite la
+    vibración y se pierde la mayor parte del beneficio.
+    Si hay que arriostrar, usar anclajes elásticos / resilientes.
+  + LANA MINERAL (lana de vidrio o de roca) llenando la cámara (densidad adecuada;
+    la lana absorbe la resonancia de la cámara, es lo que hace funcionar el sistema)
+  + 2 PLACAS DE YESO por cara (o 1 placa de yeso + 1 placa de alta densidad/fibrocemento):
+    la masa importa, y dos placas de distinto espesor desfasan las frecuencias de
+    coincidencia
+  + SELLADO ELÁSTICO PERIMETRAL COMPLETO (piso, techo y laterales) con banda
+    desolidarizante bajo los perfiles y sellador acústico. ⚠️ ESTO ES INNEGOCIABLE.
+```
+
+**Órdenes de magnitud (referenciales; verificar los ensayos del sistema y del fabricante que se especifique):** los sistemas de contratabique con estructura metálica, lana mineral y placa de yeso pueden alcanzar valores del orden de **45 dBA** con configuraciones simples y **50 dB o más** en sistemas dobles con mayor masa y cámara. La placa acústica específica puede aportar del orden de **3 dB** respecto de la placa convencional. **La mejora real de un contratabique sobre un muro existente depende del muro base y de la ejecución, y en la práctica se ubica típicamente en el orden de +8 a +15 dB si el trabajo está bien hecho y sellado.**
+
+**Referencia perceptual (esto es lo que hay que explicarle al cliente):**
+- **+3 dB** = apenas perceptible.
+- **+6 dB** = perceptible.
+- **+10 dB** = se percibe como **"la mitad de fuerte"**.
+- **+20 dB** = transformación radical.
+
+**Errores que anulan el sistema:**
+- ⚠️ Atornillar la estructura al muro existente.
+- ⚠️ No sellar el perímetro.
+- ⚠️ Dejar la cámara vacía (sin lana).
+- ⚠️ **Colocar cajas de luz enfrentadas y pasantes**: una caja de luz atravesando el tabique es un agujero acústico.
+- ⚠️ Colocar el zócalo rígido tocando el contratabique y el piso simultáneamente.
+- ⚠️ No continuar el tabique por encima del cielorraso suspendido (el sonido pasa por arriba, por el plenum).
+
+### Ruido de impacto desde arriba
+
+⚠️ **Realidad que hay que decir sin vueltas:** el ruido de impacto se genera en la losa. Un cielorraso suspendido con lana **mejora algo** (típicamente unos pocos dB, y más en frecuencias medias-altas que en las graves), pero **no resuelve** los pasos y los golpes graves, que se transmiten por la estructura y por los muros perimetrales (transmisión por flancos).
+
+| Solución | Dónde se hace | Eficacia | Viabilidad |
+|---|---|---|---|
+| **Piso flotante** (manta acústica o lámina elastomérica bajo la carpeta/piso, desolidarizada del perímetro) | ⚠️ **En la unidad de ARRIBA** | **Alta. Es LA solución** | Depende del vecino |
+| **Alfombra o piso vinílico con base acústica** | En la unidad de arriba | Media-alta, barata | Depende del vecino |
+| **Cielorraso suspendido desacoplado**, con **colgantes antivibratorios**, cámara grande y lana mineral | En la unidad afectada | Media en aéreo, **baja-media en impacto grave** | ⚠️ **Cuesta altura libre** (§5.9). Es lo único que se puede hacer sin el vecino |
+| **Fieltro/almohadillas en patas de muebles, cerradores de puertas** | Arriba | Baja, pero gratis | — |
+
+**Conducta profesional:** cuando el cliente pide "que no se escuche al de arriba", explicarle esto **antes de firmar**, por escrito, con la tabla anterior. Es la principal fuente de decepción en reformas acústicas.
+
+## 8.3 Aislación a la calle
+
+| Medida | Eficacia relativa | Costo | Nota |
+|---|---|---|---|
+| **Sellado de infiltraciones de la carpintería** (burletes, encuentro marco-muro, caja de persiana) | **Alta en relación al costo** | **Muy bajo** | ⚠️ **Se hace SIEMPRE primero.** Por una rendija pasa muchísimo ruido. Es también mejora energética (§7.2) |
+| **Doble ventana** (segunda carpintería interior, con cámara grande, idealmente ≥ 8–10 cm, y vidrios de distinto espesor) | **La más alta de todas** | Medio | **Mejor que un DVH para acústica**, porque la cámara grande y el desacople de marcos son lo que aísla. Excelente en patrimonio (se conserva la original) |
+| **DVH acústico** (vidrios de distinto espesor + cámara + eventualmente vidrio laminado con PVB acústico) | Alta | Alto | ⚠️ Un DVH **común** (dos vidrios iguales, cámara chica) mejora poco en acústica: puede haber "efecto tambor" a ciertas frecuencias. **Para acústica hay que pedir vidrios asimétricos y/o laminado acústico** |
+| **Vidrio laminado acústico simple** (reemplazando el vidrio de la carpintería existente, si el marco lo admite) | Media-alta | Medio | Buena relación costo-beneficio si la carpintería está sana |
+| **Persianas y cortinas pesadas** | Baja-media | Bajo | Ayudan, no resuelven |
+| **Aislación del muro de fachada por dentro** (contratabique) | Media | Alto | Solo si el muro es liviano; en muro de mampostería maciza el punto débil es la ventana, no el muro |
+
+**Diagnóstico simple y gratuito:** parado dentro del ambiente con la ventana cerrada, **acercar la mano al perímetro del marco**. Si se siente aire, ahí entra ruido. La solución más rentable de este capítulo cuesta lo que cuestan unos burletes.
+
+## 8.4 Expectativas realistas — tabla para mostrarle al cliente
+
+| Lo que el cliente pide | Lo que se puede lograr en reforma | Lo que NO se puede |
+|---|---|---|
+| "Que no escuche la TV del vecino" | **Muy factible** con contratabique bien ejecutado y sellado | Silencio absoluto |
+| "Que no escuche los pasos del de arriba" | **Mejora parcial** con cielorraso desacoplado; ⚠️ solución real solo interviniendo arriba | Eliminarlo desde abajo |
+| "Que no escuche la calle" | **Muy factible** con sellado + doble ventana o vidrio acústico | Aislar completamente si hay que ventilar abriendo la ventana |
+| "Que no se escuche el baño desde el living" | Factible: tabique con lana, puerta con burlete y umbral, **cañerías desacopladas y forradas** (⚠️ el ruido de la descarga viaja por el caño y por el muro que lo aloja) | — |
+| "Que no me escuchen a mí" | Igual que lo anterior: la aislación es recíproca | — |
+| "Que el ambiente no retumbe" | Es **acondicionamiento acústico**, no aislación: se resuelve con materiales absorbentes (cortinas, alfombras, paneles, cielorraso absorbente). Es barato y muy efectivo. **No mejora la aislación** | Confundirlo con aislación |
+
+---

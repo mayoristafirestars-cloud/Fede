@@ -3998,3 +3998,577 @@ De **IRAM 11603**, estación Santa Rosa (Aero):
 > Con esos valores, **La Pampa tiene un recurso solar bueno**, comparable al de la región centro. **La irradiación global anual sobre plano inclinado óptimo se ubica del orden de 1.800 a 2.000 kWh/m²·año.** `[VERIFICAR con datos de irradiación del atlas solar de la Secretaría de Energía o del SMN para Santa Rosa antes de dimensionar cualquier sistema]`
 
 ---
+
+# 6. TERMOMECÁNICAS: CLIMATIZACIÓN Y VENTILACIÓN
+
+## 6.1 Datos climáticos de Santa Rosa y zona bioambiental
+
+### 6.1.1 Datos verificados de IRAM 11603, Anexo A
+
+**Estación SANTA ROSA (AERO), provincia de La Pampa. Lat. −36,57° / Long. −64,27° / 191 m s.n.m. Serie 1980-2009.**
+
+**CONDICIÓN DE INVIERNO:**
+
+| Parámetro | Valor |
+|---|---|
+| TMED — Temperatura media | **9,77 °C** |
+| TMÁX — Temperatura máxima media | **16,0 °C** |
+| TMÍN — Temperatura mínima media | **3,5 °C** |
+| **TMA — Temperatura mínima absoluta** | **−11,3 °C** |
+| **TDMN — Temperatura exterior de DISEÑO mínima** | **−6,0 °C** |
+| PREC — Precipitación | 105 mm |
+| HR — Humedad relativa | 73 % |
+| HELRE — Heliofanía relativa | 4,8 |
+| VM — Velocidad media del viento | 10,1 |
+| **GD16 — Grados-día base 16 °C** | **994** |
+| **GD18 — Grados-día base 18 °C** | **1.394** |
+| **GD20 — Grados-día base 20 °C** | **1.865** |
+| **GD22 — Grados-día base 22 °C** | **2.409** |
+
+**CONDICIÓN DE VERANO:**
+
+| Parámetro | Valor |
+|---|---|
+| TMED — Temperatura media | **22,21 °C** |
+| TMÁX — Temperatura máxima media | **29,4 °C** |
+| TMÍN — Temperatura mínima media | **15,0 °C** |
+| **TMA — Temperatura máxima absoluta** | **42,1 °C** |
+| **TDMX — Temperatura exterior de DISEÑO máxima** | **38,8 °C** |
+| PREC — Precipitación | **380,0 mm** |
+| HR — Humedad relativa | 61,6 % |
+| HELRE — Heliofanía relativa | 9,0 |
+| VM — Velocidad media del viento | 12,5 |
+
+**Referencia comparativa (misma tabla IRAM 11603):** General Pico (LP): TDMN −6,2 °C, GD18 1.271. Victorica (LP): TDMN −7,3 °C, GD18 1.396.
+
+### 6.1.2 Zona bioambiental: una contradicción que hay que conocer
+
+**Dato 1 — Listado departamental de IRAM 11603 (Anexo):** *La Pampa — departamentos Atreucó, **Capital**, Catriló, Conhelo, Chapaleufú, Loventué, Maracó, Quemú Quemú, Rancul, Realicó, Toay, Trenel* figuran bajo la **ZONA III, SUBZONA IIIa (Templada Cálida)**.
+
+**Santa Rosa está en el Departamento Capital → según el listado departamental, ZONA IIIa.**
+
+**Dato 2 — Criterio de grados-día de la propia norma:** la **Zona IV (Templada Fría)** tiene como límite superior la isolínea de **1.170 grados-día** y como límite inferior la de **1.950 grados-día**.
+
+**Santa Rosa tiene GD18 = 1.394 → según el criterio de grados-día, ZONA IV.**
+
+> ### ⚠ CÓMO RESOLVER ESTA CONTRADICCIÓN EN EL PROYECTO
+>
+> Santa Rosa está **sobre el límite** entre las zonas III y IV. El listado departamental la ubica en IIIa; su clima real (1.394 GD18, TDMN −6,0 °C, mínima absoluta −11,3 °C) corresponde a zona IV.
+>
+> **CRITERIO DEL ESTUDIO: proyectar con criterio de ZONA IV (templada fría).**
+>
+> Razones:
+> 1. **Los valores de K máximo admisible de IRAM 11605 en condición de invierno NO dependen de la zona bioambiental, sino de la TDMN de la localidad.** Con TDMN = −6,0 °C, la tabla da los valores del §6.2 independientemente de si llamamos a Santa Rosa "III" o "IV". **La contradicción es de nomenclatura, no de exigencia de invierno.**
+> 2. Para la **condición de verano**, las Tablas 2 y 3 de IRAM 11605 dan el **mismo valor para zonas III y IV**. **La contradicción tampoco afecta al verano.**
+> 3. Solo afecta a recomendaciones de diseño bioclimático cualitativas (orientación, protección solar, ventilación cruzada), donde la zona IV es más exigente en invierno.
+>
+> **En resumen: la contradicción es real pero prácticamente inocua para el dimensionamiento. Usar SIEMPRE la TDMN = −6,0 °C y verificar el K contra la Tabla 1 de IRAM 11605.**
+>
+> `[VERIFICAR la edición vigente de IRAM 11603 y su listado departamental: la clasificación puede haber sido actualizada]`
+
+### 6.1.3 Consecuencias de proyecto para Santa Rosa
+
+| Consecuencia | Fundamento |
+|---|---|
+| **La calefacción es el problema dominante, no la refrigeración** | 1.394 GD18 vs. TMED de verano de 22,2 °C. Pero con TDMX 38,8 °C y máxima absoluta 42,1 °C, **el verano tampoco es despreciable**: hay que resolver ambos |
+| **Riesgo de congelamiento en instalaciones** | TMA = **−11,3 °C**. Todo caño de agua en sala de tanques no calefaccionada, en pleno exterior, en cubierta o enterrado con poca tapada **puede congelarse**. Aislar y/o proteger |
+| **Alta amplitud térmica diaria** | Verano: TMÁX 29,4 / TMÍN 15,0 → **14,4 °C de amplitud**. Invierno: 16,0 / 3,5 → **12,5 °C**. Esto **favorece el uso de inercia térmica** (masa) en la envolvente y **la ventilación nocturna en verano** |
+| **Viento** | VM = 10,1 (invierno) y 12,5 (verano). **La Pampa es ventosa.** Aumenta la infiltración y la pérdida por convección exterior; obliga a cuidar la **estanqueidad al aire** de carpinterías, y da oportunidad para ventilación cruzada en verano |
+| **Buena heliofanía** | Favorece: (a) **ganancia solar directa en invierno** por vidriados al norte, (b) **solar térmica**, (c) **fotovoltaica**. Y obliga a: **protección solar en verano** (aleros, parasoles, persianas) |
+| **Baja humedad relativa en verano (61,6 %)** | El calor latente es menor que en el litoral; **la carga de refrigeración es dominantemente sensible.** Permite considerar **enfriamiento evaporativo** como opción en algunos destinos `[verificar viabilidad con el diagrama psicrométrico de la localidad]` |
+
+---
+
+## 6.2 Transmitancia térmica: IRAM 11601 y 11605
+
+### 6.2.1 Qué hace cada norma
+
+| Norma | Objeto |
+|---|---|
+| **IRAM 11549** | Acondicionamiento térmico de edificios — **Vocabulario** |
+| **IRAM 11601** | **Métodos de cálculo** de las propiedades térmicas de los componentes y elementos de construcción en régimen estacionario. **De aquí sale el valor de K de un muro o techo** |
+| **IRAM 11603** | **Clasificación bioambiental** de la República Argentina. De aquí salen TDMN, TDMX, grados-día y zona |
+| **IRAM 11604** | **Ahorro de energía en calefacción. Coeficiente volumétrico G de pérdida de calor** |
+| **IRAM 11605** | **Valores máximos admisibles de transmitancia térmica K** en edificios de viviendas |
+| **IRAM 11625** | Verificación del **riesgo de condensación** de vapor de agua, superficial e intersticial |
+| **IRAM 11507** | Carpinterías — `[verificar objeto exacto]` |
+
+### 6.2.2 Cálculo de K (IRAM 11601)
+
+> **K = 1 / R_total**   [W/m²·K]
+>
+> **R_total = R_si + Σ (e_i / λ_i) + Σ R_cámaras + R_se**
+
+| Símbolo | Significado |
+|---|---|
+| R_si | Resistencia superficial interior |
+| R_se | Resistencia superficial exterior |
+| e_i | Espesor de cada capa [m] |
+| λ_i | Conductividad térmica de cada material [W/m·K] |
+
+**Resistencias superficiales de referencia (IRAM 11601):**
+
+| Situación | R_si (m²K/W) | R_se (m²K/W) |
+|---|---|---|
+| Muro, flujo horizontal | **0,13** | **0,04** |
+| Techo, flujo ascendente | **0,10** | **0,04** |
+| Piso, flujo descendente | **0,17** | **0,04** |
+
+`[verificar valores contra la edición vigente de IRAM 11601: son los valores de uso corriente y coinciden con la práctica internacional (EN ISO 6946)]`
+
+**Conductividades térmicas orientativas (λ, W/m·K):**
+
+| Material | λ (W/m·K) | Densidad (kg/m³) |
+|---|---|---|
+| Hormigón armado | **1,63** | 2.400 |
+| Ladrillo macizo común | **0,81** | 1.600 |
+| Ladrillo hueco cerámico (bloque) | ~0,45 equivalente | 1.000 |
+| Mortero de cemento (revoque) | **1,16** | 1.900 |
+| Mortero de cal / yeso | 0,70 | 1.400 |
+| **Poliestireno expandido (EPS) 15 kg/m³** | **0,037** | 15 |
+| **Poliestireno expandido (EPS) 20-25 kg/m³** | **0,035** | 20-25 |
+| **Poliestireno extruido (XPS)** | **0,033** | 32 |
+| **Lana de vidrio** | **0,040** | 12-20 |
+| **Lana de roca** | **0,040** | 30-50 |
+| **Poliuretano proyectado (PUR)** | **0,024** | 35 |
+| Madera (pino) | 0,14 | 500 |
+| Vidrio | 1,00 | 2.500 |
+| Cámara de aire no ventilada de 2 cm | R = 0,17 m²K/W | — |
+
+`[VERIFICAR TODOS los valores de λ contra IRAM 11601 y contra la ficha técnica del producto especificado. Los valores de aislantes varían con la densidad y con el envejecimiento (PUR).]`
+
+### 6.2.3 TABLA 1 de IRAM 11605 — K máximos admisibles, condición de INVIERNO [W/m²K]
+
+Los valores dependen de la **temperatura exterior de diseño (TDMN)** de la localidad, no de la zona.
+
+| TDMN (°C) | **NIVEL A — MUROS** | **NIVEL A — TECHOS** | **NIVEL B — MUROS** | **NIVEL B — TECHOS** | **NIVEL C — MUROS** | **NIVEL C — TECHOS** |
+|---|---|---|---|---|---|---|
+| −15 | 0,23 | 0,20 | 0,60 | 0,52 | 1,01 | 1,00 |
+| −14 | 0,23 | 0,20 | 0,60 | 0,53 | 1,04 | 1,00 |
+| −13 | 0,24 | 0,21 | 0,63 | 0,55 | 1,08 | 1,00 |
+| −12 | 0,25 | 0,21 | 0,65 | 0,56 | 1,11 | 1,00 |
+| −11 | 0,25 | 0,22 | 0,67 | 0,58 | 1,15 | 1,00 |
+| −10 | 0,26 | 0,23 | 0,69 | 0,60 | 1,19 | 1,00 |
+| −9 | 0,27 | 0,23 | 0,72 | 0,61 | 1,23 | 1,00 |
+| −8 | 0,28 | 0,24 | 0,74 | 0,63 | 1,28 | 1,00 |
+| −7 | 0,29 | 0,25 | 0,77 | 0,65 | 1,33 | 1,00 |
+| **−6** | **0,30** | **0,26** | **0,80** | **0,67** | **1,39** | **1,00** |
+| −5 | 0,31 | 0,27 | 0,83 | 0,69 | 1,45 | 1,00 |
+| −4 | 0,32 | 0,28 | 0,87 | 0,72 | 1,52 | 1,00 |
+| −3 | 0,33 | 0,29 | 0,91 | 0,74 | 1,59 | 1,00 |
+| −2 | 0,35 | 0,30 | 0,95 | 0,77 | 1,67 | 1,00 |
+| −1 | 0,36 | 0,31 | 0,99 | 0,80 | 1,75 | 1,00 |
+| ≥ 0 | 0,38 | 0,32 | 1,00 | 0,83 | 1,85 | 1,00 |
+
+*Para valores de TDMN intermedios, los K_MÁX_ADM se obtienen por **interpolación lineal**.*
+
+> ### ⭐ VALORES DE PROYECTO PARA SANTA ROSA (TDMN = −6,0 °C)
+>
+> | Nivel | Muros K_máx | Techos K_máx |
+> |---|---|---|
+> | **A (Recomendado)** | **0,30 W/m²K** | **0,26 W/m²K** |
+> | **B (Medio)** | **0,80 W/m²K** | **0,67 W/m²K** |
+> | **C (Mínimo)** | **1,39 W/m²K** | **1,00 W/m²K** |
+>
+> **RECOMENDACIÓN DEL ESTUDIO: proyectar como mínimo en NIVEL B (0,80 muros / 0,67 techos), y en NIVEL A (0,30 / 0,26) en obras donde el comitente valore la eficiencia energética o donde se aspire a certificación.**
+>
+> Fundamento: con 1.394 GD18, la diferencia de consumo de calefacción entre nivel C y nivel B es del orden del **35-45 %**, y entre C y A puede superar el **60 %**. `[valor estimativo; verificar con el cálculo del coeficiente G de IRAM 11604 para el caso concreto]`
+
+### 6.2.4 TABLAS 2 y 3 de IRAM 11605 — K máximos admisibles, condición de VERANO
+
+**TABLA 2 — MUROS [W/m²K]:**
+
+| Zona bioambiental | NIVEL A | NIVEL B | NIVEL C |
+|---|---|---|---|
+| I y II | 0,45 | 1,10 | 1,80 |
+| **III y IV** | **0,50** | **1,25** | **2,00** |
+
+**TABLA 3 — TECHOS [W/m²K]:**
+
+| Zona bioambiental | NIVEL A | NIVEL B | NIVEL C |
+|---|---|---|---|
+| I y II | 0,18 | 0,45 | 0,72 |
+| **III y IV** | **0,19** | **0,48** | **0,76** |
+
+> **Como se ve, las zonas III y IV comparten los mismos valores de verano. La contradicción de zona señalada en §6.1.2 no afecta este cálculo.**
+
+**Correcciones por coeficiente de absorción solar (5.3.2 y 5.3.3):**
+
+Los valores corresponden a superficies exteriores con coeficiente de absorción de la radiación solar de **0,7 ± 0,1**.
+
+| Coeficiente de absorción | Corrección Tabla 2 (muros) | Corrección Tabla 3 (techos) |
+|---|---|---|
+| **< 0,6** (colores claros) | **Incrementar 20 %** | **Incrementar 30 %** |
+| **> 0,8** (colores oscuros) | **Disminuir 15 %** | **Disminuir 20 %** |
+
+> **Consecuencia de proyecto muy concreta:** pintar la cubierta de **blanco o color claro (α < 0,6)** permite un K de techo **30 % mayor**, es decir, **menos aislante**. En Santa Rosa, con TDMX 38,8 °C, **una cubierta clara es una decisión de proyecto de alto impacto y costo cero.**
+>
+> **⚠ ATENCIÓN a la verificación simultánea:** *"La verificación debe realizarse SIMULTÁNEAMENTE para ambas condiciones (invierno y verano), excepto para las zonas bioambientales V y VI, donde solo se exige invierno."*
+>
+> Para Santa Rosa (zona III/IV): **hay que verificar invierno Y verano.**
+>
+> Comparando: **techos, Nivel B → invierno exige K ≤ 0,67 y verano exige K ≤ 0,48.** **MANDA EL VERANO (0,48).** Para muros, Nivel B → invierno 0,80 y verano 1,25 → **manda el invierno (0,80)**.
+>
+> **VALORES DE PROYECTO FINALES PARA SANTA ROSA, NIVEL B: MUROS K ≤ 0,80 / TECHOS K ≤ 0,48 W/m²K.**
+> **NIVEL A: MUROS K ≤ 0,30 / TECHOS K ≤ 0,19 W/m²K.**
+
+### 6.2.5 Puentes térmicos (IRAM 11605, 5.4)
+
+| Regla | Valor |
+|---|---|
+| **La transmitancia de un puente térmico K_pt no debe ser mayor que el 50 % de la del muro opaco K_mo** | **K_pt / K_mo ≤ 1,50** |
+| **Si los puentes térmicos lineales están a distancia ≤ 1,7 m entre sí**, se reduce ese porcentaje al 35 % | **K_pt / K_mo ≤ 1,35** |
+
+> **Este requisito es más severo de lo que parece.** Con un muro de K = 0,80, el puente térmico admisible es K ≤ 1,20 (o ≤ 1,08 si hay puentes cada menos de 1,7 m). **Una columna o viga de hormigón desnuda tiene K ≈ 3,0 a 3,5 W/m²K.** Es decir: **en un edificio de hormigón, si no se aísla la estructura, el requisito de puentes térmicos NO SE CUMPLE**, aunque los muros cumplan.
+>
+> **Consecuencias de proyecto:**
+> - **En un PB+9 de hormigón, la estructura debe quedar por dentro de la aislación (SATE / EIFS / fachada ventilada) o llevar aislación local.**
+> - Los **cantos de losa de balcón** son el puente térmico peor: hormigón continuo del interior al exterior. Se resuelven con **cortapuentes térmicos estructurales** (elementos tipo Isokorb) o con aislación envolvente del canto.
+> - Las **cajas de persiana (taparrollos)** son puentes térmicos y de infiltración de primer orden.
+>
+> **Y a esto se suma el riesgo de condensación superficial en el puente (IRAM 11625): la mancha de moho en el encuentro de muro y losa es exactamente esto.**
+
+### 6.2.6 Ejemplos de composiciones que cumplen en Santa Rosa
+
+**MURO — objetivo K ≤ 0,80 W/m²K (Nivel B):**
+
+| Composición | Cálculo de R | K resultante | ¿Cumple B? |
+|---|---|---|---|
+| Revoque 2 cm + ladrillo hueco 18 cm + revoque 2 cm (sin aislación) | R = 0,13 + 0,017 + 0,40 + 0,017 + 0,04 = 0,604 | **1,66** | ❌ Ni C |
+| Revoque + ladrillo hueco 18 + **EPS 3 cm** + revoque | R = 0,604 + 0,03/0,037 = 0,604 + 0,811 = 1,415 | **0,71** | ✅ **B** |
+| Revoque + ladrillo hueco 18 + **EPS 5 cm** + revoque (SATE) | R = 0,604 + 1,351 = 1,955 | **0,51** | ✅ B, ❌ A |
+| Revoque + ladrillo hueco 18 + **EPS 10 cm** + revoque | R = 0,604 + 2,703 = 3,307 | **0,30** | ✅ **A** (justo) |
+| Hormigón 20 cm + **EPS 10 cm** + placa | R = 0,13 + 0,123 + 2,703 + 0,04 = 2,996 | **0,33** | ✅ B, ❌ A |
+| Steel frame: placa + **lana de vidrio 90 mm** + OSB + **EPS 3 cm** + revoque | R = 0,13 + 0,05 + 2,25 + 0,08 + 0,811 + 0,04 = 3,361 | **0,30** | ✅ **A** |
+
+**TECHO — objetivo K ≤ 0,48 W/m²K (Nivel B, manda verano):**
+
+| Composición | R total | K | ¿Cumple? |
+|---|---|---|---|
+| Losa H°A° 15 cm + contrapiso 8 cm + carpeta + membrana (sin aislación) | ≈ 0,42 | **2,38** | ❌ |
+| Losa + **EPS 5 cm** + contrapiso + membrana | ≈ 0,42 + 1,351 = 1,771 | **0,56** | ❌ B (roza) |
+| Losa + **EPS 8 cm** + contrapiso + membrana | ≈ 0,42 + 2,162 = 2,582 | **0,39** | ✅ **B** |
+| Losa + **EPS 15 cm** | ≈ 0,42 + 4,054 = 4,474 | **0,22** | ✅ B, ❌ A (0,19) |
+| Losa + **EPS 20 cm** o **PUR 12 cm** | ≈ 5,4 | **0,19** | ✅ **A** |
+
+`[Todos estos cálculos son ORIENTATIVOS y usan λ de referencia. VERIFICAR con IRAM 11601 y con las fichas técnicas de los materiales efectivamente especificados. No usar en documentación sin recalcular.]`
+
+> **Conclusión práctica para Santa Rosa: 8 cm de EPS en cubierta y 3-5 cm en muros es el mínimo razonable (Nivel B). Para Nivel A: 20 cm en cubierta y 10 cm en muros.**
+
+---
+
+## 6.3 Cálculo de carga térmica
+
+### 6.3.1 Método simplificado — W/m² de referencia
+
+Útil para **anteproyecto y presupuesto preliminar**. **Nunca para dimensionar equipos en el proyecto ejecutivo.**
+
+**CALEFACCIÓN — Santa Rosa (TDMN −6,0 °C, ΔT de diseño ≈ 26 °C con interior a 20 °C):**
+
+| Calidad de la envolvente | Carga de calefacción (W/m²) |
+|---|---|
+| **Sin aislación (nivel C o peor)** — la construcción argentina corriente | **110 – 150** |
+| **Nivel C de IRAM 11605** | **90 – 120** |
+| **Nivel B de IRAM 11605** | **60 – 85** |
+| **Nivel A de IRAM 11605** | **35 – 55** |
+| Casa pasiva / muy alta eficiencia | 15 – 25 |
+
+**REFRIGERACIÓN — Santa Rosa (TDMX 38,8 °C):**
+
+| Situación | Carga de refrigeración (W/m²) | Equivalente en frigorías/h por m² |
+|---|---|---|
+| Departamento interior, poca superficie vidriada, buena protección solar | **70 – 90** | 60 – 78 |
+| Departamento con orientación oeste o norte con vidriado sin protección | **110 – 150** | 95 – 130 |
+| Última planta bajo cubierta sin aislación | **150 – 200** | 130 – 172 |
+| Oficina con alta densidad de ocupación y equipos | **120 – 180** | 103 – 155 |
+| Local comercial con iluminación intensa | 150 – 250 | 130 – 215 |
+
+`[TODOS estos valores son de referencia práctica del oficio, NO están tomados de una norma. Verificar con cálculo detallado antes de dimensionar. Conversión: 1 frigoría/h = 1,163 W]`
+
+**Regla mnemotécnica rápida para split residencial en Santa Rosa:** *"unos 100 W/m² para frío en un departamento medio; unos 100-120 W/m² para calor si no está aislado, 70 si está en nivel B."*
+
+### 6.3.2 Método detallado — calefacción
+
+> **Q_calefacción = Q_transmisión + Q_infiltración/ventilación − Q_ganancias internas**
+
+**Pérdidas por transmisión:**
+
+> **Q_T = Σ (K_i × A_i × ΔT) × (1 + suplementos)**
+
+| Símbolo | Significado |
+|---|---|
+| K_i | Transmitancia de cada cerramiento [W/m²K] |
+| A_i | Superficie de cada cerramiento [m²] |
+| ΔT | T_interior − TDMN. **Para Santa Rosa: 20 − (−6,0) = 26 K** |
+| Suplementos | Por orientación (sur/sudoeste: +5 a +10 %), por intermitencia de uso, por altura de local |
+
+**Pérdidas por infiltración/ventilación:**
+
+> **Q_V = 0,34 × n × V × ΔT**    [W]
+
+donde 0,34 = ρ·c_p del aire en Wh/m³K, n = renovaciones por hora [1/h], V = volumen del local [m³].
+
+**Renovaciones de aire de referencia:**
+
+| Situación | n (renovaciones/hora) |
+|---|---|
+| Vivienda con carpintería moderna estanca (con burletes, DVH) | **0,5 – 0,8** |
+| Vivienda con carpintería estándar | **1,0 – 1,5** |
+| **Vivienda antigua con carpintería de madera sin burletes** | **2,0 – 4,0** |
+| Vivienda con rejillas de ventilación de gas Tipo B (2 rejillas de 150 cm²) | **+0,5 a +1,0 adicional** |
+| Ventilación higiénica mínima exigible en vivienda | **0,5** `[verificar valor exigido por el Código de Santa Rosa]` |
+
+> **Nota crítica para Santa Rosa:** con VM (velocidad media del viento) de **10,1** en invierno, **la infiltración es alta**. Cuidar la estanqueidad al aire de carpinterías es tan importante como el aislante. Un ensayo de blower door en obra (n50) es la forma de verificarlo. `[verificar disponibilidad de este servicio en la región]`
+
+**Ganancias internas (se descuentan en calefacción):**
+
+| Fuente | Ganancia |
+|---|---|
+| Persona en reposo/actividad ligera | **≈ 100 – 120 W** (sensible ≈ 70 W, latente ≈ 45 W) |
+| Iluminación LED | 3 – 6 W/m² |
+| Iluminación incandescente/halógena | 15 – 25 W/m² |
+| Heladera | ≈ 100 – 200 W |
+| TV / computadora | 100 – 200 W c/u |
+| Cocción | 500 – 1.500 W (intermitente) |
+
+`[valores de referencia; verificar contra ASHRAE Handbook of Fundamentals, capítulo de Nonresidential Cooling and Heating Load Calculations, o contra Carrier System Design Manual]`
+
+### 6.3.3 Método detallado — refrigeración
+
+> **Q_refrigeración = Q_transmisión + Q_radiación_solar + Q_infiltración + Q_internas (sensible + latente)**
+
+**Ganancia solar a través de vidriados** — es la componente dominante en Santa Rosa:
+
+> **Q_S = A_vidrio × I × FS × f_sombra**
+
+| Símbolo | Significado |
+|---|---|
+| A_vidrio | Superficie del vidriado [m²] |
+| I | Irradiancia solar sobre el plano [W/m²] — depende de la orientación y del mes. Para el oeste en enero, en latitud −36,5°, puede superar los **600-700 W/m²** a la tarde `[verificar con tablas de irradiancia de ASHRAE o del SMN]` |
+| FS | Factor solar del vidriado (**vidrio simple incoloro ≈ 0,86; DVH incoloro ≈ 0,75; DVH con control solar ≈ 0,35-0,45; vidrio laminado con capa low-e y control solar ≈ 0,25-0,35**) |
+| f_sombra | Factor de reducción por protección (alero, parasol, persiana exterior, cortina interior) |
+
+> **REGLA DE ORO PARA SANTA ROSA: la protección solar EXTERIOR es la medida de mayor impacto sobre la carga de refrigeración.** Una persiana exterior o un parasol reduce la ganancia solar en **70-85 %**; una cortina interior, solo en **30-40 %** (porque el calor ya entró al local).
+>
+> Con TDMX 38,8 °C y máxima absoluta 42,1 °C, **una fachada oeste sin protección hace inviable cualquier dimensionamiento razonable del equipo de frío.**
+
+**Cargas internas — calor sensible y latente por persona (referencia ASHRAE):**
+
+| Actividad | Sensible (W) | Latente (W) |
+|---|---|---|
+| Sentado, en reposo | 65 | 35 |
+| Sentado, trabajo ligero (oficina) | 70 | 45 |
+| De pie, trabajo ligero | 75 | 55 |
+| Caminando, trabajo moderado | 100 | 130 |
+| Baile / gimnasio | 165 | 250 |
+
+`[verificar contra ASHRAE Handbook of Fundamentals, capítulo 18, Tabla 1]`
+
+**Factores de simultaneidad de las cargas:** las máximas de transmisión, solar y ocupación **no ocurren al mismo tiempo**. El método detallado (Carrier, ASHRAE RTS/CLTD) usa **factores de acumulación y desfase** que reducen el pico. **Sumar todas las máximas sobredimensiona el equipo entre 20 y 40 %.**
+
+> **Consecuencia de sobredimensionar un equipo de frío:** ciclado corto → mala deshumidificación → sensación de "frío húmedo" → mayor consumo → menor vida del compresor. **Un equipo sobredimensionado enfría peor que uno bien dimensionado.**
+
+---
+
+## 6.4 EJEMPLO RESUELTO — Carga térmica de un departamento tipo en Santa Rosa
+
+### Datos
+
+Departamento de 2 dormitorios, **85 m²**, en piso intermedio (5.º) del edificio del Ejemplo Nº 1, orientación **norte-oeste**, altura libre 2,60 m.
+
+**Envolvente:**
+
+| Cerramiento | Superficie | K (W/m²K) | Composición |
+|---|---|---|---|
+| Muro exterior norte | 18 m² | 0,71 | Ladrillo hueco 18 + EPS 3 cm (Nivel B) |
+| Muro exterior oeste | 12 m² | 0,71 | ídem |
+| Vidriado norte (DVH) | 8 m² | 2,80 | DVH 4/9/4 con carpintería de aluminio con RPT `[verificar K real de la carpintería especificada]` |
+| Vidriado oeste (DVH) | 5 m² | 2,80 | ídem |
+| Muros interiores a palier/vecinos | — | — | Se consideran adiabáticos (mismo ambiente térmico) |
+| Losa superior e inferior | — | — | Adiabáticas (departamentos climatizados arriba y abajo) |
+
+**Superficie total de envolvente: 43 m²** (30 opacos + 13 vidriados)
+**Volumen: 85 × 2,60 = 221 m³**
+**Ocupación: 4 personas**
+
+### Parte A — CALEFACCIÓN
+
+**Condiciones de diseño:** T_interior = 20 °C; TDMN = **−6,0 °C** → **ΔT = 26 K**
+
+**A.1 — Pérdidas por transmisión:**
+
+| Cerramiento | A (m²) | K | ΔT | Q (W) |
+|---|---|---|---|---|
+| Muro norte | 18 | 0,71 | 26 | **332** |
+| Muro oeste | 12 | 0,71 | 26 | **222** |
+| Vidriado norte | 8 | 2,80 | 26 | **582** |
+| Vidriado oeste | 5 | 2,80 | 26 | **364** |
+| **Subtotal transmisión** | | | | **1.500 W** |
+
+> **Observación demoledora:** los vidriados son **30 % de la superficie de envolvente** y aportan **63 % de las pérdidas** (946 de 1.500 W). **La carpintería es el punto débil, no el muro.** Con carpintería de aluminio sin ruptura de puente térmico y vidrio simple (K ≈ 5,8), esas mismas pérdidas serían de **1.960 W**, es decir, **el doble que la totalidad de los muros**.
+
+**Suplemento por puentes térmicos** (estructura de hormigón no aislada, cantos de losa de balcón): **+15 %** `[valor estimativo; verificar con cálculo de puentes térmicos lineales según IRAM 11601 o EN ISO 10211]`
+> Q_T = 1.500 × 1,15 = **1.725 W**
+
+**A.2 — Pérdidas por infiltración/ventilación:**
+
+Carpintería moderna con burletes y artefactos de gas de **cámara estanca** (sin rejillas de combustión): **n = 0,7 ren/h**
+
+> Q_V = 0,34 × 0,7 × 221 × 26 = **1.368 W**
+
+**A.3 — Ganancias internas (se descuentan parcialmente; criterio conservador: no descontarlas para dimensionar el equipo, ya que el pico ocurre de madrugada sin ocupación ni iluminación):**
+
+**A.4 — CARGA DE CALEFACCIÓN:**
+
+> **Q_calef = 1.725 + 1.368 = 3.093 W ≈ 3,1 kW = 2.660 kcal/h**
+
+**Densidad: 3.093 / 85 = 36,4 W/m²** — coherente con el rango de "Nivel B" del método simplificado (60-85 W/m²), incluso mejor, porque el departamento es interior (solo 2 muros expuestos).
+
+**A.5 — Comparación: el mismo departamento SIN aislación (K muro = 1,66) y con vidrio simple (K = 5,8):**
+
+| Cerramiento | A | K | ΔT | Q (W) |
+|---|---|---|---|---|
+| Muro norte | 18 | 1,66 | 26 | 777 |
+| Muro oeste | 12 | 1,66 | 26 | 518 |
+| Vidriado norte | 8 | 5,80 | 26 | 1.206 |
+| Vidriado oeste | 5 | 5,80 | 26 | 754 |
+| Subtotal | | | | **3.255 W** |
+| × 1,15 (puentes) | | | | **3.743 W** |
+| Infiltración (n = 1,5, carpintería menos estanca) | | | | 0,34 × 1,5 × 221 × 26 = **2.931 W** |
+| **TOTAL SIN AISLACIÓN** | | | | **6.674 W = 5.740 kcal/h** |
+
+> ### ⭐ CONCLUSIÓN CUANTIFICADA
+>
+> | | Con aislación Nivel B + DVH | Sin aislación + vidrio simple |
+> |---|---|---|
+> | Carga de calefacción | **3,09 kW** | **6,67 kW** |
+> | Densidad | 36,4 W/m² | 78,5 W/m² |
+> | **Relación** | **1** | **2,16** |
+>
+> **La aislación de nivel B con DVH reduce la carga de calefacción a MENOS DE LA MITAD.** Con 1.394 GD18, eso se traduce directamente en la factura de gas de todos los inviernos de la vida del edificio.
+>
+> Y en el dimensionamiento: **caldera de 3,1 kW vs. 6,7 kW por departamento**; a escala del edificio, **124 kW vs. 268 kW**, con todo lo que implica para el caudal de gas, el diámetro de la prolongación y el costo de los equipos.
+
+### Parte B — REFRIGERACIÓN
+
+**Condiciones de diseño:** T_interior = 25 °C; TDMX = **38,8 °C** → **ΔT = 13,8 K**
+
+**B.1 — Transmisión (con corrección por temperatura sol-aire en muros):**
+
+Temperatura sol-aire del muro oeste a la tarde con color medio (α = 0,7): T_sa ≈ TDMX + (α × I / h_e) ≈ 38,8 + (0,7 × 650 / 22,7) ≈ 38,8 + 20,0 = **58,8 °C** → **ΔT_efectivo = 33,8 K**
+`[valor orientativo; el método riguroso usa CLTD/RTS de ASHRAE o el método de Carrier con desfase y amortiguación]`
+
+| Cerramiento | A | K | ΔT | Q (W) |
+|---|---|---|---|---|
+| Muro norte (T_sa ≈ 48 °C → ΔT 23 K) | 18 | 0,71 | 23 | **294** |
+| Muro oeste (T_sa ≈ 58,8 °C → ΔT 33,8 K) | 12 | 0,71 | 33,8 | **288** |
+| Vidriado norte (ΔT aire) | 8 | 2,80 | 13,8 | **309** |
+| Vidriado oeste (ΔT aire) | 5 | 2,80 | 13,8 | **193** |
+| **Subtotal transmisión** | | | | **1.084 W** |
+
+**B.2 — RADIACIÓN SOLAR a través de los vidriados** (la componente dominante):
+
+Hipótesis: DVH incoloro **FS = 0,75**. Sin protección solar exterior (f_sombra = 1,0). Irradiancia de pico:
+- Norte en enero, mediodía: **I ≈ 350 W/m²** (el sol está alto, la fachada norte recibe poco en verano)
+- Oeste en enero, 17-18 h: **I ≈ 650 W/m²**
+
+`[VERIFICAR estos valores de irradiancia con tablas para latitud −36,5° — son estimaciones. Fuente rigurosa: ASHRAE Handbook Fundamentals cap. 14, o cálculo con software de simulación]`
+
+| Vidriado | A | I (W/m²) | FS | f_sombra | Q (W) |
+|---|---|---|---|---|---|
+| Norte | 8 | 350 | 0,75 | 1,0 | **2.100** |
+| **Oeste** | 5 | **650** | 0,75 | 1,0 | **2.438** |
+| **Subtotal solar** | | | | | **4.538 W** |
+
+> **El aporte solar (4.538 W) es CUATRO VECES el de transmisión (1.084 W).** Este es el hecho central del proyecto de refrigeración en Santa Rosa.
+
+**B.3 — Infiltración (n = 0,7, ΔT = 13,8, más carga latente):**
+- Sensible: 0,34 × 0,7 × 221 × 13,8 = **726 W**
+- Latente: con HR exterior 61,6 % y baja humedad absoluta, la carga latente por infiltración es moderada. Estimación: **≈ 400 W** `[calcular con diagrama psicrométrico y humedad absoluta de diseño]`
+
+**B.4 — Cargas internas:**
+- Personas (4): sensible 4 × 70 = **280 W**; latente 4 × 45 = **180 W**
+- Iluminación LED (5 W/m² × 85 m²): **425 W**
+- Equipos (heladera 150 + TV 150 + varios 200): **500 W**
+- **Subtotal internas: sensible 1.205 W + latente 180 W**
+
+**B.5 — CARGA DE REFRIGERACIÓN:**
+
+| Componente | Sensible (W) | Latente (W) |
+|---|---|---|
+| Transmisión | 1.084 | — |
+| **Radiación solar** | **4.538** | — |
+| Infiltración | 726 | 400 |
+| Personas | 280 | 180 |
+| Iluminación | 425 | — |
+| Equipos | 500 | — |
+| **SUBTOTAL** | **7.553** | **580** |
+| **TOTAL** | **8.133 W** | |
+
+Aplicando un **factor de simultaneidad de 0,85** (las máximas no coinciden en el tiempo):
+> **Q_refrig = 8.133 × 0,85 = 6.913 W ≈ 6,9 kW = 5.943 frigorías/h**
+
+**Densidad: 6.913 / 85 = 81,3 W/m²** — coherente con el rango del método simplificado.
+
+**Equipo:** split inverter de **6.000 frigorías/h (≈ 7,0 kW)** para el estar-comedor, más equipos independientes para dormitorios; o **multisplit / VRF**.
+
+**B.6 — El mismo departamento CON protección solar exterior (persiana o parasol, f_sombra = 0,25):**
+
+| Vidriado | Q solar con protección (W) |
+|---|---|
+| Norte | 2.100 × 0,25 = 525 |
+| Oeste | 2.438 × 0,25 = 610 |
+| **Subtotal solar** | **1.135 W** (vs. 4.538 sin protección) |
+
+> Q_sensible = 1.084 + 1.135 + 726 + 280 + 425 + 500 = **4.150 W**
+> Q_total = (4.150 + 580) × 0,85 = **4.021 W = 3.458 frigorías/h**
+
+> ### ⭐ CONCLUSIÓN CUANTIFICADA
+>
+> | | Sin protección solar | Con protección solar exterior |
+> |---|---|---|
+> | Carga de refrigeración | **6.913 W (5.943 fg/h)** | **4.021 W (3.458 fg/h)** |
+> | Densidad | 81,3 W/m² | 47,3 W/m² |
+> | Equipo requerido | **6.000 fg/h** | **3.500 fg/h** |
+> | **Reducción** | — | **−42 %** |
+>
+> **Una persiana exterior sobre las ventanas norte y oeste reduce el equipo de aire acondicionado casi a la mitad.** Es la decisión de proyecto de mejor relación costo-beneficio en climatización.
+>
+> Y si además se especifica **DVH con control solar (FS = 0,40)** en lugar de DVH incoloro, la reducción es todavía mayor.
+
+### Resumen del Ejemplo
+
+| Concepto | Valor |
+|---|---|
+| **CALEFACCIÓN — con envolvente Nivel B + DVH** | **3,09 kW (2.660 kcal/h) — 36,4 W/m²** |
+| Calefacción — sin aislación + vidrio simple | 6,67 kW (5.740 kcal/h) — 78,5 W/m² |
+| **REFRIGERACIÓN — sin protección solar** | **6,91 kW (5.943 fg/h) — 81,3 W/m²** |
+| **REFRIGERACIÓN — con protección solar exterior** | **4,02 kW (3.458 fg/h) — 47,3 W/m²** |
+| Componente dominante en verano | **Radiación solar (66 % de la carga sensible sin protección)** |
+| Componente dominante en invierno | **Vidriados (63 % de la transmisión) + infiltración (44 % del total)** |
+
+---
+
+## 6.5 Coeficiente volumétrico G — IRAM 11604
+
+Mientras IRAM 11605 verifica **elemento por elemento**, la **IRAM 11604** verifica el **conjunto del edificio** mediante el coeficiente volumétrico de pérdidas de calor:
+
+> **G = [Σ (K_i × A_i) + 0,35 × n × V] / V**   [W/m³·K]
+
+Y establece un **G_admisible** en función de los **grados-día** de la localidad y del volumen del edificio.
+
+> Con **GD18 = 1.394** para Santa Rosa, el G_adm resultante es exigente. `[VERIFICAR el valor de G_admisible en la Tabla / gráfico de IRAM 11604 para GD 1.394 y para el volumen del edificio en cuestión — no lo pudimos verificar contra fuente primaria]`
+
+**Ventaja del método G sobre el K elemento por elemento:** permite **compensar** — un edificio compacto con mucha superficie vidriada bien orientada puede cumplir G aunque un elemento aislado no cumpla el K de tabla. Es un método de prestación, no prescriptivo.
+
+**Utilidad práctica para el estudio:** el coeficiente G es el argumento técnico para justificar ante el comitente por qué conviene una envolvente mejor. Se traduce directamente en consumo:
+
+> **Consumo anual de calefacción ≈ G × V × GD × 24 / (1000 × η)**   [kWh/año]
+
+*Ejemplo aproximado para el departamento del §6.4:* con V = 221 m³, GD18 = 1.394 y η = 0,90 (caldera):
+- Con G ≈ 1,4 W/m³K (nivel B): 1,4 × 221 × 1.394 × 24 / (1000 × 0,90) = **11.500 kWh/año ≈ 1.180 m³ de gas natural/año**
+- Con G ≈ 3,0 W/m³K (sin aislación): **24.700 kWh/año ≈ 2.530 m³ de gas/año**
+
+`[cálculo orientativo; el método riguroso de IRAM 11604 incluye ganancias internas y solares y factores de intermitencia. VERIFICAR contra la norma antes de presentar estos números al comitente]`
+
+---

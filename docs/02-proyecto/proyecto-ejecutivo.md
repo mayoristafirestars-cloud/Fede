@@ -2584,3 +2584,647 @@ El contrato profesional es un **contrato de obra** (CCyC arts. 1251 y ss.), en l
 9. Esta propuesta se perfeccionará mediante la firma del **contrato de locación de obra intelectual**, que será registrado ante el Colegio profesional correspondiente.
 
 ---
+
+## 9. DIRECCIÓN DE OBRA
+
+### 9.1 Dirección de obra, dirección ejecutiva y administración de obra
+
+**Los tres roles se confunden todo el tiempo y esa confusión es la fuente principal de los reclamos contra arquitectos.**
+
+**Cuadro 9.1 — Los tres roles**
+
+| | **DIRECCIÓN DE OBRA (DO)** | **DIRECCIÓN EJECUTIVA** | **ADMINISTRACIÓN DE OBRA / TRABAJOS POR ADMINISTRACIÓN** |
+|---|---|---|---|
+| **Qué hace** | **Controla** que lo construido concuerde con el proyecto. Interpreta la documentación, emite órdenes de servicio, revisa liquidaciones y emite certificados, asesora al comitente | DO **+ representación técnica del comitente**: planificación y gestión, control económico, dirección técnica y de calidad | **Conduce y administra la ejecución** por cuenta y riesgo del comitente: contrata personal, liquida sueldos y cargas, compra materiales, alquila equipos, adjudica subcontratos |
+| **Relación con la ejecución** | **NO conduce la construcción.** Esa tarea es del constructor, cuya gestión el DO controla | Asume funciones de conducción por cuenta del comitente | **Asume la conducción**, sin ser constructor (no hay contrato de construcción) |
+| **Riesgo empresario** | No asume riesgo empresario | Parcial | **El riesgo lo asume el comitente**; el profesional actúa por cuenta y orden |
+| **Presencia en obra** | *"El arquitecto DDO **no está obligado a concurrir diariamente** a la obra ni a permanecer en ella durante toda la jornada. Debe visitar la obra con la **frecuencia apropiada** en función del grado de avance y del tipo de trabajos"* (CPAU C-09) | Mayor | Permanente o casi |
+| **Puede ordenar adicionales** | **NO.** No puede ordenar trabajos que impliquen adicionales o economías, ni modificaciones significativas de diseño o especificaciones, ni otorgar prórrogas, sin autorización previa del comitente (CPAU C-09) | Según el mandato | Sí, dentro del mandato |
+| **Honorario (A-115)** | **40% del honorario de proyecto y dirección** (Art. 3.14), con recargos por contratos separados y por coste y costas (Art. 3.15) | **80% de la suma de** el honorario de DO + el honorario de representación técnica del comitente (Art. 7.2) — Art. 3.16 | **10% del monto de los rubros ejecutados por administración** (Art. 3.17) |
+| **Riesgo profesional** | Moderado | Alto | **Muy alto**: se asumen responsabilidades laborales, previsionales y de seguridad e higiene que no son propias de la DO |
+
+> ⚠️ **Advertencia central del CPAU (documento C-09):** *"La tarea del DDO **no implica la administración de la obra**; inicialmente esta responsabilidad es del comitente o de otra persona que éste designe, salvo que, previo acuerdo entre las partes y por contrato, el DDO asuma estas tareas, en tanto formen parte de su contratación y por lo tanto de su propuesta de honorarios, ya que **la administración de obra no está incluida en los honorarios de dirección de obra**."*
+
+**Y la advertencia más importante de todas** (CPAU C-09):
+
+> *"Cuando el comitente insiste en una posición que no comparte el DDO, y que según su criterio debidamente fundado **puede hacer peligrar la estabilidad, habitabilidad, higiene o salubridad del edificio, de la obra o de su entorno**, el profesional debe asesorar en todo momento a su comitente sobre las implicancias que las malas decisiones pueden generar a fin de que desista de su posición. **En caso de no llegar a un acuerdo con su comitente, el profesional debe RENUNCIAR al encargo ya que, en caso contrario, asumiría responsabilidades que no le corresponde contraer.**"*
+
+**Límites de la autoridad del DO** (CPAU C-09) — el DO **no puede**:
+- Ordenar trabajos que impliquen **adicionales o economías** a los precios contractuales.
+- Ordenar **modificaciones significativas** de diseño o especificaciones.
+- Otorgar **prórrogas** a los plazos contractuales.
+- Aprobar solicitudes del contratista por esos conceptos.
+
+Todo eso requiere **autorización previa y escrita del comitente**, porque el DO **no es parte del contrato de construcción**.
+
+### 9.2 Libro de Órdenes de Servicio y Libro de Notas de Pedido
+
+**Son los dos libros que constituyen la memoria escrita de la obra y la prueba en juicio.**
+
+| | **LIBRO DE ÓRDENES DE SERVICIO** | **LIBRO DE NOTAS DE PEDIDO** |
+|---|---|---|
+| **Quién escribe** | La **Dirección de Obra** | El **Contratista** (o su Representante Técnico) |
+| **Dirección de la comunicación** | DO → Contratista | Contratista → DO |
+| **Contenido** | Instrucciones, aclaraciones, complementos de la documentación, rechazo de trabajos, advertencias, aplicación de sanciones, otorgamiento de prórrogas (previa autorización del comitente), designación de auxiliares de la DO, respuestas a notas de pedido | Consultas, solicitudes, observaciones, reclamos, avisos de hallazgos, pedidos de prórroga, comunicación de terminación de tareas para inspección |
+| **Formato** | Foliado, por triplicado, firmado por ambas partes con fecha y hora | Ídem |
+| **Valor jurídico** | *"Las órdenes de servicio emitidas por el Director de Obra constituyen **parte integrante de la documentación contractual**"* (doctrina CPAU) | Constituye reserva de derechos del contratista |
+| **Plazo de respuesta** | A definir en el pliego (usualmente 3 a 5 días hábiles) | Ídem |
+| **Si el contratista no firma** | Se deja constancia de la negativa con testigo; la orden se considera notificada | |
+
+**Reglas de oro del libro de órdenes:**
+1. **Todo lo importante se escribe.** Lo que se habla en obra y no se escribe, no existió.
+2. Numeración correlativa, sin saltos, sin hojas arrancadas, sin espacios en blanco.
+3. **Nunca escribir "hacé lo que puedas" ni instrucciones ambiguas.** Una orden de servicio debe ser ejecutable y verificable.
+4. Toda instrucción que implique costo o plazo debe llevar la aclaración de si genera o no adicional, y de que la modificación fue autorizada por el comitente.
+5. **Las advertencias por incumplimientos de seguridad e higiene, de normativa laboral o de calidad se escriben SIEMPRE.** Es la prueba de diligencia del DO frente al art. 1277 del CCyC.
+6. Los libros quedan **permanentemente en obra**, accesibles a la DO, al contratista y a la autoridad.
+
+**El CPAU publica modelos** en su serie A, entre otros: A-410 y A-411 (designación de auxiliares de la DO con atribuciones totales o limitadas), A-412 (ejecución de variantes o detalles), A-413 (pedido de propuesta por modificaciones del contrato), A-414 (ejecución de modificaciones del contrato), A-415 (rechazar trabajos y ordenar su reejecución), A-416 (otorgamiento de prórrogas), A-417 (aplicación de sanciones).
+
+### 9.3 Actas
+
+| Acta | Cuándo | Contenido | Modelo CPAU |
+|---|---|---|---|
+| **Acta de iniciación de los trabajos** | Al comenzar | Fecha de inicio efectivo; a partir de ella corre el plazo contractual | A-418 |
+| **Acta de replanteo** | Antes de excavar | Verificación instrumental de ejes, niveles, punto fijo, línea municipal, retiros. **Firmada por DO, contratista y comitente** | A-419 |
+| **Acta de acopio** | Cada acopio | Material, cantidad, marca, lote, valor, ubicación, seguro | |
+| **Acta de medición** | Mensual, previa a la certificación | Cantidades ejecutadas por ítem, medidas conjuntamente en obra | |
+| **Acta de prueba** (hidráulica, de presión, de estanqueidad, de hermeticidad, de puesta en marcha) | Al ejecutar cada prueba | Descripción, condiciones, duración, resultado, firmas | |
+| **Acta de reunión de coordinación** | Semanal/quincenal | Asistentes, temas, decisiones, **compromisos con responsable y fecha** | A-446 |
+| **Acta de recepción provisoria** | Al terminar la obra | Fecha; **lista de observaciones (punch list)** a subsanar; inicio del plazo de garantía; entrega de llaves, garantías, manuales y conforme a obra | A-420 |
+| **Acta de recepción definitiva** | Al vencer el plazo de garantía | Verificación de subsanación; **devolución del fondo de reparo**; liberación de garantías | A-421 |
+
+### 9.4 Certificación de avance
+
+**El proceso mensual:**
+
+1. **Medición conjunta** en obra de las cantidades efectivamente ejecutadas por ítem (acta de medición).
+2. El contratista presenta su **liquidación** (planilla de avance por ítem: cantidad contractual, acumulada anterior, del período, acumulada actual, % de avance, monto).
+3. La DO **revisa la liquidación**: verifica cantidades, precios contractuales, redeterminación aplicada, descuentos.
+4. La DO **emite el certificado**.
+5. Descuentos y adiciones sobre el certificado:
+
+| Concepto | Signo | Típico |
+|---|---|---|
+| Monto de obra ejecutada en el período | + | |
+| Redeterminación / ajuste por índice | + | Según cláusula |
+| Acopio certificado | + | Se certifica pero no se ha ejecutado |
+| **Amortización del anticipo financiero** | − | Proporcional (si el anticipo fue 20%, se descuenta 20% de cada certificado) |
+| **Amortización del acopio** | − | A medida que el material se incorpora a la obra |
+| **Fondo de reparo** | − | **5% a 10% de cada certificado**, retenido hasta la recepción definitiva. Sustituible por póliza de caución |
+| Multas por mora | − | Según pliego |
+| Retenciones impositivas y previsionales | − | Según normativa |
+
+6. El comitente **paga** en el plazo contractual.
+7. **El honorario de dirección de obra se cobra en proporción al monto certificado** (A-115 Art. 3.25).
+
+**Cuadro 9.2 — Formato de certificado de obra**
+
+| Ítem | Designación | Unidad | Cant. contrato | P. unitario | Monto contrato | % acum. anterior | % del período | % acum. actual | Monto del período |
+|---|---|---|---|---|---|---|---|---|---|
+| 3.1 | Mampostería hueco 18 | m² | 480,00 | $ | $ | 45% | 20% | 65% | $ |
+
+### 9.5 Control de calidad y ensayos
+
+**Cuadro 9.3 — Plan de control de calidad (matriz de puntos de inspección)**
+
+| Etapa | Control | Tipo | Quién | Documento | ¿Punto de detención? |
+|---|---|---|---|---|---|
+| Replanteo | Verificación de ejes, niveles y retiros | Topográfico | DO | Acta de replanteo | **SÍ** |
+| Excavación | Cota y estado del fondo | Visual + instrumental | DO (+ suelista si hay duda) | Orden de servicio | **SÍ** |
+| Hormigón | Asentamiento (cono) por camión | Ensayo | Contratista + DO | Remito + planilla | No |
+| Hormigón | Probetas a 7 y 28 días | Ensayo de laboratorio | Laboratorio habilitado | Protocolo | No (pero condiciona la aceptación) |
+| Armaduras | Diámetros, separaciones, recubrimientos, empalmes, separadores | Visual + medición | DO | Aprobación escrita | **SÍ — no se hormigona sin aprobación** |
+| Encofrados | Aplome, nivel, estanqueidad, apuntalamiento | Visual + instrumental | DO | Aprobación escrita | **SÍ** |
+| Mampostería | Aplome, traba, juntas, encuentro con estructura | Visual + plomada | DO | Orden de servicio | No |
+| Aislación horizontal | Continuidad | Visual | DO | Aprobación escrita | **SÍ — antes de tapar** |
+| Instalación sanitaria | **Prueba hidráulica** de desagües | Ensayo | Contratista ante DO | Acta de prueba | **SÍ — antes de tapar** |
+| Instalación de agua | **Prueba de presión** | Ensayo | Contratista ante DO | Acta de prueba | **SÍ** |
+| Instalación de gas | **Prueba de hermeticidad** | Ensayo | Gasista matriculado ante la distribuidora | Acta + habilitación | **SÍ** |
+| Instalación eléctrica | Continuidad, aislación, **medición de puesta a tierra**, funcionamiento de diferenciales | Ensayo | Electricista + DO | Protocolo | **SÍ** |
+| Cubierta | **Prueba de estanqueidad por inundación 24–48 h** | Ensayo | Contratista ante DO | Acta | **SÍ — antes de la protección y del cielorraso** |
+| Carpinterías | Prueba de estanqueidad al agua por proyección | Ensayo | Contratista ante DO | Acta | Sí |
+| Revoques | Paño de muestra aprobado | Muestra | DO | Aprobación escrita | **SÍ — antes de continuar** |
+| Solados | Despiece aprobado; percusión de piezas | Visual + percusión | DO | Aprobación escrita | Sí |
+| Pintura | Paño de muestra por color | Muestra | DO | Aprobación escrita | **SÍ** |
+| Rellenos | Densidad in situ | Ensayo | Laboratorio | Protocolo | **SÍ** |
+| Ascensores | Pruebas de puesta en marcha y seguridad | Ensayo | Instalador + habilitante | Certificado de habilitación | **SÍ** |
+| Incendio | Prueba de presión de cañería, funcionamiento de detección, presurización de escalera | Ensayo | Instalador + bomberos | Certificado | **SÍ** |
+
+> **"Punto de detención" (hold point):** tarea que **no puede continuar** sin la aprobación escrita de la DO. Debe estar listada en el pliego. Es la herramienta más eficaz de control de calidad: obliga a que la DO sea convocada.
+
+### 9.6 No conformidades
+
+**Procedimiento formal (recomendado incluso en obra chica):**
+
+1. **Detección** y registro en el **Registro de No Conformidades (RNC)**.
+2. **Clasificación** por severidad:
+   - **Crítica:** afecta la seguridad estructural, la seguridad de las personas o el cumplimiento normativo → **detención inmediata de la tarea**.
+   - **Mayor:** afecta la funcionalidad, la durabilidad o la estanqueidad → reejecución.
+   - **Menor:** afecta la terminación o la estética → reparación.
+3. **Notificación por Orden de Servicio**, con plazo de subsanación.
+4. **Propuesta de acción correctiva** del contratista (Nota de Pedido).
+5. **Aprobación o rechazo** por la DO.
+6. **Verificación** de la corrección y cierre.
+7. **Acción preventiva:** ¿por qué pasó? ¿va a volver a pasar? (Ej.: si un paño de mampostería salió fuera de plomo, ¿el problema fue el operario, la falta de miras, o la falta de un replanteo claro?)
+
+**Formato del RNC:**
+
+| Nº | Fecha | Ubicación | Descripción de la no conformidad | Documento incumplido (plano/PET) | Severidad | Acción requerida | Plazo | Responsable | Fecha de cierre | Verificado por |
+|---|---|---|---|---|---|---|---|---|---|---|
+
+### 9.7 Adicionales y economías
+
+**Este es el capítulo que genera más conflictos. La regla es simple y hay que ser inflexible:**
+
+> **Ningún trabajo adicional se ejecuta sin: (1) pedido de propuesta por escrito, (2) presupuesto del contratista, (3) autorización expresa y escrita del comitente, y (4) orden de servicio de la DO ordenando su ejecución.**
+
+**Procedimiento (modelos CPAU A-413 y A-414):**
+
+| Paso | Documento | Quién |
+|---|---|---|
+| 1. Se detecta la necesidad de un cambio | Nota de pedido o iniciativa de la DO | Cualquiera |
+| 2. La DO informa y asesora al comitente sobre alcance, costo estimado e impacto en plazo | Informe al comitente | DO |
+| 3. **Pedido de propuesta** al contratista | **Orden de servicio (A-413)** | DO |
+| 4. El contratista cotiza, con análisis de precios, y estima el impacto en el plazo | Nota de pedido | Contratista |
+| 5. La DO analiza el precio (compara con precios contractuales de ítems análogos) y recomienda | Informe | DO |
+| 6. **El comitente autoriza por escrito** | Autorización / adenda contractual | **COMITENTE** |
+| 7. La DO ordena la ejecución | **Orden de servicio (A-414)** | DO |
+| 8. Se ejecuta, se mide y se certifica en un ítem separado | Certificado de adicionales | |
+
+**Criterios de precio para trabajos nuevos:**
+1. Si el ítem existe en el contrato → **precio contractual**.
+2. Si es análogo → precio contractual **por analogía**, ajustado.
+3. Si es nuevo → **análisis de precios** con la misma estructura de gastos generales, beneficio e impuestos del contrato original.
+4. Si no hay acuerdo → **por coste y costas** con tope, o por medición de tiempo y materiales con la estructura contractual.
+
+**Economías:** el mismo procedimiento inverso. **Importante:** una economía no siempre reduce el precio en el 100% del ítem eliminado, porque el contratista ya incurrió en gastos generales. El pliego debe fijar el criterio (habitualmente: se deduce el costo directo del ítem más su proporción de gastos generales, dejando el beneficio o parte de él).
+
+**El impacto en el honorario profesional:** los adicionales aumentan el monto de obra y por lo tanto el honorario de proyecto (si el adicional derivó de una modificación pedida por el comitente, ver A-115 Art. 3.23) y el honorario de dirección de obra. **Esto debe estar en el contrato profesional.**
+
+### 9.8 Recepción y garantías
+
+**Cuadro 9.4 — Las dos recepciones**
+
+| | **RECEPCIÓN PROVISORIA** | **RECEPCIÓN DEFINITIVA** |
+|---|---|---|
+| **Cuándo** | Al terminar la obra, con las observaciones subsanadas o listadas | Al vencer el **plazo de garantía** (habitualmente 6 a 12 meses; **verificar lo pactado**) |
+| **Qué se verifica** | Que la obra esté completa y funcione. Lista de observaciones (*punch list*) | Que las observaciones y los defectos aparecidos durante la garantía estén subsanados |
+| **Efectos** | Comienza el plazo de garantía. El comitente toma posesión. **Cesa la responsabilidad del contratista por vicios aparentes** (los ocultos y los que comprometen la solidez siguen) | Se libera el **fondo de reparo** y las garantías contractuales. **Comienza a correr el plazo de caducidad de 10 años del CCyC art. 1275** |
+| **Documentos que se entregan** | Planos conforme a obra, manuales de uso y mantenimiento, garantías de fabricantes y de instaladores, protocolos de ensayo, certificados de habilitación, llaves rotuladas, repuestos (5% de solados, pinturas) | Constancia de subsanación |
+| **Acta** | A-420 | A-421 |
+
+**Antes de la recepción provisoria, la DO debe (CPAU C-09 y A-711 "Lista de chequeos finales"):**
+- Inspeccionar los trabajos terminados y **registrar las fallas y defectos** que deben subsanarse previamente y los que pueden subsanarse durante la garantía.
+- **Controlar la puesta en marcha de todas las instalaciones.**
+- Comprobar la entrega de folletos, garantías técnicas, planos conforme a obra y manuales de operación y/o mantenimiento.
+- Revisar las liquidaciones finales y emitir los certificados finales.
+- Entregar al comitente permisos, certificados finales y planos conforme a obra de arquitectura, estructura e instalaciones.
+- Asesorar sobre la devolución de garantías y del fondo de reparo.
+
+**Garantías típicas (a exigir en el pliego):**
+
+| Elemento | Garantía mínima recomendada |
+|---|---|
+| Obra en general (plazo de garantía contractual) | 6 – 12 meses |
+| Impermeabilización de cubiertas | **10 años del fabricante + aplicador** |
+| Carpinterías de aluminio | 2 – 5 años |
+| Pintura | 2 años |
+| Instalaciones (funcionamiento) | 1 – 2 años |
+| Ascensores | 1 año + contrato de conservación obligatorio |
+| Equipos y artefactos | La del fabricante |
+| **Solidez y aptitud para el destino (responsabilidad decenal)** | **10 años desde la aceptación de la obra (CCyC art. 1275) — irrenunciable e inderogable (art. 1276)** |
+
+### 9.9 Manual de uso y mantenimiento del edificio
+
+Es el documento que **transfiere el conocimiento del edificio al usuario** y que, bien hecho, protege al proyectista: si el usuario no mantiene, la responsabilidad se atenúa.
+
+**Contenido mínimo:**
+
+| Sección | Contenido |
+|---|---|
+| 1. Identificación del edificio | Datos, profesionales intervinientes, contratistas, fecha de terminación |
+| 2. Descripción constructiva | Sistemas constructivos, materiales, terminaciones por local |
+| 3. **Planos conforme a obra** | Arquitectura, estructura e instalaciones, con ubicación de llaves de corte, tableros, cámaras, tanques |
+| 4. **Instrucciones de uso** | Qué se puede y qué no: cargas máximas admisibles en losas y balcones, prohibición de perforar losas y tabiques estructurales, prohibición de modificar desagües o fachada, uso de aberturas y persianas, ventilación para evitar condensación |
+| 5. **PLAN DE MANTENIMIENTO PREVENTIVO** | Ver cuadro abajo |
+| 6. Instrucciones de emergencia | Corte general de agua, gas y electricidad; qué hacer ante una pérdida, un corte, un principio de incendio; teléfonos |
+| 7. Garantías y contactos | Fabricantes, instaladores, conservador de ascensores, service |
+| 8. Registro de mantenimiento | Planilla para que el usuario/consorcio registre las intervenciones realizadas |
+
+**Cuadro 9.5 — Plan de mantenimiento preventivo (modelo)**
+
+| Elemento | Tarea | Frecuencia |
+|---|---|---|
+| Cubierta / azotea | Limpieza de embudos, canaletas y desagües | **Semestral, y antes de la temporada de lluvias** |
+| Cubierta | Inspección visual de membrana, babetas y sellados | Anual |
+| Fachada | Inspección de fisuras, desprendimientos y sellados de carpintería | Anual |
+| Selladores de carpintería | Reposición | Cada 5 – 8 años |
+| Pintura exterior | Repintado | Cada 5 – 8 años |
+| Pintura interior | Repintado | Cada 5 – 10 años |
+| Desagües cloacales | Limpieza de cámaras y piletas de piso | Semestral / anual |
+| Tanque de reserva | **Limpieza y desinfección** | **Semestral** (obligatorio en edificios; verificar exigencia local) |
+| Bombas | Verificación de funcionamiento, alternancia, válvulas | Trimestral |
+| Instalación de gas | Verificación por gasista matriculado; limpieza de conductos y ventilaciones | Anual |
+| Artefactos a gas | Service y verificación de combustión | Anual |
+| Instalación eléctrica | **Prueba del interruptor diferencial (botón de test)** | **Mensual** |
+| Instalación eléctrica | Verificación de tableros, ajuste de bornes, medición de puesta a tierra | Anual |
+| Matafuegos | Control de carga y presión | **Anual (recarga según norma)** |
+| Detección de incendio | Prueba de detectores, pulsadores y central | Semestral |
+| Ascensores | **Mantenimiento por empresa conservadora inscripta** | **Mensual (obligatorio)** |
+| Aire acondicionado | Limpieza de filtros | Trimestral |
+| Aire acondicionado | Service completo | Anual |
+| Juntas de dilatación | Inspección de tapajuntas y sellado | Anual |
+| Solados exteriores y veredas | Inspección de asentamientos y juntas | Anual |
+| Herrería y barandas | Verificación de fijaciones y anticorrosivo | Anual |
+
+---
+
+## 10. SEGURIDAD E HIGIENE
+
+### 10.1 Marco normativo
+
+| Norma | Contenido |
+|---|---|
+| **Ley 19.587** | Ley de Higiene y Seguridad en el Trabajo (marco general) |
+| **Decreto 351/79** | Reglamentario general de la Ley 19.587 (su **Anexo VII** trata protección contra incendios) |
+| **Decreto 911/96** | **Reglamento de Higiene y Seguridad para la Industria de la Construcción.** Es LA norma de obra |
+| **Ley 24.557** | Riesgos del Trabajo (ART) |
+| **Ley 22.250** | Régimen laboral de la construcción |
+| **Res. SRT 231/96** | Reglamenta aspectos del Dec. 911/96: **Legajo Técnico**, Aviso de Obra, Servicio de H&S |
+| **Res. SRT 51/97** | **Programa de Seguridad** para obras: obligatoriedad y aprobación por la ART |
+| **Res. SRT 35/98** | Programa de seguridad en obras con varios contratistas; coordinación |
+| **Res. SRT 319/99** | Complementa el régimen de programas de seguridad |
+| **Res. SRT 550/11** | Condiciones de seguridad para excavaciones y submuraciones (**verificar vigencia y alcance**) |
+
+*Fuentes: [Decreto 911/96 en InfoLEG](https://servicios.infoleg.gob.ar/infolegInternet/anexos/35000-39999/38568/texact.htm); Resoluciones SRT en [argentina.gob.ar/srt](https://www.argentina.gob.ar/srt). **Verificar vigencia y modificaciones antes de aplicar.***
+
+### 10.2 Obligaciones del comitente, del contratista y del director de obra
+
+**Cuadro 10.1 — Reparto de responsabilidades**
+
+| Sujeto | Obligaciones principales | Fundamento |
+|---|---|---|
+| **COMITENTE** | • **Incluir en el contrato la obligación del contratista de acreditar, ANTES del inicio de la obra, la contratación del seguro de riesgos del trabajo (Ley 24.557) del personal afectado a la obra, o la existencia de autoseguro.**<br>• Exigir a contratistas y subcontratistas el cumplimiento de la Res. SRT 231/96 y del Dec. 911/96, y documentarlo en el **Legajo Técnico**.<br>• Facilitar la coordinación entre contratistas cuando hay varios.<br>• No exigir plazos ni condiciones que induzcan a incumplir la normativa. | **Dec. 911/96**; Res. SRT 231/96 |
+| **CONTRATISTA / EMPLEADOR** | • **Implementar obligatoriamente un Servicio de Higiene y Seguridad** en el trabajo.<br>• Elaborar y hacer aprobar por la ART el **Programa de Seguridad** (Res. SRT 51/97).<br>• Confeccionar y mantener actualizado el **Legajo Técnico**.<br>• Presentar el **Aviso de Obra** a la ART.<br>• Proveer **EPP** sin cargo y exigir su uso; capacitar al personal y registrar las capacitaciones.<br>• Ejecutar y mantener las **protecciones colectivas**.<br>• Registrar al personal (IERIC, Ley 22.250) y contratar ART.<br>• Realizar los **exámenes médicos** preocupacionales y periódicos. | **Dec. 911/96**; Res. SRT 231/96 y 51/97; Ley 22.250; Ley 24.557 |
+| **SERVICIO DE HIGIENE Y SEGURIDAD** | • Elaborar el Programa de Seguridad y el Legajo Técnico.<br>• Determinar los riesgos por etapa y las medidas de prevención.<br>• Capacitar, inspeccionar, registrar y proponer acciones correctivas.<br>• Firmar como responsable. | Dec. 911/96 |
+| **DIRECTOR DE OBRA** | • **NO es el responsable de la seguridad e higiene** (esa responsabilidad es del contratista y de su Servicio de H&S).<br>• **PERO debe: requerir al constructor el cumplimiento de las medidas de seguridad e higiene, protecciones y defensas; y ADVERTIR por Orden de Servicio cuando observa fallas u omisiones en materia de seguridad e higiene, protecciones y defensas, procedimientos y técnicas constructivas, maquinaria y equipos, construcciones provisorias, limpieza y vigilancia** (CPAU A-111 y C-09).<br>• Comprobar que los contratistas cumplan los requerimientos contractuales de ART, garantías y seguros.<br>• Recordar el **CCyC art. 1277**: los profesionales que intervienen en una construcción están obligados a observar las normas administrativas y son responsables, incluso frente a terceros, por los daños producidos por su incumplimiento. | CPAU C-09, A-111; CCyC art. 1277 |
+
+> **La conducta que protege al DO:** cuando detecta un incumplimiento de seguridad, **lo escribe en el Libro de Órdenes de Servicio**, con fecha, describiendo el hecho y ordenando su corrección. Si el incumplimiento es grave y persiste, lo informa al comitente por escrito y, si aun así persiste, **considera la renuncia al encargo**. La constancia escrita es la única prueba de diligencia.
+
+### 10.3 Legajo Técnico
+
+Según el Dec. 911/96 y la Res. SRT 231/96, el **Legajo Técnico** es la documentación generada por el Servicio de Higiene y Seguridad para el control efectivo de los riesgos emergentes de la obra. Debe contener información suficiente, según las características, el volumen y las condiciones en que se desarrollará la obra, para **determinar los riesgos más significativos en cada etapa**.
+
+**Contenido típico:**
+1. Memoria descriptiva de la obra y datos del comitente, contratista y profesionales.
+2. **Programa de Seguridad aprobado por la ART**, con la identificación de riesgos y medidas preventivas por etapa.
+3. Plano o croquis del obrador, con circulaciones, accesos, servicios, acopio y zonas de riesgo.
+4. Nómina del personal, con constancias de ART y de registro (IERIC).
+5. **Constancias de capacitación** del personal, firmadas.
+6. **Constancias de entrega de EPP**, firmadas por cada trabajador.
+7. Registro de **exámenes médicos** preocupacionales y periódicos.
+8. Registro de inspecciones del Servicio de H&S y de las acciones correctivas.
+9. **Constancias de habilitación y de mantenimiento de máquinas y equipos** (grúa, montacargas, andamios, aparejos), y de sus operadores.
+10. Registro de accidentes e incidentes, con investigación.
+11. Aviso de obra a la ART.
+12. Firmas del responsable del Servicio de H&S.
+
+**El Legajo Técnico debe estar en obra, actualizado y a disposición de la autoridad.**
+
+### 10.4 Protecciones colectivas y trabajo en altura
+
+> ⚠️ **Principio jerárquico de la prevención:** primero **eliminar el riesgo** (proyectar para evitar el trabajo en altura), luego **protección colectiva** (barandas, redes), y sólo en último término **protección individual** (arnés). El EPP es la última barrera, no la primera.
+
+**Cuadro 10.2 — Protecciones colectivas**
+
+| Protección | Dónde | Requisitos típicos |
+|---|---|---|
+| **Barandas** | Perímetro de losas, huecos de escalera y de ascensor, aberturas de fachada, bordes de excavación, plataformas | Baranda superior, baranda intermedia y **zócalo o rodapié** al pie. Resistencia y altura según Dec. 911/96 — **verificar valores exactos en la norma** |
+| **Tapa de huecos** | Todo hueco en losa (pasadizos, pases, huecos de instalaciones) | Tapa resistente, fijada e **identificada**, o baranda perimetral |
+| **Redes de seguridad** | Perímetro y bajo el nivel de trabajo | Certificadas, con anclajes calculados, revisadas periódicamente |
+| **Vallado perimetral de obra** | Límite con la vía pública | Altura, material y señalización según el Código de Edificación municipal |
+| **Bandeja / pantalla de protección** | Sobre la vereda y hacia linderos | Voladizo con defensa vertical, para interceptar caída de materiales |
+| **Pantallas y mallas de fachada** | En toda la fachada durante la construcción | Contienen polvo y objetos |
+| **Señalización** | Toda la obra | Riesgos, uso obligatorio de EPP, prohibiciones, salidas |
+| **Iluminación de emergencia y de circulaciones** | | |
+| **Extintores** | Distribuidos, cerca de zonas de soldadura, acopio de combustibles y tableros | Con carga vigente |
+| **Tableros eléctricos de obra** | | Con **disyuntor diferencial y térmicas**, tomas industriales, protegidos del agua, con puesta a tierra |
+| **Escaleras de acceso** | Excavaciones y niveles | Cada 25 m en excavaciones; fijadas y sobresaliendo del nivel de llegada |
+
+**Trabajo en altura**
+- **Sistema de detención de caídas:** arnés de cuerpo completo (nunca cinturón de seguridad simple), con **doble cabo de vida con absorbedor de energía** para poder desplazarse siempre anclado.
+- **Punto de anclaje** calculado y certificado, ubicado por encima del usuario cuando sea posible.
+- **Línea de vida** horizontal o vertical, calculada e instalada por personal competente.
+- Prever en el **proyecto** los anclajes permanentes para el mantenimiento futuro de la fachada y de la cubierta (**se dibujan en el plano de techos**).
+
+**Andamios**
+- Montaje, modificación y desmontaje **por personal capacitado y bajo supervisión**.
+- Base firme y nivelada, con **husillos y durmientes**; nunca sobre ladrillos, tambores o materiales sueltos.
+- **Arriostrado a la estructura del edificio** con la frecuencia que corresponda.
+- Plataformas de trabajo completas (sin tablones faltantes), con **baranda, baranda intermedia y rodapié**.
+- Acceso por escalera interna, no trepando la estructura.
+- **Rotulación de estado**: verde (apto) / rojo (no apto), con fecha y firma del responsable.
+- Verificación de la **carga máxima admisible**.
+- Andamios sobre ruedas: bloqueadas durante el uso; prohibido desplazarlos con personas arriba.
+
+**Silletas y trabajos con cuerdas**
+- Doble línea: **línea de trabajo + línea de seguridad independiente**, cada una con su anclaje independiente.
+- Anclajes verificados y calculados.
+- Personal específicamente capacitado.
+- Prohibido el uso de silletas improvisadas.
+- Protección de las cuerdas contra aristas vivas.
+
+**Excavaciones y submuración**
+- **Talud estable o entibación** para profundidades mayores a la que fije el Dec. 911/96 (habitualmente 1,20 m — **verificar**).
+- **Prohibido acopiar material o circular con equipos en la franja adyacente al borde** de la excavación (distancia mínima igual a la profundidad).
+- Escaleras de acceso cada 25 m.
+- **Estudio de suelos y proyecto de submuración firmados por profesional.**
+- **Testigos y fisurómetros** en linderos, con lectura registrada.
+- Verificación de instalaciones enterradas antes de excavar (gas, electricidad, agua, cloaca).
+- Control de agua: bombeo, y verificación de que el abatimiento de napa no afecte a los linderos.
+- Inspección diaria del estado de la excavación, especialmente después de lluvias.
+
+**Demoliciones**
+- **Proyecto y memoria de demolición** con secuencia, método y apuntalamientos.
+- **Demolición de arriba hacia abajo**, elemento por elemento, salvo método específicamente proyectado.
+- Corte previo de todos los servicios.
+- **Apuntalamiento de linderos** y de elementos a conservar.
+- Riego para control de polvo.
+- **Prohibido el paso de personal bajo la zona de demolición.**
+- Verificación de la presencia de **amianto/asbesto** en construcciones antiguas: si lo hay, procedimiento específico y habilitado.
+- Retiro de escombros por conducto cerrado o contenedor, nunca arrojándolos.
+- Vallado y protección total de la vía pública.
+
+**EPP mínimo obligatorio en obra**
+
+| EPP | Uso |
+|---|---|
+| **Casco** | Permanente, en toda la obra |
+| **Calzado de seguridad** con puntera y plantilla antiperforación | Permanente |
+| **Ropa de trabajo** y chaleco de alta visibilidad | Permanente |
+| **Guantes** | Según tarea (anticorte, dieléctricos, químicos) |
+| **Protección ocular** (anteojos, antiparras) | Amoladora, martillo neumático, hormigonado, soldadura (careta) |
+| **Protección auditiva** | Amoladora, martillo, vibrador, equipos ruidosos |
+| **Protección respiratoria** | Corte de mampostería, demolición, pintura, aplicación de productos químicos |
+| **Arnés de cuerpo completo con doble cabo y absorbedor** | Todo trabajo en altura sin protección colectiva |
+| **Protección facial y delantal** | Soldadura, corte |
+
+**Registro obligatorio:** entrega de EPP con firma del trabajador, y capacitación en su uso.
+
+---
+
+## 11. CONTROL DE CALIDAD DOCUMENTAL
+
+### 11.1 Checklist de revisión del legajo antes de emitir
+
+> **Regla del estudio: ningún legajo se emite sin que una persona distinta de quien lo dibujó recorra este checklist y lo firme.** Toma 2–4 horas. Ahorra semanas de obra.
+
+**A. COHERENCIA ENTRE DOCUMENTOS**
+
+- [ ] ¿Las plantas, los cortes y las vistas coinciden entre sí? (alturas, aberturas, niveles, cantidad de escalones)
+- [ ] ¿Las cotas de nivel de cortes y plantas coinciden y suman correctamente desde ±0,00?
+- [ ] ¿Los códigos de carpintería del plano coinciden con los de la planilla? ¿Hay algún código en el plano que no esté en la planilla, o viceversa?
+- [ ] ¿Los nombres y números de local del plano coinciden con los de la planilla de locales?
+- [ ] ¿Los ejes estructurales de arquitectura coinciden con los de estructura (misma denominación, misma posición)?
+- [ ] ¿El plano de terminaciones y la planilla de locales dicen lo mismo?
+- [ ] ¿El pliego especifica todos los materiales que aparecen en la planilla de locales?
+- [ ] ¿El cómputo tiene un ítem para cada rubro del pliego, y viceversa?
+- [ ] ¿Los detalles referenciados en los planos generales existen realmente, con el número correcto?
+- [ ] ¿La escala indicada en el rótulo es la del dibujo?
+
+**B. COORDINACIÓN ENTRE DISCIPLINAS**
+
+- [ ] ¿Todas las columnas de estructura están dibujadas en arquitectura, con la misma sección?
+- [ ] ¿Todas las vigas están representadas (en punteado) en las plantas de arquitectura?
+- [ ] ¿Las alturas libres de local se verifican **bajo viga** y **bajo conducto**, no sólo bajo losa?
+- [ ] ¿Todos los pases de instalaciones a través de la estructura están dibujados en el plano de encofrado, con cota y diámetro, y aprobados por el calculista?
+- [ ] ¿Los montantes de instalaciones atraviesan todas las losas y tienen su pase previsto en cada nivel?
+- [ ] ¿Los desagües tienen pendiente verificada en el corte, y esa pendiente entra en el pleno disponible?
+- [ ] ¿Hay algún desagüe que cruce una viga?
+- [ ] ¿Las bocas de agua y desagüe del detalle de baño coinciden con la posición de los artefactos en la planta?
+- [ ] ¿La sala de máquinas / sala de bombas / tanque tiene el espacio, la altura y el acceso que el equipo real necesita?
+- [ ] ¿El pasadizo del ascensor tiene la fosa, el sobrerrecorrido y las dimensiones que exige el proveedor concreto?
+- [ ] ¿Las unidades exteriores de aire tienen ubicación, espacio de aspiración, soporte y desagüe de condensado?
+- [ ] ¿El tablero eléctrico tiene su espacio de apertura de puerta y de trabajo?
+
+**C. COMPLETITUD**
+
+- [ ] ¿Están todos los planos del listado, con la revisión correcta?
+- [ ] ¿Hay un detalle para cada encuentro no trivial? (dintel, antepecho, umbral, azotea, junta, escalera, baño, cocina)
+- [ ] ¿Está el **goterón** dibujado en TODOS los bordes de voladizo, alféizar y cornisa?
+- [ ] ¿Están las **babetas** dibujadas en todos los encuentros de impermeabilización con paramento vertical?
+- [ ] ¿Están dibujadas las **juntas de dilatación** en todos los planos que atraviesan (piso, pared, cielorraso, cubierta)?
+- [ ] ¿Está resuelto el encuentro del muro con la losa superior (junta de asiento)?
+- [ ] ¿Están las cotas de nivel de la vereda, del cordón y del acceso, y verificado el desnivel accesible?
+- [ ] ¿Está el plano de accesibilidad y verifican los círculos de giro y los anchos libres?
+- [ ] ¿Están los planos de replanteo, con el punto fijo y la convención de acotación declarada?
+- [ ] ¿Está la planilla de superficies con la verificación de FOS, FOT, retiros y altura?
+- [ ] ¿Están las notas generales y la simbología en el AR-00?
+
+**D. NORMATIVA**
+
+- [ ] ¿Cumple FOS, FOT, altura máxima, plano límite, retiros y ochava?
+- [ ] ¿Todos los locales de primera categoría tienen la superficie, el lado mínimo y la altura que exige el Código?
+- [ ] ¿Todos los locales tienen la iluminación y ventilación exigidas, y está calculado en la planilla?
+- [ ] ¿Los patios cumplen las dimensiones mínimas?
+- [ ] ¿La escalera cumple el ancho, la pedada, la alzada, la altura de paso y la baranda exigidos?
+- [ ] ¿Los medios de escape cumplen la distancia máxima, el ancho y la cantidad exigidos?
+- [ ] ¿Está la sectorización de incendio y la resistencia al fuego de cada elemento?
+- [ ] ¿Cumple la cantidad de guardacoches exigida?
+- [ ] ¿La estructura está calculada con los CIRSOC vigentes y hay memoria firmada?
+- [ ] ¿La instalación eléctrica cumple el grado de electrificación de la AEA 90364?
+- [ ] ¿Los locales con artefactos a gas tienen las ventilaciones permanentes superior e inferior?
+
+**E. FORMA Y TRAZABILIDAD**
+
+- [ ] ¿Todos los planos tienen rótulo completo, con revisión, fecha y estado?
+- [ ] ¿La tabla de revisiones describe específicamente qué cambió?
+- [ ] ¿Las nubes de revisión están sobre todo lo que cambió, y se borraron las de la revisión anterior?
+- [ ] ¿El listado de planos está actualizado con las revisiones vigentes?
+- [ ] ¿Los archivos están nombrados según la convención del estudio?
+- [ ] ¿Los PDF están a escala verificable y con escala gráfica impresa?
+- [ ] ¿Se purgaron y auditaron los archivos CAD? ¿Se limpiaron los XREF rotos?
+- [ ] ¿Los planos están firmados por quien corresponde?
+
+### 11.2 Errores frecuentes que generan adicionales en obra
+
+**Cuadro 11.1 — Los 25 errores que más plata cuestan**
+
+| # | Error | Consecuencia en obra | Cómo se evita |
+|---|---|---|---|
+| 1 | **No declarar la regla de descuento de vanos** en mampostería, revoque y pintura | Ofertas incomparables; discusión en cada certificación | Declararla en el PETG |
+| 2 | **No definir la ayuda de gremios** | El albañil dice que las canaletas las hace el sanitarista y viceversa. Nadie las hace, o las cobran los dos | Cláusula específica en el PETG con lista taxativa |
+| 3 | **Altura de pleno insuficiente** | Se descubre en obra que el desagüe no entra. Hay que bajar el cielorraso o hacer viga invertida | Verificar la ecuación vertical (§3.1) en corte, con las instalaciones dibujadas |
+| 4 | **Pases no previstos en la estructura** | Se perfora con amoladora, se corta armadura, se compromete la estructura, se hace un adicional de refuerzo | Plano de pases coordinado y firmado por el calculista |
+| 5 | **Faltan detalles constructivos** | El albañil resuelve. Lo resuelve mal. Se rehace | Lista mínima de detalles (§2.5) |
+| 6 | **Goterón olvidado** | Manchas de escurrimiento en fachada al primer año. Reclamo del comitente | Checklist |
+| 7 | **Babeta apoyada y no empotrada** | Filtración en el encuentro cubierta-pretil | Detalle 1:10 con buña |
+| 8 | **Pendiente de cubierta insuficiente o con contrapendiente** | Estancamiento, filtración, deterioro de la membrana | Verificar pendiente en el plano de techos y en obra antes de la membrana |
+| 9 | **No exigir prueba de estanqueidad antes del cielorraso** | La filtración aparece cuando ya está el cielorraso y la pintura | Punto de detención en el plan de calidad |
+| 10 | **Cotas encadenadas en lugar de acumuladas** | El error de cada tramo se acumula; el último local sale 8 cm más chico | Acotar desde ejes con cotas acumuladas |
+| 11 | **No declarar si se acota a eje o a paramento terminado** | Muros corridos 12 cm | Declararlo en el AR-00 |
+| 12 | **Planilla de carpinterías con medidas de carpintería en lugar de vano (o al revés) sin aclarar** | Carpinterías que no entran o que quedan chicas | Poner ambas medidas, siempre |
+| 13 | **No exigir medición en obra antes de fabricar** | Carpinterías inutilizables | Cláusula en el PET |
+| 14 | **Especificar sin muestras ni tramos de muestra** | El revoque/la pintura/el revestimiento sale distinto de lo esperado | Cláusula de muestras obligatorias con aprobación escrita |
+| 15 | **Marca sin "o equivalente" definido** | Discusión sobre qué es equivalente; el contratista trae lo más barato | Cláusula de equivalencia (§4.3) |
+| 16 | **Planeidad de carpeta no especificada** | El porcelanato rectificado de 90×90 no se puede colocar sin cejas | Tolerancia ± 2–3 mm bajo regla de 2 m en el PET |
+| 17 | **Despiece de solado no aprobado antes de colocar** | Piezas cortadas en el eje visual del local; hay que levantar el piso | Punto de detención |
+| 18 | **Boca de acceso o cámara bajo un mueble o un solado sin registro** | El día que hay que destapar, hay que romper la cocina | Verificar en el plano de terminaciones que toda cámara sea registrable |
+| 19 | **No prever el acceso y el espacio real de los equipos** (tanque, caldera, ascensor, split) | El equipo no entra o no se puede mantener | Pedir la ficha técnica del equipo REAL y dibujarla, no un genérico |
+| 20 | **Contratar los ascensores tarde** | La obra se para 3 meses esperando el equipo | Contratar en los primeros meses de obra |
+| 21 | **No prever la logística de izaje** | El material sube a mano; se pierden semanas y plata | Plano de obrador y estudio de izaje en el proyecto |
+| 22 | **No documentar el estado de los linderos antes de empezar** | Todo defecto preexistente del lindero se le atribuye a la obra | Acta notarial + relevamiento fotográfico fechado |
+| 23 | **No dejar constancia escrita de las instrucciones** | En el conflicto, la palabra del arquitecto contra la del contratista | Libro de Órdenes de Servicio, siempre |
+| 24 | **Ejecutar un adicional sin autorización escrita del comitente** | El comitente no lo paga y el DO queda en el medio | Procedimiento de adicionales (§9.7), sin excepciones |
+| 25 | **Emitir revisiones sin nube, sin tabla y sin actualizar el listado de planos** | Se construye con una revisión vieja | Protocolo de emisión (§3.6.4) |
+
+**Los tres orígenes estructurales de los adicionales:**
+1. **Documentación incompleta o incoherente** (≈ lo que este documento intenta prevenir).
+2. **Cambios del comitente** después de aprobar una etapa → se resuelven con el procedimiento de modificaciones y con honorario adicional.
+3. **Condiciones imprevistas del sitio o del existente** → se resuelven con estudios previos (suelos, cateos) y con una partida de imprevistos declarada.
+
+> **La estadística incómoda:** una porción muy alta de los adicionales de obra tiene origen en el proyecto, no en el contratista. **Invertir en documentación es la inversión con mejor retorno del proceso constructivo**, y es el mejor argumento comercial para vender el proyecto ejecutivo a un cliente que "quiere ahorrar en planos".
+
+---
+
+## 12. BIBLIOGRAFÍA Y NORMAS COMENTADAS
+
+### 12.1 Documentos profesionales argentinos (los más útiles del oficio)
+
+| Documento | Qué es | Comentario | URL |
+|---|---|---|---|
+| **CPAU — MEPAU, Manual del Ejercicio Profesional de Arquitectura y Urbanismo** | Colección completa de capítulos (serie C) y anexos (serie A): modelos de contratos, órdenes de servicio, actas, certificados, planillas de chequeo | **Es el mejor recurso gratuito disponible en Argentina para la gestión profesional.** Aunque es de jurisdicción CABA, su doctrina es referencia nacional | [mepau.cpau.org](https://mepau.cpau.org) |
+| **CPAU A-115 — Honorarios sugeridos** | El arancel del CPAU: definiciones de etapas, escalas, subdivisiones, recargos | Documento base para calcular y justificar honorarios. Sus disposiciones son **recomendadas, no obligatorias** | [mepau.cpau.org/anexos.html](https://mepau.cpau.org/anexos.html) |
+| **CPAU A-111 — Cartilla de tareas y honorarios recomendados para encargos de proyecto y dirección** | Lista taxativa de tareas y documentos por etapa | **Ideal para armar el Anexo de entregables del contrato.** 9ª ed. 2023 | [mepau.cpau.org/Media/Default/pdf/anexos/A-111.pdf](https://mepau.cpau.org/Media/Default/pdf/anexos/A-111.pdf) |
+| **CPAU C-09 — La dirección de las obras** | Capítulo doctrinario sobre el rol del DO | Clarísimo sobre los límites de la autoridad del DO y sobre la diferencia con el rol del constructor. 10ª ed. 2026 | [mepau.cpau.org/Media/Default/pdf/capitulos/c09.pdf](https://mepau.cpau.org/Media/Default/pdf/capitulos/c09.pdf) |
+| **CPAU C-06 — Los costos de las obras** y **C-07 — El proyecto de las obras** | | Complementarios | [mepau.cpau.org](https://mepau.cpau.org) |
+| **CPAU A-406 — Planilla resumen de costos de obra e incidencia de rubros** | Matriz modelo para registrar costos por m² y por incidencia porcentual | **Adoptarla como base de datos del estudio.** Es el método correcto para tener incidencias propias en lugar de usar tablas ajenas | [repositorio.cpau.org/items/show/926](https://repositorio.cpau.org/items/show/926) |
+| **CPAU A-405 — Ejemplo de formulario de oferta con listado de rubros e ítems** y **A-408 — Juego de planillas para cómputo y presupuesto** | | Plantillas listas para usar | [mepau.cpau.org/anexos.html](https://mepau.cpau.org/anexos.html) |
+| **CPAU A-711 — Lista de chequeos finales previos a la recepción provisoria** y **A-713 — Planilla para chequear tareas y gestiones** | | Checklists de gestión | Ídem |
+| **CPAU serie A-201 a A-210** | Modelos de contratos de construcción y bases de licitación | Por ajuste alzado, unidad de medida, contratista único, contratos separados | Ídem |
+| **CAPBA — Arancel para la profesión de arquitecto (doctrina, Sergio Bertone)** | Compilación y comentario del arancel bonaerense | Muy útil para entender la lógica del arancel y su interpretación | [capbaiv.org](https://capbaiv.org/downloads/archivos/Libro_Arancel_Arquitecto_2da_edicion_Sergio_Bertone.pdf) |
+| **Colegio de Arquitectos de La Pampa (CALP)** | Valor de referencia de m², resoluciones de visado y aportes, códigos y planillas municipales por localidad | **Fuente obligada para el estudio.** Ley provincial 2.881; Res. 03/2016; valor de m² actualizado con promedio de índices CAMARCO e IPC-INDEC | [colegioarqlapampa.org.ar](https://colegioarqlapampa.org.ar) — tecnica@colegioarqlapampa.org.ar — (02954) 271045 |
+| **Consejo Profesional de Ingeniería y Arquitectura de La Pampa (CPIALP)** | Matriculación exigida por el Código de Edificación de Santa Rosa; información sobre modificaciones al Código | | [cpitlp.org.ar](https://www.cpitlp.org.ar) — **verificar denominación y sitio oficial vigente** |
+| **Municipalidad de Santa Rosa — Código de Edificación (Ord. 1581/95 y modificatorias)** | Norma de aplicación local | Modificado, entre otras, por Ord. 6445/2020 (art. 2.1.9, Final de Obra) y Ord. 6976/2023 | [concejosantarosa.gob.ar](https://www.concejosantarosa.gob.ar) |
+
+### 12.2 Normativa técnica
+
+| Norma | Objeto | Comentario | URL |
+|---|---|---|---|
+| **CIRSOC (serie completa)** | Reglamentos argentinos de estructuras | Al 22/01/2026 rigen, por **Resolución 11/2026 SOP**, CIRSOC 101-2025, 102-2025, 200-2024 y **201-2025** (3ª generación). CIRSOC 301-2018 (acero), 303-2009 (steel framing), 501-2007/501-E-2023 (mampostería), 601-2016 (madera), INPRES-CIRSOC 103 I-2018 y II-2021 (sismo) | [inti.gob.ar/cirsoc](https://www.inti.gob.ar/areas/servicios-industriales/cirsoc) |
+| **IRAM serie 4500** | Dibujo técnico: 4501 (principios), **4502 (líneas)**, 4503 (letras), **4504 (formatos y plegado)**, **4505 (escalas)**, 4507 (cortes), **4508 (rótulo)**, **4513 (acotación)** | Normas de aplicación voluntaria pero estándar del oficio | [iram.org.ar](https://www.iram.org.ar) |
+| **IRAM 11601 / 11605 / 11900** | Acondicionamiento térmico de edificios: cálculo de transmitancia; condiciones de habitabilidad; etiquetado de eficiencia energética | **Verificar si La Pampa o Santa Rosa exigen su cumplimiento obligatorio** | [iram.org.ar](https://www.iram.org.ar) |
+| **AEA 90364** | Reglamentación para la ejecución de instalaciones eléctricas en inmuebles. Sección 771: viviendas, oficinas y locales unitarios. Define **grados de electrificación** (mínimo, medio, elevado, superior) según superficie, y de ahí los circuitos y puntos de utilización mínimos | Es la norma de referencia argentina; la adopta cada distribuidora | [aea.org.ar](https://www.aea.org.ar) |
+| **ENARGAS NAG-200** | Reglamento técnico para la ejecución de instalaciones domiciliarias de gas | Los planos los firma un instalador matriculado ante la distribuidora | [enargas.gob.ar](https://www.enargas.gob.ar/secciones/normativa/normas-tecnicas-items.php?grupo=2) |
+| **ENARGAS NAG-225** | Sistema integral de matriculación de instaladores | | Ídem |
+| **Decreto 351/79, Anexo VII** | Protección contra incendios (reglamentario de la Ley 19.587) | Carga de fuego, resistencia al fuego, medios de escape, presurización de cajas de escalera que sirvan a seis o más niveles | [InfoLEG](https://servicios.infoleg.gob.ar/infolegInternet/anexos/30000-34999/32030/dto351-1979-anexo7.htm) |
+| **IRAM 11949** | Ensayo de puertas cortafuego | Referencia para exigir certificación | [iram.org.ar](https://www.iram.org.ar) |
+
+### 12.3 Legislación
+
+| Norma | Objeto | Artículos clave | URL |
+|---|---|---|---|
+| **Código Civil y Comercial de la Nación** (Ley 26.994) | | **Arts. 1251 y ss.** (contrato de obra); **arts. 1273 a 1277** (obra en ruina, extensión de la responsabilidad, plazo de caducidad de 10 años, nulidad de la cláusula de exclusión, responsabilidades complementarias); **arts. 2006 a 2036** (medianería); **arts. 2037 a 2072** (propiedad horizontal) | [Código Civil y Comercial Online](https://codigocivilonline.com.ar) |
+| **Ley 26.994** | Sanciona el CCyC y **DEROGA la Ley 13.512 de Propiedad Horizontal** | La PH está hoy en el CCyC arts. 2037 y ss. | |
+| **Ley 11.723** | Propiedad intelectual. **Protege las obras de arquitectura y los planos** | Base de la cláusula de propiedad intelectual del contrato | [InfoLEG](https://servicios.infoleg.gob.ar) |
+| **Decreto-Ley 7887/55** | Arancel de honorarios para la jurisdicción nacional | **Art. 47** (definición de dirección de obra); **art. 48** (categorías); **art. 50** (escala 9/7/5% y 15/10/5%); **art. 51** (subdivisión 5/20/40/60 + DO 40%). **Valor histórico/orientativo: los aranceles no son hoy de cumplimiento obligatorio** | [argentina.gob.ar/normativa](https://www.argentina.gob.ar/normativa/nacional/decreto_ley-7887-1955-296814/actualizacion) |
+| **Ley 19.587** y **Decreto 351/79** | Higiene y seguridad en el trabajo (marco general) | | [InfoLEG](https://servicios.infoleg.gob.ar) |
+| **Decreto 911/96** | **Reglamento de higiene y seguridad para la industria de la construcción** | Obligación del comitente de exigir acreditación de ART antes del inicio; obligación del contratista de implementar Servicio de H&S; Legajo Técnico | [InfoLEG](https://servicios.infoleg.gob.ar/infolegInternet/anexos/35000-39999/38568/texact.htm) |
+| **Res. SRT 231/96, 51/97, 35/98, 319/99** | Legajo Técnico, Aviso de Obra, Programa de Seguridad y su aprobación por la ART | | [argentina.gob.ar/srt](https://www.argentina.gob.ar/srt) |
+| **Ley 24.557** | Riesgos del trabajo (ART) | | [InfoLEG](https://servicios.infoleg.gob.ar) |
+| **Ley 22.250** | Régimen laboral de la industria de la construcción: Fondo de Cese Laboral; registro obligatorio en IERIC; **solidaridad del propietario y del profesional contratante respecto de contratistas no inscriptos** | **Art. 3** (registro); régimen de solidaridad; sanciones | [InfoLEG](https://servicios.infoleg.gob.ar/infolegInternet/anexos/25000-29999/27238/norma.htm) — [IERIC](https://www.ieric.org.ar) |
+| **Ley 24.314** y **Decreto 914/97** | Accesibilidad al medio físico. Supresión de barreras arquitectónicas y urbanísticas | Anchos mínimos de vereda (1,50 m), pendientes, rampas, sanitarios accesibles, itinerarios | [Decreto 914/97 en InfoLEG](https://servicios.infoleg.gob.ar/infolegInternet/anexos/45000-49999/45816/norma.htm) |
+| **Ley provincial 2.881 (La Pampa)** | Visado previo y aportes por tareas profesionales de arquitectos | **Verificar texto vigente en el CALP** | [colegioarqlapampa.org.ar](https://colegioarqlapampa.org.ar) |
+| **Ordenanza 1581/95 (Santa Rosa)** y modificatorias (6445/2020, 6976/2023) | Código de Edificación de Santa Rosa | Autoridad de aplicación: Dirección de Planeamiento Urbano y Obras Particulares. Exige profesional matriculado en el Consejo Profesional de Ingeniería y Arquitectura de La Pampa | [concejosantarosa.gob.ar](https://www.concejosantarosa.gob.ar/ordenanza-1581-1995/) |
+
+### 12.4 Estándares internacionales de gestión de la información
+
+| Estándar | Objeto | Comentario |
+|---|---|---|
+| **ISO 19650** (partes 1 a 5) | Organización y digitalización de la información sobre edificios y obras de ingeniería civil, incluido BIM. Gestión de la información | Define BEP, CDE, EIR, estados de la información (WIP / Shared / Published / Archived) y nomenclatura. **Está en revisión; el BEP pasaría a llamarse "Plan de Producción de Información". Verificar en [iso.org](https://www.iso.org)** |
+| **ISO 16739 (IFC)** | Industry Foundation Classes: formato abierto de intercambio de modelos | IFC 2x3 es el mínimo común denominador práctico; IFC 4 tiene mejor geometría |
+| **BCF (BIM Collaboration Format)** | Formato abierto para intercambiar incidencias de coordinación | Permite trabajar interferencias sin licencias caras (BIMcollab, Solibri, Revit con add-ins) |
+| **MasterFormat** (CSI/CSC) | Sistema de clasificación por **divisiones y secciones orientadas a oficios y especificaciones**. Desde 2004 tiene 50 divisiones (0 a 49) | Es la lógica del pliego y del contrato: compras, mediciones, facturación. **La estructura de rubros e ítems del cómputo argentino es funcionalmente equivalente** |
+| **UniFormat** | Sistema de clasificación por **elementos y sistemas del edificio según su función** (subestructura, superestructura, envolvente, interiores, servicios…) | Es la lógica del **presupuesto temprano y del control por sistemas**: sirve para comparar alternativas en anteproyecto y para reportar incidencias. **Complementario, no sustituto, de MasterFormat** |
+| **Uniclass / OmniClass** | Sistemas de clasificación más amplios, usados en BIM | Referencia |
+| **PMBOK (PMI)** | Guía de fundamentos para la dirección de proyectos | Aporta EDT/WBS, gestión del alcance, del cronograma, del costo, de la calidad, de los riesgos y de los interesados. Aplicado a obra, complementa (no reemplaza) las prácticas constructivas |
+| **Last Planner System** (Ballard & Howell) | Sistema de control de la producción de Lean Construction | Plan maestro → planificación de fase → lookahead con análisis de restricciones → plan semanal → **PPC y causas de no cumplimiento** |
+
+### 12.5 Bibliografía técnica argentina y de referencia
+
+| Obra | Autor | Comentario |
+|---|---|---|
+| **Cómputos y presupuestos** | Mario E. Chandías (Ed. Alsina) | **La referencia argentina insustituible.** Reglas de medición, planillas de materiales y mano de obra, análisis de precios por elemento constructivo. Aunque los precios están desactualizados, las **reglas de medición y las metodologías siguen plenamente vigentes** |
+| **Construcción de edificios** | Mario E. Chandías y José A. Ramos (Ed. Alsina) | El complemento constructivo del anterior |
+| **Cálculo de estructuras de hormigón armado** | Chandías / Ramos y otros autores clásicos argentinos | Referencia; **para el cálculo real hay que usar los CIRSOC vigentes** |
+| **Manual práctico de construcción** | Jaime Nisnovich | **Especialmente valioso para este estudio:** el propio autor declara que sus contenidos se basan en los materiales, técnicas y condiciones geográfico-climáticas de la **zona pampeana** y están adaptados a los códigos de edificación de esa zona. Premio Rolex a la Iniciativa (1987) y Premio Nacional de Arquitectura, Diseño y Urbanismo |
+| **Manual del arquitecto director de obra** | (varias ediciones y autores en el ámbito iberoamericano) | Referencia sobre el rol; **para el ámbito argentino, el CPAU C-09 es más específico y está actualizado a 2026** |
+| **Neufert — El arte de proyectar en arquitectura** | Ernst Neufert (Ed. Gustavo Gili) | Dimensionamiento y estándares. Base europea: **verificar siempre contra el Código de Edificación local** |
+| **Manual de Tiempos y Rendimientos** / bases de datos de rendimientos | Diversos | Útiles como punto de partida; **cada estudio debe medir los propios** |
+| **Lean Construction / Last Planner** | Glenn Ballard, Greg Howell; Lean Construction Institute; blogs y repositorios académicos latinoamericanos (UPC Perú, Lean Construction México) | Ver [leanconstructionblog.com](https://leanconstructionblog.com/What-is-the-Last-Planner-System-Que-es-el-Last-Planner-System.html) |
+
+### 12.6 Fuentes de precios e índices
+
+| Fuente | Qué publica | URL |
+|---|---|---|
+| **INDEC — ICC** | Índice del Costo de la Construcción en el Gran Buenos Aires, nivel general y por capítulos (Materiales, Mano de Obra, Gastos Generales). **Es el índice del coeficiente K del arancel CPAU y el más usado para redeterminación** | [indec.gob.ar](https://www.indec.gob.ar/indec/web/Nivel4-Tema-3-5-33) |
+| **CAMARCO — Índice CAC** | Índice del costo de la construcción de la Cámara Argentina de la Construcción | [camarco.org.ar](https://www.camarco.org.ar) |
+| **CPAU — Honorarios sugeridos, valor de K mensual** | Publicación mensual del coeficiente de actualización | [cpau.org](https://www.cpau.org) |
+| **CALP — Valor de referencia de m²** | Valor de referencia de m² para el cálculo de aportes y honorarios en La Pampa | [colegioarqlapampa.org.ar/valordereferenciadem2](https://colegioarqlapampa.org.ar/valordereferenciadem2) |
+| **Revista Vivienda** | Costo de prototipos de vivienda, precios de materiales | Publicación mensual |
+| **El Constructor** | Precios y costos de la construcción | Publicación |
+| **Suplementos de Clarín y La Nación (Propiedades / Arquitectura)** | Costo por m² de referencia | Semanal |
+| **APYMECO** (PyMEs constructoras de Bs. As.) | Costo por m² de vivienda tipo | |
+
+---
+
+## APÉNDICE — RESUMEN DE VALORES DE REFERENCIA VERIFICADOS
+
+> **Tabla de consulta rápida. Cada valor lleva su fuente. Los precios y los índices se desactualizan: reverificar siempre.**
+
+| Concepto | Valor | Fuente | Fecha del dato |
+|---|---|---|---|
+| Subdivisión honorario: proyecto / dirección | **60% / 40%** | CPAU A-115 Art. 3.14 | Ed. 2023 |
+| Subdivisión histórica por etapas (acumulada) | Croquis 5% · +anteproyecto 20% · +planos generales y detalles 40% · +estructuras 60% · dirección 40% | Decreto-Ley 7887/55, art. 51 | 1955 (histórico) |
+| Escala histórica de honorarios, 1ª categoría | 9% / 7% / 5% por tramos | Decreto-Ley 7887/55, art. 50 | 1955 (histórico) |
+| Documentación licitatoria | **+15% del honorario de Proyecto** | CPAU A-115 Art. 3.11 | 2023 |
+| Documentación ejecutiva | **+20% del honorario de Proyecto** | CPAU A-115 Art. 3.11 | 2023 |
+| DO con 4–8 contratistas | +20% del honorario de DO | CPAU A-115 Art. 3.15 | 2023 |
+| DO con más de 8 contratistas | +40% del honorario de DO | CPAU A-115 Art. 3.15 | 2023 |
+| Dirección ejecutiva | 80% de (DO + representación técnica) | CPAU A-115 Art. 3.16 | 2023 |
+| Trabajos por administración | 10% del monto de los rubros | CPAU A-115 Art. 3.17 | 2023 |
+| Obras de refacción | +50% | CPAU A-115 Art. 3.18 | 2023 |
+| Obras de restauración/preservación | +80% | CPAU A-115 Art. 3.19 | 2023 |
+| Demolición: honorario base | 1,5% del valor de tasación a valor de reposición (sin terreno), afectado por 5 factores. Subdivisión: proyecto 30% / DO 70% | CPAU A-115 Arts. 5.2 y 5.3 | 2023 |
+| Cómputo y presupuesto detallado | 3% del honorario de proyecto (cómputo solo 2%; presupuesto solo 1,5%; +30% con análisis de precios; +50% en refacción) | CPAU A-115 Art. 3.22 | 2023 |
+| Prosecución de encargo de otro profesional | +25% | CPAU A-115 Art. 1.19 | 2023 |
+| Desistimiento del comitente | 100% de lo completado + proporcional de lo en curso + 25% de lo no ejecutado | CPAU A-115 Art. 1.18 | 2023 |
+| Derecho de uso de croquis/anteproyecto | 100% del honorario de anteproyecto | CPAU A-115 Art. 1.18 | 2023 |
+| Gastos improductivos por suspensión > 30 días | 30% del honorario mensual promedio por cada 30 días | CPAU A-115 Art. 1.17 | 2023 |
+| Honorario mínimo sugerido | 0,0003 K | CPAU A-115 Art. 1.11 | 2023 |
+| **Responsabilidad decenal** | **10 años desde la aceptación de la obra; alcanza al proyectista y al director de obra; la limitación contractual es nula** | CCyC arts. 1273–1277 | Vigente |
+| Modificación del Reglamento de PH | Mayoría de 2/3 de la totalidad de los propietarios | CCyC art. 2057 | Vigente |
+| Muro de cerramiento forzoso urbano | Estable, aislante, altura mínima 3 m desde la intersección del límite con la superficie de los inmuebles; medianero hasta 3 m | CCyC arts. 2007–2008 | Vigente |
+| Registro en IERIC | 15 días hábiles desde el inicio de la actividad, para la empresa y para cada trabajador. **Solidaridad del propietario y del profesional contratante** | Ley 22.250 art. 3 | Vigente |
+| **ICC INDEC julio 2026** | **+2,1% mensual · +32,5% interanual · +19,2% acumulado ene–jul.** Materiales +1,6%; Mano de obra +2,5%; Gastos generales +2,5% | INDEC, informe ICC julio 2026 | 08/2026 |
+| ICC INDEC junio 2026 / abril 2026 | +2,6% / +3,1% mensual | INDEC | 2026 |
+| Costo m² vivienda (pesos) | ~$2.019.993/m² sin terreno | APYMECO | Enero 2026 |
+| Costo m² vivienda (dólares) | USD 700–950 (estándar) / USD 1.000–1.500 (gama media) / >USD 2.000 (premium) — **fuentes con metodologías dispares** | Relevamientos de mercado | 2026 |
+| CALP — valor de referencia de m² | $390.768/m² (vivienda unifamiliar tipo 120 m²), actualizado por promedio de índices CAMARCO e IPC-INDEC, máximo cada 2 meses. **MUY DESACTUALIZADO: consultar el vigente** | CALP, Res. 22/2023 | Vigente desde 01/10/2023 |
+| Gastos generales (rango de mercado) | 13–21% del costo directo (fuentes citan desde 7% en pliegos públicos hasta 25% en relevamientos) | Relevamientos varios | 2026 |
+| Beneficio empresario | 10–15% | Pliegos y relevamientos | 2026 |
+| Impuestos sobre facturación (sin IVA) | 3–7% | Práctica | Verificar con contador |
+| IVA | 21% general (**verificar si corresponde 10,5% en obras destinadas a vivienda**) | AFIP/ARCA | Verificar |
+| Rendimiento mampostería de bloque | 12 m²/jornada (rango 8–14) | Fuentes de rendimientos relevadas | 2026 |
+| Rendimiento revoque (aplanado) | 12–18 m²/jornada | Ídem | 2026 |
+| Rendimiento colocación de cerámico | Cuadrilla de 2 oficiales + 1 ayudante: 36 m² en 3 jornadas | Ídem | 2026 |
+| Seguro de RC profesional | Sumas aseguradas del orden de $5.000.000 a $150.000.000; franquicia ~1,5% de la suma asegurada. Algunos Colegios lo brindan sin cargo a sus matriculados | Fuentes comerciales | 2026 — **cotizar** |
+| CIRSOC vigentes | 101-2025, 102-2025, 200-2024, 201-2025 desde el 22/01/2026 (Res. 11/2026 SOP); 301-2018; 303-2009; 501-2007/501-E-2023; 601-2016; INPRES-CIRSOC 103 I-2018 y II-2021 | INTI-CIRSOC / Resumen EDICI | 2026 |
+| Cajas de escalera presurizadas | Obligatorias en cajas que sirvan a **seis o más niveles** | Decreto 351/79 Anexo VII | Vigente — verificar en el Código local |
+| Accesibilidad: vereda | Ancho mínimo 1,50 m; pendiente transversal máx. 2%, mín. 1%; pendiente longitudinal < 4% (por encima se trata como rampa) | Decreto 914/97 | Vigente — verificar el anexo completo |
+
+---
+
+*Documento elaborado en septiembre de 2026 para uso interno del estudio. Ruta: `docs/02-proyecto/proyecto-ejecutivo.md`.*
+*Toda cifra, arancel, índice y trámite debe reverificarse en la fuente citada antes de su uso en una propuesta o en obra.*
