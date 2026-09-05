@@ -7,20 +7,27 @@
 
 ---
 
-## ⚠ Advertencia de vigencia — leer antes de usar
+## Estado de la normativa — leer antes de usar
 
-Los indicadores urbanísticos de este documento fueron **extraídos del texto del Código
-Urbanístico de Santa Rosa consolidado hasta la Ordenanza 5770/18** (versión publicada en
-`region.com.ar`, texto ordenado 2017 / 20-02-2018).
+✅ **El Código Urbano Ambiental vigente (Ordenanza 6976/2023) fue obtenido, transcripto y
+volcado a este documento.** Su Artículo 2º **deroga la Ordenanza 3274/2005** (el Código
+Urbanístico anterior). También se obtuvo el **Código de Edificación (Ordenanza 1581/1995)**,
+texto consolidado. Ambos, más los planos de zonificación y de corredores, están descargados en
+`docs/10-casa-santa-rosa/fuentes/`.
 
-**En 2023 el Concejo Deliberante sancionó la Ordenanza 6976/2023, que aprueba un nuevo
-"Código Urbano Ambiental".** El Colegio Profesional de la Ingeniería y la Técnica de La Pampa
-(CPITLP) publica el nuevo código, el plano de zonificación y el plano de corredores.
+**Las tablas de este documento fueron rehechas sobre el texto vigente.** Igual valen dos
+recaudos:
 
-**Consecuencia operativa:** los números de las tablas de abajo sirven como *estructura mental
-y orden de magnitud*, pero **antes de cerrar cualquier anteproyecto hay que pedir la ficha
-urbanística de la parcela en la Dirección de Planeamiento Urbano** y confirmar contra el código
-vigente. No se cotiza ni se dibuja sobre estos números sin ese chequeo.
+1. El cuerpo del Código Urbano Ambiental estaba escaneado y se transcribió por OCR: los valores
+   numéricos hay que confirmarlos contra el PDF antes de firmar.
+2. **La ficha urbanística de la parcela se pide siempre en Planeamiento.** Puede haber
+   ordenanzas modificatorias posteriores a 2023 y particularidades del lote que ninguna tabla
+   general recoge.
+
+**Lo único que sigue faltando:** los **Cuadros 3.4.4.a/b/c** (superficies, lados y altura
+mínima de locales) y el **Cuadro 3.4.5.1** (iluminación y ventilación) del Código de
+Edificación. El código remite a "Temas de Interés" del sitio del Concejo, que está detrás de
+Cloudflare y no tiene copia en Wayback. **Hay que pedirlos en la oficina.**
 
 **Ruta de verificación (hacerla una vez y dejarla documentada por parcela):**
 
@@ -34,197 +41,128 @@ vigente. No se cotiza ni se dibuja sobre estos números sin ese chequeo.
 
 ---
 
-## 1. Dónde se puede construir 10 plantas en Santa Rosa
+## 1. Dónde se puede construir en altura en Santa Rosa
 
-Ésta es la primera pregunta que hay que responder y casi nadie la responde bien. En Santa Rosa
-la altura no la define el proyecto: la define el distrito **y la tipología constructiva** que se
-adopte en ese distrito.
+*Transcripto del Código Urbano Ambiental (Ord. 6976/2023), Título 5.*
 
-Según el código consolidado 2018, un edificio de **PB + 9 pisos o más solo es viable** en:
+La altura no la define el proyecto: la definen **el distrito y la tipología constructiva**. El
+CUA distingue cuatro tipologías —entre medianeras, torre de perímetro libre (con y sin
+basamento) y semiperímetro libre (con y sin basamento)— y le da a cada una una altura distinta
+dentro del mismo distrito.
 
-| Distrito | Tipología | Altura máxima admitida | ¿Llega a 10 plantas? |
-|---|---|---|---|
-| **CR1** | Entre medianeras | PB + 6 pisos ó 21 m (+3 m servicios) | No |
-| **CR1** | Torre de semiperímetro libre (3 lados) | PB + 10 pisos ó 27 m (+3 m) — **solo en parcelas ≤ 12 m de frente** | Sí (PB+10) |
-| **CR1** | Torre (basamento + fuste) | PB + 12 pisos ó 39 m (+3 m). Basamento: PB + 3 pisos ó 13 m | Sí, con margen |
-| **CR2a** | Entre medianeras | PB + 8 pisos ó 27 m (+3 m) | Casi (PB+8) |
-| **CR2a** | Torre de semiperímetro libre | PB + 12 pisos ó 39 m (+3 m) | Sí |
-| **CR2a** | Torre | PB + 15 pisos ó 48 m (+3 m), basamento 3 pisos | Sí, con margen |
-| **CR2b** | Entre medianeras | PB + 6 pisos ó 21 m (+3 m) | No |
-| **CR2b** | Torre semiperímetro libre / perímetro libre | PB + 12 ó 39 m / PB + 15 ó 48 m (+3 m) | Sí |
-| **CR3** | — | PB + 6 pisos ó 21 m | No |
-| **R2** | — | PB + 2 pisos ó 9 m | No |
-| **R2a / R2e** | — | PB + 2 pisos ó 9 m / 9 m | No |
-| **R3 / R3e / R4** | — | PB + 1 piso ó 6 m | No |
-| **R5 / R6** | — | PB + 1 piso ó 6 m / 6 m | No |
-| **Corredores tipo 1-2-3-5-6-7** | — | **+3 m (un piso más)** sobre la altura del distrito, **excepto** en CR1, CR2 y CR3 | Solo suma un piso |
+### 1.1 CR1
 
-**Lectura para el estudio:** el edificio en altura en Santa Rosa vive en el **área central
-(CR1 y CR2)**. Fuera de ahí, el producto es vivienda unifamiliar, dúplex, PH y multifamiliar
-de baja escala (PB+1 / PB+2), más el bonus de un piso sobre los corredores comerciales.
-Un anteproyecto de 10 plantas presentado sobre un lote en R3 no es "ambicioso": es
-inviable, y detectarlo en la primera reunión ahorra semanas.
+| Tipología | Altura máxima | Plantas |
+|---|---|---|
+| Entre medianeras | PB + 6 pisos ó **22 m** (+3 m servicios) | 7 |
+| Torre de perímetro libre **con** basamento | Basamento PB + 2 pisos (10 m) + volumen exento de 10 pisos (30 m) + 3 m → **total 43 m** | 13 |
+| Torre de perímetro libre **sin** basamento | PB + 12 pisos (30 m) + 3 m → **total 43 m** | 13 |
+| Semiperímetro libre **con** basamento | Basamento PB + 2 pisos (10 m) + volumen exento de 7 pisos (31 m) + 3 m → **total 34 m** | **10** |
+| Semiperímetro libre **sin** basamento | PB + 9 pisos (31 m) + 3 m → **total 34 m** | **10** |
 
-### 1.1 La consulta municipal que decide si el edificio tiene 9 o 10 plantas
+- **FOS:** 0,8 en PB y 1er piso para usos **no residenciales** cuando ocupen al menos el 50 % de
+  la superficie · 0,6 en el resto de los pisos superiores · **0,9 en CR1b** para parcelas
+  menores a 200 m², en PB y los 2 pisos superiores.
+- **Altura mínima de planta baja:** 4 m en CR1a y CR1b · 3 m en el resto de CR1.
+- **Densidad neta máxima:** 2.000 hab/ha (vivienda) · 1.000 hab/ha (usos no residenciales).
+- **Retiro de fondo** (si profundidad ≥ 26 m): 1er y 2° piso **(n−20)/2** · desde el 3er piso
+  **(n−20)/1,5**.
 
-El código admite **"edificios de tipología combinada, donde se respeten los indicadores
-establecidos para cada una de ellas"**. Cómo se lee exactamente esa combinación —a partir de
-qué nivel arranca el fuste, cómo se cuentan las alturas de cada tipología, si el basamento de
-un edificio "en torre" puede tener más de 3 pisos— **la fija la Autoridad de Aplicación, no
-el código**.
+### 1.2 CR2
 
-No es un detalle: en CR2a, una lectura habilita el 9° piso por vía de tipologías mixtas y la
-otra lo impide. **Esa interpretación vale aproximadamente el 10 % de la superficie vendible
-del edificio.**
+| Tipología | Altura máxima | Plantas |
+|---|---|---|
+| Entre medianeras | PB + 6 pisos ó **22 m** (+3 m servicios) | 7 |
+| Torre de perímetro libre **con** basamento | Basamento PB + 2 pisos (10 m) + 13 pisos (49 m) + 3 m → **total 52 m** | 16 |
+| Torre de perímetro libre **sin** basamento | PB + 15 pisos (49 m) + 3 m → **total 52 m** | 16 |
+| Semiperímetro libre **con** basamento | Basamento PB + 2 pisos (10 m) + 13 pisos (49 m) + 3 m → **total 52 m** | 16 |
+| Semiperímetro libre **sin** basamento | PB + 15 pisos (49 m) + 3 m → **total 52 m** | 16 |
 
-**Por eso es la consulta municipal número uno de cualquier anteproyecto en altura en Santa
-Rosa, y se hace por escrito ANTES de dibujar, no después.** Junto con ella conviene resolver
-en el mismo trámite las otras tres ambigüedades detectadas en el código:
+- **FOS:** 0,6 residencial · 0,9 en parcelas menores a 200 m² en PB y los 2 pisos superiores ·
+  0,8 no residencial cuando ocupe al menos el 50 % de la superficie en 1er piso · 0,6 en pisos
+  superiores para todos los usos · **CR2a:** 0,9 no residencial con ≥50 % en PB · **CR2b:** 0,8
+  no residencial en PB y 1er piso con ≥30 %.
+- **Altura mínima de planta baja:** 4 m.
+- **Densidad neta máxima CR2a y CR2b:** **3.000 hab/ha** — indicador parcelario **0,3 hab/m²
+  para cualquier uso**.
+- **Retiro de fondo** (si profundidad ≥ 26 m): desde el 1er piso **(n−20)/2**.
 
-1. Interpretación de la **combinación de tipologías** (la de arriba).
-2. **Cómputo del monoambiente para densidad** — cuántos habitantes se le imputan a una unidad
-   sin dormitorio separado.
-3. Lectura de **"3 habitaciones o más"** en la planilla de estacionamiento — si "habitaciones"
-   son dormitorios o ambientes, cambia la cantidad de cocheras exigidas.
-4. **Pendiente máxima admitida de rampa vehicular**.
+### 1.3 Lo que cambió respecto del código derogado
 
-Análisis completo de las cuatro en `docs/01-anteproyecto/anteproyecto.md`.
+| Tema | Ord. 3274/2005 (derogado) | Ord. 6976/2023 (vigente) |
+|---|---|---|
+| CR2a entre medianeras | PB + 8 pisos ó 27 m | **PB + 6 pisos ó 22 m** — bajó |
+| CR1 entre medianeras | PB + 6 ó 21 m | PB + 6 ó **22 m** |
+| Densidad CR1 | 3.000 hab/ha · 0,3 hab/m² | **2.000 hab/ha** (vivienda) — bajó |
+| Densidad CR2a | 2.000 hab/ha · 0,2 hab/m² | **3.000 hab/ha · 0,3 hab/m²** — subió |
+| Retiro de fondo en distritos R | (n−20)/3, /4 ó /5 según distrito | **(n−20)/2 unificado** |
+| Suelo absorbente | No existía | **C.A.S.** obligatorio |
+| Corredores | 8 tipos | Reescritos como **CC1 a CC13** con tramos |
 
-**Y un piso regalado por la norma:** por encima de la altura máxima se pueden ubicar sala de
-máquinas, tanques, vivienda del encargado y **locales complementarios de uso común** (SUM,
-laundry, gimnasio, terraza cubierta), mientras no superen en conjunto el 30 % de la planta
-tipo ni 3 m de altura. Los amenities de azotea, bien planteados, no consumen altura
-computable. [Confirmar interpretación con el municipio.]
-
-> El "+3 m" que aparece en casi todas las alturas es para **locales de servicio común o
-> instalaciones** (sala de máquinas, tanque, remate de ascensor, vivienda del encargado,
-> amenities de uso común). El código lo acota: no puede superar el **30 % de la planta tipo
-> construida** ni los **3 m de altura**. Antenas, balizamiento y pararrayos sí pueden pasar.
+> **El edificio más alto admitido de la ciudad no está en CR1 ni en CR2.** El distrito **E9
+> (ex Molino Harinero Werner y terrenos aledaños)** tiene indicadores propios: FOS 0,6
+> residencial / 0,8 no residencial y **altura máxima PB + 18 pisos ó 57 m**, con retiros de
+> torre de perímetro libre. Los edificios existentes se preservan y todo reciclado pasa por
+> dictamen de Planeamiento con intervención de la Comisión Municipal Honoraria de Patrimonio.
 
 ---
 
-## 2. Tabla maestra de indicadores por distrito
+## 2. Distritos residenciales — casa de una planta
 
-Consolidada del texto del Código Urbanístico (versión 2018). **Verificar contra Ord. 6976/2023.**
+*Transcripto del CUA, Título 5, Secciones 5.4 a 5.11.*
 
-### 2.1 Distritos centrales (CR)
+Una casa de una planta entra en **R2, R2a, R2e, R3, R3e, R4, R5 y R6**: todo el tejido
+residencial fuera del centro. **La altura nunca es el condicionante** —los techos van de 6 a
+9 m y una casa baja no los toca. Lo que manda es el **FOS**, el **retiro de fondo**, el
+**C.A.S.** y, en algunos distritos, el **retiro de frente**.
 
-| Indicador | **CR1** (CR1a / CR1b) | **CR2a** | **CR2b** | **CR3** |
-|---|---|---|---|---|
-| Carácter | Máxima centralidad; equipamiento + residencia de alta densidad | Residencial densidad alta | Residencial densidad alta | Residencial densidad media, borde del área central |
-| Subdivisión mínima | 15 m de lado / 450 m² | 15 m / 450 m² | 15 m / 450 m² | 12 m / 300 m² |
-| **FOS** | 0,8 en PB y 1er piso · 0,6 en pisos superiores | 0,6 residencial · 0,9 no residencial PB · 0,8 no resid. 1er piso · 0,6 superiores | 0,6 residencial · 0,8 no residencial | 0,6 residencial · 0,8 no residencial en PB |
-| Retiro de frente | Entre medianeras y semiperímetro libre: sin retiro hasta 3 pisos; **desde el 4° piso: 3 m** (se puede ocupar hasta LM en PB y 6 pisos en ≤50 % del ancho). Torre: 3 m obligatorio para el fuste desde el 4° piso | Sin retiro desde LM (todas las tipologías) | Se propicia torre exenta/perímetro libre con 3 m de retiro | — |
-| Retiro lateral | Entre medianeras PB+6: sin retiro. Torre: 3 m libres (3,15 a ejes divisorios) para el fuste **desde el 7° piso**. Semiperímetro libre: apoyo en un lateral, mínimo 4,50 m en el otro | Entre medianeras PB+8: sin retiro. Torre: 3 m (3,15 a ejes). Semitorre: 4,50 m de un lado. Tipologías mixtas: 3 m desde el 9° piso | Apoyo entre medianeras hasta PB+6. Semiperímetro libre: 4,50 m libres del lado opuesto. Torre: 3 m ambos laterales / semitorre 4,50 m de uno, para el fuste desde el 7° piso | Sin retiro entre medianeras |
-| **Retiro de fondo** (solo si profundidad ≥ 26 m) | 1er piso: (n−20)/3 · desde 2° piso: (n−20)/2 | Desde 1er piso: (n−20)/3 · desde 2° piso: (n−20)/2 | ídem CR2a | Pisos superiores: (n−20)/2 |
-| Altura máxima | Ver tabla §1 | Ver tabla §1 | Ver tabla §1 | PB + 6 pisos ó 21 m |
-| **Densidad máxima** | 3.000 hab/ha — indicador parcelario **0,3 hab/m²** | 2.000 hab/ha — **0,2 hab/m²** | ídem CR2a | 1.000 hab/ha — **0,1 hab/m²** |
-| Tipología vedada | En CR1a y CR1b **no se permite perímetro libre** | — | — | — |
-
-> **`n`** = profundidad del lote en metros. El retiro de fondo solo se aplica si el lote tiene
-> **26 m o más** de profundidad. En planta baja el fondo se puede ocupar con dependencias de
-> servicio (cochera, quincho, baulera, sanitarios, natatorio) o un mínimo de 3 m, **en una sola
-> planta de hasta 4,50 m de altura desde el nivel 0**, sin superar el FOS.
-
-**Regla de recomposición de fachada (CR1a y CR1b):** entre la altura de PB y la altura máxima
-de basamento (PB + 3 pisos) hay que **recomponer, real o virtualmente, el plano vertical de
-fachada sobre la Línea Municipal en al menos 1/3 del ancho de la parcela**. Si no se resuelve
-con volumen cerrado habitable, se admiten estructuras, entramados, muros calados o
-acristalamientos. **Esto es un condicionante de diseño de fachada, no un trámite**: hay que
-resolverlo en anteproyecto. No es obligatorio en refacciones y ampliaciones de edificios
-existentes (queda como recomendación).
-
-### 2.2 Distritos residenciales (R)
-
-| Indicador | **R2** | **R2a** | **R2e** | **R3** | **R3e** | **R4** | **R5** | **R6** |
+| Indicador | R2 | R2a | R2e | R3 | R3e | R4 | R5 | R6 |
 |---|---|---|---|---|---|---|---|---|
-| Carácter | Densidad media externa al centro | Residencial con resguardo de calidad edilicia | Residencial unifamiliar homogéneo | Residencial en compactación | Baja densidad con usos no residenciales preexistentes | Residencial en recuperación / periférico | Baja densidad, permanencia variable | Vivienda extraurbana / fin de semana |
-| Subdivisión mínima | 12 m / 300 m² | 15 m / 450 m² | 15 m / 450 m² | 12 m / 300 m² | 12 m / 300 m² | 10 m / 300 m² | 15 m / 600 m² | 25 m / 1.000 m² |
-| **FOS** | 0,6 | 0,6 | 0,6 | 0,6 | 0,6 | 0,6 (hasta **0,8** en barrios de interés social con lotes ≤200 m², solo uso residencial) | 0,5 | 0,5 |
-| Retiro de fondo (si prof. ≥26 m) | (n−20)/3 | (n−20)/5 | (n−20)/5 | (n−20)/4 | (n−20)/4 | (n−20)/4 | (n−20)/4 | (n−20)/4 |
-| Retiro de frente | — | Jardín obligatorio; se puede avanzar hasta LM en 50 % del ancho. Sugerido: 3 m si fondo >30 m · 2 m si 20–30 m · 1,5 m si ≤20 m | ídem R2a | — | — | — | 4 m (intermedias) · esquina: 4 m lado menor + 2 m lado mayor | 4 m (intermedias) · esquina: 4 m / 2 m |
-| Retiro lateral | — | — | — | — | — | — | 3 m de un lateral si el frente ≥20 m | 3 m de un lateral |
-| **Altura máxima** | PB + 2 pisos ó 9 m | PB + 2 pisos ó 9 m | 9 m | PB + 1 piso ó 6 m | PB + 1 piso ó 6 m | PB + 1 piso ó 6 m | PB + 1 piso ó 6 m | 6 m |
-| **Densidad** | 800 hab/ha — **0,08 hab/m²** | 400 hab/ha — **0,04 hab/m²** | 400 hab/ha — **1 vivienda por parcela** | 400 hab/ha — **0,04 hab/m²** | 400 hab/ha | 400 hab/ha | **1 vivienda por parcela** | **1 vivienda por parcela** |
-| Restricciones tipológicas | — | Multifamiliar sí, pero **sin viviendas superpuestas**; accesos desde nivel 0,00; cada unidad con patio privado (patio 1ª categoría); **no se admiten monoambientes**, mínimo 2 dormitorios; cocheras cubiertas desde el inicio de obra. En R2aII, unificaciones >600 m² pueden usar indicadores de R2 | Solo **una unidad de vivienda por parcela** | — | — | — | — | — |
+| **FOS** | 0,6 | 0,6 | 0,6 | 0,6 | 0,6 | 0,6 (0,8 en interés social, lotes ≤200 m²) | 0,5 | 0,5 |
+| **Retiro de frente** | — | Sí (jardín) | Sí (jardín) | — | — | — | **4 m** | **4 m** |
+| **Retiro de fondo, pisos sup.** (si prof. ≥26 m) | (n−20)/2 | (n−20)/2 | (n−20)/2 | (n−20)/2 | (n−20)/2 | (n−20)/2 | (n−20)/2 | (n−20)/2 |
+| **Retiro lateral** | — | — | — | — | — | — | 3 m de un lateral si frente ≥20 m | 3 m de un lateral |
+| **Subdivisión mínima** | 12 m / 300 m² | 15 m / 450 m² | 15 m / 450 m² | 12 m / 300 m² | 12 m / 300 m² | 10 m / 300 m² | 15 m / 600 m² | **20 m / 1.000 m²** |
+| **Altura máxima** | PB+2 ó 9 m | PB+2 ó 9 m | 9 m | PB+1 ó 6 m | PB+1 ó 6 m | PB+1 ó 6 m | PB+1 ó 6 m | PB+1 ó 6 m |
+| **Densidad** | 800 hab/ha · 0,08 hab/m² | 400 hab/ha · 0,04 hab/m² | **200 hab/ha · 1 viv./parcela** | **200 hab/ha · 0,02** | **200 hab/ha · 0,02** | **300 hab/ha · 0,03** | **60 hab/ha · 1 viv./parcela** | **60 hab/ha · 1 viv./parcela** |
+| **C.A.S.** | 0,20 | 0,15 | 0,15 | 0,20 | 0,20 | 0,20 | 0,25 | 0,30 |
+| **Cochera** | 1 espacio | **Obligatoria, 1 módulo/vivienda** | **Obligatoria, 1 módulo/vivienda** | 1 espacio | 1 espacio | 1 espacio | 1 espacio | 1 espacio |
 
-**Regla de asimilación (R5 y R6):** los lotes cuyas dimensiones sean asimilables a las exigidas
-en zonas de mayor densidad (R2 o R3) adoptan los indicadores de esas zonas **únicamente en lo
-referido a FOS y retiros**.
+En **R2e, R5 y R6** se admite **una sola vivienda por parcela** (hasta 2 unidades funcionales
+del mismo grupo familiar, sin tipología repetitiva).
 
-### 2.3 Corredores comerciales (Cc)
+**En planta baja**, el fondo de la parcela se puede ocupar con dependencias de servicio
+—cochera, quincho, baulera, sanitarios, natatorio— **en una sola planta de hasta 4,50 m de
+altura**, sin superar el FOS. Para otros usos hay que retirarse un mínimo de 3 m del fondo.
 
-Los corredores son alineamientos sobre avenidas y calles jerarquizadas que **atraviesan**
-distritos y les cambian los indicadores a los lotes frentistas.
+### 2.1 El C.A.S. — el indicador nuevo que sorprende
 
-| Tipo | Carácter | FOS | Altura |
-|---|---|---|---|
-| **1** – Comercial y de servicios | Comercio de gran escala, transporte automotor, turismo | 0,80 en PB solo no residencial · 0,60 residencial | +3 m (un piso más) sobre el distrito |
-| **2** – Comercial diversificado | Usos según planillas | 0,80 en PB y 1er piso no residencial · 0,60 superiores. **Lotes ≤200 m²: 0,90** en PB y 1er piso no residencial · 0,60 superiores | +3 m sobre el distrito |
-| **3** – Comercial de menor escala | Usos según planillas | ídem tipo 2 | +3 m sobre el distrito |
-| **4** – Comercial, servicios y recreativo | Tramo a: gastronomía, hotelería, recreación compatible con residencia. Tramo b: además bailables y usos de gran escala | Tramo a: 0,8 PB no residencial / 0,60 residencial · Tramo b: **0,4 en PB para todos los usos** | PB + 1 piso (puede admitirse uno más según proyecto) |
-| **5** – Comercial, servicios e industrial | Tramo a: semiindustrial, depósitos, servicios de gran magnitud. Tramo b: semiindustrial y productivo | 0,8 no residencial en PB · 0,60 superiores | +3 m sobre el distrito |
-| **6** – Comercial-residencial | Comercio, servicio y recreación ligados a residencia | 0,8 no residencial en PB · 0,60 superiores | +3 m sobre el distrito |
-| **7** – Comercial-residencial especial | Solo usos no residenciales de pequeña escala | 0,8 no residencial en PB · 0,60 superiores | +3 m sobre el distrito |
-| **8** – Comercial-recreativo | Comercio minorista de escasa superficie + recreativo | 0,6 en PB y superiores, todos los usos | **Mantiene** la altura del distrito |
+**Coeficiente de Absorción del Suelo** (art. 1.4.1.15): *"porción mínima de la superficie total
+de una parcela que debe quedar libre de cualquier construcción que impida la permeabilidad del
+terreno natural, sean locales cubiertos, semicubiertos o **veredas exteriores**."*
 
-**El +3 m NO aplica en CR1, CR2 ni CR3.**
+**Los solados exteriores computan en contra.** No alcanza con cumplir el FOS y pavimentar el
+resto del patio: hay que dejar una fracción del lote efectivamente permeable. En R2a/R2e
+(C.A.S. 0,15) sobre un lote de 600 m² hay que dejar **90 m² de tierra o piso permeable**, y eso
+es independiente de los 240 m² que quedan libres por FOS.
 
-**Corredor tipo 7 — condiciones especiales de proyecto** (Av. Manuel Belgrano y Argentino Valle):
-mínimo 2 dormitorios por unidad; mayoría de unidades con expansión (patio o balcón-terraza) en
-relación directa con el estar-comedor, con lado según patio de 2ª categoría; expresión
-arquitectónica afín a R2e con materiales tradicionales declarados en planos de cortes y
-fachadas; **1 módulo de estacionamiento por unidad**.
+**Y en Santa Rosa esto se cruza con el suelo:** la napa subió cerca de 20 m en tres décadas
+(ver §5.2). El C.A.S. empuja a infiltrar agua en el lote, justo donde el loess colapsa al
+saturarse. Conviene resolverlo **lejos de la fundación**, con las distancias de
+`docs/10-casa-santa-rosa/suelo-y-fundacion-santa-rosa.md`, no con un cantero contra el muro.
 
-### 2.4 Reglas transversales de tejido
+### 2.2 Reglas transversales
 
 | Regla | Contenido |
 |---|---|
-| **Fórmula general de retiro de fondo** | En todos los distritos, para los pisos superiores: **(n−20)/x**, donde `n` es el lado mayor (profundidad) y `x` varía por distrito. Solo en terrenos que cumplan la profundidad mínima |
-| **FOS en lotes chicos** | En lotes **≤ 200 m²**, el FOS puede ser mayor al del distrito (ver corredores y R4); en CR1a/CR1b, corredores comerciales, perímetro de plazas y frente al área ferroviaria se admite **FOS 0,90 en PB y hasta 2 pisos altos** |
-| **Perímetro de plazas** | Los edificios en el perímetro de plazas tienen un **incremento de altura máxima de 2 niveles** |
-| **Premios urbanísticos** | El código habilita alterar parámetros (estacionamiento, FOS de PB y/o altura máxima) como **premio por opciones de diseño que beneficien al ambiente o produzcan mejoras urbanas** — herramienta de negociación real en anteproyecto: **preguntarla siempre en Planeamiento** |
-| **FOS: qué computa** | Proyección horizontal de la envolvente total del edificio en la cota de parcela. **Se excluyen solo los balcones de vuelo ≤ 1,20 m** |
-| **Parcelas en esquina entre sectores distintos** | Se consideran integrantes del **sector con mayores restricciones** |
-| **Superficie máxima de manzana** | Límite de 15.000 m², rebasable solo en distritos E |
-| **Altura máxima: qué no computa** | Parapetos y barandas de terraza, tanques de reserva, remate de ascensores, vivienda o local del encargado, locales complementarios de uso común de PH — **hasta 30 % de la planta tipo y 3 m**. Antenas, balizamiento y pararrayos sí pueden superarla |
-| **Techos inclinados** | La altura del último piso **no debe permitir la existencia futura de locales habitables en dos niveles** |
-
-### 2.5 Patios (categorías)
-
-| Categoría | Sirve a | Dimensiones mínimas |
-|---|---|---|
-| **1ª categoría** | Locales de 1ª, 3ª y 5ª categoría (habitables) | **Hasta 13 m de altura:** lado mín. 3 m y área mín. 12 m². **Superando 13 m:** lado mín. 3 m y área mín. 18 m², desde planta baja |
-
-**Regla crítica en edificios:** independientemente de la cantidad de unidades o de la altura,
-cuando a estos patios ventilen **locales de 1ª categoría**, la **separación mínima entre dos
-bloques que constituyan unidades distintas es de 6 m**. Los aventanamientos de circulaciones
-verticales o espacios de uso común **no pueden tener visuales directas** a esos locales.
-
-> Las categorías de local y el resto de las dimensiones de patio están en el **Código de
-> Edificación**, no en el Urbanístico. Pedirlo y anexarlo a esta biblioteca.
-
-### 2.6 Estacionamiento exigido
-
-| Uso | Exigencia |
-|---|---|
-| Vivienda individual | 1 espacio de guarda-auto **en todos los casos** |
-| Vivienda colectiva, unidades de 3 dormitorios o más | 1 espacio de guarda-auto **por vivienda** |
-| Vivienda colectiva, otras unidades | 1 espacio de guarda-auto **cada 2 viviendas** |
-| Oficinas / administración pública y privada | Superficie total >250 m²: 1 módulo automóvil cada 40 m² **a partir de los 251 m²** |
-| Hotel | 1 módulo cada 3 habitaciones |
-| Educación (ciclos, polimodal, universitario) | 12 % de la superficie construida |
-| Sanidad sin internación (>200 m²) | 12 % de la superficie construida |
-| Sanidad con internación (desde 200 m²) | 1 módulo cada 60 m² |
-
-**Notas operativas:**
-- En **vivienda unifamiliar**, el FOS del distrito **ya incluye** la superficie de estacionamiento.
-- En distritos que admiten FOS hasta 0,80 para usos no residenciales, el estacionamiento se
-  computa aparte hasta el máximo cubierto (verificar redacción vigente).
-- En **CR1a** se exime el estacionamiento, **excepto** viviendas unifamiliares, multifamiliares
-  y hoteles. En emprendimientos de gran magnitud queda a criterio de la Autoridad de Aplicación.
-- En **R2a y R2e** la cochera es obligatoria: **1 módulo mínimo por vivienda**, y en
-  multifamiliar el estacionamiento **cubierto** debe preverse en su totalidad desde el inicio de obra.
+| **FOS: qué computa** (art. 1.4.3.2) | Proporción máxima de la parcela ocupable con edificios **sobre el nivel +1,50 m** respecto de la cota ±0,00, considerando la envolvente total, **cubierta y semicubierta**. Se excluyen solo los balcones de vuelo ≤ 1,20 m, **excluyendo los de configuración continua** |
+| **Lotes ≤ 200 m²** (art. 4.3.1.6) | El FOS puede ser igual al **80 %** de la superficie |
+| **Lotes atípicos** (art. 4.3.2.3) | En lotes preexistentes de dimensiones muy distintas al parcelamiento típico se pueden usar **indicadores de zonas análogas** para el FOS, variar el ancho del retiro de frente y **prescindir del retiro lateral** |
+| **Lotes en esquina** (art. 4.3.1.1) | Se considera frente y fondo el **lado menor**; el mayor es eje divisorio y frente lateral. Por criterio proyectual **se puede definir el lado mayor como fondo** |
+| **Fondo en esquina** (art. 4.3.1.5) | Si un lado supera 26 m, el retiro de fondo se cumple sobre el **lado menor**, en PB y pisos superiores, pudiendo distribuirse en ambos ejes o volcarse todo al lado mayor |
+| **Perímetro de plazas y área ferroviaria** | Incremento de la altura máxima en **2 niveles** |
+| **Premios urbanísticos** | El código habilita alterar parámetros como premio por opciones proyectuales que beneficien al ambiente o produzcan mejoras urbanas — **preguntarlo siempre en Planeamiento** |
+| **Techos inclinados** | La altura del último piso no debe permitir la existencia futura de locales habitables en dos niveles |
 
 ---
 
@@ -252,31 +190,36 @@ Este es el cálculo que abre toda reunión de anteproyecto. Orden fijo:
 ### 3.1 Ejemplo numérico — lote entre medianeras en CR2a
 
 Datos: lote de **12 m de frente × 40 m de profundidad = 480 m²**, distrito CR2a, tipología
-entre medianeras (uso residencial).
+entre medianeras, uso residencial. Indicadores del **CUA vigente**.
 
 | Paso | Cálculo | Resultado |
 |---|---|---|
 | Superficie del lote | 12 × 40 | **480 m²** |
-| FOS residencial CR2a | 0,6 | **288 m² ocupables** |
-| Retiro de frente | CR2a entre medianeras: sin retiro | 0 m |
-| Retiro de fondo, 1er piso | (40 − 20)/3 = 6,67 m | huella 12 × 33,33 = 400 m² → manda el FOS: **288 m²** |
-| Retiro de fondo, 2° piso y superiores | (40 − 20)/2 = 10 m | huella 12 × 30 = 360 m² → manda el FOS: **288 m²** |
-| Retiro lateral | Entre medianeras hasta PB+8: sin retiro | 0 m |
-| Altura máxima | PB + 8 pisos ó 27 m, + 3 m de servicios | **9 niveles** |
-| Superficie construible bruta teórica | 288 m² × 9 niveles | **2.592 m²** |
-| **Densidad — el límite real** | 480 m² × 0,2 hab/m² | **96 habitantes** |
-| Unidades admitidas (a 1,5 hab/dorm) | 96 / 1,5 = 64 dormitorios | ~**32 unidades de 2 dorm.** ó ~21 de 3 dorm. |
-| Estacionamiento (unidades de 2 dorm. → "otras") | 32 / 2 | **16 módulos** |
+| FOS residencial CR2 | 0,6 | **288 m² ocupables** |
+| Retiro de frente | Entre medianeras: sin retiro | 0 m |
+| Retiro de fondo, desde 1er piso | (40 − 20)/2 = 10 m | huella 12 × 30 = 360 m² → manda el FOS: **288 m²** |
+| Retiro lateral | Entre medianeras: sin retiro | 0 m |
+| Altura máxima | PB + 6 pisos ó 22 m (+3 m de servicios ≤30 % de planta tipo) | **7 niveles** |
+| Altura mínima de planta baja | 4 m en CR2 | condiciona el corte |
+| Superficie construible bruta | 288 m² × 7 niveles | **2.016 m²** |
+| Densidad admitida | 480 m² × 0,3 hab/m² | **144 habitantes** |
+| Unidades que habilita la densidad (1,5 hab/dorm) | 144 / 1,5 = 96 dormitorios | ~**48 unidades de 2 dorm.** |
 
-**Lectura:** el FOS permite ~2.590 m², pero la densidad admite ~32 unidades de 2 dormitorios.
-A ~65 m² promedio por unidad, eso da ~2.080 m² vendibles + circulaciones y servicios ≈ el
-edificio "cierra" cerca del límite de FOS. **Si el proyecto se inclinara a monoambientes, la
-densidad lo corta mucho antes que el FOS.** Y los 16 módulos de cochera en un lote de 12 m de
-frente obligan a subsuelo o a resignar toda la planta baja: eso define el partido, no la
-estética.
+**Lo que cambió, y es contraintuitivo:** con el código derogado, en este mismo lote **mandaba
+la densidad** (2.000 hab/ha permitían ~32 unidades sobre 9 niveles). Con el CUA vigente,
+CR2a **perdió dos pisos** (de PB+8 a PB+6) y **ganó densidad** (de 0,2 a 0,3 hab/m²), así que
+**la restricción se dio vuelta: ahora manda la envolvente.** La densidad habilita ~48 unidades
+de 2 dormitorios, pero en 2.016 m² brutos no entran: a ~65 m² promedio más circulaciones y
+servicios, el edificio cierra en el orden de **24-26 unidades**.
 
-> Números ilustrativos del método. **Rehacer con los indicadores vigentes y la ficha
-> urbanística de la parcela real.**
+**Conclusión de método:** no se puede razonar por analogía con proyectos anteriores a 2023. En
+cada lote hay que calcular las dos restricciones —envolvente y densidad— y ver cuál corta
+primero, porque el código nuevo las invirtió en buena parte del área central.
+
+> Falta cerrar el **estacionamiento exigido**: el cuadro está en el Título 7 del CUA y los
+> corredores se reescribieron como CC1 a CC13. **[Verificar en el CUA vigente y en la ficha
+> urbanística.]** En un lote de 12 m de frente, la rampa y la maniobra siguen definiendo el
+> partido antes que la planta tipo.
 
 ---
 
