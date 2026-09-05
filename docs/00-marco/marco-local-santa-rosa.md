@@ -65,6 +65,37 @@ de baja escala (PB+1 / PB+2), más el bonus de un piso sobre los corredores come
 Un anteproyecto de 10 plantas presentado sobre un lote en R3 no es "ambicioso": es
 inviable, y detectarlo en la primera reunión ahorra semanas.
 
+### 1.1 La consulta municipal que decide si el edificio tiene 9 o 10 plantas
+
+El código admite **"edificios de tipología combinada, donde se respeten los indicadores
+establecidos para cada una de ellas"**. Cómo se lee exactamente esa combinación —a partir de
+qué nivel arranca el fuste, cómo se cuentan las alturas de cada tipología, si el basamento de
+un edificio "en torre" puede tener más de 3 pisos— **la fija la Autoridad de Aplicación, no
+el código**.
+
+No es un detalle: en CR2a, una lectura habilita el 9° piso por vía de tipologías mixtas y la
+otra lo impide. **Esa interpretación vale aproximadamente el 10 % de la superficie vendible
+del edificio.**
+
+**Por eso es la consulta municipal número uno de cualquier anteproyecto en altura en Santa
+Rosa, y se hace por escrito ANTES de dibujar, no después.** Junto con ella conviene resolver
+en el mismo trámite las otras tres ambigüedades detectadas en el código:
+
+1. Interpretación de la **combinación de tipologías** (la de arriba).
+2. **Cómputo del monoambiente para densidad** — cuántos habitantes se le imputan a una unidad
+   sin dormitorio separado.
+3. Lectura de **"3 habitaciones o más"** en la planilla de estacionamiento — si "habitaciones"
+   son dormitorios o ambientes, cambia la cantidad de cocheras exigidas.
+4. **Pendiente máxima admitida de rampa vehicular**.
+
+Análisis completo de las cuatro en `docs/01-anteproyecto/anteproyecto.md`.
+
+**Y un piso regalado por la norma:** por encima de la altura máxima se pueden ubicar sala de
+máquinas, tanques, vivienda del encargado y **locales complementarios de uso común** (SUM,
+laundry, gimnasio, terraza cubierta), mientras no superen en conjunto el 30 % de la planta
+tipo ni 3 m de altura. Los amenities de azotea, bien planteados, no consumen altura
+computable. [Confirmar interpretación con el municipio.]
+
 > El "+3 m" que aparece en casi todas las alturas es para **locales de servicio común o
 > instalaciones** (sala de máquinas, tanque, remate de ascensor, vivienda del encargado,
 > amenities de uso común). El código lo acota: no puede superar el **30 % de la planta tipo
