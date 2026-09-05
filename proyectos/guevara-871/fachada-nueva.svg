@@ -60,9 +60,9 @@
 
 <!-- paredon: perfil de lo que tapa -->
 <line x1="0" y1="120" x2="420" y2="120" stroke="#8f1d15" stroke-width="2.5" stroke-dasharray="12 7"/>
-<text class="n" x="6" y="112">paredón 2,00 — se mantiene en el garage</text>
+<rect x="2" y="96" width="330" height="24" fill="#ffffff" opacity="0.92" rx="4"/><text class="n" x="12" y="113">paredón 2,00 — se mantiene en el garage</text>
 <line x1="420" y1="200" x2="1000" y2="200" stroke="#1a7a3c" stroke-width="2.5" stroke-dasharray="12 7"/>
-<text x="994" y="192" text-anchor="end" style="font-size:16px;fill:#166b34">paredón bajado a 1,20 — deja entrar el sol de invierno</text>
+<rect x="546" y="176" width="452" height="24" fill="#ffffff" opacity="0.92" rx="4"/><text x="988" y="193" text-anchor="end" style="font-size:16px;fill:#166b34">paredón bajado a 1,20 — deja entrar el sol de invierno</text>
 
 <!-- cotas -->
 <line class="d" x1="0" y1="-232" x2="1000" y2="-232"/><line class="d" x1="0" y1="-241" x2="0" y2="-223"/><line class="d" x1="1000" y1="-241" x2="1000" y2="-223"/><text class="c" x="500.0" y="-244" text-anchor="middle">10,00</text>
