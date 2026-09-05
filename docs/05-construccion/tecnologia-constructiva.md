@@ -8,6 +8,40 @@
 
 ---
 
+> ## 🔴 CORRECCIÓN — la temperatura de diseño de este documento está mal
+>
+> Este documento fue calculado con **TDMN = −2,7 °C / TDMX = 33,8 °C / GD18 = 1.331**. **Esos
+> valores son incorrectos para Santa Rosa.**
+>
+> Surgen de aplicar la *regla simplificada* de IRAM 11603 (`TDMN = TMIN − 4,5` y
+> `TDMX = TMAX + 3,5`) a un juego de datos antiguo. Esa regla es una aproximación **para
+> localidades que no están tabuladas en la norma**, y Santa Rosa (Aero) **sí está tabulada**.
+>
+> **Los valores normativos correctos son:**
+>
+> | | Correcto | Usado en este documento |
+> |---|---|---|
+> | **TDMN** | **−6,0 °C** | −2,7 °C |
+> | **TDMX** | **38,8 °C** | 33,8 °C |
+> | **GD18** | **1.394** | 1.331 |
+> | Mínima absoluta | −11,3 °C | no figuraba |
+>
+> La definición formal (IRAM 11603:2011, art. 3.3) es el **percentil 1 %** de las mínimas
+> diarias de mayo a agosto, no una resta fija. Una TDMN de −2,7 °C es incompatible con una
+> mínima absoluta registrada de −11,3 °C.
+>
+> **Consecuencias:** las **Tablas 0.1, 4.9 y 4.10** de este documento están calculadas sobre la
+> TDMN equivocada y **no deben usarse**. Con la TDMN correcta, el **muro doble con cámara vacía
+> (K 0,86) deja de verificar Nivel B**, y el hueco 18 revocado (K 1,58) **no verifica ni
+> Nivel C**.
+>
+> **Los objetivos y las soluciones correctas están en**
+> `docs/10-casa-santa-rosa/envolvente-casa-santa-rosa.md`, con la resolución completa de la
+> discrepancia y su fuente. **El método de cálculo, las tablas de λ, los detalles constructivos
+> y el resto de este documento siguen siendo válidos** — lo que cambia es el dato de partida.
+
+---
+
 ## ÍNDICE
 
 - [0. Contexto climático y consecuencias de diseño: Santa Rosa, La Pampa](#0-contexto-climático-y-consecuencias-de-diseño-santa-rosa-la-pampa)

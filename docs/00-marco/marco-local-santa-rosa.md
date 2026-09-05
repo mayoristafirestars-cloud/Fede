@@ -238,31 +238,54 @@ Clima **templado continental semiárido**, caracterizado por:
 | **Humedad relativa: seco en verano (59 %), húmedo en invierno (76 %)** | ⚠ Corrige un lugar común: el clima pampeano **no es seco todo el año**. En verano la HR baja habilita ventilación nocturna y enfriamiento evaporativo; en invierno, con HR 76 % y temperatura de diseño −2,7 °C, **el riesgo de condensación superficial e intersticial es real y hay que verificarlo siempre** (IRAM 11625/11630) |
 | **Cielos despejados frecuentes** | Ganancia solar directa aprovechable en invierno; y potencial solar térmico / fotovoltaico alto en cubierta |
 
-### 4.1 Zona bioambiental — **Zona IV, con una discrepancia de datos que hay que conocer**
+### 4.1 Datos bioambientales — **resueltos**
 
-⚠ **Dos registros distintos de la IRAM 11603 dan valores distintos para Santa Rosa.** No es un
-error: son estaciones y/o ediciones diferentes de la norma. Ambos aparecen en esta biblioteca y
-conviene saber cuál se está usando.
+✅ **La discrepancia entre registros quedó resuelta con fuente primaria.** Los valores
+normativos de Santa Rosa son los tabulados en el Anexo de la **IRAM 11603:2011** para la
+estación **Santa Rosa (Aero)**:
 
-| Parámetro | Registro **"Santa Rosa"** | Registro **"Santa Rosa (Aero)"** |
-|---|---|---|
-| Temperatura de diseño mínima (TDMN) | −2,7 °C | **−6,0 °C** |
-| Temperatura de diseño máxima (TDMX) | 33,8 °C | **38,8 °C** |
-| Grados-día base 18 °C (GD18) | 1.331 °C·día | **1.394 °C·día** |
-| Mínima absoluta | — | **−11,3 °C** |
-| Humedad relativa media de invierno | 76 % | — |
-| Amplitud térmica invierno / verano | 14,1 K / 16,5 K | 12,5 K / 14,4 K |
-| Encuadre resultante | Zona IV, subzona **IVc** | Zona IV por grados-día |
-| Fuente en esta biblioteca | `05-construccion` | `04-instalaciones` |
+| Invierno | Valor | | Verano | Valor |
+|---|---|---|---|---|
+| **Temperatura de diseño mínima (TDMN)** | **−6,0 °C** | | **Temperatura de diseño máxima (TDMX)** | **38,8 °C** |
+| Mínima absoluta | **−11,3 °C** | | Máxima absoluta | **42,1 °C** |
+| Humedad relativa media | 76 % | | Humedad relativa media | 59 % |
+| **Grados-día base 18 °C** | **1.394 °C·día** | | Amplitud térmica | 14,4 K |
 
-**Criterio del estudio: usar el registro más exigente (TDMN = −6,0 °C) para dimensionar, y
-verificar cuál corresponde en la edición vigente de la IRAM 11603 antes de firmar una
-verificación higrotérmica.** Dimensionar con −2,7 °C cuando el clima real llega a −6,0 °C
-subdimensiona la calefacción y la aislación; el error inverso solo cuesta un poco más de
-aislante.
+**Por qué circulaba el otro juego de datos (−2,7 / 33,8 / 1.331):** son el resultado de aplicar
+la **regla simplificada** (`TDMN = TMIN − 4,5`, `TDMX = TMAX + 3,5`) a una serie antigua. Esa
+regla es una aproximación **para localidades no tabuladas en la norma**; Santa Rosa sí está
+tabulada, así que no corresponde usarla. La definición formal (art. 3.3) es el **percentil 1 %**
+de las mínimas diarias de mayo a agosto. Una TDMN de −2,7 °C es incompatible con una mínima
+absoluta registrada de −11,3 °C.
 
-**Referencia provincial (misma tabla):** General Pico TDMN −6,2 °C / GD18 1.271 · Victorica
-TDMN −7,3 °C / GD18 1.396.
+> **Regla para el estudio: TDMN = −6,0 °C, TDMX = 38,8 °C, GD18 = 1.394.** Dimensionar con
+> −6,0 °C cuesta unos 20 mm más de EPS en el muro. Dimensionar con −2,7 °C cuesta una casa fría
+> durante 50 años.
+
+**Encuadre:** con 1.394 GD18, Santa Rosa está en **Zona IV — Templada Fría** (entre las
+isolíneas de 1.170 y 1.950), subzona **IVc (de transición)** por amplitud térmica.
+
+**Referencia provincial:** General Pico TDMN −6,2 °C / GD18 1.271 · Victorica TDMN −7,3 °C /
+GD18 1.396.
+
+#### Objetivos de K para Santa Rosa
+
+| Cerramiento | Nivel A | Nivel B | Gobierna |
+|---|---|---|---|
+| **Muros** | K ≤ **0,30** | K ≤ **0,80** | invierno |
+| **Techos** | K ≤ **0,19** | K ≤ **0,48** | **verano** |
+
+**En cubierta manda siempre el verano, con cualquier color de terminación.** Y con estos
+objetivos, el **hueco 18 revocado (K 1,58) no verifica ni Nivel C**, y el **muro doble con
+cámara vacía (K 0,86) tampoco alcanza el Nivel B**.
+
+Soluciones recomendadas, con el cálculo en
+`docs/10-casa-santa-rosa/envolvente-casa-santa-rosa.md`:
+
+- **Muro:** hueco 18 + **SATE de EPS 100 mm** → K = 0,29 (Nivel A). Es el único tipo de solución
+  que cumple la relación de puente térmico K_pt ≤ 1,5·K_muro y deja la masa del lado interior.
+- **Techo:** losa con bovedilla de EPS + **EPS 120-140 mm** + membrana clara (α < 0,6) →
+  K ≈ 0,23 (Nivel A).
 
 #### La contradicción de zona III vs. IV — y por qué es inocua
 
