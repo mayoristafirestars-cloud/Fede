@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-120 -200 2480 1120" width="1400">
+<style>
+  svg { background:#fff; }
+  .m { fill:#9aa0a6; stroke:#333; stroke-width:3; }
+  .n { fill:#e8483c; stroke:#8f1d15; stroke-width:3; }
+  .hueco { fill:#fff; stroke:none; }
+  .ab { stroke:#8f1d15; stroke-width:4; }
+  .d { stroke:#444; stroke-width:2; }
+  .lm { stroke:#1a63c4; stroke-width:3; stroke-dasharray:24 10 6 10; }
+  text { font-family:'Helvetica Neue',Arial,sans-serif; fill:#111; }
+  .h { font-size:40px; font-weight:700; }
+  .l { font-size:34px; font-weight:700; letter-spacing:2px; }
+  .s { font-size:26px; fill:#444; }
+  .c { font-size:26px; fill:#222; }
+  .sun { font-size:28px; font-weight:700; fill:#c47f00; }
+  .leg { font-size:26px; }
+  .rot { font-size:24px; fill:#333; }
+</style>
+<g transform="translate(0,0)"><rect class="m" x="0" y="0" width="20" height="700"/><rect class="m" x="980" y="0" width="20" height="700"/><rect class="n" x="0" y="680" width="1000" height="20"/><rect class="n" x="320" y="130" width="15" height="550"/><rect class="hueco" x="45.0" y="680" width="250" height="20"/><line class="ab" x1="45.0" y1="680" x2="295.0" y2="680"/><rect class="hueco" x="457.5" y="680" width="400" height="20"/><line class="ab" x1="457.5" y1="686" x2="857.5" y2="686"/><line class="ab" x1="457.5" y1="694" x2="857.5" y2="694"/><text class="l" x="170.0" y="380" text-anchor="middle">GARAGE</text><text class="s" x="170.0" y="408" text-anchor="middle">3,00 x 5,50</text><text class="l" x="657.5" y="380" text-anchor="middle">LIVING</text><text class="s" x="657.5" y="408" text-anchor="middle">6.45 m de frente</text><text class="sun" x="840" y="230" text-anchor="middle">☀ NORTE</text><line class="d" x1="0" y1="-40" x2="1000" y2="-40"/><line class="d" x1="0" y1="-52" x2="0" y2="-28"/><line class="d" x1="1000" y1="-52" x2="1000" y2="-28"/><text class="c" x="500.0" y="-54" text-anchor="middle">10,00</text><line class="d" x1="457.5" y1="758" x2="857.5" y2="758"/><line class="d" x1="457.5" y1="746" x2="457.5" y2="770"/><line class="d" x1="857.5" y1="746" x2="857.5" y2="770"/><text class="c" x="657.5" y="744" text-anchor="middle">4,00 ventana</text><line class="d" x1="45.0" y1="758" x2="295.0" y2="758"/><line class="d" x1="45.0" y1="746" x2="45.0" y2="770"/><line class="d" x1="295.0" y1="746" x2="295.0" y2="770"/><text class="c" x="170.0" y="744" text-anchor="middle">2,50 portón</text><line class="lm" x1="-40" y1="716" x2="1040" y2="716"/><text class="s" x="1046" y="720" text-anchor="start">L.M.</text><text class="h" x="500.0" y="-92" text-anchor="middle">VARIANTE A — garage al SUR</text><text class="s" x="500.0" y="-64" text-anchor="middle">el living se queda con el frente norte</text></g><g transform="translate(1240,0)"><rect class="m" x="0" y="0" width="20" height="700"/><rect class="m" x="980" y="0" width="20" height="700"/><rect class="n" x="0" y="680" width="1000" height="20"/><rect class="n" x="665" y="130" width="15" height="550"/><rect class="hueco" x="705.0" y="680" width="250" height="20"/><line class="ab" x1="705.0" y1="680" x2="955.0" y2="680"/><rect class="hueco" x="142.5" y="680" width="400" height="20"/><line class="ab" x1="142.5" y1="686" x2="542.5" y2="686"/><line class="ab" x1="142.5" y1="694" x2="542.5" y2="694"/><text class="l" x="830.0" y="380" text-anchor="middle">GARAGE</text><text class="s" x="830.0" y="408" text-anchor="middle">3,00 x 5,50</text><text class="l" x="342.5" y="380" text-anchor="middle">LIVING</text><text class="s" x="342.5" y="408" text-anchor="middle">6.45 m de frente</text><text class="sun" x="160" y="230" text-anchor="middle">☀ NORTE</text><line class="d" x1="0" y1="-40" x2="1000" y2="-40"/><line class="d" x1="0" y1="-52" x2="0" y2="-28"/><line class="d" x1="1000" y1="-52" x2="1000" y2="-28"/><text class="c" x="500.0" y="-54" text-anchor="middle">10,00</text><line class="d" x1="142.5" y1="758" x2="542.5" y2="758"/><line class="d" x1="142.5" y1="746" x2="142.5" y2="770"/><line class="d" x1="542.5" y1="746" x2="542.5" y2="770"/><text class="c" x="342.5" y="744" text-anchor="middle">4,00 ventana</text><line class="d" x1="705.0" y1="758" x2="955.0" y2="758"/><line class="d" x1="705.0" y1="746" x2="705.0" y2="770"/><line class="d" x1="955.0" y1="746" x2="955.0" y2="770"/><text class="c" x="830.0" y="744" text-anchor="middle">2,50 portón</text><line class="lm" x1="-40" y1="716" x2="1040" y2="716"/><text class="s" x="1046" y="720" text-anchor="start">L.M.</text><text class="h" x="500.0" y="-92" text-anchor="middle">VARIANTE B — garage al NORTE</text><text class="s" x="500.0" y="-64" text-anchor="middle">como el croquis: el living queda al sur</text></g>
+<g transform="translate(0,900)">
+  <rect x="0" y="0" width="2240" height="150" fill="none" stroke="#333" stroke-width="3"/>
+  <text class="h" x="20" y="46">REFORMA DE FRENTE — A. Guevara 871, Santa Rosa (La Pampa)</text>
+  <text class="leg" x="20" y="86">Estudio de alternativas · planta del sector frente · esc. 1:50 · frente al ESTE · lote 10,00 × 31,00 — Distrito R3 I</text>
+  <text class="leg" x="20" y="124" fill="#8f1d15">PRELIMINAR — no apto para obra ni para trámite municipal. Medidas a verificar en obra.</text>
+  <g transform="translate(1600,60)">
+    <rect x="0" y="-22" width="34" height="26" class="m"/><text class="leg" x="46" y="0">existente</text>
+    <rect x="0" y="18" width="34" height="26" class="n"/><text class="leg" x="46" y="40">obra nueva</text>
+  </g>
+</g>
+</svg>
