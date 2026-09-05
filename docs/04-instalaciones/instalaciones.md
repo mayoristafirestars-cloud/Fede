@@ -6266,3 +6266,373 @@ FINAL DE OBRA
 > **El "manual de uso y mantenimiento del edificio" es un entregable que casi nadie hace y que evita el 70 % de los problemas de los primeros cinco años.** Es también una protección profesional: documenta que se informó al comitente.
 
 ---
+
+# 11. CHECKLISTS Y ERRORES FRECUENTES
+
+## 11.1 CHECKLIST — Agua fría y caliente
+
+### Proyecto
+- [ ] ¿Se pidió y se obtuvo la **factibilidad de la prestadora** con diámetro de conexión y presión disponible?
+- [ ] ¿Se calculó Qc por el método K con el coeficiente de mayoración `a` correcto (**a = 2 para vivienda multifamiliar**)?
+- [ ] ¿Se hizo el **balance de caudales** y se determinó la reserva? ¿Se verificó también por dotación y se adoptó el mayor?
+- [ ] ¿El tanque de bombeo y el de reserva tienen **cada uno ≥ 1/3 de la Reserva Total Diaria**?
+- [ ] ¿Los tanques de **4.000 l o más están divididos en 2 o más secciones iguales**?
+- [ ] ¿Se verificó la **presión de 6 m.c.a. (o 10 con calefón, o 15 con válvula) en el artefacto más desfavorable**?
+- [ ] ¿Se verificó la **carga máxima de 45 m.c.a.** en el artefacto más bajo? ¿Hacen falta reductoras?
+- [ ] ¿Se previeron **dispositivos anti-ariete** en bajadas a válvulas con carga estática > 30 m?
+- [ ] ¿Se dimensionó la bomba y se verificó **golpe de ariete si Hm > 35 m**?
+- [ ] ¿Hay **dos bombas alternadas** al 100 %?
+- [ ] ¿Los diámetros de PPR se especificaron por su **diámetro INTERIOR real**, no por el nominal?
+- [ ] ¿Se especificó **PPR con fibra de vidrio para agua caliente** y aislación de espesor adecuado?
+- [ ] ¿Hay **llave de paso a válvula suelta en cada bajada** y en la entrada de cada unidad?
+- [ ] ¿Se previó la **medición individual** y su gabinete?
+- [ ] ¿Hay **ruptores de vacío** donde corresponde (edificios sin micromedición)?
+- [ ] ¿El ACS central tiene **cañería de retorno (recirculación)** — es obligatoria?
+- [ ] ¿El acumulador de ACS trabaja a **≥ 60 °C** y hay **válvula termostática en el punto de uso**?
+- [ ] ¿Hay **válvula de limpieza en la parte más baja** del generador de ACS?
+- [ ] **Santa Rosa:** ¿están **aisladas contra el congelamiento** todas las cañerías en sala de tanques, cubierta y plenos exteriores?
+
+### Obra
+- [ ] Prueba de presión de 24 h **antes de tapar**
+- [ ] Fotografías de todo el trazado **antes de tapar**, con cinta métrica visible
+- [ ] Verificación de las liras/brazos de dilatación en tramos rectos largos de PPR
+- [ ] Verificación de que la termofusión no dejó rebabas que estrangulen la sección
+- [ ] Limpieza y desinfección de tanques y cañerías antes de la puesta en servicio
+
+## 11.2 ERRORES FRECUENTES — Agua
+
+| # | Error | Consecuencia | Cómo evitarlo |
+|---|---|---|---|
+| 1 | **Especificar PPR 25 creyendo que equivale a ¾"** | Interior real 16,6 mm: caudal insuficiente, quejas de presión | Usar la tabla de equivalencias del §1.4.2 |
+| 2 | **Tanque elevado demasiado bajo para el último piso** | Presión insuficiente en el 9.º; hay que agregar presurización a posteriori | Verificar la presión en el artefacto más desfavorable **en el anteproyecto** |
+| 3 | **No prever dilatación del PPR de agua caliente** | Pandeo, fisuración del revoque, desprendimiento de accesorios | Liras, brazos de dilatación, abrazaderas deslizantes, y **especificar PPR-FV** |
+| 4 | **Una sola bomba** | El edificio queda sin agua cada vez que falla o se hace mantenimiento | Siempre dos, alternadas |
+| 5 | **No verificar el golpe de ariete con Hm > 35 m** | Rotura de la impulsión, ruido, falla de la válvula de retención | Estudio de golpe de ariete + tanque hidroneumático o válvula anticipadora |
+| 6 | **Colector conectado por el lateral del tanque** | **Prohibido por la Guía.** El sedimento del fondo no sale nunca | Salida por el fondo |
+| 7 | **Tanque enterrado** | **Prohibido en general.** Riesgo de contaminación | Cisterna sobre nivel, o tramitar excepción |
+| 8 | **ACS sin retorno en sistema central** | El usuario tira 15 l antes de que llegue el agua caliente | **Retorno obligatorio** (Guía 2.19.1) |
+| 9 | **Bajar la temperatura del acumulador de ACS a 50 °C "para ahorrar"** | **Riesgo de legionela** | Acumular a 60 °C, mezclar en el punto de uso |
+| 10 | **Dejar ramales ciegos en una reforma** | Reactor biológico de legionela; agua estancada | Cortar y taponar **en el origen** |
+| 11 | **Cobre nuevo aguas arriba de hierro galvanizado existente** | Par galvánico: el hierro se corroe aceleradamente | Cambio completo, o junta dieléctrica |
+| 12 | **No aislar cañerías en zona no calefaccionada en Santa Rosa** | **Congelamiento y rotura.** TMA = −11,3 °C | Aislación + calorifugado o traceado si corresponde |
+
+## 11.3 CHECKLIST — Desagües cloacales
+
+### Proyecto
+- [ ] ¿Se calculó Qt con **Kc = 1/(n−2)^0,5** (no n−1, que es de agua) y con **a = 2**?
+- [ ] ¿Se sumaron los **caudales adicionales** (bombeos, condensados)?
+- [ ] ¿Se verificó cada tramo por **Manning** con las tres condiciones: sección parcialmente llena, **0,3 < h/d < 0,7** y **V > 0,60 m/s**?
+- [ ] ¿Las pendientes están dentro de los límites: **Ø110 entre 1:60 y 1:20; Ø160 entre 1:100 y 1:20**?
+- [ ] ¿Se verificó la capacidad de las **montantes con r ≤ 0,20** (recomendación de la Guía)?
+- [ ] ¿Se respetó la **longitud de tranquilización Lt** al pie de las montantes (no conectar artefactos)?
+- [ ] ¿Hay **ventilación principal** en el punto más distante de la conexión?
+- [ ] ¿Hay **ventilación subsidiaria** en todas las montantes (obligatoria en más de 2 plantas)?
+- [ ] ¿Se ventilan los artefactos a más de 10 m (o 15 m para PC/mingitorio/PP) de un punto ventilado?
+- [ ] ¿Los remates son **del mismo diámetro que la columna** y rematan a los cuatro vientos, alejados de aberturas y tomas de aire?
+- [ ] ¿Hay **pileta de piso abierta en cada local sanitario**, recibiendo máximo 4 artefactos?
+- [ ] ¿La **última cámara está a ≤ 10 m de la línea municipal**, en espacio de uso general?
+- [ ] ¿Toda cámara está en **circuito ventilado**?
+- [ ] ¿Las **tapadas** cumplen (0,20 m H°F°, 0,40 m otros materiales)?
+- [ ] ¿Hay **pozo de bombeo cloacal ventilado (Ø60 mínimo, 4 vientos), con 2 bombas y alarma** para el subsuelo?
+- [ ] ¿La impulsión del pozo tiene **lira antirretorno por encima del nivel de la cámara**?
+- [ ] ¿Se especificó **caño insonorizado y aislación acústica** en montantes que lindan con locales habitables?
+- [ ] ¿Se verificó el **espacio necesario en el contrapiso** para las pendientes? (¡conflicto con arquitectura!)
+
+### Sin cloaca (sistema estático)
+- [ ] ¿Se hizo el **ensayo de percolación** (24 h de saturación previa)?
+- [ ] ¿El tiempo de percolación es **≤ 30 min** (pozo absorbente) o **≤ 60 min** (cualquier sistema)?
+- [ ] ¿El nivel freático está a **> 1,20 m** del fondo del sistema?
+- [ ] ¿Se cumplen las **distancias mínimas** de la Tabla Nº 2? (35 m a perforación de agua es la crítica)
+- [ ] ¿La cámara séptica tiene **permanencia ≥ 24 h (óptimo 36 h)** + volumen de barros + volumen de natas?
+- [ ] ¿Tiene **deflector de entrada (0,20 m) y de salida (0,40 m)** y **puente de ventilación Ø100**?
+
+## 11.4 ERRORES FRECUENTES — Desagües
+
+| # | Error | Consecuencia | Cómo evitarlo |
+|---|---|---|---|
+| 1 | **Usar (n−1) en lugar de (n−2)** en la simultaneidad de desagües | Subdimensionado leve | Recordar: **agua = n−1; desagüe = n−2** |
+| 2 | **Poner "más pendiente por las dudas"** | Con > 1:20 el líquido corre más rápido que los sólidos y taponan | Respetar el máximo de 1:20 |
+| 3 | **Conectar un artefacto al pie de la montante** | El sifón se sopla en cada descarga desde arriba: **olor permanente** | Respetar Lt = 0,1686 × V² (≈ 1,5-2 m) |
+| 4 | **No poner ventilación subsidiaria en un edificio de 10 plantas** | Sifonaje de los cierres hidráulicos, olores | Obligatoria en más de 2 plantas |
+| 5 | **Rematar la ventilación cloacal cerca de una ventana o de la toma de aire del recuperador** | Olor en el interior | Coordinar remates en el plano de cubierta |
+| 6 | **Doble sifonaje** (sifón + pileta de piso con sifón en serie) | Se rompe el arrastre, sedimenta, se tapa | Un solo cierre hidráulico por recorrido |
+| 7 | **Mover el inodoro 3 m en una reforma con contrapiso de 10 cm** | No entra la pendiente. Se descubre con el piso roto | **Regla de oro: máximo 1,0-1,5 m** (§9.5) |
+| 8 | **Montante con más de 6-8 departamentos en Ø110** | Sobrepresión, ruido, sifonaje | Ir a Ø160 o desdoblar la montante |
+| 9 | **Montante de PVC común lindando con dormitorio** | Ruido de descarga de 55-60 dB(A). Reclamo del propietario | **Caño insonorizado + lana mineral + abrazadera elastomérica + doble placa** |
+| 10 | **Pozo de bombeo sin ventilación** | Acumulación de H₂S: corrosión, olor y riesgo | Ventilación Ø60 mínimo a los cuatro vientos |
+| 11 | **Sistema estático sin ensayo de percolación** | El pozo no absorbe; el efluente aflora | El ensayo es obligatorio |
+| 12 | **Pozo absorbente a 15 m de la perforación de agua** | **Contaminación de la fuente de agua potable** | 35 m mínimo (Tabla Nº 2) |
+
+## 11.5 CHECKLIST — Pluviales
+
+- [ ] ¿Se obtuvo el dato de **lluvia de diseño para Santa Rosa**, o se justificó el valor adoptado?
+- [ ] ¿Se computó el **aporte de los paramentos verticales (50 % de su superficie)**?
+- [ ] ¿Se verificó la **capacidad de los EMBUDOS** (Tabla Nº 8), no solo la de las bajadas? ← *error más frecuente*
+- [ ] ¿Las montantes están calculadas con **r ≤ 0,20** (Ø110 → 134 m²; Ø160 → 395 m²)?
+- [ ] ¿Hay **al menos 2 embudos por azotea**, aunque el cálculo dé uno?
+- [ ] ¿Hay **rebosaderos de emergencia en el parapeto**?
+- [ ] ¿**Todos los balcones tienen desagüe proyectado** (prohibido el libre escurrimiento)?
+- [ ] ¿Los caños de Ø60 respetan sus límites (**10 m²/planta, sin desviación, horizontal ≤ 3 m**)?
+- [ ] ¿Se verificó la necesidad de **reductor de velocidad al pie** (montante a < 4 m de LO con afluente más bajo a > 30 m)?
+- [ ] ¿El albañal cumple **h/d entre 0,5 y 0,7** y **V > 0,90 m/s** (más exigente que el cloacal)?
+- [ ] ¿El **pozo de bombeo pluvial** cumple 0,036 l/s·m² × 600 s, con máximo de 1.000 l?
+- [ ] ¿Se resolvió la **protección de la rampa de subsuelo** (resalto, doble rejilla, bombeo redundante)?
+- [ ] ¿Se verificó si corresponde **sistema de retardo**?
+
+## 11.6 ERRORES FRECUENTES — Pluviales
+
+| # | Error | Consecuencia |
+|---|---|---|
+| 1 | **Calcular la bajada y no el embudo** | El embudo es el cuello de botella: la azotea se inunda con la bajada libre |
+| 2 | **Un solo embudo por azotea** | Se tapa con hojas y la azotea se convierte en piscina; **riesgo estructural** |
+| 3 | **No poner rebosaderos** | Ídem. Los rebosaderos son un elemento de seguridad estructural |
+| 4 | **Balcón que "desagua por el frente"** | Prohibido si concentra el escurrimiento. Mancha la fachada, moja al vecino |
+| 5 | **No computar el aporte de los paramentos verticales** | Subdimensionado del 10-15 % |
+| 6 | **Usar Ø60 en un balcón de 15 m²** | Excede el límite de 10 m²/planta |
+| 7 | **Bomba de subsuelo sin redundancia ni alarma** | Inundación del subsuelo en la primera tormenta fuerte |
+| 8 | **No prever el reductor de velocidad al pie de una montante de 30 m** | Erosión de la boca de desagüe y de la vereda; ruido |
+| 9 | **Sellado del embudo con una sola capa de membrana** | Es el punto de falla nº 1 de toda cubierta |
+
+## 11.7 CHECKLIST — Gas
+
+- [ ] ¿Hay un **Instalador Matriculado** contratado desde el anteproyecto?
+- [ ] ¿Se pidió la **Factibilidad de Suministro** a la prestadora?
+- [ ] ¿Se calculó Q_si con **A + B + (resto)/2** para uso doméstico?
+- [ ] ¿Se usó **S₂ (con calefacción individual)** y no S₁, como recomienda la norma para zonas frías? ← *crítico en Santa Rosa*
+- [ ] ¿Se dimensionó con el **consumo mínimo de proyecto de 21,63 kW (18.600 kcal/h)** aunque se instale menos?
+- [ ] ¿Se computaron las **tomas taponadas y los incrementos previstos**?
+- [ ] ¿Le = 1,20 × L_real en todos los tramos?
+- [ ] ¿ΔP total **≤ 1 mbar** entre el medidor y cada artefacto?
+- [ ] ¿Velocidad **≤ 7 m/s** en baja presión y **≤ 20 m/s** en media presión?
+- [ ] ¿Diámetro mínimo **9,5 mm (⅜")** en cañería interna y **13 mm (½")** en prolongación de media presión?
+- [ ] ¿El **gabinete/compartimento de medidores** está ubicado según 3.2.1 y tiene ventilación según 3.3?
+- [ ] ¿Hay **antecámara de 1 m²** si comunica con locales de riesgo?
+- [ ] ¿Está a **≥ 0,50 m de instalaciones eléctricas** (0,30 m si tiene ventilación al exterior)?
+- [ ] ¿Las **rejillas de ventilación** cumplen **4 cm²/kW con mínimo 100 cm² de área LIBRE**?
+- [ ] ¿La rejilla inferior está **entre 0,30 y 0,50 m** y la superior a **≥ 1,80 m** del piso?
+- [ ] ¿Se verificaron las **prohibiciones por ambiente** (dormitorios y baños: solo cámara estanca)?
+- [ ] ¿Se verificó si algún ambiente califica como **monoambiente por ausencia de puerta > 1 m**?
+- [ ] ¿El **espacio de aire-luz tiene ≥ 4 m²** si se usa para evacuar gases (edificios de 3+ plantas)?
+- [ ] ¿Los conductos son de material admitido (**PROHIBIDOS: aluminio corrugado, PVC, PE, policarbonato**)?
+- [ ] ¿Los conductos a la intemperie de más de 0,50 m están **aislados térmicamente**?
+- [ ] ¿Se hicieron las **pruebas de hermeticidad** (150 mbar/15 min y 50 mbar/5 min) y **de obstrucción**?
+- [ ] ¿Se hizo la **prueba de humo de los conductos**?
+- [ ] ¿Se tramitaron **inspección parcial** (antes de tapar) e **inspección final**?
+- [ ] ¿El comitente recibió **copia EN PAPEL** de la Factibilidad, la inspección final y el conforme a obra?
+
+## 11.8 ERRORES FRECUENTES — Gas
+
+| # | Error | Consecuencia |
+|---|---|---|
+| 1 | **Usar S₁ en lugar de S₂ en un edificio de Santa Rosa** | Prolongación y montantes subdimensionadas hasta 2,3 veces. **La norma recomienda expresamente S₂ en zonas frías** |
+| 2 | **Calefón o termotanque de cámara abierta en el baño** | **PROHIBIDO.** Solo cámara estanca (5.9.2.2) |
+| 3 | **Calefactor de tiro natural en un dormitorio** | **PROHIBIDO.** Solo cámara estanca (5.9.2.1) |
+| 4 | **Diseñar un dormitorio con vano sin puerta de 1,20 m** | La norma lo califica como **monoambiente** y cambia todas las reglas de gas |
+| 5 | **Poner campana/extractor en una cocina con artefacto a conducto colectivo** | **PROHIBIDO.** Invierte el tiro y trae CO de los pisos vecinos. **Chapa de advertencia obligatoria** |
+| 6 | **Especificar la rejilla por su medida exterior** | 20×20 cm con 60 % de área libre = 240 cm², no 400 cm². Especificar el **área libre** |
+| 7 | **Patio de aire y luz de 3 m² usado para evacuar gases en un edificio de 3+ plantas** | **PROHIBIDO** (< 4 m²). Rehacer el partido o ir a cámara estanca |
+| 8 | **Usar flexible de aluminio corrugado como conducto** | **PROHIBIDO.** Pérdida de carga, acumulación de hollín, perforación |
+| 9 | **No aislar el conducto de tiro natural a la intemperie** | Condensación de los productos de combustión, corrosión, pérdida de tiro. **Crítico en Santa Rosa** |
+| 10 | **Cambiar las carpinterías por otras estancas sin cambiar los artefactos de cámara abierta** | **Se eliminan las infiltraciones que alimentaban la combustión. RIESGO DE INTOXICACIÓN POR CO.** Es un riesgo real de las reformas de eficiencia energética |
+| 11 | **El arquitecto firmando el plano de gas** | No tiene incumbencia. Lo firma el Instalador Matriculado |
+| 12 | **No prever el compartimento de medidores en el anteproyecto** | En un edificio de 40 unidades es un local de 2,5-4 m² con requisitos de acceso, ventilación y separación de otras instalaciones |
+| 13 | **Recuperador de calor conviviendo con artefactos de cámara abierta** | Incompatibles: la depresión invierte el tiro |
+
+## 11.9 CHECKLIST — Eléctrica
+
+- [ ] ¿Se pidió la **factibilidad de la distribuidora** (potencia disponible, monofásico/trifásico)?
+- [ ] ¿Se determinó el **grado de electrificación por superficie** de cada unidad?
+- [ ] ¿Se cumple el **número mínimo de circuitos** (Tabla 770.7.II)?
+- [ ] ¿Se cumplen los **puntos mínimos de utilización** por ambiente (Tabla 770.7.III)?
+- [ ] ¿Ningún circuito de uso general supera las **15 bocas**?
+- [ ] ¿Las **secciones mínimas** son correctas (1,5 IUG / 2,5 TUG / 2,5 PE)?
+- [ ] ¿Se aplicó el **factor de agrupamiento** a la corriente admisible?
+- [ ] ¿La **caída de tensión ≤ 3 %** (iluminación) y **≤ 5 %** (motores en régimen)?
+- [ ] ¿Se calculó la **DPMS** con la Tabla 770.8.I y el **coeficiente de simultaneidad** de la 770.8.II?
+- [ ] ¿La carga total supera **7 kVA o 32 A**? → considerar **suministro trifásico**
+- [ ] ¿Hay **diferenciales de 30 mA** sectorizados (no uno solo para toda la unidad)?
+- [ ] ¿Se especificó **diferencial tipo A o superinmunizado** donde hay electrónica (VFD, cargador EV, inversor FV, heladera)?
+- [ ] ¿Hay **jabalina** con cámara de inspección y **barra con puente removible**?
+- [ ] ¿Se **midió la resistencia de PAT** (≤ 40 Ω; recomendable ≤ 10 Ω)?
+- [ ] ¿El **PE recorre integralmente** la instalación, incluidas cajas sin tomacorriente?
+- [ ] ¿Hay **barra equipotencial principal** vinculando estructura y cañerías metálicas?
+- [ ] ¿Hay **conexión equipotencial suplementaria en baños**?
+- [ ] ¿Se previó **DPS** en el tablero principal? (recomendado en La Pampa)
+- [ ] ¿La **sala de medidores** está a ≥ 0,50 m del gabinete de gas y tiene acceso desde espacio común?
+- [ ] ¿Los **tomacorrientes a menos de 0,90 m** son 2x10+T IRAM 2071 **con pantalla de protección**?
+- [ ] ¿Hay **iluminación de emergencia** en todos los medios de escape?
+- [ ] ¿Se previó la infraestructura de **cargador de vehículo eléctrico**?
+- [ ] ¿Se previó la **canalización y el espacio para fotovoltaica** (Ley 27.424)?
+- [ ] ¿Los pases de la montante eléctrica tienen **sellado cortafuego**?
+- [ ] ¿Se hicieron las **mediciones finales** (aislación, PAT, ensayo de diferenciales)?
+
+## 11.10 ERRORES FRECUENTES — Eléctrica
+
+| # | Error | Consecuencia |
+|---|---|---|
+| 1 | **Poner un diferencial y decir que la instalación cumple, sin conductor de protección** | El diferencial protege a la persona que toca, pero **no evita la puesta en tensión de las masas** ni actúa ante falla fase-masa. **No cumple AEA** |
+| 2 | **Un solo diferencial para toda la vivienda** | Cuando salta, se corta todo: sin luz, sin heladera. Y es imposible identificar la falla |
+| 3 | **Diferencial AC común en el circuito de la heladera o de la caldera** | Disparos intempestivos por fugas de alta frecuencia de la electrónica |
+| 4 | **No corregir la corriente admisible por agrupamiento** | 3 circuitos en un caño: 2,5 mm² baja de 21 A a 14,7 A. La protección de 20 A ya no coordina |
+| 5 | **Calcular la demanda sin verificar el límite de 32 A / 7 kVA** | El departamento requiere trifásico y se descubre cuando la distribuidora rechaza la solicitud |
+| 6 | **Adoptar un factor de simultaneidad del edificio sin consultar a la distribuidora** | Es el dato más sensible del cálculo y la distribuidora tiene el suyo |
+| 7 | **No prever la sala de medidores en el anteproyecto** | En 40 unidades es un local de 4-8 m² con acceso, ventilación y separación de gas |
+| 8 | **No prever infraestructura para vehículo eléctrico** | Retrofit en subsuelo terminado: 5-10× más caro, y en PH requiere asamblea |
+| 9 | **Medir la PAT en invierno y no verificar en verano** | La resistividad del suelo pampeano se dispara con la sequía |
+| 10 | **Tratar el terreno de la jabalina con sal** | Acelera la corrosión del electrodo. Usar bentonita o gel conductor |
+| 11 | **Cañería sobreocupada en una reforma** | Al pasar 2,5 mm² + PE por un caño calculado para 1,5 mm², no entra |
+| 12 | **Conexión larga del DPS a tierra** | Con más de 0,50 m de conexión total, el DPS deja de proteger |
+
+## 11.11 CHECKLIST — Termomecánica
+
+- [ ] ¿Se usó la **TDMN de −6,0 °C y la TDMX de 38,8 °C** de Santa Rosa (IRAM 11603)?
+- [ ] ¿Se verificó el **K de muros y techos contra IRAM 11605**, en invierno **Y** en verano?
+- [ ] Para Santa Rosa nivel B: **muros ≤ 0,80 / techos ≤ 0,48 W/m²K** ← *el techo lo fija el verano*
+- [ ] ¿Se verificaron los **puentes térmicos** (K_pt/K_mo ≤ 1,50, o ≤ 1,35 si están a menos de 1,7 m)?
+- [ ] ¿Se resolvieron los **cantos de losa de balcón** y los **taparrollos**?
+- [ ] ¿Se calculó la carga térmica por **método detallado**, no solo por W/m²?
+- [ ] ¿Se incluyó la **radiación solar** en la carga de verano?
+- [ ] ¿Se especificó **protección solar EXTERIOR** en orientaciones norte y oeste?
+- [ ] ¿Se aplicó un **factor de simultaneidad** a las cargas de refrigeración (no sumar todas las máximas)?
+- [ ] Si hay **losa radiante**: ¿la carga es ≤ 100 W/m² en zona de permanencia?
+- [ ] Si hay losa radiante: ¿tiene **aislación bajo la losa, banda perimetral, barrera antioxígeno** y **prueba de 6 bar antes de la carpeta**?
+- [ ] Si hay **radiadores con caldera de condensación**: ¿se recalculó la potencia con el **ΔT real**, no el nominal?
+- [ ] ¿La **extracción de baños** descarga al exterior y no al pleno?
+- [ ] Si hay **recuperador de calor**: ¿tiene **protección antihielo**? ← *crítico con TDMN de −6 °C*
+- [ ] ¿El recuperador **NO convive** con artefactos de gas de cámara abierta?
+- [ ] ¿La **ventilación de cocheras** tiene sensores de CO y, si corresponde, **ventilador certificado F300/90**?
+- [ ] ¿La ventilación mecánica del subsuelo tiene **enclavamiento de corte de gas** (NAG-200, 6.4.5)?
+- [ ] ¿Se previó **desagüe de condensado** de todos los equipos, con descarga a pileta de piso abierta?
+- [ ] ¿Se previó el **espacio y el acceso** para las condensadoras en cubierta o en balcón técnico?
+
+## 11.12 ERRORES FRECUENTES — Termomecánica
+
+| # | Error | Consecuencia |
+|---|---|---|
+| 1 | **Verificar el K solo en invierno** | En Santa Rosa, para techos **manda el verano** (0,48 vs. 0,67 en nivel B) |
+| 2 | **Aislar los muros y dejar la estructura de hormigón desnuda** | El puente térmico no cumple; aparecen manchas de moho en los encuentros |
+| 3 | **Losa radiante en una casa sin aislar** | La losa no puede dar más de 100 W/m². Si la casa pide 120, **el sistema no calienta y no hay solución** |
+| 4 | **Hormigonar la carpeta de losa radiante sin prueba de presión** | Si hay una pérdida, hay que romper el piso terminado |
+| 5 | **No hacer el ciclo de puesta en marcha de la losa** | La carpeta fisura y el solado se despega |
+| 6 | **Dimensionar radiadores con la potencia nominal a ΔT 50 y operar la caldera a 55/45** | El radiador entrega la mitad. La casa no calienta |
+| 7 | **Sumar todas las cargas máximas de refrigeración** | Equipo 20-40 % sobredimensionado: ciclado, mala deshumidificación, más consumo |
+| 8 | **Vidriado oeste sin protección solar en Santa Rosa** | Con 650 W/m² de irradiancia, el equipo no da abasto a ninguna potencia razonable |
+| 9 | **Cortina interior en lugar de persiana exterior** | Reduce la ganancia solar 30-40 % en lugar de 70-85 %: **el calor ya entró** |
+| 10 | **Recuperador de calor sin protección antihielo con TDMN de −6 °C** | El intercambiador se congela y el equipo se bloquea |
+| 11 | **Extracción de baño descargando al pleno o al entrepiso** | Humedad, moho y olor en el pleno; migración a otras unidades |
+| 12 | **Sala de máquinas de ascensor en cubierta sin ventilación** | Con TDMX de 38,8 °C, supera los 45 °C y el equipo se protege y para |
+
+## 11.13 CHECKLIST — Incendio
+
+- [ ] ¿Se **verificaron las exigencias del Código de Santa Rosa y de Bomberos de La Pampa**? ← *no asumir CABA*
+- [ ] ¿Está definida la **sectorización** y cada sector con su resistencia al fuego?
+- [ ] ¿**Cada departamento es un sector de incendio**?
+- [ ] ¿La **caja de escalera es un sector independiente** con puertas F60-F90 y cierrapuertas?
+- [ ] ¿**Ninguna cañería de gas atraviesa la escalera** ni el hueco del ascensor?
+- [ ] ¿Se marcó en el plano de instalaciones **cada pase que requiere sellado cortafuego**, con su sistema y resistencia?
+- [ ] ¿Los pases de **cañerías plásticas** llevan **collar intumescente**?
+- [ ] ¿Se verificó el **factor de ocupación, el ancho de escape y la distancia máxima**?
+- [ ] ¿Se verificó si hace falta **segunda escalera** en el PB+9?
+- [ ] ¿La escalera **no continúa al subsuelo** sin interrupción física en PB?
+- [ ] ¿Hay **iluminación de emergencia** en todo el medio de escape?
+- [ ] ¿Hay **matafuego cada 200 m² y a no más de 15 m de recorrido**?
+- [ ] ¿La **altura de montaje** de los matafuegos es correcta (1,20-1,50 m hasta 20 kg)?
+- [ ] ¿Hay **CO₂ junto a los tableros** y **ABC** en el resto?
+- [ ] ¿Hay **clase K** si hay local gastronómico?
+- [ ] ¿La **reserva de incendio es exclusiva**, en tanque propio de hormigón o metálico (**no PRFV**)?
+- [ ] ¿Está **separada ≥ 0,50 m** de la reserva sanitaria?
+- [ ] ¿Hay **DOS bombas principales + bomba jockey**?
+- [ ] ¿La bomba principal **solo arranca automáticamente y se detiene en forma manual**?
+- [ ] ¿La **alimentación eléctrica de las bombas** va por el exterior o con protección **F90**?
+- [ ] ¿La **sala de bombas tiene drenaje**?
+- [ ] ¿La cañería de hidrantes es de **acero, Ø 64 mm mínimo**?
+- [ ] ¿El eje de la válvula del hidrante está **entre 1,00 y 1,40 m**?
+- [ ] ¿La **boca de impulsión** está a ≤ 0,60 m del piso y marcada **"RE xx"** en letras de 10 cm?
+- [ ] ¿Hay **detección, pulsadores y sirenas**, y los ascensores **bajan a PB ante alarma**?
+- [ ] ¿Hay **señalización IRAM 10005-II** y planos de evacuación en cada palier?
+
+## 11.14 ERRORES FRECUENTES — Incendio
+
+| # | Error | Consecuencia |
+|---|---|---|
+| 1 | **Aplicar los valores de CABA en Santa Rosa sin verificar** | La documentación se rechaza, o peor, se aprueba con exigencias distintas a las reales |
+| 2 | **No sellar los pases de instalaciones** | **Destruye toda la sectorización.** Es el error más frecuente y el más grave |
+| 3 | **Sellar un caño de PVC con mortero en lugar de collar intumescente** | El PVC se funde y deja un agujero abierto al fuego y al humo |
+| 4 | **Reserva de incendio en tanque de PRFV** | **No se acepta** (salvo excepciones) |
+| 5 | **Reserva mixta sanitaria/incendio en obra nueva** | La capacidad debe ser exclusiva y permanente |
+| 6 | **Una sola bomba de incendio** | Mínimo dos principales, cada una al 100 % |
+| 7 | **Bomba principal con parada automática** | **Debe pararse solo en forma manual.** Si para sola, puede dejar el sistema sin agua en pleno incendio |
+| 8 | **Alimentación eléctrica de la bomba pasando por el interior sin protección F90** | Se quema con el propio incendio |
+| 9 | **Escalera que continúa al subsuelo sin interrupción** | En la evacuación, la gente sigue bajando y termina atrapada en el subsuelo |
+| 10 | **Cañería de gas atravesando la caja de escalera o el hueco de ascensor** | Prohibido; convierte el medio de escape en un riesgo |
+| 11 | **Matafuegos sin mantenimiento anual (IRAM 3517-2)** | Inservibles en el momento crítico; responsabilidad del consorcio |
+| 12 | **Central de detección sin autonomía de batería** | Se corta la luz por el incendio y el sistema deja de funcionar |
+
+## 11.15 CHECKLIST — Ascensores
+
+- [ ] ¿Se hizo el **estudio de tráfico** (RTT, intervalo, capacidad de acarreo)?
+- [ ] ¿El **intervalo es ≤ 60-80 s** y la capacidad de acarreo ≥ 7-9 %?
+- [ ] ¿Hay **al menos dos ascensores** en el PB+9 (redundancia)?
+- [ ] ¿Al menos uno es **accesible** según la normativa?
+- [ ] ¿Se le pidieron al **fabricante** las dimensiones exactas de hueco, foso y sobrerrecorrido **antes del cálculo estructural**?
+- [ ] ¿El **sobrerrecorrido** entra dentro de la altura máxima admisible del Código?
+- [ ] ¿El **foso está impermeabilizado y tiene desagüe/achique** (no conectado a cloaca)?
+- [ ] ¿El **hueco es exclusivo**: ninguna cañería ni cable ajeno lo atraviesa?
+- [ ] ¿El hueco es un **sector de incendio independiente**?
+- [ ] ¿Hay **maniobra de emergencia por incendio** (bajar a PB y abrir puertas)?
+- [ ] ¿Hay **dispositivo de rescate automático (ARD/UPS)** para corte de energía?
+- [ ] ¿Hay **intercomunicador bidireccional** a punto atendido 24 h?
+- [ ] Si hay sala de máquinas: ¿está **ventilada y aislada** (5-40 °C)?
+- [ ] ¿El **circuito eléctrico es exclusivo** y el diferencial es del tipo adecuado para el VVVF?
+- [ ] ¿Se previó **aislación acústica del hueco** respecto de dormitorios?
+- [ ] ¿Se previó el **contrato con conservador matriculado** y el registro municipal?
+
+## 11.16 CHECKLIST — Reformas
+
+- [ ] ¿Se hizo el **relevamiento completo** con los ensayos que corresponden (§9.1)?
+- [ ] ¿Se identificó el **material de las cañerías** (¿hay plomo? ¿hierro galvanizado? ¿fibrocemento?)
+- [ ] ¿Se verificó la existencia de **conductor de protección y de diferencial**?
+- [ ] ¿Se **midió la PAT y la aislación**?
+- [ ] ¿Se marcaron en la planta existente **los montantes y las bocas de acceso** antes de proyectar?
+- [ ] ¿Se verificó que la **pendiente disponible** permite el nuevo emplazamiento de los artefactos?
+- [ ] ¿Se verificó el **reglamento de copropiedad** (qué es propio, qué es común, qué está prohibido)?
+- [ ] ¿Se previó el **retiro de amianto** con su protocolo, como ítem de pliego?
+- [ ] ¿Se verificó que las **carpinterías nuevas estancas no dejen sin aire a artefactos de cámara abierta**?
+- [ ] ¿Se previó **corte y anulación de servicios por matriculado** antes de demoler?
+- [ ] ¿Se planificó el **orden de gremios** (desagües → conductos → gas → agua → eléctrica)?
+- [ ] ¿Se van a **fotografiar todas las instalaciones antes de tapar**, con cinta métrica visible?
+- [ ] ¿Se previeron los **registros** en cielorrasos y tabiques?
+- [ ] ¿Se van a entregar **planos conforme a obra**?
+
+## 11.17 ERRORES FRECUENTES — Reformas
+
+| # | Error | Consecuencia |
+|---|---|---|
+| 1 | **Presupuestar sin relevamiento** | Desvío de costos garantizado |
+| 2 | **Proyectar la planta y después ver dónde están los montantes** | Se descubre que el baño nuevo no tiene pendiente. Hay que rehacer el proyecto |
+| 3 | **Parchear un tramo de hierro galvanizado** | Los tramos adyacentes fallan más rápido; el problema de sección persiste |
+| 4 | **Dejar cañería de plomo "porque el tramo está sano"** | Riesgo sanitario. No es negociable |
+| 5 | **Cortar fibrocemento con amoladora** | **Libera fibras de amianto. Riesgo cancerígeno grave** |
+| 6 | **Poner ventanas nuevas estancas y dejar el calefón de tiro natural** | **Riesgo de intoxicación por CO.** Se eliminan las infiltraciones que alimentaban la combustión |
+| 7 | **Tapar sin fotografiar** | Nadie sabe dónde está nada. Cada intervención futura es una demolición exploratoria |
+| 8 | **No dejar registros en el cielorraso técnico** | Hay que romper el cielorraso para cualquier mantenimiento |
+| 9 | **Mover el inodoro 3 m confiando en "el contrapiso"** | No entra. Se descubre con el piso demolido |
+| 10 | **Reutilizar cañería eléctrica sin verificar el coeficiente de ocupación** | El cable nuevo (2,5 + PE) no entra en el caño |
+| 11 | **Hacer la obra sin permiso municipal en una reforma que lo requiere** | Multa, paralización, imposibilidad de escriturar |
+| 12 | **No verificar el reglamento de copropiedad antes de mover un núcleo húmedo** | Reclamo de otros propietarios; obligación de volver al estado anterior |
+
+## 11.18 CHECKLIST — Coordinación general del proyecto ejecutivo
+
+- [ ] ¿Se obtuvieron las **tres factibilidades** (agua, gas, electricidad) antes de dimensionar?
+- [ ] ¿Existe **plano de pases** coordinado, entregado al calculista antes del cálculo estructural definitivo?
+- [ ] ¿Se hizo **detección de colisiones** (BIM) o **cortes de coordinación 1:20** de todos los plenos críticos?
+- [ ] ¿La **altura del pleno** está verificada contra el elemento más restrictivo (desagüe o conducto)?
+- [ ] ¿Todos los **remates en cubierta** (cloaca, tanque, gas, campanas, extracción, antena, FV) están coordinados en un solo plano de cubierta, con sus distancias mínimas?
+- [ ] ¿Cada instalación tiene su **isométrico** o **esquema unifilar/de principio**?
+- [ ] ¿Cada instalación tiene su **memoria de cálculo firmada**?
+- [ ] ¿Está claro **quién firma cada instalación** y se contrataron los matriculados?
+- [ ] ¿Se previeron todos los **locales técnicos** (sala de bombas, sala de medidores eléctricos, compartimento de gas, sala técnica de datos, sala de máquinas, sala de tanques) **en el anteproyecto**?
+- [ ] ¿Todos esos locales tienen **acceso desde espacio común, ventilación, iluminación y desagüe de piso**?
+- [ ] ¿Está previsto el **manual de uso y mantenimiento** como entregable final?
+
+---

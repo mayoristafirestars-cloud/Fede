@@ -5286,3 +5286,749 @@ EN PRODUCCIÓN → DESPACHADO → RECIBIDO → INSTALADO → OK
 | **Columna de "quién aprobó y cuándo"** | **[E]** Es la que protege al estudio |
 
 ---
+
+# 10. RENDER Y PRESENTACIÓN DE INTERIORES
+
+## 10.1 Flujo de trabajo
+
+### Combinaciones habituales
+
+| Modelado | Motor de render | Perfil | Curva de aprendizaje | Costo | Velocidad |
+|---|---|---|---|---|---|
+| **SketchUp** | **Enscape / D5 Render / Lumion / V-Ray** | El más difundido en estudios de arquitectura chicos | **Baja** | Bajo-medio | **Muy alta** (tiempo real) |
+| **SketchUp** | **V-Ray** | Mayor control y realismo, más lento | Media | Medio | Media |
+| **3ds Max** | **Corona Renderer** | **El estándar de la industria del render de interiores** | **Alta** | Alto | Media |
+| **3ds Max** | V-Ray | Estándar clásico | Alta | Alto | Media |
+| **Blender** | **Cycles** | Gratuito y muy capaz | Alta | **Cero** | Media |
+| **Revit / ArchiCAD** | Enscape / Twinmotion | Ventaja: el render sale del modelo BIM, sincronizado con la documentación | Media | Medio | Alta |
+| **Rhino** | V-Ray / Enscape | Geometría compleja | Alta | Alto | Media |
+
+### Recomendación para el estudio
+
+| Escenario | Flujo recomendado |
+|---|---|
+| **Estudio chico, volumen alto de proyectos, plazos cortos** | **SketchUp + Enscape o D5 Render.** Iteración en tiempo real, permite trabajar CON el cliente en la reunión ("¿lo querés más claro? mirá") |
+| **Necesidad de imágenes de alto realismo para portfolio o venta** | **3ds Max + Corona**, o tercerizar a un renderista |
+| **Sin presupuesto de licencias** | **Blender + Cycles** |
+| **Estudio con BIM** | ArchiCAD/Revit + Twinmotion/Enscape |
+
+> **[C]** Para un estudio que vende interiorismo en Santa Rosa, **la velocidad de iteración vale más que el fotorrealismo**. Un render "muy bueno" que se puede cambiar en 10 minutos delante del cliente vende más que un render "perfecto" que tarda 3 días.
+
+### Recursos y bibliotecas
+
+| Recurso | Uso |
+|---|---|
+| Modelos 3D de mobiliario | 3D Warehouse (SketchUp), Design Connected, Chocofur, Poliigon, bibliotecas de fabricantes |
+| Texturas | Poliigon, ambientCG, Textures.com; **y escaneos propios de los materiales reales del proyecto** |
+| HDRI (iluminación de entorno) | Poly Haven |
+| Archivos IES | **Los de los fabricantes especificados.** Es lo que hace que la luz del render se parezca a la luz real |
+
+> **[C] Regla del estudio:** los **materiales del render deben ser los materiales del proyecto**, no genéricos. Si el piso es un porcelanato específico, se usa la textura de ese porcelanato (bajada del fabricante o escaneada). Un render con "madera genérica" no sirve para decidir.
+
+---
+
+## 10.2 Render de arquitectura vs. render de interior
+
+Son dos disciplinas distintas. El error de aplicar criterios de exterior a un interior produce imágenes frías y poco vendibles.
+
+| Aspecto | **Render de ARQUITECTURA (exterior)** | **Render de INTERIOR** |
+|---|---|---|
+| **Altura de cámara** | 1,50–1,70 m, o vista de dron | **1,20–1,50 m.** Más baja que el ojo humano de pie: se ve más espacio, más piso, y las proporciones se sienten más generosas |
+| **Lente (distancia focal)** | 24–50 mm | **18–28 mm** típico; **24 mm** es el estándar. Menos de 16 mm distorsiona y "miente" |
+| **Encuadre** | Objeto (el edificio) en el centro | **Se busca la esquina.** Encuadrar desde una esquina del ambiente hacia la opuesta muestra dos muros y la mayor profundidad posible |
+| **Verticales** | Corregidas (dos puntos de fuga) | **Corregidas SIEMPRE.** Las verticales convergentes en un interior se leen como error |
+| **Composición** | Vista completa del volumen | **Un punto de fuga** (frontal, ordenado, muy legible) o **dos puntos** (esquina, más natural). Regla de tercios en el punto de interés |
+| **Iluminación** | Sol y cielo (HDRI) | **Mezcla:** luz natural por ventanas + **la iluminación artificial del proyecto, con sus IES reales**. La hora ideal suele ser luz difusa de día o "hora azul" con luz artificial encendida |
+| **Rango dinámico** | Alto contraste | **Rango dinámico controlado.** El interior real tiene ventanas quemadas: en render se equilibra, pero sin aplanar |
+| **Escala humana** | Personas para dar escala | **Personas: opcionales y polémicas.** Una persona mal integrada arruina la imagen. **Preferible: rastros de vida** (un libro abierto, una taza, una manta desordenada, zapatos) |
+| **Ambientación** | Vegetación, autos, contexto | **Es el 50% del trabajo.** Objetos, textiles, plantas, libros, vajilla, arte |
+| **Profundidad de campo** | Raramente | Sutil, si se usa. **Un desenfoque exagerado esconde falta de detalle y se nota** |
+| **Post-producción** | Ajustes de color y cielo | Ajustes de curva, brillo local, viñeteo suave, corrección de color. **Sin filtros agresivos** |
+| **Objetivo** | Mostrar la forma | **Transmitir la atmósfera y permitir DECIDIR** |
+
+### La regla de la ambientación
+
+> **[C] Un render de interior sin ambientación no vende.** Un ambiente vacío se ve más chico, más frío y más barato de lo que va a ser. Pero la ambientación tiene un límite ético: ver §10.4.
+
+**Ambientación mínima por ambiente:**
+
+| Ambiente | Elementos |
+|---|---|
+| Estar | Almohadones (impares, tamaños distintos), manta, libros, planta, objetos en la mesa ratona, arte en la pared |
+| Comedor | Mantel o camino, vajilla, copas, centro de mesa, fruta |
+| Cocina | Tabla, frutero, tarros, un paño, una planta chica. **Nada de electrodomésticos que no estén en el FF&E** |
+| Dormitorio | Ropa de cama con arrugas reales, almohadones, manta a los pies, libro y velador en la mesa de luz |
+| Baño | Toallas, jabón, planta, un objeto de cerámica |
+| Escritorio | Notebook, cuaderno, taza, lámpara, libros |
+
+**Trucos de realismo:**
+
+| Truco | Efecto |
+|---|---|
+| **Nada perfectamente alineado** | La realidad tiene pequeños desvíos. Girar 2° una silla, correr 3 cm un objeto |
+| **Arrugas en los textiles** | Una cama perfectamente estirada y una cortina perfectamente recta se ven en CG |
+| Polvo/imperfección en los materiales (mapas de rugosidad variable) | Rompe la perfección plástica |
+| Luz de varias fuentes con distinta temperatura | La luz real nunca es monocroma |
+| **Bordes redondeados (bevel) en TODAS las aristas** | Una arista matemáticamente aguda no existe en el mundo real y es lo que más delata un render |
+
+---
+
+## 10.3 Cuántas imágenes por ambiente
+
+| Uso | Cantidad recomendada |
+|---|---|
+| **Ambiente principal (estar-comedor, cocina)** | **2 imágenes:** una general de esquina y una de detalle/segunda visual |
+| **Ambiente secundario (dormitorio, escritorio)** | **1 imagen** |
+| **Baño** | **1 imagen** (dos si es el baño principal) |
+| **Espacios comunes de edificio (hall, SUM)** | 2–3 por espacio (venden el edificio) |
+| Vista de conjunto / eje principal de la casa | 1 |
+| **Total típico — departamento 2 ambientes** | **4–6 imágenes** |
+| **Total típico — casa 3 dormitorios** | **8–12 imágenes** |
+| **Total típico — casa grande** | 12–18 imágenes |
+
+**Qué se incluye en el contrato:** la cantidad exacta, y que **cada imagen adicional se cotiza aparte** (§1.5). También la cantidad de **revisiones** incluidas por imagen (típicamente 2).
+
+**Formatos de entrega:**
+
+| Formato | Resolución | Uso |
+|---|---|---|
+| Presentación al cliente | 1920×1080 o 2000×1500 px | Pantalla |
+| Impresión / portfolio | 3000–4000 px lado mayor, 300 dpi | Lámina, redes |
+| Panorámica 360° | Equirectangular | **Muy vendible:** el cliente "entra" al ambiente con el celular. Enscape y D5 lo generan directo |
+| Video walkthrough | 1080p, 20–60 s | Alto impacto en redes; consume mucho tiempo |
+| **Comparativa antes/después** | Foto real + render desde el mismo punto | **La herramienta de venta más potente en reformas.** Fotografiar en el relevamiento desde la posición exacta de la futura cámara del render |
+
+---
+
+## 10.4 IA para variantes
+
+### Usos legítimos hoy
+
+| Uso | Descripción | Riesgo |
+|---|---|---|
+| **Exploración conceptual temprana** | Generar variantes de atmósfera antes de modelar, para conversar con el cliente | **Bajo**, si se declara que son imágenes conceptuales |
+| **Variantes de material/color sobre un render propio** | Tomar el render base y generar versiones con distinta paleta | Bajo-medio |
+| **Ambientación y styling** | Poblar un render con objetos | Bajo |
+| **Upscaling y limpieza** | Mejorar resolución, quitar ruido | Bajo |
+| **Referencias de moodboard** | Generar imágenes de atmósfera | **Medio**: puede generar expectativas de cosas que no existen |
+| **Render en tiempo real asistido** (D5, Enscape con IA) | Acelerar el proceso manteniendo el modelo real como base | **Bajo — es el mejor uso** |
+
+### Riesgos serios
+
+| Riesgo | Detalle |
+|---|---|
+| **Geometría imposible** | La IA genera espacios que no cierran: escaleras que no llegan, muros que no se encuentran, medidas incoherentes. **Nunca usar una imagen generada por IA como base de diseño sin verificarla en un modelo 3D real** |
+| **Productos que no existen** | La IA inventa muebles y artefactos. El cliente se enamora de algo que no se puede comprar |
+| **Materiales inexistentes** | Texturas que ningún fabricante hace |
+| **Expectativa desmedida** | Ver §10.5 |
+| **Homogeneización estética** | Todos los proyectos empiezan a parecerse |
+| **Propiedad intelectual** | **[V] Verificar los términos de uso de cada herramienta**, especialmente para uso comercial |
+
+### Política del estudio sobre IA
+
+> **Toda imagen generada con IA que se muestre al cliente lleva la leyenda visible: "IMAGEN CONCEPTUAL — NO REPRESENTA EL PROYECTO FINAL".**
+>
+> **Ninguna imagen de IA se entrega como render de proyecto.** Los renders de proyecto salen de un modelo 3D construido sobre los planos y con los productos reales especificados en el FF&E.
+
+---
+
+## 10.5 El riesgo del render que no se puede materializar
+
+> **Este es el mayor riesgo reputacional del render en interiorismo.**
+
+### El problema
+
+Un render puede mostrar, sin costo adicional para quien lo hace:
+- Un mármol Calacatta de veta perfecta que cuesta 8 veces el presupuesto de mesada.
+- Una carpintería sin juntas visibles que ningún carpintero local ejecuta.
+- Una luz uniforme y perfecta que la instalación real no va a dar.
+- Un mueble italiano que no se importa.
+- Un cielorraso sin una sola tapa de registro ni rejilla de aire.
+- Una planta de 2,20 m que nadie va a comprar ni mantener.
+
+Cuando la obra se ejecuta, la brecha entre el render y la realidad es la fuente de decepción número uno.
+
+### Las cinco reglas anti-brecha del estudio
+
+| # | Regla |
+|---|---|
+| **1** | **Todo lo que aparece en un render debe estar en la planilla FF&E, o estar declarado como ambientación.** Se entrega junto al render una lista de "qué está incluido y qué es ambientación" |
+| **2** | **El render se hace DESPUÉS del presupuesto estimado, no antes.** Se diseña dentro del presupuesto y después se dibuja. Al revés, se vende una ilusión |
+| **3** | **Los materiales del render son los materiales especificados**, con sus texturas reales |
+| **4** | **La iluminación del render usa los IES de los artefactos especificados** y los niveles de iluminancia calculados. Si el proyecto tiene 150 lux en el living, el render no puede verse a 500 lux |
+| **5** | **El render muestra la realidad completa**: las rejillas de aire, las tapas de registro, los interruptores, el desagüe de la ducha, la campana. Un render que oculta lo feo miente |
+
+### El texto que acompaña a toda entrega de renders
+
+> *"Las imágenes que se adjuntan representan la propuesta de diseño en cuanto a distribución, proporciones, materiales, color e iluminación. **No son fotografías del resultado final.** Las variaciones de tono, veta y textura propias de los materiales naturales, las tolerancias de fabricación y las condiciones reales de luz producirán diferencias respecto de estas imágenes.*
+>
+> *Los objetos decorativos, plantas, textiles menores y obras de arte que aparecen en las imágenes corresponden a **ambientación** y no forman parte del alcance contratado, salvo aquellos identificados con su código en la planilla FF&E adjunta.*
+>
+> *Toda modificación del alcance, de los materiales especificados o del presupuesto aprobado producirá un resultado distinto del representado."*
+
+---
+
+# 11. ERRORES FRECUENTES EN INTERIORISMO
+
+## Errores de PROCESO
+
+**1. Empezar a diseñar sin briefing escrito y firmado.**
+→ *Consecuencia:* el alcance se estira infinitamente y todo cambio parece incluido.
+→ *Cómo evitarlo:* §2.1 y el acta de acuerdos de la fase 1.
+
+**2. No declarar el presupuesto antes de diseñar.**
+→ *Consecuencia:* se diseña algo inejecutable y hay que rehacer todo, gratis.
+→ *Cómo evitarlo:* no pasar de fase 1 sin un número. §2.4.
+
+**3. Contratar el interiorismo después de la instalación eléctrica.**
+→ *Consecuencia:* el 60% del proyecto de iluminación queda imposible; el cliente vive con un plafón central el resto de su vida.
+→ *Cómo evitarlo:* §5.12. Es el argumento de venta más fuerte del servicio.
+
+**4. No poner por escrito la cantidad de alternativas y de renders.**
+→ *Consecuencia:* revisiones infinitas, honorario licuado.
+→ *Cómo evitarlo:* §1.5, lista de adicionales.
+
+**5. No verificar el reglamento de copropiedad antes de proyectar.**
+→ *Consecuencia:* el consorcio frena la obra, o hay que deshacer.
+→ *Cómo evitarlo:* briefing pregunta 66 y relevamiento §2.5.
+
+**6. Especificar un producto sin verificar stock ni lead time.**
+→ *Consecuencia:* la obra se frena 8 semanas, o se cambia el material a último momento y se rompe la coherencia.
+→ *Cómo evitarlo:* verificar antes de escribir el pliego. Tener plan B por cada ítem crítico. §8.7.
+
+**7. No medir el acceso (puerta, ascensor, escalera) antes de comprar.**
+→ *Consecuencia:* el sofá no entra. Es un desastre caro, evitable y humillante.
+→ *Cómo evitarlo:* medir en el relevamiento. §8.7.
+
+**8. Aceptar decisiones verbales.**
+→ *Consecuencia:* "yo nunca dije eso".
+→ *Cómo evitarlo:* minuta escrita de cada reunión, en 24 h, con los acuerdos numerados.
+
+## Errores de DISEÑO
+
+**9. Iluminar con un solo plafón central por ambiente.**
+→ *Consecuencia:* espacio plano, sin jerarquía, sin atmósfera, con sombras propias sobre las zonas de trabajo.
+→ *Cómo evitarlo:* diseño por capas. §5.6. Mínimo 5 fuentes independientes en un living.
+
+**10. Mezclar temperaturas de color en un mismo campo visual.**
+→ *Consecuencia:* el ambiente se ve sucio y desprolijo; nadie sabe explicar por qué.
+→ *Cómo evitarlo:* una sola Tc por campo visual. §5.3.
+
+**11. Luz cenital sobre el espejo del baño.**
+→ *Consecuencia:* sombras profundas en ojos y mentón; nadie se puede maquillar ni afeitar.
+→ *Cómo evitarlo:* apliques laterales a 150–165 cm. §7.2. **[E]**
+
+**12. Luz bajo alacena montada al fondo, contra el muro.**
+→ *Consecuencia:* el usuario trabaja en su propia sombra.
+→ *Cómo evitarlo:* perfil al frente de la alacena, retirado 3–5 cm. §7.1.
+
+**13. Alfombra demasiado chica.**
+→ *Consecuencia:* el living entero se ve más chico y desarmado. Es el error visual más frecuente y más visible.
+→ *Cómo evitarlo:* reglas de §6.7.3. Al menos las patas delanteras del sofá adentro.
+
+**14. Cortinas montadas al dintel y cortas.**
+→ *Consecuencia:* el ambiente se ve más bajo y la ventana más chica.
+→ *Cómo evitarlo:* montar a cielorraso, ancho 15–25 cm por lado, largo al piso. §6.7.1.
+
+**15. Muebles todos pegados a las paredes ("efecto sala de espera").**
+→ *Consecuencia:* un vacío incómodo en el centro y ninguna zona de conversación.
+→ *Cómo evitarlo:* zonificar, despegar el sofá, usar alfombra para definir la isla de estar. §7.4.
+
+**16. Ignorar la orientación real (y aplicar consejos del hemisferio norte).**
+→ *Consecuencia:* paletas frías en ambientes que ya son fríos; ambientes al oeste inhabitables a la tarde.
+→ *Cómo evitarlo:* §4.3. **En Argentina el norte tiene sol y el sur no.**
+
+**17. Elegir el color en el catálogo y no probarlo en el lugar.**
+→ *Consecuencia:* el beige del abanico se convierte en amarillo canario en la pared.
+→ *Cómo evitarlo:* muestras de 60×60 cm, sobre gris, en el lugar, vistas en 4 momentos. §4.8.
+
+**18. Demasiados protagonistas.**
+→ *Consecuencia:* ruido visual; "hay algo que no cierra".
+→ *Cómo evitarlo:* un protagonista por campo visual. §3.4.
+
+**19. Guardado insuficiente.**
+→ *Consecuencia:* desorden permanente a la vista, sin importar cuán lindo sea el diseño.
+→ *Cómo evitarlo:* medir en el briefing (preguntas 31–39) y dimensionar con **30% de holgura**. §6.6.
+
+**20. Poner la moda en lo caro y lo neutro en lo barato.**
+→ *Consecuencia:* un piso de moda que se fecha en 5 años y cuesta una fortuna cambiar.
+→ *Cómo evitarlo:* matriz de riesgo de moda. §3.6. **La moda va en la pintura y en los almohadones, no en el piso ni en la mesada.**
+
+**21. Elegir materiales sin considerar mascotas, chicos o alergias.**
+→ *Consecuencia:* un sofá de bouclé destruido por el gato en 4 meses; una alfombra de viscosa manchada la primera semana.
+→ *Cómo evitarlo:* Martindale, fibras, tabla de §6.7.2.
+
+**22. No resolver la acústica en espacios de superficies duras.**
+→ *Consecuencia:* un living lindo donde no se puede conversar ni escuchar la TV.
+→ *Cómo evitarlo:* alfombra, cortinas de tela, biblioteca llena, un plano absorbente. §6.3.3.
+
+**23. Diseñar la cocina sin saber los modelos exactos de electrodomésticos.**
+→ *Consecuencia:* el horno no entra en el hueco; hay que rehacer el mueble.
+→ *Cómo evitarlo:* ficha técnica al carpintero antes de fabricar. §8.5.
+
+**24. No prever el espacio de los drivers de LED, ni su ventilación ni su acceso.**
+→ *Consecuencia:* cuando falla un driver a los 3 años, hay que romper el cielorraso.
+→ *Cómo evitarlo:* checklist de replanteo eléctrico. §5.12.
+
+**25. Comprar la mesada con las medidas del plano en vez de plantillar.**
+→ *Consecuencia:* la mesada no calza. Es un material que no se puede corregir.
+→ *Cómo evitarlo:* plantillar con los muebles montados. §8.2, secuencia de obra.
+
+**26. Colgar los cuadros demasiado alto.**
+→ *Consecuencia:* la habitación se ve desarmada y el arte "flota".
+→ *Cómo evitarlo:* **[C]** el **centro de la obra a 145–155 cm del piso** (altura del ojo). Sobre un sofá: el borde inferior a **15–25 cm por encima del respaldo**.
+
+**27. Dejar la tecla de luz detrás de la puerta abierta o detrás de un mueble.**
+→ *Consecuencia:* hay que cerrar la puerta para prender la luz.
+→ *Cómo evitarlo:* verificar en obra con el plano amoblado y el sentido de apertura real. §5.12.
+
+**28. Especificar porcelanato pulido en cocina, baño o circulación.**
+→ *Consecuencia:* resbala, marca cada pisada y se raya.
+→ *Cómo evitarlo:* R10 mínimo, acabado mate. §6.1.
+
+**29. No definir el despiece de solados ni de revestimientos.**
+→ *Consecuencia:* el colocador arranca de una esquina y deja un corte de 3 cm en el lugar más visible.
+→ *Cómo evitarlo:* dibujar el despiece con punto de arranque. §9.2.
+
+**30. Empapelar o poner microcemento sobre un soporte con humedad o en mal estado.**
+→ *Consecuencia:* hongos, ampollas, fisuras. **Garantizado.**
+→ *Cómo evitarlo:* diagnóstico y reparación del soporte antes. §6.2.5, §6.3.2.
+
+**31. Diseñar un vestidor o un placard con la profundidad equivocada.**
+→ *Consecuencia:* con menos de 55 cm libres, la ropa toca la puerta y se arruga.
+→ *Cómo evitarlo:* 58–60 cm interiores. §6.6, §7.3.
+
+**32. No prever la ventilación de reposición de aire para la campana.**
+→ *Consecuencia:* la campana no extrae, y en el peor caso puede hacer retornar gases de combustión.
+→ *Cómo evitarlo:* §7.1.
+
+**33. Poner la TV sobre el hogar o demasiado alta.**
+→ *Consecuencia:* dolor cervical y mala experiencia de visionado.
+→ *Cómo evitarlo:* centro de pantalla a 105–115 cm. §7.4.
+
+**34. Espejo enfrentado a una pared vacía "para agrandar".**
+→ *Consecuencia:* duplica la pared vacía. Nada más.
+→ *Cómo evitarlo:* los espejos duplican **luz y vistas**, no metros cuadrados. §7.7.
+
+**35. Renders que no se pueden ejecutar con el presupuesto real.**
+→ *Consecuencia:* decepción garantizada en la entrega.
+→ *Cómo evitarlo:* §10.5.
+
+**36. No entregar manual de uso ni códigos de color.**
+→ *Consecuencia:* a los 6 meses el cliente llama porque no sabe con qué limpiar el microcemento ni qué pintura comprar para un retoque.
+→ *Cómo evitarlo:* §1.2, fase 7.
+
+---
+
+# 12. BIBLIOGRAFÍA COMENTADA, NORMAS Y PROVEEDORES
+
+## 12.1 Bibliografía esencial
+
+### Antropometría y dimensionamiento
+
+**Panero, Julius & Zelnik, Martin — *Las dimensiones humanas en los espacios interiores* (Ed. Gustavo Gili)**
+El texto de referencia absoluto. Tres partes: (1) teoría y aplicación de la antropometría, con atención específica a personas mayores y con discapacidad; (2) tablas antropométricas ilustradas por grupo etario; (3) dibujos acotados que ilustran la relación correcta entre el usuario y el espacio, cubriendo espacios de estar, comer, dormir, cocinar y baños, además de espacios comerciales e institucionales.
+*Cómo usarlo:* no como catálogo de medidas mínimas, sino como método. Las medidas son de población norteamericana: verificar contra datos locales.
+→ https://editorialgg.com/las-dimensiones-humanas-en-los-espacios-interiores-ebook.html
+
+**Neufert, Ernst — *Arte de proyectar en arquitectura* (Ed. Gustavo Gili)**
+El clásico alemán. Medidas de todo. Muy útil como consulta rápida, pero muchas medidas están fechadas y son de contexto europeo.
+
+**Ching, Francis D. K. — *Interior Design Illustrated* (Wiley)**
+El mejor libro para entender **cómo se construyen** los espacios interiores: sistemas constructivos, materiales, revestimientos, cielorrasos, escaleras, y los principios de organización espacial. Menos "decorativo" y más técnico que su título sugiere.
+
+**Ching, Francis D. K. — *Arquitectura: forma, espacio y orden***
+Para el vocabulario de composición: jerarquía, ritmo, proporción, escala.
+
+### Iluminación
+
+**Gordon, Gary — *Interior Lighting for Designers* (Wiley)**
+El manual más completo específicamente orientado al diseño de interiores. Cubre la física de la luz, la percepción, el diseño por capas, los tipos de fuente y el cálculo. Es el libro que hay que leer si se va a vender iluminación como servicio.
+
+**IES — *The Lighting Handbook* (Illuminating Engineering Society)**
+La referencia técnica de la industria norteamericana. Recomendaciones de iluminancia por categoría de tarea, métodos de cálculo, y la base de casi toda la literatura secundaria.
+→ https://www.ies.org
+
+**CIE — Publicaciones de la Comisión Internacional de la Iluminación**
+El organismo internacional de referencia en colorimetría y fotometría. Define, entre otras cosas, el sistema de reproducción cromática y el cielo cubierto estándar.
+→ https://cie.co.at
+
+### Color
+
+**Itten, Johannes — *El arte del color* / *The Art of Color* (1961)**
+La sistematización de los siete contrastes cromáticos (matiz, claro-oscuro, frío-cálido, complementarios, simultáneo, de cualidad, de cantidad). Es la base de la enseñanza del color en la tradición Bauhaus. **Los contrastes de cantidad y de claro-oscuro son los más aplicables al interiorismo.**
+
+**Albers, Josef — *La interacción del color* / *Interaction of Color* (1963)**
+Demuestra experimentalmente que el color no existe aisladamente: es siempre relacional. **Es la base teórica de por qué hay que probar el color en el lugar** (§4.8). Lectura obligatoria.
+
+**Chevreul, Michel Eugène — *De la loi du contraste simultané des couleurs* (1839)**
+El origen histórico del estudio del contraste simultáneo.
+
+### Salud, bienestar y normativa de confort
+
+**WELL Building Standard v2 — International WELL Building Institute**
+Estándar voluntario de salud en edificios. El capítulo **Light** es el más relevante: define requisitos de iluminación circadiana en **EML (equivalent melanopic lux)**, medida en plano vertical a la altura del ojo (típicamente 1,2–1,4 m del piso), con valores del orden de 150–240 EML para espacios generales y **≥ 200 o ≥ 250 EML** en un 75% de los puestos de trabajo, mantenidos al menos 4 horas.
+→ https://standard.wellcertified.com/light/circadian-lighting-design
+→ https://v2.wellcertified.com
+
+### Sobre lo que NO es evidencia
+
+**Literatura crítica sobre psicología del color**
+Los principios de la "psicología del color" tal como se divulgan no resisten el método científico: falta de estudios controlados y reproducibles, y fuerte dependencia de variables culturales, contextuales y personales. **Conviene tener leído al menos un texto crítico para poder conversar con un cliente que llega con estas ideas.**
+→ https://www.menteyciencia.com/psicologia-del-color-del-mito-a-la-pseudociencia/
+
+---
+
+## 12.2 Normas
+
+### Argentinas
+
+| Norma | Contenido | Estado / Nota |
+|---|---|---|
+| **IRAM-AADL J 20-06** | *Luminotecnia. Iluminación artificial de interiores. Niveles de iluminación.* Valores mínimos para más de 200 actividades, clasificadas por tipo de edificio, local y tarea visual. **Publicada en 1972, reeditada sin modificaciones en 1996.** Es la referencia argentina y la que citan las inspecciones y la SRT | **Valores conservadores** para el estándar actual. Usar como piso, no como objetivo |
+| **IRAM-AADL J 20-02 / J 20-03 / J 20-04 / J 20-05** | Serie de luminotecnia (vocabulario, método de cálculo, etc.) | **[V] verificar títulos y vigencia en IRAM** |
+| **Ley 19.587 y Decreto 351/79, Anexo IV** | Higiene y seguridad en el trabajo — iluminación | Obligatorio en ámbito laboral |
+| **Decreto 351/79, Anexo VII** | Protección contra incendios | |
+| **IRAM 11910 (partes 1, 2 y 3)** | Reacción al fuego de materiales de construcción — clasificación | **[V] Verificar contenido, partes vigentes y equivalencias. NO es directamente equivalente a EN 13501-1** |
+| **IRAM 11603** | Acondicionamiento térmico de edificios — zonificación bioambiental de la República Argentina | La Pampa: principalmente **zona IV — templada fría [V] verificar** |
+| **IRAM 11601 / 11605 / 11507** | Aislamiento térmico, transmitancias máximas, carpinterías | **[V]** |
+| **AEA 90364, Parte 7, Sección 771** | Reglamentación para la ejecución de instalaciones eléctricas en inmuebles — viviendas, oficinas y locales unitarios. Grados de electrificación, circuitos y bocas mínimas, **zonas de protección en baños** | **[V] Verificar edición vigente y exigibilidad local.** Fundamental para coordinar §5.12 |
+| **Ley 24.314 y Decreto 914/97** | Accesibilidad de personas con movilidad reducida | **[V]** |
+| **IRAM 111102** (serie de accesibilidad) | Accesibilidad al medio físico | **[V] verificar partes y vigencia** |
+| **Decreto 658/96** | Listado de enfermedades profesionales (incluye silicosis) | **[V]** Relevante para §6.5 |
+| **Normativa ENARGAS** | Instalaciones de gas, ventilaciones de artefactos | **[V] verificar. Requiere gasista matriculado** |
+| **Código de Edificación — Municipalidad de Santa Rosa** | **Superficies mínimas, alturas libres, iluminación y ventilación natural, escaleras, accesibilidad, protección contra incendio** | **[V] CRÍTICO. Es la normativa que rige realmente en las obras del estudio. Verificar en la Dirección de Obras Particulares.** |
+
+**Dónde conseguir las normas argentinas:**
+- **IRAM — Instituto Argentino de Normalización y Certificación** → https://www.iram.org.ar
+- **AEA — Asociación Electrotécnica Argentina** → https://www.aea.org.ar
+- **Biblioteca de la SRT (Superintendencia de Riesgos del Trabajo)** — tiene catalogada la J 20-06 → http://biblioteca.srt.gob.ar
+- **Colegio de Arquitectos de La Pampa (CALP)** → consultar por aranceles orientativos y normativa provincial
+
+### Internacionales (de referencia técnica, no obligatorias en Argentina)
+
+| Norma | Contenido | Nota |
+|---|---|---|
+| **EN 12464-1:2021** | *Luz y alumbrado. Alumbrado de los lugares de trabajo. Parte 1: Lugares de trabajo en interiores.* Define **Em** (iluminancia mantenida), **UGR** máximo, **Uo** (uniformidad) y **Ra** mínimo por tarea. Escala normalizada: 20-30-50-75-100-150-200-300-500-750-1000-1500-2000-3000-5000 lux | La referencia técnica más completa y actualizada. Verificados: oficina 500 lux / UGR≤19 / Ra≥80; CAD 750–1000 lux / UGR≤16; circulaciones 150–200 lux; muros 50–150 lux |
+| **EN 12464-2** | Alumbrado de lugares de trabajo exteriores | |
+| **EN 17037** | *Daylight in buildings* — luz natural, factor de luz diurna, vistas, asoleamiento | **[V]** |
+| **EN 13501-1** | Clasificación de reacción al fuego de productos de construcción. Euroclases A1–F + s1/s2/s3 (humo) + d0/d1/d2 (goteo) | Verificado: **B** = combustible de baja contribución; **s1** = baja emisión de humo; **d0** = sin goteo inflamado > 600 s |
+| **DIN 51130** | Resistencia al deslizamiento con calzado — clases **R9 a R13** | Verificado: R9 = 6°–10°; R10 = 10°–19°; R11 = 19°–27° |
+| **DIN 51097** | Resistencia al deslizamiento con pie descalzo — clases **A, B, C** | |
+| **ANSI A326.3** | Coeficiente de fricción dinámico (DCOF) | Estándar norteamericano |
+| **ISO 10545** (serie) | Ensayos de baldosas cerámicas: -3 absorción, -7 abrasión (PEI), -13 resistencia química, -14 manchas | |
+| **ISO 9241** (serie) | Ergonomía de la interacción persona-sistema. **Parte 5:** disposición del puesto de trabajo y requisitos posturales (última edición 2024). **Parte 303/307:** requisitos de pantallas | |
+| **ISO 354** | Medición de la absorción acústica en cámara reverberante (coeficiente α) | Para exigir datos reales a fabricantes de paneles acústicos |
+| **ISO 3382** | Medición de parámetros acústicos de recintos (tiempo de reverberación) | |
+| **IES TM-30** | Evaluación de reproducción cromática: **Rf** (fidelidad) y **Rg** (gamut) | Verificado: benchmarks profesionales Ra≥90, R9≥50, Rf≥85, Rg 100–105 |
+| **BS 8493 / normativa británica de accesibilidad** | LRV y diferencia mínima de contraste visual | Verificado: **mínimo 30 puntos de LRV** de diferencia entre superficies contrastantes |
+
+---
+
+## 12.3 Proveedores de referencia
+
+> **[V] TODA ESTA LISTA ES REFERENCIAL.** Verificar disponibilidad, cobertura en La Pampa, plazos y condiciones. Mantener la planilla de proveedores de §8.3.
+
+### Pinturas
+
+| Marca | Web | Nota |
+|---|---|---|
+| **Alba** (Grupo AkzoNobel) | https://www.alba.com.ar | Sistema tintométrico propio, pionero en Argentina desde 1992, más de 8.000 colores preparables en el acto. Publica "color del año" (2026: *Azul Puro*; 2025: *Curry Dorado*). Herramienta online "Color Play" |
+| **Sherwin Williams Argentina** | https://www.sherwin.com.ar | Sistema tintométrico. **[V] Los códigos globales SW no siempre se reproducen igual localmente** |
+| **Sinteplast** | https://www.sinteplast.com.ar | Sistema tintométrico propio |
+| Tersuave, Colorín, Petrilac | — | Verificar disponibilidad local |
+
+### Iluminación
+
+| Marca | Web | Nota |
+|---|---|---|
+| **Lucciola** | https://www.lucciola.com.ar | Fabricante nacional de iluminación profesional. Amplia gama técnica. Rosario + Buenos Aires. ventas@lucciola.com.ar |
+| **Artelum** | https://www.artelum.com.ar | Fabricante nacional |
+| **Candil** | — | Fabricante y distribuidor nacional |
+| Directorio de fabricantes | https://www.iluminacion.net/fabricantes/ | Listado del sector |
+
+### Herrajes
+
+| Marca / Distribuidor | Web | Nota |
+|---|---|---|
+| **Blum** | https://www.blum.com | Fabricante austríaco: bisagras, sistemas de cajones (Tandembox, Legrabox, Movento), sistemas de elevación (Aventos), Tip-On |
+| **Häfele Argentina** | https://www.hafele.com.ar | Herrajes para muebles y construcción, sistemas de cierre |
+| **Hettich** | — | Sensys, Innotech, Quadro |
+| **Montoya Herrajes SRL** | https://www.montoyaherrajes.com.ar | Distribuidor exclusivo autorizado Blum con showroom oficial; también Häfele, Ducasse, Currao, Sidañez |
+| **Herraturr Herrajes** | https://www.herraturrherrajes.com.ar | Distribuidor oficial Häfele, Blum, Hettich, Ducasse, Salice. Showroom de ~200 m² |
+| **Bisagra OH** | https://bisagraoh.com.ar | Representante Blum desde 1992 |
+
+### Revestimientos, mesadas y otros
+
+| Rubro | Referencias | Nota |
+|---|---|---|
+| Porcelanato y cerámicos nacionales | Cerro Negro, Alberdi, San Lorenzo, Ilva, Scop | **[V] verificar disponibilidad y catálogos vigentes** |
+| Superficies de cuarzo | Silestone (Cosentino), Caesarstone, Compac | **Ver advertencia de silicosis §6.5** |
+| Superficies sinterizadas | Neolith, Dekton (Cosentino), Laminam | Alta gama |
+| Superficie sólida | Corian (DuPont) y equivalentes | Junta invisible, reparable |
+| Microcemento | Topciment, Baumit, Weber, sistemas nacionales | **El aplicador importa más que la marca** |
+| Vinílicos SPC/LVT | Varias marcas nacionales e importadas | Verificar capa de uso ≥ 0,5 mm |
+| Telas de tapicería técnica | Aquaclean, Crypton, Sunbrella, y tapicerías nacionales | Exigir ficha con Martindale y solideces |
+
+### Software
+
+| Software | Uso | Costo |
+|---|---|---|
+| **DIALux evo** | **Cálculo y verificación de iluminación con fotometrías reales.** Gratuito | Gratis → https://www.dialux.com |
+| **Relux** | Alternativa a DIALux | Gratis |
+| SketchUp | Modelado 3D | Suscripción |
+| Enscape / D5 Render / Twinmotion | Render en tiempo real | Suscripción / D5 tiene versión gratuita |
+| 3ds Max + Corona | Render de alto realismo | Suscripción |
+| Blender + Cycles | Modelado y render | **Gratis** → https://www.blender.org |
+| AutoCAD / ArchiCAD / Revit | Documentación | Suscripción |
+| Google Sheets | **Planilla FF&E colaborativa** | Gratis |
+
+---
+
+# ANEXOS
+
+## ANEXO A — Planilla FF&E en blanco
+
+```
+PROYECTO: ..............................  CLIENTE: ..........................
+FECHA: ...............  VERSIÓN: ...........  RESPONSABLE: ..................
+
+┌───────┬──────────┬────────────────┬───────────┬──────────────┬─────────────┐
+│ CÓD.  │ AMBIENTE │ UBICACIÓN /    │ PRODUCTO  │ MARCA /      │ TERMINACIÓN │
+│       │          │ APLICACIÓN     │           │ MODELO       │ / COLOR     │
+├───────┼──────────┼────────────────┼───────────┼──────────────┼─────────────┤
+│       │          │                │           │              │             │
+└───────┴──────────┴────────────────┴───────────┴──────────────┴─────────────┘
+
+┌────────────┬──────┬─────┬────────────┬───────────┬─────────────┬───────────┐
+│ MEDIDAS    │ CANT.│ UN. │ PROVEEDOR  │ LEAD TIME │ PRECIO UNIT.│ PRECIO TOT│
+│ (cm)       │      │     │            │ (semanas) │             │           │
+├────────────┼──────┼─────┼────────────┼───────────┼─────────────┼───────────┤
+│            │      │     │            │           │             │           │
+└────────────┴──────┴─────┴────────────┴───────────┴─────────────┴───────────┘
+
+┌──────────┬──────────┬──────────────┬──────────────┬────────────┬───────────┐
+│ ESTADO   │ FECHA OC │ ENTREGA PREV.│ ENTREGA REAL │ APROB.     │ OBSERV.   │
+│          │          │              │              │ CLIENTE    │           │
+├──────────┼──────────┼──────────────┼──────────────┼────────────┼───────────┤
+│          │          │              │              │            │           │
+└──────────┴──────────┴──────────────┴──────────────┴────────────┴───────────┘
+
+ESTADOS: ESPECIFICADO · COTIZADO · APROBADO · ORDENADO · EN PRODUCCIÓN ·
+         DESPACHADO · RECIBIDO · INSTALADO · OK
+
+CATEGORÍAS DE CÓDIGO:
+  PT pintura · PI pisos · RV revestimientos · CI cielorrasos · MS mesadas
+  CA carpintería · MB mobiliario · LU iluminación · GR grifería · SN sanitarios
+  HE herrajes · TX textiles · AL alfombras · EL electrodomésticos
+  AC accesorios · VG vegetación · VD vidrios y espejos
+
+MARCAR CON ★ LOS ÍTEMS DE RUTA CRÍTICA (mayor lead time)
+```
+
+---
+
+## ANEXO B — Checklist de relevamiento (imprimible)
+
+```
+OBRA: ...........................................  FECHA: ..................
+RELEVÓ: .........................................
+
+GEOMETRÍA
+[ ] Planta acotada, medidas cruzadas para verificar escuadra
+[ ] Altura libre medida en 4 puntos por local
+[ ] Espesor de muros
+[ ] Vanos: ancho, alto, antepecho, sentido de apertura, espesor de marco
+[ ] Vigas descolgadas, columnas, conductos, bajadas — acotados
+[ ] Desniveles de piso (nivel láser): punto más alto y más bajo
+[ ] Nivel de piso terminado vs. contrapiso
+
+INSTALACIONES
+[ ] Ubicación y ALTURA de cada boca: luz, tomas, TV, datos, timbre, portero
+[ ] Tablero: ubicación, circuitos disponibles, espacio para ampliar
+[ ] Puntos de agua fría/caliente y desagües: ubicación y cota
+[ ] Ventilaciones existentes: dónde salen, si funcionan
+[ ] Gas: medidor, recorrido, artefactos, ventilaciones
+[ ] Calefacción/refrigeración: tipo, unidades, cañerías
+[ ] Router: ubicación y zonas de señal débil
+
+AMBIENTE FÍSICO
+[ ] Orientación real de cada abertura (BRÚJULA)
+[ ] Sombras arrojadas: qué las produce y en qué horario
+[ ] Medición con luxómetro: 10-11 h y 15-16 h, día despejado
+    · a 1 m de ventana · a 1,5 m · centro del local · punto más alejado
+[ ] Ruido: fuentes y horarios
+[ ] Humedad: manchas, eflorescencias, olor, condensación
+[ ] Ambientes que se recalientan (oeste y norte)
+
+ACCESOS (para la logística de compra)
+[ ] Ancho de puerta de entrada del edificio
+[ ] Ascensor: ancho × profundidad × ALTURA DE PUERTA × diagonal de cabina
+[ ] Ancho y giro de la escalera
+[ ] Ancho de puerta del departamento
+[ ] Altura de palier
+[ ] ¿Se puede izar por balcón? ¿Permiso de consorcio?
+
+FOTOGRAFÍA
+[ ] 4 fotos por ambiente, desde las 4 esquinas, a 1,55 m, misma lente
+[ ] Cada vano desde adentro y desde afuera
+[ ] Cada patología, con cinta métrica en la foto
+[ ] Cada instalación y tablero
+[ ] Cada pieza que se conserva, con medidas anotadas
+
+DOCUMENTACIÓN A PEDIR AL CLIENTE
+[ ] Plano municipal aprobado
+[ ] Plano de instalaciones
+[ ] Reglamento de copropiedad (si es PH)
+[ ] Facturas y garantías de equipos existentes
+```
+
+---
+
+## ANEXO C — Checklist de replanteo eléctrico
+
+*(Versión resumida imprimible de §5.12. Se recorre EN OBRA, con el electricista, marcando con fibrón.)*
+
+```
+OBRA: ...........................  FECHA: ..........  PRESENTES: ............
+
+ILUMINACIÓN
+[ ] Cada boca de techo marcada y verificada contra el MOBILIARIO REAL
+[ ] Colgantes centrados respecto del mueble real (mesa / isla), no del ambiente
+[ ] Apliques de espejo: altura y separación contra el espejo REAL comprado
+[ ] Apliques de cabecera: contra el ancho REAL de la cama y las mesas de luz
+[ ] Alimentación de perfiles bajo alacena + ESPACIO VENTILADO PARA DRIVER
+[ ] Alimentación de luz de placard/vestidor con sensor
+[ ] Alimentación de gargantas de luz (verificada contra detalle de yesería)
+[ ] Balizamiento de escalera y pasillo nocturno
+[ ] Luz exterior: acceso, sendero, galería, parrilla
+[ ] Cochera y baulera
+[ ] ESPACIO ACCESIBLE Y VENTILADO PARA TODOS LOS DRIVERS
+
+COMANDOS
+[ ] Todas las teclas a UNA MISMA ALTURA (verificar con láser)
+[ ] Ninguna tecla detrás de una puerta abierta (verificar apertura REAL)
+[ ] Ninguna tecla detrás de un mueble (verificar contra planta amoblada)
+[ ] Combinación: pasillos, escaleras, ambientes con 2 accesos, dormitorios
+[ ] Cantidad de módulos por caja verificada
+[ ] Dimmers: living, comedor, dormitorios, cocina general, acentos
+[ ] Bus DALI / Casambi / KNX tendido y documentado (si aplica)
+
+TOMACORRIENTES
+[ ] Generales cada 3-4 m; nunca a más de 1,80 m de un punto de muro libre
+[ ] Detrás de cada mueble con equipo (TV, router, decodificador, consola)
+[ ] Junto a la cama: MÍNIMO 2 POR LADO
+[ ] Esquinas de estar para lámpara de pie, COMANDADAS POR TECLA
+[ ] Sobre mesada de cocina: 4-6, en 2+ circuitos, a h=110
+[ ] Bajo mesada: lavavajillas, triturador, purificador
+[ ] Campana (verificar posición contra el modelo real)
+[ ] Mueble de baño (fuera de zonas de protección)
+[ ] Balcón / galería (IP adecuado)
+[ ] Palier / hall (aspiradora)
+[ ] Interior de placard / vestidor
+[ ] Detrás de TV: toma alta + datos + coaxil + CONDUIT PARA CABLES
+[ ] Escritorio: 4 tomas + 2 datos
+[ ] Circuitos exclusivos: horno, anafe, lavarropas, lavavajillas, termotanque, AA
+
+DATOS Y PREVISIONES
+[ ] Router en posición central, no en un rincón ni en mueble metálico
+[ ] Bocas de datos: escritorio, TV, access point de pasillo
+[ ] Timbre, portero, cámaras, alarma
+[ ] ALIMENTACIÓN EN DINTEL DE CADA VENTANA (cortinas motorizadas futuras)
+[ ] Pantalla de proyección
+[ ] Canalización troncal para carga de vehículo eléctrico (si aplica)
+
+CIERRE
+[ ] Recorrido completo con el plano de planta amoblada superpuesto
+[ ] FOTOGRAFIAR TODAS LAS PAREDES ABIERTAS ANTES DE CERRAR — y archivar
+[ ] Acta de replanteo firmada por electricista y cliente
+```
+
+---
+
+## ANEXO D — Checklist de entrega y punch list
+
+```
+OBRA: ...........................  FECHA DE ENTREGA: ......................
+
+RECORRIDO 1 — CON LUZ NATURAL (día despejado, entre 10 y 16 h)
+[ ] Todas las superficies pintadas: sin manchas, sin diferencias de tono,
+    sin marcas de rodillo, sin salpicaduras
+[ ] Encuentros de solados resueltos, sin cortes visibles mal ubicados
+[ ] Zócalos continuos, a nivel, sin separaciones del muro
+[ ] Todas las juntas de revestimiento alineadas y con pastina uniforme
+[ ] Carpintería: frentes alineados, luces uniformes de 2-3 mm
+[ ] Todos los cajones y puertas abren y cierran sin roce
+[ ] Todos los amortiguadores funcionan
+[ ] Herrajes regulados
+[ ] Vidrios y espejos sin rayas ni restos de silicona
+[ ] Mamparas: plomo, sin filtraciones
+[ ] Cortinas: a plomo, mismo largo, mecanismo suave
+[ ] Alfombras: manta antideslizante colocada, sin ondulaciones
+[ ] Mobiliario nivelado y sin daños
+[ ] Cuadros a la altura correcta y a nivel
+
+RECORRIDO 2 — CON LUZ ARTIFICIAL (de noche)
+[ ] Todos los artefactos encienden
+[ ] Ningún artefacto con temperatura de color distinta
+[ ] Ningún LED visible directamente desde posición de uso
+[ ] Todos los dimmers regulan sin parpadeo en TODO el rango
+[ ] Todos los spots orientados y fijados
+[ ] Escenas grabadas y probadas
+[ ] Todas las teclas rotuladas
+[ ] Balizamiento funciona
+[ ] Sensores calibrados (tiempo y sensibilidad)
+[ ] Sin sombras propias en zonas de trabajo (cocina, escritorio, espejo)
+
+FUNCIONAMIENTO
+[ ] Todos los tomacorrientes probados con tester
+[ ] Todos los electrodomésticos probados
+[ ] Campana: probada en las 3 velocidades, sin ruido anormal
+[ ] Extractores de baño probados; temporizador calibrado
+[ ] Grifería: sin pérdidas, temperatura correcta, caudal correcto
+[ ] Desagües: escurren correctamente, sin olor
+[ ] Ducha: pendiente correcta, no encharca
+[ ] Wi-Fi probado en todos los ambientes
+
+ENTREGA DOCUMENTAL
+[ ] Manual de uso y mantenimiento (con CÓDIGOS DE COLOR de cada pintura)
+[ ] Garantías de todos los productos
+[ ] Fichas técnicas de los electrodomésticos
+[ ] Fotografías de las paredes abiertas (Anexo C)
+[ ] Planos as-built (si hubo cambios)
+[ ] FF&E final con proveedores y contactos
+[ ] Stock de repuestos entregado (piezas de piso, pintura, artefactos)
+[ ] Lista de contactos de gremios y proveedores
+[ ] PUNCH LIST con responsables y fechas
+[ ] ACTA DE RECEPCIÓN firmada, con reservas
+[ ] Autorización de fotografía / derecho de imagen firmada
+```
+
+---
+
+## Control de versiones de este documento
+
+| Versión | Fecha | Cambios | Responsable |
+|---|---|---|---|
+| 1.0 | Septiembre 2026 | Documento inicial | — |
+
+### Pendientes de verificación prioritarios
+
+Los siguientes ítems están marcados **[V]** en el cuerpo del documento y **deben resolverse antes de usar el manual como base de pliegos**:
+
+1. **Código de Edificación de la Municipalidad de Santa Rosa**: superficies y alturas mínimas de locales, superficie mínima de iluminación y ventilación natural, escaleras, barandas, protección contra incendio, cocheras.
+2. **AEA 90364-7-771**, edición vigente: zonas de protección en baños, grados de electrificación, bocas mínimas.
+3. **IRAM 11910** (partes vigentes): clasificación de reacción al fuego, y su exigibilidad para revestimientos en vías de evacuación y espacios comunes.
+4. **Aranceles orientativos del Colegio de Arquitectos de La Pampa** y encuadre fiscal del servicio (contador + abogado).
+5. **Valor hora y valor por m²** del estudio, calculados con la estructura de costos real.
+6. **Precios de referencia locales** por rubro, para el "costo de la foto" (§2.3) y los índices de costo relativo.
+7. **Planilla de proveedores** de §8.3, completa y con lead times reales medidos.
+8. **LRV reales** de los colores de las paletas de §4.9, confirmados con fabricante.
+9. **Ley 24.314 / Decreto 914/97 / IRAM de accesibilidad** y normativa provincial y municipal aplicable.
+10. **Normativa argentina sobre sílice cristalina respirable** (§6.5) y protocolo a exigir a las marmolerías.
+11. **IRAM 11603** — confirmación de la zona bioambiental de Santa Rosa y sus implicancias.
+12. **Datos antropométricos argentinos/latinoamericanos**, para contrastar con Panero & Zelnik.
+
+---
+
+*Documento interno del estudio. Revisión anual obligatoria. Los apartados marcados [V] no deben usarse como base de un pliego, un presupuesto ni una afirmación normativa ante un cliente sin verificación previa en la fuente indicada.*
