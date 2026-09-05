@@ -343,25 +343,49 @@ los cálculos resueltos está en el documento de tecnología constructiva.
 
 ## 5. Suelo y estructura
 
-### 5.1 Sismo
+### 5.1 Sismo y viento
 
-La zonificación del **INPRES-CIRSOC 103** define 5 zonas: **0** (peligrosidad muy reducida),
-**1** (reducida), **2** (moderada), **3** (elevada) y **4** (muy elevada).
+**Santa Rosa (Departamento Capital) y Toay están en ZONA SÍSMICA 0** — peligrosidad muy
+reducida — según la zonificación del INPRES-CIRSOC 103. El **oeste de la provincia** (Puelén,
+Chical Có, Rancul y parte de Chalileo) está en **Zona 1**. Para obras cerca de límites
+departamentales, el propio reglamento remite a `inpres.gob.ar`: se ingresa latitud y longitud
+y devuelve la zona.
 
-**⚠ La zona exacta de La Pampa / Santa Rosa no pudo verificarse en fuente primaria en esta
-investigación.** La provincia se ubica en la porción centro-este del país, lejos del frente
-andino, por lo que corresponde esperar una **zona de peligrosidad baja**, pero
-**esto debe confirmarse contra el mapa oficial** antes de definir un sistema estructural:
+**Pero el edificio igual necesita resolver la acción horizontal, y acá la resuelve el viento.**
 
-- Mapa de zonificación sísmica: INTI–CIRSOC (`inti.gob.ar` → CIRSOC → área 100 → mapa de
-  zonificación sísmica) y **INPRES** (`inpres.gob.ar`, reglamento 103 Parte I completo en PDF).
-- Herramienta de consulta por coordenadas: Dlubal, "zonas de cargas — INPRES-CIRSOC 103:2013-07".
+**Velocidad básica del viento en Santa Rosa: V = 50,0 m/s** (CIRSOC 102, Fig. 1B).
 
-**Por qué importa incluso si la zona es baja:** una zona de peligrosidad reducida no elimina la
-necesidad de **estabilidad lateral** en un edificio de 10 plantas. El **viento** en La Pampa es
-severo y en muchos casos gobierna el diseño lateral por encima del sismo. El núcleo de
-circulaciones sigue siendo el elemento rigidizante natural, y las irregularidades en planta y
-elevación siguen siendo malas ideas. Ver `docs/03-estructuras/estructuras.md`.
+| Acción | Rol en un PB+9 en Santa Rosa |
+|---|---|
+| **Sismo (E)** | Prácticamente **no gobierna**. Aun así, el 103 exige una verificación con el **1,5 % del peso** si no se cumplen las tres condiciones de exención del art. 2.5.2 |
+| **Viento (W)** | **Gobierna la estabilidad lateral.** Es la acción horizontal de diseño |
+
+Que la zona sísmica sea 0 **no elimina** la necesidad de un sistema resistente a fuerzas
+laterales: lo cambia de dueño. El núcleo de circulaciones sigue siendo el elemento rigidizante
+natural y las irregularidades en planta y elevación siguen siendo malas ideas.
+
+> **Detalle que también protege del suelo:** el factor R de la Tabla 5.1 del 103 muestra que
+> encadenar mampostería la lleva de R = 1,5 (sin encadenados) a R = 3,0 o más. En La Pampa,
+> **aunque el sismo no lo exija, encadenar es la mejor protección contra el asentamiento
+> diferencial por colapso del loess.**
+
+#### ⚠ Trampa normativa: no mezclar generaciones de CIRSOC
+
+Desde el **22 de enero de 2026** rige la 3ª generación de reglamentos (CIRSOC 101-2025,
+102-2025, 200-2024, 201-2025) por Resolución 11/2026, **para obra pública nacional**. La
+adopción para obra privada depende de cada provincia y municipio: **hay que confirmar qué
+edición exige Santa Rosa antes de calcular.**
+
+Y sobre todo, **no se mezclan**:
+
+| Si usás… | Factor de viento en combinación de resistencia |
+|---|---|
+| Mapa de vientos de **CIRSOC 102-2005** (V = 50 m/s para Santa Rosa, recurrencia 50 años) | **1,6 W** |
+| Mapas de **nueva generación** (recurrencia 700–1700 años según categoría de riesgo) | **1,0 W** |
+
+**Mezclar las dos cosas produce un error de ~60 % en la acción lateral**, y puede caer para
+cualquiera de los dos lados. Desarrollo completo, con las combinaciones transcriptas, en
+`docs/03-estructuras/estructuras.md`.
 
 ### 5.2 Suelo
 

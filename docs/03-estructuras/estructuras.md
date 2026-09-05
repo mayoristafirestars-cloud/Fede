@@ -5743,3 +5743,1008 @@ Se ejecuta descalzando por bataches (§8.5.5) y calzando con mortero expansivo.
 
 ---
 ---
+
+# 9. INTERACCIÓN CON ARQUITECTURA
+
+Este capítulo es el que más valor agrega a un estudio que hace anteproyecto, proyecto ejecutivo e interiorismo: **decidir bien en el anteproyecto ahorra el 80% de los problemas del proyecto ejecutivo.**
+
+## 9.1 Modulación de columnas y luces económicas
+
+### 9.1.1 La curva de costo vs. luz
+
+```
+   Costo de
+   estructura
+   por m²
+       │
+       │ ╲                                            ╱
+       │  ╲                                        ╱
+       │   ╲                                    ╱
+       │    ╲__________________________     ╱
+       │              ZONA ÓPTIMA        ╲╱
+       │
+       └────┬────────┬────────┬────────┬────────┬──── Luz (m)
+            3        5        7        9       12
+       
+   Luces cortas: muchas columnas, muchas fundaciones,
+                 mucho encofrado por m², poca eficiencia
+   Luces largas: cantos grandes, mucho acero, peso propio
+                 que crece, encofrados complejos
+```
+
+### 9.1.2 Luces económicas por sistema [PD]
+
+| Sistema | Luz económica | Luz máxima razonable |
+|---|---|---|
+| Muros portantes de mampostería | 3,5 – 4,5 m | 6,0 m |
+| Losa de viguetas + vigas de HºAº | **4,5 – 6,0 m** | 7,0 m |
+| Losa maciza + vigas de HºAº | 5,0 – 7,0 m | 8,5 m |
+| Losa plana sin vigas | 5,5 – 7,5 m | 9,0 m |
+| Losa casetonada | 8,0 – 12,0 m | 15,0 m |
+| Losa postesada | 8,0 – 14,0 m | 18,0 m |
+| Vigas metálicas + steel deck | 7,0 – 12,0 m | 18,0 m |
+| Prefabricado (alveolar / doble T) | 8,0 – 16,0 m | 25,0 m |
+
+### 9.1.3 Módulos que funcionan
+
+| Módulo | Uso |
+|---|---|
+| **2,50 × 5,00 m** | Módulo de cochera (una cochera = 2,50 × 5,00). **Fundamental en PB de edificios** |
+| **5,00 × 5,00 m** | Vivienda. Dos cocheras por vano. **El módulo estrella** |
+| **5,00 × 7,50 m** | Tres cocheras por vano. Oficinas |
+| **7,50 × 7,50 m** | Oficinas, comercio |
+| **8,10 × 8,10 m** | Estacionamiento eficiente (3 cocheras de 2,70) |
+| **2,80 – 3,20 m** | Módulo de dormitorio |
+| **3,50 – 4,00 m** | Módulo de local comercial en frente |
+
+**Regla de coordinación [PD]:** en un edificio con cocheras en PB, **el módulo de columnas se define desde la cochera, no desde la planta tipo**. Una columna en el lugar equivocado te cuesta una cochera; en Santa Rosa una cochera vale lo suficiente como para justificar toda la ingeniería de la planta tipo.
+
+### 9.1.4 Continuidad vertical — el mandamiento
+
+> **Las columnas deben coincidir en todas las plantas y bajar hasta la fundación.**
+
+**Cuando la arquitectura obliga a interrumpir una columna** (por ejemplo, local comercial en PB que no admite la grilla de arriba):
+
+| Solución | Costo relativo | Riesgo |
+|---|---|---|
+| **Rediseñar la arquitectura para que coincidan** | **0** | **0** — es la solución correcta |
+| **Viga de transferencia** | Alto | Alto — [RC] art. 2.6.3-b del 103: debe diseñarse para agotar la capacidad del elemento interrumpido |
+| **Tabique de transferencia** (muro de gran canto en el 1er piso) | Alto | Medio |
+| **Columnas inclinadas** | Muy alto | Alto (empujes horizontales importantes) |
+
+**Costo real de una viga de transferencia [PD]:** puede tener 1,20-2,00 m de canto, 60-80 cm de ancho, y cuantías de 250-400 kg/m³. Es 5-10 veces más cara que una viga normal, y **come altura libre en la planta baja**, que es donde más se necesita.
+
+**Consejo profesional:** cuando el arquitecto propone una planta baja libre con la grilla superior desalineada, **presentá el costo de la viga de transferencia en el anteproyecto**. En el 80% de los casos el proyecto se ajusta.
+
+## 9.2 Altura de vigas vs. altura libre
+
+### 9.2.1 El presupuesto de altura
+
+```
+   ┌─────────────────────────────────────────┐
+   │  Nivel de piso terminado (planta alta)  │
+   ├─────────────────────────────────────────┤  ↕ contrapiso + carpeta + piso: 10-14 cm
+   ├═════════════════════════════════════════┤  ↕ losa: 12-20 cm
+   │                                         │
+   │                                         │  ↕ ALTURA LIBRE
+   │                                         │
+   ├─────────────────────────────────────────┤  ↕ cielorraso (si es suspendido): 15-40 cm
+   │  Nivel de piso terminado (planta baja)  │
+   └─────────────────────────────────────────┘
+   
+   ALTURA ENTRE NIVELES = piso + losa + libre + cielorraso
+```
+
+**Presupuesto típico para vivienda [PD]:**
+
+| Componente | Espesor |
+|---|---|
+| Piso + carpeta + contrapiso | 10 – 14 cm |
+| Losa | 12 – 20 cm |
+| **Altura libre requerida** | **2,40 m mínimo [VER exigencia del código municipal de Santa Rosa]**; 2,55-2,70 m confortable |
+| Cielorraso suspendido (si lo hay) | 15 – 40 cm |
+| **Altura entre niveles resultante** | **2,80 – 3,20 m** |
+
+### 9.2.2 El problema de la viga descolgada
+
+Una viga de 5,00 m con h = 50 cm sobresale **30-38 cm** por debajo de la losa. Si la altura entre niveles es 2,90 m y la losa 15 cm + piso 12 cm:
+```
+Altura libre bajo losa:  290 − 15 − 12 = 2,63 m       ✓ cómodo
+Altura libre bajo viga:  290 − 50 − 12 = 2,28 m       ✗ demasiado bajo
+```
+
+**Soluciones, en orden de preferencia:**
+
+| Solución | Consecuencia |
+|---|---|
+| **1. Ubicar las vigas coincidiendo con tabiques** | La viga desaparece dentro del muro. **La mejor solución, y es gratis** |
+| **2. Ubicar las vigas en el perímetro de los ambientes** | El descuelgue queda contra la pared, se resuelve con un cielorraso perimetral (que además aloja instalaciones e iluminación indirecta) |
+| **3. Viga invertida (hacia arriba)** | Sube al nivel superior. Sirve si arriba hay azotea, o un muro que la oculte. **Excelente en losas de azotea (queda dentro del contrapiso de pendiente o del parapeto)** |
+| **4. Viga plana (embebida)** | Ver §5.2.2. Sólo luces ≤ 5 m |
+| **5. Losa plana sin vigas** | Elimina el problema. Espesor L/30-L/33. Cuidado con el punzonamiento |
+| **6. Losa casetonada** | Elimina vigas interiores en grandes luces |
+| **7. Losa postesada** | Máxima altura libre con grandes luces |
+| **8. Aumentar la altura entre niveles** | **Cuesta caro**: más muros, más columnas, más fachada, y suele chocar con la altura máxima permitida del código |
+
+### 9.2.3 La regla del anteproyecto
+
+> **Dibujá las vigas en el anteproyecto.** No en el proyecto ejecutivo. Un plano de anteproyecto sin la grilla estructural es un plano incompleto, y la corrección posterior siempre es peor.
+
+**Método [PD]:**
+1. Definí la grilla de columnas coordinada con cocheras y con la planta tipo.
+2. Dibujá los ejes de vigas sobre la planta de arquitectura.
+3. Marcá dónde caen las vigas: ¿sobre tabiques? ¿en el medio de un ambiente?
+4. Ajustá los tabiques para que coincidan con las vigas, o ajustá las vigas.
+5. Predimensioná: `h_viga ≈ L/11`, `h_losa ≈ L/25`.
+6. Verificá la altura libre en cada punto.
+7. **Recién ahí** hacé el corte y definí la altura entre niveles.
+
+## 9.3 Pases de instalaciones en vigas y losas
+
+Este es el punto de fricción número uno entre estructura e instalaciones, y donde más se rompe estructura en obra sin que nadie se entere.
+
+### 9.3.1 Pases en VIGAS — reglas de zona permitida
+
+```
+        L (luz de la viga)
+   ├─────────────────────────────────────────────────┤
+   
+   ╔═══════════════════════════════════════════════════╗
+   ║ ░░░░░░░░░░░ │                    │ ░░░░░░░░░░░░░ ║  ← ZONA PROHIBIDA
+   ║ ░░ZONA░░░░░ │   ZONA PERMITIDA   │ ░░ZONA░░░░░░░ ║     (0,20 L desde
+   ║ ░PROHIBIDA░ │      ┌───┐         │ ░PROHIBIDA░░░ ║      cada apoyo)
+   ║ ░░░░░░░░░░░ │      │   │         │ ░░░░░░░░░░░░░ ║
+   ║ ░░░░░░░░░░░ │      └───┘         │ ░░░░░░░░░░░░░ ║
+   ╚═══════════════════════════════════════════════════╝
+   ▲                                                   ▲
+   │← 0,20 L →│←──── 0,60 L ────→│← 0,20 L →│
+   
+   Y EN ALTURA:
+   
+   ╔════════════════════════════════╗  ↑ h/4 armadura superior — PROHIBIDO
+   ║░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░║
+   ╟────────────────────────────────╢  ↑ 
+   ║        ┌─────────┐             ║  │ h/2 central — PERMITIDO
+   ║        │  PASE   │             ║  │ (centrado en el eje neutro)
+   ║        └─────────┘             ║  ↓
+   ╟────────────────────────────────╢  ↑ h/4 armadura inferior — PROHIBIDO
+   ║░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░║
+   ╚════════════════════════════════╝
+```
+
+**Reglas dimensionales [PD]** — criterio de buena práctica, **no reglamentario**. **[VER] si el CIRSOC 201 vigente incorpora prescripciones específicas de aberturas en vigas; la referencia internacional es ACI 318 y las guías del CEB.**
+
+| Parámetro | Límite |
+|---|---|
+| **Zona longitudinal permitida** | **Tercio central** de la luz, o entre 0,20 L y 0,80 L |
+| **Zona longitudinal prohibida** | **0,20 L desde cada apoyo** (zona de máximo corte). Nunca dentro de d de la cara del apoyo |
+| **Altura del pase (circular)** | **≤ h/3** (h = altura total de la viga), y **≤ 0,25 h** para no afectar el corte significativamente |
+| **Altura del pase (rectangular)** | **≤ h/4** |
+| **Ancho del pase (rectangular)** | **≤ h/2** y **≤ 3 veces su altura** |
+| **Posición vertical** | **Centrado en el eje neutro**, en la mitad central de la altura. Distancia mínima al borde: **h/4** o **2,5 veces el diámetro del pase** |
+| **Distancia entre pases** | **≥ 3 veces la dimensión mayor** del pase mayor, o ≥ 2h |
+| **Recubrimiento sobre el pase** | ≥ el recubrimiento nominal + el estribo |
+| **Refuerzo perimetral** | Estribos adicionales a ambos lados del pase, más armadura diagonal en las esquinas (para pases rectangulares) |
+
+**Regla absoluta:** **NUNCA se rompe una viga en obra sin autorización del calculista.** Ni un pase de 5 cm. La viga puede estar diseñada al límite, o el pase puede caer sobre una barra de armadura.
+
+**Alternativa que resuelve el 90% de los casos: la viga con canto suficiente para pasar por debajo, y cielorraso suspendido.** Cuesta 15-30 cm de altura libre y elimina todo el problema.
+
+### 9.3.2 Pases en LOSAS
+
+| Tipo de losa | Regla |
+|---|---|
+| **Maciza en una dirección** | ϕ ≤ 15 cm sin refuerzo, corriendo las barras a los lados (nunca cortarlas). Zona central del paño. **Nunca sobre apoyos** |
+| **Maciza en dos direcciones** | ϕ ≤ 20-25 cm en el centro del paño |
+| **Viguetas** | **Entre viguetas.** Ancho máximo = ancho del bloque. **Cortar una vigueta requiere refuerzo con nervios transversales de reparto que la "cuelguen" de las viguetas vecinas** |
+| **Nervurada/casetonada** | En los casetones, entre nervios |
+| **Losa plana sin vigas** | **Ninguna perforación a menos de 3h de la cara de la columna** (zona de punzonamiento) sin verificación |
+| **Postesada** | **Detección obligatoria de cables. Nunca improvisar.** §7.6.4 |
+
+**Huecos mayores (montantes, patios técnicos, cajas de escalera):** requieren **vigas de borde perimetrales** y verificación como abertura estructural, no como "pase".
+
+### 9.3.3 Coordinación de instalaciones — el método
+
+```
+1. En ANTEPROYECTO:
+   ► Definir la posición de los MONTANTES verticales (agua, cloaca,
+     pluvial, gas, electricidad, datos, ventilaciones)
+   ► Un montante que atraviesa 10 losas es 10 perforaciones. Que
+     estén todas alineadas y en un lugar sin estructura.
+   ► Reservar un PATIO TÉCNICO o un ducto vertical continuo.
+
+2. En PROYECTO EJECUTIVO:
+   ► Superponer plano de estructura + plano de instalaciones
+   ► Marcar TODOS los cruces
+   ► Resolver cada uno: pase previsto, corrimiento del conducto,
+     o corrimiento de la viga
+   ► ► DIBUJAR LOS PASES EN EL PLANO DE ENCOFRADO ← lo que separa
+       un proyecto profesional de uno improvisado
+
+3. En OBRA:
+   ► Los pases se dejan CON ENCOFRADO (caños de PVC, cajones),
+     NUNCA se rompen después
+   ► Cualquier pase no previsto: consulta al calculista, por escrito
+```
+
+**Regla de instalación sanitaria en losa:** los **desagües cloacales necesitan pendiente (1-2%)**. Un desagüe que recorre 8 m baja 8-16 cm. Si va colgado bajo la losa, hay que prever el cielorraso. Si va dentro del contrapiso, el contrapiso tiene que tener espesor suficiente. **Un inodoro necesita un desagüe de ϕ110 mm** — no entra en un contrapiso de 8 cm con pendiente. Por eso los baños suelen estar sobre baños, o requieren un escalón.
+
+## 9.4 Voladizos
+
+### 9.4.1 Predimensionado [PD]
+
+| Elemento | Regla |
+|---|---|
+| **Losa maciza en voladizo** | **h ≥ L/9** (más exigente que el L/10 de la Tabla 9.5.a) por flechas). Con tabiques o barandas pesadas: **L/8** |
+| **Viga en voladizo** | **h ≥ L/7 a L/8** |
+| **Longitud del contrapeso** | El tramo interior debe tener **al menos 1,5 a 2,0 veces** la longitud del voladizo, para equilibrar el momento |
+| **Anclaje de la armadura superior** | Debe extenderse **al menos 1,3 veces la longitud del voladizo** hacia el interior, o hasta el punto de momento nulo + longitud de anclaje |
+
+### 9.4.2 Los cinco errores del voladizo
+
+```
+1. ARMADURA EN LA CARA EQUIVOCADA
+   ═════════════════════════════════════════════════════
+   El voladizo trabaja con MOMENTO NEGATIVO:
+   la armadura principal va ARRIBA.
+   
+   ╔═══════════════════════════════════════╗
+   ║ ▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬ ║  ← ARMADURA ARRIBA ✓
+   ║                                       ║
+   ╚═══════════════════════════════════════╝
+   ▓▓▓▓▓                                    ← extremo libre
+   
+   Colocarla abajo = colapso. Ha pasado. Muchas veces.
+
+2. ARMADURA QUE SE PISA EN OBRA
+   La armadura superior del voladizo queda arriba de todo,
+   donde caminan los operarios. Si se pisa y baja 3 cm en
+   una losa de 15 cm, la altura útil pasa de 12 a 9 cm:
+   PIERDE EL 25% DE SU CAPACIDAD.
+   ► Separadores rígidos ("caballetes", "burritos") cada 50 cm.
+   ► Pasarelas para circular.
+   ► CONTROL ANTES DE HORMIGONAR. Foto.
+
+3. ANCLAJE INSUFICIENTE
+   La armadura superior tiene que anclarse hacia adentro.
+   Cortarla al llegar al eje de la viga = falla en el empotramiento.
+
+4. FLECHA
+   La flecha de un voladizo va con L⁴ y el coeficiente es
+   MUCHO mayor que en un tramo apoyado.
+   δ_voladizo = q·L⁴/(8·E·I)   vs.   δ_biapoyado = 5·q·L⁴/(384·E·I)
+   Para la misma L: el voladizo flecha 9,6 VECES MÁS.
+   ► Contraflecha de ejecución: L/300 a L/250
+   ► Verificación estricta de la flecha diferida
+
+5. IMPERMEABILIZACIÓN Y GOTERÓN
+   El voladizo suele ser un balcón. Sin goterón, el agua
+   corre por el intradós, satura el hormigón, carbonata,
+   corroe la armadura SUPERIOR (que está a 2-3 cm de la
+   cara superior, bajo el piso).
+   ► Los balcones son la patología número uno de los
+     edificios de 30-50 años en Argentina.
+```
+
+### 9.4.3 Balcones — checklist específico
+
+| Item | Requisito |
+|---|---|
+| Sobrecarga | **[RC] 5,00 kN/m²** (vivienda en general) o 3,00 kN/m² (casa de 1-2 familias, ≤ 10 m²) — Tabla 4.1 |
+| Espesor | h ≥ L/9, mínimo 12-15 cm |
+| Armadura principal | **ARRIBA**, con separadores rígidos |
+| Anclaje | ≥ 1,3 L hacia el interior |
+| Recubrimiento | **[RC] 35 mm** (barras > 16 mm) o 30 mm (≤ 16 mm) — expuesto al aire libre, Tabla 7.7.1 (b). **Incrementado 30% si es clase A3** |
+| Clase de hormigón | **H-25 mínimo (A2)**; H-30 si A3 |
+| Pendiente | **≥ 1,5%** hacia afuera o hacia una canaleta |
+| Impermeabilización | Membrana continua, con babeta en el encuentro con el muro (subir ≥ 15 cm) |
+| **Goterón** | **En todo el perímetro del borde**. Ranura de 1 × 1 cm a 2 cm del borde, o perfil de aluminio |
+| Baranda | Anclaje calculado. **[VER] cargas del art. 4.5.1 del CIRSOC 101**. Anclajes químicos con verificación, no brocas comunes |
+| Puente térmico | El voladizo es un puente térmico masivo. Considerar aislación o rotura de puente térmico |
+| Junta con la fachada | Sellador elástico, no mortero rígido |
+
+## 9.5 Escaleras
+
+### 9.5.1 Tipologías estructurales
+
+| Tipo | Descripción | Espesor de losa [PD] |
+|---|---|---|
+| **Losa inclinada apoyada arriba y abajo** | La más simple. Trabaja como losa de un tramo | **h ≈ L/25 a L/28** (L = proyección horizontal, o mejor la longitud inclinada) |
+| **Losa plegada con descanso** | Continua de un nivel al otro, con quiebre en el descanso | h ≈ L/25, y **armadura de refuerzo en el quiebre** (los dobleces de la armadura tienden a "saltar") |
+| **Escalera en voladizo desde un muro o viga** | Peldaños en voladizo | Requiere viga o muro de gran rigidez torsional |
+| **Escalera autoportante ("en U" sin apoyos intermedios)** | Los dos tramos y el descanso forman una estructura espacial | **Cálculo complejo.** Requiere análisis 3D |
+| **Escalera con zanca central o lateral** | Viga inclinada + peldaños | Zanca metálica o de HºAº |
+
+### 9.5.2 Puntos críticos
+
+1. **El quiebre en el descanso.** Si el momento es negativo, la armadura que se dobla en el ángulo entrante tiende a saltar hacia afuera. **Hay que armarla en horquilla** (barras separadas, no un doblez único) o disponer estribos que la retengan.
+2. **La escalera rigidiza** — ver §6.2.3. Decidí conscientemente si la modelás o la desvinculás.
+3. **Las cargas:** [RC] escaleras en viviendas uni y bifamiliares: **2,00 kN/m²**; **todos los demás destinos: 5,00 kN/m²** (Tabla 4.1 verificada). En un edificio multifamiliar, la escalera común es "todos los demás destinos" → **5,00 kN/m²**.
+4. **Peso propio de los peldaños:** además de la losa inclinada, sumar el peso del macizado de los escalones. Para un escalón de 17,5 × 28 cm, el macizado equivale a una capa de ~8,75 cm de hormigón sobre la losa inclinada:
+```
+q_peldaños = 25 kN/m³ × 0,0875 m = 2,19 kN/m² (medido sobre la proyección inclinada)
+```
+5. **Barandas:** anclaje calculado, igual que en balcones.
+6. **Resistencia al fuego:** la escalera es la vía de evacuación. **[VER] las exigencias del código de edificación municipal** (F60, F90, F120; escalera presurizada; antecámara).
+
+### 9.5.3 Coordinación con arquitectura
+
+- **La losa de la escalera "come" altura de paso.** Verificar que bajo el descanso y bajo el tramo superior haya al menos **2,10 m de altura libre de paso** [VER exigencia municipal].
+- **El hueco de escalera es un hueco en el diafragma** (§6.8). En un edificio, el hueco de escalera + el de ascensor pueden ser el 8-12% del área de planta. Verificar el diafragma.
+- **Relación de la escalera con el núcleo:** lo ideal es que escalera y ascensor formen un único núcleo de tabiques.
+
+## 9.6 Tanques de agua y sala de máquinas
+
+### 9.6.1 Cargas
+
+**El tanque de agua es la carga concentrada más grande de la azotea y se subestima sistemáticamente.**
+
+```
+Peso del agua: γ = 10 kN/m³   (1 tn/m³)
+
+Tanque de 1.000 litros  =  1 m³  =  10 kN  =  1 tn
+Tanque de 5.000 litros  =  5 m³  =  50 kN  =  5 tn
+Tanque de 10.000 litros = 10 m³  = 100 kN  = 10 tn
+```
+
+**Dimensionamiento de la reserva [PD; VER exigencia municipal y de la prestadora de agua]:**
+- Reserva sanitaria: **200-250 litros por habitante y por día**, con reserva de **1 día** habitualmente.
+- Reserva de incendio: según el código municipal y la superficie/destino.
+- Edificio PB+9 con 4 departamentos por planta × 3 habitantes = 120 habitantes:
+```
+Reserva = 120 × 200 = 24.000 litros = 24 m³ = 240 kN = 24 tn
+```
+
+**Sobre una losa de azotea:**
+```
+Si el tanque tiene 6,0 × 3,0 m de base:  q = 240 / 18 = 13,3 kN/m²
+```
+Contra los **1,00 kN/m²** de una azotea inaccesible. **13 veces más.**
+
+### 9.6.2 Consideraciones estructurales
+
+| Aspecto | Requisito |
+|---|---|
+| **Estructura de soporte** | **Vigas y columnas específicas**, bajando hasta la fundación. **NUNCA apoyar un tanque de 20 tn sobre una losa de azotea normal** |
+| **[RC] Combinación de carga** | El agua es carga **F** (peso y presión de fluidos). Se incluye con el mismo factor que D en las combinaciones 1 a 5 y 7 (CIRSOC 101-25 verificado). Cuando actúa resistiendo levantamiento, se incluye en D |
+| **Verificar tanque lleno Y vacío** | Vacío para el vuelco por viento; lleno para la carga gravitatoria |
+| **Sala de máquinas del ascensor** | **[RC] 7,00 kN/m²** (Tabla C 4.1 verificada). Más las cargas de impacto del art. 4.6.2 |
+| **Impermeabilización de la sala del tanque** | Un tanque que pierde arruina el edificio de arriba abajo. **Bandeja impermeabilizada con desagüe visible** |
+| **Efecto de látigo** | El tanque en la cubierta es una masa concentrada en el extremo. [RC] INPRES-CIRSOC 103 Cap. 10 (partes y componentes no estructurales) con factor de amplificación dinámica y de magnificación en altura |
+| **Anclaje del tanque** | Contra el viento (tanque vacío) y contra el sismo |
+| **Presión de agua** | Un tanque a 3 m sobre el último piso da 0,3 kg/cm². **Insuficiente para muchos artefactos modernos** (calefón, termotanque, hidromasaje). Considerar grupo hidropresor |
+
+### 9.6.3 Sala de máquinas y ducto de ascensor
+
+| Aspecto | Requisito |
+|---|---|
+| **Ducto** | Los tabiques del ducto son estructurales (§6.2). Espesor 20 cm mínimo en edificio |
+| **Foso** | Profundidad según el fabricante (típicamente 1,20-1,60 m). **Verificar impermeabilización y napa** |
+| **Sobrerrecorrido** | 3,50-4,20 m sobre el último nivel según el fabricante |
+| **Cargas del ascensor** | Reacciones de guías, del amortiguador y del motor. **Pedir la planilla de cargas al fabricante** — no estimarlas |
+| **Ascensor sin sala de máquinas (MRL)** | Elimina el volumen de sala de máquinas en la cubierta, pero **concentra la carga en la parte superior del ducto**. Verificar |
+| **Tolerancias** | El ducto tiene que estar aplomado dentro de tolerancias estrictas (típicamente ±25 mm en toda la altura). **Es un control de obra, no un detalle** |
+
+## 9.7 Otros puntos de coordinación
+
+| Tema | Regla |
+|---|---|
+| **Sótanos y cocheras subterráneas** | Muros de contención + platea estanca. Verificar flotación (§3.6.2). **Rampa: la pendiente máxima suele ser 18-20% con transiciones** [VER código municipal] |
+| **Piscinas en azotea o en planta alta** | Carga enorme (agua + estructura + terminaciones ≈ 25-35 kN/m²). Estructura específica. **Impermeabilización crítica** |
+| **Muros de contención en el terreno** | Empujes según el suelo. **Drenaje obligatorio** (grava + geotextil + caño ranurado + salida). Un muro sin drenaje recibe empuje hidrostático que puede duplicar el de tierra |
+| **Losas de gran superficie a nivel del terreno** | Juntas de contracción cada 4-6 m en ambas direcciones, con corte a disco a 1/4 del espesor dentro de las 12-24 h del hormigonado |
+| **Cambios de material en fachada** | Pesos muy distintos. Un revestimiento de piedra pesa 0,6-1,2 kN/m²; un EIFS pesa 0,1 kN/m² |
+| **Aire acondicionado en azotea** | Equipos de 200-800 kg apoyados sobre bancadas. Cargar la losa. **Verificar vibración** |
+| **Antenas y estructuras publicitarias** | Carga de viento importante, cargada excéntricamente sobre el edificio. Requiere verificación específica |
+| **Doble altura / dobles alturas parciales** | Genera columnas de gran longitud libre (esbeltez) y una irregularidad en altura. Verificar pandeo |
+| **Cerramientos vidriados de piso a techo** | La deriva del edificio los rompe. Requieren **holgura de acomodamiento en el marco** y sujeción que permita el movimiento diferencial. Ver §6.6, condición ND |
+
+---
+---
+
+# 10. SOFTWARE Y FLUJO DE CÁLCULO
+
+## 10.1 Panorama de herramientas
+
+| Software | Origen | Fuerte en | Débil en | Costo | Uso en Argentina |
+|---|---|---|---|---|---|
+| **CYPECAD** | España (CYPE) | **Edificios de HºAº completos: análisis + dimensionado + planos + cómputo automático**. Losas de viguetas, plateas, muros de sótano. **Módulo argentino con CIRSOC** | Estructuras no convencionales, análisis avanzado, no lineal | Medio-alto (licencia anual) | **El más difundido en estudios de arquitectura e ingeniería** |
+| **ETABS** | EEUU (CSI) | **Edificios en altura**: análisis modal, espectral, no lineal, P-Δ, diseño de tabiques y núcleos. **El estándar mundial para edificios** | Detallado y planos (hay que dibujar aparte) | Alto | Común en ingeniería estructural especializada |
+| **SAP2000** | EEUU (CSI) | **Estructuras generales**: cualquier geometría, análisis dinámico, no lineal, pushover, time-history | No genera planos; para edificios convencionales es más trabajoso que ETABS | Alto | Universidades y estudios de ingeniería |
+| **SAFE** | EEUU (CSI) | **Losas y fundaciones**: plateas, losas planas, punzonamiento, postesado | Sólo losas y fundaciones | Medio | Complemento de ETABS |
+| **Robot Structural Analysis** | Autodesk | Análisis general, **integración con Revit (BIM)**, buena biblioteca de normas | Curva de aprendizaje, estabilidad | Incluido en AEC Collection | Creciente por el BIM |
+| **Tekla Structures** | Trimble | **Modelado de detalle y fabricación**: acero (planos de taller, listas de piezas), hormigón prefabricado, armaduras | No es un programa de análisis | Muy alto | Empresas metalúrgicas y de prefabricado |
+| **RAM Structural System** | Bentley | Edificios de acero y hormigón, muy integrado | Menos difundido en Argentina | Alto | Poco uso local |
+| **RFEM / RSTAB** | Alemania (Dlubal) | Análisis general muy potente, membranas, no lineal, módulos por norma. **Tiene servicio de cargas por ubicación para CIRSOC** | — | Medio-alto | Creciente |
+| **Ftool** | Brasil (PUC-Rio) | **Pórticos planos 2D. GRATUITO.** Rapidísimo para verificar a mano | Sólo 2D, sólo análisis | **Gratis** | **Indispensable para verificación rápida** |
+| **Planilla propia (Excel/LibreOffice)** | — | **Verificación, predimensionado, cómputo, control de resultados** | Errores no detectados si no está verificada | Gratis | **La herramienta más importante y la más subestimada** |
+
+## 10.2 Flujo de trabajo recomendado
+
+```
+┌──────────────────────────────────────────────────────────────────────┐
+│ 1. ANTEPROYECTO                                                       │
+│    ► Grilla de columnas coordinada con arquitectura (§9.1)            │
+│    ► Predimensionado A MANO / PLANILLA:                              │
+│      - Columnas por área tributaria (§5.3.1)                         │
+│      - Vigas L/11, losas L/25                                        │
+│      - Fundación por área requerida (§4.2.1)                         │
+│    ► Cómputo preliminar con ratios (§5.7)                            │
+│    ► Salida: plano de estructura de anteproyecto + presupuesto        │
+│    ► ► SIN SOFTWARE. Papel, lápiz, planilla.                         │
+├──────────────────────────────────────────────────────────────────────┤
+│ 2. DEFINICIÓN DE ACCIONES                                            │
+│    ► Planilla propia de cargas por paquete constructivo (§2.2)       │
+│    ► Viento: planilla con CIRSOC 102 (§2.5)                          │
+│    ► Sismo: verificar exención zona 0 (§2.6.4)                       │
+│    ► ► NO delegar esto en el software. Es donde se cometen los       │
+│        errores más caros y donde el software menos ayuda.            │
+├──────────────────────────────────────────────────────────────────────┤
+│ 3. MODELO                                                            │
+│    ► CYPECAD (edificio convencional) o ETABS (altura, irregular)     │
+│    ► Definir materiales, secciones, cargas, combinaciones            │
+│    ► Rigideces reducidas por fisuración para el análisis lateral     │
+│    ► Diafragma rígido / flexible según corresponda                   │
+│    ► Vínculo con el suelo: balasto CORREGIDO por el ancho (§3.3.4)   │
+├──────────────────────────────────────────────────────────────────────┤
+│ 4. ► ► ► VERIFICACIÓN MANUAL DE LOS RESULTADOS ← §10.3               │
+├──────────────────────────────────────────────────────────────────────┤
+│ 5. DIMENSIONADO Y DETALLADO                                          │
+│    ► Iterar secciones                                                │
+│    ► Revisar CADA elemento crítico manualmente                       │
+│    ► Detallar nudos, anclajes, empalmes                              │
+├──────────────────────────────────────────────────────────────────────┤
+│ 6. PLANOS Y DOCUMENTACIÓN (§1.6)                                     │
+│    ► Encofrados, armaduras, planillas de columnas, doblado           │
+│    ► Especificaciones técnicas                                       │
+│    ► Memoria de cálculo reproducible                                 │
+├──────────────────────────────────────────────────────────────────────┤
+│ 7. OBRA                                                              │
+│    ► Control de armaduras ANTES de hormigonar (foto de cada tramo)   │
+│    ► Control de hormigón (probetas, asentamiento)                    │
+│    ► Registro de modificaciones y consultas                          │
+│    ► Planos conforme a obra                                          │
+└──────────────────────────────────────────────────────────────────────┘
+```
+
+## 10.3 Qué verificar SIEMPRE a mano
+
+> **El software no tiene criterio. Tiene aritmética.** Un modelo con un apoyo mal puesto, una carga en kN donde debía ir kg, o un balasto sin corregir te da resultados perfectamente convergentes y completamente falsos. Estas verificaciones son la única defensa.
+
+### 10.3.1 Verificaciones globales — hacerlas SIEMPRE
+
+| # | Verificación | Cómo |
+|---|---|---|
+| **1** | **PESO TOTAL DEL EDIFICIO** | Sumá las reacciones verticales del modelo. Compará con: `Área total de plantas × (D+L por planta)`. **Debe coincidir dentro del ±5%.** Si no, tenés cargas mal aplicadas |
+| **2** | **REACCIÓN TOTAL = CARGA TOTAL APLICADA** | Equilibrio global. El software lo dice; leelo |
+| **3** | **CORTE BASAL POR VIENTO** | `V = Σ(p_neta × área de fachada)`. Compará con el resultado del modelo |
+| **4** | **RELACIÓN V/W** | Debe estar en el rango esperado (§2.5.13: 3-5% para viento en PB+9). Si da 0,5% o 15%, hay un error |
+| **5** | **MOMENTO DE VUELCO** | `M ≈ V × 0,55 H`. Verificá contra el modelo y contra las reacciones diferenciales de las columnas de borde |
+| **6** | **CARGA AXIAL DE UNA COLUMNA INTERIOR** | `N ≈ AT × n_plantas × q_planta`. Compará con el modelo. **Si el modelo da la mitad, tenés un problema de área tributaria o de apoyos** |
+| **7** | **DERIVA MÁXIMA** | Compará con h/500 (viento) y con la Tabla 6.4 (sismo) |
+| **8** | **PERÍODO FUNDAMENTAL** | `T ≈ 0,0466·h^0,9` (pórticos de HºAº) o `T ≈ H/50` [PD, muy grosero]. Si el modelo da T = 5 s en un edificio de 30 m, hay algo suelto (elementos desvinculados) |
+| **9** | **SUMA DE REACCIONES EN LA FUNDACIÓN vs. PESO** | Debe cerrar |
+| **10** | **PRESIÓN MEDIA SOBRE EL SUELO** | `q = W_total / Área de fundación` ≤ σ_adm |
+
+### 10.3.2 Verificaciones de elementos — muestreo obligatorio
+
+| Elemento | Verificación a mano |
+|---|---|
+| **Una losa por tipo** | `M ≈ q·L²/10` (continua) o `q·L²/8` (simple). Comparar con el modelo |
+| **Una viga por tipo** | `M_tramo ≈ q·L²/16`, `M_apoyo ≈ q·L²/10`, `V ≈ 1,15·q·L/2` |
+| **La columna más cargada** | Área tributaria, N, y verificación P-M en el diagrama de interacción |
+| **Una columna de esquina** | Es la que más se equivoca el software si el modelo de la losa está mal |
+| **La zapata/pilote más cargado** | σ = N/A ≤ σ_adm |
+| **Un tabique** | `V_tabique ≈ V_base × (K_tabique / ΣK)` |
+| **Punzonamiento de una losa plana** | Perímetro crítico a d/2, `vu = Vu/(bo·d)` |
+| **La viga de mayor luz** | Flecha (§5.1.6). **Los programas suelen verificar mal la flecha diferida** |
+
+### 10.3.3 Errores típicos de modelado — la lista de chequeo
+
+| Error | Cómo detectarlo |
+|---|---|
+| **Unidades mezcladas** (kg vs. kN, cm vs. m) | Verificación #1 (peso total) |
+| **Cargas duplicadas** (peso propio automático + peso propio manual) | Verificación #1: el peso da ~1,5-2× el esperado |
+| **Cargas faltantes** (tabiquería, contrapiso, cielorraso) | Verificación #1: el peso da bajo |
+| **Sobrecarga sin reducir** o **reducida donde no corresponde** | Revisión manual de los coeficientes |
+| **Apoyos empotrados donde no lo están** (o articulados donde sí) | Los momentos en la base salen absurdos |
+| **Balasto sin corregir por el ancho** | La platea sale rígida y con momentos bajísimos (§3.3.4) |
+| **Diafragma rígido asumido con un hueco enorme en la losa** | Las fuerzas se reparten mal entre tabiques |
+| **Rigideces brutas en el análisis lateral** | Las derivas salen 40-60% menores que las reales |
+| **Elementos desvinculados** (nodos no coincidentes) | Períodos larguísimos, deformadas raras. **Verificación #8** |
+| **Combinaciones de carga incompletas** o de la norma equivocada | Revisar la lista de combinaciones generadas |
+| **Viento aplicado en una sola dirección** | Verificar que estén las 4 (±X, ±Y) más los casos con torsión |
+| **Excentricidad accidental no considerada** | Revisar |
+| **Losa de viguetas modelada como maciza** | El peso propio y la rigidez son muy distintos |
+| **Escalera no modelada** (que rigidiza) o modelada rígidamente (que atrae fuerza) | §6.2.3 |
+| **Combinación de vuelco con 1,2D en vez de 0,9D** | El vuelco sale del lado inseguro |
+
+### 10.3.4 La regla del "olfato"
+
+> **Si un resultado te sorprende, no lo aceptes hasta entenderlo.**
+
+Ejemplos de resultados que deben disparar la alarma:
+- Una columna interior con menos carga que una de borde.
+- Una viga con momento de tramo mayor que el de apoyo en una viga continua muy cargada.
+- Una zapata que da más chica que la del piso de arriba.
+- Una armadura de losa que da el mínimo en un paño de 8 m.
+- Un tabique que toma el 5% del corte cuando es el elemento más rígido.
+- Un período de 0,1 s en un edificio de 10 plantas.
+- Flechas de 0,2 mm en una viga de 8 m.
+
+**Cada uno de estos es la punta de un error de modelado.**
+
+## 10.4 Sobre CYPECAD en particular
+
+Como es el más usado en estudios de arquitectura, algunas advertencias específicas:
+
+| Punto | Advertencia |
+|---|---|
+| **Módulo de norma** | Verificá que estés usando el módulo **CIRSOC** (Argentina), no el EHE (España) ni el ACI genérico |
+| **Coeficiente de balasto** | El programa pide un valor. **Es tu responsabilidad corregirlo por el ancho** (§3.3.4). El valor por defecto no sirve |
+| **Losas de viguetas** | Usar las fichas del fabricante real (Shap, Tensolite, el que uses en La Pampa). Las fichas genéricas no representan el producto |
+| **Vigas planas** | El programa las dimensiona sin quejarse aunque den flechas grandes. **Verificá vos** |
+| **Armado automático** | El programa arma. **Vos tenés que revisar** cada planilla de columnas y cada despiece. Los armados automáticos suelen ser ineficientes y a veces inconstruibles |
+| **Flechas** | Revisar el criterio de flecha activo (el que afecta a los tabiques) — el programa a veces reporta la flecha total, no la activa |
+| **Cimentación** | Revisar las tensiones sobre el suelo elemento por elemento |
+| **Planos** | Los planos generados automáticamente **necesitan edición**. Nunca los mandes a obra sin revisar |
+
+## 10.5 La planilla propia
+
+**Es la herramienta que más diferencia a un estudio.** Construite planillas verificadas de:
+
+1. **Bajada de cargas por paquete constructivo** (§2.2) — con los valores de la Tabla 3.1 cargados.
+2. **Predimensionado de columnas** por área tributaria (§5.3.1).
+3. **Cálculo de viento CIRSOC 102** (§2.5) — con la tabla de Kz y el V de Santa Rosa.
+4. **Predimensionado de fundaciones** (§4.2.1, §4.5.3).
+5. **Verificación de flexión y corte** de vigas y losas.
+6. **Verificación de flechas** (§5.1.6).
+7. **Cómputo de acero y hormigón** con los ratios de §5.7.
+8. **Bajada de cargas de un edificio completo** por planta.
+9. **Verificación de dinteles y apoyos** para reformas (§8.9).
+
+**Reglas de la planilla [PD]:**
+- **Documentar las fórmulas y las referencias normativas** en celdas de comentario.
+- **Verificarla contra ejemplos resueltos de la bibliografía** antes de usarla en proyecto.
+- **Bloquear las celdas de fórmula.**
+- **Versionarla y fechar cada versión.**
+- **Que otro la revise.**
+
+---
+---
+
+# 11. ERRORES FRECUENTES Y CHECKLIST DE VERIFICACIÓN
+
+## 11.1 Los 25 errores más frecuentes del proyecto estructural
+
+### En cargas y acciones
+
+| # | Error | Consecuencia | Prevención |
+|---|---|---|---|
+| 1 | **Olvidar la tabiquería** (o subestimarla) | Flechas, fisuras en cielorrasos y tabiques | §2.2.4. 1,0-1,5 kN/m² mínimo en vivienda |
+| 2 | **No cargar el contrapiso y la carpeta con su espesor real** | 1,5-2,0 kN/m² de diferencia | Medir el espesor real, no el de proyecto |
+| 3 | **Balcón con L de 2,00 en vez de 5,00 kN/m²** | Subdimensionado del 40% | Tabla 4.1 verificada (§2.3.2) |
+| 4 | **Escalera de edificio con L de 2,00 en vez de 5,00** | Ídem | Tabla 4.1 |
+| 5 | **Tanque de agua no cargado o mal cargado** | Falla de la losa de azotea | §9.6.1. 10 kN por m³ de agua |
+| 6 | **Mezclar generaciones de reglamento** (V de 102-2005 con factor 1,0W de 101-25) | Error del 60% en la acción lateral | §1.1.1 |
+| 7 | **No verificar la exención del 103 en zona 0** | Proyecto sin verificación lateral, o con análisis sísmico innecesario | §2.6.4 |
+| 8 | **Reducir sobrecargas donde el reglamento lo prohíbe** (garajes, reunión pública, depósitos) | Subdimensionado | §2.4, notas (a) de la Tabla 4.1 |
+
+### En suelos y fundaciones
+
+| # | Error | Consecuencia | Prevención |
+|---|---|---|---|
+| 9 | **Proyectar sin estudio de suelos** | Riesgo total | §3.1.1 |
+| 10 | **Sondeos demasiado cortos** | El estudio no ve el estrato que gobierna el asentamiento | §3.1.3: 2-3 B bajo zapatas, 1,5-2 B bajo plateas |
+| 11 | **No pedir análisis de COLAPSABILIDAD en loess** | Asentamientos de 10-25 cm años después | §3.5. Doble edométrico, perfil σ0 vs. σF.SAT |
+| 12 | **No pedir análisis químico del suelo (sulfatos)** | Ataque al hormigón de fundación, irreparable | §3.7, §5.6.2 |
+| 13 | **Dimensionar la base con cargas MAYORADAS** | Base 40-50% mayor de lo necesario | §1.3: área con servicio, armadura con mayoradas |
+| 14 | **Usar el balasto de plato para una platea** | Momentos subestimados 3-5 veces | §3.3.4 |
+| 15 | **No arriostrar las fundaciones** | Asentamientos diferenciales, momentos en columnas medianeras | §4.3 |
+| 16 | **Zapata medianera sin viga de equilibrio** | Rotación de la base, momentos en la columna | §4.2.3 |
+
+### En estructura
+
+| # | Error | Consecuencia | Prevención |
+|---|---|---|---|
+| 17 | **Predimensionar vigas por resistencia y no por flecha** | Flechas excesivas, fisuras en tabiques | §5.10 Parte B: la flecha gobierna |
+| 18 | **Columna que "nace" en un piso superior** | Irregularidad grave, viga de transferencia | §5.3.4, §9.1.4 |
+| 19 | **PISO BLANDO en planta baja** | Mecanismo de piso; la falla más letal | §6.4.1 |
+| 20 | **Columna corta por antepecho de mampostería** | Falla frágil por corte | §6.4.2 |
+| 21 | **Armadura de voladizo abajo en vez de arriba** | Colapso | §9.4.2 |
+| 22 | **Armadura superior de voladizo pisada** | Pérdida del 25% de capacidad | §9.4.2. Separadores rígidos + control con foto |
+| 23 | **Recubrimiento insuficiente en elementos expuestos** | Corrosión a los 20-30 años | §5.6.1. 35 mm al aire libre |
+| 24 | **No especificar clase de exposición junto con la clase de hormigón** | Hormigón durable insuficiente | §5.6.3. Especificar "H-25 / A2" |
+| 25 | **Pases de instalaciones rotos en obra sin consultar** | Reducción de capacidad, fisuración | §9.3. Dibujar los pases en el plano de encofrado |
+
+## 11.2 Checklist de verificación del proyecto estructural
+
+### FASE 1 — ANTEPROYECTO
+
+```
+□ Grilla de columnas definida y coordinada con la arquitectura
+□ Grilla coordinada con las cocheras de PB (módulo 2,50 × 5,00)
+□ Continuidad vertical de todas las columnas verificada
+□ Ninguna columna nace en un piso superior (o está justificada)
+□ Vigas dibujadas sobre la planta; coinciden con tabiques donde es posible
+□ Altura entre niveles verificada contra la altura libre requerida
+□ Predimensionado de losas, vigas, columnas y fundaciones
+□ Sistema resistente lateral definido (pórtico / tabique / dual)
+□ Núcleo de ascensores y escalera aprovechado como tabique
+□ Excentricidad CR-CM estimada (< 10% de la dimensión de planta)
+□ Ninguna irregularidad grave en planta ni en elevación
+□ Ubicación de montantes verticales de instalaciones definida
+□ Ubicación del tanque de agua y su estructura de soporte
+□ Cómputo preliminar de hormigón, acero y encofrado
+□ Presupuesto estructural preliminar
+□ ESTUDIO DE SUELOS ENCARGADO (con el anteproyecto en mano)
+```
+
+### FASE 2 — ACCIONES
+
+```
+□ Todas las cargas permanentes computadas por paquete constructivo
+□ Tabiquería incluida (lineal o distribuida)
+□ Sobrecargas de uso según Tabla 4.1 del CIRSOC 101, por sector
+□ Balcones con 5,00 kN/m² (o 3,00 si aplica la excepción)
+□ Escaleras con 5,00 kN/m² (edificio) o 2,00 (vivienda unifam.)
+□ Azoteas: accesible 3,00 / inaccesible 1,00 / con congregación 5,00
+□ Cocheras: 2,00 kN/m² Y carga concentrada de 14 kN verificada
+□ Tanque de agua y sala de máquinas
+□ Reducción de sobrecargas aplicada donde corresponde y NO donde
+  está prohibida
+□ VIENTO: V = 50 m/s (Santa Rosa), Kd = 0,85, exposición (B o C)
+  justificada, Kzt, I, GCpi, Cp
+□ Viento verificado en las DOS direcciones principales
+□ SISMO: zona verificada en el Anexo A del 103 (Santa Rosa = Zona 0)
+□ Exención del 103 verificada (art. 2.5.2): ¿h ≤ 12 m? ¿V_viento ≥ 1,5% W?
+□ Si no aplica la exención: verificación con 1,5% del peso + arriostramiento
+  de fundaciones (Cap. 9)
+□ NIEVE: pg = 0,3 kN/m² → pf = 0,30 kN/m²; comparar con Lr = 1,00 kN/m²
+□ Combinaciones de carga completas y de la edición correcta del reglamento
+□ Combinación de eventos extraordinarios considerada si corresponde
+□ Efectos de retracción, fluencia y temperatura considerados
+□ Juntas de dilatación definidas (≤ 25-30 m)
+```
+
+### FASE 3 — GEOTECNIA Y FUNDACIONES
+
+```
+□ Informe geotécnico completo (checklist de §3.7)
+□ Cantidad y profundidad de sondeos adecuadas al proyecto
+□ Análisis de colapsabilidad si hay loess
+□ Análisis químico del suelo (sulfatos, cloruros, pH)
+□ Nivel freático y su evolución histórica
+□ Tensión admisible: ¿a humedad natural o saturada?
+□ Tipo de fundación elegido y justificado
+□ Área de fundación dimensionada con cargas de SERVICIO
+□ Armadura de fundación con cargas MAYORADAS
+□ Asentamientos totales y diferenciales estimados
+□ Distorsión angular β ≤ 1/500
+□ Vigas de fundación en ambas direcciones
+□ Zapatas medianeras resueltas (combinada o viga de equilibrio)
+□ Verificación de flotación si hay subsuelo bajo napa
+□ Balasto corregido por el ancho de la fundación
+□ Recubrimiento 50 mm sobre hormigón de limpieza
+□ Hormigón de limpieza especificado
+□ Cota de fundación y estrato de apoyo especificados en plano
+□ Si hay pilotes: ensayo de carga previsto
+□ Si hay loess colapsable: fricción negativa considerada
+```
+
+### FASE 4 — SUPERESTRUCTURA
+
+```
+□ Modelo estructural completo y verificado (§10.3)
+□ Verificación #1: peso total del modelo vs. estimación manual (±5%)
+□ Rigideces reducidas por fisuración en el análisis lateral
+□ Diafragma rígido/flexible según corresponda
+□ LOSAS: espesor ≥ Tabla 9.5.a) / 9.5.c), y verificado por flecha
+□ LOSAS: cuantía mínima de retracción 0,0018, s ≤ 3h y ≤ 300 mm
+□ LOSAS: negativos sobre apoyos armados y con longitud suficiente
+□ LOSAS de viguetas: zonas macizadas, nervios de reparto, capa de
+  compresión con malla
+□ VIGAS: h ≈ L/11 verificado por flecha (límite L/480 si soporta tabiques)
+□ VIGAS: εt ≥ 0,005 (φ = 0,90) en todas las secciones
+□ VIGAS: corte verificado, estribos densificados en tercios extremos
+□ VIGAS: anclajes y empalmes verificados
+□ COLUMNAS: verificación P-M con diagrama de interacción
+□ COLUMNAS: 0,01 ≤ ρ ≤ 0,04 (práctico)
+□ COLUMNAS: esbeltez verificada
+□ COLUMNAS: continuas, secciones constantes o crecientes hacia abajo
+□ COLUMNAS: estribos según Tabla 7.10.5.1, separación verificada
+□ TABIQUES: espesor ≥ 20 cm, doble malla, elementos de borde confinados
+□ TABIQUES: continuos hasta la fundación
+□ DERIVA: ≤ h/500 (viento de servicio) y ≤ Tabla 6.4 (sismo)
+□ P-Δ: CE < 0,10, o considerado
+□ DIAFRAGMA: colectores y cordones verificados; huecos considerados
+□ VOLADIZOS: h ≥ L/9, armadura arriba, anclaje ≥ 1,3 L, contraflecha
+□ RECUBRIMIENTOS: Tabla 7.7.1, incrementados por clase de exposición
+□ CLASE DE HORMIGÓN: especificada por elemento, con clase de exposición
+□ Durabilidad: a/c y f'c mín según Tabla 2.5
+□ JUNTAS: de dilatación, de asentamiento, sísmicas — definidas y detalladas
+□ PASES de instalaciones dibujados en el plano de encofrado
+```
+
+### FASE 5 — DOCUMENTACIÓN
+
+```
+□ Memoria de cálculo completa y reproducible (§1.6)
+□ Plano de fundaciones con cotas, tensión admisible y estrato
+□ Planos de encofrado por nivel
+□ Planillas de columnas
+□ Planos de armadura de losas y vigas con despiece
+□ Planilla de doblado y cómputo de acero
+□ Especificaciones técnicas (hormigón, acero, curado, desencofrado)
+□ Plan de control de calidad (frecuencia de probetas, criterios)
+□ Plan de hormigonado y juntas de construcción
+□ Detalles de nudos, anclajes, empalmes, apoyos
+□ Detalles de juntas
+□ Memoria de sobrecargas por sector (para el manual de mantenimiento)
+□ FIRMA DE PROFESIONAL MATRICULADO
+□ Visado del Consejo Profesional
+□ Presentación municipal
+```
+
+### FASE 6 — OBRA
+
+```
+□ Replanteo verificado contra el plano
+□ Estudio de suelos confirmado en la excavación (¿aparece lo esperado?)
+□ Cota de fundación verificada elemento por elemento
+□ Fondo de excavación limpio, seco y aprobado ANTES de hormigonar
+□ Hormigón de limpieza ejecutado
+□ Armaduras verificadas ANTES de hormigonar (foto de cada tramo)
+□ Recubrimientos con separadores rígidos cada 50 cm en ambas direcciones
+□ Armadura superior de losas y voladizos con caballetes, no pisada
+□ Pases de instalación encofrados, no rotos después
+□ Cono de Abrams en cada camión
+□ Probetas moldeadas según el plan
+□ Temperatura del hormigón controlada
+□ Curado ejecutado (7 días mínimo)
+□ Desencofrado según plan (fondos: 14-21 días)
+□ Reapuntalamiento de al menos 2 plantas
+□ No acopiar materiales sobre losas jóvenes
+□ Ensayos a 7 y 28 días con resultados dentro de criterio
+□ Registro de consultas y modificaciones
+□ Planos conforme a obra
+```
+
+### FASE 7 — REFORMA (adicional)
+
+```
+□ Documentación municipal del edificio existente obtenida
+□ Relevamiento geométrico y de daños completo (§8.1)
+□ Fotografía sistemática fechada
+□ Mapeo de fisuras con ancho, trazado y actividad
+□ Pacometría (recubrimientos, armaduras) antes de cualquier perforación
+□ Esclerometría + testigos de calibración
+□ Profundidad de carbonatación vs. recubrimiento real
+□ Cloruros si hay sospecha
+□ Calicata contra el cimiento existente
+□ ESTUDIO DE SUELOS NUEVO si hay aumento de cargas
+□ ACTA DE ESTADO DE LINDEROS con fotos y firma del vecino
+□ Fisurómetros colocados y con lectura inicial
+□ En PH: autorización de asamblea de copropietarios
+□ Verificación de la estructura existente con las cargas nuevas
+□ Verificación de la FUNDACIÓN existente
+□ Verificación del sistema resistente lateral con la nueva altura
+□ Proyecto de apuntalamiento con secuencia
+□ Secuencia de demolición etapa por etapa
+□ Plan de monitoreo topográfico
+□ Plan de contingencia
+□ Seguro de RC con cobertura de daño a linderos
+□ Servicios cortados antes de demoler
+□ Dinteles: verificado el APOYO (aplastamiento), no sólo el perfil
+□ Dinteles: verificada la FUNDACIÓN bajo el apoyo
+□ Calzado de dinteles y recalces con mortero expansivo sin retracción
+```
+
+## 11.3 Las diez preguntas que hay que poder responder de memoria
+
+Si un colega, un cliente o un perito te pregunta esto sobre un proyecto tuyo, tenés que poder contestar sin abrir un archivo:
+
+1. **¿Qué reglamento y qué edición aplicaste?**
+2. **¿Cuánto pesa el edificio y cuánta presión hace sobre el suelo?**
+3. **¿Cuál es la tensión admisible del suelo y de dónde salió?**
+4. **¿Es un suelo colapsable? ¿Cómo lo verificaste?**
+5. **¿Cuál es el corte basal por viento y qué porcentaje del peso representa?**
+6. **¿En qué zona sísmica estás y por qué el 103 aplica o no aplica?**
+7. **¿Cuál es el sistema resistente lateral y cuál es la deriva máxima?**
+8. **¿Cuál es la viga más crítica y qué verificación la gobernó?**
+9. **¿Qué clase de hormigón especificaste en cada elemento y por qué?**
+10. **¿Qué es lo que más te preocupa de este proyecto?** (Si la respuesta es "nada", no lo revisaste lo suficiente.)
+
+---
+---
+
+# 12. BIBLIOGRAFÍA COMENTADA
+
+## 12.1 Reglamentos argentinos — fuentes primarias
+
+Todos disponibles (total o parcialmente) en el sitio del INTI-CIRSOC y en el repositorio del INPRES.
+
+| Reglamento | Por qué sirve | URL |
+|---|---|---|
+| **CIRSOC 101 — Cargas permanentes y sobrecargas mínimas de diseño** | **La fuente de la Tabla 3.1 (pesos de materiales) y la Tabla 4.1 (sobrecargas por destino).** Es el reglamento que más vas a consultar. El Cap. 2 tiene las combinaciones de carga | https://www.inti.gob.ar/assets/uploads/files/cirsoc/02-Reglamento-tramite-de-aprobacion/Reglamento-CIRSOC-101-25.pdf (edición 101-25) · http://contenidos.inpres.gob.ar/docs/Reglamentos/CIRSOC-101-Reglamento.pdf (2005) |
+| **CIRSOC 102 — Acción del viento sobre las construcciones** | **Contiene la Figura 1B con V por ciudad (Santa Rosa = 50 m/s), la Tabla 4 (constantes de exposición), Tabla 5 (Kz), Tabla 6 (Kd), Tabla 7 (GCpi) y las figuras de Cp.** Imprescindible en La Pampa | http://contenidos.inpres.gob.ar/docs/Reglamentos/CIRSOC-102-Reglamento.pdf |
+| **CIRSOC 102 — Guía y ejemplos de aplicación** | **Ejemplos numéricos resueltos.** Para aprender el método analítico | http://contenidos.inpres.gob.ar/docs/Reglamentos/CIRSOC-102-Guia.pdf · http://www1.frm.utn.edu.ar/metalicas/Curso%20C%20301_2008/Reglamentos/Cirsoc%20102%20-%202005/Ejemplos%20C102%20-%202005.pdf |
+| **INPRES-CIRSOC 103 Parte I (2018)** | **El Anexo A tiene la zonificación por departamento (Santa Rosa = Zona 0). El art. 2.5.2 tiene las exenciones de zona 0. Tabla 2.2 (clasificación de sitio), 2.3/2.4 (irregularidades), 4.1 (Cn), 5.1 (R, Cd, Ωo), 6.4 (distorsión), art. 8.4.4 (P-Δ), 8.4.5 (juntas), Cap. 9 (fundaciones y diafragmas), Cap. 11 (construcciones existentes)** | http://contenidos.inpres.gob.ar/docs/INPRES-CIRSOC-103_Parte_I-Reglamento.pdf |
+| **INPRES-CIRSOC 103 Parte II (2021) — Hormigón armado sismorresistente** | Detallado dúctil, confinamiento, nudos, columna fuerte-viga débil | INTI-CIRSOC / INPRES |
+| **INPRES-CIRSOC 103 Parte III (2018) — Mampostería** | Obligatorio en zonas sísmicas 1 a 4 | INTI-CIRSOC / INPRES |
+| **INPRES-CIRSOC 103 Parte IV (2005) — Acero** | — | INTI-CIRSOC / INPRES |
+| **CIRSOC 104 (2005) — Nieve y hielo** | **Tabla 1.6: La Pampa, pg = 0,3 kN/m².** Fórmula pf = 0,7·Ce·Ct·I·pg y valores mínimos | http://contenidos.inpres.gob.ar/docs/Reglamentos/CIRSOC-104-Reglamento.pdf |
+| **CIRSOC 108 (2007) — Cargas de diseño durante la construcción** | El olvidado. Apuntalamiento, acopio, hormigonado sobre losa joven | http://contenidos.inpres.gob.ar/docs/Reglamentos/CIRSOC-108-Reglamento.pdf |
+| **CIRSOC 200 (2024) — Tecnología del hormigón** | Materiales, dosificación, elaboración, control | INTI-CIRSOC |
+| **CIRSOC 201 — Estructuras de hormigón** | **El reglamento central. Tabla 2.1/2.2 (exposición), 2.5 (durabilidad), 7.7.1 (recubrimientos), 7.10.5.1 (estribos), 7.12 (retracción), 9.2 (combinaciones), 9.3 (φ), 9.5 (flechas y espesores mínimos), 10.5 (As mín), 10.9 (columnas)** | http://contenidos.inpres.gob.ar/docs/Reglamentos/CIRSOC-201-Reglamento.pdf · https://icpa.org.ar/wp-content/uploads/2019/04/Reglamento_CIRSOC_201-2005.pdf |
+| **CIRSOC 301 (2018) — Estructuras de acero para edificios** | Basado en AISC 360. LRFD y ASD | https://www.inti.gob.ar/assets/uploads/files/cirsoc/08-reglamentos-3ra-generacion/area300/08_Area300-1A-301-Reglamento-CIRSOC-301-18-APROBADO.pdf |
+| **CIRSOC 302 (2005) — Estabilidad del equilibrio en estructuras de acero** | Pandeo global, lateral-torsional, abollamiento. Complementa el 301 | INTI-CIRSOC |
+| **CIRSOC 303 (2009) — Acero conformado en frío** | **La base normativa del steel framing.** Basado en AISI | INTI-CIRSOC |
+| **CIRSOC 304 (2007) — Soldadura de estructuras de acero** | — | INTI-CIRSOC |
+| **CIRSOC 308 (2007) — Estructuras livianas de acero para viviendas** | Steel framing en vivienda | INTI-CIRSOC |
+| **CIRSOC 401 (2015) — Estudios geotécnicos** | **Lo que hay que exigirle al geotécnico.** Cantidad y profundidad de sondeos, contenido del informe | INTI-CIRSOC |
+| **CIRSOC 501 (2007) — Estructuras de mampostería** | Cálculo de mampostería portante | https://www.inti.gob.ar/assets/uploads/files/cirsoc/vigencia-2013/area500/501R.pdf |
+| **CIRSOC 501-E (2023) — Mampostería de bajo compromiso estructural** | **El método empírico. Tabla 7.1 de espesores mínimos, límite de 10 m / 3 pisos, límites de viento (55 m/s), sismo (zona 0) y nieve (0,9 kN/m²). Art. 7.3 (anclajes) y 7.4 (cubiertas)** | https://www.inti.gob.ar/assets/uploads/files/cirsoc/04-Reglamentos-en-discusion-publica-nacional/CIRSOC501E-Reglamento.pdf |
+| **CIRSOC 601 (2016) — Estructuras de madera** | — | INTI-CIRSOC |
+
+**Portal general:** https://www.inti.gob.ar/areas/servicios-industriales/asistencia-a-la-industria/cirsoc · contacto: cirsoc@inti.gob.ar
+**Repositorio INPRES:** http://contenidos.inpres.gov.ar/acelerografos/Reglamentos
+**Zonificación sísmica por coordenadas:** https://www.argentina.gob.ar/inpres/ingenieria-sismorresistente/zonificacion-sismica y www.inpres.gob.ar
+
+## 12.2 Normas internacionales de referencia
+
+| Norma | Por qué sirve |
+|---|---|
+| **ACI 318 (Building Code Requirements for Structural Concrete)** — última edición | **Es la base del CIRSOC 201.** Cuando el CIRSOC no dice algo, ACI 318 es la referencia natural. Los comentarios (318R) son excelentes material didáctico |
+| **ACI 440.2R-17** — Guide for Design and Construction of Externally Bonded FRP Systems | **La referencia mundial para refuerzo con fibra de carbono.** No hay reglamento CIRSOC de FRP; se proyecta con esta guía |
+| **ACI 546R** — Guide to Concrete Repair | Reparación de hormigón: procedimientos, materiales, control |
+| **ACI 562** — Code Requirements for Evaluation, Repair, and Rehabilitation of Concrete Buildings | El "código" de la rehabilitación |
+| **ACI 369R** — Guide for Seismic Rehabilitation of Existing Concrete Frame Buildings | Refuerzo sismorresistente de pórticos existentes |
+| **ASCE 7 (Minimum Design Loads and Associated Criteria)** | **Es la base del CIRSOC 101 y 102.** Consultar cuando el CIRSOC no cubre un caso (acumulación de nieve, cargas de inundación, etc.) |
+| **ASCE 41 — Seismic Evaluation and Retrofit of Existing Buildings** | El estándar para evaluar y reforzar edificios existentes. Niveles de desempeño |
+| **EN 1992 (Eurocódigo 2) — Estructuras de hormigón** | Excelente tratamiento de **durabilidad, fisuración y estados límite de servicio**, más completo que ACI en esos temas |
+| **EN 1997 (Eurocódigo 7) — Proyecto geotécnico** | **El mejor marco conceptual para geotecnia moderna**: enfoques de proyecto, valores característicos, coeficientes parciales |
+| **EN 1998 (Eurocódigo 8) — Proyecto sismorresistente** | Muy claro en capacidad, ductilidad y regularidad. Complementa bien al 103 |
+| **EN 1504 (partes 1 a 10) — Productos y sistemas para la reparación de estructuras de hormigón** | **Clasificación de los morteros de reparación (R1 a R4)** y de los sistemas de protección. Lo que hay que exigir en un pliego de reparación |
+| **AISC 360** | Base del CIRSOC 301 |
+| **AISI S100** | Base del CIRSOC 303 |
+| **fib Model Code 2010** | Estado del arte del hormigón estructural, muy fuerte en durabilidad y vida útil |
+| **fib Bulletin 90 (2019)** | Refuerzo con FRP, alternativa europea a ACI 440 |
+
+## 12.3 Bibliografía clásica — libros
+
+### Hormigón armado
+
+| Obra | Edición de referencia | Por qué sirve |
+|---|---|---|
+| **Nilson, Darwin & Dolan — "Design of Concrete Structures"** | 15.ª ed. (McGraw-Hill) / trad. "Diseño de Estructuras de Concreto" (14.ª ed.) | **El libro de texto por excelencia, alineado con ACI 318.** Claro, con ejemplos resueltos. Si tenés que comprar un solo libro de hormigón, es este |
+| **MacGregor & Wight — "Reinforced Concrete: Mechanics and Design"** | 7.ª ed. (Pearson) | **Más profundo que Nilson en el comportamiento**. Excelente para entender el porqué de las prescripciones. Tratamiento notable de corte, torsión y esbeltez |
+| **Park & Paulay — "Reinforced Concrete Structures"** | 1.ª ed., 1975 (Wiley) — sigue siendo la referencia | **El libro sobre COMPORTAMIENTO del hormigón armado.** Todo lo que se sabe sobre ductilidad, confinamiento, nudos y corte viene de acá. Denso, viejo, insustituible |
+| **Calavera Ruiz — "Proyecto y Cálculo de Estructuras de Hormigón"** | 2 tomos, 2.ª ed. (INTEMAC, 2008) | **El más práctico y más orientado al proyecto real de todos.** Tablas, detalles constructivos, criterios de armado. Escrito por un ingeniero que hizo obra. Muy útil para el día a día del estudio |
+| **Calavera Ruiz — "Cálculo de Estructuras de Cimentación"** | 4.ª ed. (INTEMAC, 2000) | **La referencia en fundaciones desde la óptica estructural.** Zapatas, vigas de fundación, plateas, pilotes, encepados. Con tablas y ejemplos |
+| **Calavera Ruiz — "Patología de Estructuras de Hormigón Armado y Pretensado"** | 2 tomos (INTEMAC) | **La biblia de la patología en español.** Catálogo de fisuras, causas, diagnóstico y reparación. **Imprescindible para el capítulo de reformas** |
+| **Fratelli, María Graciela — "Diseño Estructural en Concreto Armado"** | (Caracas) | Enfoque latinoamericano, muy didáctico, con muchos ejemplos resueltos. Buena para consulta rápida |
+| **Fratelli, María Graciela — "Suelos, Fundaciones y Muros"** | (Caracas) | Tratamiento integrado de geotecnia y estructura de fundación |
+| **Moisset de Espanés, Daniel — "Intuición y Razón en el Diseño Estructural"** | (Córdoba, Argentina) | **El mejor libro argentino para el diálogo arquitecto-ingeniero.** Enseña a *ver* la estructura antes de calcularla. Fundamental para el anteproyecto |
+| **Moisset de Espanés — "Estática Gráfica" / "Optimización de Estructuras"** | — | Complementarios, del mismo autor |
+| **Leet, Uang & Gilbert — "Fundamentals of Structural Analysis"** | 5.ª ed. | Análisis estructural claro, con métodos matriciales |
+
+### Sismorresistente
+
+| Obra | Edición | Por qué sirve |
+|---|---|---|
+| **Meli Piralla, Roberto — "Diseño Sísmico de Edificios"** | (Limusa, México) | **El mejor libro en español sobre diseño sísmico conceptual.** Configuración, irregularidades, criterios de estructuración. **Los capítulos sobre configuración son lo mejor que hay escrito** y aplican aunque estés en zona 0 |
+| **Paulay & Priestley — "Seismic Design of Reinforced Concrete and Masonry Buildings"** | (Wiley, 1992) | **El texto de referencia del diseño por capacidad.** Columna fuerte-viga débil, jerarquía de resistencias, detallado dúctil. Difícil pero definitivo |
+| **Priestley, Calvi & Kowalsky — "Displacement-Based Seismic Design of Structures"** | (IUSS Press, 2007) | El paradigma moderno: diseño por desplazamientos en lugar de por fuerzas |
+| **Chopra, Anil — "Dynamics of Structures"** | 5.ª ed. (Pearson) | **La referencia de dinámica estructural.** Necesario si hacés análisis modal espectral en serio |
+| **Bazán & Meli — "Diseño Sísmico de Edificios"** | (Limusa) | Complementario a Meli, más orientado al cálculo |
+| **Crisafulli, Francisco (UNCuyo)** | Apuntes y publicaciones sobre INPRES-CIRSOC 103 | **Referencia argentina contemporánea.** Buscar sus publicaciones sobre la aplicación del 103 |
+
+### Geotecnia y fundaciones
+
+| Obra | Edición | Por qué sirve |
+|---|---|---|
+| **Terzaghi & Peck — "Soil Mechanics in Engineering Practice"** | 3.ª ed. (con Mesri, Wiley, 1996) | **El texto fundacional de la mecánica de suelos aplicada.** Las correlaciones de N-SPT con capacidad portante que todavía usamos son de acá |
+| **Bowles, Joseph — "Foundation Analysis and Design"** | 5.ª ed. (McGraw-Hill, 1996) | **El manual de fundaciones más completo y práctico.** Todos los métodos de capacidad portante, asentamientos, módulo de balasto, pilotes, muros. Lleno de tablas y de criterio de ingeniero |
+| **Das, Braja — "Principles of Foundation Engineering"** | 9.ª ed. (Cengage) | Más moderno y didáctico que Bowles. Muy buenos ejemplos resueltos. Excelente primera lectura |
+| **Das, Braja — "Principles of Geotechnical Engineering"** | 9.ª ed. | El complemento sobre mecánica de suelos |
+| **Poulos & Davis — "Pile Foundation Analysis and Design"** | (Wiley, 1980) | La referencia clásica de pilotes |
+| **Tomlinson & Woodward — "Pile Design and Construction Practice"** | 6.ª ed. | Muy orientado a la práctica de obra |
+| **Jiménez Salas et al. — "Geotecnia y Cimientos"** | 3 tomos (Rueda, Madrid) | Tratado exhaustivo en español |
+| **Bolognesi, Aldo J. L.** | Publicaciones argentinas | **Pionero de la mecánica de suelos en Argentina.** Sus trabajos sobre los loess pampeanos y sobre suelos preconsolidados por desecación son la base local |
+| **Núñez, Eduardo** | Publicaciones argentinas | Referencia argentina en suelos colapsables y preconsolidados |
+
+### Patología, reparación y refuerzo
+
+| Obra | Por qué sirve |
+|---|---|
+| **Calavera — "Patología de Estructuras de Hormigón Armado y Pretensado"** (2 tomos) | Ya citado. **La referencia en español** |
+| **Broto, Carles — "Enciclopedia Broto de Patologías de la Construcción"** | Catálogo visual muy amplio, orientado a la arquitectura. Bueno para el diálogo con el cliente |
+| **Monjo Carrió, J. — "Patología de cerramientos y acabados arquitectónicos"** | Complementa lo estructural con la envolvente |
+| **Helene & Pereira — "Manual de Rehabilitación de Estructuras de Hormigón"** (CYTED) | **Manual iberoamericano, gratuito en muchos repositorios.** Muy práctico |
+| **Emmons, Peter — "Concrete Repair and Maintenance Illustrated"** | Ilustrado, paso a paso. Excelente para transmitir procedimientos al capataz |
+| **Ricardo Ortega (dir.) — publicaciones del ICPA** | El **Instituto del Cemento Portland Argentino** publica material técnico local muy útil. https://icpa.org.ar |
+
+### Acero, madera y otros
+
+| Obra | Por qué sirve |
+|---|---|
+| **Segui, William — "Steel Design"** | 6.ª ed. Basado en AISC, alineado con el CIRSOC 301 |
+| **McCormac & Csernak — "Structural Steel Design"** | Alternativa muy didáctica |
+| **AISC — "Steel Construction Manual"** | El manual de referencia, con todas las tablas de perfiles y conexiones |
+| **Argüelles Álvarez et al. — "Estructuras de Acero"** (2 tomos) | Referencia en español |
+| **Argüelles Álvarez et al. — "Estructuras de Madera"** | Referencia en español |
+| **Porteous & Kermani — "Structural Timber Design to Eurocode 5"** | Madera moderna |
+
+## 12.4 Papers y publicaciones específicas
+
+| Trabajo | Por qué es relevante para vos | Dónde |
+|---|---|---|
+| **Rocca, R. J.; Redolfi, E. R.; Terzariol, R. E. (2006) — "Características geotécnicas de los loess de Argentina"** — *Rev. Int. de Desastres Naturales, Accidentes e Infraestructura Civil*, Vol. 6(2), pp. 149-166 | **EL TRABAJO DE REFERENCIA para tu zona.** Distribución, propiedades índice, colapsibilidad, criterios de fundación, casos. Todos los datos numéricos del §3.5 salen de acá | https://www.fceia.unr.edu.ar/geologiaygeotecnia/Loess%20Rocca_Redolfi_Terzariol.pdf |
+| **Bolognesi, A. J. L. (1975) — propiedades de los loess pampeanos** | Base de la Tabla 1 de propiedades de loessoides antiguos | Citado en Rocca et al. |
+| **Moll, L. L. (1975) — "Análisis del problema de los suelos colapsibles"** — V Pan American Conference on Soil Mechanics and Foundation Engineering | Trabajo fundacional argentino sobre colapsables | Actas PCSMFE |
+| **Núñez, E. (1975) — "Suelos colapsibles y preconsolidados por desecación"** — V PCSMFE | Ídem | Actas |
+| **Redolfi, E. R. y Oteo Mazo, C. (1992) — pilotes en suelos colapsables** | **La referencia sobre fricción negativa y pérdida de capacidad friccional en loess.** Crítico si vas a pilotes | Citado en Rocca et al. |
+| **Terzariol, R. E. y Abbona, P. V. (1999) — "Determinación del Potencial de colapso mediante ensayos in-situ"** — XI PCSMFE | Ensayos in situ de colapsabilidad | Actas |
+| **Leoni, Augusto J. — "Parametrización de suelos" (Capítulo 2)** — UNLP / FCEIA-UNR | **Todas las correlaciones de N-SPT del §3.3 salen de acá.** Tablas de consistencia, módulo de deformación, balasto, densidad relativa, DMT. Material de cátedra excelente y gratuito | https://www.fceia.unr.edu.ar/geologiaygeotecnia/Capitulo%202_Parametrizacion%20de%20suelos.pdf · https://ingenieroleoni.com |
+| **Sitio "Estudios Geotécnicos"** (blog técnico en español) | Serie de artículos sobre correlaciones geotécnicas, muy bien explicados | https://estudiosgeotecnicos.info |
+| **"Criterios de control de la durabilidad en las estructuras en ambientes marítimos según CIRSOC 201/05 y comparaciones con el CIRSOC 201/82"** | Comparación entre generaciones del 201 en durabilidad | ResearchGate |
+| **Zárate, M. (2003) — distribución de loess y loessoides en Argentina** | Base de los mapas de distribución | Citado en Rocca et al. |
+| **Krohling, D. (1999) — estratigrafía del loess pampeano** | Formaciones y espesores | Citado en Rocca et al. |
+| **Teruggi, M. E. (1957) — origen del loess pampeano** | Trabajo fundacional sobre la génesis | Citado en Rocca et al. |
+| **Bjerrum, L. (1963) — distorsiones angulares admisibles** | Origen de los límites de β del §4.7.2 | Proc. European Conf. SMFE |
+| **Skempton & MacDonald (1956) — "The allowable settlements of buildings"** | Ídem | Proc. ICE |
+| **Ellingwood, B. et al. (1982); Galambos, T. et al. (1982)** | **Base probabilística de los factores de carga LRFD** que usa el CIRSOC 101. Citados explícitamente en el comentario C 2.3.2 | NBS / ASCE |
+| **Turkstra & Madsen (1980) — combinación de cargas** | Base conceptual de las combinaciones (una carga en su máximo, las demás en valor puntual arbitrario). Citado en C 2.3.2 | — |
+
+## 12.5 Recursos online útiles
+
+| Recurso | Para qué | URL |
+|---|---|---|
+| **Dlubal — Cargas de viento CIRSOC 102 por ubicación** | Herramienta gratuita: seleccionás el punto en el mapa de Argentina y te da la zona y velocidad | https://www.dlubal.com/es/zonas-de-cargas-para-nieve-viento-y-sismos/viento-cirsoc-102.html |
+| **Dlubal — Cargas sísmicas INPRES-CIRSOC 103 por ubicación** | Ídem para sismo | https://www.dlubal.com/es/zonas-de-cargas-para-nieve-viento-y-sismos/terremoto-inpres-cirsoc-103.html |
+| **INPRES — Zonificación sísmica por coordenadas** | Ingresás lat/long y te da la zona | https://www.argentina.gob.ar/inpres/ingenieria-sismorresistente/zonificacion-sismica |
+| **ICPA — Instituto del Cemento Portland Argentino** | Publicaciones técnicas sobre hormigón, reglamentos, boletines | https://icpa.org.ar |
+| **EDICI Ingeniería — resumen de reglamentos CIRSOC vigentes** | Tabla actualizada de ediciones vigentes y en desarrollo. **Verificar siempre contra la fuente oficial** | https://edici.com.ar/normativa/cirsoc-resumen |
+| **INCOSE — Instituto de la Construcción en Seco** | Steel framing en Argentina: manuales, detalles constructivos | https://www.incose.org.ar |
+| **Ftool** | Software gratuito de pórticos 2D para verificación rápida | https://www.ftool.com.br |
+
+## 12.6 Cómo armar la biblioteca del estudio — orden de compra sugerido
+
+Si arrancás de cero y tenés presupuesto acotado, este es el orden [PD]:
+
+| Prioridad | Obra | Por qué primero |
+|---|---|---|
+| **1** | **Reglamentos CIRSOC 101, 102, 201 y INPRES-CIRSOC 103 Parte I** (descarga gratuita) | Son la ley. Costo cero |
+| **2** | **Calavera — "Proyecto y Cálculo de Estructuras de Hormigón"** | El más útil día a día |
+| **3** | **Moisset de Espanés — "Intuición y Razón en el Diseño Estructural"** | Para el anteproyecto y para hablar con arquitectos |
+| **4** | **Nilson — "Diseño de Estructuras de Concreto"** | El texto de cálculo |
+| **5** | **Calavera — "Cálculo de Estructuras de Cimentación"** | Fundaciones |
+| **6** | **Das — "Principles of Foundation Engineering"** | Geotecnia |
+| **7** | **Calavera — "Patología de Estructuras..."** | Para el área de reformas |
+| **8** | **Meli Piralla — "Diseño Sísmico de Edificios"** | Configuración estructural |
+| **9** | **Bowles — "Foundation Analysis and Design"** | Referencia profunda de fundaciones |
+| **10** | **Park & Paulay** + **Paulay & Priestley** | Para cuando quieras entender de verdad |
+
+---
+---
+
+## NOTA FINAL
+
+Este documento reúne **datos verificados directamente contra el texto de los reglamentos** (marcados como citas y transcripciones), **reglas prácticas de predimensionado** (marcadas **[PD]**) y **puntos que no pude confirmar** (marcados **[VER]**).
+
+**Todo lo marcado [VER] debe verificarse en la fuente antes de usarse en un proyecto.** La lista incluye, entre otros:
+
+- La **edición de cada reglamento CIRSOC efectivamente adoptada** por la Provincia de La Pampa y la Municipalidad de Santa Rosa (§1.1.1).
+- El texto y los números del **Código de Edificación y del Código de Planeamiento de Santa Rosa** (§1.2): alturas máximas, FOT, FOS, retiros, exigencias de estudio de suelos, resistencia al fuego, alturas libres mínimas.
+- Los valores exactos de **CIRSOC 401** sobre cantidad y profundidad de sondeos (§3.1).
+- Varios artículos y valores de detalle del **CIRSOC 201** (expresión de reducción de sobrecargas, coeficientes de flecha diferida, criterios de aceptación de testigos, recubrimientos por fuego).
+- Los **números de norma IRAM** para esclerometría (1694) y extracción de testigos (1551), y su edición vigente.
+- El requisito exacto de **arriostramiento de fundaciones** del art. 9.2.4.1 del INPRES-CIRSOC 103.
+- El contenido del **Capítulo 11 (Construcciones existentes)** del INPRES-CIRSOC 103, que es la referencia normativa argentina directa para intervención en estructuras existentes.
+
+**Nada de lo que está en este documento reemplaza el cálculo estructural firmado por profesional matriculado.** Es una herramienta de anteproyecto, de coordinación con la arquitectura, de presupuesto y de control del trabajo del calculista. Usada así, es muy valiosa. Usada de otro modo, es peligrosa.
+
+---
+
+*Documento técnico interno. Santa Rosa, La Pampa, Argentina.*
