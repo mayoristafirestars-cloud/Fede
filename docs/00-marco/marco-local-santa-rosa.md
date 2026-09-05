@@ -295,45 +295,72 @@ Clima **templado continental semiárido**, caracterizado por:
 | **Humedad relativa: seco en verano (59 %), húmedo en invierno (76 %)** | ⚠ Corrige un lugar común: el clima pampeano **no es seco todo el año**. En verano la HR baja habilita ventilación nocturna y enfriamiento evaporativo; en invierno, con HR 76 % y temperatura de diseño −2,7 °C, **el riesgo de condensación superficial e intersticial es real y hay que verificarlo siempre** (IRAM 11625/11630) |
 | **Cielos despejados frecuentes** | Ganancia solar directa aprovechable en invierno; y potencial solar térmico / fotovoltaico alto en cubierta |
 
-### 4.1 Zona bioambiental — **Zona IVc (templada fría, de transición)**
+### 4.1 Zona bioambiental — **Zona IV, con una discrepancia de datos que hay que conocer**
 
-Datos bioclimáticos de la estación **Santa Rosa (La Pampa)**, de las tablas de la
-**IRAM 11603**:
+⚠ **Dos registros distintos de la IRAM 11603 dan valores distintos para Santa Rosa.** No es un
+error: son estaciones y/o ediciones diferentes de la norma. Ambos aparecen en esta biblioteca y
+conviene saber cuál se está usando.
 
-| Invierno | Valor | | Verano | Valor |
-|---|---|---|---|---|
-| Temperatura de diseño mínima (TDMN) | **−2,7 °C** | | Temperatura de diseño máxima (TDMX) | **33,8 °C** |
-| Temperatura de rocío media | 3,4 °C | | Temperatura media | 22,3 °C |
-| Humedad relativa media | **76 %** | | Humedad relativa media | 59 % |
-| Velocidad media del viento | 10,3 km/h | | Velocidad media del viento | 14 km/h |
-| Heliofanía relativa | 48 % | | Heliofanía relativa | 68 % |
-| **Grados-día base 18 °C (GD18)** | **1.331 °C·día** | | Grados-día de enfriamiento base 25 °C | 297 °C·día |
+| Parámetro | Registro **"Santa Rosa"** | Registro **"Santa Rosa (Aero)"** |
+|---|---|---|
+| Temperatura de diseño mínima (TDMN) | −2,7 °C | **−6,0 °C** |
+| Temperatura de diseño máxima (TDMX) | 33,8 °C | **38,8 °C** |
+| Grados-día base 18 °C (GD18) | 1.331 °C·día | **1.394 °C·día** |
+| Mínima absoluta | — | **−11,3 °C** |
+| Humedad relativa media de invierno | 76 % | — |
+| Amplitud térmica invierno / verano | 14,1 K / 16,5 K | 12,5 K / 14,4 K |
+| Encuadre resultante | Zona IV, subzona **IVc** | Zona IV por grados-día |
+| Fuente en esta biblioteca | `05-construccion` | `04-instalaciones` |
 
-**Encuadre:** con GD18 = 1.331 °C·día, Santa Rosa cae en la **Zona IV — Templada Fría**
-(entre las isolíneas de 1.170 y 1.950 GD18). La amplitud térmica —14,1 K en invierno y
-16,5 K en verano— la ubica en la **subzona IVc (de transición)**, la franja entre 14 y 18 °C.
+**Criterio del estudio: usar el registro más exigente (TDMN = −6,0 °C) para dimensionar, y
+verificar cuál corresponde en la edición vigente de la IRAM 11603 antes de firmar una
+verificación higrotérmica.** Dimensionar con −2,7 °C cuando el clima real llega a −6,0 °C
+subdimensiona la calefacción y la aislación; el error inverso solo cuesta un poco más de
+aislante.
 
-**Lo que la propia IRAM 11603 prescribe para la Zona IV:**
+**Referencia provincial (misma tabla):** General Pico TDMN −6,2 °C / GD18 1.271 · Victorica
+TDMN −7,3 °C / GD18 1.396.
+
+#### La contradicción de zona III vs. IV — y por qué es inocua
+
+La propia IRAM 11603 se contradice con Santa Rosa:
+
+- Su **listado departamental** ubica al Departamento **Capital** (y a Toay, Atreucó, Catriló,
+  Conhelo, Maracó, Realicó, Rancul y otros) en **Zona III, subzona IIIa (Templada Cálida)**.
+- Su **criterio de grados-día** ubica a la Zona IV entre las isolíneas de 1.170 y 1.950 GD18.
+  Con 1.331–1.394 GD18, **Santa Rosa cae en Zona IV**.
+
+Santa Rosa está **justo sobre el límite** entre ambas zonas. La contradicción es real, pero
+**prácticamente no afecta el dimensionamiento**, por tres razones:
+
+1. Los **K máximos admisibles de invierno** de la IRAM 11605 **no dependen de la zona
+   bioambiental sino de la TDMN de la localidad**. La discusión de nombre no cambia la
+   exigencia.
+2. Para la **condición de verano**, las tablas de la IRAM 11605 dan **el mismo valor para
+   zonas III y IV**.
+3. Solo afecta a recomendaciones cualitativas de diseño bioclimático, donde la Zona IV es más
+   exigente en invierno — es decir, el lado seguro.
+
+**En resumen: proyectar con criterio de Zona IV, usar siempre la TDMN, y verificar el K contra
+la Tabla 1 de la IRAM 11605.**
+
+#### Lo que la IRAM 11603 prescribe para la Zona IV
 
 - Muy buena aislación en **toda** la envolvente, con **el doble de aislación en techos que en
   muros**.
 - Relación superficie vidriada / superficie opaca **no mayor al 15 %**.
 - **En las subzonas c y d se verificará el riesgo de condensación, controlando los puentes
-  térmicos.** Santa Rosa es IVc: **la verificación de condensación no es opcional.**
+  térmicos** — con Santa Rosa en IVc, **la verificación de condensación no es opcional**.
 - Excelente recurso solar invernal: aprovechar ganancia directa y acumulación solar pasiva.
 
-**La relación GD18/GDe25 es 4,5**: acá domina ampliamente la demanda de **calefacción**. Un
-proyecto que se optimiza para el verano y descuida el invierno está optimizando el problema
-menor.
+#### Cuatro consecuencias directas de proyecto
 
-> *Verificar el encuadre exacto en el mapa de la IRAM 11603 vigente antes de firmar una
-> verificación higrotérmica ante el municipio o la provincia.*
-
-**Consecuencia directa — el muro estándar argentino no verifica.** Un muro de ladrillo hueco
-de 18 cm revocado en ambas caras da **K = 1,58 W/m²K**: **1,7 veces** el máximo admisible de
-Nivel B y **4,6 veces** el de Nivel A para esta zona. Y en cubierta **manda la condición de
-verano**, no la de invierno. El desarrollo con los K máximos interpolados para Santa Rosa y
-los cálculos resueltos está en el documento de tecnología constructiva.
+| Consecuencia | Fundamento |
+|---|---|
+| **La calefacción es el problema dominante** | La relación GD18/GDe25 es ~4,5. Pero con TDMX 38,8 °C y máxima absoluta 42,1 °C **el verano tampoco es despreciable**: hay que resolver los dos |
+| **Riesgo real de congelamiento de instalaciones** | Mínima absoluta **−11,3 °C**. Todo caño de agua en sala de tanques sin calefaccionar, a la intemperie, en cubierta o enterrado con poca tapada **puede congelarse**: aislar y proteger |
+| **El muro estándar argentino no verifica** | Ladrillo hueco de 18 cm revocado en ambas caras: **K = 1,58 W/m²K**, unas 1,7 veces el máximo de Nivel B y 4,6 veces el de Nivel A. Y en cubierta **manda la condición de verano**, no la de invierno |
+| **La estanqueidad al aire es crítica** | Viento medio 10,1 km/h en invierno y 12,5 en verano. La infiltración se lleva buena parte de lo que gana la aislación: carpinterías estancas y sellado perimetral bien ejecutado |
 
 **Desarrollo técnico completo:** `docs/05-construccion/tecnologia-constructiva.md`
 (cálculo de K, puentes térmicos, condensación, aislantes) y `docs/01-anteproyecto/anteproyecto.md`

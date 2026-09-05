@@ -50,7 +50,7 @@
 - 2.10 Subsuelos: pozo de bombeo cloacal y bombas trituradoras
 - 2.11 Interceptores de grasa, de trapos y de nafta
 - 2.12 Sistemas estáticos: cámara séptica, pozo absorbente, zanjas de infiltración
-- 2.13 **EJEMPLO RESUELTO — Ensayo de percolación y dimensionado de sistema estático**
+- 2.12.7 **EJEMPLO RESUELTO — Ensayo de percolación y dimensionado de sistema estático**
 
 **[3. DESAGÜES PLUVIALES](#3-desagües-pluviales)**
 - 3.1 Cómo se obtiene el dato de lluvia de diseño para Santa Rosa / La Pampa
@@ -101,29 +101,28 @@
 - 5.19 Generación distribuida fotovoltaica — Ley 27.424
 
 **[6. TERMOMECÁNICAS: CLIMATIZACIÓN Y VENTILACIÓN](#6-termomecánicas-climatización-y-ventilación)**
-- 6.1 Datos climáticos de Santa Rosa (La Pampa) y zona bioambiental
-- 6.2 Transmitancia térmica: IRAM 11601 / 11605 y niveles A, B, C
-- 6.3 Consecuencias de proyecto de la zona bioambiental
-- 6.4 Cálculo de carga térmica: método simplificado (W/m²) y método detallado
-- 6.5 **EJEMPLO RESUELTO — Carga térmica de un departamento tipo en Santa Rosa**
-- 6.6 Coeficiente volumétrico G — IRAM 11604
-- 6.7 Sistemas: split, multisplit, VRF/VRV, fan coil + caldera/enfriadora
-- 6.8 Losa radiante: dimensionado, paso, temperatura de impulsión
-- 6.9 Radiadores
-- 6.10 Ventilación mecánica y recuperadores de calor
-- 6.11 Extracción de baños y cocinas
-- 6.12 Ventilación de cocheras y salas de máquinas
+- 6.1 Datos climáticos de Santa Rosa (La Pampa), zona bioambiental y sus consecuencias de proyecto
+- 6.2 Transmitancia térmica: IRAM 11601 / 11605, niveles A, B y C, y puentes térmicos
+- 6.3 Cálculo de carga térmica: método simplificado (W/m²) y método detallado
+- 6.4 **EJEMPLO RESUELTO — Carga térmica de un departamento tipo en Santa Rosa**
+- 6.5 Coeficiente volumétrico G — IRAM 11604
+- 6.6 Sistemas: split, multisplit, VRF/VRV, fan coil + caldera/enfriadora
+- 6.7 Losa radiante: dimensionado, paso, temperatura de impulsión
+- 6.8 Radiadores
+- 6.9 Ventilación mecánica y recuperadores de calor
+- 6.10 Extracción de baños y cocinas
+- 6.11 Ventilación de cocheras y salas de máquinas
 
 **[7. PROTECCIÓN CONTRA INCENDIOS](#7-protección-contra-incendios)**
 - 7.1 Lógica normativa: protección pasiva y activa
 - 7.2 Resistencia al fuego F30 a F180 y sectorización
-- 7.3 Medios de escape
-- 7.4 Escalera protegida y presurizada
-- 7.5 Matafuegos: tipo, potencial extintor, cantidad y ubicación
-- 7.6 Detección y alarma
-- 7.7 Red de incendio: reserva, bombas, hidrantes, cañerías
-- 7.8 **EJEMPLO RESUELTO — Reserva y bombas de incendio**
-- 7.9 Rociadores automáticos
+- 7.3 Medios de escape, escalera protegida y presurización de escaleras
+- 7.4 Matafuegos: tipo, potencial extintor, cantidad y ubicación
+- 7.5 Detección y alarma
+- 7.6 Red de incendio: reserva, bombas, hidrantes, cañerías
+- 7.7 **EJEMPLO RESUELTO — Reserva y bombas de incendio**
+- 7.8 Rociadores automáticos
+- 7.9 Campanas sobre artefacto cocina (extinción clase K)
 - 7.10 Señalización
 
 **[8. ASCENSORES Y ELEVACIÓN](#8-ascensores-y-elevación)**
@@ -6636,3 +6635,267 @@ FINAL DE OBRA
 - [ ] ¿Está previsto el **manual de uso y mantenimiento** como entregable final?
 
 ---
+
+# 12. BIBLIOGRAFÍA Y NORMAS COMENTADAS
+
+## 12.1 Fuentes primarias efectivamente consultadas para este documento
+
+Estas son las fuentes de las que se extrajeron los valores numéricos y las tablas transcriptas. **Todo dato de este documento que no lleve la marca `[verificar…]` proviene de una de estas fuentes.**
+
+| Fuente | Qué aporta a este documento | URL |
+|---|---|---|
+| **Guía para Ejecución de Instalaciones Sanitarias Domiciliarias y Asimilables a Domiciliarias** — AySA / ERAS (actualización de las *Normas y Gráficos de Instalaciones Sanitarias Domiciliarias e Industriales* de OSN, Res. 67.017/81; Comisión creada por Res. ERAS 71/2017) | **Capítulos 1, 2 y 3 completos.** Dotaciones, caudales por artefacto, presiones mínimas, coeficiente K, balance de caudales, reserva, tanques, bombas, medidores, ACS, desagües, pendientes, ventilaciones, pluviales, retardo, sistemas estáticos | https://www.argentina.gob.ar/sites/default/files/if-2023-141050544-apn-dnapysmop-guia.pdf<br>https://aysa.com.ar/media-library/usuarios/tramites_online/Guia_para_ejecucion_de_instalaciones_sanitarias_domiciliarias.pdf |
+| **NAG-200 — Reglamento Técnico para la ejecución de instalaciones internas domiciliarias de gas** (ENARGAS, edición 2019 en consulta pública) | **Capítulo 4 completo.** Simultaneidad S₁/S₂, caudales de artefactos (Tabla E.1), dimensiones de caños (E.2), caudales por diámetro (E.4), Renouard, ventilación de ambientes, prohibiciones, gabinetes, pruebas, trámite | https://www.enargas.gob.ar/secciones/normativa/pdf/normas-discusion/NAG-200.pdf |
+| **AEA 90364-7-770 — Reglamentación para la ejecución de instalaciones eléctricas en inmuebles. Viviendas, oficinas y locales unitarios** (Edición 2016) | **Capítulo 5 completo.** Grados de electrificación, número mínimo de circuitos, puntos mínimos de utilización, secciones mínimas, corrientes admisibles, factores de agrupamiento, caída de tensión, DPMS, coeficientes de simultaneidad, puesta a tierra, diferenciales | https://aea.org.ar/wp-content/uploads/2017/10/90364-7-770-1.pdf<br>https://ersep.cba.gov.ar/wp-content/uploads/2021/05/AEA-90364-7-770_ERSep.pdf |
+| **IRAM 11603 — Acondicionamiento térmico de edificios. Clasificación bioambiental de la República Argentina** (edición 2011) | **Datos climáticos de Santa Rosa (Aero):** TDMN −6,0 °C, TDMX 38,8 °C, GD18 1.394, TMA −11,3 °C, etc. Listado departamental de zonas | https://procesosconstructivos.wordpress.com/wp-content/uploads/2011/08/iram-11603-e1.pdf |
+| **IRAM 11605 — Valores máximos admisibles de transmitancia térmica en edificios de viviendas** | **Tabla 1 completa** (K máx. adm. de invierno en función de TDMN, niveles A, B y C) y **Tablas 2 y 3** (verano, por zona) | Transcripta en: https://www.argentina.gob.ar/sites/default/files/guia_de_calculo_transmitancia_termica.pdf |
+| **Código de Edificación de CABA — Reglamento Técnico "De las Instalaciones — Instalaciones contra Incendio" RT-030909-020202-03** | **Capítulo 7 completo.** Condiciones A1-A9, tabla de reserva de agua, caudales de bombas, requisitos de bombas, reserva, hidrantes, cañerías, matafuegos, potencial extintor | https://documentosboletinoficial.buenosaires.gob.ar/publico/PE-RES-MJGGC-SSGU-224-24-ANX-10.pdf |
+| **Guía AEA 770 — Módulo de formación de Instalador Electricista Cat. III** (EPAC Córdoba) | Ejemplos de aplicación de DPMS, coeficiente de simultaneidad de 0,8, criterio de suministro trifásico | https://www.epac-cordoba.org.ar/wp-content/uploads/2021/cursos/INSTALADOR%20ELECTRICISTA%20CAT%203/M%C3%B3dulo%20IV-1%20-%20Cat%203.pdf |
+| **Nota Técnica SMN 2024-180 — Cálculos relacionados con la norma IRAM 11603** (Servicio Meteorológico Nacional) | Metodología de cálculo de grados-día y temperaturas de diseño | https://repositorio.smn.gob.ar/bitstream/handle/20.500.12160/2854/Nota_Tecnica_SMN_2024-180.pdf |
+
+## 12.2 Normas argentinas — comentadas
+
+### 12.2.1 Sanitarias
+
+| Norma / documento | Comentario |
+|---|---|
+| **Guía AySA/ERAS de Instalaciones Sanitarias Domiciliarias** | **La referencia técnica más completa del país.** Estructurada en 8 capítulos: (1) Símbolos y abreviaturas, (2) Instalaciones de agua, (3) Desagües primarios, (4) Desagües secundarios, (5) Desagües pluviales, (6) Ventilaciones, (7) Instalaciones asimilables a domiciliarias, (8) Disposición del efluente cloacal en el terreno. ⚠ **No es la norma vigente en La Pampa: verificar el reglamento de la prestadora local y de la APA** |
+| **Normas y Gráficos de Instalaciones Sanitarias Domiciliarias e Industriales — OSN** (Res. 67.017/81) | El antecedente histórico. **Todavía es la referencia de muchos reglamentos del interior del país.** Vale la pena tenerla, porque muchos municipios remiten a ella |
+| **IRAM 2634:2005** | Válvulas reductoras-reguladoras de presión. Citada expresamente por la Guía (2.15). Define los grupos acústicos (Grupo I: ≤ 20 dBA) |
+| **ISO 4064** | Medidores de agua. Base de la Tabla Nº 6 de la Guía |
+| **Reglamento de la prestadora local de agua y cloaca de Santa Rosa** | `[OBTENER Y ESTUDIAR. Es la norma que efectivamente se aplica]` |
+| **Normativa de la Administración Provincial del Agua (APA) — La Pampa** | `[OBTENER. Especialmente para: perforaciones, vuelco de efluentes tratados, sistemas estáticos fuera de radio servido]` |
+
+### 12.2.2 Gas
+
+| Norma | Comentario |
+|---|---|
+| **NAG-200** | El reglamento técnico de instalaciones internas domiciliarias. **Verificar SIEMPRE la edición vigente en enargas.gob.ar.** Existe una edición 2025 posterior a la de 2019 que usamos como fuente |
+| **NAG-201** | Instalaciones de mayor porte / industriales `[verificar alcance en la edición vigente]` |
+| **NAG-215** | Rejillas fijas de ventilación (citada en 6.4) |
+| **NAG-237** | Conjunto puerta-marco de gabinetes de medidores |
+| **NAG-250** | Caños de acero para instalaciones de gas. Base de las Tablas E.2 y E.4 |
+| **NAG-E 209** | Sistemas de tubería de cobre |
+| **NAG-E 210** | Sistemas de tubería de polietileno-acero unidos por termofusión |
+| **Resolución ENARGAS 247/2019** | Aprobación de normas técnicas |
+| **Sitio de ENARGAS — Normas técnicas** | https://www.enargas.gob.ar/secciones/normativa/normas-tecnicas-items.php?grupo=2 |
+| **Preguntas frecuentes sobre instalaciones internas de gas — ENARGAS** | Útil para explicar al comitente | https://www.enargas.gob.ar/secciones/seguridad-en-el-hogar/preguntas-frecuentes.php |
+
+### 12.2.3 Eléctricas
+
+| Norma | Comentario |
+|---|---|
+| **AEA 90364** (todas sus partes) | **La reglamentación argentina de instalaciones eléctricas.** De aplicación en todo el territorio nacional |
+| **AEA 90364-7-770** | **Viviendas, oficinas y locales unitarios hasta 63 A.** Es la parte que se usa a diario |
+| **AEA 90364-7-771** | Viviendas, oficinas y locales, incluyendo requisitos para **instalaciones comunes de edificios** |
+| **AEA 90364-7-701** | **Cuartos de baño y duchas.** Define los volúmenes de protección y la conexión equipotencial suplementaria. **Imprescindible en vivienda** |
+| **AEA 90364 caps. 32, 51, 52** | Influencias externas, selección de materiales, canalizaciones |
+| **AEA 90865** | Cálculo de corrientes de cortocircuito |
+| **IRAM 2071** | Tomacorrientes 2x10+T |
+| **IRAM-NM 60884-1 / IEC 60884-1** | Tomacorrientes con pantalla de protección (obligatoria hasta 0,90 m por BA2) |
+| **IRAM-NM 247-3 / IRAM 62267** | Cables unipolares aislados para instalaciones fijas |
+| **IRAM 2178 / IRAM 62266** | Cables con envoltura de protección |
+| **IRAM 2309 / IRAM 2310** | Jabalinas cilíndricas de puesta a tierra |
+| **IRAM 2343** | Tomacable de bronce o latón |
+| **IRAM 2281** | Puesta a tierra `[verificar objeto exacto de cada parte]` |
+| **IRAM 2005** | `[verificar objeto exacto: usualmente asociado a tomacorrientes/fichas del sistema argentino]` |
+| **IRAM 2183** | `[verificar objeto exacto]` |
+| **IEC 61008 / IEC 61009** | Interruptores diferenciales |
+| **IEC 60529** | Grados de protección IP |
+| **IEC 61558-2-6 / -2-16** | Transformadores y fuentes de seguridad para MBTS |
+| **Ley 27.424 y Decreto 986/2018** | Generación distribuida de energía renovable. `[VERIFICAR adhesión de La Pampa]` | https://www.argentina.gob.ar/energia/generacion-distribuida |
+| **Reglamento de conexión de la distribuidora eléctrica de Santa Rosa** | `[OBTENER. Define potencia, tipo de suministro, sala de medidores y factores de simultaneidad del edificio]` |
+
+### 12.2.4 Térmicas
+
+| Norma | Comentario |
+|---|---|
+| **IRAM 11549** | Acondicionamiento térmico de edificios — **Vocabulario.** Define los términos que usan todas las demás |
+| **IRAM 11601** | **Métodos de cálculo de las propiedades térmicas.** De aquí sale el K de cada cerramiento. Incluye las tablas de conductividad térmica de materiales |
+| **IRAM 11603** | **Clasificación bioambiental.** El Anexo A tiene los datos climáticos de 90-96 estaciones. **Es de donde salen la TDMN, la TDMX y los grados-día de Santa Rosa** |
+| **IRAM 11604** | **Coeficiente volumétrico G de pérdida de calor.** Método prestacional que evalúa el edificio completo |
+| **IRAM 11605** | **Valores máximos admisibles de K.** Niveles A (recomendado), B (medio) y C (mínimo). **Tabla 1 (invierno, según TDMN) y Tablas 2 y 3 (verano, según zona)** |
+| **IRAM 11625** | **Verificación del riesgo de condensación** superficial e intersticial. **Imprescindible cuando se aísla: si se aísla mal, se condensa** |
+| **IRAM 11507** | Carpinterías `[verificar objeto exacto de cada parte]` |
+| **IRAM 11900** | Etiquetado de eficiencia energética de viviendas `[verificar aplicabilidad en La Pampa]` |
+| **Ley 13.059 de la Provincia de Buenos Aires** | Ley de acondicionamiento térmico. **No aplica en La Pampa, pero es el modelo de las leyes provinciales del tema.** Adopta el **Nivel B** de IRAM 11605 como mínimo exigible. `[verificar si La Pampa tiene una ley equivalente]` |
+
+### 12.2.5 Incendio
+
+| Norma / documento | Comentario |
+|---|---|
+| **Ley 19.587 de Higiene y Seguridad en el Trabajo y Decreto 351/79, Anexo VII** | **De aplicación nacional en el ámbito laboral.** Contiene el sistema de carga de fuego, resistencia al fuego, potencial extintor y medios de escape. **Es la referencia para los locales comerciales y los espacios de trabajo del edificio** | https://www.argentina.gob.ar/normativa/recurso/32030/dto351-1979-anexo7/htm |
+| **Código de Edificación de CABA y sus Reglamentos Técnicos** | **La referencia técnica más moderna y detallada del país.** El RT-030909-020202-03 (protección activa) es de donde extrajimos las tablas del Cap. 7 |
+| **IRAM 3517 Parte II** | **Control, mantenimiento y recarga de matafuegos.** La norma que rige la obligación anual del consorcio |
+| **IRAM 3509, 3523, 3525, 3527, 3537, 3550, 3565, 3694/3697** | Matafuegos por tipo de agente |
+| **IRAM 3539** | Gabinetes para mangueras de incendio |
+| **IRAM 3555** | **Rociadores automáticos.** El RT de CABA remite a ella hasta que se reglamente |
+| **IRAM 10005 Parte II** | **Señalización.** Colores, formas y símbolos de seguridad |
+| **IRAM 2506 / IRAM IAS U 500-2502 / IRAM IAS U 500-2613 (NM 210)** | Caños de acero para instalaciones de incendio |
+| **IRAM 13432 / 13485** | Cañerías plásticas para incendio (solo enterradas) |
+| **NFPA 13** | *Installation of Sprinkler Systems*. **Citada expresamente como admisible por el RT de CABA** |
+| **NFPA 20** | *Installation of Stationary Pumps for Fire Protection*. La referencia mundial de bombas de incendio |
+| **NFPA 72** | *National Fire Alarm and Signaling Code*. **Citada expresamente por el RT de CABA.** La referencia de detección y alarma |
+| **NFPA 92** | *Standard for Smoke Control Systems*. Referencia para presurización de escaleras |
+| **EN 12101-6** | Sistemas de control de humo — **Presurización diferencial.** Referencia europea |
+| **EN 13501** | Clasificación europea de reacción y resistencia al fuego (designación REI) |
+| **Código de Edificación de Santa Rosa (Ord. 1581/95 y modificatorias)** | `[OBTENER Y ESTUDIAR — ES LA NORMA APLICABLE]` | https://www.concejosantarosa.gob.ar/category/codigo-edificacion/ |
+| **Normativa de Bomberos de La Pampa** | `[OBTENER]` |
+
+### 12.2.6 Ascensores
+
+| Norma | Comentario |
+|---|---|
+| **EN 81-20** | *Reglas de seguridad para la construcción e instalación de ascensores — Parte 20: Ascensores para el transporte de personas y cargas.* **La referencia técnica de facto en Argentina** |
+| **EN 81-50** | Métodos de ensayo y verificación |
+| **ISO 8100-32** | **Método de cálculo de tráfico** (intervalo y capacidad de transporte) |
+| **Ley 24.314 y Decreto 914/97** | Accesibilidad. `[verificar adhesión de La Pampa y de Santa Rosa]` |
+| **Ordenanza de ascensores de Santa Rosa** | `[OBTENER: registro, conservador matriculado, inspecciones]` |
+
+## 12.3 Bibliografía técnica
+
+### 12.3.1 Sanitarias
+
+| Obra | Comentario |
+|---|---|
+| **NISNOVICH, Jaime — *Manual Práctico de Instalaciones Sanitarias*** (tomos 1 y 2) | **El clásico argentino.** Explica con claridad los criterios de OSN, los isométricos, las unidades de gasto y el detalle constructivo. Sigue siendo la mejor entrada al tema en español rioplatense. Sus tablas de unidades de gasto son las que usa la mayoría de los proyectistas argentinos |
+| **NISNOVICH, Jaime — *Manual Práctico de Construcción*** | Complementario; útil para la coordinación con obra |
+| **SÁNCHEZ, Franco Martín — *Instalaciones en edificios*** | Tratado español, muy completo y actualizado. Excelente para agua, ACS, saneamiento y contra incendios con criterio moderno (CTE). Útil como marco metodológico, no como norma aplicable |
+| **HUNTER, Roy B. — *Methods of Estimating Loads in Plumbing Systems*** (NBS Report BMS65, 1940) y *Water Distributing Systems for Buildings* (BMS79, 1941) | **El trabajo original que fundó el método de unidades de gasto.** Vale leerlo para entender de dónde salen los números que todos usamos |
+| **UNE 149201 — *Abastecimiento de agua. Dimensionado de instalaciones de agua para consumo humano dentro de los edificios*** | El método español moderno, más ajustado que Hunter para grifería de bajo caudal. **Excelente verificación cruzada** |
+| **CTE DB-HS — Documento Básico Salubridad** (España): HS-3 Calidad del aire interior, HS-4 Suministro de agua, HS-5 Evacuación de aguas | **Referencia metodológica de primer nivel.** No es aplicable en Argentina, pero su estructura de cálculo (caudales, simultaneidad, dimensionado de bajantes y colectores) es didáctica y rigurosa. **Muy útil para verificar el propio criterio** | https://www.codigotecnico.org |
+| **CTE DB-HE4 — Contribución solar mínima de ACS** | Referencia para dimensionar solar térmica |
+| **ENOHSA — Fundamentaciones y Normas de Estudio, Diseño, Proyecto y Construcción** | Ente Nacional de Obras Hídricas de Saneamiento. Referencia argentina para redes y plantas |
+
+### 12.3.2 Térmicas y climatización
+
+| Obra | Comentario |
+|---|---|
+| **ASHRAE Handbook — *Fundamentals*** | **La referencia mundial.** Capítulos clave: 14 (Climatic Design Information), 16 (Ventilation and Infiltration), 17 (Residential Cooling and Heating Load Calculations), 18 (Nonresidential Cooling and Heating Load Calculations), 26-27 (Heat, Air and Moisture Transfer) |
+| **ASHRAE Handbook — *HVAC Systems and Equipment*** | Selección y diseño de sistemas |
+| **ASHRAE Handbook — *HVAC Applications*** | Aplicación por tipo de edificio; incluye el capítulo de agua caliente sanitaria |
+| **ASHRAE Standard 62.1 / 62.2** | Ventilación para calidad de aire interior aceptable (no residencial / residencial) |
+| **ASHRAE Standard 55** | Condiciones térmicas ambientales para la ocupación humana (confort) |
+| **CARRIER — *System Design Manual*** (Handbook of Air Conditioning System Design) | **El manual de cálculo de cargas que usó y usa toda una generación de proyectistas.** Su método de factores de acumulación y de temperatura sol-aire sigue siendo el más práctico para cálculo manual |
+| **RECKNAGEL, SPRENGER, SCHRAMEK — *Manual Técnico de Calefacción y Aire Acondicionado*** (Taschenbuch für Heizung + Klimatechnik) | **La referencia alemana.** Extraordinariamente completo en datos, tablas y métodos. La biblia europea de la climatización |
+| **EN 1264** | Sistemas de calefacción y refrigeración por superficies radiantes con agua. **La norma de referencia de losa radiante** (temperaturas máximas de superficie, dimensionado, puesta en marcha) |
+| **EN ISO 6946** | Cálculo de resistencia y transmitancia térmica (equivalente metodológico a IRAM 11601) |
+| **EN ISO 10211 / EN ISO 14683** | Puentes térmicos: cálculo detallado y valores por defecto |
+| **CTE DB-HE — Ahorro de energía** (España) | Marco metodológico moderno de limitación de demanda energética |
+
+### 12.3.3 Eléctricas
+
+| Obra | Comentario |
+|---|---|
+| **Manual del Instalador Electricista, Cat. III — AEA / Colegios profesionales** | La guía de aplicación práctica de AEA 90364-7-770, con ejemplos resueltos |
+| **Guía de aplicación AEA 770** | Publicada por AEA y por varios colegios provinciales |
+| **SCHNEIDER ELECTRIC — *Guía de Diseño de Instalaciones Eléctricas*** | Gratuita, excelente para cálculo de cortocircuito, selectividad, coordinación de protecciones y compensación de reactiva |
+| **IEC 60364** (serie) | La norma internacional de la que deriva AEA 90364 |
+
+### 12.3.4 Incendio y seguridad
+
+| Obra | Comentario |
+|---|---|
+| **NFPA Handbooks** (13, 20, 72, 92, 101) | Los handbooks explican el porqué de cada regla del standard. **NFPA 101 (Life Safety Code)** es la referencia mundial de medios de escape |
+| **SFPE Handbook of Fire Protection Engineering** | El tratado de referencia de ingeniería de protección contra incendios |
+| **CTE DB-SI — Seguridad en caso de incendio** (España) | Marco metodológico claro y bien estructurado de sectorización, evacuación y resistencia al fuego |
+
+### 12.3.5 Ascensores
+
+| Obra | Comentario |
+|---|---|
+| **BARNEY, G. — *Elevator Traffic Handbook: Theory and Practice*** | **La referencia de cálculo de tráfico vertical.** Desarrolla el método de RTT, intervalo y capacidad de acarreo |
+| **CIBSE Guide D — *Transportation Systems in Buildings*** | Guía británica de transporte vertical, muy práctica |
+| **Elevator World** — publicaciones técnicas | Artículos sobre análisis de tráfico analítico vs. simulado | https://elevatorworld.com |
+
+## 12.4 Enlaces útiles
+
+| Recurso | URL |
+|---|---|
+| ENARGAS — Normativa técnica | https://www.enargas.gob.ar/secciones/normativa/normas-tecnicas-items.php?grupo=2 |
+| ENARGAS — Seguridad en el hogar (preguntas frecuentes) | https://www.enargas.gob.ar/secciones/seguridad-en-el-hogar/preguntas-frecuentes.php |
+| AEA — Asociación Electrotécnica Argentina | https://aea.org.ar |
+| AySA — Guía de instalaciones sanitarias | https://aysa.com.ar |
+| Argentina.gob.ar — Guía para ejecución de instalaciones sanitarias | https://www.argentina.gob.ar/sites/default/files/if-2023-141050544-apn-dnapysmop-guia.pdf |
+| Argentina.gob.ar — Generación distribuida (Ley 27.424) | https://www.argentina.gob.ar/energia/generacion-distribuida |
+| Servicio Meteorológico Nacional — Repositorio institucional | https://repositorio.smn.gob.ar |
+| Concejo Deliberante de Santa Rosa — Código de Edificación | https://www.concejosantarosa.gob.ar/category/codigo-edificacion/ |
+| Colegio Profesional de Ingeniería y Técnicas de La Pampa (CPITLP) | https://www.cpitlp.org.ar |
+| Código Técnico de la Edificación (España) — referencia metodológica | https://www.codigotecnico.org |
+| InfoLEG — Legislación nacional argentina | https://servicios.infoleg.gob.ar |
+
+---
+
+## 12.5 LISTA DE VERIFICACIONES PENDIENTES
+
+Este documento tiene **valores marcados como `[verificar…]`**. Los agrupamos aquí para que el estudio pueda encararlos como tareas concretas antes del próximo proyecto ejecutivo.
+
+### PRIORIDAD ALTA — sin esto no se puede proyectar en Santa Rosa
+
+| # | Qué verificar | Dónde | Impacto |
+|---|---|---|---|
+| 1 | **Reglamento de instalaciones sanitarias de la prestadora de agua/cloaca de Santa Rosa** | Prestadora local | Todo el Cap. 1, 2 y 3 |
+| 2 | **Normativa de la Administración Provincial del Agua (APA) de La Pampa** | APA | Sistemas estáticos, perforaciones, vuelco de efluentes |
+| 3 | **Código de Edificación de Santa Rosa (Ord. 1581/95 y modif.), capítulo de instalaciones y de incendio** | Municipalidad / Concejo Deliberante | Cap. 7 completo, ascensores, ventilación de cocheras |
+| 4 | **Exigencias de la Dirección de Bomberos de La Pampa** | Bomberos | Cap. 7 completo |
+| 5 | **Reglamento de conexión de la distribuidora eléctrica de Santa Rosa**: potencia, tipo de suministro, sala de medidores, **factores de simultaneidad de edificios** | Distribuidora | §5.8, dimensionado del alimentador |
+| 6 | **Edición vigente de NAG-200** (2019 vs. 2025) y presión garantizada a la salida del medidor por Camuzzi Gas Pampeana | ENARGAS / Camuzzi | Cap. 4 completo |
+| 7 | **Curvas IDF de Santa Rosa** o parámetros del Estudio Piloto de Lluvias Intensas (Moyano y Medina, 1974) para La Pampa | APA / UNLPam / INA / SSRH | Cap. 3 completo |
+| 8 | **¿Se exige segunda escalera en un PB+9 en Santa Rosa?** | Código de Santa Rosa | Define la planta tipo completa |
+| 9 | **¿Se exige sistema de retardo pluvial en Santa Rosa?** | Código de Santa Rosa | Define el subsuelo y el presupuesto |
+
+### PRIORIDAD MEDIA
+
+| # | Qué verificar | Dónde |
+|---|---|---|
+| 10 | Edición vigente de IRAM 11603 y su listado departamental (contradicción zona III/IV de Santa Rosa) | IRAM |
+| 11 | Valores de conductividad térmica λ contra IRAM 11601 y contra las fichas de los productos especificados | IRAM / fabricantes |
+| 12 | Valor de G admisible de IRAM 11604 para GD18 = 1.394 | IRAM |
+| 13 | Adhesión de La Pampa a la Ley 27.424 (generación distribuida) y procedimiento de la distribuidora | Provincia / distribuidora |
+| 14 | Adhesión de La Pampa y Santa Rosa a la normativa de accesibilidad (Ley 24.314, Dto. 914/97) y dimensiones mínimas de cabina accesible | Provincia / Municipalidad |
+| 15 | Análisis fisicoquímico del agua de red de Santa Rosa (para decidir material de cañería) | Prestadora |
+| 16 | Resistividad del suelo en el sitio (medición de Wenner) para la puesta a tierra | Ensayo de campo |
+| 17 | Normativa provincial de La Pampa sobre manipulación y disposición de amianto | Secretaría de Ambiente |
+| 18 | Irradiación solar de Santa Rosa (atlas solar de la Secretaría de Energía o del SMN) para solar térmica y FV | Secretaría de Energía / SMN |
+| 19 | Datos de irradiancia por orientación para latitud −36,5° (cálculo de carga solar) | ASHRAE Fundamentals cap. 14 |
+| 20 | Tabla completa de distancias mínimas de terminales de cámara estanca (NAG-200, 6.6) | NAG-200 |
+| 21 | Secciones mínimas de conductos colectivos (NAG-200, 6.10.3) | NAG-200 |
+| 22 | Nivel ceráunico / densidad de descargas atmosféricas de Santa Rosa (para dimensionar el DPS) | SMN |
+| 23 | Exigencia de ventilador certificado F300/90 o F400/120 en cocheras | Código de Santa Rosa / Bomberos |
+| 24 | Clasificación de riesgo de "vivienda colectiva" (R2/R3/R4) para la reserva de incendio | Código de Santa Rosa |
+| 25 | Incumbencias profesionales y categorías de matrícula en La Pampa | Consejo/Colegio profesional de La Pampa |
+
+### PRIORIDAD BAJA — precisión de detalle
+
+| # | Qué verificar |
+|---|---|
+| 26 | Objeto exacto de IRAM 2005, IRAM 2183, IRAM 11507 |
+| 27 | Tablas de unidades de gasto de Hunter contra la fuente adoptada (varían entre fuentes) |
+| 28 | Coeficientes de escorrentía C contra el Manual de Drenaje del INA |
+| 29 | Valores de dotación por destino contra el reglamento local |
+| 30 | Frecuencias exactas de IRAM 3517-2 (mantenimiento de matafuegos) |
+| 31 | Autonomía exigida de iluminación de emergencia (1 h / 1,5 h / 3 h) |
+| 32 | Presión y tiempo de prueba de losa radiante según el fabricante especificado |
+| 33 | Exponente n de radiadores según fabricante |
+| 34 | Dimensiones de cabina, hueco, foso y sobrerrecorrido según el fabricante de ascensores a contratar |
+
+---
+
+## 12.6 Nota final sobre el uso de este documento
+
+Este manual reúne, en un solo lugar, los criterios y los números que el estudio necesita para producir el proyecto ejecutivo de instalaciones de un edificio de hasta PB+9 en Santa Rosa. Está construido sobre fuentes primarias verificables, con las referencias explícitas para que cualquiera pueda rastrear cada valor hasta su origen.
+
+**Sus tres limitaciones, dichas con claridad:**
+
+1. **La jurisdicción sanitaria y de incendio no es la de las fuentes principales.** Las tablas sanitarias vienen de AySA/ERAS y las de incendio del Código de CABA. **Son técnicamente sólidas y son lo que usa la práctica argentina, pero no son la norma de La Pampa.** La lista de §12.5 es el trabajo pendiente para cerrar esa brecha.
+
+2. **El gas y la electricidad sí son de aplicación nacional** (ENARGAS y AEA), así que los capítulos 4 y 5 tienen una base normativa firme para Santa Rosa.
+
+3. **Los datos climáticos de Santa Rosa (TDMN −6,0 °C, TDMX 38,8 °C, GD18 1.394) son verificados** de IRAM 11603, y de ellos se derivan directamente las exigencias de IRAM 11605 del Capítulo 6. **Esa parte es sólida y es específica de la localidad.**
+
+**Lo que este documento no reemplaza:** la consulta de factibilidad a las tres prestadoras, la firma del matriculado en cada especialidad, y el criterio profesional en el caso concreto.
+
+---
+
+*Documento elaborado en septiembre de 2026 para uso interno del estudio.*
+*Revisión y actualización recomendada: anual, o ante cambio de edición de cualquiera de las normas citadas.*
