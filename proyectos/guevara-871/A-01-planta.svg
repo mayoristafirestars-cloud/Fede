@@ -1,0 +1,110 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-360 -570 2840 1750" width="2300">
+<defs>
+ <pattern id="pmamp" width="16" height="16" patternTransform="rotate(45)" patternUnits="userSpaceOnUse">
+  <rect width="16" height="16" fill="#ececec"/><line x1="0" y1="0" x2="0" y2="16" stroke="#7a7a7a" stroke-width="2.2"/></pattern>
+ <pattern id="pnew" width="9" height="9" patternTransform="rotate(45)" patternUnits="userSpaceOnUse">
+  <rect width="9" height="9" fill="#c8342a"/><line x1="0" y1="0" x2="0" y2="9" stroke="#6e1610" stroke-width="2.6"/></pattern>
+</defs>
+<style>
+ svg{background:#fff} text{font-family:'Helvetica Neue',Arial,sans-serif;fill:#111}
+ .wex{fill:url(#pmamp);stroke:#333;stroke-width:3} .wnw{fill:url(#pnew);stroke:#6e1610;stroke-width:3}
+ .hueco{fill:#fff;stroke:none} .carp{stroke:#111;stroke-width:2.2;fill:none}
+ .carpg{stroke:#111;stroke-width:3.5;fill:none} .hoja{stroke:#111;stroke-width:3.5}
+ .barr{fill:none;stroke:#111;stroke-width:1.4;stroke-dasharray:8 6}
+ .mob{fill:none;stroke:#5b6b76;stroke-width:1.6}
+ .eje{stroke:#1a63c4;stroke-width:1;stroke-dasharray:34 8 6 8;opacity:.75}
+ .cot{stroke:#111;stroke-width:1.2} .lm{stroke:#1a63c4;stroke-width:2.5;stroke-dasharray:26 9 6 9}
+ .corte{stroke:#111;stroke-width:1.4;stroke-dasharray:30 8 6 8}
+ .cortl{stroke:#111;stroke-width:5} .cortf{fill:#111} .niv{fill:#fff;stroke:#111;stroke-width:2}
+ .ck{font-size:19px} .tx{font-size:19px} .lb{font-size:19px;fill:#333}
+ .lc{font-size:25px;font-weight:700} .mb{font-size:15px;fill:#5b6b76}
+ .nv{font-size:19px;font-weight:700} .cn{font-size:26px;font-weight:700} .sg{font-size:17px}
+ .th{font-size:21px;font-weight:700} .td{font-size:19px}
+ .rt1{font-size:29px;font-weight:700} .rt2{font-size:19px} .rt3{font-size:17px;fill:#555}
+ .adv{font-size:19px;fill:#8f1d15;font-weight:700}
+</style>
+<g><rect class="wex" x="-40" y="-190" width="1080" height="190"/><rect class="wex" x="0" y="850" width="680.0" height="20"/><rect class="wex" x="980.0" y="850" width="20.0" height="20"/><rect class="wnw" x="0" y="0" width="20" height="550"/><rect class="wnw" x="980" y="0" width="20" height="550"/><rect class="wnw" x="0" y="530" width="525" height="20"/><rect class="wnw" x="665" y="530" width="335" height="20"/><rect class="wnw" x="510" y="410" width="15" height="140"/><rect class="wnw" x="665" y="0" width="15" height="550"/><rect class="wnw" x="525" y="410" width="140" height="20"/><rect class="hueco" x="65.0" y="530" width="400" height="20"/><line class="carp" x1="65.0" y1="535" x2="465.0" y2="535"/><line class="carp" x1="65.0" y1="545" x2="465.0" y2="545"/><line class="carp" x1="65.0" y1="530" x2="65.0" y2="550"/><line class="carp" x1="465.0" y1="530" x2="465.0" y2="550"/><rect class="hueco" x="705.0" y="530" width="250" height="20"/><line class="carpg" x1="705.0" y1="550" x2="955.0" y2="550"/><line class="carp" x1="705.0" y1="530" x2="705.0" y2="550"/><line class="carp" x1="955.0" y1="530" x2="955.0" y2="550"/><rect class="hueco" x="510" y="450" width="15" height="90"/><line class="carp" x1="510" y1="450" x2="525" y2="450"/><line class="carp" x1="510" y1="540" x2="525" y2="540"/><line class="hoja" x1="525" y1="540" x2="525" y2="450"/><path class="barr" d="M 525 450 A 90 90 0 0 1 435 540"/><line class="eje" x1="10.0" y1="-530" x2="10.0" y2="950"/><line class="eje" x1="517.5" y1="-530" x2="517.5" y2="950"/><line class="eje" x1="672.5" y1="-530" x2="672.5" y2="950"/><line class="eje" x1="990.0" y1="-530" x2="990.0" y2="950"/><line class="eje" x1="-150" y1="540.0" x2="1150" y2="540.0"/><rect class="mob" x="28" y="8" width="474" height="60"/><text class="mb" x="265" y="46" text-anchor="middle">MESADA / COCINA</text><rect class="mob" x="50" y="190" width="220" height="85"/><text class="mb" x="140" y="240" text-anchor="middle">SOFÁ</text><circle class="mob" cx="380" cy="235" r="55"/><text class="mb" x="380" y="240" text-anchor="middle">MESA</text><rect class="mob" x="735" y="60" width="190" height="450"/><text class="mb" x="830" y="290" text-anchor="middle" transform="rotate(-90,830,290)">AUTO 4,50 × 1,80</text><rect class="mob" x="555" y="448" width="80" height="55"/><text class="mb" x="595" y="480" text-anchor="middle">felpudo</text><path class="niv" d="M 265 330 l -13 -20 l 26 0 z"/><text class="nv" x="265" y="304" text-anchor="middle">+0.25</text><path class="niv" d="M 830 470 l -13 -20 l 26 0 z"/><text class="nv" x="830" y="444" text-anchor="middle">+0.10</text><path class="niv" d="M 595 630 l -13 -20 l 26 0 z"/><text class="nv" x="595" y="604" text-anchor="middle">±0.00</text><text class="lc" x="300" y="130" text-anchor="middle">1 · ESTAR–COMEDOR</text><text class="lb" x="300" y="158" text-anchor="middle">32,00 m²</text><text class="lb" x="300" y="182" text-anchor="middle">porcelanato mate R10</text><text class="lc" x="830" y="130" text-anchor="middle">2 · GARAGE</text><text class="lb" x="830" y="158" text-anchor="middle">15,90 m²</text><text class="lc" x="595" y="525" text-anchor="middle">3</text><text class="lb" x="595" y="550" text-anchor="middle">ACCESO</text><text class="lb" x="500.0" y="715" text-anchor="middle">PATIO DE FRENTE — SUELO PERMEABLE (C.A.S.)</text><text class="lb" x="500.0" y="745" text-anchor="middle">CÉSPED · ZONA DEL PERRO</text><text class="lb" x="830.0" y="912" text-anchor="middle">PASO VEHICULAR</text><text class="lb" x="210" y="912" text-anchor="middle">PAREDÓN EXISTENTE h=1,20 (SE BAJA)</text><text class="lc" x="500.0" y="-100" text-anchor="middle">CASA EXISTENTE</text><text class="lb" x="500.0" y="-72" text-anchor="middle">ESTAR-COMEDOR · COCINA VIEJA → LAVADERO</text><line class="cortl" x1="150" y1="-490" x2="240" y2="-490"/><path class="cortf" d="M 240 -490 l -18 -9 l 0 18 z"/><text class="cn" x="126" y="-481" text-anchor="middle">A</text><line class="cortl" x1="150" y1="980" x2="240" y2="980"/><path class="cortf" d="M 240 980 l -18 -9 l 0 18 z"/><text class="cn" x="126" y="989" text-anchor="middle">A</text><line class="corte" x1="200" y1="-490" x2="200" y2="980"/><line class="cot" x1="0" y1="-250" x2="1000" y2="-250"/><line class="cot" x1="0" y1="-259" x2="0" y2="-241"/><line class="cot" x1="20" y1="-259" x2="20" y2="-241"/><line class="cot" x1="65.0" y1="-259" x2="65.0" y2="-241"/><line class="cot" x1="465.0" y1="-259" x2="465.0" y2="-241"/><line class="cot" x1="510" y1="-259" x2="510" y2="-241"/><line class="cot" x1="525" y1="-259" x2="525" y2="-241"/><line class="cot" x1="665" y1="-259" x2="665" y2="-241"/><line class="cot" x1="680" y1="-259" x2="680" y2="-241"/><line class="cot" x1="705.0" y1="-259" x2="705.0" y2="-241"/><line class="cot" x1="955.0" y1="-259" x2="955.0" y2="-241"/><line class="cot" x1="980" y1="-259" x2="980" y2="-241"/><line class="cot" x1="1000" y1="-259" x2="1000" y2="-241"/><text class="ck" x="10.0" y="-284" text-anchor="middle">0,20</text><line class="cot" x1="10.0" y1="-278" x2="10.0" y2="-256"/><text class="ck" x="42.5" y="-308" text-anchor="middle">0,45</text><line class="cot" x1="42.5" y1="-302" x2="42.5" y2="-256"/><text class="ck" x="265.0" y="-258" text-anchor="middle">4,00</text><text class="ck" x="487.5" y="-284" text-anchor="middle">0,45</text><line class="cot" x1="487.5" y1="-278" x2="487.5" y2="-256"/><text class="ck" x="517.5" y="-308" text-anchor="middle">0,15</text><line class="cot" x1="517.5" y1="-302" x2="517.5" y2="-256"/><text class="ck" x="595.0" y="-258" text-anchor="middle">1,40</text><text class="ck" x="672.5" y="-284" text-anchor="middle">0,15</text><line class="cot" x1="672.5" y1="-278" x2="672.5" y2="-256"/><text class="ck" x="692.5" y="-308" text-anchor="middle">0,25</text><line class="cot" x1="692.5" y1="-302" x2="692.5" y2="-256"/><text class="ck" x="830.0" y="-258" text-anchor="middle">2,50</text><text class="ck" x="967.5" y="-284" text-anchor="middle">0,25</text><line class="cot" x1="967.5" y1="-278" x2="967.5" y2="-256"/><text class="ck" x="990.0" y="-308" text-anchor="middle">0,20</text><line class="cot" x1="990.0" y1="-302" x2="990.0" y2="-256"/><line class="cot" x1="0" y1="-330" x2="1000" y2="-330"/><line class="cot" x1="0" y1="-339" x2="0" y2="-321"/><line class="cot" x1="20" y1="-339" x2="20" y2="-321"/><line class="cot" x1="510" y1="-339" x2="510" y2="-321"/><line class="cot" x1="525" y1="-339" x2="525" y2="-321"/><line class="cot" x1="665" y1="-339" x2="665" y2="-321"/><line class="cot" x1="680" y1="-339" x2="680" y2="-321"/><line class="cot" x1="980" y1="-339" x2="980" y2="-321"/><line class="cot" x1="1000" y1="-339" x2="1000" y2="-321"/><text class="ck" x="10.0" y="-364" text-anchor="middle">0,20</text><line class="cot" x1="10.0" y1="-358" x2="10.0" y2="-336"/><text class="ck" x="265.0" y="-338" text-anchor="middle">4,90</text><text class="ck" x="517.5" y="-388" text-anchor="middle">0,15</text><line class="cot" x1="517.5" y1="-382" x2="517.5" y2="-336"/><text class="ck" x="595.0" y="-338" text-anchor="middle">1,40</text><text class="ck" x="672.5" y="-364" text-anchor="middle">0,15</text><line class="cot" x1="672.5" y1="-358" x2="672.5" y2="-336"/><text class="ck" x="830.0" y="-338" text-anchor="middle">3,00</text><text class="ck" x="990.0" y="-388" text-anchor="middle">0,20</text><line class="cot" x1="990.0" y1="-382" x2="990.0" y2="-336"/><line class="cot" x1="0" y1="-415" x2="1000" y2="-415"/><line class="cot" x1="0" y1="-424" x2="0" y2="-406"/><line class="cot" x1="1000" y1="-424" x2="1000" y2="-406"/><text class="ck" x="500.0" y="-423" text-anchor="middle">10,00</text><line class="cot" x1="-70" y1="0" x2="-70" y2="870"/><line class="cot" x1="-79" y1="0" x2="-61" y2="0"/><line class="cot" x1="-79" y1="530" x2="-61" y2="530"/><line class="cot" x1="-79" y1="550" x2="-61" y2="550"/><line class="cot" x1="-79" y1="850" x2="-61" y2="850"/><line class="cot" x1="-79" y1="870" x2="-61" y2="870"/><text class="ck" x="-78" y="265.0" text-anchor="middle" transform="rotate(-90,-78,265.0)">5,30</text><text class="ck" x="-78" y="540.0" text-anchor="middle" transform="rotate(-90,-78,540.0)">0,20</text><text class="ck" x="-78" y="700.0" text-anchor="middle" transform="rotate(-90,-78,700.0)">3,00</text><text class="ck" x="-78" y="860.0" text-anchor="middle" transform="rotate(-90,-78,860.0)">0,20</text><line class="cot" x1="-125" y1="0" x2="-125" y2="870"/><line class="cot" x1="-134" y1="0" x2="-116" y2="0"/><line class="cot" x1="-134" y1="550" x2="-116" y2="550"/><line class="cot" x1="-134" y1="870" x2="-116" y2="870"/><text class="ck" x="-133" y="275.0" text-anchor="middle" transform="rotate(-90,-133,275.0)">5,50</text><text class="ck" x="-133" y="710.0" text-anchor="middle" transform="rotate(-90,-133,710.0)">3,20</text><line class="cot" x1="-180" y1="0" x2="-180" y2="870"/><line class="cot" x1="-189" y1="0" x2="-171" y2="0"/><line class="cot" x1="-189" y1="870" x2="-171" y2="870"/><text class="ck" x="-188" y="435.0" text-anchor="middle" transform="rotate(-90,-188,435.0)">8,70</text><line class="lm" x1="-170" y1="910" x2="1170" y2="910"/><text class="lb" x="1180" y="915" text-anchor="start">L.M.</text></g>
+<g transform="translate(1180,-380)"><circle r="46" fill="none" stroke="#111" stroke-width="2.5"/>
+ <path d="M 0 -60 l -13 26 l 13 -8 l 13 8 z" fill="#111"/>
+ <text x="0" y="12" text-anchor="middle" style="font-size:30px;font-weight:700">N</text></g>
+<g transform="translate(0,1060)"><rect x="0" y="0" width="100" height="14" fill="#111" stroke="#111" stroke-width="1.5"/><text class="sg" x="0" y="-8" text-anchor="middle">0</text><rect x="100" y="0" width="100" height="14" fill="#fff" stroke="#111" stroke-width="1.5"/><text class="sg" x="100" y="-8" text-anchor="middle">1</text><rect x="200" y="0" width="100" height="14" fill="#111" stroke="#111" stroke-width="1.5"/><text class="sg" x="200" y="-8" text-anchor="middle">2</text><rect x="300" y="0" width="100" height="14" fill="#fff" stroke="#111" stroke-width="1.5"/><text class="sg" x="300" y="-8" text-anchor="middle">3</text><rect x="400" y="0" width="100" height="14" fill="#111" stroke="#111" stroke-width="1.5"/><text class="sg" x="400" y="-8" text-anchor="middle">4</text><text class="sg" x="500" y="-8" text-anchor="middle">5 m</text>
+ <text class="sg" x="0" y="42" text-anchor="start">ESCALA GRÁFICA — ESC. 1:50</text></g>
+
+<g transform="translate(1340,-430)">
+ <text class="th" x="0" y="-14">PLANILLA DE LOCALES</text>
+ <rect x="0" y="0" width="1000" height="176" fill="none" stroke="#111" stroke-width="2.5"/>
+ <line x1="0" y1="44" x2="1000" y2="44" stroke="#111" stroke-width="2.5"/>
+ <line x1="0" y1="88" x2="1000" y2="88" stroke="#111" stroke-width="1.2"/>
+ <line x1="0" y1="132" x2="1000" y2="132" stroke="#111" stroke-width="1.2"/>
+ <line x1="70" y1="0" x2="70" y2="176" stroke="#111" stroke-width="1.2"/><line x1="420" y1="0" x2="420" y2="176" stroke="#111" stroke-width="1.2"/><line x1="570" y1="0" x2="570" y2="176" stroke="#111" stroke-width="1.2"/><line x1="790" y1="0" x2="790" y2="176" stroke="#111" stroke-width="1.2"/>
+ <text class="th" x="35" y="30" text-anchor="middle">N°</text><text class="th" x="245" y="30" text-anchor="middle">DENOMINACIÓN</text>
+ <text class="th" x="495" y="30" text-anchor="middle">SUP.</text><text class="th" x="680" y="30" text-anchor="middle">SOLADO</text>
+ <text class="th" x="895" y="30" text-anchor="middle">CIELORRASO</text>
+ <text class="td" x="35" y="74" text-anchor="middle">1</text><text class="td" x="86" y="74">ESTAR–COMEDOR / COCINA</text>
+ <text class="td" x="495" y="74" text-anchor="middle">32,00 m²</text><text class="td" x="680" y="74" text-anchor="middle">PORC. MATE R10</text>
+ <text class="td" x="895" y="74" text-anchor="middle">YESO</text>
+ <text class="td" x="35" y="118" text-anchor="middle">2</text><text class="td" x="86" y="118">GARAGE</text>
+ <text class="td" x="495" y="118" text-anchor="middle">15,90 m²</text><text class="td" x="680" y="118" text-anchor="middle">LLANEADO</text>
+ <text class="td" x="895" y="118" text-anchor="middle">LOSA VISTA</text>
+ <text class="td" x="35" y="162" text-anchor="middle">3</text><text class="td" x="86" y="162">ACCESO (SEMICUBIERTO)</text>
+ <text class="td" x="495" y="162" text-anchor="middle">1,40 m²</text><text class="td" x="680" y="162" text-anchor="middle">PORC. R11</text>
+ <text class="td" x="895" y="162" text-anchor="middle">LOSA VISTA</text>
+</g>
+<g transform="translate(1340,-150)">
+ <text class="th" x="0" y="-14">PLANILLA DE CARPINTERÍAS</text>
+ <rect x="0" y="0" width="1000" height="176" fill="none" stroke="#111" stroke-width="2.5"/>
+ <line x1="0" y1="44" x2="1000" y2="44" stroke="#111" stroke-width="2.5"/>
+ <line x1="0" y1="88" x2="1000" y2="88" stroke="#111" stroke-width="1.2"/>
+ <line x1="0" y1="132" x2="1000" y2="132" stroke="#111" stroke-width="1.2"/>
+ <line x1="70" y1="0" x2="70" y2="176" stroke="#111" stroke-width="1.2"/><line x1="240" y1="0" x2="240" y2="176" stroke="#111" stroke-width="1.2"/><line x1="420" y1="0" x2="420" y2="176" stroke="#111" stroke-width="1.2"/><line x1="530" y1="0" x2="530" y2="176" stroke="#111" stroke-width="1.2"/><line x1="760" y1="0" x2="760" y2="176" stroke="#111" stroke-width="1.2"/>
+ <text class="th" x="35" y="30" text-anchor="middle">REF</text><text class="th" x="155" y="30" text-anchor="middle">MEDIDA</text>
+ <text class="th" x="330" y="30" text-anchor="middle">TIPO</text><text class="th" x="475" y="30" text-anchor="middle">CANT.</text>
+ <text class="th" x="645" y="30" text-anchor="middle">MATERIAL</text><text class="th" x="880" y="30" text-anchor="middle">VIDRIO</text>
+ <text class="td" x="35" y="74" text-anchor="middle">V1</text><text class="td" x="155" y="74" text-anchor="middle">4,00 × 2,00</text>
+ <text class="td" x="330" y="74" text-anchor="middle">CORREDIZA</text><text class="td" x="475" y="74" text-anchor="middle">1</text>
+ <text class="td" x="645" y="74" text-anchor="middle">ALUMINIO RPT</text><text class="td" x="880" y="74" text-anchor="middle">DVH 3+3 LAM.</text>
+ <text class="td" x="35" y="118" text-anchor="middle">P1</text><text class="td" x="155" y="118" text-anchor="middle">0,90 × 2,40</text>
+ <text class="td" x="330" y="118" text-anchor="middle">BATIENTE</text><text class="td" x="475" y="118" text-anchor="middle">1</text>
+ <text class="td" x="645" y="118" text-anchor="middle">MADERA MACIZA</text><text class="td" x="880" y="118" text-anchor="middle">—</text>
+ <text class="td" x="35" y="162" text-anchor="middle">P2</text><text class="td" x="155" y="162" text-anchor="middle">2,50 × 2,40</text>
+ <text class="td" x="330" y="162" text-anchor="middle">PORTÓN SECC.</text><text class="td" x="475" y="162" text-anchor="middle">1</text>
+ <text class="td" x="645" y="162" text-anchor="middle">CHAPA + LISTONES</text><text class="td" x="880" y="162" text-anchor="middle">—</text>
+</g>
+<g transform="translate(1340,110)">
+ <text class="th" x="0" y="-14">REFERENCIAS</text>
+ <rect x="0" y="8" width="46" height="30" fill="url(#pmamp)" stroke="#333" stroke-width="2"/>
+ <text class="td" x="62" y="31">MAMPOSTERÍA EXISTENTE QUE PERMANECE</text>
+ <rect x="0" y="52" width="46" height="30" fill="url(#pnew)" stroke="#6e1610" stroke-width="2"/>
+ <text class="td" x="62" y="75">MAMPOSTERÍA NUEVA 0,20 + SATE 100 mm (K 0,29)</text>
+ <line x1="0" y1="106" x2="46" y2="106" class="eje"/><text class="td" x="62" y="112">EJE DE REPLANTEO</text>
+ <path class="niv" d="M 23 142 l -13 -20 l 26 0 z"/><text class="td" x="62" y="140">NIVEL DE PISO TERMINADO</text>
+</g>
+<g transform="translate(1340,310)">
+ <text class="th" x="0" y="0">NOTAS</text>
+ <text class="td" x="0" y="34">1 · SE DEMUELEN 47,68 m² DE CONSTRUCCIÓN PRECARIA (h ≤ 1,50 m).</text>
+ <text class="td" x="0" y="66">2 · MUROS NUEVOS: LADRILLO HUECO 0,18 + SATE EPS 100 mm. TECHO: LOSA + EPS 120–140 mm.</text>
+ <text class="td" x="0" y="98">3 · SOLADOS ANTIDESLIZANTES R10 EN INTERIOR Y R11 EN SEMICUBIERTO Y EXTERIOR.</text>
+ <text class="td" x="0" y="130">4 · PATIO DE FRENTE PERMEABLE: APORTA A LOS 62 m² DE C.A.S. (0,20 SOBRE 310 m²).</text>
+ <text class="td" x="0" y="162">5 · DESAGÜES PLUVIALES ALEJADOS DEL PERÍMETRO DE FUNDACIÓN.</text>
+ <text class="adv" x="0" y="200">6 · COTAS 5,50 Y 3,00 PRELIMINARES — VERIFICAR EN OBRA ANTES DE REPLANTEAR.</text>
+</g>
+<g transform="translate(1340,560)">
+ <rect x="0" y="0" width="1000" height="300" fill="none" stroke="#111" stroke-width="3"/>
+ <line x1="0" y1="70" x2="1000" y2="70" stroke="#111" stroke-width="2"/>
+ <line x1="0" y1="146" x2="1000" y2="146" stroke="#111" stroke-width="2"/>
+ <line x1="0" y1="212" x2="1000" y2="212" stroke="#111" stroke-width="2"/>
+ <line x1="600" y1="212" x2="600" y2="300" stroke="#111" stroke-width="2"/>
+ <text class="rt3" x="14" y="24">OBRA</text>
+ <text class="rt1" x="14" y="56">REFORMA DE FRENTE — VIVIENDA UNIFAMILIAR</text>
+ <text class="rt3" x="14" y="92">UBICACIÓN</text>
+ <text class="rt2" x="14" y="118">A. GUEVARA 871 — SANTA ROSA, LA PAMPA</text>
+ <text class="rt2" x="14" y="140">EJIDO 047, CIRC. I, RADIO f, MZ. 48, PARC. 21 · DISTRITO R3 I</text>
+ <text class="rt3" x="14" y="170">CONTENIDO</text>
+ <text class="rt2" x="14" y="200">PLANTA DE ARQUITECTURA — SECTOR FRENTE</text>
+ <text class="rt3" x="14" y="240">ESCALA</text><text class="rt2" x="14" y="272">1:50</text>
+ <text class="rt3" x="210" y="240">FECHA</text><text class="rt2" x="210" y="272">09/2026</text>
+ <text class="rt3" x="410" y="240">LÁMINA</text><text class="rt2" x="410" y="272">A-01</text>
+ <text class="adv" x="616" y="252">PRELIMINAR — NO APTO PARA</text>
+ <text class="adv" x="616" y="282">OBRA NI PARA TRÁMITE</text>
+</g>
+</svg>

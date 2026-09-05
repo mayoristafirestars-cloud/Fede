@@ -73,30 +73,39 @@ Entregar **2 o 3 variantes** cuando el problema lo admita, no una sola. Para cad
 
 ## Paso 4 — Dibujar
 
-Generar los planos **en SVG a escala**, escritos a archivo y enviados con `SendUserFile`.
-El SVG abre en navegador, se importa a AutoCAD/Illustrator y es editable — no entregar imágenes
-rasterizadas.
+**Planos técnicos, no diagramas.** El entregable tiene que leerse como una lámina de estudio.
+Generar en **SVG a escala** (1 unidad = 1 cm, `viewBox` real), escribir a archivo, renderizar a
+JPG con Chromium headless + Pillow, y enviar ambos con `SendUserFile`. El SVG se importa a CAD;
+el JPG es para mirar. **Guardar el generador como `.py`** para que las correcciones siguientes
+sean un `sed`, no reescribir todo.
 
-**Convención de colores obligatoria** (norma de uso corriente en Argentina):
+### Lo que hace que un plano sea técnico
 
-| Color | Significa |
+| Elemento | Cómo |
 |---|---|
-| **Negro / gris** | Existente que **permanece** |
-| **Amarillo** | A **demoler** |
-| **Rojo** | **Obra nueva** |
+| **Poché de muros** | Muro cortado con relleno de trama, no una línea. Existente = trama 45° gris; nuevo = trama 45° roja; a demoler = trama amarilla o contorno de trazos |
+| **Jerarquía de líneas** | Corte 3 · carpintería 2,2 · mobiliario 1,6 · cotas 1,2 · ejes 1,0. Nunca todo del mismo espesor |
+| **Cadena de cotas** | Tres líneas por eje, **fuera del dibujo**: parciales (muros y vanos) → locales → total. Escalonar las cotas cortas (<0,70 m) con directriz para que no se pisen |
+| **Ejes de replanteo** | Línea de trazo y punto por cada muro estructural, pasando fuera del dibujo |
+| **Carpinterías** | Marco + hoja + **barrido** en puertas; tres líneas en ventanas; portones con línea gruesa. Referenciadas V1, P1, P2… |
+| **Niveles** | Símbolo triangular con el valor (±0.00, +0.25) en cada local que cambie de cota |
+| **Marcas de corte** | A-A, B-B con línea de trazo y punto y flecha de dirección de vista |
+| **Norte** | Siempre |
+| **Escala gráfica** | Barra segmentada en metros, además de la escala numérica |
+| **Planilla de locales** | N° · denominación · superficie · solado · cielorraso |
+| **Planilla de carpinterías** | Ref · medida · tipo · cantidad · material · vidrio |
+| **Notas** | Numeradas, en mayúscula, con lo que no se puede dibujar |
+| **Rótulo** | Obra · ubicación con nomenclatura catastral y distrito · contenido · escala · fecha · lámina · y la leyenda de preliminar |
 
-**Reglas de dibujo:**
-- Escala real: definir `viewBox` en centímetros y trabajar 1 unidad = 1 cm. Indicar la escala
-  nominal en el rótulo (1:50 o 1:100).
-- Muros con dos líneas y espesor real, no una línea.
-- Acotar: cotas parciales y totales en cada dirección.
-- Nombre y superficie en cada local.
-- Aberturas con su barrido de puerta.
-- **Flecha de norte, siempre.**
-- Rótulo con: obra, ubicación, contenido de la lámina, escala, fecha y la leyenda "PRELIMINAR —
-  no apto para obra ni para trámite".
-- Entregar **tres láminas**: existente, demolición (amarillo sobre gris) y obra nueva (rojo
-  sobre gris).
+**Textos en mayúscula** en rótulo, planillas y notas. Escalas usuales: **1:50** para sector,
+1:100 para planta general, 1:20 para detalle.
+
+### Verificar el render antes de mandarlo
+
+Renderizar, **abrir el JPG con Read y mirarlo**. Los errores que aparecen siempre:
+`viewBox` corto que corta el rótulo, cotas encima del dibujo, rótulos superpuestos, hatch que
+tapa los locales. Corregir y volver a renderizar hasta que esté limpio. **No mandar un plano
+sin haberlo mirado.**
 
 ## Paso 5 — Cerrar
 
