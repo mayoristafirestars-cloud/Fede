@@ -202,7 +202,7 @@ Nunca es "sacar cosas". Es **modificar el esquema estructural en el que el edifi
 - Se apuntala **antes** de demoler, no durante.
 - Los apuntalamientos se retiran solo cuando el elemento nuevo tomó su resistencia de proyecto.
 - Los muros medianeros que quedan expuestos deben protegerse e impermeabilizarse el mismo día que se los descubre.
-- Se prevé la evacuación de escombro **antes** de empezar (§9.5).
+- Se prevé la evacuación de escombro **antes** de empezar (§9.3).
 
 ## 1.3 Matriz alcance / plazo / riesgo / trámite
 
@@ -2460,7 +2460,7 @@ PASO 4 — PROYECTO, TRÁMITE Y OBRA
 | **Ascensor de servicio / montacargas** | Si existe, verificar capacidad y dimensiones | Define el tamaño máximo de las piezas que se pueden subir (muebles, mesada, bañera, placas) |
 | **Ingreso y circulación** | Por dónde entran y salen materiales; si hay que proteger hall, palier, escalera, piso y ascensor | Ítem de protección en el presupuesto |
 | **Acopio** | Dónde se pueden dejar materiales. Habitualmente **no** en espacios comunes | Puede obligar a entregas fraccionadas y a acopio dentro de la unidad |
-| **Volquete** | Permiso municipal de ocupación de vereda/calzada; horarios; ubicación | §9.5 |
+| **Volquete** | Permiso municipal de ocupación de vereda/calzada; horarios; ubicación | §9.3 |
 | **Personal** | Registro de ingreso, seguros, ART, listado ante el administrador | Documentación obligatoria |
 | **Corte de servicios comunes** | Aviso previo obligatorio para cortar agua, luz o gas del edificio | Coordinación con administración |
 
@@ -2855,3 +2855,1498 @@ Muro existente
 | "Que el ambiente no retumbe" | Es **acondicionamiento acústico**, no aislación: se resuelve con materiales absorbentes (cortinas, alfombras, paneles, cielorraso absorbente). Es barato y muy efectivo. **No mejora la aislación** | Confundirlo con aislación |
 
 ---
+
+# PARTE VI — HACERLO
+
+# 9. Proceso de obra de reforma
+
+## 9.1 Orden correcto de trabajos
+
+**La secuencia no es una preferencia: es una relación de dependencia. Alterarla genera retrabajo, que es la principal fuente de sobrecosto en reforma.**
+
+```
+FASE 0 — PREPARACIÓN
+  0.1  Documentación completa: permisos, autorizaciones de consorcio, seguros, ART.
+  0.2  Registro fotográfico y acta de estado previo (propio, común, vecinos). §11.2
+  0.3  Cateos complementarios y cierre del listado VERIFICADO/INFERIDO/SUPUESTO.
+  0.4  Cortes de servicio: agua, gas ⚠️ (gasista matriculado), electricidad del sector.
+  0.5  Protecciones: pisos, aberturas que quedan, muebles, espacios comunes, obra fuera
+       del área de trabajo. §9.4
+  0.6  Obrador: acopio, baño de obra, tablero de obra con diferencial ⚠️, contenedor.
+  0.7  Cartel de obra si corresponde. Vallado y señalización.
+
+FASE 1 — DEMOLICIÓN Y RETIROS
+  1.1  ⚠️ Retiro de materiales peligrosos por especialista: asbesto §3.5.
+  1.2  Desmontaje de lo recuperable (carpinterías, artefactos, herrajes, solados de valor).
+       Se hace ANTES de la demolición gruesa y se acopia rotulado.
+  1.3  ⚠️ APUNTALAMIENTOS Y APEOS, colocados y verificados ANTES de demoler.
+  1.4  Demolición: de arriba hacia abajo, de adentro hacia afuera, orden inverso al
+       constructivo. Cielorrasos → revestimientos → tabiques → pisos → contrapisos.
+  1.5  Retiro continuo de escombro (no acumular carga sobre losas ⚠️ §5.10).
+  1.6  ⚠️ REVISIÓN POST-DEMOLICIÓN: con todo a la vista, se re-releva. Es el momento
+       de los hallazgos. Se documenta, se valoriza y se comunica. §9.7
+
+FASE 2 — ESTRUCTURA Y SANEAMIENTO
+  2.1  Refuerzos, dinteles, apeos definitivos, recalces. Se espera el tiempo de
+       resistencia especificado ANTES de descargar apuntalamientos.
+  2.2  Saneamiento de patologías: reparación de hormigón §4.3.1, tratamiento de
+       maderas §4.3.5, corte de capilaridad §4.1.2, impermeabilizaciones estructurales.
+  2.3  Cierre de vanos que se anulan; apertura de vanos nuevos.
+  2.4  Impermeabilización de cubiertas y de locales húmedos (con PRUEBA DE ESTANQUEIDAD
+       documentada antes de continuar ⚠️ §6.8).
+
+FASE 3 — INSTALACIONES (todas juntas, coordinadas, antes de cerrar nada)
+  3.1  Replanteo conjunto: sanitaria, agua, gas ⚠️, electricidad, datos, climatización,
+       calefacción, desagües. ⚠️ Se replantea TODO junto y se resuelven los cruces
+       EN PLANO, no en el muro.
+  3.2  Desagües primero (son los que tienen pendiente y no se pueden mover). Luego agua,
+       luego gas ⚠️ (gasista matriculado), luego electricidad y datos (los más flexibles).
+  3.3  PRUEBAS antes de tapar: prueba hidráulica de agua, prueba de desagües, prueba de
+       hermeticidad de gas ⚠️ por matriculado, continuidad y aislación eléctrica.
+       ⚠️ TODAS DOCUMENTADAS CON ACTA Y FOTOS. Sin prueba aprobada NO se tapa.
+  3.4  Relevamiento fotográfico completo de instalaciones a la vista, con cotas, ANTES
+       de cerrar. Es el "conforme a obra" real y sirve para toda la vida del edificio.
+
+FASE 4 — CERRAMIENTOS Y ALBAÑILERÍA
+  4.1  Tabiquería nueva (mampostería o seco), incluyendo aislación acústica y térmica.
+  4.2  Contrapisos y carpetas (con las pendientes verificadas ⚠️ en locales húmedos).
+  4.3  Revoques / masillados.
+  4.4  Aislación térmica de envolvente §7 (⚠️ con barrera de vapor verificada §7.5).
+  4.5  Cielorrasos (dejando REGISTROS de acceso §5.9).
+  4.6  Colocación de premarcos y marcos.
+
+FASE 5 — TERMINACIONES
+  5.1  Revestimientos de paredes húmedas.
+  5.2  Solados.
+  5.3  Carpinterías: colocación de hojas, herrajes, sellado perimetral.
+  5.4  Pintura (primera mano).
+  5.5  Colocación de artefactos sanitarios, griferías, mesadas, bajo mesadas.
+  5.6  Colocación de artefactos eléctricos: llaves, tomas, luminarias, tablero.
+  5.7  ⚠️ Colocación y conexión de artefactos a gas por gasista matriculado, con
+       verificación de ventilaciones y prueba final.
+  5.8  Equipamiento fijo, placares, muebles.
+  5.9  Pintura final (después de todo lo que ensucia).
+  5.10 Zócalos y remates.
+
+FASE 6 — CIERRE
+  6.1  Limpieza fina de obra.
+  6.2  Puesta en marcha y ensayos finales.
+  6.3  Recorrido de recepción con el cliente y lista de observaciones (punch list).
+  6.4  Corrección de observaciones.
+  6.5  Entrega de documentación (§12.4) y acta de recepción.
+  6.6  Trámites finales: conforme a obra, certificaciones, habilitaciones.
+```
+
+### Las tres reglas de secuencia que más se violan
+
+1. ⚠️ **No se cierra nada sin prueba documentada.** Ni un muro, ni un cielorraso, ni un contrapiso. Es la regla que evita romper lo nuevo.
+2. ⚠️ **No se descarga un apuntalamiento antes de tiempo.** El plazo lo fija el estructuralista, no el capataz que necesita el puntal en otro lado.
+3. ⚠️ **No se empieza la fase siguiente con la anterior a medias.** En reforma la tentación de solapar es enorme (por presión de plazo) y es la causa directa del retrabajo.
+
+## 9.2 Obra con la gente viviendo adentro
+
+**Es el escenario más común en reforma de vivienda, y el que más determina la satisfacción del cliente. Se planifica; no se improvisa.**
+
+### Decisión previa: ¿se puede vivir adentro?
+
+| Escenario | ¿Habitable? | Condición |
+|---|---|---|
+| Reforma seca de un ambiente | ✅ Sí | Sectorizar y proteger |
+| Reforma de un baño, habiendo otro | ✅ Sí | Cortes de agua acotados y avisados |
+| Reforma del **único baño** | ⚠️ Muy difícil | Baño químico o mudanza temporal. **Definirlo antes de firmar** |
+| Reforma de **cocina** | ⚠️ Difícil | Cocina provisoria (anafe, microondas, heladera y pileta en otro sector) |
+| Demolición de muros / obra estructural | ❌ **No** | Ruido, polvo, riesgo. Mudanza |
+| Renovación completa de instalaciones | ❌ **No** | Cortes prolongados de todos los servicios |
+| Obra en cubierta con la unidad debajo | ⚠️ Depende | Riesgo de filtración durante la obra |
+| Retiro de asbesto | ❌ **NO** ⚠️ | Nunca con gente adentro |
+
+⚠️ **Decisión que se toma antes de firmar el contrato, no en la semana 3.** Si hay que mudarse, hay un costo (alquiler temporal, depósito de muebles, mudanzas) que **debe estar en el análisis económico del cliente desde el inicio**. Es una de las principales fuentes de conflicto.
+
+### Obra por etapas: cómo se organiza
+
+```
+[ ] Dividir la vivienda en SECTORES y definir un orden que deje siempre operativo
+    un núcleo mínimo habitable: un dormitorio, un baño, un lugar para comer.
+[ ] Definir la BARRERA FÍSICA entre sector de obra y sector habitado:
+      - Tabique provisorio de placa o de estructura + film, del piso al techo, SELLADO.
+      - Doble film con cierre tipo cremallera en el paso.
+      - ⚠️ El film simple clavado con cinta NO contiene el polvo. Se necesita sellado
+        perimetral real.
+[ ] CIRCULACIÓN de obra separada de la circulación del usuario. Si se comparte,
+    definir horarios.
+[ ] Definir el ACCESO: si el personal entra por la puerta principal, protección de
+    piso desde la puerta hasta el sector de obra, todos los días.
+[ ] Baño de obra: ⚠️ el personal NO usa el baño de la familia. Se define uno (con
+    protección) o se provee baño químico.
+[ ] Llave: definir quién abre, quién cierra, quién tiene llave, y dejarlo por escrito.
+[ ] Horarios acordados por escrito, incluyendo la franja de tareas ruidosas.
+```
+
+### Control de polvo — lo que más molesta y lo que más se subestima
+
+⚠️ **El polvo de la demolición de mampostería y hormigón contiene sílice cristalina respirable, que es cancerígena.** No es solo un problema de limpieza: es un problema de salud, para los ocupantes y sobre todo para los operarios.
+
+```
+[ ] CORTE Y DEMOLICIÓN CON AGUA O CON ASPIRACIÓN. Amoladoras y sierras con captación
+    de polvo conectada a aspiradora de obra con filtro adecuado. ⚠️ Cambia todo.
+[ ] Aspiradora de obra (no escoba). Barrer en seco resuspende el polvo.
+[ ] Barrera física sellada (arriba).
+[ ] PRESIÓN NEGATIVA en el sector de obra: extractor en una ventana del sector de obra
+    tirando aire hacia afuera. El aire fluye desde la zona limpia hacia la sucia y no
+    al revés. ⚠️ Es la medida más eficaz y la más ignorada.
+[ ] Tapar rejillas de retorno del aire acondicionado en el sector de obra.
+[ ] Alfombra atrapapolvo / paño húmedo en el paso.
+[ ] Limpieza al final de cada jornada, no al final de la semana.
+[ ] Protección respiratoria del personal ⚠️ (mínimo FFP2; FFP3 en sílice y asbesto).
+[ ] Retiro de escombro embolsado, no en carretilla abierta a través de la casa.
+```
+
+### Cortes de servicio
+
+```
+[ ] AVISAR con anticipación, por escrito (WhatsApp del grupo de obra + cartel).
+[ ] AGUA: agrupar los cortes. Dejar siempre una canilla operativa. Prever un bidón/tanque.
+    Nunca cortar sin previo aviso ni dejar cortado de un día para el otro sin avisar.
+[ ] ⚠️ GAS: corte y reconexión SOLO por gasista matriculado. Prever cómo se calefacciona
+    y cómo se calienta el agua durante el corte. Si el corte es en invierno, es un tema
+    de habitabilidad.
+[ ] ELECTRICIDAD: circuito de obra separado, con su tablero y su diferencial ⚠️.
+    Mantener alimentado: heladera, un circuito de iluminación, tomas del sector habitado.
+[ ] En PH: avisar a la administración cualquier corte que afecte servicios comunes.
+```
+
+### Convivencia — reglas escritas desde el día 1
+
+| Regla | Detalle |
+|---|---|
+| **Un solo interlocutor** | Un responsable de obra que habla con el cliente. Y un solo interlocutor del lado del cliente. ⚠️ **La causa #1 de caos en obra: la familia le da instrucciones directas al albañil.** Ponerlo por escrito en el contrato |
+| **Canal único** | Un grupo de WhatsApp con el cliente, el responsable de obra y la DT. **Todo cambio se pide y se confirma ahí, por escrito** |
+| **Horarios** | Fijos, escritos, respetados |
+| **Radio y música** | Regla explícita. Es una fuente de conflicto sorprendentemente frecuente |
+| **Fumar, comer, baño** | Reglas explícitas |
+| **Mascotas y niños** | ⚠️ Definir zonas prohibidas y responsabilidad. Una obra es peligrosa para un chico |
+| **Fin de jornada** | Herramientas guardadas, sector barrido, materiales peligrosos fuera del alcance, ⚠️ energía y agua del sector cortadas |
+| **Reunión semanal fija** | 15–30 min, mismo día y hora, con avance, próximos pasos, decisiones pendientes y novedades económicas. **La reunión semanal previene el 90% de los conflictos** |
+
+## 9.3 Gestión de escombros y volquetes
+
+```
+[ ] ESTIMAR EL VOLUMEN antes de empezar. Regla práctica: el escombro ocupa
+    aproximadamente 1,3-1,6 veces el volumen del elemento demolido (esponjamiento).
+    ⚠️ Estimar también el PESO: mampostería y hormigón pesan del orden de 1,3-1,8 t/m³
+    de escombro suelto. Es lo que define cuántos volquetes y qué se puede acopiar
+    sobre una losa (§5.10).
+[ ] VERIFICAR EN LA MUNICIPALIDAD DE SANTA ROSA: permiso de ocupación de vereda o
+    calzada para el volquete, horarios permitidos, señalización exigida, empresas
+    habilitadas y sitios de disposición autorizados. VERIFICAR, no suponer.
+[ ] SEGREGAR: escombro limpio (mampostería, hormigón) / madera / metales / cartón y
+    plásticos / RESIDUOS PELIGROSOS ⚠️ (asbesto, pinturas, solventes, aceites, tubos
+    fluorescentes, baterías). Los peligrosos van por circuito habilitado, con manifiesto,
+    NUNCA al volquete común.
+[ ] RECUPERAR lo que tiene valor: carpinterías, herrajes, artefactos, ladrillos de
+    demolición, tejas, pinotea, mármoles, rejas. Se desmonta con cuidado, se acopia
+    rotulado. ⚠️ Definir POR CONTRATO de quién es lo recuperado: del cliente o de la
+    empresa. Es motivo de conflicto habitual.
+[ ] En PH: coordinar bajada de escombro (⚠️ habitualmente prohibido el ascensor),
+    protección de espacios comunes, horarios, y limpieza del recorrido cada día.
+[ ] NUNCA acumular escombro sobre una losa ⚠️ (§5.10) ni sobre un balcón.
+[ ] Prohibido arrojar escombro por conductos improvisados o por la ventana. Si se usa
+    manga de descarga, con proyecto de sujeción y área vallada abajo.
+```
+
+## 9.4 Protección de lo que queda
+
+**Lo que se rompe por no proteger sale de la ganancia de la obra. Sin excepción.**
+
+| Elemento | Protección |
+|---|---|
+| **Pisos que se conservan** | Manta/cartón corrugado + film o placa dura de protección, con cinta al zócalo, **cubriendo el 100% del recorrido**. Verificar y reponer cada semana |
+| **Carpinterías que se conservan** | Film y cartón, especialmente en el paso de materiales. Marcos: cantoneras |
+| **Escaleras** | Protección de peldaños y de la baranda |
+| **Mesadas, bachas, artefactos que se conservan** | Cubiertos con placa rígida, no solo film |
+| **Muebles fijos** | Envueltos y sellados contra el polvo |
+| **Muebles del cliente** | ⚠️ Definir por escrito qué se mueve, quién lo mueve y quién responde por daños |
+| **Espacios comunes en PH** | ⚠️ Piso del hall y palier, paredes del recorrido, puertas, ascensor (si se autoriza: protección completa de cabina). **Con foto del estado previo y del estado final** |
+| **Instalaciones que se conservan** | Tapar bocas y extremos abiertos de cañerías (evita que entre escombro y que se tapen) |
+| **Cubierta / impermeabilización existente** | ⚠️ Protección contra tránsito y punzonamiento. Pasarelas de tablones |
+| **Vegetación y exteriores** | Protección de plantas, veredas, cordones, y del auto del vecino |
+| **Vidrios que se conservan** | Film protector: el mortero y la pintura sobre el vidrio se sacan mal |
+| **Documentación y objetos de valor** | ⚠️ Que el cliente los retire. Ponerlo por escrito |
+
+## 9.5 Plazos realistas por tipo de reforma
+
+⚠️ **Plazos de ejecución en obra, en condiciones normales, con cuadrilla adecuada y materiales disponibles.** No incluyen: proyecto, trámites, autorizaciones de consorcio ni plazos de fabricación de carpinterías, muebles a medida o equipamiento importado (que suelen ser el verdadero camino crítico).
+
+| Trabajo | Plazo típico | Camino crítico habitual |
+|---|---|---|
+| Pintura completa de un departamento de 2 ambientes | 5–10 días | Secado entre manos |
+| Cambio de piso de un ambiente (sobre el existente) | 3–5 días | Fragüe del adhesivo |
+| Cambio de piso completo con demolición del existente | 3–5 semanas | Demolición, contrapiso, fragüe |
+| **Reforma de 1 baño completo** | **3–6 semanas** | Instalaciones, impermeabilización, pruebas, fragües, plazo de entrega de artefactos y mampara |
+| **Reforma de cocina completa** | **4–8 semanas** | ⚠️ **La mesada y los muebles a medida**: su plazo de fabricación suele ser mayor que el de la obra |
+| Reforma de baño + cocina | 6–10 semanas | Idem |
+| Reforma integral de departamento de 2–3 ambientes | 3–5 meses | Instalaciones + terminaciones |
+| Reforma integral de casa de 3 dormitorios | 4–8 meses | Coordinación de gremios |
+| Demolición de un muro portante + dintel | 1–3 semanas (la operación en sí: días; el fragüe y la reparación: el resto) | Resistencia del dintel antes de descargar |
+| Ampliación en planta de 30–50 m² | 4–8 meses | Estructura y cubierta; trámite previo |
+| Ampliación en altura (1 planta) | 8–14 meses | ⚠️ Verificación estructural + trámite + refuerzos |
+| Renovación completa de instalación eléctrica (casa 3 dorm.) | 3–5 semanas | Canaletas y reparación de revoque |
+| Renovación de instalación de agua completa | 2–4 semanas | Idem |
+| Renovación de membrana de azotea (100 m²) | 1–2 semanas | ⚠️ Clima: no se impermeabiliza con lluvia, con soporte húmedo ni con viento fuerte |
+| Retrofit energético "paquete mínimo" | 2–4 semanas | — |
+| Retrofit energético integral con fachada | 3–6 meses | Andamios y fachada |
+| Tratamiento de humedad ascendente en un local (inyección + revoque) | 2–4 semanas | ⚠️ **Tiempo de secado del muro antes de revocar: no se acelera** |
+| Rehabilitación integral de edificio PB+4 | 12–24 meses | Asambleas, financiamiento, fachada |
+
+⚠️ **Los tres factores que más estiran plazos en reforma, y que hay que gestionar desde el día 1:**
+1. **Decisiones pendientes del cliente** (§11.4). Una decisión de revestimiento que tarda dos semanas paraliza el baño dos semanas.
+2. **Plazos de provisión**: carpinterías, mesadas, muebles a medida, griferías especiales, equipos. **Se piden apenas se firma, no cuando llega el momento de colocarlos.**
+3. **Hallazgos** (§9.7).
+
+## 9.6 Contingencia: cuánto se encarece una reforma
+
+### La respuesta corta
+
+| Tipo de obra | Contingencia recomendada sobre el costo directo |
+|---|---|
+| **Obra nueva** con proyecto ejecutivo completo | **5–10%** |
+| **Reforma seca** (sin tocar instalaciones ni estructura) | **10%** |
+| **Reforma con instalaciones** en edificio de < 30 años | **15%** |
+| **Reforma con instalaciones** en edificio de > 40 años | **20%** |
+| **Reforma con demolición de muros / apertura de vanos** | **20–25%** |
+| **Rehabilitación integral / reciclaje / edificio con patologías** | **25–30%** |
+| **Restauración patrimonial** | **30%+** |
+
+**Recomendación del estudio: 20% como valor por defecto en reforma de vivienda existente, ajustado según la tabla.**
+
+### Por qué la reforma tiene más contingencia que la obra nueva
+
+**Es una razón estructural, no una cuestión de prolijidad:**
+
+1. **El objeto de la obra es parcialmente desconocido.** En obra nueva el proyecto define el 100% de lo que se va a construir. En reforma, una parte del objeto —lo que está adentro de los muros, bajo los pisos y detrás de los cielorrasos— **solo se conoce cuando se rompe**, es decir, después de haber firmado el precio.
+2. **Los cateos reducen la incertidumbre pero no la eliminan.** Se puede catear el 1% de la superficie, no el 100%.
+3. **Los hallazgos son asimétricos:** casi nunca aparece algo que abarata; casi siempre aparece algo que encarece.
+4. **La cadena de dependencias:** un hallazgo en instalaciones obliga a rehacer un contrapiso ya ejecutado. En obra nueva, cada tarea se hace una vez.
+5. **Los rendimientos son peores:** trabajar en espacios reducidos, con protecciones, con la gente adentro, con horarios acotados, con acarreo manual, con acceso restringido.
+6. **La normativa cambió:** lo que se construyó hace 40 años cumplía otras reglas. Al intervenir, se dispara la obligación de adecuar (eléctrica, gas ⚠️, ventilaciones, accesibilidad).
+
+### La referencia externa
+
+Las referencias de la industria coinciden en el rango: para reformas se recomienda habitualmente reservar **entre el 10% y el 20%** del presupuesto para imprevistos, y **entre el 15% y el 25%** cuando hay mayor incertidumbre técnica —apertura de muros o renovación de instalaciones antiguas—, frente al **5–10%** habitual en obra estándar.
+
+⚠️ **El fondo de contingencia se usa SOLO para imprevistos genuinos, no para ampliaciones de alcance ni para mejoras que el cliente decide sobre la marcha.** Esos son adicionales, se cotizan aparte y se aprueban por escrito. Mezclarlos es el camino directo a quedarse sin contingencia en la semana 6.
+
+## 9.7 Cómo cotizar una reforma sin perder plata
+
+### Los cinco pilares
+
+**1. Cobrar el relevamiento y el diagnóstico aparte.**
+Es el trabajo de mayor valor y mayor riesgo. Se contrata como servicio independiente, con entregable propio (§2.11), **antes** de cotizar la obra. Beneficios: el estudio cobra por el trabajo que hace; el cliente recibe información antes de comprometerse; y la cotización de obra que sigue es mucho más precisa.
+
+**2. Precios unitarios, no suma alzada ciega.**
+El presupuesto se estructura por **ítems con unidad, cantidad y precio unitario**, no como un número global. Así, cuando la cantidad cambia (y en reforma cambia), se ajusta por certificación de cantidades reales sin renegociar todo.
+
+```
+Ejemplo de estructura de ítem:
+  Nº    Descripción                                   Un.   Cant.   P.Unit.   Total
+  2.03  Demolición de tabique de mampostería de
+        hasta 15 cm, incl. retiro de escombro         m²    24,50   $ ____    $ ____
+  2.04  Picado de revoque en muros afectados por
+        humedad, hasta 1,80 m de altura               m²    ITEM ABIERTO — se
+                                                            certifica según cantidad
+                                                            real ejecutada
+```
+
+**3. Ítems abiertos declarados.**
+Todo lo que depende de lo que aparezca se cotiza como **ítem abierto con precio unitario cerrado y cantidad estimada**:
+- Picado y rehecho de revoques.
+- Reemplazo de cañerías ocultas (por metro lineal, por diámetro).
+- Reparación de hormigón (por m² de superficie saneada y por kg de armadura repuesta).
+- Refuerzos estructurales no previstos.
+- Tratamiento de humedad (por m²).
+- Nivelación de contrapisos (por m² y por cm de espesor).
+- Retiro de material peligroso ⚠️ (por m² o por unidad, con protocolo).
+
+**Ventaja doble:** el estudio no absorbe el riesgo de cantidad, y el cliente ve un precio unitario acordado desde el principio (no una negociación en el peor momento).
+
+**4. Cláusula de hallazgos ocultos.** Modelo para incorporar al contrato:
+
+```
+CLÁUSULA — TRABAJOS POR HALLAZGOS OCULTOS
+
+Las partes reconocen que la presente obra se ejecuta sobre una construcción
+preexistente cuyo estado interno no es íntegramente verificable antes del inicio de
+los trabajos. El presupuesto se elabora sobre la base del relevamiento y los cateos
+realizados, cuyo detalle y grado de certeza (VERIFICADO / INFERIDO / SUPUESTO) consta
+en el Anexo I "Estado del existente", que forma parte integrante del presente.
+
+Se denomina HALLAZGO OCULTO a toda condición preexistente no visible ni razonablemente
+previsible al momento de la cotización, que se descubra durante la ejecución, y que
+requiera trabajos no incluidos en el presupuesto. A título enunciativo: instalaciones
+ocultas en estado deficiente o de material no previsto; elementos estructurales con
+deterioro; humedades no visibles; ausencia o insuficiencia de aislaciones; materiales
+peligrosos (asbesto, plomo u otros); rellenos, huecos, cavidades o construcciones
+previas no documentadas; niveles, espesores o dimensiones distintos a los relevados.
+
+PROCEDIMIENTO ante un hallazgo:
+1. El Contratista lo comunica por escrito al Comitente y a la Dirección Técnica dentro
+   de las 48 h de detectado, con registro fotográfico.
+2. La Dirección Técnica evalúa el hallazgo y define la solución técnica.
+3. Se presenta la cotización de los trabajos adicionales, aplicando los precios
+   unitarios del presupuesto cuando el ítem exista, y precios a convenir cuando no.
+4. El Comitente aprueba o rechaza por escrito dentro de los ___ días hábiles.
+5. Recién con la aprobación escrita se ejecutan los trabajos y se ajustan precio y
+   plazo. Sin aprobación escrita no se ejecutan ni se facturan.
+6. Los días transcurridos entre la comunicación del hallazgo y su aprobación, si
+   impiden el avance de la obra, se adicionan al plazo contractual.
+
+FONDO DE PREVISIÓN: el Comitente declara conocer que en obras de reforma se recomienda
+prever un fondo adicional del ___ % del monto contractual destinado exclusivamente a
+hallazgos ocultos, el cual no forma parte del precio pactado y solo se aplica contra
+aprobaciones escritas conforme el procedimiento precedente.
+
+⚠️ SUSPENSIÓN POR RIESGO: si el hallazgo implica riesgo para la seguridad de las
+personas o de la construcción (incluyendo, sin limitación, presencia de asbesto,
+riesgo de colapso, instalación de gas en condición insegura o riesgo eléctrico
+inminente), el Contratista suspenderá de inmediato los trabajos en el sector, lo
+comunicará en el acto y no los reanudará hasta contar con la instrucción escrita de
+la Dirección Técnica.
+```
+
+**5. Anexo I "Estado del existente"** — el documento que sostiene todo lo anterior. Es el listado VERIFICADO / INFERIDO / SUPUESTO de §2.11-8, con las fotos de los cateos. **Sin ese anexo, la cláusula de hallazgos es una declaración de intenciones. Con él, es un acuerdo sobre hechos.**
+
+### Errores de cotización que hacen perder plata
+
+| Error | Consecuencia | Corrección |
+|---|---|---|
+| Cotizar sin haber cateado | Todo es imprevisto | Cobrar y hacer el diagnóstico primero |
+| Cotizar "reforma de baño" como ítem global | Cualquier cambio es una renegociación | Desglosar por ítem con unidades |
+| No cotizar demoliciones y retiro de escombro por separado | Se subestima siempre | Ítem propio, con volumen y volquetes |
+| No cotizar protecciones, limpieza y acarreo | Salen de la ganancia | Ítems propios |
+| No cotizar el sobrecosto de obra habitada, horarios restringidos y acarreo manual en PH | Pérdida de productividad no pagada | **Coeficiente de dificultad** explícito, o ítem "logística y condiciones de obra" |
+| Aceptar cambios verbales | Nunca se cobran | Todo cambio, por escrito, con precio y plazo, antes de ejecutar |
+| No definir de quién es el material recuperado | Conflicto | Cláusula específica |
+| Presupuestar con precios de una semana en un contexto inflacionario | Se licúa la ganancia | Mecanismo de actualización o validez de oferta acotada y explícita |
+| No prever el plazo de provisión de carpinterías y muebles | Obra parada, costos indirectos | Cronograma de compras desde el día 1 |
+| No cobrar la dirección técnica de una obra que dura el doble | — | Honorario por tiempo o cláusula de extensión de plazo |
+
+---
+
+# 10. Trámite y legalización
+
+> ⚠️ **ADVERTENCIA JURISDICCIONAL.** Todo lo relativo a permisos de obra, regularizaciones, tributos y catastro **varía por municipio y por provincia**. En Santa Rosa rigen el **Código de Edificación (Ordenanza 1581/1995 y sus modificatorias, entre ellas la Ord. 6445/2020)** y el **Código Urbanístico** municipal, más la normativa provincial de La Pampa. **Verificar el texto vigente y el procedimiento actualizado en la Subsecretaría de Planeamiento Urbano y Obras Particulares de la Municipalidad de Santa Rosa y en el Colegio Profesional correspondiente antes de comprometer plazos o costos con un cliente.** Este capítulo describe el **método**, no el texto de la norma local.
+
+## 10.1 Cuándo una reforma requiere permiso
+
+**No hay una regla nacional. Hay un criterio general que se repite en las ordenanzas municipales argentinas:**
+
+| Tipo de trabajo | Criterio general (⚠️ verificar en Santa Rosa) |
+|---|---|
+| **Mantenimiento y pintura** (sin andamios sobre vía pública) | Habitualmente **sin permiso**; puede requerir aviso |
+| **Reparación de revoques y de cubierta sin modificar** | Habitualmente sin permiso, o con aviso de obra |
+| **Trabajos en fachada con andamios sobre vereda** | Habitualmente **permiso de ocupación de vía pública** |
+| **Reforma interior sin modificar superficies, muros portantes ni fachada** | Habitualmente **sin permiso de obra**, o "aviso de obra" |
+| **Demolición o apertura de vanos en muros portantes** | ⚠️ **Habitualmente CON permiso**, con documentación estructural |
+| **Modificación de fachada** (vanos, cerramientos, cambio de aspecto) | ⚠️ **Habitualmente CON permiso** |
+| **Cambio de distribución que altera locales, ventilaciones o iluminación reglamentarias** | ⚠️ **Habitualmente CON permiso** (cambia el plano) |
+| **Ampliación de superficie cubierta o semicubierta** | ⚠️ **SIEMPRE permiso** |
+| **Sobreelevación** | ⚠️ **SIEMPRE permiso** |
+| **Cambio de uso o destino** | ⚠️ **SIEMPRE permiso / habilitación** |
+| **Demolición total o parcial** | ⚠️ **SIEMPRE permiso** |
+| **Piscina, quincho, cochera, galpón, pérgola cubierta** | Habitualmente permiso (verificar umbrales de superficie) |
+| **Obra en edificio catalogado o en área de protección** | ⚠️ **SIEMPRE**, con intervención del organismo de patrimonio |
+
+### Criterio del estudio ante la duda
+
+> **Consultar en el municipio ANTES de proyectar, con un croquis en la mano.** Una consulta previa de media hora en la mesa de entradas evita meses de problemas. Y **dejar registrada la consulta** (a quién, cuándo, qué dijo).
+
+⚠️ **Riesgos de hacer obra sin permiso cuando correspondía:** multas (el Código de Edificación de Santa Rosa prevé sanciones por iniciar obras sin permiso y por ejecutar ampliaciones o modificaciones en condiciones no previstas), orden de demolición, imposibilidad de escriturar o de obtener crédito hipotecario, imposibilidad de vender la superficie no declarada, problemas con el seguro ante un siniestro, y **responsabilidad profesional del arquitecto interviniente**.
+
+## 10.2 Regularización de obra existente sin planos
+
+**Situación arquetípica en Santa Rosa y en todo el país:** casa con planos de 1965, ampliada tres veces desde entonces, sin nada declarado. El cliente quiere reformar. **No se puede reformar legalmente sobre una base ilegal.**
+
+### Circuito de trabajo
+
+```
+PASO 1 — INVESTIGACIÓN CATASTRAL Y DOCUMENTAL
+  [ ] Solicitar el expediente municipal completo del inmueble.
+  [ ] Solicitar copia del plano registrado (si existe) y su fecha.
+  [ ] Verificar la situación catastral (plano de mensura, superficies registradas).
+  [ ] Verificar la situación tributaria (superficie declarada a efectos del impuesto
+      inmobiliario / tasas municipales).
+  [ ] Verificar si hay infracciones, intimaciones o expedientes abiertos.
+
+PASO 2 — RELEVAMIENTO DEL ESTADO REAL (§2)
+  [ ] Plano de relevamiento completo de lo efectivamente construido.
+  [ ] Cómputo de superficies por planta y por tipo (cubierta, semicubierta, descubierta).
+
+PASO 3 — ANÁLISIS DE VIABILIDAD DE LA REGULARIZACIÓN
+  [ ] Comparar lo construido con la normativa urbanística VIGENTE:
+        FOS, FOT, altura, retiros, distancias, superficie de patios, iluminación y
+        ventilación de locales, estacionamiento, uso permitido.
+  [ ] Identificar los excesos y las contravenciones.
+  [ ] Determinar si el municipio admite regularizar en contravención, con qué
+      condiciones y con qué penalidades. ⚠️ VERIFICAR: muchas jurisdicciones tienen
+      regímenes especiales o "amnistías" de regularización con vigencia acotada.
+
+PASO 4 — DECISIÓN (con el cliente, por escrito)
+  A) Regularizar todo lo construido tal cual está (si es admisible).
+  B) Regularizar parcialmente y DEMOLER lo no regularizable.
+  C) Regularizar y ADECUAR lo que se puede adecuar (p. ej., abrir un patio para
+     cumplir ventilación e iluminación).
+  D) No regularizar. ⚠️ Consecuencias: no se puede reformar legalmente, no se puede
+     escriturar la mejora, riesgo de intimación. Dejarlo POR ESCRITO.
+
+PASO 5 — PRESENTACIÓN
+  [ ] Plano de regularización / "obra en contravención" según lo que exija el municipio.
+  [ ] Memorias, planillas de superficies, planilla de iluminación y ventilación.
+  [ ] Documentación estructural si se exige.
+  [ ] Encomienda profesional visada por el Colegio Profesional correspondiente
+      (verificar: en La Pampa, el consejo/colegio de arquitectos e ingenieros).
+  [ ] Pago de derechos de construcción, diferencias y eventuales multas.
+
+PASO 6 — REGISTRO Y ACTUALIZACIÓN
+  [ ] Registro del plano.
+  [ ] Actualización catastral y de la valuación fiscal.
+  [ ] Si corresponde: escritura de mejoras / declaración ante el Registro de la
+      Propiedad Inmueble.
+```
+
+⚠️ **Advertencia comercial fundamental:** la regularización **tiene un costo** (honorarios, derechos, multas, y sobre todo **aumento permanente del impuesto inmobiliario y de la tasa municipal**), y el cliente casi nunca lo tiene presupuestado. **Se lo dice en la primera reunión, con números estimados, no en la semana 8.** Ver §10.5.
+
+## 10.3 Conforme a obra y final de obra
+
+| Documento | Qué es | Cuándo |
+|---|---|---|
+| **Permiso de obra** | Autorización para construir lo proyectado | Antes de empezar |
+| **Plano conforme a obra** | Plano que refleja **lo efectivamente construido**, que puede diferir del aprobado | Al finalizar |
+| **Final de obra** | Acto administrativo por el cual el municipio da por terminada y aprobada la obra | Al finalizar, tras inspección |
+
+**Por qué importa el final de obra (argumentos para el cliente):**
+- Sin él, la obra queda formalmente inconclusa aunque esté terminada y habitada.
+- Es requisito habitual para escriturar, para acceder a crédito hipotecario y para vender.
+- Es requisito para habilitaciones comerciales.
+- Su ausencia puede generar problemas con la cobertura del seguro ante un siniestro.
+
+⚠️ **En reforma es habitual encontrar obras "sin final de obra" de hace décadas.** Se releva en el Paso 1 de §10.2.
+
+## 10.4 Ampliaciones que superan FOT/FOS
+
+**FOS (Factor de Ocupación del Suelo):** proporción máxima del terreno que puede ocuparse con edificación.
+**FOT (Factor de Ocupación Total):** relación máxima entre superficie total edificable y superficie del terreno.
+**Ambos, más la altura máxima, los retiros y el tejido, están en el Código Urbanístico de Santa Rosa. ⚠️ VERIFICAR los valores del distrito específico de la parcela — no se supone, se consulta.**
+
+**Qué hacer cuando la ampliación pretendida no entra:**
+
+| Alternativa | Cómo |
+|---|---|
+| **1. Rediseñar** | Redistribuir la superficie: crecer en altura en lugar de en planta (si el FOS está agotado y el FOT no), aprovechar entrepisos, usar superficie semicubierta si computa distinto (⚠️ verificar cómo computa en Santa Rosa) |
+| **2. Compensar** | Demoler superficie existente no valiosa (galpón, cochera, cobertizo) para liberar FOS/FOT |
+| **3. Verificar excepciones y premios** | Algunos códigos prevén premios por retiro, por espacio libre, por patios, por accesibilidad o por eficiencia energética. ⚠️ **Verificar si el Código Urbanístico de Santa Rosa contempla alguno** |
+| **4. Vía de excepción** | Algunos municipios admiten excepciones por vía de ordenanza o de resolución fundada. ⚠️ **Verificar procedimiento, plazos y probabilidad real. No prometer nunca una excepción** |
+| **5. No ampliar** | Resolver el programa dentro de lo existente: reorganizar, entrepisos, mejor aprovechamiento. **A veces es la mejor arquitectura y el mejor consejo** |
+
+⚠️ **Regla profesional:** **la verificación urbanística se hace ANTES del primer croquis.** Dibujar una ampliación que no es admisible y descubrirlo después es un error grave, porque el cliente ya se enamoró del proyecto.
+
+## 10.5 Declaración de mejoras e impacto impositivo
+
+**Al regularizar o al declarar una ampliación:**
+- Aumenta la **superficie edificada registrada** en el catastro provincial.
+- Aumenta la **valuación fiscal** del inmueble.
+- Aumenta, en consecuencia, el **impuesto inmobiliario provincial** y la **tasa municipal**, **de forma permanente**.
+- Puede impactar en otros tributos según la situación del contribuyente. ⚠️ **Consultar con contador. No es materia del arquitecto y no se asesora sobre esto.**
+
+**Conducta profesional:**
+```
+[ ] Informar al cliente, EN LA PRIMERA REUNIÓN y por escrito, que la regularización
+    o la ampliación tienen efecto tributario permanente.
+[ ] Estimar el orden de magnitud (consultando la valuación actual y el impacto de la
+    superficie a incorporar) o derivar expresamente al contador del cliente.
+[ ] Contrastarlo con los BENEFICIOS: posibilidad de escriturar, de vender, de acceder
+    a crédito, de habilitar, y de no estar expuesto a una intimación o a una orden de
+    demolición.
+[ ] Dejar constancia escrita de la decisión del cliente.
+```
+
+## 10.6 Obras en edificios catalogados o de valor patrimonial
+
+```
+PASO 1  Verificar si el inmueble está catalogado, protegido, o incluido en un área
+        de protección patrimonial o en un catálogo municipal/provincial/nacional.
+        ⚠️ VERIFICAR en la Municipalidad de Santa Rosa y en la Subsecretaría de
+        Cultura de La Pampa / Comisión Nacional de Monumentos, según corresponda.
+        Se hace ANTES de proyectar. Un inmueble catalogado cambia todo el encargo.
+
+PASO 2  Determinar el GRADO de protección (integral, estructural, cautelar, ambiental,
+        o la denominación que use la norma local) y qué permite y qué prohíbe cada grado.
+
+PASO 3  Documentación previa exhaustiva: relevamiento métrico y fotográfico completo,
+        estudio histórico, análisis de materiales y de intervenciones previas,
+        mapeo de patologías. (Fotogrametría de fachada: §2.8.)
+
+PASO 4  Proyecto de intervención con criterios de conservación (§1.2-9):
+        mínima intervención, reversibilidad, distinguibilidad, compatibilidad de
+        materiales, documentación. Referencia doctrinaria: Carta de Venecia (ICOMOS,
+        1964) y documentos posteriores de ICOMOS.
+
+PASO 5  Presentación ante el organismo de patrimonio ANTES de la presentación
+        municipal ordinaria. Obtener dictamen o autorización previa.
+
+PASO 6  Ejecución con dirección técnica especializada, personal capacitado, y
+        registro documental permanente de lo que se encuentra y de lo que se hace.
+
+PASO 7  Documentación final: qué se hizo, con qué materiales, con qué criterio, y
+        qué se dejó registrado para las intervenciones futuras.
+```
+
+⚠️ **Riesgos específicos:** intervenir sin autorización en un bien catalogado puede generar sanciones, orden de restitución al estado anterior y **responsabilidad profesional directa del arquitecto**. Además, la pérdida material es irreversible: **un revoque original picado no vuelve.**
+
+**Nota técnica que se repite:** en edificios históricos de mampostería con morteros de cal, ⚠️ **no se repara con mortero de cemento**. El cemento es más rígido e impermeable que el soporte, no acompaña sus movimientos, bloquea la evaporación y traslada el daño al material original. Se usan **morteros de cal compatibles**.
+
+---
+
+# 11. Relación con el cliente en reforma
+
+> **La reforma es un proyecto con incertidumbre estructural. El cliente cree estar comprando un resultado cerrado. Toda la gestión de la relación consiste en alinear esas dos cosas antes de romper el primer ladrillo.**
+
+## 11.1 Cómo explicar la incertidumbre
+
+### Las analogías que funcionan
+
+- **"Es como una cirugía."** Se hacen estudios previos, se planifica, se sabe casi todo. Pero **lo que hay adentro se ve cuando se abre**. Un buen cirujano no promete que no habrá sorpresas: promete tener un plan para cuando aparezcan.
+- **"Estamos comprando una casa usada, no una casa nueva."** Nadie espera que un auto usado no tenga nada. Con las casas, en cambio, existe la fantasía de que todo está bien hasta que se demuestre lo contrario.
+- **"Lo que se ve es el 30%."** Detrás de los muros, bajo los pisos y arriba del cielorraso está el otro 70%, y ahí es donde vive el riesgo.
+
+### El discurso, en la primera reunión
+
+```
+1. "En reforma trabajamos con dos categorías: lo que SABEMOS y lo que SUPONEMOS.
+    Nuestro trabajo previo consiste en pasar la mayor cantidad posible de cosas de
+    la segunda categoría a la primera. Eso se hace con relevamiento y cateos, y tiene
+    un costo, que es mucho menor que el costo de equivocarse."
+
+2. "Al final del diagnóstico te vamos a entregar una lista explícita de lo que
+    verificamos y de lo que no pudimos verificar. Esa lista va a formar parte del
+    contrato de obra."
+
+3. "El presupuesto va a tener ítems cerrados y ítems abiertos. Los abiertos tienen
+    precio unitario acordado desde ahora; lo que no sabemos es la cantidad."
+
+4. "Además del presupuesto, vas a necesitar un fondo de imprevistos del orden del
+    ___ %. No es una comisión ni una ganancia nuestra: es TU dinero, reservado, que
+    solo se usa contra una aprobación escrita tuya. Si no se usa, no se gasta."
+
+5. "Y hay tres cosas que pueden aparecer y que si aparecen paran la obra:
+    material con asbesto, un problema estructural serio, o una instalación de gas
+    en condición insegura. Si aparecen, se para, se informa y se resuelve, porque
+    son temas de seguridad, no de presupuesto."
+```
+
+⚠️ **La clave es decirlo ANTES.** Después de un hallazgo, el mismo discurso suena a excusa.
+
+## 11.2 Documentar el estado previo: registro fotográfico y acta
+
+**Este es el documento que decide quién paga cuando aparece un daño.**
+
+### Acta de estado previo — contenido mínimo
+
+```
+ACTA DE CONSTATACIÓN DE ESTADO PREVIO
+
+Lugar y fecha: Santa Rosa, ___ de ____________ de 20__
+
+Inmueble: ______________________________________________________________
+Unidad Funcional (si corresponde): ____  Piso ___ Depto ___
+
+INTERVINIENTES
+Comitente/propietario: _______________________ DNI: __________
+Empresa constructora: _______________________ CUIT: __________
+Dirección Técnica: __________________________ Mat.: __________
+Otros presentes: ______________________________________________
+
+OBJETO
+Se deja constancia del estado en que se encuentran, a la fecha, los sectores que a
+continuación se detallan, con carácter previo al inicio de los trabajos de
+_______________________________, a fin de establecer una base objetiva de comparación
+para el eventual reclamo de daños.
+
+SECTORES CONSTATADOS  (marcar y describir)
+[ ] Interior de la unidad objeto de la obra
+[ ] Espacios comunes de acceso y circulación: vereda, hall, palier, escalera,
+    ascensor, puertas, pisos, paredes, luminarias
+[ ] Unidad lindante inferior — Piso ___ Depto ___
+[ ] Unidad lindante superior — Piso ___ Depto ___
+[ ] Unidades lindantes laterales — ____________
+[ ] Inmuebles linderos (medianeras, veredas, cercos, construcciones)
+[ ] Cubierta / azotea / terrazas
+[ ] Instalaciones comunes visibles
+
+LESIONES PREEXISTENTES REGISTRADAS
+Nº | Ubicación | Tipo (fisura / mancha / rotura / faltante / desgaste) | Dimensiones |
+   | Foto Nº  | Testigo colocado (S/N y Nº)
+___|__________|______________________________________________________|____________
+___|__________|______________________________________________________|____________
+___|__________|______________________________________________________|____________
+
+REGISTRO FOTOGRÁFICO
+Se acompañan ___ (____) fotografías digitales con fecha y hora, identificadas según
+el listado del Anexo A, cuya copia se entrega a cada interviniente en soporte digital.
+Se acompaña asimismo video-recorrido de ___ minutos de duración.
+
+TESTIGOS Y FISURÓMETROS
+Se colocaron ___ testigos/fisurómetros en las lesiones preexistentes indicadas, con
+fecha y numeración visible, cuya lectura inicial se consigna en el Anexo B.
+
+DECLARACIÓN
+Las partes manifiestan que el presente refleja fielmente el estado observado a la
+fecha y que ninguna de las lesiones registradas es imputable a los trabajos objeto
+de la obra, sin perjuicio de su eventual agravamiento durante la ejecución, extremo
+que se evaluará por comparación con el presente instrumento.
+
+Firmas: ____________  ____________  ____________  ____________
+```
+
+### Cuándo se hace acta notarial (y no basta el acta privada)
+
+⚠️ Ante escribano, con constatación notarial, cuando:
+- Hay **demolición** o **excavación** próxima a linderos.
+- Hay **submuración**, recalce o intervención en medianera.
+- Hay **sobreelevación**.
+- El **vecino se niega a firmar** el acta privada (el escribano constata desde el espacio accesible y deja constancia de la negativa).
+- Hay **antecedentes de conflicto** con el consorcio o los vecinos.
+- El inmueble lindero es **de alto valor** o tiene lesiones preexistentes importantes.
+
+**Costo:** una fracción mínima del costo de un reclamo. Se incluye en el presupuesto como ítem.
+
+## 11.3 Manejo de expectativas y de sobrecostos
+
+### Las cinco conversaciones que hay que tener antes de firmar
+
+| # | Conversación | Por qué |
+|---|---|---|
+| 1 | **El presupuesto no es el costo final; es el costo de lo previsible.** Fondo de contingencia. | §9.6 |
+| 2 | **El plazo depende de decisiones que vos tenés que tomar.** Cronograma de decisiones. | §11.4 |
+| 3 | **Vas a tener que mudarte / vivir en obra.** Con las consecuencias concretas. | §9.2 |
+| 4 | **Hay cosas que no se pueden hacer.** Enumerar las restricciones concretas de ESE inmueble: dónde no va el baño, qué muro no se toca, qué necesita el consorcio. | §5, §6 |
+| 5 | **Hay riesgos de seguridad que, si aparecen, tienen prioridad absoluta** sobre el presupuesto y el plazo. | ⚠️ §3.5, §4.4 |
+
+### Protocolo ante un sobrecosto (los primeros 30 minutos definen todo)
+
+```
+[ ] 1. COMUNICARLO INMEDIATAMENTE. El peor error es esperar a tener la solución
+       completa. El cliente perdona el problema; no perdona el silencio.
+[ ] 2. PRESENTARLO CON EVIDENCIA: foto del hallazgo, ubicación, fecha.
+[ ] 3. EXPLICAR POR QUÉ NO ERA PREVISIBLE, remitiendo al Anexo I "Estado del existente"
+       (§9.7-5), donde ese punto figuraba como INFERIDO o SUPUESTO. ⚠️ Este es el
+       momento en que ese anexo demuestra su valor. Sin él, todo es discusión.
+[ ] 4. OFRECER OPCIONES, no un solo camino:
+         Opción A: solución completa — costo, plazo, resultado.
+         Opción B: solución mínima aceptable — costo, plazo, limitaciones.
+         Opción C: no hacer nada — ⚠️ consecuencias explícitas, y si compromete la
+                   seguridad, decir claramente que NO es una opción disponible.
+[ ] 5. RECOMENDAR una opción, con fundamento técnico. El cliente contrata criterio,
+       no un menú.
+[ ] 6. PONERLO POR ESCRITO y esperar la aprobación escrita antes de ejecutar.
+[ ] 7. ACTUALIZAR el cronograma y el presupuesto acumulado, y mostrar el saldo del
+       fondo de contingencia. ⚠️ El cliente tiene que ver SIEMPRE cuánto queda.
+```
+
+### Tablero de control económico (se muestra en cada reunión semanal)
+
+```
+Contrato original ....................... $ __________
+Adicionales aprobados (acumulado) ....... $ __________  (___ %)
+Deductivos aprobados .................... $ (_________)
+─────────────────────────────────────────────────────
+MONTO ACTUALIZADO ....................... $ __________
+Certificado a la fecha .................. $ __________  (___ % de avance)
+Saldo a certificar ...................... $ __________
+
+Fondo de contingencia constituido ....... $ __________
+Fondo consumido ......................... $ __________
+FONDO DISPONIBLE ........................ $ __________  ⚠️
+
+Plazo original .......................... ___ días
+Ampliaciones aprobadas .................. ___ días
+Fecha de finalización prevista .......... __/__/____
+```
+
+⚠️ **La transparencia total del tablero es la mejor herramienta de gestión de la relación.** Un cliente que ve el número todas las semanas no se sorprende.
+
+## 11.4 Decisiones que hay que tomar antes de romper
+
+**Cronograma de decisiones — se entrega firmado al inicio de la obra, con fecha límite para cada una.**
+
+```
+CRONOGRAMA DE DECISIONES DEL COMITENTE
+Obra: ______________________  Inicio: __/__/____
+
+DEBEN ESTAR DEFINIDAS ANTES DEL INICIO (día 0)          Fecha límite   Estado
+─────────────────────────────────────────────────────────────────────────────
+[ ] Distribución definitiva y ubicación de baños/cocina      __/__/__    ___
+[ ] Ubicación de TODOS los artefactos sanitarios y grifería  __/__/__    ___
+    (define el replanteo de cañerías: cambiarlo después
+     significa romper lo hecho)
+[ ] Ubicación de mesada, bacha, cocina, horno, heladera,
+    lavavajillas, lavarropas                                 __/__/__    ___
+[ ] Ubicación de TODAS las bocas eléctricas: luces, llaves,
+    tomas, TV, datos, timbre, portero                        __/__/__    ___
+[ ] Tipo de calefacción y ubicación de equipos y radiadores  __/__/__    ___
+[ ] Ubicación de equipos de aire acondicionado (interior y
+    ⚠️ exterior — §6.4) y recorrido de cañerías y desagüe     __/__/__    ___
+[ ] Cotas de piso terminado en cada local (⚠️ §5.9)          __/__/__    ___
+[ ] Tipo de cielorraso y altura libre resultante             __/__/__    ___
+[ ] Aberturas: cantidad, dimensiones, tipo, sentido de
+    apertura, material, color (⚠️ plazo de fabricación)      __/__/__    ___
+[ ] Muebles a medida: dimensiones y ubicación (aunque el
+    diseño se defina después, las medidas condicionan
+    tomas, luces y revestimientos)                           __/__/__    ___
+
+PUEDEN DEFINIRSE DURANTE LA OBRA (con fecha límite firme)
+─────────────────────────────────────────────────────────────────────────────
+[ ] Revestimientos de baños y cocina        Antes de sem. ___  __/__/__   ___
+[ ] Solados                                 Antes de sem. ___  __/__/__   ___
+[ ] Griferías y accesorios (modelo)         Antes de sem. ___  __/__/__   ___
+[ ] Luminarias (modelo)                     Antes de sem. ___  __/__/__   ___
+[ ] Colores de pintura                      Antes de sem. ___  __/__/__   ___
+[ ] Herrajes y manijas                      Antes de sem. ___  __/__/__   ___
+
+⚠️ Toda decisión no tomada en la fecha límite genera detención de la tarea
+dependiente y ampliación del plazo contractual, conforme la cláusula ___ del contrato.
+```
+
+⚠️ **El cambio de ubicación de un artefacto sanitario después de ejecutados los desagües es el sobrecosto evitable más frecuente de una reforma.** Este cronograma existe para eso.
+
+## 11.5 Cómo se vende una reforma
+
+### El error comercial: regalar el diagnóstico
+
+Lo que hace único al estudio en reforma es **el criterio para leer un edificio existente**. Si eso se da gratis en la visita de cortesía, se está regalando el producto y quedándose con la parte más commoditizada del trabajo.
+
+### Estructura de servicios escalonada
+
+| Etapa | Producto | Entregable | Se cobra |
+|---|---|---|---|
+| **0. Visita de contacto** | Conversación, viabilidad general, encuadre del encargo | Verbal + propuesta de servicios | Gratis (1 hora, y no más) |
+| **1. Diagnóstico y relevamiento** | §2.11 completo | Planos de relevamiento, informe de patologías, registro de cateos, listado VERIFICADO/INFERIDO/SUPUESTO, semáforo de urgencias, presupuesto estimativo por rangos | **SÍ. Honorario propio** |
+| **2. Anteproyecto** | Propuesta espacial y de alcance | Plantas, imágenes, alcance, estimación de costo | **SÍ** |
+| **3. Proyecto y documentación** | Documentación ejecutiva | Planos, detalles, pliegos, cómputo, presupuesto por ítems | **SÍ** |
+| **4. Trámites** | Gestión municipal | Permisos, regularización, final de obra | **SÍ** |
+| **5. Dirección de obra** | Control técnico y de calidad | Actas, certificados, informes | **SÍ** |
+| **6. Administración / gestión integral** | Contratación y coordinación de gremios, gestión de compras | Todo lo anterior + ejecución | **SÍ** |
+
+### Los argumentos que venden el diagnóstico
+
+1. **"El diagnóstico cuesta una fracción de lo que cuesta equivocarse."** Un cateo cuesta lo que cuesta una jornada de albañil; descubrir en obra que hay que rehacer todos los desagües cuesta semanas.
+2. **"Con el diagnóstico vas a poder pedir presupuestos comparables."** Sin él, cada constructor cotiza otra cosa y no se pueden comparar.
+3. **"Te va a servir aunque no hagas la obra con nosotros."** Es un documento sobre tu propiedad, y aumenta su valor: sabés lo que tenés.
+4. **"Con el diagnóstico vas a saber qué es urgente y qué puede esperar."** El semáforo permite hacer la obra por etapas, cuando el presupuesto no alcanza para todo.
+5. ⚠️ **"Hay cosas que son un riesgo de seguridad y hay que saberlas."** Asbesto, gas, electricidad, estructura. **Este argumento es cierto y es el que más pesa.**
+
+### Productos recurrentes (ingresos estables del estudio)
+
+- **Plan de mantenimiento preventivo** anual/semestral para viviendas y consorcios.
+- **Informe periódico de conservación de fachadas y balcones** para consorcios (modelo Ley 257 CABA, aunque no sea obligatorio localmente — §6.3). ⚠️ **Alto valor preventivo real: los desprendimientos de fachada y las fallas de balcones matan gente.**
+- **Informe técnico del art. 2051 CCyC** para obras en partes comunes (§6.2). Es un requisito legal expreso.
+- **Auditoría energética + propuesta de retrofit por etapas** (§7).
+- **Peritajes y dictámenes** de patologías, humedades y fisuras.
+- **Actas de estado previo** para obras de terceros (§11.2).
+- **Relevamientos y regularizaciones** (§10.2).
+
+---
+
+# PARTE VII — HERRAMIENTAS
+
+# 12. Checklists y planillas imprimibles
+
+## 12.1 Planilla de visita técnica inicial (relevamiento completo)
+
+```
+════════════════════════════════════════════════════════════════════════════════
+                    PLANILLA DE VISITA TÉCNICA — REFORMA
+════════════════════════════════════════════════════════════════════════════════
+Obra/Cliente: ______________________________  Fecha: __/__/____  Hoja ___ de ___
+Dirección: _________________________________________________________________
+Profesional: _______________________________  Acompañó: ____________________
+Clima el día de la visita: ____________  Última lluvia: hace ____ días
+
+────────────────────────────────────────────────────────────────────────────────
+A. DATOS GENERALES
+────────────────────────────────────────────────────────────────────────────────
+Año de construcción (estimado/verificado): ______  Fuente: ____________________
+Régimen: [ ]Dominio pleno [ ]Propiedad horizontal — UF Nº ____ Piso ___ Dto ___
+Superficie cubierta aprox: ______ m²   Plantas: ____   Subsuelo: [ ]Sí [ ]No
+Uso actual: ______________________  Uso propuesto: ____________________________
+Ocupada durante la obra: [ ]Sí [ ]No [ ]Parcial     Ocupantes: ____ personas
+
+DOCUMENTACIÓN DISPONIBLE
+[ ]Plano municipal, año ____   [ ]Conforme a obra   [ ]Final de obra
+[ ]Planos de estructura        [ ]Planos de instalaciones
+[ ]Reglamento de PH            [ ]Plano de subdivisión PH
+[ ]Escritura                   [ ]Estudio de suelos
+[ ]Facturas de servicios (24 meses)   [ ]Ninguna
+Observaciones: _______________________________________________________________
+
+────────────────────────────────────────────────────────────────────────────────
+B. ESTRUCTURA Y SISTEMA CONSTRUCTIVO
+────────────────────────────────────────────────────────────────────────────────
+Muros: [ ]Portantes mampostería  [ ]Estructura independiente HºAº  [ ]Mixto
+       [ ]Metálica  [ ]Otro: ____________
+Material de muros: ____________  Espesor medido (en vano): ______ cm
+Aparejo/traba observada: ____________________
+Entrepiso: [ ]Losa maciza [ ]Viguetas+bloques, dirección: ______ [ ]Bovedilla
+           [ ]Madera [ ]Otro: __________  Verificado por cateo Nº ____ [ ]No verif.
+Cubierta: [ ]Plana accesible [ ]Plana inaccesible [ ]Inclinada chapa
+          [ ]Inclinada teja [ ]Otro: ______  Aislación térmica: [ ]Sí [ ]No [ ]NV
+Fundación (calicata Nº ____): _______________________________ [ ]No verificada
+Capa aisladora horizontal: [ ]Presente, cota ____ [ ]Ausente [ ]No verificada
+Cota terreno/vereda exterior vs. piso interior: ______ cm  [ ]Exterior más alto ⚠️
+
+────────────────────────────────────────────────────────────────────────────────
+C. INSTALACIONES
+────────────────────────────────────────────────────────────────────────────────
+ELÉCTRICA — Año aprox: ____
+ [ ]Con puesta a tierra  [ ]SIN PAT ⚠️   [ ]Con diferencial  [ ]SIN diferencial ⚠️
+ Tablero: [ ]Adecuado [ ]Obsoleto [ ]Fusibles de tapón ⚠️   Nº de circuitos: ____
+ Conductores: material ______ estado ______  Aislación: [ ]Buena [ ]Quebradiza ⚠️
+ Termografía de tablero realizada: [ ]Sí [ ]No     Observaciones: ____________
+
+AGUA — Material: [ ]PLOMO ⚠️ [ ]Hierro galvanizado [ ]Cobre [ ]Termofusión [ ]Otro
+ Presión: [ ]Buena [ ]Regular [ ]Mala   Tanque: material ______ cap ____ L
+ Última limpieza del tanque: ____________  Bomba: [ ]Sí [ ]No
+ Prueba de medidor realizada: [ ]Sí, resultado: __________ [ ]No
+
+DESAGÜES — Material: [ ]Cerámica [ ]Hierro fundido [ ]PVC [ ]Mixto
+ Obstrucciones frecuentes: [ ]Sí, dónde: __________ [ ]No
+ Bocas de acceso y cámaras accesibles: [ ]Sí [ ]No   Olores: [ ]Sí [ ]No
+ Videoinspección recomendada: [ ]Sí [ ]No
+
+GAS ⚠️ — [ ]Existente [ ]No hay
+ Cañería embutida: [ ]Envainada [ ]SIN VAINA ⚠️ [ ]No verificable
+ Llaves de paso por artefacto: [ ]Sí [ ]No
+ ARTEFACTOS:
+   Tipo/Ubicación          Cámara abierta/estanca   Ventilación local   Conducto
+   ______________________  ____________________     _______________     _________
+   ______________________  ____________________     _______________     _________
+   ______________________  ____________________     _______________     _________
+ [ ] ⚠️ ARTEFACTO DE CÁMARA ABIERTA EN BAÑO O DORMITORIO
+ [ ] ⚠️ REJILLA DE VENTILACIÓN TAPADA O INEXISTENTE
+ [ ] ⚠️ EXTRACTOR MECÁNICO EN LOCAL CON ARTEFACTO DE CÁMARA ABIERTA
+ [ ] ⚠️ ESTUFA/CALEFACTOR SIN SALIDA AL EXTERIOR
+ [ ] Detector de monóxido de carbono instalado: [ ]Sí [ ]No
+ → SE REQUIERE VERIFICACIÓN POR GASISTA MATRICULADO: [ ]Sí [ ]No
+
+CALEFACCIÓN: ________________________  Antigüedad: ____  Termostato: [ ]Sí [ ]No
+AGUA CALIENTE: ______________________  Antigüedad: ____
+ASCENSOR (si aplica): antigüedad ____ [ ]Con puerta de cabina [ ]SIN PUERTA ⚠️
+   Empresa conservadora: ____________  Libro de inspecciones: [ ]Sí [ ]No
+
+────────────────────────────────────────────────────────────────────────────────
+D. RIESGOS ⚠️  (marcar cualquiera dispara acción inmediata)
+────────────────────────────────────────────────────────────────────────────────
+[ ] ⚠️ Presunción de ASBESTO — ubicación: ____________________________________
+       (chapas / tanque / caños / placas / aislación de cañerías / otro)
+[ ] ⚠️ Cañería de PLOMO
+[ ] ⚠️ Pintura con PLOMO presunta (anterior a ~2004)
+[ ] ⚠️ Riesgo de MONÓXIDO (ver sección C)
+[ ] ⚠️ Instalación eléctrica sin PAT y/o sin diferencial
+[ ] ⚠️ Lesión estructural del SEMÁFORO ROJO (§4.2.5) — cuál: __________________
+[ ] ⚠️ Riesgo de DESPRENDIMIENTO (revoque de fachada / cielorraso / mampostería /
+       balcón / cornisa) sobre vía pública o sobre personas
+[ ] ⚠️ Sobrecarga no verificada en losa (pileta / macetones / equipos / tanque)
+[ ] ⚠️ Muro con desplome medible: ______ cm en ______ m
+ACCIÓN INMEDIATA TOMADA: _____________________________________________________
+COMUNICADO POR ESCRITO AL PROPIETARIO: [ ]Sí, fecha __/__/__  [ ]Pendiente
+
+────────────────────────────────────────────────────────────────────────────────
+E. PATOLOGÍAS — MAPEO  (una línea por lesión; ubicar en croquis)
+────────────────────────────────────────────────────────────────────────────────
+Nº | Ubicación (planta/local/elemento) | Tipo | Descripción y dimensiones | Foto Nº | Semáforo
+___|___________________________________|______|___________________________|_________|_________
+___|___________________________________|______|___________________________|_________|_________
+___|___________________________________|______|___________________________|_________|_________
+___|___________________________________|______|___________________________|_________|_________
+___|___________________________________|______|___________________________|_________|_________
+Tipos: HA=humedad ascendente  HF=humedad filtración  HC=humedad condensación
+       HI=humedad intersticial  HX=humedad accidental  FI=fisura  GR=grieta
+       DE=desprendimiento  CO=corrosión  MO=moho  EF=eflorescencia  BI=biodeterioro
+       XI=xilófagos/pudrición  OT=otro
+
+────────────────────────────────────────────────────────────────────────────────
+F. MEDICIONES REALIZADAS
+────────────────────────────────────────────────────────────────────────────────
+T° interior: ____ °C   HR interior: ____ %   T° exterior: ____ °C  HR ext: ____ %
+Punto de rocío calculado: ____ °C
+T° superficial en puntos fríos: 1)______  2)______  3)______   → ¿condensa? [ ]Sí [ ]No
+Higrómetro — perfil en altura (muro ______), lecturas relativas:
+  0,20 m: ____   0,40 m: ____   0,60 m: ____   0,80 m: ____   1,00 m: ____
+  1,20 m: ____   1,40 m: ____   1,60 m: ____   1,80 m: ____   2,00 m: ____
+  Zona de referencia "seca": ____
+Niveles de piso (cotas relativas): ____________________________________________
+Desplomes medidos: ____________________________________________________________
+
+────────────────────────────────────────────────────────────────────────────────
+G. ENTREVISTA AL USUARIO  (transcribir textual)
+────────────────────────────────────────────────────────────────────────────────
+Obras realizadas y fechas: ____________________________________________________
+Estacionalidad de las humedades: ______________________________________________
+¿Aparece con la lluvia? ¿Con qué viento?: _____________________________________
+Gotas en los vidrios a la mañana: [ ]Sí [ ]No    Olor a humedad: [ ]Sí, dónde: ___
+Ropa tendida adentro: [ ]Sí [ ]No   Estufa a gas sin salida: [ ]Sí ⚠️ [ ]No
+¿Ventilan? ¿Taparon rejillas?: ________________________________________________
+Puertas o ventanas que se trabaron con el tiempo: _____________________________
+¿La grieta creció?: ___________________________________________________________
+Desagües que se tapan: ________________________________________________________
+Lo que más le molesta: ________________________________________________________
+Lo que NO quiere tocar: _______________________________________________________
+
+────────────────────────────────────────────────────────────────────────────────
+H. PROPIEDAD HORIZONTAL (si aplica)
+────────────────────────────────────────────────────────────────────────────────
+Administración: ____________________  Contacto: _______________________________
+Reglamento leído: [ ]Sí [ ]No — obtenerlo ⚠️
+Partes comunes afectadas por la obra: _________________________________________
+Requiere autorización de asamblea: [ ]Sí [ ]No [ ]A determinar
+Mayoría según reglamento: _____________________________________________________
+Informe técnico art. 2051 CCyC requerido: [ ]Sí [ ]No
+Horarios permitidos de obra: __________________________________________________
+Uso de ascensor para materiales: [ ]Permitido [ ]Prohibido [ ]Con condiciones
+Acceso y acopio: ______________________________________________________________
+
+────────────────────────────────────────────────────────────────────────────────
+I. CATEOS PROPUESTOS / REALIZADOS
+────────────────────────────────────────────────────────────────────────────────
+Nº | Ubicación | Objetivo | Realizado | Hallazgo | Foto Nº
+___|___________|__________|___________|__________|________
+___|___________|__________|___________|__________|________
+___|___________|__________|___________|__________|________
+
+────────────────────────────────────────────────────────────────────────────────
+J. CONCLUSIONES DE LA VISITA
+────────────────────────────────────────────────────────────────────────────────
+Estado general: [ ]Bueno [ ]Regular [ ]Malo [ ]Crítico
+Requiere verificación estructural por matriculado: [ ]Sí [ ]No — motivo: _______
+Estudios complementarios recomendados:
+  [ ]Estudio de suelos  [ ]Ensayo de testigos  [ ]Análisis de asbesto
+  [ ]Análisis de plomo en agua  [ ]Videoinspección de desagües
+  [ ]Termografía  [ ]Blower door  [ ]Análisis de sales  [ ]Otro: ______________
+Alcance sugerido de la intervención: __________________________________________
+Restricciones detectadas (lo que NO se puede hacer): __________________________
+_______________________________________________________________________________
+Contingencia recomendada: ____ %  (§9.6)
+Fotos tomadas: ____   Video: [ ]Sí, ____ min
+
+Firma: ____________________  Aclaración: ____________  Matrícula: ____________
+════════════════════════════════════════════════════════════════════════════════
+```
+
+## 12.2 Checklist de diagnóstico de humedad
+
+```
+════════════════════════════════════════════════════════════════════════════════
+              CHECKLIST DE DIAGNÓSTICO DE HUMEDAD — Lesión Nº ____
+════════════════════════════════════════════════════════════════════════════════
+Obra: ______________________  Local: ______________  Fecha: __/__/____
+
+1. DESCRIPCIÓN DEL SÍNTOMA (sin interpretar todavía)
+   Ubicación exacta: _________________________________________________________
+   Elemento afectado: [ ]Muro exterior [ ]Muro interior [ ]Medianera
+                      [ ]Cielorraso [ ]Piso [ ]Encuentro/rincón
+   Orientación del muro: ______   Local contiguo del otro lado: ______________
+   Dimensiones de la mancha: ancho ____ cm  alto ____ cm
+   Altura desde el piso al borde INFERIOR de la mancha: ____ cm
+   Altura desde el piso al borde SUPERIOR de la mancha: ____ cm
+   Forma del límite superior: [ ]Horizontal y nítido [ ]Irregular [ ]Difuso
+   Sentido de avance aparente: [ ]De abajo hacia arriba [ ]De arriba hacia abajo
+                               [ ]Desde un punto [ ]Sin dirección clara
+   Fotos Nº: ______________
+
+2. OBSERVACIONES DIRECTAS
+   [ ] Sales / eflorescencias visibles          → apunta a ASCENDENTE
+   [ ] Moho negro puntuado en rincones/silicona → apunta a CONDENSACIÓN
+   [ ] Revoque ahuecado o pulverulento          → ASCENDENTE o FILTRACIÓN antigua
+   [ ] Pintura ampollada                        → humedad detrás
+   [ ] Agua libre / goteo                       → FILTRACIÓN o ACCIDENTAL
+   [ ] Chorreado con forma de recorrido         → FILTRACIÓN
+   [ ] Superficie fría al tacto, sin sales      → CONDENSACIÓN
+   [ ] Olor a humedad                           → moho oculto
+
+3. ESTACIONALIDAD Y CORRELACIÓN (preguntar al usuario)
+   ¿Permanente todo el año?                        [ ]Sí → ASCENDENTE o ACCIDENTAL
+   ¿Solo o principalmente en invierno?             [ ]Sí → CONDENSACIÓN
+   ¿Aparece/crece 1-3 días después de llover?      [ ]Sí → FILTRACIÓN
+   ¿Depende de la dirección del viento?            [ ]Sí → FILTRACIÓN de fachada
+   ¿Empeora con el uso del ambiente/artefacto?     [ ]Sí → CONDENSACIÓN o ACCIDENTAL
+   ¿Desde cuándo? ______________  ¿Empeoró? ______________
+
+4. MEDICIONES
+   T° aire int ____ °C   HR int ____ %   T° aire ext ____ °C   HR ext ____ %
+   PUNTO DE ROCÍO calculado: ____ °C
+   T° superficial en la mancha: ____ °C   En zona sana: ____ °C
+   → ¿T° superficie ≤ punto de rocío?  [ ]SÍ = CONDENSACIÓN CONFIRMADA  [ ]No
+
+   PERFIL DE HUMEDAD EN ALTURA (higrómetro, lecturas relativas):
+     0,20m __  0,40m __  0,60m __  0,80m __  1,00m __  1,20m __  1,50m __  2,00m __
+     Referencia zona seca: ____
+   → ¿Decreciente y continuo desde el piso?  [ ]SÍ = compatible con ASCENDENTE
+
+5. ENSAYOS
+   [ ] PRUEBA DEL FILM (48-72 h): se humedeció la cara que da
+       [ ]al muro = humedad del muro   [ ]al ambiente = CONDENSACIÓN
+   [ ] PRUEBA DEL MEDIDOR DE AGUA (cerrar todo, 2-4 h):
+       [ ]avanzó = PÉRDIDA ⚠️  [ ]no avanzó
+   [ ] RIEGO DIRIGIDO por sectores: sector que produjo la aparición: __________
+   [ ] CALICATA al pie del muro: capa aisladora [ ]Presente, cota ____ [ ]Ausente
+       Cota de terreno exterior vs. capa aisladora: ____________________________
+   [ ] TERMOGRAFÍA realizada: patrón observado: _____________________________
+   [ ] VIDEOINSPECCIÓN de desagües: hallazgo: _______________________________
+   [ ] Análisis de sales: [ ]Nitratos [ ]Sulfatos [ ]Cloruros
+   [ ] Método CM (carburo): resultado ____ % de masa
+
+6. VERIFICACIÓN DE LO OBVIO (⚠️ hacerlo SIEMPRE antes de concluir)
+   [ ] ¿Hay una pérdida de cañería descartada? ⚠️
+   [ ] ¿Hay un desagüe pluvial que descarga contra el muro?
+   [ ] ¿Hay un cantero o terreno regado contra el muro?
+   [ ] ¿La vereda/terreno exterior está más alto que el piso interior?
+   [ ] ¿La cubierta tiene desagües tapados o embalse?
+   [ ] ¿El local tiene ventilación? ¿Se tapó alguna rejilla? ⚠️
+   [ ] ¿Se cambiaron las carpinterías recientemente? (→ condensación nueva)
+
+7. DIAGNÓSTICO
+   Causa PRIMARIA: _________________________________________________________
+   Causas CONCURRENTES: ____________________________________________________
+   Lesiones SECUNDARIAS derivadas: _________________________________________
+   Grado de certeza: [ ]Confirmado [ ]Probable [ ]Requiere más ensayos
+
+8. SOLUCIÓN PROPUESTA
+   a) Eliminar la causa: ____________________________________________________
+   b) Reparar el daño: _____________________________________________________
+   c) Prevenir recurrencia: ________________________________________________
+   d) Verificación posterior: qué se va a comprobar y cuándo: ______________
+   ⚠️ Advertencias al cliente: _____________________________________________
+
+Firma: ____________________  Matrícula: ____________  Fecha: __/__/____
+════════════════════════════════════════════════════════════════════════════════
+```
+
+## 12.3 Checklist de decisión de tirar un muro ⚠️
+
+```
+════════════════════════════════════════════════════════════════════════════════
+        CHECKLIST — DEMOLICIÓN DE MURO           Muro Nº ____  Local: ________
+════════════════════════════════════════════════════════════════════════════════
+⚠️ ANTE CUALQUIER DUDA NO RESUELTA: EL MURO ES PORTANTE.
+
+1. IDENTIFICACIÓN
+   Ubicación (planta/entre locales): ________________________________________
+   Longitud ____ m   Altura ____ m   Espesor medido en vano ____ cm
+   Material: [ ]Ladrillo macizo [ ]Ladrillo hueco [ ]Bloque [ ]HºAº
+             [ ]Placa de yeso [ ]Madera [ ]Otro: __________
+   Aparejo: [ ]De plano (soga/tizón) [ ]De canto [ ]No verificable
+
+2. INDICIOS DE CONDICIÓN PORTANTE                          Sí   No   NV
+   ¿Perpendicular a la dirección de viguetas/armado?       [ ]  [ ]  [ ]
+     Dirección verificada por cateo Nº ____
+   ¿Se repite en la misma posición en las plantas superiores? [ ] [ ] [ ]
+   ¿Se repite en las plantas inferiores hasta la fundación?   [ ] [ ] [ ]
+   ¿Tiene cimiento propio? (calicata Nº ____)              [ ]  [ ]  [ ]
+   ¿Espesor ≥ 25-30 cm?                                    [ ]  [ ]  [ ]
+   ¿Sonido macizo al golpear en toda su superficie?        [ ]  [ ]  [ ]
+   ¿Tiene dintel dimensionado sobre sus vanos?             [ ]  [ ]  [ ]
+   ¿Hay viga o encadenado apoyando sobre él? (cateo Nº __) [ ]  [ ]  [ ]
+   ¿Apoya sobre él: escalera / tanque / equipo / entrepiso? [ ] [ ] [ ]
+   ¿Arriostra un muro largo o alto?                        [ ]  [ ]  [ ]
+   ¿Es muro de sótano, contención o medianera?             [ ]  [ ]  [ ]
+   ¿Hay fisuras que sugieran que está cargado?             [ ]  [ ]  [ ]
+   ¿El plano de estructura lo indica como portante?        [ ]  [ ]  [ ]
+
+   → ⚠️ CUALQUIER "Sí" O CUALQUIER "NV" EN LOS PUNTOS CRÍTICOS
+     OBLIGA A TRATARLO COMO PORTANTE HASTA VERIFICACIÓN PROFESIONAL.
+
+3. CONTENIDO DEL MURO                                       Sí   No   NV
+   Instalación eléctrica embutida                          [ ]  [ ]  [ ]
+   Cañería de agua                                         [ ]  [ ]  [ ]
+   Desagüe / montante                                      [ ]  [ ]  [ ]
+   ⚠️ CAÑERÍA DE GAS                                        [ ]  [ ]  [ ]
+       → si Sí: DETENER. Gasista matriculado. No se toca.
+   Conducto de ventilación o de evacuación de artefactos ⚠️ [ ] [ ] [ ]
+   Material con presunción de asbesto ⚠️                    [ ]  [ ]  [ ]
+   Detector utilizado: __________  Endoscopio: [ ]Sí [ ]No
+
+4. CONDICIONANTES LEGALES                                   Sí   No   NV
+   ¿Es muro divisorio entre unidades? (COMÚN, CCyC 2041 i)  [ ]  [ ]  [ ]
+   ¿Es muro exterior / fachada? (COMÚN, CCyC 2041 i)        [ ]  [ ]  [ ]
+   ¿Es muro maestro o estructura? (COMÚN, CCyC 2041 d)      [ ]  [ ]  [ ]
+   ¿Es medianera? ⚠️                                        [ ]  [ ]  [ ]
+   ¿Requiere autorización de consorcio? Mayoría: __________
+   ¿Requiere permiso municipal?                            [ ]  [ ]  [ ]
+   ¿Edificio catalogado?                                   [ ]  [ ]  [ ]
+
+5. CONDICIONANTES FUNCIONALES                               Sí   No
+   ¿La demolición deja un local sin ventilación/iluminación
+    reglamentaria?                                          [ ]  [ ]
+   ¿Cambia la superficie o el destino declarado del local?   [ ]  [ ]
+   ¿Afecta la aislación acústica entre ambientes o unidades? [ ]  [ ]
+   ¿Cómo queda el encuentro con piso y cielorraso?  _______________________
+
+6. SI ES PORTANTE — REQUISITOS ANTES DE TOCAR NADA ⚠️
+   [ ] Verificación estructural firmada por matriculado. Prof.: ____________
+       Matrícula: __________  Fecha: __/__/____
+   [ ] Proyecto de dintel/viga de apeo, con dimensionamiento
+   [ ] Verificación de la capacidad de los APOYOS del dintel
+   [ ] Verificación de la FUNDACIÓN bajo los nuevos apoyos
+   [ ] Proyecto y secuencia de APUNTALAMIENTO, con plazos de descarga
+   [ ] Permiso municipal (si corresponde) — Expte. Nº ______________
+   [ ] Autorización de consorcio (si corresponde) — Acta de fecha __/__/____
+   [ ] Seguro de RC vigente con cobertura de linderos. Póliza Nº __________
+   [ ] Acta de estado previo de unidades y linderos afectables (§11.2)
+   [ ] Dirección técnica presente durante la operación. Responsable: ______
+
+7. SECUENCIA DE EJECUCIÓN VERIFICADA
+   [ ] 1. Instalaciones desconectadas y desviadas (⚠️ gas por matriculado)
+   [ ] 2. Apuntalamiento colocado y verificado por la DT — fecha __/__/__
+   [ ] 3. Apoyos/jambas ejecutados
+   [ ] 4. Dintel colocado — mitad A: __/__/__   mitad B: __/__/__
+   [ ] 5. RETAQUE contra el muro superior ejecutado ⚠️
+   [ ] 6. Solidarización de ambas mitades
+   [ ] 7. Plazo de resistencia cumplido: ____ días — fecha de habilitación __/__/__
+   [ ] 8. Demolición autorizada por la DT — fecha __/__/__
+   [ ] 9. Retiro de apuntalamientos autorizado por la DT — fecha __/__/__
+
+DECISIÓN FINAL: [ ] SE DEMUELE  [ ] NO SE DEMUELE  [ ] SE DEMUELE CON APEO
+Firma DT: ____________________  Matrícula: ____________  Fecha: __/__/____
+════════════════════════════════════════════════════════════════════════════════
+```
+
+## 12.4 Checklist de cierre de obra
+
+```
+════════════════════════════════════════════════════════════════════════════════
+                        CHECKLIST DE CIERRE DE OBRA
+════════════════════════════════════════════════════════════════════════════════
+Obra: ______________________________  Fecha de recepción: __/__/____
+
+A. VERIFICACIONES TÉCNICAS
+   [ ] Prueba hidráulica de agua fría y caliente — acta de fecha __/__/__
+   [ ] Prueba de desagües (llenado y estanqueidad) — acta __/__/__
+   [ ] Prueba de estanqueidad de impermeabilizaciones (baños, balcones, cubierta),
+       24-48 h — acta __/__/__ ⚠️
+   [ ] ⚠️ Prueba de hermeticidad de gas y habilitación por gasista matriculado
+       Matrícula: __________  Certificado Nº __________
+   [ ] ⚠️ Verificación de ventilación de TODOS los artefactos de combustión
+   [ ] ⚠️ Medición de puesta a tierra (telurímetro) — valor ____ Ω  ¿Cumple? [ ]Sí
+   [ ] ⚠️ Prueba de disparo de interruptores diferenciales
+   [ ] Verificación de aislación y continuidad de circuitos eléctricos
+   [ ] Certificación de instalación eléctrica por matriculado — Nº __________
+   [ ] Verificación de funcionamiento de todos los artefactos y equipos
+   [ ] Verificación de pendientes de desagüe de pisos y balcones (con agua)
+   [ ] Verificación de escurrimiento en cubierta (riego)
+   [ ] Verificación de apertura, cierre y sellado de todas las carpinterías
+   [ ] Verificación de niveles, plomos y planitud de terminaciones
+   [ ] Retiro de todos los apuntalamientos, autorizado por la DT
+   [ ] Limpieza de desagües y de embudos de cubierta
+   [ ] Retiro de protecciones
+
+B. DOCUMENTACIÓN A ENTREGAR AL CLIENTE
+   [ ] Planos conforme a obra (arquitectura)
+   [ ] ⚠️ Planos/croquis conforme a obra de INSTALACIONES, con recorridos acotados
+       + fotografías de instalaciones antes de tapar (§9.1 Fase 3.4)
+       → Es el documento más valioso para toda la vida futura del edificio
+   [ ] Actas de todas las pruebas realizadas
+   [ ] Certificados de gasista y electricista matriculados
+   [ ] Manuales y garantías de equipos y artefactos
+   [ ] Fichas técnicas de materiales colocados (membranas, pinturas, adhesivos,
+       revestimientos), con lote y fecha
+   [ ] Certificados de garantía de sistemas (impermeabilización, tratamiento de
+       humedad, tratamiento de maderas, control de plagas)
+   [ ] Remanentes rotulados: cerámicos, pintura, pisos (para futuras reparaciones)
+   [ ] Llaves, controles remotos, códigos
+   [ ] Registro fotográfico completo de la obra (antes / durante / después)
+   [ ] Informe de hallazgos ocultos y cómo se resolvieron
+   [ ] ⚠️ Registro de materiales peligrosos que PERMANECEN en el edificio
+       (asbesto encapsulado, plomo, otros) con su ubicación, para futuras obras
+   [ ] PLAN DE MANTENIMIENTO (§12.5)
+
+C. TRÁMITES
+   [ ] Plano conforme a obra presentado — Expte. Nº __________
+   [ ] Final de obra tramitado / obtenido — fecha __/__/____
+   [ ] Habilitaciones (si corresponde)
+   [ ] Comunicación de finalización a la administración del consorcio
+   [ ] Actualización catastral / declaración de mejoras (si corresponde)
+   [ ] Baja de volquete y de ocupación de vía pública
+
+D. ADMINISTRATIVO
+   [ ] Certificación final de obra y liquidación
+   [ ] Cierre del tablero económico: monto final vs. contrato + adicionales
+   [ ] Devolución del saldo no utilizado del fondo de contingencia
+   [ ] Fondo de reparo / garantía: monto ______ plazo ______
+   [ ] Cierre de seguros de obra; verificación de vigencia de garantías
+   [ ] Constancia de que no hay reclamos pendientes de vecinos o del consorcio
+   [ ] Acta de recepción provisoria firmada — fecha __/__/____
+   [ ] Lista de observaciones (punch list) y plazo de corrección
+   [ ] Acta de recepción definitiva — fecha __/__/____
+
+E. POST-OBRA
+   [ ] Visita de verificación a los 30 días
+   [ ] Visita de verificación a los 6 meses (⚠️ especialmente si hubo tratamiento de
+       humedad, impermeabilización o reparación de fisuras)
+   [ ] Visita de verificación al año (primer ciclo estacional completo)
+   [ ] Lectura de testigos/fisurómetros colocados
+   [ ] Encuesta de satisfacción / pedido de referencia
+
+Firma DT: ____________  Firma Comitente: ____________  Fecha: __/__/____
+════════════════════════════════════════════════════════════════════════════════
+```
+
+## 12.5 Plan de mantenimiento preventivo (entregable al cliente)
+
+| Elemento | Frecuencia | Tarea |
+|---|---|---|
+| **Desagües y embudos de cubierta** | **Semestral** y después de tormentas | Limpieza, verificación de rejillas |
+| **Cubierta: inspección general** | **Anual**, antes del otoño | Membrana, solapes, babetas, pretiles, juntas, penetraciones, embalse |
+| **Canaletas y bajadas pluviales** | Semestral | Limpieza y verificación de descarga |
+| **Selladores de carpinterías** | Anual | Inspección; recambio cada ~5–10 años según exposición |
+| **Pintura exterior** | Inspección anual | Repintado cada ~4–8 años según exposición |
+| **Fachada y balcones** ⚠️ | **Anual** (percusión de revoques accesibles); inspección técnica profesional con la periodicidad del modelo Ley 257 (§6.3) | Detección de riesgo de desprendimiento y de corrosión de armaduras |
+| **Artefactos a gas y conductos** ⚠️⚠️ | **ANUAL, ANTES DEL INVIERNO, por gasista matriculado** | Quemadores, ventilaciones, conductos, remates. **Innegociable** |
+| **Detector de monóxido** ⚠️ | Prueba mensual; recambio según fabricante | — |
+| **Interruptor diferencial** ⚠️ | **Prueba mensual con el botón de test** | Si no dispara: recambio inmediato |
+| **Tablero eléctrico** | Anual | Ajuste de bornes, termografía si es posible |
+| **Puesta a tierra** | Cada 1–2 años | Medición de resistencia |
+| **Tanque de agua** | **Semestral** | Limpieza y desinfección; verificación de tapa |
+| **Instalación de agua** | Anual | Verificación de pérdidas (prueba del medidor) |
+| **Desagües cloacales** | Cada 2–3 años | Videoinspección en instalaciones antiguas |
+| **Bombas** | Anual | Funcionamiento y protecciones |
+| **Ascensor** | Según contrato de conservación y normativa | Empresa habilitada |
+| **Juntas de dilatación** | Anual | Estado del sellador |
+| **Fisuras bajo monitoreo** | Según protocolo (§4.2.4) | Lectura de testigos |
+| **Vegetación próxima** | Anual | Poda de raíces y ramas; distancia a fundaciones y desagües |
+| **Vereda perimetral y pendientes** | Anual | Que el agua se aleje del muro |
+| **Ventilaciones y rejillas** ⚠️ | Estacional | **Que estén libres. NUNCA taparlas** |
+| **Filtros de aire acondicionado** | Trimestral en uso | Limpieza |
+| **Madera estructural** | Anual | Inspección de apoyos, humedad, xilófagos |
+| **Estructura metálica** | Anual | Óxido, especialmente en apoyos y encuentros |
+
+---
+
+# 13. Bibliografía y normas comentadas
+
+> ⚠️ **Sobre las URLs:** verificadas al momento de redactar este documento. Los sitios oficiales reorganizan sus contenidos con frecuencia; si un enlace falla, buscar por el título de la norma en el sitio del organismo. **Toda cita normativa debe verificarse contra el texto vigente antes de usarse en un informe o contrato.**
+
+## 13.1 Normativa argentina
+
+### Propiedad horizontal y derechos reales
+
+| Norma | Contenido | Comentario de uso | Fuente |
+|---|---|---|---|
+| **CCyC, Libro Cuarto, Título V, arts. 2037–2072 — Propiedad horizontal** | Régimen completo de PH: partes comunes y propias, facultades y obligaciones, obras, reglamento, asambleas, administrador | **Es el texto que hay que tener a mano en toda reforma en PH.** Artículos operativos: 2040-2043 (común/propio), 2046-2047 (obligaciones y prohibiciones), 2051-2055 (obras), 2056-2057 (reglamento), 2058-2063 (asambleas), 2067 (administrador) | [CPCE Santa Fe – texto del Título V (PDF)](https://www.cpcesfe2.org.ar/wp-content/uploads/2019/03/4305-Codigo_Civil_y_Comercial_TituloV.pdf) · [Notarfor – Título V](https://www.notarfor.com.ar/codigo-civil-comercial-unificado/titulo-v-propiedad-horizontal.php) |
+| **CCyC arts. 1978–1981 — Luces y vistas** | Distancias mínimas para vistas (3 m frontal / 0,60 m lateral) y altura mínima para luces (1,80 m); privación de luces o vistas | ⚠️ Todos con la salvedad *"excepto que una ley local disponga otras dimensiones"*: **hay que verificar la normativa municipal de Santa Rosa** | [Código Civil Online – art. 1978](https://codigocivilonline.com.ar/articulo-1978/) · [art. 1979](https://codigocivilonline.com.ar/articulo-1979/) · [art. 1981](https://codigocivilonline.com.ar/articulo-1981/) |
+| **CCyC arts. 2006–2036 — Condominio de muros, cercos y fosos (medianería)** | Cerramiento forzoso urbano (2007), adquisición y cobro de la medianería, prolongación en altura o profundidad (2022), reconstrucción (2024) | ⚠️ La cuestión de **abrir vanos en medianera** exige consulta jurídica: no se resuelve con un solo artículo | [Código Civil Online – art. 2007](https://codigocivilonline.com.ar/articulo-2007/) · [art. 2022](https://codigocivilonline.com.ar/articulo-2022/) · [art. 2024](https://codigocivilonline.com.ar/articulo-2024/) |
+| **CCyC comentado, Tomo V (Libro Cuarto)** — Infojus/SAIJ | Comentario oficial artículo por artículo | Muy útil para fundamentar un informe técnico-legal | [SAIJ (PDF)](https://www.saij.gob.ar/docs-f/codigo-comentado/CCyC_Nacion_Comentado_Tomo_V.pdf) |
+| **Ley 13.512 (1948) – Propiedad Horizontal** | Régimen **derogado**, reemplazado por el CCyC | ⚠️ Los reglamentos redactados bajo su vigencia siguen aplicándose en lo que no se opongan al CCyC. **Verificar el encuadre con asesoramiento legal** | — |
+
+### Seguridad, salud y materiales peligrosos
+
+| Norma | Contenido | Comentario | Fuente |
+|---|---|---|---|
+| **Resolución 823/2001 (Ministerio de Salud)** | Prohíbe producción, importación, comercialización y uso de **asbesto crisotilo** y productos que lo contengan **desde el 1/1/2003** (art. 1°); excepciones transitorias (arts. 3° y 4°); **art. 5°: remite a reglamentación posterior las tareas de mantenimiento, refacción y demolición de edificios con asbesto instalado** | ⚠️ **Norma clave para el §3.5.** No obliga a remover lo instalado, pero remite su manipulación a los organismos competentes | [Argentina.gob.ar – texto](https://www.argentina.gob.ar/normativa/nacional/resoluci%C3%B3n-823-2001-68112/texto) |
+| **Res. SRT 577/1991** | Normas para uso, manipuleo y disposición del amianto y sus desechos | **Verificar vigencia y normativa complementaria de la SRT antes de aplicar** | Buscar en el sitio de la SRT |
+| **Ley 19.587 de Higiene y Seguridad en el Trabajo y Decreto 911/96 (industria de la construcción)** | Régimen de seguridad e higiene en obra | ⚠️ **Aplicable a toda obra de reforma con personal.** Legajo técnico, servicio de higiene y seguridad, EPP, andamios, trabajo en altura | Buscar en Argentina.gob.ar / SRT |
+| **AEA 90364 — Reglamentación para la ejecución de instalaciones eléctricas en inmuebles** (Asociación Electrotécnica Argentina) | Base normativa de instalaciones eléctricas: esquemas de conexión a tierra (TT en suministros BT desde red pública), interruptores diferenciales de 30 mA, valores de resistencia de PAT, secciones, protecciones; Parte 7 Sección 771 para viviendas | ⚠️ **Verificar la edición vigente y su adopción por la autoridad local.** Es la referencia técnica de §4.4.1 | [Editores – AEA 90364](https://www.editores.com.ar/institucion/aea/20240923_todo_sobre_instalaciones_electricas_todo_sobre_aea_90364) |
+| **Normativa ENARGAS y del distribuidor de gas** | Instalaciones internas, artefactos, ventilaciones, conductos de evacuación | ⚠️ **Verificar siempre el texto vigente.** Todo lo de §4.4.3 y §4.4.4 depende de esto | Sitio de ENARGAS y del distribuidor local |
+
+### Estructuras
+
+| Norma | Contenido | Comentario | Fuente |
+|---|---|---|---|
+| **Reglamentos CIRSOC** (INTI-CIRSOC) | Serie completa de reglamentos argentinos de estructuras: CIRSOC 101 (cargas), 102 (viento), 201 (hormigón), 301 (acero), 601 (madera), INPRES-CIRSOC 103 (sismo) | ⚠️ **Verificar la edición vigente y su adopción por la jurisdicción.** Uso en reforma: verificación de cargas (101), viento en cubiertas livianas (102) | [INTI-CIRSOC](https://www.inti.gob.ar/) · [INPRES](http://contenidos.inpres.gob.ar/) |
+| **INPRES-CIRSOC 103 — Zonificación sísmica** | 5 zonas (0 a 4) según peligrosidad sísmica; requerimientos decrecientes de zona 4 a zona 0 | La Pampa está en las zonas de **menor peligrosidad** del país (el este de la provincia, en nivel "muy reducida"). ⚠️ **Verificar la zona exacta de Santa Rosa en el mapa vigente** | [INPRES – Zonificación sísmica](https://www.argentina.gob.ar/inpres/ingenieria-sismorresistente/zonificacion-sismica) · [CIRSOC 103 Parte I (PDF)](http://contenidos.inpres.gob.ar/docs/INPRES-CIRSOC-103_Parte_I-Reglamento.pdf) |
+| **ISO 13822 — Bases for design of structures. Assessment of existing structures** | Requisitos y procedimientos generales para la **evaluación de estructuras existentes** con base en confiabilidad estructural y consecuencias de falla. Aplica ante cambio de uso, extensión de vida útil, verificación por nuevas acciones o deterioro. El Anexo I contempla estructuras patrimoniales | ⚠️ **La referencia metodológica correcta para §5.6 (sobreelevación) y para cualquier verificación de estructura existente.** Norma de pago | [ISO 13822:2010](https://www.iso.org/standard/46556.html) |
+
+### Térmica, energía y habitabilidad
+
+| Norma | Contenido | Comentario | Fuente |
+|---|---|---|---|
+| **IRAM 11603** | Clasificación bioambiental de la República Argentina | Define la zona de Santa Rosa (**IV, templada fría** — verificar subzona) y los datos climáticos de diseño | IRAM (norma de pago) |
+| **IRAM 11601** | Propiedades térmicas de los componentes y elementos de construcción. Método de cálculo de la transmitancia térmica | Base de todo cálculo de aislación | IRAM |
+| **IRAM 11605** | Acondicionamiento térmico de edificios. Condiciones de habitabilidad. Valores máximos de transmitancia térmica en cerramientos opacos (niveles A, B y C) | ⚠️ **La referencia para fijar objetivos de retrofit (§7)** | IRAM |
+| **IRAM 11625** | Verificación del riesgo de **condensación superficial e intersticial** en paños centrales de muros | ⚠️⚠️ **NORMA CLAVE DE §7.5.** Es la verificación obligatoria antes de aislar por el interior | IRAM |
+| **IRAM 11630** | Verificación del riesgo de condensación en **puentes térmicos** | Complemento indispensable de la 11625 | IRAM |
+| **IRAM 11900** | **Etiqueta de eficiencia energética de viviendas.** Método de cálculo, criterios de evaluación y calificación (letras A a G según el Índice de Prestación Energética). Edición de 2017 amplía a climatización, ACS, iluminación y fotovoltaica, en viviendas uni y multifamiliares | ⚠️ **Verificar obligatoriedad en la jurisdicción.** Herramienta de venta del retrofit (§7.1) | [Presentación IRAM sobre 11900 (PDF)](https://www.argentina.gob.ar/sites/default/files/vii-norma_iram_11900-etiquetado_en_viviendas-iram-ing._pablo_paisan_0.pdf) · [Programa nacional](https://www.argentina.gob.ar/noticias/el-etiquetado-de-eficiencia-energetica-tambien-para-viviendas) |
+| **Ley 27.424 – Generación distribuida de energía renovable** | Régimen de fomento a la generación distribuida integrada a la red | ⚠️ **Verificar reglamentación nacional, adhesión provincial de La Pampa y condiciones de la distribuidora local antes de proyectar fotovoltaica (§7.2-11)** | Argentina.gob.ar |
+
+### Sanitarias
+
+| Norma | Contenido | Comentario | Fuente |
+|---|---|---|---|
+| **Reglamentos de instalaciones sanitarias internas** (ex Obras Sanitarias de la Nación y sus adopciones provinciales/municipales) | Materiales, diámetros, pendientes (referencia: **1:60 a 1:20** para Ø 0,100 m), bocas de acceso, ventilaciones | ⚠️ **Verificar el reglamento aplicable en Santa Rosa / La Pampa y el de la prestataria local** | [Guía nacional de instalaciones sanitarias domiciliarias (PDF)](https://www.argentina.gob.ar/sites/default/files/guia_para_ejecucion_de_instalaciones_sanitarias_domiciliarias_y_asimilables_a_domiciliarias.pdf) |
+
+### Normativa local — Santa Rosa, La Pampa
+
+| Norma | Contenido | Comentario | Fuente |
+|---|---|---|---|
+| **Código de Edificación de Santa Rosa — Ordenanza 1581/1995 y modificatorias** (entre ellas Ord. 6445/2020) | Administración, proyecto de obras, ejecución, instalaciones complementarias, usos, sanciones (incluidas multas por ampliar o modificar sin permiso) | ⚠️⚠️ **Norma de cabecera del estudio. Obtener el texto ordenado vigente y tenerlo impreso.** Todo el §10 depende de ella | [Concejo Deliberante de Santa Rosa](https://www.concejosantarosa.gob.ar/category/codigo-edificacion/) · [Ord. 1581/1995](https://www.concejosantarosa.gob.ar/ordenanza-1581-1995/) |
+| **Código Urbanístico de Santa Rosa** | Zonificación, usos, FOS, FOT, altura, retiros, tejido | ⚠️ **Verificar el distrito de cada parcela antes de proyectar (§10.4)** | [Texto 2017/2018 (PDF)](https://www.region.com.ar/productos/semanario/archivo/pdf-fotos/codigo-urbanistico-2017-al-20-02%202018.pdf) · Municipalidad de Santa Rosa |
+| **Colegio/Consejo Profesional de La Pampa** | Encomiendas, visados, honorarios, incumbencias | Verificar requisitos de visado y encomienda para cada tipo de trámite | [CPITLP](https://www.cpitlp.org.ar/) |
+
+### Referencia comparada (no aplicable en La Pampa, se usa como buena práctica)
+
+| Norma | Por qué se cita |
+|---|---|
+| **Ley 257 CABA — Conservación de fachadas y balcones** | ⚠️ **Rige solo en CABA.** Modelo de inspección técnica periódica obligatoria de fachadas y balcones, con informe de arquitecto o ingeniero civil matriculado y **periodicidad creciente según antigüedad** (10–21 años: cada 10; 21–34: cada 8; 34–50: cada 6; 50–71: cada 4). Se usa como **modelo de servicio profesional preventivo** (§6.3, §11.5). [Texto (PDF)](http://cagesra.org.ar/downloads/ley_257.pdf) · [Info general](https://www.arquitectonline.com/ley-257/) |
+| **ITE / IEE — Inspección Técnica de Edificios (España)** | Modelo maduro de inspección periódica obligatoria: estructura y cimentación, cerramientos exteriores, redes de saneamiento y fontanería, y elementos que afecten a la seguridad, salubridad y ornato público, más evaluación del estado de conservación y de accesibilidad, con dictamen final y medidas correctoras. **Es la mejor plantilla conceptual para armar un informe de diagnóstico completo (§2.11)** |
+| **CTE — Código Técnico de la Edificación (España)**, especialmente DB-SE (seguridad estructural), DB-HS (salubridad), DB-HE (ahorro de energía) y DB-HR (protección frente al ruido) | Fuente de criterios técnicos y de valores de referencia bien documentados, útil como base doctrinaria. ⚠️ **No es normativa aplicable en Argentina** |
+
+## 13.2 Bibliografía técnica
+
+### Patología y diagnóstico
+
+| Obra | Comentario |
+|---|---|
+| **MONJO CARRIÓ, Juan — *Patología de cerramientos y acabados arquitectónicos*** (Munilla-Lería; ed. adaptada al CTE) | ⚠️ **El libro de cabecera del capítulo §4.** Estructurado como manual médico: consulta → diagnóstico → solución. Trata humedades, suciedad, grietas y fisuras, desprendimientos y eflorescencias, y **distingue explícitamente lesiones primarias de secundarias** (concepto usado en §4.0) |
+| **BROTO, Carles — *Enciclopedia Broto de patologías de la construcción*** | Catálogo visual muy extenso de lesiones con fotografías. Excelente para **mostrarle al cliente** de qué se está hablando, y para el reconocimiento rápido en obra |
+| **AA.VV. — *Tratado de Rehabilitación*** (Munilla-Lería / DCTA-UPM, 1998-1999), 5 tomos: (1) Teoría e historia de la rehabilitación; (2) Metodología de la restauración y la rehabilitación; (3) Patología y técnicas de intervención: elementos estructurales; (4) …fachadas y cubiertas; (5) …las instalaciones | ⚠️ **La obra de referencia completa en español.** El tomo 2 es la base metodológica de §2 y §4.0; los tomos 3-5 son el catálogo de técnicas de intervención. [Bibliografía comentada (PDF)](https://www.aparejadoresmadrid.es/documents/20181/541136/Bibliografia+Tratado+de+Rehabilitaci%C3%B3n+Editorial+Munilla.pdf/a7293eec-86a1-49a6-bb90-76a21b50bb14) |
+| **DE MIGUEL, José L. — *Fisuras y Grietas*** (UPM, 2015) | ⚠️ **La mejor fuente en español sobre §4.2**, y de acceso abierto. Desarrolla los patrones por causa (asiento, expansividad, dilatación, retracción, empuje) y **el criterio diagnóstico de la "fisura conjugada"**. Advertencia central: la gravedad no se mide por el espesor. [PDF abierto](https://oa.upm.es/74693/1/Fisuras_Grietas.pdf) |
+| **HARRIS, Samuel Y. — *Building Pathology: Deterioration, Diagnostics, and Intervention*** (Wiley) | Enfoque anglosajón sistemático: los mecanismos de deterioro (agua, calor, movimiento, biología) y el método de diagnóstico. Muy bueno en la **lógica de investigación** |
+| **WATT, David — *Building Pathology: Principles and Practice*** (Wiley-Blackwell) | Complementario del anterior, con énfasis en la inspección y el informe |
+
+### Humedades
+
+| Obra | Comentario |
+|---|---|
+| **FREITAS, Vasco Peixoto de; BARREIRA, Eva y otros — publicaciones del LFC (Laboratório de Física das Construções, FEUP, Universidade do Porto) sobre humedad en la edificación, humedad ascendente y comportamiento higrotérmico** | ⚠️ Referencia científica sólida sobre humedad en edificios: mecanismos, medición, y evaluación de técnicas de tratamiento de humedad ascendente. Buscar por autores en el repositorio de la Universidade do Porto y en revistas de *Building and Environment* / *Construction and Building Materials* |
+| **Recomendaciones WTA** (Wissenschaftlich-Technische Arbeitsgemeinschaft für Bauwerkserhaltung und Denkmalpflege), en particular la línea sobre **revoques de saneamiento (Sanierputz)** | ⚠️ **Referencia técnica del §4.1.2-C.** Los revoques macroporosos de calidad se especifican por certificación WTA y/o como mortero de renovación tipo R según EN 998-1 |
+| **Fundación MUSAAT — *Muros de sótano: impermeabilización y drenaje* (CM-1)** | Guía práctica de acceso abierto sobre §4.1.8. [Ebook](https://fundacionmusaat.musaat.es/static/ebooks/CM-1/) |
+| **OMS — *Guidelines for indoor air quality: dampness and mould*** | ⚠️ **La fuente sanitaria de §4.1.10.** Fundamenta que la humedad persistente y el crecimiento microbiano en interiores deben evitarse, y su asociación con síntomas respiratorios |
+| **EPA (EE.UU.) — *Mold Remediation in Schools and Commercial Buildings* / guías de limpieza de moho** | Protocolos prácticos de remediación por superficie afectada. [Versión en español (PDF)](https://espanol.epa.gov/sites/default/files/2019-03/documents/mold_worker_and_employer_guide._disaster-flood_cleanup._spanish._pdf_0.pdf) |
+
+### Hormigón, ensayos y reparación
+
+| Referencia | Comentario |
+|---|---|
+| **ASTM C805** — *Standard Test Method for Rebound Number of Hardened Concrete* | Esclerómetro. ⚠️ **Método comparativo, no da resistencia característica** |
+| **ASTM C597** — *Pulse Velocity Through Concrete* | Ultrasonido: homogeneidad y detección de defectos internos |
+| **ASTM C876** — *Corrosion Potentials of Uncoated Reinforcing Steel in Concrete* | Semipila: mapeo de zonas con corrosión activa. Muy útil en superficies grandes |
+| **UNE 112011 (u equivalente aplicable)** — determinación de la **profundidad de carbonatación** en hormigón endurecido | ⚠️ El ensayo de fenolftaleína de §4.3.1. Verificar la norma aplicable en Argentina |
+| **Método SonReb** (combinación esclerómetro + ultrasonido), con modelos tipo RILEM | Mejora la estimación de resistencia respecto de cada ensayo por separado. Sigue siendo estimación |
+| **EN 1504** (serie), especialmente **EN 1504-3** (morteros de reparación estructural y no estructural, clases R1 a R4) y **EN 1504-9** (principios generales de reparación y protección) | ⚠️ Base para especificar correctamente los productos de reparación de §4.3.1. Verificar disponibilidad y certificación de los productos en el mercado argentino |
+| **RILEM** — recomendaciones de comités técnicos sobre ensayos in situ en hormigón y mampostería | Fuente de métodos de ensayo no destructivo bien documentados |
+| **Informes de la Construcción** (CSIC, acceso abierto) — artículos sobre END y determinación de resistencia con esclerómetro y ultrasonidos | [Revista](https://informesdelaconstruccion.revistas.csic.es/) |
+
+### Termografía, hermeticidad y energía
+
+| Referencia | Comentario |
+|---|---|
+| **EN 13187 / ISO 6781** — *Thermal performance of buildings. Qualitative detection of thermal irregularities in building envelopes. Infrared method* | ⚠️ **Marco metodológico de la termografía de edificios (§2.5, §7.1).** Requiere contraste térmico mínimo (del orden de 10 °C) entre interior y exterior y control de la radiación solar incidente |
+| **EN ISO 9972** (ex EN 13829) — ensayo de **hermeticidad al aire por presurización** (blower door) | Método del ensayo n50 |
+| **Estándar EnerPHit** (Passive House Institute) — rehabilitación con criterios Passivhaus | Referencia de objetivos ambiciosos de retrofit; exige **n50 ≤ 1,0 h⁻¹** |
+| **GANEM, C. y otros — trabajos sobre termografía infrarroja para diagnóstico térmico de viviendas en Mendoza, Argentina** | ⚠️ Valioso por estar **desarrollado en contexto argentino**, con protocolos de bajo costo y alta replicabilidad. [Artículo (SciELO)](https://scielo.conicyt.cl/scielo.php?pid=S0719-07002018000200080&script=sci_arttext) |
+| **UNLP — Método de análisis para verificar los riesgos de condensación superficial e intersticial** | Trabajo argentino sobre la verificación de §7.5. [PDF (SEDICI-UNLP)](http://sedici.unlp.edu.ar/bitstream/handle/10915/102007/Documento_completo.pdf-PDFA.pdf?sequence=1&isAllowed=y) |
+
+### Patrimonio y restauración
+
+| Referencia | Comentario |
+|---|---|
+| **Carta de Venecia (ICOMOS, 1964)** — *Carta internacional sobre la conservación y la restauración de monumentos y sitios* | ⚠️ **Documento fundacional de §1.2-9 y §10.6.** Principios: valor patrimonial, autenticidad, investigación y documentación, respeto por la evolución histórica, uso sostenible. [ICOMOS Argentina](https://www.icomos.org.ar/blog/2024/09/11/60-aniversario-de-la-carta-de-venecia-carta-internacional-sobre-la-conservacion-y-la-restauracion-de-monumentos-y-sitios/) |
+| **Cartas y textos doctrinarios de ICOMOS** (Nara sobre autenticidad, Cracovia, Burra, principios sobre patrimonio construido en madera, análisis y restauración de estructuras del patrimonio arquitectónico) | Colección completa. [ICOMOS España – biblioteca](https://icomos.es/biblioteca-y-recursos/) · [Compilación (PDF)](https://disurb1.files.wordpress.com/2011/03/03-cartas-y-textos-doctrinarios-icomos.pdf) |
+| **ISO 13822, Anexo I** | Consideraciones adicionales para la evaluación estructural de **estructuras patrimoniales** |
+
+## 13.3 Fuentes consultadas para este documento
+
+**Marco legal argentino**
+- [CCyC – Título V Propiedad Horizontal, texto completo (CPCE Santa Fe)](https://www.cpcesfe2.org.ar/wp-content/uploads/2019/03/4305-Codigo_Civil_y_Comercial_TituloV.pdf)
+- [CCyC comentado, Tomo V – SAIJ](https://www.saij.gob.ar/docs-f/codigo-comentado/CCyC_Nacion_Comentado_Tomo_V.pdf)
+- [Código Civil y Comercial Online – artículos 1978, 1979, 1981, 2007, 2022, 2024](https://codigocivilonline.com.ar/)
+- [Resolución 823/2001 – Prohibición de asbesto crisotilo (texto oficial)](https://www.argentina.gob.ar/normativa/nacional/resoluci%C3%B3n-823-2001-68112/texto)
+- [Ley 257 CABA – Conservación de fachadas (PDF)](http://cagesra.org.ar/downloads/ley_257.pdf)
+- [Código de Edificación de Santa Rosa – Ordenanza 1581/1995](https://www.concejosantarosa.gob.ar/ordenanza-1581-1995/)
+- [Código Urbanístico de Santa Rosa (PDF)](https://www.region.com.ar/productos/semanario/archivo/pdf-fotos/codigo-urbanistico-2017-al-20-02%202018.pdf)
+- [Regularización de obra en contravención – modelo de trámite (Buenos Aires Ciudad)](https://buenosaires.gob.ar/tramites/registro-de-plano-de-obra-civil-regularizacion-de-obra-en-contravencion)
+- [Subdivisión en propiedad horizontal – cuestiones planimétricas (Colegio de Escribanos, PDF)](https://www.colegio-escribanos.org.ar/biblioteca/cgi-bin/ESCRI/ARTICULOS/53947.pdf)
+
+**Estructuras y evaluación**
+- [INPRES – Zonificación sísmica](https://www.argentina.gob.ar/inpres/ingenieria-sismorresistente/zonificacion-sismica)
+- [INPRES-CIRSOC 103 Parte I (PDF)](http://contenidos.inpres.gob.ar/docs/INPRES-CIRSOC-103_Parte_I-Reglamento.pdf)
+- [ISO 13822:2010 – Assessment of existing structures](https://www.iso.org/standard/46556.html)
+- [De Miguel, J. L. – *Fisuras y Grietas* (UPM, PDF abierto)](https://oa.upm.es/74693/1/Fisuras_Grietas.pdf)
+- [La interpretación de las grietas – Cuaderno de Estructuras (ACE)](https://aceweb.cat/es/articulos-destacados/la-interpretacion-de-las-grietas/)
+- [Determinación de la resistencia del hormigón con esclerómetro y ultrasonidos – Informes de la Construcción (CSIC)](https://informesdelaconstruccion.revistas.csic.es/index.php/informesdelaconstruccion/article/view/2141)
+- [Corrosión en armaduras: determinación de la profundidad de carbonatación (ULL, PDF)](https://campusvirtual.ull.es/ocw/pluginfile.php/2096/mod_page/content/3/FichasTemas/tema16-carbonatacion.pdf)
+- [Norviguet – Manual técnico de viguetas pretensadas (Argentina, PDF)](https://www.norviguet.com.ar/wp-content/uploads/2024/02/Catalogo-tecnico-comercial-Norviguet_V6.pdf)
+
+**Humedades y patologías**
+- [Fundación MUSAAT – Muros de sótano: impermeabilización y drenaje (CM-1)](https://fundacionmusaat.musaat.es/static/ebooks/CM-1/)
+- [Mapei – Saneamiento de muros con humedad ascendente: revoques macroporosos y barrera química](https://www.mapei.com/es/es/productos-y-soluciones/nuestras-soluciones/detalles-de-la-solucion/saneamiento-de-muros-afectados-por-humedad-ascendente-con-revoque-deshumidificante-macroporoso-a-base-de-cal-hidraulica-natural-sin-cemento-y-con-acabado-transpirable-a-base-de-siloxanos)
+- [Sobre la falta de aval científico de la electroósmosis](https://www.murprotec.es/blog/razones-electroosmosis-humedades/) · [Caso documentado de ineficacia](https://humeingenieria.es/blog/electroosmosis-caso-real-de-humedad-por-capilaridad/)
+- [Condensaciones intersticiales y barreras de vapor (URSA)](https://www.ursa.es/es-es/articulos/2553598/condensaciones-intersticiales/)
+- [Sika Argentina – Impermeabilización de sótanos y subsuelos](https://arg.sika.com/es/construccion/impermeabilizacion-de-estructuras/44859.html)
+- [Control de moho y calidad del aire interior](https://higieneambiental.com/control-del-moho)
+- [Testigos y fisurómetros: seguimiento de grietas](https://ingenierosasesores.com/actualidad/grietas-en-edificios/) · [CYPE – Control de fisuras mediante testigos](https://generadordeprecios.info/rehabilitacion/Actuaciones_previas/0E_Toma_de_muestras_y_ensayos_par/Control_de_fisuras/Control_de_fisuras_mediante_testigos.html)
+
+**Instalaciones y seguridad**
+- [AEA 90364 – Reglamentación de instalaciones eléctricas (información general)](https://www.editores.com.ar/institucion/aea/20240923_todo_sobre_instalaciones_electricas_todo_sobre_aea_90364)
+- [AEA 90364-7-770/771 (PDF, ERSeP Córdoba)](https://ersep.cba.gov.ar/wp-content/uploads/2021/05/AEA-90364-7-770_ERSep.pdf)
+- [Prevención de intoxicaciones por monóxido de carbono (Infobae)](https://www.infobae.com/salud/2026/06/25/como-evitar-intoxicaciones-por-monoxido-de-carbono/) · [Defensoría del Pueblo de la Nación – guía de prevención](https://defensor.gob.ar/articulo.php?id=30622)
+- [El monóxido de carbono en instalaciones domiciliarias](https://guiadelacalefaccion.com.ar/noticias/el-monoxido-de-carbono-en-instalaciones-domiciliarias/)
+- [Plomo en viviendas antiguas: cañerías y pinturas (CONICET)](https://www.conicet.gov.ar/plomo-el-enemigo-silencioso/)
+- [Asbesto en Argentina – reseña histórica y normativa (ECyT-ar)](https://cyt-ar.com.ar/cyt-ar/index.php/Asbesto_en_Argentina)
+- [Pendiente de desagüe cloacal: mínima y máxima (referencia argentina)](https://appmaestro.com.ar/guia/pendiente-de-desague-cloacal/)
+- [Guía nacional para la ejecución de instalaciones sanitarias domiciliarias (PDF)](https://www.argentina.gob.ar/sites/default/files/guia_para_ejecucion_de_instalaciones_sanitarias_domiciliarias_y_asimilables_a_domiciliarias.pdf)
+
+**Energía y acústica**
+- [IRAM 11900 – Etiquetado de eficiencia energética de viviendas (presentación, PDF)](https://www.argentina.gob.ar/sites/default/files/vii-norma_iram_11900-etiquetado_en_viviendas-iram-ing._pablo_paisan_0.pdf)
+- [Programa nacional de etiquetado de viviendas](https://www.argentina.gob.ar/noticias/el-etiquetado-de-eficiencia-energetica-tambien-para-viviendas)
+- [Etiquetado de eficiencia energética de viviendas – caso de estudio (CONICET, PDF)](https://ri.conicet.gov.ar/bitstream/handle/11336/231981/CONICET_Digital_Nro.fa357965-ca03-4363-bf07-8b1a01ac1716_B.pdf?sequence=2&isAllowed=y)
+- [Ensayo Blower Door: normativa e interpretación](https://blog.beissier.es/2022/07/20/realizacion-e-interpretacion-de-resultados-del-test-blower-door-y-ensayos-complementarios/) · [Valores n50 en rehabilitación](https://www.construible.es/comunicaciones/resultados-obtenidos-ensayos-hermeticidad-blower-door-proyecto-prei-anerr-barrio-fuencarral)
+- [Termografía en edificación: norma EN 13187 y procedimiento](https://pdmcubic.com/inspecciones/termografia/termografia-edificacion/)
+- [Termografía infrarroja para diagnóstico térmico de viviendas en Mendoza, Argentina (SciELO)](https://scielo.conicyt.cl/scielo.php?pid=S0719-07002018000200080&script=sci_arttext)
+- [Método de análisis para verificar riesgos de condensación superficial e intersticial (UNLP, PDF)](http://sedici.unlp.edu.ar/bitstream/handle/10915/102007/Documento_completo.pdf-PDFA.pdf?sequence=1&isAllowed=y)
+- [Comportamiento acústico de lanas minerales en edificación](https://www.construible.es/2017/09/14/estudio-comportamiento-lanas-minerales-acustica-edificios)
+- [CTE DB-HR – Protección frente al ruido (PDF)](https://www.coacyle.com/descargas/cat_coacyle_1255512795.pdf)
+
+**Relevamiento, gestión y ITE**
+- [Scan to BIM: de la nube de puntos al modelo](https://www.mydigitalbuildings.com/es/blog/el-scan-to-bim-de-la-nube-de-puntos-al-modelo-bim)
+- [Medición de humedad: método del carburo, capacitivo y resistivo](https://www.danthermgroup.com/es/articulos/medicion-de-la-humedad-guia-para-elegir-el-medidor-de-humedad-adecuado)
+- [Informe ITE: normativa, contenido y procedimiento](https://www.certicalia.com/blog/informe-ite-normativa-que-mirar-procedimiento-contenido)
+- [Inspección Técnica de Edificios – contenido del informe (TÜV SÜD)](https://www.tuvsud.com/es-es/industrias/construccion-real-estate/edificios/informes-tecnicos-iee-ite)
+- [Presupuesto de contingencia: reserva del 10–20% en renovaciones](https://reiprime.com/es/glossary/contingency-budget)
+- [Bibliografía completa del *Tratado de Rehabilitación* (COAATM, PDF)](https://www.aparejadoresmadrid.es/documents/20181/541136/Bibliografia+Tratado+de+Rehabilitaci%C3%B3n+Editorial+Munilla.pdf/a7293eec-86a1-49a6-bb90-76a21b50bb14)
+- [Carta de Venecia – 60º aniversario (ICOMOS Argentina)](https://www.icomos.org.ar/blog/2024/09/11/60-aniversario-de-la-carta-de-venecia-carta-internacional-sobre-la-conservacion-y-la-restauracion-de-monumentos-y-sitios/)
+
+---
+
+## Registro de verificaciones pendientes
+
+⚠️ **Este listado se actualiza a medida que se verifica cada punto. Nada de esta lista debe afirmarse ante un cliente hasta estar verificado.**
+
+| # | Punto a verificar | Dónde | Sección |
+|---|---|---|---|
+| 1 | Texto ordenado vigente del Código de Edificación de Santa Rosa y umbrales que disparan el permiso de obra | Municipalidad de Santa Rosa – Subsecretaría de Planeamiento Urbano y Obras Particulares | §1.3, §10.1 |
+| 2 | FOS, FOT, altura, retiros y tejido por distrito del Código Urbanístico | Municipalidad de Santa Rosa | §10.4 |
+| 3 | Procedimiento y régimen vigente de regularización de obra sin planos en Santa Rosa | Municipalidad de Santa Rosa | §10.2 |
+| 4 | Normativa municipal sobre luces, vistas y distancias que pueda modificar los arts. 1978/1979 CCyC | Código de Edificación de Santa Rosa | §5.4 |
+| 5 | Marco legal preciso para apertura de vanos en muro medianero | Asesoramiento jurídico | §5.4 |
+| 6 | Zona sísmica exacta de Santa Rosa en el mapa vigente INPRES-CIRSOC 103 | INPRES | §3.7, §5.6 |
+| 7 | Subzona bioambiental de Santa Rosa y datos climáticos de diseño | IRAM 11603 | §3.7, §7 |
+| 8 | Colapsabilidad de los suelos loéssicos locales y perfil típico | Estudio geotécnico local; profesionales de la zona | §3.7 |
+| 9 | Edición vigente de AEA 90364 y su adopción por la autoridad local | AEA / autoridad provincial | §4.4.1 |
+| 10 | Normativa ENARGAS y del distribuidor local sobre ventilaciones, conductos y artefactos | ENARGAS / distribuidora | §4.4.3, §4.4.4 |
+| 11 | Reglamento de instalaciones sanitarias aplicable y pendientes exigidas | Prestataria local / municipio | §4.4.5, §5.2 |
+| 12 | Normativa nacional y provincial vigente para remoción y disposición de asbesto; operadores habilitados en La Pampa | SRT / autoridad ambiental provincial | §3.5 |
+| 13 | Disposición de residuos de obra: permisos de volquete, empresas y sitios habilitados | Municipalidad de Santa Rosa | §9.3 |
+| 14 | Ordenanza de ruidos molestos y horarios de obra | Municipalidad de Santa Rosa | §6.5, §9.2 |
+| 15 | Normativa de ascensores aplicable (inspecciones periódicas, empresas conservadoras) | Municipalidad / provincia | §4.4.6 |
+| 16 | Existencia de una ordenanza local análoga a la Ley 257 CABA sobre conservación de fachadas | Municipalidad de Santa Rosa | §6.3 |
+| 17 | Obligatoriedad del etiquetado energético de viviendas en La Pampa / Santa Rosa | Secretaría de Energía / provincia / municipio | §7.1 |
+| 18 | Régimen vigente de generación distribuida (Ley 27.424) y condiciones de la distribuidora local | Secretaría de Energía / distribuidora | §7.2 |
+| 19 | Requisitos de encomienda y visado profesional para cada tipo de trámite | Colegio/Consejo profesional de La Pampa | §10 |
+| 20 | Catálogo de bienes patrimoniales y áreas de protección de Santa Rosa | Municipalidad / Subsecretaría de Cultura de La Pampa | §10.6 |
+| 21 | Fecha exacta y norma de prohibición del plomo en pinturas en Argentina | Fuente oficial | §3.6 |
+| 22 | Cifras oficiales actualizadas de mortalidad por monóxido de carbono | Ministerio de Salud de la Nación | §4.4.4 |
+| 23 | Valores de sobrecargas de uso de la edición vigente de CIRSOC 101 | INTI-CIRSOC | §5.10 |
+| 24 | Normas IRAM 11601 / 11605 / 11625 / 11630: adquirir los textos y tenerlos en el estudio | IRAM | §7 |
+
+---
+
+*Documento interno del estudio. Elaborado a partir de fuentes normativas, técnicas y bibliográficas citadas en §13. Las afirmaciones marcadas con "verificar" no han sido confirmadas en fuente primaria y no deben trasladarse a un informe, presupuesto o contrato sin esa verificación previa. Los criterios de seguridad marcados con ⚠️ no admiten excepción por razones de presupuesto o de plazo.*

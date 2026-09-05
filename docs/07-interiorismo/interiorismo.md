@@ -3679,3 +3679,1610 @@ C) TODAS LAS PATAS AFUERA (solo si la alfombra es chica y la
 > Consultar: **IRAM (iram.org.ar)**, Cuerpo de Bomberos local, y la Dirección de Obras Particulares municipal.
 
 ---
+
+# 7. AMBIENTES UNO POR UNO
+
+> **Nota sobre las medidas de este capítulo:** las medidas antropométricas de referencia provienen de **Panero & Zelnik, "Las dimensiones humanas en los espacios interiores"** (Ed. Gustavo Gili) y de **Neufert, "Arte de proyectar en arquitectura"**, complementadas con datos de fabricantes y con práctica profesional. **Las medidas antropométricas publicadas corresponden mayoritariamente a población norteamericana y europea.** [V] Para trabajo de precisión conviene contrastar con datos antropométricos latinoamericanos y argentinos — verificar en INTI, en publicaciones de ergonomía de universidades argentinas y en la base **DINED** (que incluye datos de varias poblaciones).
+
+## 7.1 COCINA
+
+### Las cinco zonas de actividad (más útil que el triángulo)
+
+El clásico **triángulo de trabajo** (heladera – bacha – cocción) sigue siendo válido como control geométrico, pero las cocinas contemporáneas se organizan mejor por **zonas de actividad secuenciales**:
+
+```
+  1. GUARDAR          2. ALMACENAR      3. LAVAR        4. PREPARAR      5. COCINAR
+  (despensa,          (vajilla,         (bacha,         (mesada libre,   (anafe, horno,
+   heladera)           utensilios)       lavavajillas)   tabla)           campana)
+       │                    │                │                │                │
+       └────────────────────┴────────────────┴────────────────┴────────────────┘
+                       flujo de trabajo, izquierda → derecha
+                    (invertir para usuarios zurdos: preguntarlo)
+```
+
+**Reglas de las zonas:**
+
+| Regla | Detalle |
+|---|---|
+| El **lavavajillas va inmediatamente al lado de la bacha** | Para no chorrear agua al cargarlo. Del lado no dominante del usuario |
+| El guardado de vajilla va **cerca del lavavajillas** | Se guarda al vaciar |
+| La **mesada de preparación** va entre la bacha y el anafe | Es la zona que más se usa y la que siempre se sacrifica |
+| **Mesada libre mínima de preparación: 90 cm** continuos | **[C] Es el mínimo real.** 120 cm es cómodo |
+| Mesada libre a cada lado del anafe | **≥ 30 cm** de un lado, **≥ 40 cm** del otro |
+| Mesada libre a cada lado de la bacha | **≥ 40 cm** de un lado (escurrido), **≥ 60 cm** del otro |
+| Espacio de apoyo junto a la heladera | **≥ 40 cm** del lado de apertura |
+| Espacio de apoyo junto al horno | **≥ 40 cm** para dejar la fuente caliente |
+
+### Triángulo de trabajo: control geométrico
+
+> **[C]** Suma de los tres lados del triángulo (heladera–bacha–cocción): **entre 3,60 m y 6,60 m**. Ningún lado menor a 1,20 m ni mayor a 2,70 m. El triángulo no debe ser cruzado por una circulación de paso.
+>
+> **Limitación:** el triángulo asume un único usuario y una cocina cerrada. En cocinas contemporáneas con isla, con dos personas cocinando o con cocina abierta al estar, **las zonas de actividad son un mejor modelo**.
+
+### Distribuciones
+
+| Distribución | Ancho mínimo del local | Descripción | Ventajas | Desventajas |
+|---|---|---|---|---|
+| **Lineal (1 pared)** | 1,80 m | Todo en un muro | Económica; sirve en monoambientes | Mucho recorrido lateral; poca mesada. Máximo útil: 3,60 m de largo |
+| **Paralela / doble frente** | **2,40 m** (1,20 de circulación + 2×0,60 de mesada) | Dos frentes enfrentados | Muy eficiente; triángulo corto | Requiere ancho; si es de paso, molesta |
+| **En L** | 2,40 × 2,40 m | Dos muros contiguos | **La más versátil.** Libera espacio para mesa | La esquina es un punto muerto (resolver con carrusel o cajón esquinero) |
+| **En U** | 2,40 × 2,70 m | Tres muros | **Máxima mesada y guardado** | Dos esquinas muertas; puede resultar encerrada |
+| **En L + isla** | 3,60 × 3,60 m | L más volumen central | **La más deseada.** Permite dos usuarios, sociabilidad | Requiere superficie; instalaciones a la isla |
+| **En U + península** | 3,00 × 3,60 m | U con un brazo suelto | Cierra sin encerrar; sirve de desayunador | — |
+
+### MEDIDAS CRÍTICAS — TABLA MAESTRA DE COCINA
+
+| Medida | Valor | Nota |
+|---|---|---|
+| **ALTURAS** |
+| **Altura de mesada estándar** | **88–92 cm** (90 cm típico) | **[E]** Para usuarios de 1,65–1,75 m, 90 cm funciona bien |
+| **Altura ergonómica según el usuario** | **Fórmula: altura del codo flexionado a 90° − 10 a 15 cm** | **[E]** Es el método correcto. Medir al usuario real |
+| Usuario < 1,60 m | **85–88 cm** | [E] |
+| Usuario 1,60–1,75 m | **88–92 cm** | [E] |
+| Usuario 1,75–1,85 m | **92–95 cm** | [C] |
+| Usuario > 1,85 m | **95–100 cm** | [E] |
+| **Altura diferenciada por tarea** (cocina de alta gama) | Bacha **+5 cm** sobre la altura base; anafe **−5 a −10 cm** bajo la altura base | [C] La bacha se usa con las manos abajo, el anafe con la olla arriba |
+| Altura de zócalo (rodapié del mueble) | **10–15 cm** (rango observado 10–22 cm) | [E] |
+| Retranqueo del zócalo (para la punta del pie) | **5–8 cm** | [C] |
+| **Altura libre entre mesada y alacena** | **45–70 cm** (recomendado **55–65 cm**) | **[E]** Menos de 45 se golpea la cabeza; más de 70 no se alcanza el estante superior |
+| Altura del borde inferior de la alacena desde el piso | **135–150 cm** | Derivado |
+| **Altura máxima del estante superior alcanzable sin escalera** | **190–200 cm** (usuario de 1,65 m) | [C] Por encima: guardado de baja frecuencia |
+| Altura de alacena (alto del mueble) | 70–90 cm (o hasta cielorraso) | Llegar a cielorraso elimina el polvo y da altura visual |
+| **Altura de instalación del horno empotrado en columna** | **90–97 cm** al piso del horno | **[E]** Permite sacar la fuente sin agacharse. **Nunca bajo mesada si se puede evitar** |
+| **Altura de instalación del microondas** | **130–145 cm** (base del equipo) | **[E]** Nunca por encima de los hombros: sacar un recipiente caliente desde arriba es peligroso |
+| Altura de campana sobre anafe a **GAS** | **65–70 cm** | **[E]** |
+| Altura de campana sobre anafe **ELÉCTRICO / INDUCCIÓN / VITROCERÁMICA** | **55–60 cm** | **[E]** |
+| **PROFUNDIDADES** |
+| **Profundidad de mesada** | **55–60 cm** (60 cm es el estándar) | **[E]** |
+| Profundidad del mueble bajo mesada | 55–58 cm (la mesada vuela 2–3 cm) | [C] |
+| **Profundidad de alacena** | **30–35 cm** (rango observado 20–40 cm) | **[E]** Más de 35 cm y se golpea la cabeza al trabajar |
+| Profundidad de isla (con un solo frente de guardado) | **90–120 cm** | [E] |
+| Profundidad de isla (guardado en ambos frentes) | 120–140 cm | [C] |
+| **CIRCULACIONES** |
+| **Pasillo de trabajo entre frentes enfrentados (1 usuario)** | **100–110 cm** mínimo | [C] |
+| **Pasillo de trabajo (2 usuarios / cocina de uso intensivo)** | **120–140 cm** | [C] |
+| **Distancia entre isla y bajo mesada** | **mínimo 90 cm; recomendado 100–120 cm** | **[E]** Con 90 cm no se puede abrir un cajón y pasar al mismo tiempo |
+| Distancia entre isla y bajo mesada si hay lavavajillas o horno enfrentados | **≥ 120 cm** | [C] La puerta abierta come 55–60 cm |
+| Espacio libre perimetral mínimo alrededor de la isla | **≥ 60 cm** para moverse y abrir cajones | [E] |
+| Circulación de paso (que atraviesa la cocina) | **≥ 90 cm** libres, fuera del triángulo | [C] |
+| **DESAYUNADOR / BARRA** |
+| Voladizo mínimo de mesada para sentarse | **≥ 25 cm** (cómodo: **30–38 cm**) | **[E]** Con 25 cm las rodillas rozan |
+| Plataforma de apoyo para asiento | **70 × 40 cm** a **70 cm** de altura | **[E]** (variante de barra baja) |
+| Ancho por comensal en barra | **60 cm** (mínimo 55) | [C] |
+| **Espacio libre detrás del asiento** para circular | **≥ 60 cm** (cómodo: 90–100 cm) | **[E]** |
+| Altura de banqueta según altura de barra | Barra a 90 cm → banqueta de **60–65 cm** de asiento. Barra a 105–110 cm → banqueta de **75–80 cm** | [C] Diferencia asiento–superficie: **25–30 cm** |
+| **APERTURAS Y HOLGURAS** |
+| Espacio libre frente a la heladera (para abrir la puerta) | **≥ 90 cm**; ideal 110 cm | [C] |
+| Ángulo de apertura de puerta de heladera | Verificar que la pared/mueble adyacente permita **≥ 90°** (ideal 120° para sacar los cajones) | **Error clásico:** heladera contra un muro, no se pueden sacar los cajones |
+| Espacio libre frente a lavavajillas y horno | **≥ 100 cm** | [C] |
+| Cajón esquinero / carrusel | Necesario en toda esquina en L o U | Sin esto, la esquina es volumen perdido |
+
+### Cajoneras vs. puertas
+
+> **[C] Regla del estudio: TODO el bajo mesada en cajones, salvo el mueble de la bacha y el mueble del horno.**
+
+| | Cajones | Puertas |
+|---|---|---|
+| Acceso al fondo | **Total** (sale todo hacia afuera) | Hay que agacharse y meterse |
+| Aprovechamiento del volumen | ~85% | ~60% (el fondo no se usa) |
+| Ergonomía | **Excelente** (no hay que agacharse) | Mala (agacharse + estirarse) |
+| Costo | +25–40% | Base |
+| Uso ideal | **Todo el bajo mesada**: ollas, vajilla, alimentos, utensilios | Bajo bacha (por los caños), bajo horno, alacenas altas, despensa alta |
+
+**Conclusión:** los cajones cuestan más y valen cada peso. Si hay que ahorrar, se ahorra en el frente (melamina en vez de laca), **no en el herraje ni en el sistema.**
+
+### Ventilación y campana
+
+**Cálculo de caudal**
+
+> **[E] Fórmula verificada:**
+> ```
+> Caudal (m³/h) = Velocidad (m/s) × Superficie (m²) × 3.600
+> ```
+> donde la **velocidad mínima recomendada en la superficie abierta entre el borde de la campana y el plano de cocción es de 0,15 a 0,20 m/s en todo el perímetro abierto**.
+>
+> **[E]** El **caudal mínimo** de extracción de una cocina doméstica según el Código Técnico de la Edificación español es de **50 l/s = 180 m³/h**. Es un mínimo técnico; puede necesitarse más según el ancho de la campana y su proximidad al plano de cocción.
+
+**Método práctico alternativo (renovaciones por hora):**
+
+```
+Caudal (m³/h) = Volumen del local (m³) × Renovaciones/hora
+
+Renovaciones/hora recomendadas para cocina doméstica: 10 a 15
+(15 a 20 si se cocina con fritura frecuente o con wok)
+```
+
+**Ejemplo:** cocina de 2,80 × 3,60 × 2,50 m = 25,2 m³.
+- Con 12 renovaciones/h → **302 m³/h**
+- Con 18 renovaciones/h (fritura frecuente) → **454 m³/h**
+
+**Tabla de caudal recomendado por tipo de uso**
+
+| Tipo de cocción | Caudal recomendado |
+|---|---|
+| Cocina de uso liviano (calentar, hervir, poca fritura) | **250–350 m³/h** |
+| Cocina de uso normal familiar | **350–500 m³/h** |
+| Cocina con fritura frecuente, wok, plancha, mucha cocción | **500–800 m³/h** |
+| **Isla** (la campana no tiene muros que ayuden a contener el humo) | **+30% a +50%** sobre el valor equivalente en pared |
+| Cocina abierta al living (para evitar que el olor migre) | **+30%** |
+
+> **[C]** El caudal declarado por el fabricante suele ser **en descarga libre, sin conducto**. Con conducto, codos y rejilla, el caudal real cae. **Regla práctica: especificar un 30–40% por encima del caudal calculado, y elegir un equipo cuyo caudal esté declarado a una presión estática razonable.**
+
+**Conducto**
+
+> **[E]** La velocidad de paso del aire en el conducto debe ser de **10 a 12 m/s** para evitar ruidos y vibraciones. La sección **no debe reducirse en todo el recorrido**. Se aconsejan conductos lisos (menor resistencia y ruido); los flexibles deben instalarse **totalmente extendidos, sin pliegues**. Los primeros **20–30 cm** deberían discurrir en trayectoria recta vertical antes del primer codo. El conducto debe ser **independiente** de otras extracciones o ventilaciones.
+
+**Cálculo del diámetro:**
+
+```
+              ┌─────────────────────┐
+              │   4 × Q             │
+   D (mm) = √ │ ─────────────────── │  × 1.000
+              │ π × v × 3.600       │
+              └─────────────────────┘
+
+   Q = caudal (m³/h)
+   v = velocidad (m/s), usar 10–12
+```
+
+**Tabla resuelta de diámetro de conducto**
+
+| Caudal (m³/h) | Sección necesaria a 10 m/s (m²) | **Diámetro circular equivalente (mm)** | Diámetro comercial |
+|---|---|---|---|
+| 250 | 0,0069 | 94 | **100 mm** |
+| 350 | 0,0097 | 111 | **120 mm** |
+| 450 | 0,0125 | 126 | **125–150 mm** |
+| 600 | 0,0167 | 146 | **150 mm** |
+| 800 | 0,0222 | 168 | **180 mm** |
+| 1.000 | 0,0278 | 188 | **200 mm** |
+
+> **[C] Pérdida de carga:** cada codo de 90° equivale aproximadamente a **1,5–2 m de conducto recto** en pérdida de carga; una rejilla de salida con malla, a **3–5 m**. En el cálculo hay que sumarlo. **[V] Verificar valores exactos con el fabricante del equipo.**
+
+**Reglas de campana**
+
+| Regla | Detalle |
+|---|---|
+| **El ancho de la campana debe ser ≥ el ancho del anafe** | Ideal: **+10 cm de cada lado** (una campana de 90 cm sobre un anafe de 60 cm captura mucho mejor) |
+| **Extracción al exterior siempre que sea posible** | El modo **recirculación con filtro de carbón NO elimina la humedad ni el vapor**, solo parte del olor y la grasa. Es la última opción |
+| **Filtro de grasa metálico lavable** | Preferible al de aluminio descartable |
+| Ruido | Especificar el nivel sonoro en dB(A) a caudal medio. Por encima de 60–65 dB(A) nadie la usa en velocidad alta, y una campana que no se usa no sirve |
+| Motor remoto | En cocinas de alta gama: el motor va en el techo o en el exterior. **Reduce drásticamente el ruido** |
+| Ventilación de reposición | Una campana de 600 m³/h **saca 600 m³/h del ambiente**. En una casa muy estanca, esto genera depresión, puede hacer retornar gases de combustión de un calefactor o termotanque de tiro natural, y hace que la campana no rinda. **Prever entrada de aire.** [V] **Verificar exigencias de ventilación de artefactos a gas en la normativa ENARGAS aplicable** |
+| Interruptor accesible | No arriba de la campana ni detrás del anafe |
+
+### Iluminación de cocina
+
+Ver §5.9 (ejemplo resuelto 2) y §5.2 (filas 7–12). Puntos clave:
+
+| Punto | Regla |
+|---|---|
+| **Luz bajo alacena** | **Obligatoria.** Sin ella, el usuario trabaja en su propia sombra. Perfil LED continuo, ≥700 lm/m, 3000 K, Ra 90 |
+| **Posición del perfil bajo alacena** | **Al FRENTE de la alacena, retirado 3–5 cm del borde**, con difusor. Nunca al fondo contra el muro |
+| Embutidos generales | Corridos hacia adelante, con el eje a 60–75 cm del muro de la mesada |
+| **Nunca un solo plafón central** | Genera la sombra del propio cuerpo sobre toda la zona de trabajo |
+| Anafe | La luz de la campana debe tener **Ra ≥ 80 y flujo ≥ 400 lm**. Muchas campanas traen luces pésimas: verificar y, si hace falta, agregar |
+| Interior de despensa y alacenas | Con sensor de apertura. Bajo costo, alto impacto |
+| Isla | Colgantes a 70–80 cm de la mesada, dimerizables |
+
+### Tomacorrientes de cocina
+
+| Ubicación | Cantidad mínima | Altura |
+|---|---|---|
+| **Sobre mesada** | **4 a 6**, distribuidas en al menos **2 circuitos** | **110 cm** al eje (10–20 cm sobre la mesada) |
+| Zona de electrodomésticos de mesada (cafetera, tostadora, licuadora) | **Agrupar 3–4 tomas juntas** donde el cliente declaró que van (briefing, pregunta 42) | 110 cm |
+| Dentro del mueble bajo mesada | 1 para lavavajillas, 1 para triturador/purificador | 30–50 cm |
+| Heladera | 1 exclusiva | 30 cm o a la altura que permita el mueble |
+| Horno empotrado | **Circuito exclusivo** con protección propia | Según fabricante |
+| Anafe eléctrico / inducción | **Circuito exclusivo**, sección adecuada | Según fabricante |
+| Campana | 1 | Detrás de la campana, verificar posición contra el modelo |
+| Microondas empotrado | 1 dentro del mueble | Según fabricante |
+| Isla | **2–4 tomas** (en el lateral, en un módulo escamoteable, o en un canal bajo el voladizo) | **Prever la alimentación en el contrapiso ANTES de hacer el piso** |
+
+> **[C] Error clásico #1 de la cocina:** poner las tomas de la mesada **detrás del salpicadero de gran formato**, obligando a perforar el porcelanato. Se resuelve decidiendo la posición exacta **antes** de comprar el revestimiento, y perforando en el taller de corte, no en obra.
+>
+> **[C] Error clásico #2:** tomas de isla no previstas → la isla queda sin electricidad, o con un cable cruzando el piso.
+
+### Materiales de frente de cocina
+
+| Material | Costo rel. | Resistencia al agua | Resistencia a rayas | Reparabilidad | Notas |
+|---|---|---|---|---|---|
+| **Melamina (MDF/aglomerado melamínico)** | **1** | Buena en superficie; **mala en cantos** si el tapacanto es fino | Buena | Nula | **Exigir tapacanto ABS de 1–2 mm**, no de 0,45 mm. Es lo que define si dura |
+| **MDF laqueado (poliuretánico)** | 2,5–4 | Buena | Media (se raya y se marca) | **Buena** (se puede repintar) | Mate satinado es más noble y menos "espejo de huellas" que el brillante |
+| **MDF enchapado en madera natural** | 3–5 | Media | Media | Buena | Cálido, noble; requiere sellado |
+| **Melamina símil madera de alta gama** | 1,5–2,5 | Buena | **Muy buena** | Nula | Las melaminas texturadas actuales son muy convincentes. **Excelente relación precio/prestación** |
+| **Acrílico / superficie brillante (PET, acrílico)** | 3–5 | Excelente | Media | Baja | Muy brillante; marca huellas |
+| **Aluminio + vidrio** | 4–6 | Excelente | Buena | Media | Alacenas vitrina; frío |
+| **Compacto fenólico** | 4–6 | **Excelente** | **Excelente** | Nula | Muy resistente; poco usado en residencial |
+
+> **[C]** En cocina, **la melamina de buena marca con tapacanto ABS de 2 mm y herrajes Blum es mejor inversión que el laqueado con herrajes malos.** El cliente ve el laqueado; usa el herraje.
+
+---
+
+## 7.2 BAÑO
+
+### Medidas de los artefactos
+
+| Artefacto | Ancho | Fondo | Altura | Fuente |
+|---|---|---|---|---|
+| **Inodoro** | 35–40 cm (típico 38) | **60–70 cm** | **40–45 cm** (asiento) | **[E]** Panero/Neufert |
+| Inodoro (referencia de baño público) | **50 cm** | **70 cm** | **39,4 cm** | **[E]** |
+| **Inodoro de altura confort / accesible** | 38–40 cm | 65–70 cm | **45–48 cm** (asiento) | [C] |
+| **Bidet** | **40–50 cm** | **60–70 cm** | 40 cm | **[E]** |
+| **Lavatorio / bacha de apoyar** | 40–60 cm | 35–50 cm | Mesada a **85–90 cm** | [C] |
+| Lavatorio de colgar | 45–60 cm | 40–50 cm | Borde superior a **80–85 cm** | [C] |
+| Doble bacha (mesada) | **≥ 150 cm** de mesada (ideal 180) | 50–55 cm | 85–90 cm | [C] |
+| **Ducha (plato / recinto)** | **90 × 90 cm mínimo** | | Rociador a **190 cm** | **[E]** |
+| Ducha (mínimo absoluto de plato) | **60 × 60 cm** | | | **[E]** — muy incómodo, solo emergencia |
+| Ducha cómoda | **90 × 120** a **90 × 140 cm** | | | [C] |
+| Ducha de dos personas | 120 × 140 cm o más | | | [C] |
+| **Bañera estándar** | 70–75 cm | **150–170 cm** | 55–60 cm de altura de borde | [C] |
+| Bañera compacta | 70 cm | 120–140 cm | | [C] |
+| **Altura de mampara** | **~200 cm** | | | **[E]** |
+
+### Distancias y holguras
+
+| Distancia | Mínimo | Recomendado | Fuente |
+|---|---|---|---|
+| **Espacio libre FRENTE al inodoro** | **60 cm** | **70–75 cm** | **[E]** |
+| **Espacio libre LATERAL del inodoro** (a cada lado, desde el eje) | **20 cm** libres a cada lado del artefacto | **25–30 cm** | **[E]** |
+| Ancho total mínimo para un inodoro (eje a muro) | **38–40 cm** desde el eje al muro | **45 cm** | [C] |
+| **Separación entre inodoro y bidet** (eje a eje) | **40 cm** | 45–50 cm | **[E]** |
+| **Espacio libre a cada lado del bidet** | **15–20 cm** | 20–25 cm | **[E]** |
+| Espacio libre frente al bidet | 60 cm | 70 cm | [C] |
+| **Espacio libre frente al lavatorio** | **60 cm** | **75–90 cm** | [C] |
+| Espacio libre lateral del lavatorio | 20 cm | 25–30 cm | [C] |
+| Separación entre dos bachas (eje a eje) | 75 cm | **90 cm** | [C] |
+| **Espacio libre frente a la ducha** (para secarse) | **60 cm** | **75–90 cm** | [C] |
+| Circulación general del baño | 70 cm | 90 cm | [C] |
+| Altura de colgado de toallero | 110–130 cm | | [C] |
+| Altura de percha | 165–175 cm | | [C] |
+| Altura de portarrollo | 60–70 cm, a 20–30 cm por delante del eje del inodoro | | [C] |
+
+### Baños tipo: superficies mínimas y cómodas
+
+| Tipo | Contenido | Medida mínima | Medida cómoda |
+|---|---|---|---|
+| **Toilette (medio baño)** | Inodoro + lavatorio | **0,90 × 1,50 m** (1,35 m²) | 1,20 × 1,80 m |
+| **Baño completo compacto** | Inodoro + lavatorio + ducha | **1,50 × 1,80 m** (2,70 m²) | 1,70 × 2,10 m |
+| **Baño completo estándar** | Inodoro + bidet + lavatorio + ducha | **1,60 × 2,20 m** (3,52 m²) | 1,80 × 2,50 m |
+| **Baño con bañera** | Inodoro + lavatorio + bañera | **1,70 × 2,10 m** | 1,90 × 2,40 m |
+| **Baño principal (suite)** | Doble bacha + inodoro + ducha grande + guardado | 2,20 × 3,00 m | **2,50 × 3,50 m** o más |
+| **Baño accesible (silla de ruedas)** | Ver §7.2 accesibilidad | **[V] verificar** | **[V] verificar** |
+
+> **[V] CRÍTICO:** las medidas mínimas de baños en vivienda están fijadas por el **Código de Edificación de la Municipalidad de Santa Rosa**. Los valores de arriba son de buena práctica, **no** de normativa local. **Verificar antes de proyectar.**
+
+### La regla clave de la iluminación del espejo
+
+> **[E] LA REGLA:** **la luz sobre el rostro debe venir de los LADOS, a la altura de los ojos. La luz cenital proyecta sombras descendentes justo sobre las partes de la cara que más importan** (ojos, nariz, mentón), y hace imposible maquillarse o afeitarse bien.
+>
+> **Apliques laterales a ambos lados del espejo, con el eje a 150–165 cm del piso** (aproximadamente la altura de los ojos), iluminan el rostro sin sombras y de forma equilibrada. Deben estar **exactamente al mismo nivel** entre sí.
+
+**Jerarquía de soluciones, de mejor a peor:**
+
+| # | Solución | Calidad | Cuándo |
+|---|---|---|---|
+| **1** | **Dos apliques laterales difusos**, eje a 150–165 cm, separados 75–110 cm entre sí (a 8–15 cm de cada borde del espejo) | **Óptima** | Siempre que el ancho lo permita. Espejo de 60–90 cm de ancho |
+| 2 | **Espejo con iluminación perimetral integrada** (LED difuso en todo el contorno) | **Muy buena** | Muy práctica; resuelve el problema en un solo producto |
+| 3 | **Espejo con dos bandas verticales de LED difuso** a los lados del propio espejo | Muy buena | Igual efecto que los apliques, en un solo elemento |
+| 4 | **Aplique horizontal sobre el espejo**, a 15–20 cm del borde superior, **con difusor y proyección hacia adelante** | Aceptable | Cuando no hay ancho para laterales |
+| 5 | **Perfil LED bajo el espejo o bajo la mesada**, como complemento | Complementaria | Suma relleno inferior; excelente combinada con la #1 |
+| 6 | Embutido en el cielorraso justo delante del espejo | Regular | Segunda mejor si nada más es posible: **al menos que esté DELANTE del usuario, no encima** |
+| **7** | **Embutido en el cielorraso directamente SOBRE la cabeza del usuario** | **MAL** | **El error más común.** Sombras profundas en ojos y mentón |
+
+**Especificación de la luz del espejo:**
+
+| Parámetro | Valor |
+|---|---|
+| Iluminancia sobre el rostro (plano vertical) | **300–500 lux** |
+| Temperatura de color | **3000 K** (nunca ≥ 4000 K: la piel se ve enferma) |
+| Ra | **≥ 90**, ideal 95 |
+| R9 | **≥ 50** |
+| Difusión | Alta. La fuente puntual desnuda produce sombras duras |
+| IP | Según zona de protección (§5.7) |
+
+### Otros aspectos técnicos del baño
+
+**Ventilación**
+
+| Aspecto | Criterio |
+|---|---|
+| Ventilación natural | Preferible. **[V] verificar superficie mínima exigida por el Código de Edificación de Santa Rosa** |
+| **Extractor mecánico** | **Obligatorio en baños sin ventana.** Caudal orientativo: **6–10 renovaciones/hora**, o **[V] verificar mínimo normativo**. Para un baño de 4 m² × 2,50 m = 10 m³ → **60–100 m³/h** |
+| Control del extractor | **Con temporizador** (sigue funcionando 10–20 min después de apagar la luz) o con **higrostato** (arranca por humedad). Sin esto, la gente lo apaga antes de tiempo y la humedad queda |
+| Salida del extractor | **Al exterior**, nunca al entrepiso ni al cielorraso |
+| Entrada de aire | Rendija bajo la puerta de **1–2 cm**, o rejilla. **Sin entrada de aire, el extractor no extrae nada** |
+
+**Impermeabilización — el punto más caro de arreglar**
+
+| Zona | Tratamiento |
+|---|---|
+| **Piso completo del baño** | Membrana o revestimiento impermeabilizante cementicio, **con babeta subiendo 15–20 cm por los muros** |
+| **Interior de la ducha, muros** | Impermeabilización hasta **200 cm** de altura como mínimo |
+| **Encuentro piso-muro de la ducha** | **Banda elástica de refuerzo** en todo el perímetro. Es donde falla el 90% de las filtraciones |
+| Penetraciones (caños, desagüe, grifería) | Sellado con manguito específico |
+| Nichos embutidos en el muro de la ducha | **Impermeabilizar el interior completo del nicho**, con pendiente hacia afuera de 1–2% en el fondo |
+| Pastina | **Epoxi** en la ducha. La pastina cementicia se ennegrece y se degrada |
+
+> **[C] Una filtración de baño cuesta 20 a 50 veces lo que cuesta impermeabilizar bien.** Es el rubro donde jamás se ahorra (§2.4).
+
+**Mampara vs. cortina**
+
+| Opción | Ventajas | Desventajas |
+|---|---|---|
+| **Mampara fija (panel walk-in)** | Muy limpia visualmente, sin perfiles, fácil de limpiar | Deja pasar algo de agua por el lado abierto. Requiere buena pendiente y una ducha de al menos 120 cm de largo |
+| **Mampara corrediza** | Contiene bien el agua | Los rieles inferiores juntan mugre. **Preferir sistemas sin riel inferior** |
+| **Mampara abatible** | Buena contención | Requiere espacio libre para abrir |
+| **Cortina de baño** | Muy económica, contiene bien | Se ensucia, se pega al cuerpo, se ve barata |
+| Vidrio | **Templado de 8–10 mm**, con tratamiento antical | El tratamiento antical duplica la vida útil visual |
+
+**Piso y pendientes**
+
+| Aspecto | Criterio |
+|---|---|
+| Pendiente hacia el desagüe | **1,5–2%** |
+| Rejilla lineal vs. rejilla puntual | **Lineal:** permite pendiente en una sola dirección, admite gran formato de piso, es más estética y drena más. **Puntual:** más barata, exige pendiente en 4 direcciones (los cortes de piezas grandes se ven mal) |
+| **Ducha a nivel (sin escalón)** | **Muy recomendable**: es más lindo, más seguro y prepara la casa para envejecer. Requiere prever el rebaje en el contrapiso **antes**, y una rejilla lineal |
+| Antideslizamiento | R10 en el piso general, **R11 o clase B/C descalzo en la ducha** |
+
+**Calefacción del baño**
+
+| Sistema | Notas |
+|---|---|
+| **Piso radiante eléctrico** (manta bajo el piso) | **La mejor solución de confort.** Bajo consumo si es solo el baño; se instala en el momento de colocar el piso. Requiere previsión eléctrica |
+| Toallero eléctrico calefactor | Calienta la toalla y algo el ambiente. Muy valorado |
+| Caloventor de pared / panel infrarrojo | Rápido, económico |
+| Piso radiante por agua | Solo si la casa entera lo tiene |
+| Caloventor de techo | Ruidoso |
+
+> **[C]** En La Pampa, con inviernos fríos, **la calefacción del baño es un diferencial de proyecto altísimo por muy poco dinero.** Y se decide antes de colocar el piso, no después.
+
+**Nichos y guardado**
+
+| Elemento | Medida |
+|---|---|
+| **Nicho en muro de ducha** | 30–40 cm de ancho × 25–35 cm de alto × **8–12 cm de profundidad** (limitado por el espesor del muro) |
+| Altura del nicho de ducha | **100–130 cm** al piso (a la mano, no a los pies) |
+| Nicho para shampoo grande | Al menos 30 cm de alto interior |
+| Mueble bajo mesada | Profundidad 45–50 cm; cajones mejor que puertas (los caños obligan a diseñar el cajón con recorte en U) |
+| Botiquín / espejo con guardado | Profundidad 12–15 cm |
+| Altura de estantes de toallas | 30–35 cm entre estantes |
+
+**Accesibilidad y "envejecer en casa"**
+
+> **[V] CRÍTICO — VERIFICAR NORMATIVA:** los requisitos de accesibilidad en Argentina se rigen por la **Ley 24.314** y el **Decreto 914/97** (accesibilidad de personas con movilidad reducida), y por las normas **IRAM** de la serie de accesibilidad (p. ej. IRAM 111102). **Verificar la normativa provincial de La Pampa y las ordenanzas de Santa Rosa antes de proyectar un baño accesible.** Los valores que siguen son de buena práctica, no un sustituto de la norma.
+
+**Medidas de referencia [V]:**
+
+| Elemento | Referencia |
+|---|---|
+| Diámetro de giro de silla de ruedas | **150 cm** libres |
+| Ancho de puerta libre de paso | **≥ 80 cm** (ideal 90 cm); **apertura hacia afuera o corrediza** |
+| Aproximación lateral al inodoro | **≥ 80 cm** libres de un lado |
+| Altura de asiento de inodoro accesible | **45–48 cm** |
+| Barrales de apoyo junto al inodoro | Horizontal a **70–75 cm**; el abatible a 30–35 cm del eje del inodoro |
+| Barral en la ducha | Horizontal a **70–90 cm** + vertical |
+| Lavatorio accesible | Sin pedestal, con espacio libre debajo: altura libre **≥ 70 cm**, borde superior a **80–85 cm** |
+| Espejo | Borde inferior a **≤ 90 cm**, o espejo inclinado |
+| Ducha accesible | **A nivel (sin escalón)**, ≥ 90 × 120 cm, con asiento abatible a 45–48 cm |
+| Grifería | **Monocomando con palanca larga**, o termostática. Nunca dos volantes |
+| Piso | R11 / clase C descalzo |
+
+**"Envejecer en casa" — decisiones que no cuestan hoy y valen mucho después:**
+
+- [ ] **Refuerzos en el muro** (madera o placa metálica dentro del tabique) en las posiciones futuras de barrales, aunque no se coloquen ahora. **Costo: casi cero. Imposible de agregar después sin romper.**
+- [ ] **Ducha a nivel**, sin escalón.
+- [ ] Puerta de **80–90 cm** de paso libre.
+- [ ] Puerta que abre hacia afuera o corrediza (si alguien se cae adentro, una puerta que abre hacia adentro lo deja atrapado).
+- [ ] Grifería monocomando.
+- [ ] Iluminación de balizamiento nocturno.
+- [ ] Piso antideslizante.
+- [ ] Mueble bajo bacha desmontable (para poder liberar el espacio inferior en el futuro).
+
+---
+
+## 7.3 DORMITORIO
+
+### Medidas de camas (mercado argentino)
+
+| Denominación | Ancho × Largo (cm) | Espacio total recomendado del local |
+|---|---|---|
+| 1 plaza | **80 × 190** | — |
+| 1 plaza y media | **100 × 190** | — |
+| 2 plazas | **140 × 190** | — |
+| **Queen** | **160 × 200** | — |
+| **King** | **180 × 200** | — |
+| Súper King | 200 × 200 | — |
+| **Sumar por el respaldo/cabecera** | +8 a +20 cm al largo | |
+
+### Circulación perimetral
+
+| Situación | Mínimo | Recomendado |
+|---|---|---|
+| **Paso lateral principal (lado de acceso a la cama)** | **60 cm** | **75–90 cm** |
+| Paso lateral secundario (contra un muro) | 50 cm | 60–70 cm |
+| **A los pies de la cama** | **60 cm** | **90–110 cm** (más si hay TV o banqueta) |
+| Frente a un placard con **puertas batientes** | **90 cm** (para abrir + pararse) | **110 cm** |
+| Frente a un placard con **puertas corredizas** | 70 cm | 90 cm |
+| Frente a una cómoda con cajones | 90 cm | 110 cm |
+| Espacio para hacer la cama | **≥ 60 cm** de al menos un lado y a los pies | — |
+
+### Superficies mínimas de dormitorio
+
+| Tipo | Contenido | Superficie mínima funcional | Cómoda |
+|---|---|---|---|
+| Dormitorio individual | Cama 1 plaza + placard + escritorio chico | **7–8 m²** (2,40 × 3,00) | 9–11 m² |
+| Dormitorio doble | Cama 2 plazas + placard + 2 mesas de luz | **10–11 m²** (2,90 × 3,60) | 12–14 m² |
+| Dormitorio principal (Queen/King) | Cama + placard + circulaciones cómodas | **13–14 m²** | **16–20 m²** |
+| Dormitorio principal en suite | + baño + vestidor | 20 m² (sin baño) | 25–30 m² |
+
+> **[V]** Las superficies mínimas de dormitorios están fijadas por el **Código de Edificación de la Municipalidad de Santa Rosa**. Verificar.
+
+### Placard
+
+| Medida | Valor |
+|---|---|
+| **Profundidad interior útil** | **58–60 cm** — es la medida crítica para ropa colgada |
+| Profundidad total con puerta corrediza | 62–68 cm |
+| **Metros lineales de placard por persona (referencia)** | **[C]** 1,20–1,50 m lineales de barral por persona como mínimo; 2,00–2,50 m para quien tiene mucha ropa. **Medir en el briefing (pregunta 31)** |
+| Altura del módulo de barral simple (ropa larga: vestidos, abrigos) | **150–170 cm** de espacio libre debajo del barral |
+| Altura del módulo de barral doble (ropa corta) | Barral superior a **200–210 cm**; inferior a **100–110 cm** |
+| Altura de estante superior (guardado de baja frecuencia) | 200–240 cm |
+| Ancho de módulo | 45–90 cm |
+| Cajonera interior | Ancho 45–90 cm; cajones de 12–28 cm de altura interior |
+| Zapatera | Estantes de 30–35 cm de profundidad, 18–20 cm de altura, inclinados 10–15° |
+| **Espacio de "aire" en el barral** | **[C]** No cargar más del **70–80%** del barral. Un placard lleno al 100% es imposible de usar |
+
+**Distribución interior tipo (módulo de 200 cm de ancho):**
+
+```
+ ┌───────────────┬───────────────┬───────────────┐  ← 240 cm
+ │   ESTANTE     │   ESTANTE     │   ESTANTE     │     (baja frecuencia:
+ │   ALTO        │   ALTO        │   ALTO        │      valijas, temporada)
+ ├───────────────┼───────────────┼───────────────┤  ← 200 cm
+ │               │  BARRAL ALTO  │               │
+ │   BARRAL      │  (camisas,    │   ESTANTES    │
+ │   LARGO       │   remeras)    │   (pulóveres, │
+ │   (abrigos,   ├───────────────┤    doblado)   │
+ │    vestidos)  │  BARRAL BAJO  │               │
+ │               │  (pantalones) │               │
+ ├───────────────┼───────────────┼───────────────┤  ← 100 cm
+ │               │               │   CAJONERA    │
+ │   ZAPATERA    │   ZAPATERA    │   (interior,  │
+ │               │               │    accesorios)│
+ └───────────────┴───────────────┴───────────────┘  ← 0 cm
+    ~70 cm           ~70 cm           ~60 cm
+```
+
+### Vestidor
+
+| Configuración | Ancho mínimo del local | Nota |
+|---|---|---|
+| **Vestidor lineal** (guardado en un solo lado) | **60 (placard) + 90 (circulación) = 150 cm** | Mínimo absoluto |
+| **Vestidor en paralelo** (guardado en dos lados) | **60 + 110 + 60 = 230 cm** | **El más eficiente.** 110 cm de circulación permite abrir cajones y vestirse |
+| Vestidor en paralelo, mínimo apretado | 60 + 90 + 60 = **210 cm** | Justo |
+| **Vestidor en U** | 240 × 240 cm mínimo | |
+| Vestidor con isla | **340 × 240 cm** mínimo (isla de 60–90 cm de ancho + 100 cm libres a cada lado) | |
+| Largo mínimo útil de un vestidor | 180–200 cm | Menos que eso, conviene un placard |
+
+> **[C] Iluminación de vestidor:** es donde se elige la ropa, por lo que **Ra ≥ 95 y R9 ≥ 80** son necesarios de verdad. Con luz de mal Ra, el cliente sale a la calle con dos medias de distinto color. **Y luz vertical, no cenital** (la ropa se cuelga en vertical).
+
+### Otras medidas del dormitorio
+
+| Elemento | Medida |
+|---|---|
+| **Altura de mesa de luz** | **A la altura del colchón, ± 5 cm** (típicamente 50–65 cm). No más alta que el colchón |
+| Ancho de mesa de luz | 40–60 cm |
+| Altura de cabecera/respaldo | 90–130 cm desde el piso |
+| **Altura de TV en dormitorio** | Centro de pantalla a **110–130 cm** (más alta que en el living: se mira acostado) |
+| Altura de la barra de cortina / gola | A cielorraso |
+| **Tomas junto a la cama** | **Mínimo 2 por lado**: velador + carga. **A 60–75 cm** si van sobre la mesa de luz, o a 20–30 cm si van bajo ella |
+| Boca de datos / USB junto a la cama | Muy valorada. USB integrado al toma |
+| **Comando de la luz general desde la cama** | **Obligatorio.** Conmutación puerta-cabecera |
+| Comando de la luz de lectura, individual por lado | Obligatorio en dormitorio de pareja |
+
+### Iluminación del dormitorio
+
+| Capa | Solución | Nota |
+|---|---|---|
+| **General** | Luz indirecta perimetral o apliques hacia el muro, **nunca un embutido sobre la cama** | 100–150 lux, dimerizable a 10% |
+| **Lectura** | Aplique articulado o velador, uno por lado, comando independiente | 300–500 lux **sobre el libro**, con haz que no invada el lado del otro |
+| **Vestidor/placard** | Perfil LED con sensor de puerta | 200 lux |
+| **Espejo de cuerpo entero** | Luz vertical a ambos lados o frontal difusa | 300–500 lux, Ra ≥ 95 |
+| **Balizamiento nocturno** | Luz a 25–30 cm del piso, 2200 K, sensor o comando desde la cama | 1–5 lux |
+| **Blackout** | Roller blackout **con guías laterales** o cortina de tela pesada con retorno al muro | Sin guías, la luz entra por los costados y arruina el efecto |
+
+> **[E]** Para el sueño, lo que importa es **la oscuridad y la ausencia de luz azul en la hora previa**, no el color de las paredes. Un dormitorio con blackout real y luz cálida y baja a la noche es un dormitorio bien diseñado, independientemente de su paleta.
+
+---
+
+## 7.4 ESTAR-COMEDOR
+
+### Distancia de visión a TV
+
+> **[E] Las dos referencias del sector:**
+> - **SMPTE** recomienda un ángulo de visión horizontal de **30°** (uso mixto, TV general).
+> - **THX** recomienda aproximadamente **40°** (experiencia inmersiva, cine).
+>
+> Fórmulas: `diagonal (pulgadas) = distancia (pulgadas) × 0,835` para THX, y `× 0,65` para SMPTE. Equivalentemente: `distancia = diagonal × 1,20` (THX) o `distancia = diagonal × 1,54` (SMPTE).
+>
+> Muchos fabricantes (Samsung, LG, Sony) recomiendan sentarse a **1,5 veces la diagonal**, una regla simplificada que funciona bien con TV 4K en livings típicos.
+
+**TABLA DE DISTANCIA DE VISIÓN A TV**
+
+| Diagonal | Diagonal (cm) | **THX (inmersivo, 40°)** | **SMPTE (mixto, 30°)** | Regla del fabricante (1,5×) |
+|---|---|---|---|---|
+| 43" | 109 cm | 1,31 m | 1,68 m | 1,64 m |
+| 50" | 127 cm | 1,52 m | 1,96 m | 1,91 m |
+| 55" | 140 cm | 1,67 m | 2,15 m | 2,10 m |
+| **65"** | 165 cm | **1,98 m** | **2,54 m** | 2,48 m |
+| 75" | 191 cm | 2,29 m | 2,93 m | 2,86 m |
+| 85" | 216 cm | 2,59 m | 3,32 m | 3,24 m |
+| 98" | 249 cm | 2,99 m | 3,83 m | 3,73 m |
+
+**Uso práctico (a la inversa):** medí la distancia real del sofá a la pared de la TV y calculá:
+```
+Diagonal máxima recomendada (pulgadas) = distancia (cm) / 2,54 × 0,835   [THX]
+Diagonal recomendada (pulgadas)        = distancia (cm) / 2,54 × 0,65    [SMPTE]
+
+Ejemplo: sofá a 3,00 m de la TV
+  THX:   300 / 2,54 × 0,835 = 98"     ← límite de inmersión, puede resultar excesivo
+  SMPTE: 300 / 2,54 × 0,65  = 77"     ← recomendable: 75"
+```
+
+**Altura de la TV**
+
+| Regla | Medida |
+|---|---|
+| **[C] Regla principal:** el **centro de la pantalla** debe estar aproximadamente a la altura de los ojos de una persona **sentada** | Ojos sentado ≈ **105–120 cm** del piso. Por lo tanto: **centro de pantalla a 105–115 cm** |
+| Para una TV de 65" (alto ≈ 81 cm), el borde inferior queda a | ≈ **70 cm** del piso |
+| **[E]** Otra referencia de la industria monta el **borde inferior a 42" (107 cm)** del piso | **[C] Ese valor es alto para un living argentino típico**; se aproxima a la altura de ojos de una persona de pie. Usar solo en barras o espacios donde se mira de pie |
+| **Sobre un hogar / chimenea** | **Es un error ergonómico frecuente:** obliga a mirar hacia arriba y produce fatiga cervical. Si es inevitable, usar soporte abatible que baje la pantalla |
+| Ángulo de inclinación máximo aceptable hacia arriba | **[C]** ≤ 15° |
+
+**Otras reglas de TV:**
+- **Luz de fondo (bias lighting)** detrás de la pantalla, 6500 K y bajo nivel: reduce la fatiga visual al bajar el contraste entre pantalla y fondo. **[C]** Es barato y muy efectivo.
+- **Nunca una ventana enfrente ni detrás de la TV** sin control solar: reflejos o contraluz.
+- **Prever conduit** desde el soporte de TV hasta el mueble para pasar cables sin canaleta a la vista.
+
+### Disposición de sofás y radios de conversación
+
+> **[C] Regla de conversación:** la distancia cómoda entre asientos que conversan es de **180 a 270 cm** (medida de rodilla a rodilla, o entre bordes frontales de los asientos). Por debajo de 180 cm resulta invasivo; por encima de 300 cm hay que levantar la voz y el grupo se rompe.
+
+| Distancia | Medida |
+|---|---|
+| **Entre sofá y sillón que conversan** | 180–270 cm |
+| **Entre sofá y mesa ratona** | **35–45 cm** (alcanzar la taza sin levantarse, pasar las piernas) |
+| **Altura de mesa ratona** | Igual o **hasta 5 cm por debajo** de la altura del asiento del sofá (típicamente 38–45 cm) |
+| **Largo de la mesa ratona** | **≈ 2/3 del largo del sofá** |
+| **Circulación detrás del sofá** | **≥ 60 cm** (paso ocasional); **90 cm** si es circulación principal |
+| Circulación entre mobiliario y muro | ≥ 60 cm |
+| Circulación principal de la casa | **90–120 cm** |
+| Distancia entre sofá y muro (si el sofá está exento) | ≥ 20 cm (para la respiración visual) o pegado (decisión de proyecto) |
+| Mesa auxiliar junto al sillón | Altura ≈ altura del apoyabrazos (55–65 cm) |
+
+**Configuraciones tipo:**
+
+| Configuración | Cuándo | Nota |
+|---|---|---|
+| Sofá + 2 sillones enfrentados | Living cuadrado, orientado a la conversación | La mejor para recibir |
+| Sofá + chaise longue (esquinero) | Living orientado a la TV, familia grande | Ocupa mucho: medir bien |
+| **Dos sofás enfrentados** | Living alargado, alta formalidad | Requiere 4,00 m de ancho mínimo |
+| Sofá + mesa ratona + puf/otomanas | Espacios chicos y flexibles | Las otomanas son asiento extra y mesa auxiliar |
+| Sofá contra la ventana | Cuando la vista está en el lado corto | Verificar que no bloquee la luz |
+
+### Comedor: medidas de mesa según comensales
+
+| Comensales | Mesa rectangular | Mesa redonda (diámetro) | Mesa cuadrada |
+|---|---|---|---|
+| 2 | 70 × 70 cm | 70–80 cm | 70 × 70 |
+| 4 | **80 × 120 cm** | **90–110 cm** | 90 × 90 |
+| 6 | **90 × 160–180 cm** | **120–140 cm** | 130 × 130 |
+| 8 | **90 × 200–240 cm** | **150–170 cm** | 150 × 150 |
+| 10 | 100 × 260–300 cm | 180–200 cm | — |
+| 12 | 100 × 300–360 cm | 210–240 cm | — |
+
+**Reglas de comedor:**
+
+| Regla | Medida |
+|---|---|
+| **Ancho lineal por comensal** | **60 cm** mínimo; **65–70 cm** cómodo |
+| **Profundidad de cubierto por comensal** | 35–40 cm |
+| **Altura de mesa** | **72–76 cm** (75 cm es el estándar) |
+| **Altura de asiento de silla** | **44–47 cm** |
+| **Espacio libre entre asiento y tablero de mesa** | **28–32 cm** (para las piernas) |
+| **Espacio para faldón/travesaño de la mesa** | Verificar que la silla entre: el travesaño no debe estar a menos de 62–65 cm del piso |
+| **Espacio para correr la silla y sentarse** | **75–90 cm** desde el borde de la mesa al muro/mueble |
+| **Espacio para pasar por detrás de una silla ocupada** | **+ 45–60 cm** adicionales → total **120–150 cm** desde el borde de la mesa |
+| **Espacio total recomendado alrededor de la mesa** | **100 cm** mínimo, **120 cm** cómodo por lado |
+| Superficie mínima de comedor para 6 | **≈ 3,30 × 3,80 m** (mesa 90×180 + 100 cm por lado) | |
+| Superficie cómoda de comedor para 6 | 3,70 × 4,20 m | |
+| Mesa redonda: ventaja | Mejor conversación, sin cabeceras, ocupa menos en planta cuadrada | |
+| Mesa redonda con pie central | **Permite sentar una persona más** (no hay patas en el camino) | |
+
+### Alfombra del estar-comedor
+
+Ver §6.7.3 para las reglas completas.
+
+---
+
+## 7.5 LAVADERO
+
+| Elemento | Medida |
+|---|---|
+| **Lavarropas de carga frontal** | 60 × 60 × 85 cm (verificar profundidad con la puerta abierta: **hasta 110 cm**) |
+| **Lavarropas de carga superior** | 60 × 60 × 90 cm — **requiere espacio libre arriba** |
+| Secarropas | 60 × 60 × 85 cm |
+| Torre lavarropas + secarropas apilados | 60 × 65 × 180 cm — **requiere kit de apilado del fabricante** |
+| **Espacio libre frente al lavarropas** | **≥ 90 cm**; **110 cm** si es de carga frontal (la puerta abre 60 cm) |
+| Altura de mesada de trabajo | 90 cm |
+| Profundidad de mesada | 60 cm |
+| **Pileta de lavadero** | 45–60 cm de ancho, profunda (25–35 cm) |
+| **Ancho mínimo de lavadero lineal** | 60 (equipos) + 90 (circulación) = **150 cm** |
+| Ancho de lavadero con guardado en ambos lados | 60 + 110 + 40 = **210 cm** |
+| **Barral de colgado interior** | A 180–190 cm, con al menos 60 cm de espacio libre debajo |
+| **Superficie mínima funcional** | ≈ 1,50 × 2,00 m (3 m²) |
+
+**Requisitos técnicos:**
+
+- [ ] **Piso con desagüe** (rejilla) y pendiente. **Innegociable:** cuando el lavarropas pierde, hay 40 litros en el piso.
+- [ ] **Impermeabilización del piso** con babeta.
+- [ ] **Canilla de agua fría (y caliente si el equipo lo admite)** con llave de paso individual accesible.
+- [ ] Desagüe a la altura correcta (según fabricante, típicamente 60–90 cm).
+- [ ] **Toma exclusiva** para lavarropas y para secarropas, con protección diferencial.
+- [ ] **Ventilación:** el secarropas de condensación genera humedad; el de ventilación necesita conducto al exterior.
+- [ ] **Piso R10** mínimo.
+- [ ] **Guardado para productos de limpieza, cerrado y alto** si hay chicos.
+- [ ] Espacio para el carro/canasto de ropa sucia (clasificación en 2–3 canastos).
+- [ ] Mesada de plegado con **500 lux** (§5.2 fila 30).
+- [ ] Tabla de planchar: previsión de guardado vertical (12 cm de espesor, 140 cm de alto).
+- [ ] **Absorción acústica** si el lavadero está pegado a un dormitorio o al living: el lavarropas centrifugando es ruidoso. Considerar puerta con burlete y una placa de yeso con lana mineral.
+
+---
+
+## 7.6 ESCRITORIO / HOME OFFICE
+
+### Ergonomía completa
+
+> **[E]** La norma **ISO 9241-5** (*Ergonomía de la interacción persona-sistema — Parte 5: Disposición del puesto de trabajo y requisitos posturales*) establece los criterios de disposición del puesto: altura de superficie de trabajo que mantenga los codos aproximadamente a **90°**, silla ajustable que soporte la postura, distancias y ángulos de visión recomendados para pantallas, y elementos de apoyo (reposapiés, soporte de documentos, brazos de monitor).
+
+**TABLA DE MEDIDAS ERGONÓMICAS DEL PUESTO DE TRABAJO**
+
+| Elemento | Medida | Nota |
+|---|---|---|
+| **Altura de superficie de trabajo (fija)** | **72–75 cm** | Estándar; sirve a la mayoría con silla regulable |
+| **Altura de superficie regulable (escritorio sit-stand)** | **65–125 cm** de recorrido | **La mejor solución.** Sentado ≈ 70–75 cm; de pie ≈ 100–115 cm |
+| **Altura de superficie según el usuario (sentado)** | Altura del codo flexionado a 90°, con hombros relajados | Medir al usuario |
+| **Profundidad de escritorio** | **≥ 70 cm**; **80 cm recomendado** | 60 cm es insuficiente para un monitor de 24"+ |
+| **Ancho de escritorio (1 monitor)** | **≥ 120 cm**; recomendado **140–160 cm** | |
+| Ancho de escritorio (2 monitores) | **≥ 160 cm**; recomendado 180 cm | |
+| **Espacio libre para las piernas (altura)** | **≥ 65 cm** libres bajo el tablero | Sin travesaños ni cajoneras en el medio |
+| Espacio libre para las piernas (ancho) | ≥ 60 cm | |
+| Espacio libre para las piernas (profundidad, a la altura de las rodillas) | ≥ 45 cm; a la altura de los pies, ≥ 60 cm | |
+| **Altura de asiento** | **40–52 cm regulable** | |
+| **Profundidad de asiento** | 38–45 cm, preferiblemente regulable | Debe quedar un espacio de 2–3 dedos entre el borde del asiento y la parte de atrás de la rodilla |
+| **Apoyo lumbar** | Regulable en altura y profundidad | **Es el elemento que más importa en una silla** |
+| Apoyabrazos | Regulables en altura (y preferiblemente en ancho); a la altura que permita hombros relajados | |
+| **Distancia ojo–monitor** | **50–70 cm** (aprox. el largo del brazo) | Más para monitores grandes: 70–90 cm en un 27" |
+| **Altura del monitor** | **El borde SUPERIOR de la pantalla a la altura de los ojos o ligeramente por debajo** | La mirada natural va **10–20° hacia abajo** |
+| Inclinación del monitor | 10–20° hacia atrás | |
+| Ángulo de codo | **90–110°** | |
+| Ángulo de rodilla | 90–110° | |
+| **Reposapiés** | Necesario si los pies no apoyan planos en el piso | Especialmente para usuarios de baja estatura |
+| **Superficie de trabajo libre delante del teclado** | **≥ 10–15 cm** (apoyo de muñecas) | |
+
+### Iluminación del home office
+
+| Aspecto | Criterio |
+|---|---|
+| **Iluminancia de tarea** | **500 lux** sobre el plano de trabajo (§5.2 fila 23) [E] EN 12464-1 |
+| Trabajo de precisión / CAD / dibujo | **750–1.000 lux**, UGR ≤ 16 [E] |
+| **UGR** | **≤ 19** [E] |
+| **Posición de la ventana respecto del escritorio** | **LATERAL.** Nunca de frente (deslumbramiento) ni de espaldas (reflejos en la pantalla) |
+| Lado de la ventana | Preferiblemente a la **izquierda** para diestros que escriben a mano (evita la sombra de la mano) |
+| **Posición de la luminaria de tarea** | Del lado opuesto a la mano dominante |
+| **Reflejos en pantalla** | Verificar que ninguna luminaria ni ventana se refleje en la pantalla. Prueba: sentarse, apagar el monitor y mirar la pantalla negra como si fuera un espejo |
+| Temperatura de color | 4000 K de día (alerta), 3000 K a la tarde. **Ideal: tunable white** |
+| **Luz de fondo del ambiente** | La habitación no debe estar a oscuras con la pantalla brillando: relación de luminancias ≤ 10:1 |
+| **Videollamada** | Luz **frontal difusa** sobre el rostro, 250–400 lux en plano vertical, Ra ≥ 90, R9 ≥ 50. Un panel LED difuso o un aro delante, no arriba |
+
+### Acústica y fondo
+
+| Aspecto | Criterio |
+|---|---|
+| **Fondo de cámara** | Definirlo como parte del proyecto: una biblioteca, un muro de color, una planta. **No un placard abierto ni una pared blanca vacía** |
+| Absorción acústica | Alfombra + cortina de tela + un panel absorbente detrás y a los lados del usuario. Reduce el "eco de baño" en las llamadas |
+| Puerta | Si el escritorio está en un ambiente de paso, considerar una puerta o al menos una separación visual |
+
+### Otras previsiones
+
+- [ ] **Mínimo 4 tomas + 2 bocas de datos** (§5.12).
+- [ ] Pasacables en el tablero, y bandeja portacables bajo el escritorio.
+- [ ] Espacio para impresora, si la hay (¿realmente la hay?).
+- [ ] Guardado de documentación: metros lineales medidos en el briefing.
+- [ ] Si el escritorio se usa de pie parte del día: alfombra antifatiga.
+
+---
+
+## 7.7 ESPACIOS CHICOS Y MONOAMBIENTES
+
+### Principios
+
+| Principio | Aplicación |
+|---|---|
+| **1. Una sola familia de materiales y un solo piso** | El cambio de piso entre zonas fragmenta y achica. Un solo piso continuo, sin zócalos de contraste |
+| **2. Bajo contraste entre planos** | Muros, cielorraso y carpintería en el mismo tono o cercanos. Los límites se disuelven (§4.5) |
+| **3. Todo el guardado en un solo plano** | Un muro entero de guardado, del piso al cielorraso, de color igual al muro. El resto del ambiente queda limpio |
+| **4. Ocupar la altura** | Guardado de baja frecuencia por encima de 200 cm: valijas, temporada, cosas de una vez al año |
+| **5. Mobiliario de patas visibles** | Ver el piso por debajo del mueble aumenta la percepción de superficie |
+| **6. Un solo protagonista** | En espacios chicos, 2 protagonistas saturan |
+| **7. Muebles multifunción, no muebles chicos** | Un mueble grande y multifunción rinde más que cinco muebles chicos |
+| **8. Espejos: sí, pero con criterio** | Un espejo grande frente a una **ventana o a una vista** duplica luz y profundidad. Un espejo frente a una pared vacía solo duplica la pared |
+| **9. Cortina de pared a pared y de cielorraso a piso** | Hace que la ventana parezca del ancho del muro |
+| **10. Iluminación en capas, muchas fuentes bajas** | La luz general única aplana y encierra. 5 fuentes puntuales en 25 m² leen como un espacio más grande |
+
+### Mobiliario transformable
+
+| Pieza | Función | Espacio que ahorra | Advertencia |
+|---|---|---|---|
+| **Cama abatible (murphy bed)** | Cama que se pliega al muro | 3–4 m² | **Requiere anclaje estructural verificado y colchón de espesor limitado (25–30 cm).** Requiere mantenimiento del herraje |
+| **Sofá-cama** | Asiento + cama de invitados | 3 m² | Los buenos son caros. Los baratos son mal sofá y peor cama |
+| **Mesa extensible** | Comedor de 4 a 8 | 2 m² | Prever **dónde se guarda el tablero adicional** |
+| **Mesa consola extensible** | Consola de 30 cm → mesa de 6 | 3 m² | Muy efectiva; verificar estabilidad |
+| **Mesa ratona elevable** | Mesa ratona → mesa de trabajo/comer | — | Muy útil en monoambientes |
+| **Escritorio abatible / rebatible** | Escritorio que se pliega al muro | 1,5 m² | |
+| **Banco con guardado** | Asiento + baúl | — | Excelente en entrada y a los pies de la cama |
+| **Cama con cajones o elevable** | Guardado bajo la cama | **2–3 m³ de guardado** | La cama elevable (con pistón) es la más práctica |
+| **Litera / entrepiso** | Cama arriba, escritorio o guardado abajo | 3–4 m² | Requiere altura libre ≥ 2,80 m para ser cómodo |
+| **Puerta corrediza embutida** | Elimina el barrido de la puerta | **0,8–1,2 m²** por puerta | **Requiere tabique especial (decidido en obra)**; menos aislación acústica |
+| **Panel deslizante / cortina divisoria** | Separa el dormitorio del estar en un monoambiente | — | Muy efectivo y barato |
+
+### Zonificación de un monoambiente
+
+```
+   ┌──────────────────────────────────────────────────┐
+   │  ┌────────┐                                      │
+   │  │ COCINA │   ═══════════ MUEBLE DE ═══════════  │
+   │  │ lineal │       GUARDADO CONTINUO (h=2,40)     │
+   │  └────────┘                                      │
+   │                                                  │
+   │       ┌────────┐          ╎        ┌─────────┐   │
+   │       │ MESA   │          ╎        │  CAMA   │   │
+   │  ┌──┐ │        │          ╎        │         │   │
+   │  │SO│ └────────┘     panel╎        └─────────┘   │
+   │  │FÁ│                deslizante                  │
+   │  └──┘                  o biblioteca              │
+   │                          baja                    │
+   └──────────────────────────────────────────────────┘
+     ← zona día (público) →      ← zona noche (privado) →
+```
+
+**Reglas de zonificación:**
+1. **La zona de dormir va lo más lejos posible de la puerta de entrada.**
+2. **La cama nunca debe verse desde la puerta de entrada** si se puede evitar.
+3. La separación puede ser **visual y no física**: un cambio de nivel, una biblioteca baja, un panel, una cortina, un cambio de iluminación.
+4. **La cocina va cerca de las instalaciones existentes** (no negociable en un departamento).
+5. **La zona de trabajo, cerca de la ventana** y con posibilidad de "cerrarse" visualmente al terminar la jornada.
+
+---
+
+## 7.8 EXTERIOR: BALCÓN, GALERÍA, PATIO
+
+### Balcón de departamento
+
+| Elemento | Medida |
+|---|---|
+| **Profundidad mínima útil** | **150 cm** para poner una mesa chica y dos sillas |
+| Profundidad para comer (mesa de 4) | **200–220 cm** |
+| Balcón "francés" / de servicio | 80–120 cm — solo para pararse y plantas |
+| **Altura de baranda** | **[V] Verificar Código de Edificación de Santa Rosa.** Referencia habitual: **≥ 100–110 cm** |
+| Separación entre barrotes | **[V] Verificar.** Referencia habitual: **≤ 12 cm** (para que no pase la cabeza de un chico) |
+| **Sobrecarga admisible del balcón** | **[V] CRÍTICO — verificar con el proyectista estructural o el reglamento de copropiedad antes de colocar deck, jardineras grandes, jacuzzi o piso pesado** |
+
+**Consideraciones de proyecto:**
+
+| Aspecto | Criterio |
+|---|---|
+| **Piso** | Porcelanato R11 exterior, deck de madera dura (lapacho, curupay) o WPC. **Verificar peso y desagüe: el piso nuevo no debe tapar el desagüe ni superar la altura del umbral** |
+| **Deck sobre baldosa existente** | Deck flotante sobre rastreles con separación, para que el agua corra por debajo. Dejar registro para limpiar el desagüe |
+| **Viento** | En Santa Rosa el viento es un factor real. **Todo el mobiliario liviano vuela.** Especificar piezas con peso o previsión de anclaje. Sombrilla: base de ≥ 25 kg o anclada |
+| **Sol** | Verificar orientación. Un balcón al oeste es inhabitable de 16 a 20 h en verano sin sombra |
+| Vegetación | Elegir especies resistentes a viento y a la amplitud térmica pampeana. Macetas con reserva de agua |
+| **Iluminación** | IP65. Cálida (2200–2700 K). Baja: balizas, apliques hacia abajo, tira LED bajo la baranda. **Nunca un reflector potente** |
+| Tomas exteriores | IP44 mínimo, con tapa |
+| **Reglamento de copropiedad** | **Verificar SIEMPRE** antes de proponer: qué se puede colocar, qué colores, si se pueden cerrar, si se pueden poner toldos |
+
+### Galería / quincho
+
+| Elemento | Medida |
+|---|---|
+| **Profundidad mínima de galería útil** | 250 cm |
+| Profundidad cómoda (mesa + circulación) | **300–350 cm** |
+| **Altura de parrilla (nivel de la grilla)** | **80–95 cm** — a la altura de la mesada de trabajo del asador |
+| Mesada de apoyo junto a la parrilla | **≥ 90 cm** de largo, a 90 cm de altura |
+| **Iluminación sobre la parrilla** | **300–500 lux, Ra ≥ 90** (§5.2 fila 48). Hay que ver el punto de la carne |
+| Bacha en la galería | Muy valorada. Prever agua y desagüe |
+| **Sobrecarga y voladizos** | [V] Verificar con estructura |
+| Materiales | Todo debe resistir intemperie, amplitud térmica y viento. **Madera: solo especies duras o tratadas.** Metal: galvanizado o con protección |
+| **Cerramiento** | Cortinas de vidrio, paneles móviles, celosías. En La Pampa, considerar el viento como factor principal, no solo el sol |
+
+---
+
+## 7.9 ESPACIOS COMUNES DE EDIFICIO (hasta 10 plantas)
+
+> **Por qué importan comercialmente:** en un edificio, los espacios comunes son **lo primero que ve un comprador o un inquilino y lo que define el valor percibido del edificio entero**. Un edificio con buenos amenities y un hall cuidado se vende y se alquila más caro. Y son, además, lo que se destruye más rápido si se diseña mal.
+
+### Los dos criterios rectores
+
+```
+1) VENDIBILIDAD    →  ¿Qué ve alguien que entra por primera vez?
+                      → Escala, luz, material noble a la altura de la mano,
+                        orden visual, ausencia de cables y carteles.
+
+2) RESISTENCIA     →  ¿Cómo va a estar esto en 5 años con 40 familias,
+                        mudanzas, carros de compra, bicicletas y perros?
+                      → Zócalo alto de material duro, esquinas protegidas,
+                        pisos R10-R11 PEI V, superficies lavables,
+                        iluminación con recambio simple y sin escalera.
+```
+
+### Hall de acceso
+
+| Aspecto | Criterio |
+|---|---|
+| **Iluminancia** | **200 lux** (§5.2 fila 34), Ra ≥ 90, 3000 K |
+| **Diseño de luz** | En capas: general baja + acento sobre el muro protagonista + luz de recepción/buzones. **Nunca un plafón fluorescente** |
+| **Piso** | Porcelanato **PEI V, R10–R11** (entra agua y barro de la calle). Formato grande, junta mínima |
+| **Felpudo / zona de transición** | **Empotrado y a nivel**, mínimo 120 cm en el sentido de la marcha (idealmente 2 pasos). Es lo que evita que el barro entre a todo el edificio |
+| **Zócalo / basamento** | **Material duro hasta 0,90–1,20 m** (porcelanato, microcemento, madera, piedra). **INNEGOCIABLE.** Sin esto, la pared se destruye en 2 años |
+| **Protección de esquinas** | Perfil de acero inoxidable o guardaesquinas en todas las aristas expuestas |
+| Muro protagonista | Un solo muro con material noble (madera, piedra, revestimiento texturado) iluminado con bañador. Es donde se juega la impresión |
+| **Buzones** | Integrados en un mueble diseñado, no colgados. Con iluminación propia |
+| Portero / conserjería | Mostrador a 105–110 cm (altura de atención de pie) con un sector a 75–80 cm (accesible sentado) |
+| **Acústica** | **Crítico.** Los halls de material duro reverberan y todo se escucha. Cielorraso acústico o paneles |
+| Puerta de acceso | Con cierrapuertas regulado y burlete. Vidrio con señalización visual (banda a 90–150 cm) |
+| **Accesibilidad** | Rampa o acceso a nivel, ancho de paso ≥ 90 cm, iluminación de umbral. **[V] verificar Ley 24.314 / Decreto 914/97 y normativa local** |
+| Carteles, medidores, matafuegos | **Integrarlos al diseño desde el principio.** Un hall lindo con 8 carteles pegados con cinta es un hall feo |
+
+### Palier de piso
+
+| Aspecto | Criterio |
+|---|---|
+| **Iluminancia** | **150–200 lux** (§5.2 fila 36) + **100 lux en plano vertical sobre la cerradura** (fila 37) |
+| **Control** | **Detección de presencia con nivel de vigilia** (queda al 10–20% y sube al 100% con presencia). Ahorra mucha energía y evita el pasillo a oscuras |
+| **Piso** | Igual criterio que el hall, o el mismo material para dar continuidad |
+| **Zócalo alto** | 90–120 cm de material duro, o al menos protección en la zona de las puertas |
+| Numeración de departamentos | Diseñada, iluminada, legible con contraste de LRV ≥ 30 puntos [E] |
+| **Acústica** | El palier es una caja de resonancia. Un cielorraso con absorción mejora mucho la vida del edificio |
+| Puerta de departamento | La cara exterior es espacio común: unificar color y herraje |
+
+### Escalera
+
+| Aspecto | Criterio |
+|---|---|
+| **Iluminancia** | **150 lux sobre la huella** (§5.2 fila 38) |
+| **Regla de proyecto** | **Iluminar la HUELLA, no la contrahuella.** La luz debe venir de arriba o de un lateral bajo, de modo que cada escalón proyecte una sombra que lo haga legible |
+| **Nunca** | Luz que deslumbre al bajar; sombras propias del usuario sobre los escalones |
+| **Luz de emergencia** | **Obligatoria. [V] Verificar exigencias en el Código de Edificación de Santa Rosa y en la normativa de bomberos** |
+| Nariz de escalón antideslizante | Con contraste de LRV respecto de la huella |
+| Pasamanos | Continuo, a **90–100 cm**; **[V] verificar normativa** |
+| Reacción al fuego de revestimientos | **Es vía de evacuación: máxima exigencia.** Ver §6.8 |
+
+### SUM (salón de usos múltiples)
+
+| Aspecto | Criterio |
+|---|---|
+| **Qué lo hace vendible** | Que se pueda usar de verdad: cocina/office funcional, baño propio, mesas y sillas guardables, buena luz, buena acústica, y que se pueda calefaccionar/refrescar |
+| **Iluminación** | **200–300 lux con escenas dimerizables de 50 a 500 lux** (§5.2 fila 40). Un SUM sin dimmer no sirve para una fiesta |
+| **Acústica** | **El factor #1.** Un SUM con eco es inutilizable para 20 personas. Requiere tratamiento: cielorraso acústico, paneles, cortinas. **Calcular tiempo de reverberación** |
+| **Piso** | PEI V, R10, resistente a manchas (vino, comida). **Vinílico heterogéneo comercial o porcelanato** |
+| **Mobiliario** | Mesas plegables y sillas apilables, **con depósito propio dimensionado** (ese depósito es lo que nunca se proyecta y luego las sillas quedan en el pasillo) |
+| **Office / cocina** | Mesada, bacha, heladera, microondas, guardado con llave. Mesada de acero o porcelanato |
+| **Baño** | Propio, accesible, con acceso desde el SUM sin pasar por el hall |
+| **Climatización** | Sin esto, el SUM no se usa 6 meses al año |
+| Salida a exterior | Si hay patio o terraza vinculada, multiplica el valor |
+| Terminaciones | **Nada frágil.** Esquinas protegidas, muros lavables, zócalo alto |
+
+### Gimnasio
+
+| Aspecto | Criterio |
+|---|---|
+| **Iluminancia** | **300 lux** (§5.2 fila 41) |
+| **Deslumbramiento** | **CRÍTICO:** el usuario mira el cielorraso en press de banca, colchoneta y estiramiento. **Nunca embutidos directos sobre las zonas de trabajo en el piso.** Usar luz indirecta o perimetral |
+| **Piso** | **Piso deportivo de caucho** (rollo o placas), 6–10 mm en zona cardio, **15–20 mm o más en zona de pesas libres**. Amortigua impacto y reduce ruido a los departamentos de abajo |
+| **Aislación acústica al ruido de impacto** | **El problema #1 de un gimnasio en un edificio.** Requiere piso flotante o desolidarizado. **[V] Consultar acústico** |
+| **Ventilación** | Renovación de aire alta. Sin ventilación, el gimnasio huele mal y no se usa |
+| **Espejos** | Grandes, de piso a 200 cm, con película de seguridad en el dorso |
+| Altura libre mínima | **≥ 2,60 m**; ideal 2,80 m (por los ejercicios con los brazos arriba y por la sensación de encierro) |
+| Terminaciones | Muros lavables; zócalo alto (las pesas golpean) |
+| Previsiones | Tomas para máquinas de cardio, bebedero, ganchos para toallas, sonido |
+
+### Coworking / sala de trabajo
+
+| Aspecto | Criterio |
+|---|---|
+| **Iluminancia** | **500 lux, UGR ≤ 19, Ra ≥ 90** (§5.2 fila 42) [E] |
+| **Acústica** | **El factor decisivo.** Sin absorción, es inutilizable. Cielorraso acústico + paneles + alfombra modular |
+| **Cabinas de llamada (phone booth)** | 1 cada 6–8 puestos. Es lo que más se valora hoy |
+| **Conectividad** | **Wi-Fi de calidad + tomas en cada puesto + USB.** Sin buen Wi-Fi el espacio no se usa |
+| Mobiliario | Mesas de 140–160 × 70–80 cm por puesto; sillas ergonómicas de verdad (Martindale ≥ 50.000) |
+| Iluminación de tarea individual | Muy valorada: cada puesto con su lámpara |
+| Zona informal | Sillones bajos + mesa de café: se usa más que las mesas formales |
+
+### Terraza / azotea
+
+| Aspecto | Criterio |
+|---|---|
+| **Iluminancia** | **50–100 lux ambiental** con acentos (§5.2 fila 52). Baja y cálida (2200–2700 K) |
+| **Viento** | **En Santa Rosa, el factor determinante.** Sin parabrisas (paneles de vidrio, vegetación, celosías) la terraza no se usa |
+| **Sombra** | Pérgola, vela, toldo. Sin sombra tampoco se usa |
+| **Piso** | Porcelanato R11 exterior o deck de madera dura/WPC sobre plots regulables. **Verificar sobrecarga y no obstruir desagües** |
+| Mobiliario | Resistente a UV, viento y lluvia. Acrílico Sunbrella, aluminio, teca, HDPE. **Con peso o anclado** |
+| Parrilla común | Muy valorada. Prever extracción, mesada, bacha, guardado |
+| Baño / toilette de terraza | Multiplica el uso |
+| Barandas y protecciones | **[V] Verificar normativa de alturas y separaciones** |
+| Vegetación | Especies resistentes a viento y heladas. Riego previsto |
+| Iluminación de emergencia y balizamiento de bordes | Seguridad |
+
+### Cochera
+
+| Aspecto | Criterio |
+|---|---|
+| **Iluminancia** | **75–100 lux general; 150 lux en rampas y cruces** (§5.2 fila 44), 4000 K |
+| Control | Detección de presencia por zonas |
+| Piso | Hormigón llaneado con endurecedor y sellador; demarcación pintada |
+| **Señalización** | Números de cochera grandes, flechas de circulación, altura libre señalizada |
+| **Protección de columnas** | Perfil de goma o pintura de alto contraste en todas las columnas y esquinas |
+| Ventilación | **[V] Verificar exigencia normativa de ventilación de cocheras (CO)** |
+| Previsión de **carga de vehículos eléctricos** | **[C] Fuerte diferencial de venta a 2026.** Prever al menos la canalización troncal y espacio de tablero, aunque no se instalen los cargadores ahora |
+| Bicicletero | Muy valorado. Soportes verticales u horizontales, iluminado |
+
+### Checklist de "resistencia al uso" para espacios comunes
+
+- [ ] Zócalo o basamento duro de **90–120 cm** en todas las circulaciones.
+- [ ] **Guardaesquinas** en todas las aristas expuestas.
+- [ ] Piso **PEI V, R10–R11**, con felpudo empotrado en el acceso.
+- [ ] Pintura **lavable** (semimate mínimo) en todos los muros comunes.
+- [ ] Artefactos de iluminación con **recambio de fuente sin escalera especial** (o con vida útil ≥ 50.000 h y stock de repuesto guardado).
+- [ ] **Stock de repuestos** entregado al consorcio: piezas de piso, pintura codificada, artefactos, herrajes.
+- [ ] Manual de mantenimiento entregado a la administración.
+- [ ] Todos los materiales especificados con **disponibilidad a 10 años** o con repuesto guardado.
+- [ ] Instalaciones (medidores, matafuegos, tableros, carteles reglamentarios) **integradas al diseño**, no agregadas después.
+- [ ] Iluminación de emergencia y señalización de evacuación proyectadas, no improvisadas.
+
+---
+
+# 8. MOBILIARIO Y EQUIPAMIENTO
+
+## 8.1 A medida vs. estándar
+
+| Criterio | **A medida** | **Estándar / de catálogo** |
+|---|---|---|
+| **Aprovechamiento del espacio** | **100%** — llega a cielorraso, resuelve esquinas, absorbe irregularidades del muro | 70–85% — quedan huecos, faltantes y sobrantes |
+| **Costo** | **1,5 a 3× el estándar** (en cuerpos simples); menos diferencia en piezas complejas | Base |
+| **Plazo** | 4–10 semanas | 0–6 semanas |
+| **Personalización** | Total (medida, color, herraje, distribución interior) | La del catálogo |
+| **Riesgo** | Depende del carpintero; hay que controlar | Bajo; producto probado |
+| **Reventa / mudanza** | **No se lleva** | Se lleva |
+| **Reparación** | Difícil (hay que volver al carpintero) | Repuestos disponibles a veces |
+| **Calidad de acabado** | Variable: puede ser excelente o mala | Consistente (industrial) |
+| **Ergonomía** | Adaptable al usuario real (altura de mesada, alturas de estantes) | Estándar |
+
+### Cuándo conviene cada uno
+
+| Situación | Recomendación |
+|---|---|
+| **Cocina** | **A medida casi siempre.** Las cocinas modulares argentinas rara vez calzan bien y se pierde mucho volumen. Excepción: presupuesto muy ajustado o inmueble de alquiler |
+| **Placares y vestidores** | **A medida.** Es donde más se gana (llegar a cielorraso, ajustar a la profundidad exacta) |
+| **Mueble bajo mesada de baño** | **A medida**, salvo que exista uno de catálogo que calce exactamente |
+| **Biblioteca / mueble de TV / mueble de living** | A medida si tiene que integrarse al muro; estándar si es exento |
+| **Sofá** | **Estándar**, salvo medidas imposibles (esquineros a medida en espacios raros). Un sofá de fábrica tiene mejor espuma, mejor estructura y mejor confección que uno de tapicero, a igual precio |
+| **Mesa de comedor** | **Estándar o de carpintero.** Una mesa a medida se justifica solo si el espacio la exige |
+| **Sillas** | **Estándar siempre.** Una silla es un problema de ingeniería y de ergonomía que un carpintero no resuelve |
+| **Camas y respaldos** | Respaldo a medida (es económico y de gran impacto); somier estándar |
+| **Escritorio** | A medida si va integrado al muro; estándar si es un escritorio regulable |
+| **Muebles de exterior** | Estándar (los materiales de intemperie son industriales) |
+
+> **[C] Regla híbrida del estudio:** **cuerpos a medida, componentes estándar.** El carpintero hace los cuerpos y los frentes; los herrajes son Blum/Hettich/Häfele; los cajones son sistemas de fábrica; la iluminación es de perfil comercial; las bachas y griferías son de catálogo. Se combina la adaptación al espacio con la confiabilidad industrial.
+
+---
+
+## 8.2 Carpintería a medida: cómo se especifica
+
+### Materiales de placa
+
+| Placa | Composición | Densidad / peso | Resistencia a la humedad | Terminaciones posibles | Uso |
+|---|---|---|---|---|---|
+| **Aglomerado (chipboard) melamínico** | Partículas de madera + resina, revestido en melamina | Media | **Baja** (se hincha con agua) | La melamina de fábrica | Cuerpos y frentes económicos |
+| **MDF crudo** | Fibras de madera prensadas | Alta, pesado | Baja | **Laqueado, enchapado, empapelado, pintado** | **Frentes laqueados, molduras, fresados, curvas** |
+| **MDF melamínico** | MDF con melamina | Alta | Baja | La melamina de fábrica | **Lo más usado hoy.** Mejor canto que el aglomerado |
+| **MDF hidrófugo (verde)** | MDF con resinas resistentes a humedad | Alta | **Media-alta** | Laqueado, melamina | **Baños, bajo bacha de cocina, lavaderos** |
+| **Multilaminado (terciado) fenólico** | Chapas cruzadas encoladas | Media-alta | **Alta** (el fenólico) | Enchapado, laqueado, canto visto | Cuerpos de alta prestación; el canto visto es un recurso estético |
+| **Enchapado (MDF/multilaminado + chapa natural)** | Placa + lámina de madera natural | Según base | Según base | **Lustre, aceite, laca transparente** | Frentes de madera natural real |
+| **Compacto fenólico (HPL macizo)** | Laminados fenólicos prensados | Muy alta | **Muy alta** | Color de fábrica | Baños públicos, exteriores, alta exigencia |
+| **Madera maciza** | Tablas encoladas | Alta | Media | Todas | Piezas nobles, mesadas de madera, marcos |
+
+**Espesores habituales:**
+
+| Elemento | Espesor |
+|---|---|
+| Cuerpos (laterales, techo, piso) | **18 mm** |
+| Fondos | 3–6 mm (**exigir fondo de 6 mm ranurado**, no de 3 mm grampado: es lo que hace que el mueble no se "abra") |
+| Estantes hasta 80 cm de luz | 18 mm |
+| **Estantes de más de 80 cm o muy cargados** | **25 mm** o refuerzo |
+| Frentes | 18 mm (laqueado: 18–19 mm) |
+| Zócalos | 18 mm (hidrófugo en cocina y baño) |
+
+### Cantos
+
+> **[C] El canto define la vida útil del mueble.** Es donde entra el agua, donde golpea la aspiradora y donde se despega.
+
+| Canto | Espesor | Durabilidad | Uso |
+|---|---|---|---|
+| Tapacanto de papel/PVC 0,45 mm | 0,45 mm | **Baja** — se despega y se astilla | **Evitar en frentes.** Aceptable solo en interiores no visibles |
+| **Tapacanto ABS 1 mm** | 1 mm | Media-buena | Estándar aceptable |
+| **Tapacanto ABS 2 mm** | 2 mm | **Buena** | **Lo que hay que exigir en frentes y en todo canto expuesto** |
+| Canto de madera maciza | 5–20 mm | Muy buena | Piezas nobles |
+| **Encolado láser / airtec (sin junta visible)** | — | **Excelente** | Alta gama; no tiene línea de cola |
+
+### Herrajes
+
+Ver §6.6.
+
+### Qué debe contener un plano de carpintería
+
+Un plano de carpintería a medida **no es un dibujo del mueble**. Es un documento de fabricación.
+
+```
+PLANO DE CARPINTERÍA — CONTENIDO OBLIGATORIO
+
+1. VISTA FRONTAL, escala 1:20 o 1:25
+   · Cotas generales: ancho, alto, profundidad
+   · Cotas de cada módulo
+   · Numeración de módulos (M1, M2, M3...)
+   · Sentido de apertura de cada puerta (línea de trazos en V)
+   · Posición de tiradores o de gola
+
+2. CORTES, escala 1:20
+   · Corte vertical por cada tipo de módulo
+   · Altura y cantidad de estantes, con cotas
+   · Altura de cajones (interior útil), con cotas
+   · Espesores de placa
+   · Encuentro con el piso (zócalo, retranqueo)
+   · Encuentro con el cielorraso (tapa, moldura, buña)
+
+3. VISTA INTERIOR / DESPIECE, escala 1:20
+   · Distribución interior de cada módulo
+   · Barrales, estantes, cajoneras, accesorios
+
+4. DETALLES, escala 1:5 o 1:2
+   · Encuentro de frentes (junta, gola, perfil)
+   · Encuentro con el muro (tapajuntas, escriba)
+   · Encuentro con la mesada
+   · Alojamiento de perfil LED
+   · Pasaje de cables e instalaciones
+   · Ventilación de módulos con equipos
+
+5. PLANILLA DE ESPECIFICACIÓN
+   ┌────┬─────────────┬────────────┬───────────┬──────────┬────────────┐
+   │ M  │ Descripción │ Placa      │ Frente    │ Herraje  │ Observ.    │
+   ├────┼─────────────┼────────────┼───────────┼──────────┼────────────┤
+   │ M1 │ Bajo bacha  │ MDF hidróf.│ Mel. XXX  │ Blum ... │ Recorte U  │
+   │ M2 │ Cacerolero  │ MDF melam. │ Mel. XXX  │ Tandem   │ 3 cajones  │
+   └────┴─────────────┴────────────┴───────────┴──────────┴────────────┘
+
+6. NOTAS
+   · Tolerancias admitidas
+   · Quién toma las medidas en obra (el carpintero, SIEMPRE)
+   · Qué se hace con las irregularidades del muro
+   · Qué instalaciones deben estar hechas antes
+```
+
+### Tolerancias y encuentros: el apartado que evita conflictos
+
+| Tema | Especificación |
+|---|---|
+| **Quién mide** | **El carpintero mide en obra, bajo su responsabilidad**, con los muros terminados. El plano del estudio da la intención de diseño; la medida final es del fabricante |
+| **Muros fuera de escuadra y de plomo** | **Siempre lo están.** El mueble debe llevar un **tapajuntas o escriba** contra el muro: una pieza de 20–40 mm que se corta en obra para absorber la irregularidad. **Nunca proyectar un mueble que llegue justo al muro** |
+| **Encuentro con el cielorraso** | Tres opciones: (a) **tapa de remate** de 30–50 mm; (b) llegar hasta 20 mm y taparlo con una moldura o buña; (c) llegar hasta cielorraso con junta abierta de 5 mm declarada. **Nunca "que llegue justo"** |
+| **Encuentro con el piso** | Zócalo del mueble regulable en altura (patas regulables), retranqueado 50–80 mm |
+| **Luz entre frentes (reveal)** | **2–3 mm**, uniforme. Se declara en el plano |
+| **Luz entre frente y cuerpo** | 2–3 mm |
+| **Planitud de frentes laqueados** | Especificar tolerancia y método de control (mirar el reflejo de una línea recta) |
+| **Diferencia de tono entre partidas** | En melamina, **exigir que todo el trabajo salga de la misma partida** |
+| **Recorte para caños e instalaciones** | Indicarlo en plano y verificarlo en obra antes de fabricar |
+| **Ventilación de módulos con equipos** | Horno, microondas, heladera bajo mesada, drivers de LED: **prever rejilla o retiro de fondo según fabricante** |
+
+### Secuencia de obra de la carpintería (el orden importa)
+
+```
+1. Muros terminados (revoque + enduído) y a plomo
+2. Piso colocado             ← el mueble apoya sobre el piso terminado
+3. Instalaciones a la vista y verificadas
+4. MEDICIÓN DEL CARPINTERO EN OBRA
+5. Fabricación (4–10 semanas)
+6. Montaje de cuerpos y frentes
+7. PLANTILLADO DE MESADA   ← recién ahora
+8. Fabricación de mesada (2–5 semanas)
+9. Colocación de mesada
+10. Conexión de instalaciones (agua, gas, eléctrica)
+11. Colocación de salpicadero/revestimiento
+12. Ajuste final de herrajes y regulación
+```
+
+> **[C] Punto crítico del cronograma:** entre el paso 6 y el paso 9 hay **2 a 5 semanas sin mesada**. Si el cliente se muda antes, no tiene cocina. **Esto se explica en la fase 1 y se pone en el cronograma.**
+
+---
+
+## 8.3 Proveedores y tiempos de entrega en Argentina
+
+> **[V] TODA ESTA SECCIÓN ES REFERENCIAL Y DEBE VERIFICARSE.** La disponibilidad, los plazos y las condiciones cambian permanentemente en el mercado argentino. **El estudio debe mantener su propia base de proveedores actualizada, con contactos, plazos reales medidos y calificación de desempeño.**
+
+### Planilla de proveedores del estudio (a completar y mantener)
+
+| Rubro | Proveedor | Contacto | Cobertura Santa Rosa | Lead time real medido | Calificación (1–5) | Última actualización |
+|---|---|---|---|---|---|---|
+| Carpintería a medida | | | | | | |
+| Mesadas (marmolería) | | | | | | |
+| Herrajes | | | | | | |
+| Porcelanato / revestimientos | | | | | | |
+| Pinturería | | | | | | |
+| Iluminación | | | | | | |
+| Mobiliario | | | | | | |
+| Tapicería | | | | | | |
+| Cortinas | | | | | | |
+| Alfombras | | | | | | |
+| Vidrios y mamparas | | | | | | |
+| Sanitarios y grifería | | | | | | |
+| Electrodomésticos | | | | | | |
+| Electricista | | | | | | |
+| Plomero / gasista matriculado | | | | | | |
+| Yesero | | | | | | |
+| Pintor | | | | | | |
+| Colocador de pisos | | | | | | |
+| Microcemento | | | | | | |
+| Herrería | | | | | | |
+
+### Criterios de calificación de un proveedor
+
+| Criterio | Peso |
+|---|---|
+| Cumple el plazo prometido | 30% |
+| Calidad de ejecución | 25% |
+| Responde y comunica (avisa cuando se atrasa) | 20% |
+| Resuelve post-venta y garantía | 15% |
+| Precio | 10% |
+
+> **[C]** Notar que **el precio es el criterio de menor peso.** Un proveedor barato que se atrasa 6 semanas y no responde el teléfono le cuesta al estudio mucho más de lo que ahorra.
+
+### Nacional vs. importado
+
+| | Nacional | Importado |
+|---|---|---|
+| **Plazo** | 2–10 semanas | 6–20 semanas (más aduana) |
+| **Precio** | Menor, generalmente | Mayor, con volatilidad cambiaria |
+| **Riesgo de disponibilidad** | Medio | **Alto** (restricciones de importación, faltantes) |
+| **Repuestos y garantía** | Disponible | **Problemático** |
+| **Servicio técnico** | Disponible | Depende del representante |
+| **Calidad** | Muy variable: hay excelente y hay malo | Generalmente consistente |
+| **Recomendación del estudio** | **Preferir nacional** en todo lo que requiere servicio, repuestos o reposición futura: electrodomésticos, herrajes de uso, iluminación técnica, sanitarios y grifería | Importado solo en piezas que definen el proyecto y que no tienen equivalente local |
+
+> **[C] Regla:** **nunca poner en la ruta crítica del cronograma un producto importado sin stock local confirmado.** Y siempre tener una **alternativa nacional pre-especificada** ("plan B") por cada ítem importado del FF&E.
+
+### Fabricantes argentinos de iluminación (referencia)
+
+| Marca | Perfil | Web |
+|---|---|---|
+| **Lucciola** | Iluminación profesional. Amplia gama: embutidos (pared, piso, downlight), paneles LED, paneles herméticos, cintas y tiras LED, plafones y colgantes, apliques de pared, bañadores de pared, rieles magnéticos, luminarias industriales y lineales, proyectores exteriores IP54, farolas. Casa central en Rosario (Amenabar 3555) y centro logístico en Florida Oeste, Vicente López. Tel. +54 341 4313995 | lucciola.com.ar |
+| **Artelum** | Amplio repertorio, desde artefactos exteriores simples hasta sistemas bidireccionales | artelum.com.ar |
+| **Candil** | Fabricante y distribuidor líder de luminarias, LED y lámparas en Argentina y Mercosur | (verificar) |
+| Otros | Consultar el directorio de fabricantes de **iluminacion.net** | iluminacion.net/fabricantes/ |
+
+> **[V]** Verificar en cada caso: disponibilidad de **archivos fotométricos IES/LDT**, valores reales de Ra y R9, compatibilidad de drivers con dimmers, plazos de entrega a La Pampa y condiciones de garantía.
+
+---
+
+## 8.4 Tapicería
+
+| Aspecto | Criterio |
+|---|---|
+| **Estructura del sofá** | Madera dura secada en horno, ensamblada y encolada (no solo grampada). **Exigir garantía de estructura de ≥ 5 años** |
+| **Suspensión** | Elásticos entrelazados de buena calidad, o resortes ensacados (mejor). Los elásticos ceden a los 3–5 años en sofás económicos |
+| **Espuma del asiento** | **Densidad ≥ 30 kg/m³** para uso diario; ideal 32–35 kg/m³, o espuma con núcleo de alta densidad + capa de confort. **[V] verificar densidades disponibles en el mercado local** |
+| **Espuma del respaldo** | Menor densidad + fibra siliconada o pluma |
+| **Almohadones de pluma/fibra** | Más confortables y más "vividos"; requieren ahuecarlos (a algunos clientes les molesta) |
+| **Tapizado** | Ver §6.7.2 (Martindale, fibras) |
+| **Fundas desenfundables** | **Muy recomendable** con chicos y mascotas. Encarece un 15–25% y salva el sofá |
+| **Profundidad de asiento** | 55–60 cm (uso normal); 65–75 cm (sofá "de hundirse", requiere almohadones de respaldo) |
+| **Altura de asiento** | **42–45 cm**. Más bajo se ve más informal y es más difícil de levantarse |
+| **Altura total del respaldo** | 75–90 cm (bajo, contemporáneo) / 90–110 cm (con apoyo de cabeza) |
+| **Retapizado** | Un buen sofá se retapiza 2–3 veces en su vida. **Es lo que justifica invertir en la estructura** |
+
+---
+
+## 8.5 Electrodomésticos: medidas estándar y previsiones
+
+| Equipo | Ancho | Alto | Profundidad | Previsión especial |
+|---|---|---|---|---|
+| **Heladera no frost 2 puertas** | 60–75 cm | 170–190 cm | 65–75 cm | **Espacio libre para abrir la puerta ≥ 90°**; ventilación posterior 5–10 cm; toma exclusiva |
+| Heladera side-by-side | 90–95 cm | 175–180 cm | 70–75 cm | Verificar el paso por la puerta de entrada |
+| Heladera bajo mesada | 55–60 cm | 82–85 cm | 55–60 cm | Ventilación del mueble |
+| **Anafe / cooktop 4 hornallas** | **58–60 cm** (hueco 55–56) | — | 50–52 cm (hueco) | Verificar hueco de encastre en la ficha del producto |
+| Anafe 5 hornallas / 90 cm | 86–90 cm (hueco) | — | 50–52 cm | |
+| **Anafe de inducción** | 58–60 / 75 / 90 cm | — | 50–52 cm | **Circuito eléctrico exclusivo de alta potencia.** Requiere ventilación bajo el equipo (dejar 5 cm libres) |
+| **Horno empotrable** | **59–60 cm** (hueco 56–57) | 59–60 cm (hueco 58–59) | 55–57 cm | **Circuito exclusivo.** Ventilación del nicho. **Base del horno a 90–97 cm** [E] |
+| Horno de 90 cm | 89–90 cm | 48–60 cm | 55 cm | |
+| **Microondas de empotrar** | 59–60 cm | 38–45 cm | 35–40 cm | **Base a 130–145 cm** [E]. Marco de empotre específico del modelo |
+| **Campana de pared** | 60 / 90 cm | — | 45–55 cm | Ver §7.1 (altura, caudal, conducto) |
+| Campana de isla | 90–120 cm | — | 50–70 cm | Requiere estructura de fijación en losa |
+| Campana de embutir en alacena | 52–90 cm | — | 30 cm | |
+| **Lavavajillas** | **59–60 cm** (hueco 60) | 82–86 cm (regulable) | 55–60 cm | Agua fría (algunos admiten caliente), desagüe, toma. **Puerta abre 55–60 cm hacia adelante** |
+| Lavavajillas compacto | 45 cm | 82–86 cm | 55 cm | |
+| **Lavarropas carga frontal** | 60 cm | 85 cm | 55–65 cm | Puerta abre 50–60 cm. Toma exclusiva, agua, desagüe, piso con rejilla |
+| Lavarropas carga superior | 60 cm | 90 cm | 60 cm | **Requiere ≥ 50 cm libres arriba** |
+| Secarropas | 60 cm | 85 cm | 60 cm | Condensación (bandeja o desagüe) o ventilación al exterior |
+| **Termotanque eléctrico** | Ø 45–55 cm | 100–160 cm | — | **Circuito exclusivo.** Prever acceso para mantenimiento y desagüe |
+| Termotanque a gas | Ø 45–55 cm | 120–160 cm | — | **Ventilación reglamentaria. [V] verificar ENARGAS** |
+| **Split de aire acondicionado (unidad interior)** | 80–120 cm | 28–35 cm | 20–25 cm | **A 15–20 cm del cielorraso; espacio libre a los lados.** Prever desagüe de condensado por gravedad, y la trayectoria de la cañería |
+| Split (unidad exterior) | 70–90 cm | 50–70 cm | 25–35 cm | Espacio de ventilación, acceso para service, **verificar reglamento de copropiedad** |
+| Purificador de agua bajo mesada | 25–35 cm | 35–45 cm | 12–20 cm | Toma + conexión de agua |
+| Cava de vinos | 30–60 cm | 85–180 cm | 55–60 cm | Ventilación |
+| Triturador de residuos | — | 30–35 cm bajo la bacha | — | Toma + espacio bajo la bacha |
+
+> **[C] Regla de oro de los electrodomésticos:** **el modelo exacto se define ANTES de fabricar la carpintería, y se le entrega al carpintero la ficha técnica con el hueco de empotre.** No "un horno de 60". El modelo, con su ficha. Un horno cuyo hueco es 2 cm distinto arruina un mueble de cocina entero.
+
+---
+
+## 8.6 Íconos del diseño y sus réplicas
+
+### El panorama
+
+Muchas piezas emblemáticas del diseño del siglo XX (Eames, Wegner, Jacobsen, Saarinen, Le Corbusier/Perriand, Mies, Panton, Bertoia, Noguchi) se fabrican hoy en tres versiones:
+
+| Versión | Qué es | Precio relativo | Calidad | Legalidad |
+|---|---|---|---|---|
+| **Original con licencia** | Fabricada por el titular de la licencia (Vitra, Knoll, Herman Miller, Carl Hansen, Fritz Hansen, Cassina) | **10–30×** | Alta, con garantía y trazabilidad | Plena |
+| **Réplica / "inspirada en"** | Copia fabricada por terceros | **1×** (base) | **Muy variable**: desde aceptable hasta pésima | Depende de la jurisdicción y del estado de la protección |
+| **Reinterpretación / pieza propia** | Diseño nuevo, del mismo lenguaje | 1,5–4× | Variable | Plena |
+
+### Implicancias que el estudio debe manejar
+
+**1. Legales**
+
+> **[V] CRÍTICO — CONSULTAR ABOGADO.** La protección de un diseño puede provenir del **derecho de autor** (obras de arte aplicada), de **modelos y diseños industriales registrados** (que tienen plazo de vigencia y caducan) y de **marcas**. Los plazos, alcances y criterios **varían según el país** y según si la pieza está o no registrada localmente.
+>
+> En Argentina, el marco relevante incluye la **Ley 11.723 (Propiedad Intelectual)** y el **Decreto-Ley 6673/63 (Modelos y Diseños Industriales)**, administrado por el **INPI**. **Verificar el estatus de cada pieza antes de afirmar nada al cliente.**
+>
+> En la Unión Europea la comercialización de réplicas de piezas protegidas está prohibida; en otros países el estatus varía.
+
+**2. Éticas y profesionales**
+
+| Postura | Argumento |
+|---|---|
+| **A favor de especificar originales** | Es la retribución al diseñador y al fabricante que sostienen la disciplina; hay garantía, repuestos, trazabilidad y calidad verificable; la pieza tiene valor de reventa |
+| **Realidad del mercado argentino** | El original es inaccesible para el 95% de los clientes. La brecha de precio es de un orden de magnitud |
+| **Postura recomendada para el estudio** | **Transparencia total.** Nunca vender una réplica como original ni dejar que el cliente lo crea. Informar la diferencia de precio, de calidad y de estatus legal, y **dejar la decisión en el cliente por escrito** |
+
+**3. Prácticas — cómo evaluar una réplica**
+
+| Punto de control | Qué mirar |
+|---|---|
+| **Materiales** | ¿Es madera maciza o enchapado sobre aglomerado? ¿Es cuero o eco-cuero? ¿Es acero o hierro pintado? |
+| **Proporciones** | Las réplicas baratas suelen tener proporciones desviadas. Comparar contra las medidas publicadas del original |
+| **Estructura y confort** | Una silla icónica es un problema resuelto de ergonomía; una réplica mal hecha puede ser incómoda o insegura |
+| **Terminaciones y soldaduras** | Es donde se ve la diferencia |
+| **Vida útil** | Una réplica barata dura 2–5 años. El costo por año puede terminar siendo peor |
+
+> **[C] Estrategia recomendada del estudio:** en lugar de llenar un proyecto de réplicas mediocres, **invertir en UNA pieza original de diseño** (a menudo una silla o una lámpara alcanzan) y **completar con producto nacional de diseño propio y buena calidad**. Argentina tiene diseñadores y talleres muy buenos. Un proyecto con 8 réplicas se ve barato; un proyecto con 1 pieza real y 7 piezas honestas de producción local, no.
+
+---
+
+## 8.7 Plan de compras y logística
+
+### El plan de compras: se ordena por LEAD TIME, no por ambiente
+
+```
+SEMANA  1  ─── Carpintería de cocina y placares (8–10 sem)
+             ─── Mobiliario tapizado a medida (6–12 sem)
+             ─── Iluminación técnica / importada (6–16 sem)
+             ─── Revestimientos de gran formato / importados (4–12 sem)
+SEMANA  3  ─── Electrodomésticos de empotrar (4–12 sem)
+             ─── Alfombras a medida (4–12 sem)
+             ─── Sanitarios y grifería (2–6 sem)
+SEMANA  6  ─── Mobiliario nacional de catálogo (2–6 sem)
+             ─── Iluminación nacional (1–4 sem)
+SEMANA  8  ─── Cortinas (2–5 sem)   ← se miden con los muros terminados
+             ─── Mamparas y vidrios (2–4 sem)  ← se miden en obra
+SEMANA 10  ─── Mesadas (2–5 sem)    ← se plantillan con los muebles montados
+SEMANA 12  ─── Pintura, accesorios, decoración, plantas (0–2 sem)
+```
+
+### Reglas de logística
+
+| Regla | Detalle |
+|---|---|
+| **Verificar el acceso ANTES de comprar** | Ancho de puertas, ancho del ascensor, altura de la cabina, radio de giro de la escalera, altura del palier. **Un sofá que no entra es el desastre más caro y más evitable del interiorismo.** Medir en la fase de relevamiento |
+| Medida crítica del ascensor | Ancho × profundidad × **altura de puerta** × **diagonal de la cabina** |
+| **Plan B de acceso** | Si no entra: ¿se puede subir por escalera? ¿Se puede izar por balcón (con permiso del consorcio y seguro)? ¿Hay versiones desarmables? |
+| **Recepción de mercadería** | **Nunca dejar que el proveedor entregue sin control.** Alguien del estudio o una persona designada recibe, verifica contra la orden de compra y **abre las cajas antes de firmar el remito** |
+| **Firmar remito con reservas** | Si no se puede revisar en el momento: firmar "recibido sin revisar, sujeto a verificación en 48 h" |
+| **Fotografiar todo daño** | En el momento, con el transportista presente |
+| **Depósito intermedio** | En modalidad 3, si la obra no está lista, hace falta un lugar donde guardar. **Prever el costo** |
+| Secuencia de entrada a obra | **Primero lo grande y lo que va contra la pared.** Sofá antes que mesa ratona. Placard antes que cama |
+| Protección durante el montaje | Cubrir el piso terminado con cartón corrugado o manta; proteger marcos y esquinas |
+| **Montaje de cortinas y colgado de cuadros: al final** | Después de la pintura de retoque |
+| **Limpieza final profunda** | **Es un ítem del presupuesto**, no un favor. Una obra sin limpieza final se ve mal aunque esté perfecta |
+
+### Punch list (lista de observaciones)
+
+Formato:
+
+| # | Ambiente | Observación | Responsable | Prioridad | Fecha compromiso | Estado | Verificado |
+|---|---|---|---|---|---|---|---|
+| 1 | Cocina | Cajón M4 roza con el frente de M5 | Carpintero | Alta | 12/03 | Pendiente | |
+| 2 | Baño 1 | Falta ajustar orientación de spot sobre espejo | Electricista | Media | 12/03 | Resuelto | ✓ |
+| 3 | Living | Retoque de pintura en muro este, junto a la ventana | Pintor | Baja | 15/03 | Pendiente | |
+
+**Reglas del punch list:**
+1. Se arma **caminando el espacio con luz natural y con luz artificial**, dos veces.
+2. Cada observación tiene **un responsable** y **una fecha**.
+3. **El cliente firma el acta de recepción con las reservas del punch list adjunto.**
+4. Se cierra ítem por ítem, con verificación.
+
+---
+
+# 9. DOCUMENTACIÓN DEL PROYECTO DE INTERIORISMO
+
+> **La documentación es el producto.** Todo lo demás (las ideas, los moodboards, las reuniones) es proceso. Lo que se entrega y lo que permite ejecutar es la carpeta técnica.
+
+## 9.1 Lista completa de entregables
+
+| # | Documento | Escala | Fase | Obligatorio |
+|---|---|---|---|---|
+| **PLANOS** |
+| 1 | Planta de estado actual (relevamiento) | 1:50 | 1 | Sí |
+| 2 | Planta de demolición y obra nueva (si aplica) | 1:50 | 3 | Si hay obra |
+| 3 | **Planta de distribución amoblada** | 1:50 | 3 | **Sí** |
+| 4 | **Planta de solados con despiece** | 1:50 / 1:25 | 4 | **Sí** |
+| 5 | **Planta de cielorrasos e iluminación (RCP)** | 1:50 | 4 | **Sí** |
+| 6 | **Plano de artefactos con circuitos y comandos** | 1:50 | 4 | **Sí** |
+| 7 | **Plano de bocas de electricidad, datos y TV con alturas** | 1:50 | 4 | **Sí** |
+| 8 | **Vistas interiores de cada muro relevante** | 1:25 | 4 | **Sí** |
+| 9 | Planos de detalle de carpintería a medida | 1:20 / 1:10 / 1:5 | 4 | Si hay carpintería |
+| 10 | Detalles constructivos (encuentros, buñas, gargantas, nichos, zócalos) | 1:5 / 1:2 | 4 | Sí |
+| 11 | Planta de sanitarios y previsiones (si hay reforma) | 1:50 | 4 | Si aplica |
+| 12 | Planta de climatización y previsiones | 1:50 | 4 | Si aplica |
+| **PLANILLAS** |
+| 13 | **Planilla FF&E (materiales, mobiliario, equipamiento)** | — | 3–5 | **Sí** |
+| 14 | Planilla de artefactos de iluminación | — | 4 | Sí |
+| 15 | Planilla de pinturas y terminaciones | — | 4 | Sí |
+| 16 | Planilla de carpinterías (puertas y ventanas, si se tocan) | — | 4 | Si aplica |
+| 17 | Cómputo y presupuesto estimado por rubro | — | 3 y 4 | Sí |
+| 18 | Cronograma de compras y de obra | — | 5 | Modalidad 3 |
+| **VISUALES** |
+| 19 | Moodboard general + por ambiente | — | 2 | Sí |
+| 20 | Muestrario físico | — | 2 | Sí |
+| 21 | Renders (cantidad pactada) | — | 3–4 | Sí |
+| **ESCRITOS** |
+| 22 | Pliego de especificaciones técnicas | — | 4 | Sí |
+| 23 | Manual de uso y mantenimiento | — | 7 | Sí |
+| 24 | Acta de replanteo eléctrico | — | Obra | Sí |
+| 25 | Punch list y acta de recepción | — | 6 | Sí |
+
+## 9.2 Qué debe mostrar cada plano
+
+### Planta de distribución amoblada (1:50)
+
+- [ ] Todo el mobiliario a escala real (**no bloques genéricos**: el sofá real, con sus medidas reales).
+- [ ] Cotas de las circulaciones críticas.
+- [ ] Sentido de apertura de todas las puertas y de los electrodomésticos.
+- [ ] Alfombras con sus medidas.
+- [ ] Ubicación de la TV y del punto de visión.
+- [ ] Cotas del mobiliario fijo respecto de los muros.
+- [ ] Numeración de ambientes y superficies.
+- [ ] **Referencia a las vistas** (marcas de corte con número de lámina).
+- [ ] Norte (real, con la orientación verdadera).
+
+### Planta de solados con despiece (1:50 / 1:25)
+
+- [ ] **Material de cada ambiente, con código FF&E.**
+- [ ] **Despiece real:** cada pieza dibujada, no una trama.
+- [ ] **Punto de arranque de la colocación** (marcado con un símbolo y una cota).
+- [ ] **Sentido de colocación** (flecha).
+- [ ] **Ancho y color de la pastina.**
+- [ ] Cambios de material: dónde caen y con qué perfil o junta se resuelven.
+- [ ] Umbrales y encuentros bajo puertas.
+- [ ] Ubicación de rejillas, desagües y registros.
+- [ ] Zócalos: tipo, altura, material.
+- [ ] Desniveles y pendientes (baños, balcones).
+
+### Planta de cielorrasos e iluminación — RCP (Reflected Ceiling Plan) (1:50)
+
+> **Qué es un RCP:** es la **planta vista desde arriba pero mostrando el cielorraso**, como si el piso fuera un espejo. Es la convención internacional y hay que respetarla.
+
+- [ ] Tipo de cielorraso por ambiente (aplicado, suspendido, con su cota de altura libre).
+- [ ] **Cota de altura libre de cada cielorraso.**
+- [ ] Buñas, gargantas, cambios de nivel, cajones — todo acotado.
+- [ ] **Cada artefacto de iluminación con su símbolo y su código de planilla.**
+- [ ] **Cotas de cada artefacto respecto de dos muros** (nunca "centrado a ojo").
+- [ ] Rejillas de aire, difusores, extractores, detectores.
+- [ ] Tapas de registro.
+- [ ] Cortineros y golas de cortina.
+- [ ] Sentido de las lamas o del machimbre, si aplica.
+
+### Plano de artefactos con circuitos y comandos (1:50)
+
+- [ ] Todos los artefactos con su código.
+- [ ] **Cada artefacto asignado a un circuito** (C1, C2, C3...).
+- [ ] Todas las teclas y dimmers, con **cantidad de módulos** y **qué circuito comanda cada uno**.
+- [ ] Líneas de vinculación artefacto–comando.
+- [ ] Conmutaciones y combinaciones.
+- [ ] Sensores de presencia y crepusculares.
+- [ ] **Tabla de circuitos** al costado del plano:
+
+| Circuito | Ambiente | Artefactos | Cant. | Potencia total | Comando | Tipo | Dimerizable |
+|---|---|---|---|---|---|---|---|
+| C1 | Living | LU-01 | 8 | 80 W | Tecla 1 de caja A + combinación en caja B | Dimmer trailing edge | Sí |
+| C2 | Living | LU-05 (toma comandada) | 2 | — | Tecla 2 de caja A | On/off | No |
+| C3 | Living | LU-03 spots | 3 | 21 W | Tecla 3 de caja A | Dimmer | Sí |
+
+### Plano de bocas de electricidad, datos y TV con alturas (1:50)
+
+- [ ] Todos los tomacorrientes con **su altura acotada** (h=30, h=110, etc.).
+- [ ] Tomas comandadas, diferenciadas con símbolo.
+- [ ] Bocas de datos, TV, telefonía, portero.
+- [ ] Previsiones (cortinas motorizadas, cámaras, cargador de auto eléctrico).
+- [ ] Circuitos exclusivos identificados.
+- [ ] **Superposición con la planta amoblada en línea fina**, para verificar que ninguna boca quede tapada.
+
+### Vistas interiores (1:25)
+
+> **[C] Las vistas son el plano más subestimado y el más útil en obra.** Un muro sin vista se ejecuta mal.
+
+Se dibuja **una vista de cada muro que tenga algo**: revestimiento, mueble, artefacto, nicho, cuadro.
+
+- [ ] Cotas horizontales y verticales.
+- [ ] **Material de cada superficie, con código.**
+- [ ] Despiece del revestimiento, si lo hay.
+- [ ] Mobiliario fijo dibujado en vista.
+- [ ] **Altura de todo:** apliques, teclas, tomas, espejos, cuadros, barrales, estantes.
+- [ ] Puertas y ventanas con sus medidas.
+- [ ] Zócalo y encuentro con el cielorraso.
+
+### Detalles constructivos (1:5 / 1:2)
+
+Los detalles que el estudio dibuja siempre:
+
+| # | Detalle |
+|---|---|
+| D1 | Encuentro cielorraso-muro (buña) |
+| D2 | Garganta de luz (cove) |
+| D3 | Zócalo (visto, enrasado, o negativo) |
+| D4 | Encuentro de dos solados distintos |
+| D5 | Nicho de ducha (con impermeabilización y pendiente) |
+| D6 | Encuentro de mesada con muro y con salpicadero |
+| D7 | Canto ingletado de mesada |
+| D8 | Gola de cortina en cielorraso |
+| D9 | Alojamiento de perfil LED en mueble |
+| D10 | Encuentro de carpintería con muro (tapajuntas) |
+| D11 | Umbral de ducha a nivel |
+| D12 | Encuentro de revestimiento de gran formato en esquina |
+
+---
+
+## 9.3 La planilla FF&E
+
+> **FF&E = Furniture, Fixtures & Equipment** (mobiliario, artefactos fijos y equipamiento). Es el **documento central** del proyecto de interiorismo: cataloga todo lo que hay que comprar o fabricar, con su especificación, su proveedor, su cantidad, su precio y su plazo.
+>
+> **[E] Distinción importante:** *"un schedule no es una especificación — el schedule hace el seguimiento del proyecto, la especificación describe el producto."* En proyectos chicos ambos van en la misma planilla; en proyectos grandes se separan.
+
+### Sistema de codificación
+
+```
+XX-NN
+│  │
+│  └── Número correlativo dentro de la categoría (01, 02, 03...)
+└───── Categoría (2 letras)
+
+CATEGORÍAS:
+  PT  Pintura y terminaciones de muro
+  PI  Pisos y solados
+  RV  Revestimientos de pared
+  CI  Cielorrasos
+  MS  Mesadas
+  CA  Carpintería a medida
+  MB  Mobiliario suelto
+  LU  Iluminación (luminarias)
+  GR  Grifería
+  SN  Sanitarios
+  HE  Herrajes
+  TX  Textiles (cortinas, tapizados, ropa de cama)
+  AL  Alfombras
+  EL  Electrodomésticos
+  AC  Accesorios y decoración
+  VG  Vegetación
+  VD  Vidrios y espejos
+
+Ejemplos:  PI-01 (porcelanato de áreas sociales)
+           LU-04 (perfil LED bajo alacena)
+           MB-07 (sillón de lectura del living)
+```
+
+### Estados de compra (columna "Estado")
+
+```
+ESPECIFICADO → COTIZADO → APROBADO POR CLIENTE → ORDENADO →
+EN PRODUCCIÓN → DESPACHADO → RECIBIDO → INSTALADO → OK
+```
+
+### EJEMPLO DE PLANILLA FF&E — con filas de muestra
+
+> **Formato de trabajo recomendado:** planilla colaborativa en la nube (Google Sheets), **un solo archivo maestro**, actualizado en tiempo real. **[E]** El error de compra más común proviene de que varias personas editen copias distintas de la misma planilla.
+
+| Cód. | Ambiente | Ubicación / Aplicación | Producto | Marca / Modelo | Terminación / Color | Medidas (cm) | Cant. | Un. | Proveedor | Lead time | Precio unit. | Precio total | Estado | Fecha OC | Entrega prev. | Aprob. cliente | Obs. |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| **PI-01** | Estar / Comedor / Cocina / Circulación | Solado | Porcelanato rectificado | *(marca)* / *(modelo)* | Mate, símil piedra arena, R10, PEI IV | 60×120×0,9 | 78 | m² | *(proveedor)* | 3 sem | | | Aprobado | | | ✓ 04/03 | Junta 2 mm, pastina cód. ... Incluye 10% desperdicio |
+| **PI-02** | Dormitorios 1-2-3 | Solado | Vinílico SPC click | *(marca)* / *(modelo)* | Símil roble tono medio, capa de uso 0,5 mm | 18×122×0,55 | 42 | m² | *(proveedor)* | 2 sem | | | Aprobado | | | ✓ 04/03 | Con manta acústica. Verificar altura de puertas |
+| **PI-03** | Baños 1-2 | Solado | Porcelanato | *(marca)* / *(modelo)* | Mate, R11 | 60×60 | 9 | m² | *(proveedor)* | 3 sem | | | Cotizado | | | | Ducha a nivel, rejilla lineal |
+| **RV-01** | Baño 1 | Muros de ducha, piso a cielorraso | Porcelanato gran formato | *(marca)* / *(modelo)* | Mate, símil piedra | 120×260×0,6 | 12 | m² | *(proveedor)* | 8 sem | | | **Ordenado** | 20/02 | 18/04 | ✓ | **RUTA CRÍTICA — importado.** Plan B: RV-01b |
+| **RV-02** | Cocina | Salpicadero, mesada a alacena | Porcelanato gran formato | Igual a MS-01 | Continuidad con mesada | Según despiece | 3,2 | m² | *(marmolería)* | Con MS-01 | | | Especificado | | | | Perforaciones de toma definidas en plano V-04 |
+| **PT-01** | Todos | Muros y cielorrasos | Látex acrílico interior premium | *(marca)* / *(línea)* | NCS S 0603-Y20R · LRV ≈82 · **MATE** | — | 62 | L | *(pinturería)* | Stock | | | Aprobado | | | ✓ | Fijador + 2 manos. Muestra aprobada 28/02 |
+| **PT-02** | Estar | Muro este (acento), piso a cielorraso | Látex acrílico interior premium | *(marca)* / *(línea)* | NCS S 7020-B70G · LRV ≈9 · **MATE** | — | 8 | L | *(pinturería)* | Stock | | | Aprobado | | | ✓ | Fondo gris + 2 manos |
+| **PT-03** | Todos | Carpintería, marcos, zócalos | Esmalte al agua | *(marca)* / *(línea)* | NCS S 0500-N · **SATINADO** | — | 12 | L | *(pinturería)* | Stock | | | Aprobado | | | ✓ | |
+| **MS-01** | Cocina | Mesada + isla + salpicadero | Granito | *(proveedor)* | Gris oscuro flameado, espesor 3 cm, canto recto | 60×420 + 100×240 | 4,9 | m² | *(marmolería)* | 4 sem **desde plantilla** | | | Especificado | | | | **Plantillar después del montaje de CA-01.** Bacha bajo mesada. 3 perforaciones (ver plano) |
+| **CA-01** | Cocina | Bajo mesada + alacenas + columna de horno | Carpintería a medida | *(carpintero)* | Cuerpos MDF melamínico blanco; frentes inferiores mel. verde NCS S 6010-B50G, superiores mel. blanco mate; tapacanto ABS 2 mm | Ver planos CA-01.1 a CA-01.4 | 1 | gl | *(carpintero)* | **9 sem** | | | **Ordenado** | 15/02 | 20/04 | ✓ | **RUTA CRÍTICA.** Herrajes Blum. Todo cajones salvo bajo bacha y columna de horno |
+| **CA-02** | Dorm. principal | Placard muro norte | Carpintería a medida | *(carpintero)* | Cuerpos MDF melamínico; frentes corredizos mel. símil madera | 280×240×62 | 1 | gl | *(carpintero)* | 9 sem | | | Ordenado | 15/02 | 20/04 | ✓ | Ver plano CA-02.1. Luz LU-08 integrada |
+| **MB-01** | Estar | Sofá principal, contra muro oeste | Sofá 3 cuerpos | *(marca)* / *(modelo)* | Tapizado TX-03, patas madera natural | 220×95×78 (h asiento 44) | 1 | u | *(proveedor)* | 8 sem | | | Aprobado | | | ✓ | **Verificar ingreso: ascensor 90×120×h200. Diagonal OK** |
+| **MB-02** | Comedor | Mesa | Mesa comedor 6-8 | *(marca)* / *(modelo)* | Roble macizo, aceite mate | 100×220×75 | 1 | u | *(proveedor)* | 6 sem | | | Cotizado | | | | Se conserva la existente → **evaluar restauración en vez de compra** |
+| **MB-03** | Comedor | Sillas | Silla comedor | *(marca)* / *(modelo)* | Estructura madera + tapizado TX-04 (Martindale 40.000) | 46×52×80 (h asiento 45) | 8 | u | *(proveedor)* | 6 sem | | | Cotizado | | | | |
+| **LU-01** | Estar / Comedor | Cielorraso, ver RCP | Embutido LED | *(marca)* / *(modelo)* | Negro mate, 1.000 lm, 3000 K, **Ra 90 / R9 ≥50**, UGR<19, haz 40°, dimerizable | Ø 8,5 · empotre Ø 7,5 · h 6 | 14 | u | *(proveedor)* | 3 sem | | | Aprobado | | | ✓ | Circuito C1. Driver dimerizable trailing edge — verificar compatibilidad con dimmer |
+| **LU-04** | Cocina | Bajo alacena, al frente | Perfil LED lineal | *(marca)* / *(modelo)* | Perfil aluminio negro + difusor opal; 750 lm/m, 3000 K, Ra 90 | 360 lineal | 3,6 | m | *(proveedor)* | 3 sem | | | Aprobado | | | ✓ | **Montar retirado 4 cm del frente.** Driver en módulo M6 (ventilado) |
+| **LU-06** | Baño 1 | Laterales de espejo | Aplique de pared difuso | *(marca)* / *(modelo)* | Negro mate, 400 lm, 3000 K, **Ra 95 / R9 ≥50**, IP44 | 6×6×32 | 2 | u | *(proveedor)* | 3 sem | | | Aprobado | | | ✓ | **Eje a 158 cm del piso, a 12 cm de cada borde del espejo VD-01** |
+| **TX-01** | Estar | Ventanal oeste | Cortina roller screen | *(proveedor)* | Screen **3% de apertura**, doble faz (oscuro int. / claro ext.), color arena | 320×250 | 1 | u | *(proveedor)* | 4 sem | | | Especificado | | | | **Montaje en gola de cielorraso.** Medir con muros terminados |
+| **TX-02** | Dorm. principal | Ventana este | Cortina roller doble | *(proveedor)* | Screen 5% + blackout, con guías laterales | 180×230 | 1 | u | *(proveedor)* | 4 sem | | | Especificado | | | | Guías laterales obligatorias |
+| **AL-01** | Estar | Bajo conjunto de asientos | Alfombra | *(marca)* / *(modelo)* | Polipropileno pelo corto, tono arena | 240×340 | 1 | u | *(proveedor)* | 5 sem | | | Cotizado | | | | Con manta antideslizante. Patas delanteras del sofá adentro |
+| **EL-01** | Cocina | Columna | Horno empotrable | *(marca)* / *(modelo)* | Acero inox / negro | 59,5×59,5×55 (hueco 56×59×55) | 1 | u | *(proveedor)* | 5 sem | | | **Aprobado** | | | ✓ | **FICHA TÉCNICA ENTREGADA AL CARPINTERO 10/02.** Base a 92 cm. Circuito exclusivo |
+| **EL-02** | Cocina | Sobre isla | Campana de isla | *(marca)* / *(modelo)* | Negro mate, 700 m³/h, 58 dB(A) | 90×70×45 | 1 | u | *(proveedor)* | 6 sem | | | Cotizado | | | | Conducto Ø 180 mm a fachada. **Altura 65 cm sobre anafe (gas)** |
+| **VD-01** | Baño 1 | Sobre mesada | Espejo | *(proveedor)* | Espejo 6 mm, canto pulido, sin marco | 90×80 | 1 | u | *(vidriería)* | 3 sem | | | Especificado | | | | Fijación oculta. **Define posición de LU-06** |
+| **AC-01** | Estar | Muro norte | Obra de arte | *(a definir con cliente)* | — | ~120×90 | 1 | u | — | — | | | Especificado | | | | **Ilumina LU-03.** El cliente aporta la obra |
+
+### Columnas obligatorias (mínimo)
+
+> **[E]** Columnas esenciales de un FF&E schedule profesional: nombre/descripción del ítem, código de producto/SKU, dimensiones, material/acabado/color, categoría, ambiente/zona, cantidad, proveedor/fabricante, imagen de referencia, costo unitario, costo total, **plazo de entrega en semanas**, **estado de la orden**, fecha de orden, fecha de entrega prevista.
+>
+> Columnas opcionales valiosas: línea presupuestaria o fase, detalles COM/COL (telas de tapizado provistas por el cliente), número de orden de compra, número de seguimiento, fecha de entrega real, notas, **estado de aprobación del cliente**.
+
+### Buenas prácticas de la planilla FF&E
+
+| Práctica | Por qué |
+|---|---|
+| **Un solo archivo maestro** en la nube | **[E]** Múltiples personas editando copias distintas es la causa más común de errores de compra |
+| **Actualizar en tiempo real**, no semanalmente | Un dato viejo es peor que no tener el dato |
+| **Incluir imagen de cada ítem** | **[E]** Sin imágenes hay ambigüedad. Es la columna que más discusiones evita |
+| **Registrar cada cambio del cliente con fecha y responsable** | **[E]** Es lo que permite justificar un adicional |
+| **Marcar los ítems de ruta crítica** | Los de mayor lead time. Son los que definen la fecha de entrega |
+| **Tener un "plan B" pre-especificado** por cada ítem importado o de riesgo | Evita 3 semanas de parálisis cuando algo no llega |
+| **Separar precio de costo y precio a cliente**, si hay markup | Transparencia (§1.6) |
+| **Herramienta según escala** | **[E]** Planilla para menos de ~100 ítems; software específico por encima de ~150 ítems o con varios proyectos simultáneos |
+| **Columna de "quién aprobó y cuándo"** | **[E]** Es la que protege al estudio |
+
+---

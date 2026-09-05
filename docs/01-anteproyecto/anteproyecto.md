@@ -3510,3 +3510,1295 @@ Las **cartas bioclimáticas de Olgyay** (temperatura de bulbo seco vs. humedad r
 **Estas dos secciones —el "corte de invierno" y el "corte de verano"— son, según nuestra experiencia, las dos láminas que más impresionan al cliente en toda la presentación**, porque le explican en 30 segundos por qué el proyecto está hecho así y le muestran que no es una decisión estética. Y son las que justifican el honorario.
 
 ---
+
+# 10. Fachada
+
+> La fachada es lo único del edificio que ve toda la ciudad, todos los días, durante cincuenta años. **Es la parte del proyecto de mayor impacto público y la que más barato sale hacer bien.**
+
+## 10.1 De qué hablamos cuando hablamos de fachada
+
+La fachada resuelve simultáneamente **cinco cosas**, y una fachada mala es siempre la que resolvió solo una:
+
+1. **Función ambiental**: luz, sol, ventilación, protección, aislación. Es la piel térmica del edificio.
+2. **Función urbana**: cómo el edificio se para en la calle, cómo dialoga con los vecinos, qué le da a la vereda.
+3. **Función expresiva**: qué dice el edificio de sí mismo y de quien lo habita.
+4. **Función técnica**: cómo se construye, cómo se junta, cómo escurre el agua, cómo se mantiene.
+5. **Función comercial** (en edificios de renta): la fachada es el 40 % de la decisión de compra de un departamento que todavía no existe.
+
+**[R] Método del estudio:** la fachada **no se dibuja al final.** Se trabaja desde el A0, en paralelo con la planta, y se corrige mutuamente. Una fachada que "resulta" de la planta suele ser mala; una fachada dibujada sin mirar la planta es un decorado.
+
+## 10.2 Composición: las herramientas
+
+### 10.2.1 Proporción
+
+| Herramienta | Descripción | Uso práctico |
+|---|---|---|
+| **Sección áurea (1 : 1,618)** | Proporción clásica | Útil como referencia, no como dogma |
+| **Raíz de 2 (1 : 1,414)** | Serie de las hojas A | Cómoda para vanos verticales |
+| **Proporción 2:3, 3:4, 3:5** | Relaciones simples | Las más robustas visualmente en aberturas |
+| **El Modulor (Le Corbusier)** | Serie basada en la estatura humana (1,83 m / 2,26 m con brazo levantado) y en la sección áurea; dos series (roja y azul) que generan una escala armónica de dimensiones | Muy útil para **fijar alturas de antepecho, dintel, parapeto y faja de fachada** con una lógica común |
+| **Trama modular propia** | Una dimensión base (p. ej. 0,60 m u 0,90 m) que gobierna todo | **Lo más práctico:** una modulación propia hace que todo se vea coherente aunque nadie sepa por qué |
+
+**[R] El consejo operativo:** definir **una trama de fachada** al inicio (por ejemplo, 0,90 × 0,90 m, o el módulo estructural dividido) y hacer que **todos los elementos —vanos, antepechos, paños ciegos, juntas, parasoles— se apoyen en ella**. Es el truco que hace que una fachada barata se vea bien resuelta.
+
+### 10.2.2 Ritmo
+
+| Tipo de ritmo | Efecto | Cuándo |
+|---|---|---|
+| **Repetición uniforme** (A A A A) | Serenidad, orden, escala grande; riesgo de monotonía | Edificios de renta, fachadas largas |
+| **Alternancia** (A B A B) | Movimiento controlado | Balcón / paño ciego |
+| **Ritmo con acento** (A A B A A) | Jerarquía sin perder orden | Marcar el acceso o una unidad especial |
+| **Progresión** (A AA AAA) | Dinamismo, dirección | Fachadas asimétricas, esquinas |
+| **Ritmo libre con pauta** | Aparente libertad sobre una trama subyacente | El más difícil y el que peor sale si no hay trama |
+
+**[R] Regla:** en un edificio de 10 plantas, **la repetición uniforme del piso tipo es una virtud, no un defecto**. Lo que hay que resolver bien es la **base** y el **remate**, no inventarle variedad al medio.
+
+### 10.2.3 Jerarquía
+
+Los recursos para jerarquizar, de mayor a menor potencia: **tamaño**, **posición** (centro, esquina, remate), **forma singular**, **color/material distinto**, **iluminación**.
+
+**[R] En un edificio hay tres cosas que hay que jerarquizar, y solo tres:**
+1. **El acceso peatonal.** Tiene que ser inconfundible desde la vereda de enfrente. Se jerarquiza con altura, con retranqueo, con material distinto y con luz.
+2. **El remate.**
+3. **La esquina**, si es un lote de esquina.
+Todo lo demás **es fondo**. Jerarquizar cinco cosas es no jerarquizar ninguna.
+
+### 10.2.4 Llenos y vacíos
+
+**[R] Relación de superficie vidriada / superficie total de fachada**, por orientación y tipo:
+
+| Situación | Relación vacío/lleno |
+|---|---|
+| Fachada Norte de vivienda con ganancia solar | **35 – 50 %** |
+| Fachada Sur de vivienda | 12 – 22 % |
+| Fachada Oeste | **≤ 15 %** |
+| Fachada de edificio de renta, frente urbano | 30 – 45 % |
+| Planta baja comercial | **60 – 80 %** (la vidriera) |
+| Fachada de carácter macizo (ladrillo, hormigón) | 20 – 30 % |
+| Muro cortina | 80 – 100 % — **desaconsejado en clima pampeano sin protección solar** |
+
+**Reglas de composición [R]:**
+1. **Los vanos se alinean**: por el dintel, por el antepecho o por un eje vertical. **Alinear por al menos un criterio, siempre.**
+2. **Cuidado con el "queso gruyere"**: vanos de distintos tamaños dispersos sin ninguna alineación. Es el error más frecuente de la fachada de vivienda.
+3. **El paño lleno también se compone.** Un muro ciego grande no es un problema: es una oportunidad (textura, junta, color, vegetación, una sola abertura precisa).
+4. **La esquina es un punto de tensión:** o se resuelve con un vano que la gira (transparencia), o con un lleno que la afirma (macizo). **Un vano que llega cerca de la esquina y se corta a 40 cm es lo peor de los dos mundos.**
+
+### 10.2.5 Base — cuerpo — remate
+
+Es el esquema compositivo clásico y, en un edificio en altura entre medianeras, **sigue siendo el más eficaz**.
+
+| Parte | Qué es | Cómo se resuelve [R] |
+|---|---|---|
+| **BASE** (PB y 1er piso) | El contacto con la vereda y con la escala del peatón | **Más altura libre**, material más resistente y de mejor calidad (es lo que se toca), vidriera continua, acceso jerarquizado, iluminación, faja de cartelería definida, sin salientes que golpeen |
+| **CUERPO** (pisos tipo) | La masa repetitiva | Ritmo uniforme, modulación clara, balcones o paños que le den profundidad y sombra propia, material de bajo mantenimiento |
+| **REMATE** (último piso y azotea) | El perfil contra el cielo | Retiro del último piso, parapeto de altura suficiente para ocultar los equipos, **volumen técnico unificado y revestido**, cambio de material o de color, pérgola |
+
+**[R] Los tres errores de remate más comunes:**
+1. **No haber remate**: el edificio se corta como con una sierra y arriba asoman tanques, casetas y antenas.
+2. **Cornisa de otra época pegada al final** de un edificio contemporáneo.
+3. **Parapeto demasiado bajo**: 0,60 m de parapeto no oculta nada. Se necesitan **1,20 a 1,80 m** para que la azotea se vea limpia desde la calle de enfrente y desde los edificios vecinos.
+
+## 10.3 Materialidad y lógica de mantenimiento
+
+**[R] La pregunta que hay que hacerse por cada material de fachada:** *¿cómo se va a ver dentro de 10 años y quién lo va a mantener?* En un edificio de propiedad horizontal, la respuesta a "quién" es **un consorcio con expensas ajustadas**, así que la respuesta correcta al "cómo" tiene que ser "bien, sin hacer nada".
+
+| Material | Costo inicial | Mantenimiento | Vida útil aparente | Comportamiento en Santa Rosa | Veredicto |
+|---|---|---|---|---|---|
+| **Revoque + pintura látex** | Bajo | **Alto: repintado cada 5–8 años; en altura, con silleta o andamio** | 5–8 años | Sol intenso y viento con tierra: se ensucia y se degrada rápido | Aceptable en PB+2; **problemático en PB+9** |
+| **Revoque + pintura elastomérica / siliconada** | Bajo-medio | Medio: 8–12 años | 8–12 años | Mejor resistencia a fisuras y a UV | **Buena relación costo/beneficio** |
+| **Revestimiento acrílico texturado sobre EIFS** | Medio | Medio | 10–15 años | Aísla y termina en un solo sistema. **Frágil a golpes en planta baja** | Muy bueno en cuerpo, **no en base** |
+| **Ladrillo visto** | Alto | **Muy bajo** | 50+ años | Excelente. **El material más noble y duradero para la pampa** | **Excelente**, sobre todo si es la piel exterior de un muro doble con aislación |
+| **Hormigón visto** | Alto | Bajo si está bien hecho; **muy alto si está mal hecho** | 30+ años | Requiere ejecución impecable; los defectos son permanentes | Solo con contratista probado |
+| **Placas de porcelanato / gres ventilado** | Alto | Bajo | 25+ años | Muy bueno, pero **atención al sistema de fijación con viento fuerte** | Bueno |
+| **Piedra natural (laja, travertino)** | Alto | Bajo-medio | 30+ años | Buena; verificar anclaje | Bueno |
+| **Chapa (sinusoidal, trapezoidal, junta alzada)** | Bajo-medio | Bajo-medio | 15–25 años | **Cuidado con el viento**: fijaciones sobredimensionadas. Buena para volúmenes secundarios | Bueno en vivienda, con criterio |
+| **Madera (siding, listones)** | Medio-alto | **Alto: lasureado cada 2–3 años en exposición** | 8–20 años según la exposición | **El sol y el viento pampeanos la castigan mucho.** Solo en zonas protegidas por aleros | **Con reservas** |
+| **Aluminio composite (ACM)** | Alto | Bajo | 15–25 años | Requiere estructura auxiliar. **Riesgo de incendio según el núcleo: exigir núcleo mineral A2** | Con precaución |
+| **Muro cortina / DVH continuo** | Muy alto | Medio | 25+ años | **Muy mal comportamiento térmico sin protección solar** en clima con 45 °C de récord | **Desaconsejado** salvo con control solar serio |
+| **EIFS con terminación tipo símil piedra** | Medio | Medio | 10–15 años | Frágil en planta baja | Cuerpo sí, base no |
+
+**[R] Las cinco reglas de mantenimiento de fachada:**
+
+1. **El agua es el enemigo.** Toda saliente necesita **goterón** y pendiente hacia afuera. Un antepecho sin goterón produce el chorreado negro bajo cada ventana: es la marca de un edificio mal detallado y **se ve a los tres años**.
+2. **Menos juntas horizontales expuestas, mejor.** Cada junta horizontal es un lugar donde se acumula tierra y donde entra agua.
+3. **Los materiales que se ensucian, que se ensucien parejo.** Un material que se ensucia de forma pareja envejece; uno que se ensucia manchado, se ve roto.
+4. **La planta baja tiene otro régimen**: golpes, grafiti, patadas, agua de vereda, orín. **Material duro, lavable y reponible, hasta 2,20 m.**
+5. **Hay que poder llegar a la fachada para mantenerla.** En un PB+9, prever **ganchos de amarre en la azotea** para silleta o balancín. Si no, cada mantenimiento cuesta un andamio de 30 m.
+
+## 10.4 Balcones, parasoles y control solar en la fachada
+
+### 10.4.1 Balcones
+
+El balcón es **el elemento que más define la fachada de un edificio de viviendas argentino**. Opciones y su efecto:
+
+| Tipo | Efecto en fachada | Cuidados |
+|---|---|---|
+| **Balcón corrido continuo** | Horizontalidad fuerte, sombra propia, escala grande | **Puente térmico continuo si no hay corte.** Baranda continua: cuidado con el "efecto crucero" |
+| **Balcón individual saliente** | Ritmo, modulación, sombra puntual | El mismo puente térmico, más veces |
+| **Balcón embutido (loggia)** | La fachada queda plana; el balcón es un hueco de sombra | **Térmicamente el mejor** (no hay voladizo). Menos superficie interior (come FOS) |
+| **Balcón semiembutido** | Combinación; da profundidad y variedad | Buen compromiso |
+| **Balcón aterrazado / escalonado** | Recurso expresivo fuerte; terrazas grandes | Más caro; complica la estructura |
+| **Sin balcón, con ventana piso-techo y barandal** | Fachada plana, económica | **Se percibe como producto de menor categoría** en el mercado argentino |
+
+**[R] Los seis errores de balcón que arruinan una fachada:**
+1. **Las condensadoras de aire acondicionado colgadas de la baranda.** Se resuelve con un nicho ventilado, con una rejilla que las oculte, o con un sector técnico en el balcón dibujado desde el anteproyecto.
+2. **Las sogas de ropa.** Si no hay lavadero con tendedero, el balcón se convierte en tendedero. **Es un problema de planta, no de fachada.**
+3. **Los cerramientos posteriores.** Los propietarios cierran los balcones con aluminio y vidrio, y cada uno con un modelo distinto. Se previene: **cerrando el balcón desde el proyecto**, o **incluyendo en el reglamento de copropiedad un modelo único de cerramiento**, dibujado en el anteproyecto.
+4. **Barandas de vidrio sin marco en ciudad ventosa y con granizo**: se rompen y se manchan; el mantenimiento es alto.
+5. **Balcones de 1,00 m de profundidad**: no se usan, y entonces se cierran o se llenan de trastos.
+6. **Losa de balcón sin corte térmico**: mancha de humedad y moho en el borde interior de la losa, en todos los departamentos. **Patología sistémica de los edificios argentinos.**
+
+### 10.4.2 Parasoles y control solar
+
+| Sistema | Orientación en la que funciona | Efecto en fachada |
+|---|---|---|
+| **Alero / voladizo horizontal** | **Norte** | Horizontalidad, sombra profunda; el más económico |
+| **Parasol horizontal de lamas** | Norte | Liviano, permite ver el cielo; requiere mantenimiento |
+| **Aletas verticales fijas** | **Este y Oeste** | Verticalidad marcada; el edificio se ve distinto desde cada lado de la calle |
+| **Celosía / brise-soleil fijo** | Todas | Textura; **cuidado con la limpieza y con los nidos de palomas** |
+| **Celosía corrediza / plegable** | Todas | **La fachada cambia según el uso**: es el recurso expresivo más rico. Requiere herrajes duraderos |
+| **Cortina de enrollar exterior** | Todas | **El sistema más eficaz y más barato.** Requiere prever el cajón: **si no está en el anteproyecto, después queda a la vista** |
+| **Toldo** | Norte y Oeste | Doméstico; mantenimiento alto; mal comportamiento con viento fuerte |
+| **Vegetación caduca** | Norte y Oeste | Sombra en verano, sol en invierno. **La mejor solución bioclimática, la más lenta** |
+| **Vidrio de control solar / bajo emisivo** | Todas | No cambia la fachada; **no reemplaza la protección exterior** pero la complementa |
+
+**[R] Advertencia importante sobre el cajón de cortina de enrollar:** es **el puente térmico más grande de la envolvente** en la construcción argentina y el punto de infiltración de aire más frecuente. Si se usa cortina de enrollar, **el cajón tiene que estar aislado y sellado, y su dimensión (habitualmente 0,20–0,25 m) tiene que estar en el corte del anteproyecto**, porque come altura de dintel.
+
+## 10.5 Relación con el entorno y con el código
+
+**[N — Santa Rosa, distritos CR1a y CR1b]**, una exigencia de composición de fachada muy concreta que hay que conocer:
+
+> "las construcciones que se realicen deberán, entre la altura de Planta Baja y la altura máxima de Basamento (Planta baja y 3 Pisos), **recomponer –real o virtualmente– el plano vertical de fachada sobre la Línea Municipal, en 1/3 del ancho de la parcela como mínimo**. Cuando este requisito no pueda hacerse efectivo con volúmenes cerrados (espacios habitables), se recurrirá a otras expresiones formales (estructuras, entramados, muros calados, acristalamientos, etc.), tendientes al fin enunciado. La Autoridad de Aplicación podrá requerir soluciones diferentes a las proyectadas, en caso de que, a su criterio, se vea desvirtuado el objetivo que se propone lograr con la aplicación de este indicador."
+
+**Traducción:** en el área central de Santa Rosa, **la norma exige mantener la línea de fachada urbana** aunque el edificio se retire. Es una exigencia de proyecto urbano, no de tejido, y es un dato de composición de fachada que hay que incorporar desde el A0.
+
+**[N] También en CR1** hay una regla que condiciona la fachada: *"A partir del 4° Piso: 3 m [de retiro de frente]. Pudiéndose ocupar con superficie cubierta hasta la Línea Municipal en Planta Baja y 6 pisos inclusive en no más del 50 % del ancho del lote."* Es decir: **la fachada de CR1 tiene, por norma, dos planos: uno sobre la línea municipal (hasta el 50 % del ancho) y otro retirado 3,00 m.** El código está dibujando la fachada.
+
+**[R] Criterios de relación con el entorno:**
+
+1. **Continuidad de la línea de edificación**: si toda la cuadra está sobre la línea municipal, retirarse rompe la calle. Si toda la cuadra está retirada con jardín, avanzar rompe la calle.
+2. **Altura de la base**: aunque el edificio sea alto, **la base debería relacionarse con la altura de las construcciones vecinas** (una faja de 6 a 9 m que "cose" la cuadra).
+3. **Ritmo de parcela**: en una cuadra de lotes de 10 m, un edificio de 40 m de frente resultante de una unificación debería **leer como cuatro piezas**, no como un bloque.
+4. **Materialidad**: no copiar, pero tampoco ignorar. Elegir conscientemente entre acompañar y contrastar, y poder explicarlo.
+5. **Medianeras a la vista**: si el proyecto expone una medianera vecina, **hay que tratarla**. Es parte del proyecto y del presupuesto.
+6. **La vereda**: solado, árboles, iluminación, marquesina. Es lo que la ciudad recibe del edificio.
+
+## 10.6 Errores comunes de fachada
+
+| Error | Por qué pasa | Cómo se evita |
+|---|---|---|
+| **Vanos sin alineación** ("queso gruyere") | La fachada se dibuja después de la planta, como consecuencia | Trabajar planta y fachada en paralelo desde el A0 |
+| **Chorreado negro bajo los antepechos** | Falta de goterón y de pendiente | Detalle de anteproyecto: **todo antepecho con vierteaguas, pendiente y goterón** |
+| **Condensadoras a la vista** | No se previeron | Nicho técnico ventilado, dibujado en el anteproyecto |
+| **Cerramientos de balcón heterogéneos** | No se definió un modelo | Definirlo en el anteproyecto e incluirlo en el reglamento |
+| **Cartelería descontrolada en la PB** | No se definió una faja | Faja de cartelería proyectada, con dimensión y sistema |
+| **Medidores, gabinetes y matafuegos en la fachada** | Aparecen en proyecto | Se ubican y se dibujan en el anteproyecto |
+| **Azotea visible con tanques y antenas** | Parapeto bajo | Parapeto de 1,20–1,80 m y volumen técnico unificado |
+| **Puentes térmicos en bordes de losa** | No se detallaron | Aislación continua o corte térmico. **Se decide en anteproyecto** |
+| **Demasiados materiales** | Miedo a que se vea "aburrido" | **Máximo 3 materiales por fachada.** Dos es mejor |
+| **Demasiados colores** | Idem | Una gama, con un acento |
+| **Copiar una imagen de otro clima** | Referencias de Pinterest sin contexto | Verificar orientación, clima y sistema constructivo de la referencia |
+| **Muro cortina sin control solar** | Deseo de "modernidad" | Calcular la carga térmica; hay 45,7 °C de récord en Santa Rosa |
+| **Fachada de la que no se puede hacer mantenimiento** | Nadie lo pensó | Ganchos de amarre, materiales accesibles, previsión de acceso |
+
+## 10.7 Tendencias actuales y por qué algunas envejecen mal
+
+**[R] Análisis honesto, para conversar con el cliente:**
+
+| Tendencia | Qué la hace atractiva | **Por qué envejece mal (o bien)** | Veredicto |
+|---|---|---|---|
+| **Fachada blanca y minimalista, volúmenes puros** | Limpieza, atemporalidad aparente, barato de renderizar | **Se ensucia.** El blanco muestra cada chorreado, cada mancha de humedad, cada reparación. En Santa Rosa, con tierra en suspensión, dura poco impecable | **Envejece mal** si no hay detalle de goterón impecable y repintado periódico |
+| **Negro / gris oscuro total** | Impacto, sofisticación | **Absorbe calor** (problemático con 45 °C), **muestra el polvo blanco** de la pampa, se decolora con UV | **Envejece mal** en este clima |
+| **Ladrillo visto** | Textura, calidez, argentinidad | **Mejora con el tiempo.** No requiere mantenimiento | **Envejece bien.** El más seguro |
+| **Hormigón visto** | Contundencia, honestidad material | Mejora si está bien ejecutado; es irrecuperable si está mal | **Todo o nada** |
+| **Listones de madera verticales** | Calidez, textura, ritmo | **En La Pampa se degrada rápido** por sol y viento; requiere lasureado cada 2–3 años; si no, gris manchado y desprendido | **Envejece mal** en exposición directa; bien bajo alero |
+| **Grandes paños vidriados de piso a techo** | Luz, vista, "moderno" | Térmicamente costosos; en Oeste, invivibles; se ven espectaculares en el render y decepcionan en el uso | **Depende enteramente de la orientación y de la protección** |
+| **Parasoles metálicos y celosías** | Textura, sombra, expresividad | Muy bien **si el metal es de calidad y está bien fijado**; mal si se oxida o se vuela | **Envejece bien** con buena especificación |
+| **Vegetación en fachada / muro verde** | Espectacular en el render | **Requiere riego, mantenimiento y un consorcio comprometido.** En clima seco y ventoso, difícil | **Envejece muy mal** si nadie lo mantiene. **Cuidado con prometerlo en el render** |
+| **Colores saturados de acento** | Alegría, identidad | Se decoloran; y pasan de moda | Aceptable en superficies chicas y repintables |
+| **Fachadas paramétricas / formas complejas** | Impacto visual | Costo de construcción alto, mantenimiento complejo, y **datan mucho la obra** | **Envejece mal**; es la tendencia más fechada de todas |
+| **Balcones aterrazados con vegetación** | Muy vendedor | Requiere impermeabilización impecable, sustrato, riego y peso estructural | **Bien si está bien resuelto**; carísimo de corregir |
+
+**[R] El criterio del estudio, resumido en tres frases:**
+> **1. Elegí materiales que mejoren, o que al menos se ensucien parejo.**
+> **2. Poné el dinero en el detalle (goterón, junta, encuentro), no en la cantidad de materiales.**
+> **3. Si no sabés cómo se va a limpiar, no lo dibujes.**
+
+---
+
+# PARTE IV — LA COMUNICACIÓN
+
+# 11. Visualización 3D
+
+> El render no vende el proyecto: **vende la confianza en que el proyecto es real.** Una imagen espectacular de algo que no se puede construir es un pasivo, no un activo.
+
+## 11.1 El flujo de trabajo real
+
+```
+┌─────────────────────────────────────────────────────────────────────────┐
+│  1. MODELADO                                                            │
+│     SketchUp  /  Revit  /  Archicad  /  Rhino  /  Blender               │
+│     → geometría, alturas reales, aberturas reales, espesores reales     │
+├─────────────────────────────────────────────────────────────────────────┤
+│  2. CONTEXTO                                                            │
+│     Terreno + medianeras + vecinos + vereda + árboles + calle           │
+│     → sin contexto, el render miente sobre la escala                    │
+├─────────────────────────────────────────────────────────────────────────┤
+│  3. MATERIALES Y TEXTURAS                                               │
+│     Asignación por capas / familias, con escala correcta de textura     │
+├─────────────────────────────────────────────────────────────────────────┤
+│  4. ILUMINACIÓN                                                         │
+│     Sol georreferenciado (36°37' S, 64°17' O) + fecha + hora            │
+│     + cielo HDRI + luces artificiales interiores                        │
+├─────────────────────────────────────────────────────────────────────────┤
+│  5. AMBIENTACIÓN                                                        │
+│     Mobiliario, vegetación de la región, autos, personas, cielo         │
+├─────────────────────────────────────────────────────────────────────────┤
+│  6. CÁMARAS Y ENCUADRE                                                  │
+│     Altura de ojo, lente, verticales corregidas, composición            │
+├─────────────────────────────────────────────────────────────────────────┤
+│  7. RENDER                                                              │
+│     Enscape / D5 / Twinmotion / Lumion / V-Ray / Corona                 │
+├─────────────────────────────────────────────────────────────────────────┤
+│  8. POSTPRODUCCIÓN                                                      │
+│     Photoshop / Lightroom / Affinity: niveles, curvas, color, cielo,    │
+│     entorno, personas, atmósfera, corrección de verticales              │
+└─────────────────────────────────────────────────────────────────────────┘
+```
+
+### 11.1.1 Elección de la cadena según el encargo [R]
+
+| Encargo | Modelado | Render | Justificación |
+|---|---|---|---|
+| **Vivienda unifamiliar** | **SketchUp** | **Enscape / D5 / Twinmotion** | Velocidad de modelado imbatible; el render en tiempo real permite iterar con el cliente en pantalla |
+| **Reforma** | SketchUp (sobre nube de puntos o relevamiento) | Enscape / D5 | Rapidez |
+| **Edificio PB+9** | **Revit / Archicad** | **Enscape / D5 / Twinmotion** | El modelo BIM sirve después para el proyecto: se hace una vez |
+| **Geometría compleja / concurso** | **Rhino** (+ Grasshopper) | **V-Ray / Corona / D5** | Control geométrico |
+| **Imagen de máxima calidad para venta en pozo** | Cualquiera | **Corona / V-Ray**, o **D5 en path tracing** | Cuando la imagen es el producto |
+
+**[R] La recomendación del estudio para Santa Rosa:** **SketchUp + Enscape o D5** para vivienda y reforma; **Revit + Enscape** para edificios. Es la combinación de menor costo total (licencias + horas) para el volumen de trabajo de un estudio chico o mediano.
+
+## 11.2 Comparativa de software de render
+
+**[R] Datos de mercado a 2026. Los precios cambian: verificar antes de comprar.**
+
+| Software | Costo aprox. | Curva de aprendizaje | Calidad de imagen | Velocidad | Fuerte en | Débil en |
+|---|---|---|---|---|---|---|
+| **Enscape** | ≈ USD 80/mes (licencia flotante) | **Muy baja** (2–3 días) | Buena / muy buena | **Tiempo real** | Integración viva con Revit, SketchUp, Rhino, Archicad. **Cambiás el modelo y el render se actualiza** | Biblioteca de assets más limitada; menos control artístico |
+| **D5 Render** | ≈ USD 30/mes | **Baja** (1–2 días) | **Muy buena / excelente** (path tracing) | Muy alta | **Mejor relación precio/calidad del mercado.** Trazado de rayos en tiempo real, herramientas de IA, sync con los principales CAD | Requiere GPU potente (RTX); menos maduro que V-Ray |
+| **Twinmotion** | **Gratis** para empresas con facturación < USD 1M; licencia paga por encima | Baja-media | Muy buena | Muy alta | **Gratis** para estudios chicos. Basado en Unreal Engine: excelente para VR y recorridos. Funciona en Mac | Menos fotorrealista que D5 en interiores; assets con estética reconocible |
+| **Lumion** | ≈ USD 125/mes | **Media-alta** | Excelente en exteriores y paisaje | Alta | Biblioteca enorme (6.000+ objetos, 1.000+ materiales); animación y naturaleza | El más caro; estética "Lumion" reconocible; pesado |
+| **V-Ray** (para SketchUp / Rhino / Revit / 3ds Max) | ≈ USD 60–80/mes | **Alta** | **Excelente** (referencia de la industria) | Baja (render offline) | Control total, fotorrealismo máximo, madurez | Curva larga; tiempos de render largos; no sirve para iterar con el cliente en vivo |
+| **Corona Renderer** (3ds Max / Cinema 4D) | ≈ USD 60–70/mes | Alta | **Excelente**, especialmente en interiores | Baja-media | **El estándar de archviz de alta gama**; iluminación y materiales muy naturales | Requiere 3ds Max o C4D; curva larga |
+| **Blender + Cycles** | **Gratis** | **Muy alta** | Excelente | Media | Sin costo de licencia; modelado + render + animación en un solo programa | Curva larguísima; flujo de trabajo distinto al de arquitectura |
+
+**[R] Recomendación por perfil de estudio:**
+
+| Perfil | Stack recomendado |
+|---|---|
+| **Estudio unipersonal o de 2 personas, presupuesto ajustado** | SketchUp + **Twinmotion (gratis)** o **D5 (USD 30/mes)** |
+| **Estudio chico que quiere calidad y velocidad** | SketchUp o Revit + **D5 Render** |
+| **Estudio que trabaja con BIM y necesita iterar rápido con clientes** | Revit + **Enscape** |
+| **Estudio que vende imágenes a desarrolladores** | Revit/Rhino + **D5** para el 80 % + **Corona o V-Ray** para las 2 o 3 imágenes clave |
+| **Trabajo tercerizado** | Modelar en el estudio, contratar el render a un especialista. **Cuesta menos que la licencia + las horas si son pocas imágenes al año** |
+
+## 11.3 Cuántas imágenes entregar
+
+**[R] La regla: menos imágenes, mejor cuidadas.** Ocho imágenes mediocres valen menos que cuatro buenas.
+
+| Encargo | Exteriores | Interiores | Otras | **Total** |
+|---|---|---|---|---|
+| **Reforma chica** | 2 | 2 | — | **4** |
+| **Vivienda unifamiliar** | 3 | 2 | 1 planta amoblada renderizada | **5–6** |
+| **Vivienda de alto nivel** | 4 | 4 | 1 aérea + 1 planta amoblada | **10** |
+| **Edificio PB+9 (anteproyecto)** | 3 | 3 | 1 esquema de asoleamiento | **6–7** |
+| **Edificio PB+9 (para venta en pozo)** | 4–5 | 4–6 (uno por tipo de unidad) | 1 aérea + plantas amobladas de cada tipología + 1 amenity | **12–18** |
+
+**[R] En el paquete de anteproyecto se pacta el número por contrato.** Las imágenes adicionales se cotizan aparte. Es la partida que más se desborda si no está escrita.
+
+## 11.4 Cámaras y encuadres que venden
+
+### 11.4.1 Reglas de cámara [R]
+
+| Parámetro | Valor | Por qué |
+|---|---|---|
+| **Altura de cámara — exterior peatonal** | **1,60 m** | Es la altura del ojo. Cualquier otra altura miente sobre la escala |
+| **Altura de cámara — interior** | **1,20 a 1,50 m** | Sentado/parado; 1,20 m hace que los espacios se vean más amplios |
+| **Altura de cámara — aérea** | 15 a 40 m | Solo para mostrar implantación |
+| **Distancia focal — exterior** | **28 a 35 mm** | Menos de 24 mm deforma; más de 50 mm aplana |
+| **Distancia focal — interior** | **18 a 24 mm** | Necesario en ambientes chicos, pero **cuidado con la deformación de los bordes** |
+| **Verticales** | **SIEMPRE corregidas (two-point perspective)** | Una fachada con verticales convergentes se ve amateur. Todos los motores lo permiten |
+| **Composición** | Regla de los tercios; línea de horizonte a 1/3 | |
+| **Encuadre exterior** | **Dejar aire alrededor del edificio.** No cortar el remate ni la base | Un edificio cortado no se lee |
+| **Primer plano** | Incluir algo cercano (una rama, un muro, una persona) | Da profundidad y escala |
+
+### 11.4.2 Los encuadres que funcionan
+
+**Exteriores:**
+
+1. **Vista frontal desde la vereda de enfrente, ojo de peatón.** Es cómo se va a ver el edificio de verdad. **Imprescindible y honesta.**
+2. **Escorzo a 3/4 desde la esquina.** El más "vendedor": muestra volumen y profundidad.
+3. **Contrapicado suave desde cerca de la base** (cámara a 1,60 m, edificio alto). Da monumentalidad. **Cuidado: exagera.**
+4. **Vista desde el acceso, mirando hacia adentro.** Cuenta la experiencia de entrar.
+5. **Contrafrente / galería / patio.** En vivienda, muchas veces es la mejor imagen del proyecto.
+6. **Aérea baja (15–25 m).** Muestra implantación y techos. Útil en vivienda con terreno.
+
+**Interiores:**
+
+7. **Desde una esquina del ambiente, hacia la esquina opuesta**, con la ventana en el encuadre. Muestra el espacio y la luz.
+8. **Desde la puerta del ambiente**, cómo se ve al entrar.
+9. **Detalle**: la cocina, el baño principal, la escalera. Vende terminaciones.
+10. **A través de un vano**, con un ambiente en primer plano y otro al fondo. **Muestra la relación entre espacios: es la imagen que explica el proyecto.**
+
+**[R] Los encuadres que NO hay que usar:**
+- Vista de dron a 100 m: no muestra nada, no emociona.
+- Vista frontal de fachada perfectamente plana como una elevación: **para eso está la elevación.**
+- Interiores con lente ultra angular de 12 mm: se ve todo y no se entiende nada; **y miente sobre el tamaño del ambiente.**
+- Cámara a 0,80 m de altura ("cámara de perro"): distorsiona la escala.
+
+## 11.5 Iluminación
+
+### 11.5.1 Configuración del sol
+
+**Siempre georreferenciada.** En todos los motores se carga:
+```
+Latitud:   −36,62°     (36°37' S)
+Longitud:  −64,28°     (64°17' O)
+Zona horaria: UTC−3
+```
+
+**[R] Fechas y horas recomendadas por tipo de imagen:**
+
+| Imagen | Fecha | Hora | Efecto |
+|---|---|---|---|
+| **Fachada Norte (la principal)** | **15 de abril o 15 de septiembre** | **10:00 o 15:00** | Sol a media altura, sombras largas que revelan el relieve de la fachada |
+| **Fachada Norte, "hero shot"** | 21 de diciembre | 17:30 | Luz cálida y rasante |
+| **Fachada Este** | Cualquiera | 09:00 | |
+| **Fachada Oeste** | Cualquiera | 18:00 | |
+| **Fachada Sur** | Verano | 09:00 o 19:00 | Es la única época en que le da sol |
+| **Interior con luz natural** | 15 de septiembre | 11:00 | Luz clara sin contraste excesivo |
+| **Atardecer / "blue hour"** | Cualquiera | 20 min después de la puesta del sol | **La imagen más vendedora de un edificio**: interiores encendidos, cielo azul profundo |
+| **Verificación de asoleamiento (lámina técnica)** | **21/06 y 21/12** | **9, 12 y 15 h** | Es un estudio, no una imagen bonita |
+
+**[R] Advertencia ética y práctica:** poner el sol en una hora imposible para que ilumine una fachada que en la realidad nunca recibe sol **es mentir**. Y se descubre. El cliente que se muda y descubre que su living nunca tiene sol es un cliente perdido y una mala referencia para siempre.
+
+### 11.5.2 Iluminación interior
+
+| Elemento | Criterio [R] |
+|---|---|
+| **Luz natural** | Debe ser la fuente dominante. Si el interior se ve solo con luz artificial, el proyecto tiene un problema de iluminación natural |
+| **Temperatura de color de la luz artificial** | **2.700 K a 3.000 K** en vivienda (cálida). 4.000 K en cocina y baño si se quiere. **Nunca 6.000 K en vivienda**: se ve a hospital |
+| **Capas de luz** | General (cielorraso) + funcional (mesada, escritorio, espejo) + ambiental (indirecta, veladores) + acento (cuadros, plantas) |
+| **Rebote** | Activar GI / path tracing. Un interior sin rebote se ve plano y con sombras negras |
+| **Contraste** | Un interior real tiene contraste. Un render sin sombras se ve falso |
+| **Exposición** | No quemar la ventana: si afuera se ve blanco puro, la imagen se lee como "no hay nada afuera". **Se hace bracketing y se compone en postproducción** |
+
+### 11.5.3 Las tres luces del día
+
+| Momento | Cuándo | Uso |
+|---|---|---|
+| **Diurna plena** | 10–16 h | Fachadas, exteriores, imágenes técnicas |
+| **Hora dorada** | 1 h antes de la puesta | Emoción; galería, patio, terraza |
+| **Hora azul / atardecer** | 15–25 min después de la puesta | **La mejor para edificios**: la fachada iluminada, los departamentos encendidos, el cielo azul profundo. **Es la imagen que vende un edificio en pozo** |
+
+**[R] En un paquete de 6 imágenes de edificio, una debería ser de hora azul.** Es la que va a la portada y al cartel de obra.
+
+## 11.6 Materiales y ambientación
+
+### 11.6.1 Materiales
+
+| Regla [R] | Por qué |
+|---|---|
+| **Escala de textura correcta** | Un ladrillo de 60 cm de largo en el render se ve mal aunque nadie sepa por qué |
+| **Mapas de rugosidad (roughness) y de relieve (bump/normal)** | Sin ellos, todo se ve de plástico |
+| **Reflexión con imperfecciones** | Ningún material real es perfectamente liso. Un mapa de imperfecciones cambia todo |
+| **Materiales reales, disponibles en el mercado local** | **Si en el render hay un porcelanato que no se consigue en Santa Rosa, la obra no va a parecerse al render** |
+| **Máximo 3–4 materiales por escena** | La coherencia se lee como calidad |
+| **Vidrio con reflejo, no transparente puro** | Un vidrio 100 % transparente en un render exterior se ve como un agujero |
+
+### 11.6.2 Ambientación
+
+| Elemento | Criterio [R] |
+|---|---|
+| **Vegetación** | **De la región.** Un render de Santa Rosa con palmeras tropicales o con abetos es un error. Especies pampeanas y de uso urbano local: fresno, olmo, jacarandá, tipa, aguaribay, siempreverde, ligustro, gramíneas, lavanda, romero, santa rita |
+| **Árboles del proyecto: a la escala que van a tener a 5 años**, no a 30 | **No prometer una arboleda madura en una obra nueva** |
+| **Personas** | 1 a 3 por imagen, **en actitud coherente con el uso**, sin mirar a cámara. **Personas de la escala y el aspecto del usuario real.** Difuminar levemente para que no roben protagonismo |
+| **Autos** | 1 o 2, modelos comunes en Argentina. **Un Porsche en el render de un edificio de renta media es contraproducente** |
+| **Mobiliario interior** | A escala real y de estilo coherente con el nivel del proyecto. **No amoblar con muebles de diseño europeo un departamento de 45 m² de renta media** |
+| **Cielo** | HDRI de calidad, con nubes. **Un cielo azul liso se ve falso.** El cielo pampeano tiene nubes altas características |
+| **Objetos de vida** | Un libro abierto, una taza, una toalla, plantas. **Lo que hace que un interior se vea habitado y no de catálogo** |
+| **Desgaste sutil** | Ningún edificio real está impecable. Un poco de suciedad en la base, una mancha de agua sutil |
+
+## 11.7 Postproducción
+
+**[R] Lo que siempre se hace:**
+
+1. **Corrección de verticales** (si no se hizo en la cámara).
+2. **Niveles y curvas**: negros reales, blancos sin quemar.
+3. **Balance de color**: unificar la temperatura de la serie. **Todas las imágenes del set tienen que verse de la misma familia.**
+4. **Contraste local** y claridad.
+5. **Cielo**: casi siempre se reemplaza o se refuerza.
+6. **Entorno de fondo**: edificios vecinos reales, fotografiados en el sitio y compuestos. **Es lo que hace que el render se vea real.**
+7. **Personas y vegetación de recorte** (cutouts) en primer y segundo plano.
+8. **Viñeteo suave** y **aberración cromática mínima** para que se lea como fotografía.
+9. **Grano sutil**: un render perfectamente limpio se ve a render.
+
+**[R] Lo que NO hay que hacer:**
+- Saturar el color hasta el HDR extremo.
+- Agregar en Photoshop cosas que no están en el proyecto (un árbol donde va una rampa, una pileta que no existe).
+- Corregir en postproducción un problema de diseño. **Si la fachada se ve mal, el problema es la fachada.**
+
+## 11.8 Plantas amobladas renderizadas, recorridos y realidad virtual
+
+### 11.8.1 Planta amoblada renderizada
+
+Es una vista cenital ortogonal o levemente en perspectiva, con el mobiliario, los materiales de piso, sombras y vegetación.
+
+**[R] Por qué es tan eficaz:** es la pieza que **le permite al cliente entender la distribución sin saber leer planos**. En venta de departamentos en pozo, la planta amoblada renderizada es la pieza que más consultas genera después del render de fachada.
+
+**Reglas:**
+- Sombras suaves y coherentes.
+- **Cotas y superficies indicadas**, no solo el dibujo bonito.
+- **Norte indicado.**
+- Nombre y superficie de cada local.
+- Escala gráfica.
+
+### 11.8.2 Recorridos virtuales
+
+| Formato | Costo/esfuerzo | Cuándo conviene |
+|---|---|---|
+| **Video de recorrido (30–90 s)** | Medio-alto | Edificios en venta; redes sociales |
+| **Panorámicas 360° navegables** (Enscape, D5, Twinmotion exportan directo) | **Bajo** | **La mejor relación costo/beneficio.** Se comparte por link, el cliente lo abre en el celular |
+| **Recorrido interactivo en tiempo real** (el cliente maneja) | Bajo si ya se usa Enscape/D5 | Reuniones con el cliente: **es la herramienta de trabajo, no el entregable** |
+| **Realidad virtual con visor** | Alto (equipo + preparación) | Proyectos grandes; efecto "wow" en una presentación importante |
+
+**[R] Recomendación:** incluir **panorámicas 360°** en el paquete de anteproyecto de vivienda y de edificio. Cuestan casi nada (un botón de exportación) y el cliente las muestra a toda su familia. Es marketing gratuito.
+
+## 11.9 IA generativa: qué sirve y qué es peligroso
+
+### 11.9.1 Usos legítimos y productivos [R]
+
+| Uso | Herramientas típicas | Valor |
+|---|---|---|
+| **Exploración rápida de alternativas de fachada** a partir de un croquis o de un modelo básico (image-to-image, ControlNet, funciones de IA de D5/Veras/Archmaster) | Alto | Genera 20 variantes en 10 minutos para elegir dirección |
+| **Moodboards y búsqueda de atmósfera** | Alto | Reemplaza horas de Pinterest |
+| **Ambientación y "poblado" de renders** (agregar personas, vegetación, cielo) | Medio-alto | Ahorra postproducción |
+| **Upscaling y mejora de resolución** de renders | Medio | Útil para imágenes grandes |
+| **Variaciones de materialidad sobre un render base ya fiel al modelo** | **Alto** | El uso más seguro: **la geometría la manda el modelo, la IA solo cambia texturas y ambiente** |
+| **Redacción de memorias descriptivas y textos de presentación** | Medio | Con revisión profesional obligatoria |
+
+### 11.9.2 Los riesgos, dichos sin vueltas
+
+| Riesgo | Descripción | Cómo se maneja |
+|---|---|---|
+| **Prometer lo que no se puede construir** | La IA genera geometrías imposibles, voladizos sin estructura, materiales inexistentes, proporciones que no cierran | **Regla absoluta: ninguna imagen sale del estudio si no proviene de un modelo 3D que respeta el proyecto.** La IA solo puede intervenir sobre texturas, ambiente y postproducción |
+| **Incoherencia con la norma** | La IA no sabe de FOS, retiros ni alturas máximas | El encuadre normativo se verifica sobre el modelo, no sobre la imagen |
+| **Deriva de expectativa** | El cliente se enamora de una imagen generada que después no se puede construir; el proyecto real siempre le va a parecer peor | **No mostrar imágenes de IA como si fueran el proyecto.** Si se usan en exploración, se rotulan claramente: *"estudio de atmósfera, no representa el proyecto"* |
+| **Responsabilidad profesional y publicidad engañosa** | En venta en pozo, una imagen que no se corresponde con lo que se entrega puede generar reclamo contractual y responsabilidad | **La imagen que va al material de venta debe corresponderse con el proyecto aprobado.** Se incluye la leyenda *"las imágenes son ilustrativas y pueden sufrir modificaciones"*, pero **la leyenda no salva una imagen que promete otra cosa** |
+| **Derechos de autor y de imagen** | Origen de los datos de entrenamiento; uso de imágenes de terceros | Usar herramientas con licencia comercial clara; no partir de imágenes de obras ajenas |
+| **Homogeneización estética** | Todos los proyectos empiezan a parecerse porque la IA tiene sesgos | Usar la IA para explorar, no para decidir |
+| **Pérdida de oficio** | Se delega el juicio de diseño a una herramienta que no tiene ninguno | La IA no proyecta. Propone imágenes |
+
+**[R] La política del estudio, en una frase:**
+> **La IA se usa hacia adentro para explorar más rápido. Hacia afuera solo sale lo que está modelado y verificado.**
+
+## 11.10 Checklist de control de calidad antes de entregar imágenes
+
+- [ ] **Todas las medidas del modelo coinciden con el plano** (altura de puertas, antepechos, espesores, alturas de local)
+- [ ] Aparecen las **medianeras y los edificios vecinos reales**
+- [ ] El **sol está georreferenciado** en Santa Rosa, con fecha y hora declaradas
+- [ ] **Las verticales están corregidas**
+- [ ] La **altura de cámara exterior es 1,60 m**
+- [ ] **No hay ningún elemento que no esté en el proyecto** (ni pileta, ni deck, ni árbol maduro, ni pérgola que no se cotizó)
+- [ ] La **vegetación es de la región** y del tamaño que va a tener a 5 años
+- [ ] Los **materiales existen y se consiguen** en el mercado local
+- [ ] **Las condensadoras, los medidores, los tanques y las antenas están dibujados o resueltos** (no borrados)
+- [ ] **Los tendederos y los balcones se ven como se van a ver** (no vacíos y perfectos)
+- [ ] La **escala de las personas es correcta** y coherente con la altura de los locales
+- [ ] **Toda la serie tiene el mismo tratamiento de color**
+- [ ] **Cada imagen está rotulada** (proyecto, vista, fecha) y tiene la leyenda de imagen ilustrativa
+- [ ] La resolución es adecuada al uso (**3000 px de lado mayor** para pantalla; 300 dpi al tamaño de impresión si va a cartel)
+
+---
+
+# 12. Presentación al cliente
+
+> La presentación no es "mostrar lo que hicimos". Es **conducir una decisión.** Si el cliente sale de la reunión sin haber decidido nada, la reunión fracasó por más lindas que estuvieran las láminas.
+
+## 12.1 El principio: una idea por lámina
+
+**[R] Reglas de oro:**
+
+1. **Una idea por lámina.** Si una lámina tiene dos mensajes, tiene cero.
+2. **El orden narrativo importa más que el contenido.** Se cuenta una historia: dónde estamos → qué nos pidieron → qué encontramos → qué decidimos → cómo se ve → cuánto cuesta → qué sigue.
+3. **Menos es más.** Una presentación de 12 láminas bien elegidas gana a una de 30.
+4. **El cliente no lee planos.** Toda planta va amoblada, con nombres de local y superficies escritas.
+5. **Nunca se manda el PDF antes de la reunión.** Se presenta y después se manda. Si el cliente lo ve solo, lo interpreta mal y llega a la reunión con una objeción a algo que no existe.
+6. **Se muestra en pantalla grande o impreso en A3.** No en un celular.
+7. **Se habla poco y se pregunta mucho.**
+
+## 12.2 El set de láminas del anteproyecto
+
+**[R] Orden narrativo estándar, 12 a 18 láminas:**
+
+| # | Lámina | Contenido | Objetivo |
+|---|---|---|---|
+| **00** | **Carátula** | Nombre del proyecto, ubicación, comitente, estudio, fecha, número de revisión | Formalidad |
+| **01** | **Índice** | | Le muestra al cliente el mapa del recorrido |
+| **02** | **El encargo** | El programa de necesidades **tal como el cliente lo pidió**, y el presupuesto y plazo objetivo | **Demuestra que se escuchó.** Es la lámina que más confianza genera y casi nadie la hace |
+| **03** | **El sitio** | Foto aérea, foto de la cuadra, medidas del terreno, entorno construido, vecinos, árboles, accesos | Contexto |
+| **04** | **Análisis del sitio** | Norte, asoleamiento, viento, vistas, ruido, servicios. En un solo esquema | Muestra método |
+| **05** | **Marco normativo** | Distrito, indicadores, y **la envolvente máxima dibujada en planta, corte y axonometría** | **Le explica al cliente por qué el edificio tiene esa forma.** Evita el "¿y por qué no hacés un piso más?" |
+| **06** | **La idea / el partido** | Diagrama de burbujas, zonificación, croquis conceptual, 3 a 5 frases | El corazón de la presentación |
+| **07–09** | **Plantas amobladas** | Una por nivel, con norte, superficies por local, cotas generales y escala gráfica | Distribución |
+| **10** | **Cortes** | 2 cortes, uno de ellos explicativo (relaciones espaciales, doble altura, escalera, terreno) | Espacialidad |
+| **11** | **Fachadas** | Todas, con materiales indicados y **el perfil de los vecinos en línea de trazos** | Imagen y escala |
+| **12** | **Axonometría explotada o seccionada** | Muestra la organización general de un vistazo | **La lámina que más se entiende sin explicación** |
+| **13** | **Cortes bioclimáticos** | Invierno y verano (ver 9.10) | Justifica el proyecto técnicamente |
+| **14** | **Moodboard / materiales** | Paleta de materiales y terminaciones con muestras reales | Le da textura a la decisión |
+| **15–20** | **Imágenes 3D** | Según el paquete pactado | Emoción |
+| **21** | **Cuadro de superficies** | Por local, por nivel, por unidad; cubierta/semicubierta/descubierta | Números |
+| **22** | **Estimación de costo y plazo** | Valor $/m² con fuente y fecha, rango de incertidumbre, ítems no incluidos, plazo estimado | **Honestidad** |
+| **23** | **Próximos pasos** | Qué sigue, qué se necesita del cliente, qué decisiones quedan pendientes, con fechas | **Cierra la reunión con acción** |
+
+**[R] Para reformas se agregan dos láminas:**
+- **Estado actual** (planta de relevamiento + fotos del existente).
+- **Demoler / conservar / construir** en tres colores.
+
+**[R] Para edificios de renta se agregan tres:**
+- **Mix de unidades** (cuántas de cada tipo, superficies, precio estimado).
+- **Eficiencia y superficie vendible.**
+- **Planta de cocheras** con módulos numerados.
+
+## 12.3 Cómo se conduce la reunión de presentación
+
+**Duración: 60 minutos. Estructura:**
+
+| Minuto | Qué pasa |
+|---|---|
+| **0–5** | **Recordar el encargo.** "Nos pediste esto, con este presupuesto, para esta fecha." Que el cliente confirme. |
+| **5–15** | **El sitio y la norma.** Sin diseño todavía. Se explica qué se puede y qué no se puede hacer. **Este bloque es el que hace que después no discutan el diseño.** |
+| **15–25** | **La idea.** Se cuenta el partido con palabras y con el diagrama, **antes de mostrar ningún plano bonito.** |
+| **25–40** | **El proyecto**: plantas, cortes, fachadas. Se recorre el edificio caminando con el dedo: "entrás por acá, dejás el auto, subís, llegás al palier…". **Se cuenta la experiencia, no las medidas.** |
+| **40–48** | **Las imágenes 3D.** Recién ahora. **Si se muestran primero, nadie escucha nada de lo anterior.** |
+| **48–55** | **Superficies, costo y plazo.** Sin adornos. |
+| **55–60** | **Próximos pasos y pedido explícito de decisión.** "¿Te parece que vamos por acá? ¿Qué necesitás para decidir?" |
+
+**[R] Frases que funcionan:**
+- *"Antes de mostrarte los dibujos, quiero contarte qué encontramos en el terreno."*
+- *"El código nos deja hacer esto, esto y esto. Elegimos esta opción porque…"*
+- *"Esta es la decisión más importante del proyecto. Te la quiero explicar despacio."*
+- *"¿Qué es lo que menos te convence de lo que viste?"* — **la pregunta que salva el proyecto.**
+- *"¿Qué necesitás para poder decidir?"*
+
+**[R] Frases que hay que evitar:**
+- *"Es lo que se usa ahora."*
+- *"Confiá en mí."*
+- *"Después lo vemos."*
+- *"Eso se resuelve en obra."*
+- *"Es un detalle."*
+
+## 12.4 Herramientas de presentación
+
+### 12.4.1 Plantas amobladas
+
+**Ya se dijo: siempre amobladas.** Y además:
+
+- **Superficie escrita en cada local**, en un cuerpo tipográfico legible.
+- **Nombre del local**, no códigos.
+- **Norte** y **escala gráfica** (no solo "1:100": el PDF se imprime en cualquier tamaño).
+- **Cotas generales** (frente, fondo, dimensiones de los ambientes principales). No hace falta acotar todo.
+- **Solados diferenciados** por textura o color suave.
+- **Sombras suaves** de los muros: el plano se lee mucho mejor.
+- **Puertas con su arco de barrido** dibujado: muestra que las puertas no chocan.
+- **Los vecinos y la vereda** en gris claro alrededor.
+
+### 12.4.2 Cortes explicativos
+
+Un corte de anteproyecto no es un corte técnico. Es un dibujo que **explica el espacio**:
+- Cortar **por donde pasa algo**: la escalera, la doble altura, el patio, el desnivel del terreno.
+- Mostrar **el terreno natural y el modificado**.
+- Incluir **personas** a escala. Es lo que más ayuda a entender la altura.
+- Mostrar **el mobiliario cortado y en vista**.
+- Incluir el **perfil de los vecinos** en línea de trazos.
+- **Cotas de altura de local** y de nivel de piso terminado.
+- En el corte bioclimático, agregar **flechas de sol y de aire**.
+
+### 12.4.3 Axonometrías
+
+**[R] Las tres que más sirven:**
+
+1. **Axonometría seccionada** (el edificio cortado por un plano vertical, visto desde arriba en 3D): **la mejor pieza para explicar un edificio de varias plantas a alguien que no lee planos.**
+2. **Axonometría explotada** (los niveles separados verticalmente): muestra la organización de cada planta y el núcleo que las une.
+3. **Axonometría de la envolvente normativa** con el edificio adentro: explica por qué el volumen es el que es.
+
+### 12.4.4 Moodboard
+
+Una lámina con:
+- **Fotos de referencia** (5 a 8) que expresen la atmósfera buscada.
+- **Muestras de material** fotografiadas o escaneadas: revoque, piso, madera, metal, azulejo.
+- **Paleta de colores** con los códigos.
+- **Referencias de mobiliario y luminarias** (para conectar con el servicio de interiorismo).
+
+**[R] El moodboard es la lámina donde el cliente más participa.** Se le puede pedir que arme uno él antes de la reunión: se aprende muchísimo.
+
+### 12.4.5 Maqueta física y digital
+
+| Tipo | Costo | Cuándo conviene |
+|---|---|---|
+| **Maqueta física de estudio** (cartón gris, 1:100, hecha por el estudio en 3 horas) | Muy bajo | **Herramienta de trabajo interno.** Resuelve dudas volumétricas más rápido que el 3D |
+| **Maqueta física de presentación** (corte láser o impresión 3D, 1:100 o 1:50) | Medio-alto | Proyectos importantes; showroom de venta de edificios |
+| **Maqueta de contexto** (la manzana entera, con el proyecto removible) | Alto | Edificios con impacto urbano, presentaciones a autoridades o vecinos |
+| **Maqueta digital navegable / 360°** | Bajo (viene con el motor de render) | **Siempre.** Es gratis y el cliente la muestra a todo el mundo |
+| **Impresión 3D del volumen** | Bajo-medio | Un objeto físico que el cliente se lleva **genera un vínculo emocional muy fuerte** |
+
+## 12.5 Cómo manejar los cambios
+
+### 12.5.1 El protocolo, paso a paso
+
+1. **Escuchar completo sin interrumpir y sin defenderse.** Tomar nota literal.
+2. **Preguntar por qué**, no por qué cambio. *"¿Qué es lo que no te funciona de esa cocina?"* Muchas veces el problema real es otro que el que el cliente enuncia.
+3. **Devolver por escrito el entendimiento** en 24 h.
+4. **Clasificar** cada pedido en menor / mayor (ver 1.5).
+5. **Cuantificar** honorario, plazo y efecto sobre el costo de obra.
+6. **Proponer alternativas**: la solución que el cliente pide y la que el estudio recomienda, con sus consecuencias.
+7. **Esperar el OK escrito** antes de dibujar.
+8. **Actualizar la revisión** del documento (Rev. 01, Rev. 02) y **dejar constancia de qué cambió** en cada una.
+
+### 12.5.2 "El cliente cambió todo"
+
+Ya se trató en 1.5.5. Se agregan tres tácticas concretas:
+
+**Táctica 1 — Volver al programa firmado.** *"En el programa que aprobamos en marzo dice tres dormitorios y quincho. Ahora estamos hablando de cuatro dormitorios y pileta. No hay problema, pero es otro proyecto y otro presupuesto. ¿Lo hacemos?"* **Sin drama, con el papel en la mano.**
+
+**Táctica 2 — El costo de la indecisión, en números.** Mostrarle qué implica: *"Este cambio son X pesos de honorarios, cuatro semanas más de anteproyecto, y sube el costo de obra estimado en Y. ¿Vale la pena?"* La mayoría de los cambios mueren cuando se los cuantifica.
+
+**Táctica 3 — La reunión de decisión.** Cuando el cliente oscila entre opciones, se convoca una reunión **cuyo único objetivo es decidir**, se ponen las dos opciones lado a lado con sus pros, contras, costos y plazos, y **no se sale de la reunión sin una elección firmada.** Funciona sorprendentemente bien.
+
+### 12.5.3 Prevención: las cinco cosas que evitan el 80 % de los cambios
+
+1. **Un programa de necesidades escrito y confirmado por mail** antes de dibujar.
+2. **Que estén todos los que deciden en las reuniones.**
+3. **Mostrar el partido (A0) antes que las imágenes bonitas.** El cliente que aprobó el partido no puede pedir otro edificio.
+4. **Presentar el marco normativo** como parte de la presentación: elimina el 100 % de los "¿y si hacemos un piso más?".
+5. **Cuantificar el costo desde el A0** y actualizarlo en cada instancia.
+
+## 12.6 Errores frecuentes de presentación
+
+| Error | Efecto |
+|---|---|
+| Mostrar las imágenes 3D primero | Nadie mira las plantas ni escucha la explicación |
+| Mostrar plantas sin amoblar | El cliente no puede evaluar si el ambiente le sirve |
+| Mandar el PDF antes de la reunión | El cliente lo interpreta solo y llega con objeciones armadas |
+| No hablar del costo | La reunión siguiente es sobre el costo, y es peor |
+| Usar jerga (FOS, LFI, retiro de fondo) sin explicarla | El cliente asiente sin entender y después reclama |
+| Presentar tres alternativas de igual peso | El cliente no puede elegir. **Se presenta una recomendada y, si acaso, una alternativa** |
+| Presentar solo lo lindo y ocultar los problemas | Los problemas aparecen igual, más tarde y peor |
+| Una presentación de 40 láminas | Se pierde el hilo en la lámina 12 |
+| No pedir una decisión al final | La etapa no cierra nunca |
+| No registrar por escrito lo que se acordó | Todo se rediscute |
+
+---
+
+# PARTE V — EL CIERRE
+
+# 13. Checklist de cierre de anteproyecto
+
+> **Nada de esta lista se puede resolver "después".** Si algo queda sin tildar, se anota como decisión pendiente en el acta, con responsable y fecha. Lo que no está en el acta, no existe.
+
+## 13.1 Documentación
+
+- [ ] Plano de implantación acotado, con retiros, niveles, accesos y árboles
+- [ ] Todas las plantas, acotadas, amobladas, con superficie por local
+- [ ] Planta de techos con pendientes, desagües, tanques y sala de máquinas
+- [ ] Planta de subsuelo / cocheras con módulos, rampa, radios de giro y locales técnicos
+- [ ] Mínimo dos cortes, uno por el núcleo vertical o la escalera
+- [ ] Todas las fachadas, con materiales y con el perfil de los vecinos
+- [ ] Esquema de estructura
+- [ ] Esquema de instalaciones
+- [ ] **Reforma:** planta de demoler / conservar / construir
+- [ ] Cuadro de superficies (cubierta / semicubierta / descubierta) por nivel y total
+- [ ] Planilla de verificación normativa
+- [ ] Memoria descriptiva
+- [ ] Presupuesto global estimativo, con fuente, fecha y rango de incertidumbre
+- [ ] Plazo estimado de obra
+- [ ] Imágenes 3D según el paquete pactado
+- [ ] Todo rotulado, numerado, fechado y con número de revisión
+
+## 13.2 Verificación normativa
+
+- [ ] **Informe de zonificación municipal obtenido por escrito**
+- [ ] Distrito y subdistrito confirmados
+- [ ] **FOS verificado** en cada nivel, con el cómputo hecho
+- [ ] Altura máxima verificada, con la tipología constructiva que la habilita
+- [ ] Retiro de frente verificado
+- [ ] Retiros laterales verificados según tipología
+- [ ] **Retiro de fondo calculado con la fórmula (n−20)/x** del distrito y verificado nivel por nivel
+- [ ] Densidad verificada: dormitorios proyectados ≤ dormitorios admitidos
+- [ ] **Estacionamiento: módulos exigidos vs. módulos proyectados, con el cálculo escrito**
+- [ ] Uso permitido en el distrito confirmado
+- [ ] Restricciones tipológicas del distrito verificadas (mínimo de dormitorios, prohibición de monoambientes, exigencia de patio privado, etc.)
+- [ ] Patios de aire y luz verificados para la altura del edificio
+- [ ] Superficies y lados mínimos de todos los locales verificados
+- [ ] Alturas mínimas de local verificadas
+- [ ] Superficies de iluminación y ventilación verificadas local por local
+- [ ] **Medios de salida, cantidad de escaleras y distancias de evacuación verificados**
+- [ ] **[V] Consultas municipales realizadas y respondidas POR ESCRITO** (especialmente: interpretación de combinación de tipologías, cómputo del monoambiente para densidad, lectura de "3 habitaciones o más" para estacionamiento, pendiente máxima de rampa vehicular)
+- [ ] Accesibilidad: itinerario accesible completo verificado
+
+## 13.3 Coordinación con estructura
+
+**[R] El estructuralista participa del anteproyecto. No se lo llama después.**
+
+- [ ] **Predimensionado de columnas y vigas hecho por el calculista** (aunque sea aproximado)
+- [ ] **Sistema estructural definido**: hormigón armado, metálico, mixto, mampostería portante, industrializado
+- [ ] Modulación estructural definida y **coordinada con la planta de cocheras** (5,20–5,40 m o 7,80–8,10 m entre ejes)
+- [ ] **Las columnas caen dentro de muros divisorios** y no en el medio de ambientes
+- [ ] **Las columnas del subsuelo no interfieren con los módulos de estacionamiento**
+- [ ] Luces de losas verificadas y espesores predimensionados
+- [ ] **El núcleo de circulación está evaluado como elemento de arriostramiento** (edificios en altura)
+- [ ] Voladizos de balcones predimensionados, **con corte térmico previsto**
+- [ ] **Estudio de suelos encargado o programado** (indispensable antes del proyecto)
+- [ ] **Submuración / contención de medianeras evaluada** si hay subsuelo, con su impacto en el costo
+- [ ] Juntas de dilatación definidas si el edificio lo requiere
+- [ ] **En reforma: verificación estructural del existente por el calculista, por escrito**
+- [ ] Impacto de la estructura en las alturas libres verificado en corte (vigas, capiteles, ábacos)
+
+## 13.4 Coordinación con instalaciones
+
+- [ ] **Montantes y plenos dibujados, verticales y continuos de arriba abajo**
+- [ ] **Pleno de conducto de campana de cocina previsto** en todas las plantas
+- [ ] Ubicación de sala de bombas, cisterna y tanque de reserva
+- [ ] **Volumen de reserva de agua estimado** (domiciliaria + incendio)
+- [ ] Altura de tanque verificada para dar presión al artefacto más alto
+- [ ] Cámaras de inspección y trazado principal de cloaca definido, **con cota de conexión a la red verificada**
+- [ ] **Si la cota de cloaca no permite desagote por gravedad, la solución (pozo de bombeo) está proyectada**
+- [ ] Desagües pluviales: cantidad y ubicación de bocas, bajadas y su recorrido
+- [ ] Ubicación de nicho de medidor de gas y trazado de montante
+- [ ] **Potencia eléctrica requerida estimada y consultada a la distribuidora**
+- [ ] Ubicación de pilar / gabinete de medidores, sala de tableros y, si corresponde, **subestación transformadora**
+- [ ] Ascensores: cantidad, tipo, dimensiones de caja, **foso y sobrerrecorrido dibujados en corte**
+- [ ] **Ubicación de condensadoras de aire acondicionado definida para cada unidad**, ventilada, accesible y resuelta en fachada
+- [ ] Ventilación de subsuelo (natural o forzada) con sus conductos dibujados
+- [ ] **Sistema de protección contra incendio predefinido** (matafuegos, hidrantes, detección, presurización de escalera, reserva de agua)
+- [ ] Local de residuos previsto en planta baja, con acceso desde la vía pública
+- [ ] Puntos de acceso de telecomunicaciones y pleno correspondiente
+
+## 13.5 Coordinación bioclimática y energética
+
+- [ ] Orientación verificada: locales principales al Norte / Noreste
+- [ ] **Verificación de asoleamiento IRAM 11603** (2 h el 21/06 en al menos la mitad de los locales habitables)
+- [ ] Superficie vidriada por orientación dentro de los rangos recomendados
+- [ ] **Aleros dimensionados con los ángulos solares de latitud 36,6° S**
+- [ ] Protección solar de Este y Oeste definida
+- [ ] Ventilación cruzada verificada en los locales principales
+- [ ] Ventilación nocturna posible (aberturas seguras)
+- [ ] Masa térmica prevista y expuesta
+- [ ] **Espesor de muros con aislación reflejado en las plantas** (no dibujar muros de 0,15 m si van a ser de 0,25 m)
+- [ ] Tipo de carpintería y vidriado decidido (DVH sí/no, RPT sí/no)
+- [ ] Puentes térmicos identificados: bordes de losa, balcones, dinteles, cajones de cortina, encuentro muro-cubierta
+- [ ] Protección del viento resuelta (galería, esclusa, barreras)
+
+## 13.6 Verificación funcional
+
+- [ ] **Checklist de A1 completo** (ver 5.5)
+- [ ] Zonificación día/noche/servicio sin islas
+- [ ] Porcentaje de circulación dentro del rango
+- [ ] Verificación de mudanza aprobada
+- [ ] Locales húmedos agrupados
+- [ ] **Todos los baños de plantas superpuestas coinciden** (edificio)
+- [ ] Placards y guardado computados y dibujados
+- [ ] Todos los ambientes tienen mobiliario básico dibujado a escala
+
+## 13.7 Verificación económica
+
+- [ ] Superficie total computada y verificada dos veces
+- [ ] Superficie equivalente calculada (cubierta + 0,50 semicubierta + 0,30 descubierta)
+- [ ] Valor $/m² actualizado, con fuente y fecha
+- [ ] **Costo estimado dentro del presupuesto objetivo del cliente, o la diferencia explicitada**
+- [ ] Ítems no incluidos listados (honorarios, tasas, conexiones, amoblamiento, aberturas, paisajismo, imprevistos)
+- [ ] **10 % de imprevistos incluido**
+- [ ] En edificios: superficie vendible, eficiencia e incidencia del terreno calculadas
+- [ ] Etapabilidad definida, si corresponde
+
+## 13.8 Verificación administrativa y de relación
+
+- [ ] **Acta de cierre redactada y firmada**
+- [ ] Listado de decisiones pendientes con responsable y fecha
+- [ ] Honorarios de la etapa cobrados en su totalidad
+- [ ] Contrato de la etapa siguiente (proyecto) presentado
+- [ ] Cronograma de la etapa siguiente acordado
+- [ ] **Archivo del estudio ordenado**: modelo 3D, archivos de dibujo, PDF de entrega, mails de aprobación, todo en la carpeta del proyecto con nomenclatura estándar
+- [ ] Copia de seguridad hecha
+- [ ] Imágenes seleccionadas para portfolio y redes, con la autorización del cliente
+
+## 13.9 La regla final
+
+> **Un anteproyecto está terminado cuando el estudio podría entregarle la carpeta a otro arquitecto y ese arquitecto podría hacer el proyecto sin llamar por teléfono a nadie.**
+>
+> Si para entender el anteproyecto hay que explicarlo, no está terminado.
+
+---
+
+# 14. Bibliografía comentada
+
+## 14.1 Normativa argentina — fuentes primarias
+
+**Código Urbanístico de Santa Rosa (La Pampa) — texto ordenado 2017, actualizado al 20/02/2018**
+https://www.region.com.ar/productos/semanario/archivo/pdf-fotos/codigo-urbanistico-2017-al-20-02%202018.pdf
+> **La fuente principal de este documento.** Consolida la Ordenanza 1581/1995 y modificatorias. Contiene: definiciones de términos técnicos (Título 1), subdivisión del suelo (Título 2), red vial (Título 3), zonificación, localización de actividades y estacionamiento (Título 4) y **normas particulares por distrito con todos los indicadores de tejido urbano (Título 5)**. Es el documento que hay que tener impreso y anillado en el estudio. **Verificar siempre si hay ordenanzas modificatorias posteriores.**
+
+**Concejo Deliberante de Santa Rosa — repositorio de ordenanzas**
+https://www.concejosantarosa.gob.ar/ — categoría "Código edificación": https://www.concejosantarosa.gob.ar/category/codigo-edificacion/
+> Fuente oficial de ordenanzas. **Aquí está la Ordenanza 6976/2023 "Código Urbano Ambiental"**, cuyo texto hay que obtener y verificar: puede haber modificado indicadores usados en este documento. El sitio tiene protección anti-bots: conviene consultarlo desde un navegador común o pedir el texto en el Concejo.
+
+**Municipalidad de Santa Rosa — Normativa y Boletines**
+https://www.santarosa.gob.ar/normativa-y-boletines/
+> Portal oficial. Punto de partida para obtener el **Código de Edificación de Santa Rosa** (ordenanza distinta del Código Urbanístico), que regula clases de locales, dimensiones mínimas, patios de 1ª y 2ª categoría, alturas, escaleras y medios de salida. **Es un documento imprescindible que este texto no pudo transcribir: conseguirlo es la tarea número uno.**
+
+**CFI — Estudio del Código de Edificación de la Municipalidad de Santa Rosa**
+http://biblioteca.cfi.org.ar/documento/estudio-del-codigo-de-edificacion-de-la-municipalidad-de-santa-rosa-provincia-de-la-pampa/
+> Antecedente técnico del código local, elaborado por el Consejo Federal de Inversiones. Útil para entender la lógica de la norma.
+
+**Código de Edificación de la Ciudad de Buenos Aires — Ley 6100, texto ordenado con Ley 6438**
+https://static.cpau.org/.newsite/noticias/2021/noviembre/codigo_de_edificacion_-_texto_ordenado_ley_6100__ley_6438.pdf
+> **No es aplicable en Santa Rosa**, pero es el código de edificación más moderno, mejor redactado y más completo de la Argentina. Se usa en este documento como **referencia metodológica y como piso de calidad recomendable**: alturas mínimas de local (art. 3.3.1.2.1), áreas y lados mínimos (3.3.1.3 y 3.8.9.1), locales para cocinar (3.3.1.6.5), estacionamiento vehicular (3.3.1.6.6), rampas y sus pendientes (3.4.5), servicios de salubridad (3.5.2), ascensores (3.9.10). **Excelente material de consulta técnica.**
+
+**CEDOM — Código de la Edificación de CABA (versión web)**
+https://www.cedom.gob.ar/legislacion/normas/codigos/edifica/index4b.html
+> Consulta rápida por artículos.
+
+**Ley Nacional 24.314 — Accesibilidad de personas con movilidad reducida**
+https://www.argentina.gob.ar/normativa/nacional/ley-24314-713/texto
+> Modifica la Ley 22.431. Define accesibilidad, practicabilidad, visitabilidad y adaptabilidad. Artículos 20 (barreras urbanas), 21 (barreras arquitectónicas en edificios públicos, privados de uso público y **vivienda colectiva**) y 22 (transporte). **Es la norma que hace obligatoria la accesibilidad en edificios de vivienda colectiva.**
+
+**Decreto 914/1997 — Reglamentación de la Ley 24.314**
+https://www.argentina.gob.ar/normativa/nacional/decreto-914-1997-45816/texto
+https://docs.argentina.justia.com/federales/decretos/decreto-n-914-1997-sep-18-1997.pdf
+> **El texto con las medidas concretas.** Rampas (pendientes según altura a salvar, ancho de 1,10 a 1,30 m, descansos cada 6,00 m, pasamanos), escaleras (máximo 12 alzadas, 2a+p = 0,60–0,63 m, ancho 1,20 m), puertas (0,80 m de luz útil), pasillos (1,20 m; 1,10 m en vivienda colectiva), baño accesible (inodoro a 0,50–0,53 m, transferencia lateral de 0,80 m, giro de 1,50 m), ascensores (cabina tipo 1 de 1,10 × 1,30 m; tipo 2 de 1,50 × 1,50 m), estacionamiento. **Documento de cabecera para el capítulo 8.**
+
+**Manual de Accesibilidad Edilicia — Municipalidad de Rosario**
+https://www.rosario.gob.ar/ArchivosWeb/manual_accesibilidad_edilicia.pdf
+> Excelente traducción gráfica de la normativa nacional de accesibilidad a esquemas de proyecto. Muy útil para explicar al cliente y para chequear medidas rápido.
+
+**Decreto-Ley 8912/77 — Ordenamiento territorial y uso del suelo, Provincia de Buenos Aires**
+https://www.gba.gob.ar/static/gobierno/docs/DECRETOley891277.pdf
+https://capbauno.org/wp-content/uploads/2021/10/Texto-Ordenado-Decreto-Ley-8912-.pdf
+> **No aplica en La Pampa**, pero es la referencia conceptual del urbanismo argentino: define densidad bruta y neta, FOS, FOT, áreas urbanas y complementarias, cesiones. Útil para entender el vocabulario y para trabajos en provincia de Buenos Aires.
+
+**IRAM 11603 — Acondicionamiento térmico de edificios. Clasificación bioambiental de la República Argentina**
+https://procesosconstructivos.wordpress.com/wp-content/uploads/2011/08/iram-11603-e1.pdf
+> **La norma clave del capítulo 9.** Define las seis zonas bioambientales y sus subzonas; ubica a Santa Rosa (departamento Capital, La Pampa) en la **Zona IV templada fría**; da datos climáticos por localidad; y en su Anexo C entrega las recomendaciones de diseño por zona: orientaciones favorables (NO-N-NE-E para zona IV en latitudes > 30°), verificación de asoleamiento invernal (**2 h de sol directo el 23 de junio en la mitad de los locales habitables**), tabla de orientaciones que cumplen ese mínimo por latitud, recomendaciones de protección solar y consideraciones sobre microclimas. **Verificar la edición vigente.**
+
+**Otras normas IRAM de la serie de acondicionamiento térmico**
+> **IRAM 11601** (propiedades térmicas y cálculo de K), **11604** (coeficiente volumétrico G de pérdidas), **11605** (valores máximos admisibles de K, niveles A/B/C), **11625 y 11630** (riesgo de condensación intersticial y superficial), **11507-4** (carpinterías), **11900** (etiquetado de eficiencia energética de viviendas). Se adquieren en IRAM: https://www.iram.org.ar/
+
+**Serie IRAM 111102 — Accesibilidad de las personas al medio físico**
+https://www.iram.org.ar/
+> Normas técnicas de accesibilidad, en varias partes (circulaciones, rampas y escaleras, sanitarios, señalización, ascensores). No son obligatorias por sí mismas salvo remisión expresa de una norma legal, pero **son el estado del arte técnico** y complementan al Decreto 914/97 con mayor detalle.
+
+## 14.2 Ejercicio profesional y honorarios
+
+**CPAU — MEPAU, Capítulo C-07 "El proyecto de las obras"**
+https://mepau.cpau.org/Media/Default/pdf/capitulos/c07.pdf
+> **La fuente del capítulo 1 de este documento.** Define con precisión y con autoridad profesional el alcance del croquis preliminar (punto 4), del **anteproyecto (punto 5, con su objeto y sus elementos constitutivos)** y del proyecto (punto 6). También trata los preliminares del proyecto, el programa de necesidades y su consolidación por escrito (punto 2). **Lectura obligatoria para cualquier arquitecto que quiera ordenar su relación con el comitente.**
+
+**CPAU — MEPAU, Capítulo C-02 "Honorarios para el ejercicio profesional"**
+https://mepau.cpau.org/Media/Default/pdf/capitulos/c02.pdf
+> Estructura de honorarios por etapas, recargos, compensaciones, gastos especiales.
+
+**CPAU — Cuadros de honorarios sugeridos (actualización periódica)**
+https://static.cpau.org/.newsite/ejercicio_profesional/honorarios_sugeridos/2026/marzo/Proyecto-y-DO.pdf
+https://static.cpau.org/.newsite/ejercicio_profesional/honorarios_sugeridos/2026/febrero/Proyecto-y-DO-Refaccion.pdf
+> **Cuadros actualizados de honorarios por proyecto y dirección, y por refacción.** Contienen la **subdivisión porcentual por etapa** (croquis preliminares 7 %, croquis avanzado 8 %, anteproyecto 5 %, anteproyecto avanzado 20 %, documentación de proyecto 20 %, dirección de obra 40 %). **Verificar la publicación del mes.**
+
+**CPAU — A-103 Arancel de honorarios**
+https://mepau.cpau.org/Media/Default/pdf/anexos/A-103.pdf
+
+**CPAU — "Usted y su arquitecto"**
+https://static.cpau.org/publicaciones/uya/doc/mc.pdf
+> **Publicación pensada para el cliente, no para el arquitecto.** Excelente material para adaptar y entregar en la primera reunión.
+
+**Colegio de Arquitectos de La Pampa (CALP)**
+> **[V]** Verificar el arancel y las resoluciones vigentes en la jurisdicción de La Pampa. Los cuadros del CPAU sirven como referencia de estructura de reparto entre etapas, no necesariamente como monto.
+
+## 14.3 Bibliografía técnica y de proyecto
+
+**Ernst Neufert — *Arte de proyectar en arquitectura*** (Gustavo Gili; múltiples ediciones)
+> **La referencia dimensional universal.** Medidas de todo: mobiliario, locales, circulaciones, alturas de trabajo, escaleras, estacionamiento, equipamientos de todo tipo de edificio. **Uso recomendado: consulta puntual, no lectura.** Cuidado con dos cosas: (a) muchas medidas responden a estándares europeos y hay que contrastarlas con la práctica local; (b) es un manual de mínimos y de estándares, no un libro de diseño. **Debe estar en el estudio en papel.**
+> Muestra de referencia (capítulo de dormitorios): https://www.dwgautocad.com/uploads/8/3/4/5/8345765/neufert-p14-218_224.pdf
+
+**Julius Panero y Martin Zelnik — *Las dimensiones humanas en los espacios interiores*** (Gustavo Gili)
+> **El complemento indispensable de Neufert.** Donde Neufert da el estándar, Panero y Zelnik dan **el dato antropométrico con percentiles** (5, 50, 95) y explican de dónde sale cada medida. Imprescindible para diseñar bien baños, cocinas, escritorios y todo espacio de contacto directo con el cuerpo. **Es el libro que hay que abrir cuando una medida "no cierra".**
+
+**Francis D. K. Ching — *Arquitectura: forma, espacio y orden*** (Gustavo Gili)
+> **El manual de composición arquitectónica.** Organizaciones espaciales (central, lineal, radial, agrupada, en trama) y principios ordenadores (eje, simetría, jerarquía, pauta, ritmo, transformación). **Uso en el anteproyecto: darle nombre y lógica al partido.** Su valor práctico es enorme: le da al estudio un vocabulario para explicarle al cliente por qué el edificio es como es.
+> Síntesis de las organizaciones espaciales: https://es.slideshare.net/slideshow/organizacin-de-las-formaspdf-en-arquitectura/266625291
+
+**Geoffrey H. Baker — *Análisis de la forma. Urbanismo y arquitectura*** (Gustavo Gili)
+> Método gráfico de análisis de obras: cómo desarmar un edificio en sus decisiones de forma, estructura, circulación, geometría y relación con el sitio. **Uso en el estudio: analizar referencias antes de proyectar.** Es la manera de aprender de una obra ajena sin copiarla.
+
+**Christopher Alexander, Sara Ishikawa y Murray Silverstein — *A Pattern Language / Un lenguaje de patrones*** (Gustavo Gili)
+> 253 patrones de diseño desde la escala regional hasta el detalle. **Los más útiles para el anteproyecto de vivienda:** 127 "Gradiente de intimidad", 159 "Luz por dos lados en cada habitación", 107 "Alas de luz", 142 "Secuencia de espacios para sentarse", 179 "Alcoba", 180 "Asiento junto a la ventana", 190 "Variación de la altura del techo", 205 "Estructura que sigue a los espacios sociales". **Es el libro que mejor explica por qué algunos espacios se usan y otros quedan vacíos.**
+> Patrón 159 en línea: https://www.patternlanguage.com/apl/aplsample/apl159/apl159.htm
+> Patrón 127 en línea: https://patternlanguage.cc/Patterns/Intimacy-Gradient-(127)
+
+**Le Corbusier — *El Modulor*** y ***Modulor 2***
+> Sistema de proporciones basado en la escala humana y en la sección áurea. **Uso práctico: fijar una serie de dimensiones coherente para alturas de antepecho, dintel, parapeto y fajas de fachada.** Más allá del debate sobre su validez universal, es una herramienta muy eficaz para dar coherencia a una fachada.
+
+**Xavier Monteys y Pere Fuertes — *Casa Collage. Un ensayo sobre la arquitectura de la casa*** (Gustavo Gili)
+> **El mejor libro para proyectar vivienda hoy.** Cuestiona el organigrama funcional clásico y propone pensar la casa como soporte de vidas que cambian: la habitación sin función asignada, el cuestionamiento del pasillo, los umbrales, la casa que se usa de maneras que el arquitecto no previó. **Cambia la manera de hacer el programa de necesidades.**
+
+**N. John Habraken — *Soportes: una alternativa al alojamiento de masas***
+> Distinción entre **soporte** (estructura, envolvente, instalaciones troncales: lo permanente y colectivo) y **relleno** (tabiques y equipamiento: lo variable e individual). **Aplicación directa al anteproyecto de edificios**: diseñar plantas tipo que admitan varias divisiones internas, y montantes que permitan mover un baño sin romper todo. **Es la teoría detrás de la flexibilidad.**
+
+**Victor Olgyay — *Arquitectura y clima. Manual de diseño bioclimático para arquitectos y urbanistas*** (Gustavo Gili)
+> El texto fundacional del diseño bioclimático. **La carta bioclimática de Olgyay** (temperatura vs. humedad, con la zona de confort y las correcciones por radiación, viento y evaporación) y el método de análisis climático previo al diseño. **Uso: la lámina de análisis climático del anteproyecto.**
+
+**Baruch Givoni — *Man, Climate and Architecture* / *Climate Considerations in Building and Urban Design***
+> La **carta bioclimática de Givoni**, trazada sobre el diagrama psicrométrico, es la herramienta operativa para decidir **qué estrategias pasivas conviene usar en un clima dado y qué porcentaje del año cubren**: ventilación diurna de confort, masa térmica con ventilación nocturna, enfriamiento evaporativo directo e indirecto, ganancia solar pasiva. Es más aplicable que la de Olgyay para el trabajo de proyecto.
+> Artículo de referencia sobre el desarrollo de las cartas bioclimáticas: https://www.academia.edu/11203153/Development_of_bioclimatic_chart_for_passive_building_design
+
+**SEDICI / UNLP — *La aplicación de la Ley 13.059 y las normas IRAM en la Provincia de Buenos Aires***
+http://sedici.unlp.edu.ar/bitstream/handle/10915/73908/Documento_completo.pdf-PDFA.pdf
+> Buen material sobre la implementación real de las exigencias de acondicionamiento térmico en Argentina, con casos y críticas. Útil para entender qué significa cumplir la IRAM 11605 en la práctica.
+
+## 14.4 Herramientas de análisis y de visualización
+
+**Climate Consultant (UCLA Energy Design Tools)** — gratuito
+> Carga un archivo climático (EPW) y grafica automáticamente la carta de Givoni con el porcentaje de horas cubiertas por cada estrategia pasiva, más carta solar, rosa de vientos y tablas de temperatura. **Media hora de trabajo, material de análisis de primer nivel para el anteproyecto.**
+
+**Ladybug Tools** (para Grasshopper/Rhino) — gratuito, código abierto
+> Análisis de radiación solar, asoleamiento, vientos, confort y simulación energética integrados al modelo 3D. Curva de aprendizaje alta pero potencia enorme.
+
+**Andrew Marsh — herramientas online de sol y psicrometría**
+https://andrewmarsh.com/software/
+> Cartas solares interactivas y diagramas psicrométricos en el navegador. **Lo más rápido para verificar un ángulo solar o dimensionar un alero.**
+
+**Comparativas de software de render 2026**
+- Lumion vs Enscape vs Twinmotion: https://illustrarch.com/articles/architectural-rendering/78474-lumion-vs-enscape-vs-twinmotion-best-renderer.html
+- D5 Render vs Twinmotion: https://www.myarchitectai.com/blog/d5-render-vs-twinmotion
+- D5 Render vs Lumion: https://maverickframe.com/blog/d5-render-vs-lumion/
+- Lumion vs Enscape vs D5: https://nuviraspace.com/lumion-vs-enscape-vs-d5-render/
+> Fuentes de la comparativa del punto 11.2. **Los precios y las prestaciones cambian rápido: verificar antes de comprar una licencia.**
+
+## 14.5 Datos climáticos y geográficos
+
+**Servicio Meteorológico Nacional (SMN)** — https://www.smn.gob.ar/
+> **Estadísticas climatológicas por estación (Santa Rosa Aero)**: normales de temperatura, precipitación, humedad, heliofanía y **rosa de los vientos**. Es la fuente que hay que citar para los datos de viento del capítulo 3.
+
+**Datos climatológicos de Santa Rosa (La Pampa)**
+https://en.wikipedia.org/wiki/Santa_Rosa,_La_Pampa
+> Coordenadas (36°37′ S, 64°17′ O), altitud (175 m), clasificación Köppen (Cfa) y tabla completa de normales 1991–2020 con récords históricos. Fuente secundaria útil, con las series del SMN como origen.
+
+**Plan Estratégico para el desarrollo de la ciudad de Santa Rosa**
+https://planestrategicosantarosa.com.ar/index.php/ideas-proyecto/52-modificar-y-actualizar-el-codigo-urbanistico
+> Documentos de discusión sobre la actualización del código urbanístico local. Útil para anticipar hacia dónde va la norma.
+
+## 14.6 Cómo se debería usar esta bibliografía
+
+**[R] Prioridad de compra / obtención para un estudio en Santa Rosa:**
+
+1. **Código Urbanístico de Santa Rosa** (gratis, descargar e imprimir) — **hoy**
+2. **Código de Edificación de Santa Rosa** (gestionar en el municipio) — **hoy**
+3. **CPAU MEPAU C-07** (gratis) — **esta semana**
+4. **Decreto 914/97** (gratis) — **esta semana**
+5. **IRAM 11603** (comprar en IRAM) — **este mes**
+6. **Neufert** (papel) — **este mes**
+7. **Panero & Zelnik** (papel) — **este mes**
+8. **IRAM 11601, 11605, 11625** (comprar en IRAM) — cuando se encare la primera obra con exigencia energética
+9. **Ching** y **Casa Collage** — biblioteca del estudio
+10. **Alexander, Baker, Habraken, Olgyay, Givoni** — biblioteca del estudio, lectura de fondo
+
+---
+
+# ANEXOS
+
+## Anexo A — Plantilla de acta de cierre de anteproyecto
+
+```
+────────────────────────────────────────────────────────────────────────
+ACTA DE APROBACIÓN DE ANTEPROYECTO
+
+Obra:                  ..............................................
+Ubicación:             ..............................................
+Nomenclatura catastral:..............................................
+Comitente:             ..............................................
+Proyectista:           ..............................................
+Fecha:                 ......../......../..........
+Revisión:              ......
+
+1. DOCUMENTACIÓN ENTREGADA
+   ┌────┬───────────────────────────────────┬────────┬──────────────┐
+   │ N° │ Documento                         │ Escala │ Archivo      │
+   ├────┼───────────────────────────────────┼────────┼──────────────┤
+   │ 01 │ Implantación                      │ 1:200  │ ............ │
+   │ 02 │ Planta baja amoblada              │ 1:100  │ ............ │
+   │ .. │ ...                               │ ...    │ ............ │
+   └────┴───────────────────────────────────┴────────┴──────────────┘
+   Imágenes 3D entregadas: ....... (cantidad pactada: .......)
+
+2. CUADRO DE SUPERFICIES APROBADO
+   Superficie cubierta:      ............ m²
+   Superficie semicubierta:  ............ m²
+   Superficie descubierta:   ............ m²
+   Superficie equivalente:   ............ m²
+   (En edificios) Superficie vendible: ............ m²  Eficiencia: ...... %
+
+3. VERIFICACIÓN NORMATIVA
+   Distrito: ............   FOS admitido: ......  FOS proyectado: ......
+   Altura máx. admitida: ...... m   Altura proyectada: ...... m
+   Retiro de fondo aplicado: ...... m   Densidad: ...... / ...... dorm.
+   Estacionamiento exigido: ...... módulos  Proyectado: ...... módulos
+   OBSERVACIÓN: la verificación definitiva queda sujeta a la
+   interpretación de la Autoridad de Aplicación en la instancia de
+   presentación municipal.
+
+4. PRESUPUESTO GLOBAL ESTIMATIVO
+   Valor de referencia adoptado: $ ........... /m²
+   Fuente: ..................................  Fecha: ......../......../......
+   Costo estimado de obra: $ ...........  Rango de incertidumbre: ± 15 %
+   NO INCLUYE: honorarios profesionales, tasas y derechos municipales,
+   conexiones de servicios, estudio de suelos, mensura, cálculo estructural,
+   proyecto de instalaciones, amoblamiento fijo, equipamiento, paisajismo,
+   ni imprevistos de obra (se recomienda prever un 10 % adicional).
+
+5. PLAZO ESTIMADO DE OBRA: ...... meses
+
+6. DECISIONES PENDIENTES (a resolver en la etapa de proyecto)
+   ┌────┬──────────────────────────────┬────────────────┬────────────┐
+   │ N° │ Decisión                     │ Responsable    │ Fecha tope │
+   ├────┼──────────────────────────────┼────────────────┼────────────┤
+   │ 01 │ ............................ │ .............. │ .......... │
+   └────┴──────────────────────────────┴────────────────┴────────────┘
+
+7. DECLARACIÓN
+   El comitente declara haber recibido, revisado y COMPRENDIDO la
+   documentación detallada en el punto 1, y APRUEBA el anteproyecto,
+   autorizando el inicio de la etapa de PROYECTO.
+
+   El comitente toma conocimiento de que toda modificación solicitada
+   con posterioridad a la firma de la presente será considerada un
+   cambio, y generará honorarios adicionales y ampliación del plazo,
+   que serán cotizados y aprobados por escrito antes de su ejecución.
+
+   La documentación de anteproyecto es propiedad intelectual del
+   proyectista. Su uso para la ejecución de la obra por otro profesional
+   requiere el pago del derecho de uso correspondiente.
+
+
+   ______________________          ______________________
+        COMITENTE                        PROYECTISTA
+   Aclaración:                     Aclaración:
+   DNI:                            Matrícula:
+────────────────────────────────────────────────────────────────────────
+```
+
+## Anexo B — Plantilla de cuadro de superficies
+
+```
+────────────────────────────────────────────────────────────────────────
+CUADRO DE SUPERFICIES                             Obra: ...............
+
+NIVEL: ..............
+┌──────────────────────────┬────────┬──────────┬────────────┬──────────┐
+│ Local                    │ Lado   │ Cubierta │ Semicubta. │ Descub.  │
+│                          │ mín.   │   (m²)   │    (m²)    │   (m²)   │
+├──────────────────────────┼────────┼──────────┼────────────┼──────────┤
+│ Estar-comedor            │        │          │            │          │
+│ Cocina                   │        │          │            │          │
+│ Dormitorio 1             │        │          │            │          │
+│ ...                      │        │          │            │          │
+│ Circulaciones            │        │          │            │          │
+│ Muros y conductos        │        │          │            │          │
+├──────────────────────────┼────────┼──────────┼────────────┼──────────┤
+│ SUBTOTAL NIVEL           │        │          │            │          │
+└──────────────────────────┴────────┴──────────┴────────────┴──────────┘
+
+RESUMEN GENERAL
+   Total cubierto:                        ........... m²
+   Total semicubierto:                    ........... m²
+   Total descubierto accesible:           ........... m²
+   SUPERFICIE EQUIVALENTE
+   (cub. × 1,00 + semicub. × 0,50 + descub. × 0,30):  ........... m²
+
+VERIFICACIÓN FOS
+   Superficie de parcela:      ........... m²
+   FOS admitido:               ......      →  Huella máxima: ........ m²
+   Huella proyectada:          ........... m²          CUMPLE: SÍ / NO
+
+(EDIFICIOS) SUPERFICIE VENDIBLE
+   Unidades cubiertas:         ........... m²
+   Balcones (× 50 %):          ........... m²
+   Locales comerciales:        ........... m²
+   Cocheras (n × 12,50 m²):    ........... m²
+   TOTAL VENDIBLE:             ........... m²
+   Eficiencia sobre rasante:   ......... %
+   Eficiencia global:          ......... %
+   Incidencia del terreno:     $ ......... /m² vendible
+────────────────────────────────────────────────────────────────────────
+```
+
+## Anexo C — Ficha de relevamiento de terreno
+
+```
+────────────────────────────────────────────────────────────────────────
+FICHA DE RELEVAMIENTO DE TERRENO           Fecha: ......../......../......
+Relevó: .....................    Obra: ..............................
+
+1. IDENTIFICACIÓN
+   Dirección: ............................................................
+   Nomenclatura catastral: ...............................................
+   Titular: ..............................  ☐ Escritura  ☐ Boleto
+   Distrito de zonificación: ...........  ☐ Sobre corredor comercial: tipo ....
+   ☐ Informe de zonificación municipal OBTENIDO POR ESCRITO
+
+2. GEOMETRÍA
+   Frente: ...... m   Fondo: ...... m   Sup. según plano: ...... m²
+   Medidas verificadas in situ: F ...... m  Fd ...... m  Diagonales ...... / ...... m
+   ☐ Intermedia  ☐ Esquina  ☐ Frente a dos calles
+   Orientación del frente: ......   Ancho de vereda: ...... m
+   Ancho de calzada: ...... m
+
+3. ALTIMETRÍA
+   Cota de cordón (±0,00): ......
+   Cota vereda LM izq.: ......   der.: ......
+   Cotas del terreno: NO ......  NE ......  SO ......  SE ......  centro ......
+   Escurrimiento natural hacia: ......
+   COTA DE BOCA DE REGISTRO DE CLOACA: ......   ☐ Desagota por gravedad  ☐ Requiere bombeo
+
+4. MEDIANERAS
+   IZQUIERDA:  ☐ muro  ☐ alambrado   Espesor ...... Altura ...... Estado ......
+               Construcción vecina apoyada: ☐ sí ☐ no   Altura vecino: ...... m
+               Vanos del vecino: ☐ sí ☐ no
+   DERECHA:    ☐ muro  ☐ alambrado   Espesor ...... Altura ...... Estado ......
+               Construcción vecina apoyada: ☐ sí ☐ no   Altura vecino: ...... m
+   FONDO:      ...............................................................
+
+5. SERVICIOS
+   ☐ Agua de red   Presión: ......   ☐ Cloaca   ☐ Gas natural   Presión: ......
+   ☐ Electricidad  ☐ Monofásica ☐ Trifásica   Potencia disponible: ......
+   ☐ Desagüe pluvial / boca de tormenta       ☐ Fibra óptica
+   Ubicación del pilar / medidores: ...................................
+
+6. VEGETACIÓN
+   ┌────┬────────────────┬──────────┬────────┬──────────┬──────────────┐
+   │ N° │ Especie        │ Ø tronco │ Altura │ Ø copa   │ ☐ Conservar  │
+   ├────┼────────────────┼──────────┼────────┼──────────┼──────────────┤
+   └────┴────────────────┴──────────┴────────┴──────────┴──────────────┘
+   Árboles de vereda: ......  ☐ Interfieren con el acceso vehicular
+
+7. ENTORNO
+   Altura predominante de la cuadra: ...... plantas
+   Línea de edificación de los vecinos: ☐ sobre LM  ☐ retirada ...... m
+   Materialidad predominante: ............................................
+   Vistas a aprovechar: ..................................................
+   Vistas a evitar: ......................................................
+   Ruido: ☐ bajo ☐ medio ☐ alto   Fuente: ...............................
+   Accesos vehiculares vecinos: ..........................................
+
+8. FOTOGRAFÍAS
+   ☐ Panorámica desde la vereda de enfrente
+   ☐ Las cuatro esquinas del terreno
+   ☐ Cada medianera
+   ☐ La vereda y el cordón
+   ☐ La cuadra hacia ambos lados
+   ☐ Cámaras de servicios abiertas
+   Numeración y plano de ubicación de tomas: ☐ hecho
+
+9. OBSERVACIONES
+   ......................................................................
+────────────────────────────────────────────────────────────────────────
+```
+
+## Anexo D — Ficha de relevamiento para reforma
+
+```
+────────────────────────────────────────────────────────────────────────
+FICHA DE RELEVAMIENTO DE OBRA EXISTENTE    Fecha: ......../......../......
+
+1. DATOS GENERALES
+   Año de construcción aprox.: ......   Ampliaciones posteriores: ..........
+   ☐ Planos originales disponibles   ☐ Aprobada en el municipio
+   ☐ Hay superficie sin declarar: ...... m² aprox.
+   Superficie cubierta existente: ...... m²   Niveles: ......
+
+2. SISTEMA CONSTRUCTIVO
+   Muros:   ☐ ladrillo común  ☐ ladrillo hueco  ☐ bloque  ☐ hormigón  ☐ madera
+   Espesores relevados: ..................................................
+   Estructura: ☐ muros portantes ☐ columnas y vigas ☐ mixta ☐ a verificar
+   Entrepiso: ☐ losa maciza ☐ viguetas ☐ madera ☐ no hay
+   Cubierta: ☐ losa ☐ madera+teja ☐ chapa ☐ fibrocemento (⚠ amianto)
+   ☐ Tiene aislación térmica en cubierta   Espesor: ......
+
+3. MUROS — CLASIFICACIÓN PRELIMINAR
+   ┌────┬─────────────┬──────────┬──────────────┬──────────────────────┐
+   │ N° │ Ubicación   │ Espesor  │ ☐ Portante   │ Indicios              │
+   ├────┼─────────────┼──────────┼──────────────┼──────────────────────┤
+   └────┴─────────────┴──────────┴──────────────┴──────────────────────┘
+   ⚠ Todo muro no confirmado se dibuja como PORTANTE.
+   ☐ Verificación estructural encargada a: ......................
+
+4. NIVELES
+   Cota ±0,00 adoptada: ...............................................
+   Diferencias relevadas entre ambientes: .............................
+   Espesor de contrapiso + carpeta: ......
+
+5. INSTALACIONES
+   ELÉCTRICA:  Tablero: ......  Circuitos: ......  ☐ Disyuntor ☐ Térmicas
+               ☐ Puesta a tierra   ☐ Cable de aluminio (⚠ RENOVACIÓN TOTAL)
+   AGUA:       Material: ......  Tanque: ...... litros, ubicación ..........
+               ☐ Bomba   Presión en el punto más alejado: ......
+   CLOACA:     ☐ Red  ☐ Cámara séptica + pozo   Cámaras abiertas: ☐ sí
+               Estado / pendiente: ..................................
+   GAS:        Material: ......  ☐ Medidor  Artefactos: ......
+               ☐ Ventilaciones reglamentarias  ⚠ Verificación por matriculado
+   PLUVIAL:    ☐ Canaletas  ☐ Bajadas  Desagote a: ......................
+
+6. PATOLOGÍAS RELEVADAS
+   ┌────┬───────────────────┬──────────────┬───────────┬───────────────┐
+   │ N° │ Patología         │ Ubicación    │ Gravedad  │ Acción        │
+   ├────┼───────────────────┼──────────────┼───────────┼───────────────┤
+   └────┴───────────────────┴──────────────┴───────────┴───────────────┘
+   ⚠ Las patologías de gravedad ALTA se comunican por escrito al comitente
+     y se dejan asentadas en el acta de cierre.
+
+7. VERIFICACIÓN NORMATIVA PARA LA AMPLIACIÓN
+   FOS ya consumido: ...... %   FOS admitido: ...... %   Margen: ...... m²
+   Altura existente: ...... m   Altura máxima admitida: ...... m
+   ☐ El lote tiene ≥ 26 m de fondo → RETIRO DE FONDO APLICABLE en pisos altos
+     Retiro requerido: (n − 20)/x = ...... m
+   Estacionamiento exigido para la nueva situación: ...... módulos
+
+8. CONDICIONES DE OBRA
+   ☐ Viven adentro durante la obra   Ambientes a mantener operativos: ......
+   ☐ Lugar para acopio    ☐ Lugar para volquete    ☐ Restricciones de horario
+   ☐ Consorcio / reglamento de PH
+
+9. FOTOGRAFÍAS
+   ☐ Cada pared de cada ambiente, numeradas en sentido horario
+   ☐ Cielorrasos y pisos   ☐ Tablero eléctrico   ☐ Tanque
+   ☐ Cámaras de inspección abiertas   ☐ Cubierta   ☐ Cada patología
+   ☐ Plano de ubicación de tomas
+────────────────────────────────────────────────────────────────────────
+```
+
+---
+
+## Nota final sobre el uso de este documento
+
+Este documento es **método de trabajo interno** y **base para explicarle al cliente**, no una fuente normativa.
+
+**Antes de usar cualquier cifra marcada [N] en un plano, una propuesta o una promesa al cliente, verificar el texto vigente de la norma en la jurisdicción que corresponda.** Las cifras marcadas **[V]** son, explícitamente, datos que este documento **no pudo verificar** y que hay que confirmar en el municipio antes de avanzar. Las marcadas **[R]** son criterio profesional del estudio: se pueden discutir, mejorar y ajustar con la experiencia de cada obra.
+
+**Las tres tareas pendientes más urgentes del estudio, derivadas de este documento:**
+
+1. **Obtener el texto vigente del Código de Edificación de Santa Rosa** (clases de locales, dimensiones mínimas, patios de 1ª y 2ª categoría, alturas, escaleras y medios de salida).
+2. **Obtener y leer la Ordenanza 6976/2023 "Código Urbano Ambiental"** y determinar qué modificó del Código Urbanístico texto ordenado 2017.
+3. **Formular por escrito, en la Dirección de Planeamiento y Obras Particulares, las cuatro consultas de interpretación** identificadas en el capítulo 4: combinación de tipologías y altura resultante; cómputo del monoambiente a los efectos de la densidad; lectura de "3 habitaciones o más" en la planilla de estacionamiento; y pendiente máxima admitida para rampas vehiculares.
+
+*Documento vivo. Se revisa cada vez que cambia una norma o cada vez que una obra nos enseña algo. Registrar las revisiones al pie.*
+
+| Rev. | Fecha | Cambios | Responsable |
+|---|---|---|---|
+| 1.0 | 2026-09 | Versión inicial | Estudio |

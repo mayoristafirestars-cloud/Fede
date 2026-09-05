@@ -4572,3 +4572,1697 @@ Y establece un **G_admisible** en función de los **grados-día** de la localida
 `[cálculo orientativo; el método riguroso de IRAM 11604 incluye ganancias internas y solares y factores de intermitencia. VERIFICAR contra la norma antes de presentar estos números al comitente]`
 
 ---
+
+## 6.6 Sistemas de climatización — comparativa
+
+| Sistema | Principio | Frío | Calor | COP/EER típico | Costo inicial | Costo operativo | Cuándo usarlo en Santa Rosa |
+|---|---|---|---|---|---|---|---|
+| **Split individual on-off** | Expansión directa | ✓ | ✓ (bomba de calor) | EER 2,6-3,0 / COP 2,8-3,2 | Muy bajo | Alto | Solo en reformas económicas |
+| **Split inverter** | Expansión directa con compresor modulante | ✓ | ✓ | **EER 3,5-5,0 / COP 4,0-5,0** | Bajo | Bajo | **El estándar. Para 1-3 ambientes por unidad** |
+| **Multisplit inverter** | 1 unidad exterior, 2-5 interiores | ✓ | ✓ | Similar a split | Medio | Bajo | **Cuando hay una sola posición posible de condensadora en fachada** |
+| **VRF / VRV** | Caudal de refrigerante variable, 1 exterior con hasta 30-60 interiores, con recuperación de calor | ✓ | ✓ | **EER 4,0-6,0** | Alto | **Muy bajo** | **Edificios de oficinas, hoteles, edificios de vivienda con sistema centralizado.** Permite frío y calor simultáneos en distintos locales |
+| **Fan coil + caldera + enfriadora (sistema de agua, 2 o 4 tubos)** | Agua fría/caliente distribuida a fan coils | ✓ | ✓ | Depende de los equipos | Alto | Medio | Edificios grandes, hoteles, sanatorios. **Los 4 tubos permiten frío y calor simultáneos** |
+| **Calefacción por radiadores + caldera individual** | Agua caliente 70-80 °C | ✗ | ✓ | η 90-95 % (condensación: hasta 108 % PCI) | Medio | **Bajo (gas)** | **RECOMENDADO para vivienda en Santa Rosa como sistema de calefacción principal, combinado con splits para frío** |
+| **Losa radiante** | Agua a 35-45 °C en la masa del piso | (✓ con precaución) | ✓ | El mejor confort | **Alto** | **Muy bajo** (permite condensación y bomba de calor) | **Excelente para Santa Rosa.** Ver §6.7 |
+| **Calefactores individuales a gas de tiro balanceado** | Combustión local | ✗ | ✓ | 75-85 % | **Muy bajo** | Medio | Vivienda económica. Ineficiente y desigual, pero es lo que se hace |
+| **Aire caliente por conductos (calefacción central)** | Generador de aire caliente + conductos | ✓ (con serpentina) | ✓ | 80-90 % | Medio-alto | Medio | Casas grandes de una planta. Poco usado en edificios |
+| **Piso radiante eléctrico** | Resistencia bajo el solado | ✗ | ✓ | 100 % en el punto, pero energía cara | Bajo | **Muy alto** | Solo baños chicos, como complemento |
+| **Aerotermia (bomba de calor aire-agua) + losa radiante** | Bomba de calor genera agua a 35-45 °C | ✓ (con fan coils) | ✓ | **COP 3,5-4,5 a 7 °C; cae a 2,0-2,5 a −5 °C** | **Muy alto** | Muy bajo | ⚠ **Verificar el COP a la TDMN de −6 °C.** Requiere apoyo. Viable pero exige análisis |
+
+### 6.6.1 Recomendación del estudio para un PB+9 en Santa Rosa
+
+**Sistema base recomendado (buena relación costo/prestación):**
+
+| Servicio | Solución |
+|---|---|
+| **Calefacción** | **Caldera mural individual de condensación por unidad + radiadores o losa radiante.** Gas natural. Medición individual por el propio medidor de gas |
+| **ACS** | **La misma caldera dual**, o termotanque de acumulación si el consumo simultáneo es alto |
+| **Refrigeración** | **Splits inverter individuales**, con condensadoras en balcón técnico o en cubierta con canalización prevista |
+| **Ventilación** | Extracción mecánica de baños y cocinas; aporte de aire por rejillas microventilación en carpinterías |
+
+**Sistema de alta prestación (si el comitente lo justifica):**
+
+| Servicio | Solución |
+|---|---|
+| **Calefacción y refrigeración** | **VRF con recuperación de calor**, o **losa radiante + fan coils** con caldera y enfriadora centralizadas y **medición individual de calorías/frigorías** |
+| **ACS** | Producción centralizada con **solar térmica de apoyo** y medición individual de calorías |
+| **Ventilación** | **Recuperador de calor por unidad o centralizado** (§6.9) |
+
+> **Por qué NO recomendamos calefacción central con caldera colectiva en vivienda en propiedad horizontal argentina:** el problema no es técnico, es de gestión. Sin medición individual de calorías, genera conflicto permanente de expensas y desincentiva el ahorro. **Si se hace, la medición individual de calorías es obligatoria, no opcional.**
+
+---
+
+## 6.7 Losa radiante
+
+### 6.7.1 Por qué es especialmente adecuada para Santa Rosa
+
+| Razón |
+|---|
+| **Temperatura de impulsión baja (35-45 °C)** → permite **caldera de condensación** trabajando en su mejor rendimiento (>105 % PCI) y **bomba de calor** con COP alto |
+| **Alta inercia térmica** → aprovecha la **alta amplitud térmica** de Santa Rosa: acumula durante la tarde y entrega a la noche |
+| **Confort térmico superior**: perfil de temperatura casi ideal (pies calientes, cabeza fresca); **sin corrientes de aire**, relevante en una zona ventosa donde las infiltraciones ya generan disconfort |
+| **Sin elementos a la vista** → libertad de proyecto en interiores |
+| **Menor temperatura de aire para el mismo confort** (efecto de la temperatura radiante media): se puede operar con 19 °C de aire y percibir 21 °C. **Cada grado menos ahorra ~6 % de energía** |
+
+### 6.7.2 Dimensionado
+
+**Paso 1 — Carga térmica del local** (por m², método del §6.3).
+
+**Paso 2 — Emisión del piso:**
+
+> **q [W/m²] = 8,92 × (T_piso_media − T_ambiente)^1,1**
+
+*(fórmula normalizada EN 1264 para emisión hacia arriba desde una superficie radiante horizontal)*
+
+**Temperaturas máximas de superficie del piso (límite fisiológico, EN 1264):**
+
+| Zona | T_máx de superficie |
+|---|---|
+| **Zona de permanencia** (estar, dormitorios) | **29 °C** |
+| **Zona periférica** (banda de 1 m junto a muros exteriores/vidriados) | **35 °C** |
+| **Baños y zonas húmedas** | **33 °C** |
+
+`[verificar contra EN 1264 o contra la norma que adopte el fabricante del sistema]`
+
+**Emisión máxima resultante (con T_ambiente = 20 °C):**
+
+| Zona | ΔT | q_máx (W/m²) |
+|---|---|---|
+| Zona de permanencia (29 °C) | 9 | **≈ 100 W/m²** |
+| Zona periférica (35 °C) | 15 | **≈ 175 W/m²** |
+| Baños (33 °C) | 13 | **≈ 150 W/m²** |
+
+> **⚠ CONSECUENCIA CRÍTICA DE PROYECTO:** la losa radiante tiene un **techo de emisión de ~100 W/m²** en zona de permanencia.
+>
+> **Del Ejemplo del §6.4:** el departamento con envolvente **Nivel B** requiere **36,4 W/m²** → ✅ la losa radiante lo cubre holgadamente.
+>
+> El mismo departamento **sin aislación** requiere **78,5 W/m²** → todavía entra, pero **al límite**, y con temperatura de piso incómodamente alta.
+>
+> Un local mal aislado que requiera **120 W/m²** → ❌ **LA LOSA RADIANTE NO PUEDE**, aunque se ponga el tubo cada 10 cm.
+>
+> **REGLA: la losa radiante EXIGE una envolvente aislada. No es un sistema que se pueda "agregar" a una casa fría.** Este es el error más caro que se comete con losa radiante en Argentina.
+
+**Paso 3 — Paso de tubos:**
+
+| Paso (separación entre ejes) | Emisión relativa | Uso |
+|---|---|---|
+| **10 cm** | Máxima | Zona periférica, baños, locales de alta demanda |
+| **15 cm** | Alta | Estándar en zonas frías / **recomendado para Santa Rosa** |
+| **20 cm** | Media | Zonas templadas, locales de baja demanda |
+| **25-30 cm** | Baja | Solo climatización de apoyo o zonas muy aisladas |
+
+**Paso 4 — Temperatura de impulsión:**
+
+| Sistema | T_impulsión | ΔT ida-retorno |
+|---|---|---|
+| Losa radiante estándar | **35 – 45 °C** | **5 – 10 K** (habitual: 7 K) |
+| Losa con muy buena envolvente | **30 – 35 °C** | 5 K |
+| **Nunca superar** | **55 °C** | — |
+
+**Paso 5 — Caudal por circuito:**
+
+> **m [kg/h] = Q [W] × 0,86 / ΔT [K]**
+
+*Ejemplo:* un circuito que emite 1.500 W con ΔT = 7 K → m = 1.500 × 0,86 / 7 = **184 kg/h ≈ 184 l/h**
+
+**Paso 6 — Longitud máxima de circuito:**
+
+| Diámetro del tubo | Longitud máxima por circuito |
+|---|---|
+| **Ø 16 mm** | **80 – 100 m** |
+| **Ø 20 mm** | **100 – 120 m** |
+
+> **Regla:** todos los circuitos de un mismo colector deben tener **longitudes similares** (diferencia máxima ~20 %), para que el equilibrado sea posible. Si no, hay que equilibrar con detentores calibrados.
+>
+> **Superficie por circuito con paso 15 cm y Ø16:** un circuito de 90 m con paso 0,15 m cubre 90 × 0,15 = **13,5 m²**. **Regla práctica: un circuito cada 12-15 m² de local.**
+
+### 6.7.3 Composición constructiva
+
+De abajo hacia arriba:
+
+| Capa | Espesor | Función |
+|---|---|---|
+| Losa estructural / contrapiso de nivelación | según proyecto | Base |
+| **Barrera de vapor** (film de polietileno) | 200 micrones | **Obligatoria sobre terreno o sobre local no calefaccionado** |
+| **Aislación térmica: EPS de alta densidad (25-30 kg/m³) o EPS con tetones** | **Mínimo 3 cm; recomendado 5 cm sobre local calefaccionado y 8-10 cm sobre terreno o local no calefaccionado** | **Impide que el calor baje. SIN ELLA, hasta el 40 % del calor va al piso de abajo** |
+| **Banda perimetral de EPS (zócalo)** | 8-10 mm × altura de la carpeta | **Absorbe la dilatación de la carpeta. Sin ella, la carpeta se fisura.** OBLIGATORIA |
+| **Film de polietileno + malla o tetones** | — | Soporte y fijación del tubo |
+| **Tubería: PEX-a con barrera antioxígeno (EVOH) o multicapa PE-RT/Al/PE-RT** | Ø 16 o 20 mm | **La barrera antioxígeno es OBLIGATORIA: sin ella, el oxígeno difunde a través del plástico y corroe la caldera y las bombas** |
+| **Carpeta de mortero con aditivo fluidificante** | **Mínimo 4,5 cm sobre el tubo** (total 6,5-7 cm) | Difusor térmico y protección mecánica |
+| **Juntas de dilatación** | Cada **40 m² o cada 8 m lineales**, y en todo cambio de forma en planta (vanos de puertas) | El tubo cruza la junta dentro de vaina |
+| **Solado** | — | **Resistencia térmica del solado ≤ 0,15 m²K/W.** Porcelanato ✓ excelente. Madera maciza gruesa ✗. Alfombra ✗✗ |
+
+### 6.7.4 Colectores y regulación
+
+| Elemento | Especificación |
+|---|---|
+| **Colector de ida y retorno** | En **gabinete registrable empotrado**, con caudalímetros visuales por circuito y detentores de equilibrado. Uno por unidad, o uno por planta en casas grandes |
+| **Purgador automático** en el punto alto | Obligatorio |
+| **Válvula de llenado y vaciado** | Obligatoria |
+| **Regulación por local** | **Cabezales termostáticos electrotérmicos** en el colector, comandados por termostatos de ambiente. **Esto es lo que convierte una losa radiante en un buen sistema: sin zonificación, la losa sobrecalienta unos locales y deja fríos otros** |
+| **Válvula mezcladora de 3 vías con termostato** | Reduce la temperatura de la caldera (70-80 °C) a la de la losa (35-45 °C). **Imprescindible si la misma caldera alimenta radiadores y losa** |
+| **Bomba circuladora de la losa** | Independiente de la de radiadores, de rotor húmedo y **velocidad variable** |
+
+### 6.7.5 Puesta en marcha
+
+| Paso | Detalle |
+|---|---|
+| **Prueba de presión ANTES de hormigonar la carpeta** | **6 bar durante 24 h como mínimo**, con la instalación a la vista. **NO se hormigona sin esta prueba aprobada y con el circuito PRESURIZADO durante el llenado** `[verificar presión y tiempo exigidos por el fabricante del sistema]` |
+| **Curado de la carpeta** | Mínimo **21 días** antes del primer encendido (mortero cementicio) |
+| **Ciclo de puesta en marcha térmica** | Arrancar a **25 °C** y subir **5 °C por día** hasta la temperatura de diseño, y luego bajar igual. **Documentar el ciclo.** Sin esto, la carpeta fisura |
+| **Colocación del solado** | Después del ciclo de puesta en marcha, con la losa a temperatura ambiente |
+
+### 6.7.6 ¿Losa radiante para refrigerar?
+
+Es posible (agua a 16-18 °C), pero:
+- ⚠ **Riesgo de condensación en el piso** si la temperatura de superficie baja del punto de rocío. **Obligatorio sensor de punto de rocío que corte la circulación.**
+- ⚠ **Capacidad de refrigeración muy limitada: 30-40 W/m² máximo**, muy por debajo de los 80-150 W/m² que necesita Santa Rosa en verano.
+- ⚠ **No deshumidifica.**
+
+> **CONCLUSIÓN: en Santa Rosa, la losa radiante es un excelente sistema de CALEFACCIÓN y un mal sistema de REFRIGERACIÓN. Combinar losa radiante (invierno) + splits o fan coils (verano).**
+
+---
+
+## 6.8 Radiadores
+
+### 6.8.1 Dimensionado
+
+Los fabricantes dan la emisión del radiador para **ΔT = 50 K** (T_media del agua − T_ambiente, típicamente 75/65/20 °C). Para otras condiciones:
+
+> **Q_real = Q_nominal × (ΔT_real / 50)^n**
+>
+> con **n ≈ 1,30** para radiadores de aluminio y de panel de acero `[verificar exponente n con el fabricante]`
+
+*Ejemplo:* radiador de 1.500 W nominal a ΔT 50 K, trabajando con caldera de condensación a 55/45 °C con ambiente a 20 °C:
+> ΔT_real = (55+45)/2 − 20 = **30 K**
+> Q_real = 1.500 × (30/50)^1,3 = 1.500 × 0,60^1,3 = 1.500 × 0,514 = **771 W**
+
+> **⚠ Al bajar la temperatura de impulsión para aprovechar la condensación de la caldera, el radiador pierde casi la mitad de su potencia.** Por eso, en instalaciones con caldera de condensación **hay que sobredimensionar los radiadores** (usar el ΔT real, no el nominal). Este es el error más frecuente en instalaciones de radiadores con caldera de condensación.
+
+### 6.8.2 Reglas de instalación
+
+| Regla | Motivo |
+|---|---|
+| **Ubicar bajo la ventana**, en el muro exterior | Contrarresta la corriente descendente fría del vidrio. **Es la mejor posición térmica, aunque el proyecto de interiores prefiera otra** |
+| Separación mínima del muro | 3-5 cm |
+| Separación mínima del solado | 10-12 cm |
+| Separación al alféizar/repisa superior | ≥ 10 cm |
+| **No encerrar en nicho ni cubrir con mueble** | Reduce la emisión hasta un 30 % |
+| **Válvula termostática** en cada radiador | Obligatoria por eficiencia. **En una habitación con termostato de ambiente, esa habitación NO lleva termostática** (o se pone en posición máxima) |
+| **Detentor de equilibrado** en el retorno | Para equilibrar el circuito |
+| **Purgador manual o automático** en el radiador | Para eliminar el aire |
+| **Distribución bitubular con retorno invertido** o con equilibrado | La distribución monotubo (en serie) da radiadores cada vez más fríos |
+| **Vaso de expansión, válvula de seguridad y manómetro** en la sala/caldera | Obligatorios |
+| **Aditivo inhibidor de corrosión y anticongelante** en el circuito | **En Santa Rosa: anticongelante si hay tramos en zona no calefaccionada o riesgo de vivienda desocupada en invierno** |
+
+---
+
+## 6.9 Ventilación mecánica y recuperadores de calor
+
+### 6.9.1 Caudales de ventilación higiénica
+
+| Local | Caudal de extracción recomendado |
+|---|---|
+| **Baño con inodoro** | **≥ 15 l/s (54 m³/h)** o 6-10 renovaciones/hora |
+| **Baño sin inodoro / toilette** | ≥ 10 l/s (36 m³/h) |
+| **Cocina — extracción general** | **≥ 20 l/s (72 m³/h)** continuo, o **≥ 50 l/s (180 m³/h)** intermitente |
+| **Cocina — campana sobre artefacto** | **150 a 400 m³/h** según el ancho de la cocina y el tipo de cocción |
+| **Lavadero** | ≥ 10 l/s (36 m³/h) |
+| **Aporte de aire por dormitorio** | **≥ 4 l/s por persona (≈ 14,4 m³/h)** |
+| **Aporte de aire en estar** | ≥ 3 l/s por persona |
+| **Vivienda completa — caudal mínimo global** | **0,5 renovaciones/hora** |
+
+`[valores de referencia derivados de la práctica y del CTE DB-HS3 español como referencia metodológica. VERIFICAR contra el Código de Edificación de Santa Rosa, que puede fijar caudales o superficies de ventilación natural obligatorias]`
+
+### 6.9.2 Recuperadores de calor (VMC de doble flujo)
+
+**Principio:** dos ventiladores (impulsión y extracción) intercambian calor a través de un intercambiador de flujos cruzados o contracorriente, **recuperando el 60-90 % del calor del aire extraído**.
+
+| Aspecto | Detalle |
+|---|---|
+| **Rendimiento del intercambiador** | Flujos cruzados: **50-70 %**. Contracorriente: **80-92 %**. Rotativo (entálpico): **75-85 %** con recuperación de humedad |
+| **Cuándo se justifica en Santa Rosa** | **Cuando la envolvente es muy estanca (Nivel A o superior).** Con 1.394 GD18 y n = 0,5 ren/h, la pérdida por ventilación de un departamento de 221 m³ es de 0,34 × 0,5 × 221 × 26 = **977 W**. Un recuperador con 85 % de eficiencia la reduce a **147 W**. **Ahorro: 830 W continuos durante el invierno** |
+| **Contrapartida** | Consumo eléctrico de los ventiladores (30-80 W), costo del equipo, **espacio para el equipo y para dos redes de conductos**, mantenimiento de filtros |
+| **⚠ Riesgo de congelamiento del intercambiador** | Con TDMN de **−6,0 °C** y aire extraído húmedo, **el condensado en el intercambiador puede congelarse.** **Especificar equipo con protección antihielo** (precalentador eléctrico, bypass o modulación de caudal). **Esto es específico de zonas frías y se omite en las especificaciones estándar** |
+| **Incompatibilidad** | **Un recuperador NO puede convivir con artefactos de gas de cámara abierta (Tipo B)**: la depresión invierte el tiro. Ver §4.11.4. **Otra razón más para especificar cámara estanca** |
+| **Filtración** | Filtro **G4 mínimo** en extracción, **F7 o superior** en impulsión (relevante con el polvo pampeano en verano) |
+| **Conductos** | Aislados térmicamente (los de aire exterior y de expulsión, obligatoriamente) y con **acústica**: un recuperador mal montado se oye |
+
+### 6.9.3 Ventilación mecánica simple flujo
+
+Más barata y frecuente: **extracción mecánica** de baños y cocina + **entrada de aire por aireadores en carpinterías**.
+
+| Aspecto | Detalle |
+|---|---|
+| Extracción | Ventiladores individuales por local, o **extractor centralizado con conducto colectivo por unidad** |
+| Aporte | **Aireadores autorregulables en carpinterías o en muro**, en los locales secos (dormitorios, estar) |
+| **Barrido** | El aire circula de locales secos a húmedos. **Requiere holgura bajo puertas de 1 a 2 cm**, o rejillas de paso |
+| Ventaja | Bajo costo, simple |
+| Desventaja | **No recupera calor. Con 1.394 GD18, es una pérdida significativa** |
+
+---
+
+## 6.10 Extracción de baños y cocinas
+
+### 6.10.1 Baños
+
+| Regla |
+|---|
+| Todo baño **sin ventilación natural directa al exterior** requiere extracción mecánica |
+| Extractor con **temporizador de sobremarcha** (sigue funcionando 5-15 min después de apagar la luz) |
+| Descarga **al exterior, nunca al pleno, al entrepiso ni al patio interno cubierto** |
+| **En edificios: conducto colectivo tipo shunt** (con conducto secundario individual por piso) o **conducto individual por unidad hasta cubierta** |
+| El conducto individual hasta cubierta es preferible: **evita la transmisión de olores entre unidades**, que es el defecto crónico del shunt de extracción |
+| **Válvula antirretorno** en la conexión al colectivo, obligatoria |
+| Grado de protección del extractor: **IPX4 mínimo** si está en zona 2 del baño (AEA 90364-7-701) |
+
+### 6.10.2 Cocinas
+
+| Regla |
+|---|
+| **Campana con extracción al exterior**, no de recirculación con filtro de carbón (que no elimina vapor ni CO₂) |
+| **Conducto de acero inoxidable o galvanizado, liso, de sección constante.** Diámetro mínimo Ø 125 mm; recomendado **Ø 150 mm** |
+| **Filtro de grasa metálico lavable**, obligatorio |
+| **⚠ INCOMPATIBILIDAD CRÍTICA con artefactos de gas de cámara abierta:** ver §4.11.4. Si hay calefón o termotanque de cámara abierta en la cocina conectado a conducto colectivo, **la campana está PROHIBIDA** y debe llevarse la chapa de advertencia |
+| Si hay campana con ventilación mecánica directa al exterior, **NAG-200 (6.4.3) permite prescindir de las aberturas superiores pasivas** si hay **enclavamiento que corta el gas ante corte de energía o falla del sistema**, o si la sección de pasaje de la campana supera la de 6.4.1 |
+| **En monoambientes**, si el único artefacto de cámara abierta es la cocina: **campana orientadora de gases SIN filtros**, rematando al exterior con conducto de **sección mínima 100 cm²** (NAG-200, 5.9.2.5.1.d) |
+| Altura de la campana sobre la mesada: **65-75 cm** (eléctrica) / **70-80 cm** (a gas) |
+| **Compensación de aire:** una campana de 400 m³/h en una vivienda estanca genera una depresión que impide su propio funcionamiento y puede invertir tiros. **Prever aporte de aire compensatorio** |
+
+---
+
+## 6.11 Ventilación de cocheras y salas de máquinas
+
+### 6.11.1 Cocheras y estacionamientos cubiertos
+
+| Aspecto | Criterio |
+|---|---|
+| **Objetivo** | Diluir **CO (monóxido de carbono)** y, en menor medida, NOx y vapores de combustible |
+| **Caudal de referencia** | **6 a 10 renovaciones/hora** en régimen, o cálculo por concentración objetivo de CO |
+| **Concentración máxima admisible de CO** | **≤ 50 ppm en promedio de 8 h; picos ≤ 100-200 ppm** `[VERIFICAR el límite exigido por el Código de Edificación de Santa Rosa y por la normativa de higiene y seguridad]` |
+| **Control** | **Sensores de CO** que comandan los ventiladores en dos o tres velocidades. **Es la solución energéticamente correcta**: el ventilador solo funciona cuando hace falta |
+| **Configuración** | **Impulsión y extracción**, o extracción con aporte por rampa. La extracción debe tomar **del nivel bajo (el CO es levemente más liviano que el aire pero se estratifica poco) y del nivel alto** |
+| **Sectorización** | Cada nivel de subsuelo con su propio sistema |
+| **Interfaz con incendio** | **Los ventiladores de cochera pueden requerir función de extracción de humo (F300/90 o F400/120: ventilador certificado para operar a 300 °C durante 90 min o 400 °C durante 120 min).** `[VERIFICAR exigencia en la normativa de bomberos de La Pampa y en el Código de Santa Rosa]` |
+| **Enclavamiento con gas** | Si en el subsuelo hay instalación de gas: **NAG-200 (6.4.5) exige que toda ventilación mecánica tenga enclavamiento que bloquee el suministro de gas ante fallas del sistema de ventilación** |
+| **Recintos bajo el primer subsuelo** | **Ventilación mecánica OBLIGATORIA** (NAG-200, 6.4.5) |
+| **PROHIBIDO GLP en subsuelos** | NAG-200, 5.8.10 |
+
+**Dimensionado orientativo:** un subsuelo de 800 m² con 2,60 m de altura tiene V = 2.080 m³.
+> Con 8 ren/h: Q = 8 × 2.080 = **16.640 m³/h**
+> Se resuelve con **2 ventiladores axiales o centrífugos en línea de ~8.500 m³/h cada uno**, redundantes, con control por sensores de CO y velocidad variable.
+
+### 6.11.2 Sala de máquinas (bombas, calderas, grupo electrógeno)
+
+| Local | Requisito de ventilación |
+|---|---|
+| **Sala de bombas de agua** | Ventilación natural o mecánica para evacuar el calor de los motores. **Desagüe de piso obligatorio** (RT CABA 2.4.9: si no hay drenaje natural por gravedad, bombas de achique) |
+| **Sala de calderas** | **Aporte de aire de combustión + ventilación del local.** Rejillas inferior y superior según NAG-200 §4.10.1 (4 cm²/kW, mín. 100 cm²) si son de cámara abierta. **Con calderas de cámara estanca, solo ventilación del local** |
+| **Sala de grupo electrógeno** | Ventilación de **entrada** dimensionada para el aire de combustión + el aire de refrigeración del radiador (caudales muy altos, del orden de 3.000-6.000 m³/h por cada 50 kVA `[verificar con el fabricante]`), y **salida** frente al radiador. **Conducto de escape aislado, con salida sobre cubierta** |
+| **Sala de máquinas de ascensor** (si existe) | Ventilación para mantener la temperatura dentro del rango de operación del equipo. **Típicamente 5-40 °C.** `[verificar con EN 81-20 y con el fabricante]` **En Santa Rosa, una sala de máquinas en cubierta sin aislación puede superar los 45 °C en verano: aislar y ventilar** |
+| **Sala técnica / rack de datos** | Ventilación o climatización dedicada |
+
+---
+
+# 7. PROTECCIÓN CONTRA INCENDIOS
+
+> **ADVERTENCIA JURISDICCIONAL:** los criterios y valores de este capítulo provienen mayoritariamente del **Reglamento Técnico "De las Instalaciones — Instalaciones contra Incendio" del Código de Edificación de CABA (RT-030909-020202-03)**, que es la referencia técnica más completa y moderna del país, y del **Decreto 351/79 Anexo VII** (Ley 19.587 de Higiene y Seguridad), de aplicación nacional en el ámbito laboral.
+>
+> **PARA SANTA ROSA, ES OBLIGATORIO VERIFICAR:**
+> - El **Código de Edificación de la Municipalidad de Santa Rosa** (Ord. 1581/95 y modificatorias, entre ellas la Ord. 6445/2020)
+> - Las exigencias de la **Dirección de Bomberos de la Provincia de La Pampa** y de los Bomberos Voluntarios locales
+> - El **Decreto 351/79 Anexo VII**, para los sectores de uso no residencial (locales de PB, cocheras comerciales)
+>
+> `[NADA DE ESTE CAPÍTULO DEBE USARSE EN DOCUMENTACIÓN SIN ESTA VERIFICACIÓN]`
+
+## 7.1 Lógica del proyecto de incendio
+
+Tres capas, en este orden de importancia:
+
+| Capa | Objetivo | Medios |
+|---|---|---|
+| **1. PROTECCIÓN PASIVA** | Que el fuego no se propague y que la estructura no colapse durante la evacuación | Sectorización, resistencia al fuego F30-F180, sellado de pases, materiales de revestimiento |
+| **2. MEDIOS DE ESCAPE** | Que las personas puedan salir | Ancho, distancia máxima, número de salidas, escalera protegida/presurizada, señalización, iluminación de emergencia |
+| **3. PROTECCIÓN ACTIVA** | Detectar, alarmar y extinguir | Detección, alarma, matafuegos, hidrantes, rociadores, bombas, reserva de agua |
+
+> **Regla de oro:** un edificio de vivienda de 10 plantas se salva por la **protección pasiva y los medios de escape**, no por los rociadores. La estrategia de evacuación en vivienda en altura suele ser de **permanencia en el departamento** (defend in place) o de evacuación por fases, y eso solo funciona si **cada departamento es un sector de incendio**.
+
+## 7.2 Resistencia al fuego F30 a F180 y sectorización
+
+### 7.2.1 Nomenclatura
+
+**F seguido del tiempo en minutos** durante el cual el elemento constructivo mantiene sus prestaciones ante el fuego normalizado:
+
+| Designación | Minutos |
+|---|---|
+| F30 | 30 |
+| F60 | 60 |
+| F90 | 90 |
+| F120 | 120 |
+| F180 | 180 |
+
+Los criterios evaluados son:
+- **R — Capacidad portante** (resistencia mecánica)
+- **E — Integridad** (no deja pasar llamas ni gases calientes)
+- **I — Aislación térmica** (la cara no expuesta no supera un incremento de temperatura)
+
+Un muro **REI 120** cumple los tres criterios durante 120 minutos.
+
+`[VERIFICAR la nomenclatura y los ensayos exigidos: en Argentina se usa la designación F de IRAM 11949 y de las normas de ensayo correspondientes; internacionalmente se usa REI de EN 13501]`
+
+### 7.2.2 Resistencias exigidas por elemento (criterio de referencia)
+
+| Elemento | Resistencia recomendada para PB+9 residencial |
+|---|---|
+| **Estructura portante (columnas, vigas, losas)** | **F120** |
+| **Muros divisorios entre unidades** | **F60 a F120** |
+| **Muro entre unidad y palier / medio de escape** | **F60 a F120** |
+| **Puerta de entrada a la unidad** | **F30 a F60, con cierrapuertas** |
+| **Caja de escalera (muros)** | **F120 a F180** |
+| **Puerta de acceso a la escalera** | **F60 a F90, con cierrapuertas y barra antipánico** |
+| **Muros de sala de máquinas, sala de bombas, sala de medidores, compartimento de gas** | **F120 a F180** |
+| **Muros del subsuelo de cocheras (separación con el resto)** | **F120 a F180** |
+| **Puerta entre cochera y núcleo de circulación** | **F90 a F120, con esclusa ventilada si el Código lo exige** |
+| **Sellado de pases de instalaciones a través de sectores** | **Igual o superior a la resistencia del elemento atravesado** |
+
+`[VERIFICAR TODOS estos valores contra el Código de Edificación de Santa Rosa. Son criterios de referencia, no valores normativos verificados para La Pampa.]`
+
+### 7.2.3 Sectorización: la regla que organiza todo
+
+Un **sector de incendio** es un volumen delimitado por elementos con la resistencia al fuego exigida, dentro del cual el fuego debe quedar confinado durante ese tiempo.
+
+**Sectorización mínima recomendada para un PB+9 residencial:**
+
+| Sector |
+|---|
+| **Cada departamento = 1 sector de incendio** |
+| **Cada nivel de palier + pasillo = 1 sector** (o parte del sector de circulación vertical) |
+| **La caja de escalera = 1 sector independiente**, protegido |
+| **El hueco del ascensor = 1 sector independiente** |
+| **Cada nivel de subsuelo de cocheras = 1 sector** |
+| **Sala de máquinas, sala de bombas, sala de medidores, sala de grupo electrógeno = sectores independientes** |
+| **Compartimento de medidores de gas = sector independiente**, con antecámara si comunica con locales de riesgo (NAG-200, 3.3.2) |
+| **Local comercial de PB = sector independiente del edificio de vivienda** |
+
+### 7.2.4 Sellado de pases — el punto que arruina la sectorización
+
+Toda instalación que atraviesa un elemento sectorizador **destruye la sectorización si no se sella con material certificado**.
+
+| Instalación | Solución de sellado |
+|---|---|
+| Cañería metálica (agua, gas, incendio) | **Mortero cortafuego o mástic intumescente** en el anillo |
+| **Cañería plástica (PVC cloacal, PPR, pluvial)** | **COLLAR INTUMESCENTE.** El plástico se funde y deja un agujero abierto: el collar se expande y estrangula el conducto. **OBLIGATORIO. Es el error más frecuente en obra** |
+| Bandeja portacable / cables | **Almohadillas intumescentes, mortero o placa cortafuego con pintura intumescente** |
+| Conducto de aire | **Compuerta cortafuego (damper) certificada**, con fusible o actuador comandado por la central de incendio |
+| Pleno vertical completo | **Sellado en cada nivel de losa**, no solo en el arranque |
+
+> **Este es un ítem de pliego y de dirección de obra.** El estudio debe: (a) marcar cada pase sellable en el plano de instalaciones, (b) especificar el sistema certificado y su resistencia, (c) verificarlo en la recepción de obra, (d) exigir la certificación del producto y del instalador.
+
+## 7.3 Medios de escape
+
+### 7.3.1 Conceptos
+
+| Concepto | Definición |
+|---|---|
+| **Factor de ocupación** | m² de superficie de piso por persona, según el destino. Determina la cantidad de personas del sector |
+| **Unidad de ancho de salida** | Módulo de referencia para el cálculo del ancho de puertas, pasillos y escaleras |
+| **Distancia máxima de recorrido** | Del punto más alejado del sector hasta la salida del sector o hasta la escalera protegida |
+| **Salidas independientes** | Cantidad de vías de escape alternativas |
+
+`[LOS VALORES NUMÉRICOS DE FACTOR DE OCUPACIÓN, ANCHO DE SALIDA Y DISTANCIA MÁXIMA VARÍAN ENTRE JURISDICCIONES. VERIFICAR OBLIGATORIAMENTE en el Código de Edificación de Santa Rosa y en el Decreto 351/79 Anexo VII. No transcribimos valores de CABA como si fueran aplicables en La Pampa.]`
+
+**Órdenes de magnitud de referencia habituales en códigos argentinos** (a verificar):
+
+| Parámetro | Valor típico |
+|---|---|
+| Factor de ocupación — vivienda | **20 m²/persona** |
+| Factor de ocupación — oficinas | 8-10 m²/persona |
+| Factor de ocupación — comercio (salón de ventas) | 3 m²/persona |
+| Ancho mínimo de puerta de salida de unidad | **0,80 – 0,90 m** |
+| Ancho mínimo de pasillo común | **1,10 – 1,20 m** |
+| **Ancho mínimo de escalera de escape** | **1,10 – 1,20 m** |
+| **Distancia máxima al medio de escape en vivienda** | **20 – 40 m** según haya una o más salidas |
+| **A partir de qué altura se exige segunda escalera** | Varía mucho: algunos códigos la exigen a partir de PB+? o de una cantidad de unidades por planta |
+
+> `[EL DATO DE "¿HACE FALTA SEGUNDA ESCALERA EN UN PB+9?" ES CRÍTICO Y DEBE OBTENERSE DEL CÓDIGO DE SANTA ROSA ANTES DEL ANTEPROYECTO. Condiciona la planta tipo completa.]`
+
+### 7.3.2 Requisitos cualitativos de la escalera de escape
+
+| Requisito |
+|---|
+| **Sector de incendio independiente**, con muros F120-F180 |
+| **Puertas F60-F90 con cierrapuertas**, abriendo **en el sentido de la evacuación** |
+| **Sin ningún elemento combustible** en su interior (ni depósitos, ni tableros no protegidos, ni cañerías de gas) |
+| **Ninguna cañería de gas puede atravesar la caja de escalera.** NAG-200 excluye expresamente los pasos de circulación de escaleras y salidas de emergencia como ubicación de gabinetes |
+| **Iluminación de emergencia** en cada tramo y descanso |
+| **Señalización** de nivel en cada descanso y de salida |
+| **Ventilación**: natural (ventana al exterior en cada nivel) o **presurización mecánica** |
+| **Continuidad hasta la vía pública**, sin pasar por el subsuelo. **Si la escalera continúa al subsuelo, debe interrumpirse visual y físicamente en PB** (puerta o barrera) para que nadie baje por error durante la evacuación |
+| **Pasamanos a ambos lados**, altura 0,90-1,05 m |
+| **Antideslizante** en pedadas |
+
+### 7.3.3 Presurización de escaleras
+
+**Principio:** mantener la caja de escalera a **sobrepresión respecto de los pisos**, para que el humo no entre.
+
+| Parámetro | Valor de referencia |
+|---|---|
+| **Diferencial de presión con todas las puertas cerradas** | **25 a 50 Pa** |
+| **Velocidad de aire por la puerta abierta** (criterio alternativo) | **≥ 0,75 – 1,0 m/s** |
+| **Fuerza máxima para abrir la puerta** | **≤ 110 N** (si la sobrepresión es excesiva, no se puede abrir la puerta) |
+| **Alivio de sobrepresión** | Compuerta de sobrepresión o variador de frecuencia en el ventilador, **imprescindible** |
+| **Ventilador** | En cubierta o en PB, con toma de aire limpio alejada de posibles focos de humo |
+| **Alimentación eléctrica** | **Desde fuente de emergencia (grupo electrógeno o línea protegida F90)** |
+| **Comando** | Automático desde la central de detección de incendios, más comando manual en el punto de acceso de bomberos |
+
+`[VERIFICAR: (a) si el Código de Santa Rosa exige presurización de escaleras en PB+9; (b) los valores exactos de presión diferencial y velocidad. Referencia metodológica internacional: EN 12101-6 y NFPA 92.]`
+
+---
+
+## 7.4 Matafuegos (extintores)
+
+### 7.4.1 Cantidad y ubicación — valores verificados (RT CABA 4.5.2)
+
+| Regla | Valor |
+|---|---|
+| **Cantidad mínima** | **UN matafuego cada 200 m² de superficie a ser protegida** |
+| **Distancia máxima a recorrer hasta el matafuego** | **15 metros** |
+| **Ubicación** | Visible, de fácil acceso, manipulables de inmediato. **Preferentemente en pasillos de tránsito, incluyendo salidas de sectores** |
+| **Altura de montaje — hasta 20 kg de masa total** | Parte superior entre **1,20 m y 1,50 m** del suelo |
+| **Altura de montaje — más de 20 kg** | Parte superior a **no más de 1,00 m** del suelo |
+| **Instalación** | En soportes, ménsulas o gabinetes (salvo los de ruedas) |
+| **Señalización** | Según **IRAM 10005 Parte II** |
+| **Protección** | Los expuestos a daños físicos deben protegerse |
+| Temperaturas fuera de lo normal | Extintor apto para esas temperaturas, o recinto que mantenga la temperatura de operación |
+
+> **Para un PB+9:** con palieres de ~30 m² por planta y 11 niveles (PB + 9 + subsuelo), la regla de 200 m² daría muy pocos, pero **la regla de los 15 m de recorrido manda**: en la práctica se coloca **al menos un matafuego por palier** (junto a la escalera) y **uno cada 200 m² en cocheras**, más los específicos de salas técnicas.
+
+### 7.4.2 Clases de fuego y selección del agente (RT CABA 4.4)
+
+| Clase de fuego | Materiales | Agentes admitidos |
+|---|---|---|
+| **A** | Sólidos combustibles (madera, papel, textiles, plásticos) | **Agua, espuma, agua + AFFF, polvo triclase (ABC)** |
+| **B** | Líquidos y gases inflamables | **Gases limpios, CO₂, polvo, espuma, agua con AFFF** |
+| **C** | **Equipos eléctricos energizados** | **Gases limpios, CO₂, polvo.** ⚠ **Prohibidos agua y espuma** (conducen la electricidad) |
+| **D** | Metales combustibles | Agentes específicos aprobados para el metal en cuestión |
+| **K** | **Aceites y grasas de cocina** | **Acetato de potasio** (extintores clase K) |
+
+| Prohibiciones |
+|---|
+| **Prohibidos por toxicidad: tetracloruro de carbono, bromuro de metilo o similares** |
+| **Los extintores con toberas metálicas NO son seguros sobre equipos eléctricos energizados** y no se clasifican como aptos para Clase C |
+
+### 7.4.3 Potencial extintor (RT CABA 4.4.3)
+
+El sistema de clasificación es el de **IRAM**, basado en la extinción de fuegos normalizados:
+
+| Clase | Base del ensayo |
+|---|---|
+| **A** | Ensayos sobre maderas y virutas de madera |
+| **B** | Ensayos con líquido combustible |
+| **C** | **Sin ensayo de fuego.** El agente debe ser no conductor de la electricidad |
+| **D** | Ensayos especiales sobre metales combustibles específicos |
+| **K** | Ensayo sobre freidoras de aceite vegetal |
+
+Los extintores se eligen **según su mayor potencial extintor o capacidad extintora** (por ejemplo, un matafuego "5A:60BC" tiene potencial 5A para clase A y 60B para clase B).
+
+### 7.4.4 Normas IRAM de matafuegos (listadas en el RT CABA)
+
+| Norma | Objeto |
+|---|---|
+| **IRAM 3509** | Matafuegos de dióxido de carbono. Manuales |
+| **IRAM 3517 – Parte II** | **Control, mantenimiento y recarga de matafuegos** |
+| **IRAM 3523** | Matafuegos de polvo bajo presión. Manuales |
+| **IRAM 3525** | Matafuegos de agua bajo presión. Manuales |
+| **IRAM 3527** | Matafuegos de AFFF. Manuales |
+| **IRAM 3537** | Matafuegos de agua bajo presión. Sobre ruedas |
+| **IRAM 3550** | Matafuegos de polvo bajo presión. Sobre ruedas |
+| **IRAM 3565** | Matafuegos de dióxido de carbono. Sobre ruedas |
+| **IRAM 3694 / 3697** | **Matafuegos clase K** |
+| **IRAM 3539** | **Gabinetes para mangueras de incendio** |
+| **IRAM 3555** | **Rociadores automáticos** |
+| **IRAM 10005 Parte II** | **Señalización** |
+
+> **IRAM 3517 Parte II es la norma de mantenimiento.** Establece las frecuencias de control, mantenimiento y recarga. En un consorcio, el mantenimiento de matafuegos es una obligación anual con oblea y remito. `[verificar frecuencias exactas en IRAM 3517-2 y las exigencias del municipio de Santa Rosa]`
+
+### 7.4.5 Selección recomendada para un PB+9
+
+| Ubicación | Matafuego |
+|---|---|
+| Palier de cada planta | **1 × ABC de 5 kg (polvo triclase)** |
+| Hall de entrada | 1 × ABC de 5 kg + **1 × CO₂ de 3,5 kg** (junto a tableros) |
+| Sala de medidores eléctricos / tablero general | **CO₂ de 3,5 kg** (clase C, no daña el equipamiento) |
+| Compartimento de medidores de gas | **ABC de 5 kg**, exterior al compartimento |
+| Sala de bombas / sala de máquinas | **ABC de 10 kg** |
+| Sala de grupo electrógeno | **ABC de 10 kg + CO₂** |
+| **Cocheras (subsuelo)** | **ABC de 10 kg, uno cada 200 m² y a no más de 15 m de recorrido** |
+| Sala técnica / rack de datos | **CO₂ o gas limpio** |
+| **Local gastronómico en PB (si lo hubiera)** | **Clase K obligatorio** además de los ABC |
+
+## 7.5 Detección y alarma
+
+### 7.5.1 Componentes
+
+| Componente | Función |
+|---|---|
+| **Central de detección y alarma** | Cerebro del sistema. **Direccionable** (identifica el dispositivo exacto) o **convencional** (identifica solo la zona). En PB+9: **direccionable** |
+| **Detectores de humo (óptico/fotoeléctrico)** | Palieres, pasillos, hall, salas técnicas, cocheras. **El óptico detecta mejor fuegos lentos con humo denso** |
+| **Detectores térmicos** | Cocinas comerciales, salas de máquinas, cocheras (donde el humo/polvo daría falsas alarmas) |
+| **Detectores de CO** | Cocheras (control de ventilación) — **es un sistema distinto del de incendio** |
+| **Pulsadores manuales de alarma** | **En cada palier, junto a la puerta de la escalera**, y en la salida a la vía pública |
+| **Sirenas/avisadores acústicos y luminosos** | En cada planta, en cocheras, en sala de máquinas |
+| **Módulos de comando** | Para: liberar cerraduras electromagnéticas, enviar los ascensores a PB, arrancar la presurización de escalera, cerrar compuertas cortafuego, parar la ventilación de confort |
+| **Alimentación** | Fuente principal + **baterías con autonomía de 24 h en vigilancia + 30 min en alarma** `[verificar contra la norma adoptada]` |
+
+### 7.5.2 Referencia normativa
+
+| Norma | Objeto |
+|---|---|
+| **NFPA 72** — *National Fire Alarm and Signaling Code* | La referencia internacional de detección y alarma. El RT de CABA la cita expresamente entre las normas admitidas. **Es la norma que usan en la práctica los proyectistas argentinos de detección** |
+| **IRAM** — serie de detección | `[verificar normas IRAM vigentes de detección y alarma]` |
+
+> **En vivienda:** la detección dentro de cada departamento generalmente **no es exigible** (y genera falsas alarmas por cocción). **Pero es altamente recomendable** un detector de humo autónomo (con batería) en el pasillo de dormitorios de cada unidad, y **un detector de monóxido si hay artefactos de gas de cámara abierta**. Es una recomendación que el estudio debería hacer siempre por escrito.
+
+## 7.6 Red de incendio: reserva, bombas e hidrantes
+
+### 7.6.1 Cuándo se exige (RT CABA 1.1 y condiciones específicas)
+
+**Condiciones de protección activa** (A1 a A9). Las relevantes:
+
+| Condición | Exigencia |
+|---|---|
+| **A1** | Habrá un **servicio de agua contra incendio** |
+| **A2** | Cada sector de incendio (o conjunto comunicado) con superficie cubierta y/o semicubierta acumulada **> 600 m²** debe cumplir A1. **En subsuelos, se reduce a 300 m²** |
+| **A3** | Superficie acumulada **> 1.000 m²** → A1. **En subsuelos, 500 m²** |
+| **A5** | **> 500 m²** cubiertos/semicubiertos sobre nivel oficial, o **> 150 m²** bajo nivel constituyendo sótano → A1 |
+| **A6** | **> 1.500 m²** → A1. **En subsuelos, 800 m²** |
+| **A7** | El uso **"Playa de estacionamiento"** cumple A1 cuando posea **1.500 m² o más** de superficie ocupada por módulos de estacionamiento y/o cocheras |
+| **A8** | **Sistema de rociadores automáticos** |
+| **A9** | **Sistema de extinción automática a base de acetato de potasio (fuegos clase K)** asociado a detectores de temperatura prefijada |
+
+**Regla adicional muy relevante para PB+9:**
+
+> Cuando un edificio, según su actividad, **no requiera reserva exclusiva contra incendio**, pero **por su desarrollo vertical** requiera **instalación fija conectada a la reserva sanitaria**, esa instalación:
+> - Cañería, hidrantes y equipamiento cumplen los ítems 2.6 y 2.7 del RT
+> - Si la reserva sanitaria está en subsuelo o piso bajo, **debe garantizarse que la cañería de incendio permanezca llena de agua**
+> - **NO requiere presurización**; proveerla es opcional del proyectista
+> - Debe proponerse **una solución que asegure la renovación periódica del agua** de las cañerías (conexión a depósito automático de inodoros, canilla de servicio, etc.)
+>
+> **La altura de referencia** es la del **nivel de piso terminado de la última planta con acceso a locales de uso principal**, respecto de la cota de la parcela.
+
+> `[EL UMBRAL DE ALTURA A PARTIR DEL CUAL SE EXIGE INSTALACIÓN FIJA VARÍA POR JURISDICCIÓN. VERIFICAR EN EL CÓDIGO DE SANTA ROSA Y CON BOMBEROS DE LA PAMPA. Un PB+9 (≈ 29-32 m) está con seguridad por encima de cualquier umbral razonable.]`
+
+### 7.6.2 Volumen de la reserva de incendio — TABLA 2.3.2 (RT CABA)
+
+**El volumen mínimo NUNCA será menor a 10.000 litros.**
+
+| Riesgo | S ≤ 1.000 m² | 1.000 < S ≤ 1.500 | 1.500 < S ≤ 2.500 | 2.500 < S ≤ 5.000 | 5.000 < S ≤ 10.000 | S ≥ 10.000 m² |
+|---|---|---|---|---|---|---|
+| **R4** | 10.000 l | 10.000 l | 12.000 l | 12.000 l | 12.000 l | 18.000 l |
+| **R3** | 10.000 l | 16.000 l | 24.000 l | 32.000 l | 48.000 l | 72.000 l |
+| **R2** | 12.000 l | 20.000 l | 30.000 l | 40.000 l | 60.000 l | 90.000 l |
+
+**Clasificación de riesgo (RT CABA 2.2.1):**
+- **Riesgo 1 (Explosivo)**
+- **Riesgo 2 (Inflamables)** — de 1ª y 2ª categoría
+- **Riesgo 3 (Muy combustibles)** `[verificar definición completa]`
+- **Riesgo 4 (Combustibles)** — **es el que corresponde típicamente a vivienda** `[VERIFICAR la categorización de riesgo de "vivienda colectiva" en el cuadro de actividades del RT y en el Código de Santa Rosa]`
+
+### 7.6.3 Bombas de incendio (RT CABA 2.4)
+
+| Requisito | Valor |
+|---|---|
+| **Cantidad** | **Mínimo DOS bombas principales.** Cada una debe proveer independientemente el caudal de diseño |
+| **Bomba jockey** | **Obligatoria** para mantener presión y lograr funcionamiento automático. **Las bombas principales NO pueden usarse como bomba de mantenimiento de presión** |
+| **Caudal nominal — 100 % del caudal del sistema** | **R4: jockey 6 m³/h, principal 24 m³/h**<br>**R3: jockey 6 m³/h, principal 36 m³/h**<br>**R2: jockey 6 m³/h, principal 48 m³/h** |
+| **Presión nominal** | Tal que se logre **≥ 1 kg/cm² (10 m.c.a.) en la boca de incendio hidráulicamente más desfavorable** |
+| **Certificación** | Las bombas deben estar **certificadas para uso específico como bombas de servicio de incendio** y tener placa con marca, modelo, caudal, presión, velocidad y aprobaciones |
+| **Alimentación motriz** | Los motores eléctricos deben tener **como mínimo una fuente de alimentación segura** (alimentación directa desde red pública confiable) |
+| **Cables de alimentación** | Deben pasar por el exterior y estar separados de los edificios, **o contar con protección contra el fuego de rango mínimo F90** |
+| **Arranque y parada** | Jockey: arranque y parada automáticos. **Bomba principal: SOLO arranque automático; se detiene únicamente en forma MANUAL** mediante golpe de puño en su tablero. La segunda bomba principal queda en reserva y arranca ante falla de la primera |
+| **Sala de bombas** | Sala protegida con características de **"sala de máquinas"** dentro del edificio, **con acceso controlado**; o recinto exclusivo y protegido tipo "caseta" |
+| **Drenaje** | Si no hay drenaje natural por gravedad, **sistema de desagüe con bombas de achique** |
+
+### 7.6.4 Reserva de agua (RT CABA 2.5)
+
+| Requisito |
+|---|
+| **Aspiración por debajo del nivel más bajo del tanque o cisterna** (bomba de eje horizontal). **NO se permiten dispositivos de cebado de ningún tipo** |
+| **Tanques elevados sin bombeo NO son aceptados** para presurizar la red de incendio, **excepto** si cumplen estrictamente los requisitos de caudal (2.4.2) y presión (2.4.3) de las bombas |
+| **Materiales del tanque de incendio: hormigón armado, placas de hormigón premoldeado o metálicos. NO se aceptan PRFV ni plásticos**, salvo que se ubiquen fuera de las áreas a proteger o dentro de una sala protegida tipo "sala de máquinas" |
+| **La capacidad debe estar reservada EXCLUSIVAMENTE para incendio en forma permanente**, en tanque propio. Solo se admite tanque mixto en obras existentes cuando la autoridad lo autorice |
+| **Separación mínima de la reserva de incendio respecto de cualquier reserva de agua para consumo: 0,50 m** (coincide con la Guía AySA/ERAS) |
+| Tanques enterrados: **tanque desconector** para cumplir exigencias de desborde |
+| **NO se acepta la red pública como fuente de agua directa** de una instalación de incendio |
+
+### 7.6.5 Diseño del sistema de hidrantes (RT CABA 2.6 y 2.7)
+
+| Aspecto | Valor |
+|---|---|
+| **Tipo de red** | Abierta o **en anillo**, con hidrantes de **64 mm o 45 mm** |
+| **Distribución** | Radios de cobertura que abarquen todo el establecimiento, preferentemente cerca de las aberturas de acceso a los sectores |
+| **En plantas altas** | Preferentemente **próximas a las escaleras de acceso** |
+| **Excepción** | No es necesario proteger con hidrantes los niveles (excepto PB) **cuya superficie sea menor que 120 m²** y sea posible atacarlos desde un nivel inmediato superior o inferior |
+| **Diámetro mínimo de cañería** | **64 mm.** Con hidrantes de 45 mm: mínimo **50 mm** cuando se alimente una única llave |
+| **Materiales** | **Cañerías aéreas de ACERO**: IRAM 2506, IRAM IAS U 500-2502, IRAM IAS U 500-2613 / NM 210. Espesor mínimo para soldadura o ranurado: **3 mm hasta 100 mm; 3,4 mm hasta 150 mm; 4,8 mm hasta 250 mm** (serie 10 de IRAM IAS U 500-2613) |
+| **Plásticos** | **Solo en cañerías SUBTERRÁNEAS en fosa exclusiva con tapada mínima de 1 metro**, cumpliendo IRAM 13432 o 13485 |
+| **Ramales y conducción a hidrantes** | **Siempre de acero**, con soportes adecuados |
+| **Cañerías subterráneas de acero** | Protección contra la corrosión **externa + protección catódica** |
+| **Presión estática > 7,00 kg/cm² en una boca** | **Obligatorias válvulas reguladoras de presión** |
+| **Mangueras** | **15, 20 o 25 m de longitud.** Diámetro no mayor al de la llave: llaves de 64 mm → mangueras de 64 mm; llaves de 64 con reducción a 45, o de 45 → mangueras de 45 mm |
+| **Gabinete** | Según **IRAM 3539**, o media luna al lado del hidrante. Recomendable mantener las mangueras permanentemente conectadas |
+| **Lanzas** | **Tipo combinado, chorro pleno y niebla**, una por manguera, en concordancia con el diámetro |
+| **Altura del eje de conexión de la válvula del hidrante** | **Entre 1,00 m y 1,40 m** del nivel de piso |
+| **Conexión para bomberos (boca de impulsión)** | Una o más en la entrada del edificio. **Hidrantes: Boca de Impulsión Simple de 64 mm mínimo. Rociadores: Boca de Impulsión DOBLE. Sistemas combinados: pueden compartir, a condición de que sea Doble** |
+| **Altura de la boca de impulsión** | Preferentemente sobre pared, **máximo 0,60 m** desde el piso |
+| **Marcado de la boca de impulsión** | En la tapa, **letras de 10 cm de alto**: **"RE xx"**, donde xx es el valor de la reserva en m³. Para bocas de conexión a pileta o estanque: **"RP xx"** |
+| **Sistemas combinados** | Válvula de control individual en cada conexión sobre el alimentador principal del sistema de rociadores |
+
+## 7.7 EJEMPLO RESUELTO — Reserva y bombas de incendio del PB+9
+
+### Datos
+- Edificio PB+9 del Ejemplo Nº 1
+- Superficie cubierta: 10 plantas × 380 m² = **3.800 m²** + subsuelo de cocheras 800 m² = **4.600 m²**
+- Destino: vivienda colectiva → **Riesgo 4 (combustibles)** `[VERIFICAR la clasificación de riesgo aplicable en Santa Rosa]`
+
+### Paso 1 — Superficie de cálculo (S)
+
+> S = 4.600 m² → cae en el rango **2.500 < S ≤ 5.000 m²**
+
+### Paso 2 — Volumen de reserva (Tabla 2.3.2)
+
+> **Riesgo R4, 2.500 < S ≤ 5.000 → 12.000 litros**
+
+**Reserva de incendio adoptada: 12.000 litros = 12 m³**, en **tanque exclusivo de hormigón armado**, separado ≥ 0,50 m de la reserva sanitaria.
+
+> **Verificación con la superficie del subsuelo:** el subsuelo de 800 m² excede los 300 m² de la condición A2 y los 500 m² de A3 → confirma que corresponde servicio de agua contra incendio.
+
+### Paso 3 — Caudal de las bombas (Tabla 2.4.2)
+
+| Bomba | Caudal (R4) |
+|---|---|
+| **Bomba jockey** | **6 m³/h = 1,67 l/s** |
+| **Bomba principal 1** | **24 m³/h = 6,67 l/s** |
+| **Bomba principal 2 (reserva)** | **24 m³/h = 6,67 l/s** |
+
+### Paso 4 — Presión de las bombas (2.4.3)
+
+**Hidrante más desfavorable:** el del palier del **9.º piso**, el más alto y alejado.
+
+| Componente | Valor |
+|---|---|
+| Altura geométrica: desde el nivel mínimo del tanque (subsuelo, cota −3,00 m) hasta el hidrante del 9.º (cota +26,10 + 1,20 m del eje de la válvula) | **30,30 m** |
+| Pérdidas distribuidas en la cañería de acero Ø 64 mm, L ≈ 55 m, Q = 24 m³/h `[calcular con Hazen-Williams C=120 para acero]` | ≈ **6,0 m** |
+| Pérdidas localizadas (válvulas, codos, te, boca de impulsión) | ≈ **3,0 m** |
+| Pérdida en la manguera de 25 m + lanza (a Q de trabajo) | ≈ **12,0 m** `[verificar: depende del caudal por lanza y del diámetro de la manguera]` |
+| **Presión mínima requerida EN LA BOCA** | **10,0 m.c.a. (1 kg/cm²)** |
+| **Hm total requerida** | **≈ 61,3 m.c.a. → adoptar 65 m.c.a.** |
+
+**Potencia de las bombas principales:**
+> P_hidr = 1000 × 9,81 × 0,00667 × 65 / 1000 = **4,25 kW**
+> P_eje = 4,25 / 0,60 = 7,08 kW
+> P_motor = 7,08 / 0,88 = **8,05 kW → adoptar motor de 11 kW (15 HP)**, verificando la curva del fabricante para el punto Q=24 m³/h, H=65 m
+
+`[La potencia real depende de la curva de la bomba certificada. Este cálculo es de predimensionado. La selección la hace el especialista en incendio.]`
+
+**Bomba jockey:**
+> P_hidr = 1000 × 9,81 × 0,00167 × 70 / 1000 = 1,15 kW → P_motor ≈ **2,2 kW (3 HP)**
+> (la jockey se dimensiona con presión algo mayor que la principal, para reponer las fugas antes de que arranque la principal)
+
+### Paso 5 — Verificación de presión estática
+
+Presión estática en el **hidrante de PB**, con el tanque lleno:
+> Si el tanque de incendio está en subsuelo, no hay presión estática por gravedad — el sistema depende de las bombas.
+>
+> Si en cambio la red se presuriza y la bomba entrega 65 m.c.a. en régimen, la presión en el hidrante de PB (cota 0,00) sería del orden de:
+> 65 − pérdidas en 10 m de cañería ≈ **62 m.c.a. = 6,2 kg/cm²**
+>
+> **< 7,00 kg/cm² → NO se requieren válvulas reguladoras de presión ✓** (pero está cerca del límite: verificar con la curva real de la bomba, que a caudal nulo da más presión que a caudal nominal)
+
+### Paso 6 — Cañería y componentes
+
+| Elemento | Especificación |
+|---|---|
+| **Montante de incendio** | **Acero Ø 64 mm mínimo**, IRAM 2506 o IRAM IAS U 500-2502, en pleno protegido, con sellado cortafuego en cada paso de losa |
+| **Hidrantes** | Uno por planta, en el palier, junto a la escalera. **Válvula de 64 mm, eje entre 1,00 y 1,40 m del piso** |
+| **Mangueras** | 25 m, Ø 64 mm (o 45 mm si el hidrante es de 45), en **gabinete IRAM 3539** |
+| **Lanzas** | Combinadas, chorro pleno y niebla, una por manguera |
+| **Boca de impulsión** | **Simple de 64 mm** (solo hidrantes, sin rociadores), en LM, a máximo 0,60 m del piso, marcada **"RE 12"** |
+| **Renovación del agua** | Prever solución de renovación periódica (canilla de servicio en la parte alta del sistema, o conexión a depósito automático de inodoro) |
+| **Sala de bombas** | Sala de máquinas, con acceso controlado, **drenaje** (natural o por achique) y **alimentación eléctrica protegida F90 o por el exterior** |
+
+### Resumen
+
+| Concepto | Valor |
+|---|---|
+| Superficie de cálculo | **4.600 m²** |
+| Riesgo | **R4** `[verificar]` |
+| **Reserva de incendio** | **12.000 litros, exclusiva, de hormigón armado** |
+| **Bomba jockey** | **6 m³/h**, ≈ 2,2 kW |
+| **Bombas principales (2)** | **24 m³/h c/u**, Hm ≈ 65 m.c.a., ≈ 11 kW c/u |
+| Presión mínima en boca más desfavorable | **1 kg/cm² (10 m.c.a.)** |
+| Cañería | **Acero Ø 64 mm** |
+| Hidrantes | 1 por planta, en palier junto a escalera |
+| Boca de impulsión | **Simple 64 mm, marcada "RE 12"** |
+
+## 7.8 Rociadores automáticos
+
+| Aspecto | Criterio |
+|---|---|
+| **Norma de referencia argentina** | **IRAM 3555**. El RT de CABA indica: *"Hasta tanto el apartado sea reglamentado, se regirá por Norma IRAM 3555"* |
+| **Normas internacionales admitidas** | *"Se admite la aplicación de normas de diseño reconocidas internacionalmente"*, citándose expresamente **NFPA 13 — Instalación de sistemas de Rociadores automáticos**. Deben citarse expresamente, sujetas al criterio de la Autoridad de Aplicación, y si son de publicación restringida, acompañarse copia autenticada **en castellano y en Sistema Métrico Decimal** |
+| **Cuándo se exigen** | Condición **A8**. Además, el RT de CABA establece: *"A partir del segundo subsuelo inclusive y desde este hacia abajo, todo subsuelo debe poseer un sistema de extinción automático que cubra toda la superficie del nivel"*, exceptuando salas de máquinas, salas de equipos técnicos y locales donde el incendio no pueda extinguirse con agua |
+| **Boca de impulsión** | **DOBLE** obligatoria |
+| **Caudal de las bombas** | Si abastecen rociadores, el caudal debe ser suficiente para **ambos sistemas** (hidrantes + rociadores) |
+| **Bombas** | **NFPA 20 — Standard for the Installation of Stationary Pumps for Fire Protection** es la referencia internacional para bombas de incendio |
+
+> **Para un PB+9 de vivienda con UN subsuelo:** los rociadores **no serían exigibles** por la regla del segundo subsuelo. **Con dos o más subsuelos, sí.** `[VERIFICAR la exigencia equivalente en el Código de Santa Rosa]`
+>
+> **Recomendación:** aunque no sean exigibles, considerar rociadores en el **subsuelo de cocheras**, que es el sector de mayor carga de fuego del edificio (combustible en los tanques de los vehículos, materiales plásticos, baterías de litio en vehículos eléctricos).
+
+## 7.9 Campanas sobre artefacto cocina (RT CABA 5)
+
+> Cuando deba cumplirse la exigencia de campana sobre el artefacto cocina, deben garantizarse las medidas de extinción del tipo de fuego correspondiente, **según el tipo de artefacto y la existencia de calentamiento de grasas o aceites (fuegos clase K)**.
+>
+> Las actividades que **elaboren o preparen comidas para público concurrente o alojados**, o los usos industriales que requieran cuadra de elaboración o cocina, **deben cumplir la condición A9** (sistema de extinción automática a base de acetato de potasio, asociado a detectores de temperatura prefijada).
+
+> **Aplicación:** si el PB+9 tiene un local gastronómico en planta baja, **ese local requiere sistema de extinción clase K sobre la campana**, además de todo lo demás. **Y su instalación de gas y su ventilación son un capítulo aparte.**
+
+## 7.10 Señalización
+
+| Elemento | Norma |
+|---|---|
+| Señalización de matafuegos | **IRAM 10005 Parte II** |
+| Señalización de salidas y vías de evacuación | IRAM 10005 Parte II |
+| Señales fotoluminiscentes o retroiluminadas | Recomendables las fotoluminiscentes, no dependen de la energía |
+| **Plano de evacuación** en cada palier | Con "usted está aquí", vías de escape y punto de reunión |
+| Numeración de nivel en cada descanso de escalera | **Visible y a la altura de la vista, y también a baja altura** (para evacuación arrastrándose bajo el humo) |
+| Identificación de la boca de impulsión | **"RE xx"** en letras de 10 cm |
+
+---
+
+# 8. ASCENSORES Y ELEVACIÓN
+
+> **ADVERTENCIA NORMATIVA:** en Argentina no existe una norma nacional única de ascensores de cumplimiento obligatorio general. Las referencias son:
+> - **EN 81-20** (*Reglas de seguridad para la construcción e instalación de ascensores — Parte 20: Ascensores para el transporte de personas y cargas*) y **EN 81-50** (métodos de ensayo). **Son la referencia técnica de facto** y lo que aplican los fabricantes.
+> - **Código de Edificación de CABA** y sus Reglamentos Técnicos (ordenanzas de ascensores, conservadores, registro).
+> - **Ordenanzas municipales** de cada ciudad: registro de ascensores, conservador matriculado, inspecciones periódicas.
+> - **IRAM** — serie de ascensores `[verificar normas IRAM vigentes]`
+> - **ISO 8100-32** — método de cálculo de tráfico (intervalo y capacidad de transporte)
+>
+> `[VERIFICAR EN EL CÓDIGO DE EDIFICACIÓN DE SANTA ROSA: obligatoriedad de ascensor por altura, cantidad mínima, dimensiones mínimas de cabina, registro y conservación]`
+
+## 8.1 Cuándo es obligatorio
+
+Regla general en los códigos argentinos: **el ascensor es obligatorio a partir de determinada altura o número de plantas** (habitualmente PB + 3 o PB + 4). Un **PB+9 lo requiere sin discusión**.
+
+**Y con accesibilidad:** la normativa de accesibilidad (Ley 24.314 y su reglamentación, y las adhesiones provinciales/municipales) exige que **al menos un ascensor sea accesible** y que la ruta desde la vía pública hasta él sea accesible. `[VERIFICAR adhesión de La Pampa y del municipio de Santa Rosa, y las dimensiones mínimas de cabina accesible exigidas]`
+
+## 8.2 Cálculo de tráfico
+
+### 8.2.1 Conceptos
+
+| Concepto | Definición |
+|---|---|
+| **Población del edificio (P)** | Cantidad de habitantes teóricos |
+| **RTT (Round Trip Time)** | Tiempo total del viaje completo: desde que la cabina sale de PB, hace todas sus paradas y vuelve a PB |
+| **Intervalo (I)** | Tiempo medio entre la llegada de dos cabinas a la planta principal. **I = RTT / N** (N = número de ascensores) |
+| **Capacidad de acarreo en 5 minutos (HC%)** | Porcentaje de la población total que el sistema puede transportar en 5 minutos |
+
+### 8.2.2 Fórmulas
+
+> **HC (personas en 5 min) = (300 × N × P_cabina) / RTT**
+>
+> **HC % = HC / P_total × 100**
+>
+> **I = RTT / N**   [segundos]
+
+donde P_cabina = número de pasajeros efectivamente transportados por viaje (típicamente **80 % de la capacidad nominal**, porque nadie llena el ascensor).
+
+### 8.2.3 Componentes del RTT
+
+> **RTT = t_viaje + t_paradas + t_puertas + t_transferencia**
+
+| Componente | Cálculo |
+|---|---|
+| **t_viaje** | Distancia recorrida (ida y vuelta) / velocidad nominal, más los tiempos de aceleración y desaceleración |
+| **t_paradas** | (N.º de paradas probables) × tiempo de arranque/frenado por parada |
+| **t_puertas** | (N.º de paradas + 1) × (t_apertura + t_cierre) |
+| **t_transferencia** | (N.º de pasajeros) × (t_entrada + t_salida), típicamente **1,0 a 1,5 s por pasajero por operación** |
+
+**Número probable de paradas (S)** en un edificio de n plantas con P pasajeros en la cabina (fórmula estadística clásica):
+
+> **S = n × [1 − (1 − 1/n)^P]**
+
+**Piso de reversión probable (H)** — el piso más alto alcanzado:
+
+> **H ≈ n − Σ_{i=1}^{n-1} (i/n)^P**
+
+### 8.2.4 Valores objetivo para edificios de vivienda
+
+| Parámetro | Valor recomendado para vivienda |
+|---|---|
+| **Capacidad de acarreo en 5 min (HC%)** | **7 % a 9 %** de la población total (referencia: *"se toma como patrón óptimo de tráfico una capacidad de transporte de entre 8 y 9 % de los usuarios totales del edificio"*) |
+| **Intervalo (I)** | **50 a 80 segundos.** Excelente < 50 s; aceptable hasta 90 s en vivienda económica |
+| Comparación: oficinas | HC% 12-15 %, I 25-35 s |
+| Comparación: hotel | HC% 10-12 %, I 40-50 s |
+
+`[Los valores objetivo de HC% e I son criterios de la práctica del sector y de ISO 8100-32. VERIFICAR contra la norma o contra el estudio de tráfico del proveedor.]`
+
+## 8.3 EJEMPLO RESUELTO — ¿Cuántos ascensores para el PB+9?
+
+### Datos
+- **PB + 9 pisos** (9 plantas de vivienda servidas, PB = planta principal)
+- **40 departamentos**: 12 de 1 dorm., 20 de 2 dorm., 8 de 3 dorm.
+- Altura de entrepiso: **2,90 m**
+- Recorrido total: 9 × 2,90 = **26,10 m**
+
+### Paso 1 — Población
+
+Criterio de ocupación de vivienda (§1.1.3): dormitorios + 1
+> 12 × 2 + 20 × 3 + 8 × 4 = 24 + 60 + 32 = **116 personas**
+
+Muchos estudios de tráfico usan un criterio más conservador para vivienda (que no está ocupada al 100 % en la hora pico): **P_efectiva = 116 × 0,85 = 99 personas**. Usaremos **P = 116** (del lado seguro).
+
+### Paso 2 — Hipótesis de ascensor
+
+Primera hipótesis: **1 ascensor de 8 personas (630 kg), velocidad 1,0 m/s, gearless sin sala de máquinas.**
+
+- Capacidad nominal: 8 personas
+- **Ocupación efectiva: 8 × 0,80 = 6,4 → adoptar P_cabina = 6 personas**
+
+### Paso 3 — Cálculo del RTT
+
+**Número probable de paradas** con n = 9 plantas servidas y P = 6:
+> S = 9 × [1 − (1 − 1/9)^6] = 9 × [1 − (0,8889)^6]
+> (0,8889)^6 = 0,4933
+> **S = 9 × (1 − 0,4933) = 9 × 0,5067 = 4,56 → 4,6 paradas**
+
+**Piso de reversión probable H:**
+> H ≈ 9 − Σ_{i=1}^{8} (i/9)^6
+> (1/9)^6 = 0,00000188; (2/9)^6 = 0,000121; (3/9)^6 = 0,00137; (4/9)^6 = 0,00771; (5/9)^6 = 0,02938; (6/9)^6 = 0,0878; (7/9)^6 = 0,2249; (8/9)^6 = 0,4933
+> Σ = 0,8447
+> **H ≈ 9 − 0,845 = 8,16 pisos**
+
+**Distancia de reversión:** 8,16 × 2,90 = **23,66 m** → ida y vuelta = **47,32 m**
+
+**t_viaje** (a velocidad nominal, más tiempo perdido en aceleración/desaceleración):
+> Tiempo a velocidad plena: 47,32 / 1,0 = 47,32 s
+> Tiempo perdido por arranque/frenado en cada parada: para v = 1,0 m/s con a = 0,8 m/s², el tiempo perdido por parada respecto de la velocidad constante es de **≈ 2,0 s**
+> Paradas totales: 4,6 (subida) + 1 (retorno a PB) = 5,6
+> **t_viaje total ≈ 47,32 + 5,6 × 2,0 = 47,32 + 11,2 = 58,5 s**
+
+**t_puertas:**
+> Apertura + cierre por parada ≈ **4,5 s** (puertas telescópicas de 2 hojas, apertura 800 mm)
+> Paradas con apertura: 4,6 + 1 (PB) = 5,6
+> **t_puertas = 5,6 × 4,5 = 25,2 s**
+
+**t_transferencia:**
+> 6 pasajeros suben en PB + 6 bajan distribuidos en las paradas
+> Tiempo por pasajero ≈ 1,2 s (entrada) + 1,2 s (salida)
+> **t_transferencia = 6 × 1,2 + 6 × 1,2 = 14,4 s**
+
+**RTT TOTAL:**
+> **RTT = 58,5 + 25,2 + 14,4 = 98,1 s → adoptar 100 s** (más un 5-10 % de margen por ineficiencias → **RTT = 105 s**)
+
+### Paso 4 — Verificación con UN ascensor
+
+> **Intervalo: I = RTT / N = 105 / 1 = 105 segundos** ❌
+> *(objetivo: 50-80 s; aceptable hasta 90 s)*
+
+> **Capacidad de acarreo: HC = (300 × 1 × 6) / 105 = 1.800 / 105 = 17,1 personas en 5 min**
+> **HC% = 17,1 / 116 × 100 = 14,8 %** ✓
+> *(objetivo: 7-9 %; con 14,8 % sobra capacidad)*
+
+> **DIAGNÓSTICO: la CAPACIDAD sobra, pero el INTERVALO de 105 s es inaceptable.** Con un solo ascensor, en el pico matinal la gente espera casi 2 minutos. **Y peor: si el único ascensor se detiene por mantenimiento o falla, el edificio de 10 plantas queda sin ascensor.**
+
+### Paso 5 — Verificación con DOS ascensores
+
+> **I = 105 / 2 = 52,5 segundos** ✓ **(dentro del objetivo de 50-80 s)**
+> **HC = (300 × 2 × 6) / 105 = 34,3 personas en 5 min**
+> **HC% = 34,3 / 116 × 100 = 29,6 %** ✓✓ (muy holgado)
+
+### Paso 6 — Alternativa: 2 ascensores más chicos
+
+**2 ascensores de 6 personas (450 kg), velocidad 1,0 m/s** → P_cabina = 5
+
+> S = 9 × [1 − (0,8889)^5] = 9 × [1 − 0,5549] = **4,01 paradas**
+> H ≈ 9 − Σ(i/9)^5 ≈ 9 − 1,04 = 7,96 pisos → 23,1 m → 46,2 m ida y vuelta
+> t_viaje ≈ 46,2 + 5,0 × 2,0 = 56,2 s
+> t_puertas = 5,0 × 4,5 = 22,5 s
+> t_transferencia = 5 × 1,2 × 2 = 12,0 s
+> **RTT = 90,7 s → 95 s con margen**
+> **I = 95 / 2 = 47,5 s** ✓✓ **(excelente)**
+> **HC = (300 × 2 × 5) / 95 = 31,6 pers/5min → HC% = 27,2 %** ✓
+
+### Paso 7 — CONCLUSIÓN Y RECOMENDACIÓN
+
+| Configuración | Intervalo | HC% | Redundancia | Veredicto |
+|---|---|---|---|---|
+| 1 × 8 personas (630 kg), 1,0 m/s | **105 s** ❌ | 14,8 % ✓ | **Ninguna** ❌ | **NO ACEPTABLE** |
+| 1 × 8 personas, 1,6 m/s | ≈ 85 s (límite) | 18 % ✓ | **Ninguna** ❌ | Marginal; sin redundancia |
+| **2 × 6 personas (450 kg), 1,0 m/s** | **47,5 s** ✓✓ | 27,2 % ✓ | **Sí** ✓ | **✅ RECOMENDADO** |
+| 2 × 8 personas (630 kg), 1,0 m/s | 52,5 s ✓ | 29,6 % ✓ | Sí ✓ | ✅ Bueno; una cabina más grande facilita mudanzas y accesibilidad |
+
+> ### ⭐ RECOMENDACIÓN PARA UN PB+9 DE 40 UNIDADES
+>
+> **DOS ascensores.** No por capacidad de tráfico (uno bastaría), sino por:
+>
+> 1. **Intervalo de espera aceptable** (< 60 s).
+> 2. **Redundancia operativa.** Un ascensor único deja al edificio sin servicio cada vez que se hace mantenimiento, se rompe o se usa para una mudanza. En un edificio de 10 plantas, eso es inaceptable.
+> 3. **Accesibilidad.** Con un solo ascensor fuera de servicio, las personas con movilidad reducida quedan atrapadas o encerradas.
+> 4. **Uso diferenciado**: uno principal y uno de servicio/mudanzas.
+>
+> **Configuración óptima: 2 ascensores, uno de ellos de mayor capacidad (630 u 800 kg) y accesible según normativa, y el otro de 450-630 kg.** Velocidad **1,0 m/s** (para PB+9, velocidades mayores no aportan y encarecen).
+
+## 8.4 Dimensiones: cabina, hueco, foso, sobrerrecorrido
+
+> **TODOS los valores de esta sección deben verificarse contra EN 81-20 y contra el catálogo del fabricante que efectivamente se contrate. Los fabricantes tienen modelos con dimensiones específicas.** `[verificar en EN 81-20 y en el Código de Edificación de Santa Rosa]`
+
+### 8.4.1 Dimensiones orientativas
+
+| Capacidad | Personas | Cabina (ancho × fondo) | **Hueco (ancho × fondo)** | Puerta (ancho) |
+|---|---|---|---|---|
+| **450 kg** | 6 | 1,00 × 1,25 m | **1,50 × 1,60 m** | 0,80 m |
+| **630 kg** | 8 | 1,10 × 1,40 m | **1,60 × 1,75 m** | 0,80 m |
+| **800 kg** | 10 | 1,35 × 1,40 m | **1,85 × 1,75 m** | 0,80 – 0,90 m |
+| **1.000 kg** | 13 | 1,10 × 2,10 m | 1,60 × 2,50 m | 0,90 m |
+| **1.275 kg (camilla)** | 17 | 1,20 × 2,30 m | 1,80 × 2,70 m | 1,10 m |
+
+`[Valores ORIENTATIVOS de mercado. Verificar contra el fabricante.]`
+
+### 8.4.2 Foso y sobrerrecorrido
+
+| Elemento | Valor orientativo |
+|---|---|
+| **Foso (profundidad bajo el nivel de la parada más baja)** | **1,10 a 1,60 m** para v ≤ 1,0 m/s; **más profundo a mayor velocidad** |
+| **Sobrerrecorrido (altura libre sobre el nivel de la parada más alta)** | **3,40 a 3,80 m** para v = 1,0 m/s con máquina en el hueco (gearless sin sala) |
+| **Sobrerrecorrido reducido** | Algunos fabricantes ofrecen soluciones desde ≈ 2,90 m; **verificar con el proveedor** |
+| **Espacios de seguridad (refugios)** | EN 81-20 exige volúmenes libres de refugio en foso y en cabecera para la protección del personal de mantenimiento. **Son la razón de las alturas mínimas** |
+
+> **Advertencia de proyecto:** **el foso y el sobrerrecorrido se definen ANTES de calcular la estructura.** Un foso de 1,60 m modifica la fundación; un sobrerrecorrido de 3,80 m modifica el remate del edificio y puede afectar la altura máxima admisible del Código. **Pedir el dato al fabricante en el anteproyecto.**
+
+### 8.4.3 Requisitos del hueco
+
+| Requisito |
+|---|
+| **Hueco exclusivo**: no puede alojar ninguna instalación ajena al ascensor (ni cañerías de agua, ni de gas, ni cables ajenos) |
+| **Sector de incendio independiente** |
+| **Ventilación del hueco** en la parte superior `[verificar sección y exigencia en EN 81-20 y en el Código local]` |
+| **Muros con la resistencia estructural para los anclajes de guías** y con las tolerancias dimensionales del fabricante (**verticalidad y planeidad son críticas**) |
+| **Iluminación del hueco y del foso**, con tomacorriente e interruptor en el foso |
+| **Escalera de acceso al foso** si su profundidad supera un valor determinado |
+| **Impermeabilización del foso** — **crítico en Santa Rosa si la napa es alta o si el subsuelo puede inundarse.** Prever **desagüe o bomba de achique del foso**, nunca conectado directamente a cloaca |
+| **Aislación acústica del hueco** respecto de dormitorios: es fuente de ruido estructural (guías, puertas, máquina) |
+
+## 8.5 Sala de máquinas vs. gearless sin sala (MRL)
+
+| | **Con sala de máquinas (tracción con reductor)** | **Gearless sin sala de máquinas (MRL)** |
+|---|---|---|
+| Máquina | Motor + reductor de tornillo sin fin, en sala sobre el hueco | Motor de imanes permanentes de accionamiento directo, **dentro del hueco**, en la cabecera o en el foso |
+| **Sala de máquinas** | **Requerida**, sobre el hueco, con acceso independiente, ventilación, iluminación, gancho de izaje | **No requerida.** El cuadro de maniobra va en un armario en el palier del último piso |
+| **Impacto en cubierta** | Volumen construido sobre la última losa, **cuenta para la altura del edificio en muchos códigos** | **Nulo.** Solo el sobrerrecorrido |
+| **Eficiencia energética** | Menor (pérdidas del reductor) | **Mayor: 30-40 % menos de consumo** |
+| **Ruido y vibración** | Mayor | Menor |
+| **Confort de marcha** | Bueno con VVVF | **Excelente** (control vectorial preciso) |
+| **Mantenimiento** | Requiere aceite del reductor | Sin aceite |
+| **Acceso para mantenimiento** | Cómodo (sala) | Desde la cabina/cabecera; **requiere personal entrenado** |
+| **Costo** | Menor en equipo, mayor en obra civil | Mayor en equipo, **menor en obra civil** |
+| **Rescate de pasajeros** | Con volante manual desde la sala | Con dispositivo de rescate del cuadro de maniobra en el palier |
+
+> ### RECOMENDACIÓN PARA UN PB+9 EN SANTA ROSA
+>
+> **Gearless sin sala de máquinas (MRL), con maniobra VVVF.**
+>
+> Razones específicas para Santa Rosa:
+> 1. **Elimina el volumen sobre la cubierta**, que en Santa Rosa es un problema doble: cuenta para la altura del Código **y** una sala de máquinas en cubierta, con TDMX de 38,8 °C, se convierte en un horno que exige ventilación forzada o aire acondicionado para mantener el equipo en su rango operativo.
+> 2. Menor consumo eléctrico (aporta a la demanda de servicios generales, §5.8).
+> 3. Mejor confort y menor ruido hacia el último piso.
+>
+> **Contrapartida a verificar:** la disponibilidad de servicio técnico y de repuestos de MRL en La Pampa. **Preguntar al proveedor por la cobertura del conservador en Santa Rosa antes de decidir la marca.**
+
+## 8.6 Montacoches y plataformas
+
+| Equipo | Cuándo | Consideraciones |
+|---|---|---|
+| **Montacoches** | Cuando el subsuelo de cocheras no tiene rampa (lote angosto, restricciones de acceso) | Capacidad 2.500-3.500 kg. **Cabina de 2,5 × 5,5 m aprox.** Velocidad baja (0,25-0,5 m/s). **Foso y sobrerrecorrido mucho mayores.** Impacto estructural fuerte |
+| **Plataforma elevadora vertical (accesibilidad)** | Salvar desniveles cortos (hasta 3 m) en accesos | Alternativa a la rampa cuando no hay desarrollo. **Verificar si el Código de accesibilidad la admite como solución** |
+| **Salvaescaleras** | Reformas en edificios existentes sin ascensor | Solución de última instancia. Reduce el ancho de la escalera: **verificar el ancho remanente contra el medio de escape** |
+| **Montaplatos / montacargas** | Locales gastronómicos, servicio | Capacidad hasta 300 kg |
+
+> **Advertencia sobre el montacoches:** es una decisión de anteproyecto. Impacta en: estructura (foso profundo, cargas), maniobra en PB (hay que poder maniobrar el auto en la plataforma), tiempo de uso (un montacoches para 40 cocheras genera colas inaceptables), y costo de mantenimiento. **Como regla: si hay lugar para rampa, hacer rampa.**
+
+## 8.7 Accesibilidad
+
+| Requisito | Valor de referencia |
+|---|---|
+| **Cabina accesible — dimensiones mínimas** | **1,10 m de ancho × 1,40 m de fondo** (permite silla de ruedas de frente) `[VERIFICAR contra la normativa de accesibilidad aplicable en La Pampa y Santa Rosa]` |
+| **Puerta — ancho libre de paso** | **≥ 0,80 m** (algunas normativas exigen 0,90 m) |
+| **Botonera** | Altura del botón más alto **≤ 1,20 m** del solado; **con relieve y braille**; botón de planta principal diferenciado |
+| **Indicación sonora y visual** de planta y de sentido de marcha | Obligatoria |
+| **Pasamanos en cabina** | A 0,90 m de altura |
+| **Espejo en el fondo de la cabina** | Para maniobra en reversa de silla de ruedas |
+| **Nivelación de parada** | Tolerancia ≤ ±10 mm respecto del nivel del palier |
+| **Tiempo de apertura de puertas** | Ajustable, con reapertura por barrera fotoeléctrica de cortina (no solo por barra mecánica) |
+| **Ruta accesible** | Desde la vía pública hasta el ascensor, sin escalones, con ancho ≥ 0,90-1,20 m y pendientes de rampa según norma |
+| **Espacio de maniobra frente al ascensor** | Círculo de **Ø 1,50 m** libre |
+
+`[VERIFICAR la normativa de accesibilidad vigente: Ley Nacional 24.314 y su Decreto reglamentario 914/97, la adhesión de La Pampa, y el Código de Edificación de Santa Rosa. Las dimensiones mínimas varían.]`
+
+## 8.8 Interfaces del ascensor con otras instalaciones
+
+| Interfaz | Requisito |
+|---|---|
+| **Eléctrica** | **Circuito exclusivo** desde el tablero de servicios generales, con protección propia. **Tablero del ascensor en el palier del último piso** (MRL). Diferencial: verificar el tipo requerido — los variadores VVVF pueden requerir **diferencial tipo B o superinmunizado** |
+| **Incendio** | **Maniobra de emergencia:** ante señal de la central de detección, todos los ascensores **bajan a planta baja y abren puertas**, quedando fuera de servicio. **Debe estar en el pliego** |
+| **Corte de energía** | **Dispositivo de rescate automático (ARD/UPS)** que lleva la cabina al piso más cercano y abre puertas. **Fuertemente recomendado**, y evita la necesidad de grupo electrógeno solo para el ascensor |
+| **Comunicación** | **Intercomunicador bidireccional** desde la cabina a un punto atendido 24 h (empresa conservadora). En Argentina es una exigencia habitual |
+| **Sanitarias** | **Ninguna cañería puede pasar por el hueco.** Prever el desagüe del foso (con bomba de achique si no hay gravedad, **nunca conexión directa a cloaca**) |
+| **Gas** | **NINGUNA cañería de gas puede pasar por el hueco ni por la sala de máquinas** |
+| **Estructura** | El calculista debe conocer: cargas de la máquina y del amortiguador en el foso, cargas de los anclajes de guías en los muros, **verticalidad y tolerancias del hueco**, y el peso del contrapeso |
+| **Térmica** | **Sala de máquinas (si existe): mantener entre 5 y 40 °C.** En Santa Rosa: aislar y ventilar. Verificar con el fabricante |
+| **Acústica** | Hueco aislado de dormitorios. Puertas de palier con amortiguación |
+
+---
+
+# 9. INSTALACIONES EN REFORMAS
+
+## 9.1 Relevamiento de lo existente: protocolo
+
+> **Regla fundamental: en una reforma, el 60 % del riesgo está en lo que no se relevó.** Presupuestar una reforma de instalaciones sin relevamiento es asegurar un desvío de costos.
+
+### 9.1.1 Documentación a buscar antes de ir a la obra
+
+| Documento | Dónde |
+|---|---|
+| **Planos municipales aprobados** | Municipalidad de Santa Rosa — archivo de obras |
+| **Plano sanitario aprobado (conforme a obra)** | Prestadora de agua/cloaca; el propietario debería tenerlo |
+| **Plano de gas conforme a obra** | Camuzzi Gas Pampeana; el usuario debe tener copia en papel (NAG-200, 8.1) |
+| **Plano eléctrico y certificado de la instalación** | Rara vez existe en obra antigua |
+| **Reglamento de copropiedad** (en PH) | Escribano / administración. **Define qué es propio y qué es común, y qué se puede modificar** |
+| **Actas de asamblea** relativas a instalaciones comunes | Administración del consorcio |
+| **Certificados de conservación de ascensor** | Administración |
+
+### 9.1.2 Relevamiento en obra — checklist
+
+**SANITARIAS — AGUA**
+
+| Ítem | Cómo se releva |
+|---|---|
+| Material de las cañerías | Abrir un punto testigo: bajo bacha, en un nicho, tras un artefacto. **Identificar visualmente: plomo (gris blando, se raya con la uña), hierro galvanizado (rosca, óxido), cobre, PPR, PVC** |
+| Presión disponible | **Manómetro en canilla de servicio** de la planta más alta, con y sin consumo |
+| Caudal | Cronometrar el llenado de un balde de 10 l en la canilla más desfavorable |
+| Ubicación y estado del tanque | **Subir a la cubierta.** Estado del tanque, la tapa, la ventilación, el colector, las llaves. **Sacar foto de todo** |
+| Recorrido de bajadas y montantes | Mapear con golpes y detector, y con las bocas de acceso |
+| Existencia de medición individual | Ver el gabinete |
+| **Fugas** | Cerrar todos los consumos y observar el medidor durante 1 hora |
+| Estado del agua | Abrir una canilla que no se use hace tiempo: **agua marrón = corrosión en cañería de hierro** |
+
+**SANITARIAS — DESAGÜES**
+
+| Ítem | Cómo se releva |
+|---|---|
+| Material | PVC, hierro fundido, cemento comprimido, cerámico |
+| **Pendiente disponible** | **Medir cotas: nivel del piso terminado vs. nivel de la boca de acceso / cámara.** Es el dato que decide si se puede mover un baño |
+| Ubicación de la cámara de inspección | Levantar tapas. Verificar que estén ventiladas y accesibles |
+| Ubicación de montantes y su diámetro | En el pleno o en el patio |
+| Estado del sistema | **Prueba de humo o cámara de video** si hay dudas. En reformas grandes, vale la pena la videoinspección |
+| **Olor** | Un baño que huele indica sifón seco, ventilación deficiente o cañería rota |
+
+**GAS**
+
+| Ítem | Cómo se releva |
+|---|---|
+| **Contratar a un Instalador Matriculado. Punto.** | Nadie más puede intervenir |
+| Material y estado de la cañería | Visible en el gabinete y en los tramos a la vista |
+| **Prueba de hermeticidad** | La hace el matriculado (NAG-200, cap. 7) |
+| Tipo de artefactos | **Cámara abierta o estanca.** Determina todo lo demás |
+| **Ventilaciones existentes** | Medir las rejillas. **Comparar con lo exigido por §4.10** |
+| Conductos de evacuación | Estado, material, remate. **Prueba de humo** |
+| Plano conforme a obra | En poder del usuario |
+
+**ELÉCTRICA**
+
+| Ítem | Cómo se releva |
+|---|---|
+| **¿Hay conductor de protección (tierra)?** | Verificar en los tomacorrientes con un buscapolos/tester. **La ausencia de tierra en toda la instalación es lo más frecuente en obra anterior a 1990** |
+| **¿Hay interruptor diferencial?** | Mirar el tablero. Si no lo hay: **se cambia el tablero, sí o sí** |
+| **¿Hay jabalina?** | Buscar la cámara de inspección de PAT. **Medir la resistencia** |
+| Sección de los conductores | Abrir una caja y medir |
+| **Material del aislante** | **Cable con aislación de goma o tela (anterior a 1970): SE CAMBIA COMPLETO. Está cristalizado y es riesgo de incendio** |
+| Cantidad de circuitos | Contar en el tablero |
+| Estado de las cañerías | Si son de acero y están sanas, **se pueden reutilizar para pasar cable nuevo** |
+| Potencia contratada | En la factura de la distribuidora |
+| **Medición de aislación y de resistencia de PAT** | Con megóhmetro y telurímetro. **Es un ensayo, no una inspección visual** |
+
+**TÉRMICA Y VENTILACIÓN**
+
+| Ítem | Cómo se releva |
+|---|---|
+| Composición de muros y cubierta | Espesor, si hay cámara de aire, si hay aislación. **Sondeo con mecha** |
+| Carpinterías | Material, tipo de vidrio, **estado de burletes y herrajes** |
+| **Puentes térmicos visibles** | **Manchas de humedad y moho en encuentros de muro-losa, esquinas y bajo ventanas: son puentes térmicos con condensación** |
+| Sistema de calefacción existente | Tipo, antigüedad, estado |
+| Ventilación de baños y cocina | ¿Hay conducto? ¿Funciona? |
+
+### 9.1.3 Cuándo hace falta un ensayo, no una inspección
+
+| Duda | Ensayo |
+|---|---|
+| ¿La instalación eléctrica está sana? | **Medición de resistencia de aislación (megado)** y **medición de PAT (telurímetro)** |
+| ¿La cañería de gas es hermética? | **Prueba de hermeticidad (matriculado)** |
+| ¿La cloaca está sana? | **Videoinspección + prueba hidráulica** |
+| ¿Hay pérdida de agua oculta? | **Prueba de presión con manómetro, 24 h** |
+| ¿Cuánto se pierde por infiltración? | **Blower door (n50)** — poco disponible en el interior pero definitivo |
+| ¿Dónde están los puentes térmicos? | **Termografía infrarroja** en día frío. **Es la herramienta más útil y menos usada en reformas argentinas** |
+| ¿La estructura tolera la reforma? | Cálculo estructural con relevamiento de armaduras (pachómetro) |
+
+---
+
+## 9.2 Qué se reutiliza y qué se cambia siempre
+
+### 9.2.1 Tabla de decisión
+
+| Elemento | ¿Se reutiliza? | Criterio |
+|---|---|---|
+| **Cañería de PLOMO (agua)** | ❌ **NUNCA. SE CAMBIA SIEMPRE** | **Riesgo sanitario.** El plomo se disuelve en el agua, especialmente si es blanda o ácida, y es un neurotóxico acumulativo sin umbral seguro. **No es negociable, no es una cuestión de estado de conservación** |
+| **Cañería de HIERRO GALVANIZADO (agua) de más de 25-30 años** | ❌ **Se cambia** | La galvanización se consume; **se incrusta y se reduce la sección interior hasta un 50-70 %**; produce agua marrón y pérdidas por picadura. Un tramo puede parecer sano y estar tapado. **Parchear un tramo acelera la falla de los adyacentes por el cambio de par galvánico** |
+| **Cañería de COBRE sana** | ✅ **Se puede reutilizar** | Si no tiene picaduras, verdín ni reparaciones múltiples. **Hacer prueba de presión.** ⚠ **Nunca conectar cobre nuevo aguas arriba de hierro galvanizado existente** |
+| **Cañería de PPR/PEX en buen estado** | ✅ Se reutiliza | Salvo que esté expuesta a UV (se cristaliza) o que se necesite ampliar el caudal |
+| **Instalación eléctrica SIN conductor de protección (tierra)** | ❌ **SE CAMBIA / SE COMPLETA SIEMPRE** | Sin PE no hay protección contra contactos indirectos. **No se puede poner un diferencial y decir que está resuelto**: el diferencial sin tierra protege a la persona pero no evita la puesta en tensión de las masas |
+| **Instalación eléctrica SIN interruptor diferencial** | ❌ **Se agrega SIEMPRE** | Ítem no negociable |
+| **Cable con aislación de goma, tela o papel** | ❌ **SE CAMBIA SIEMPRE** | Cristalizado. Riesgo de cortocircuito e incendio |
+| **Cañería eléctrica de acero sana** | ✅ **Se reutiliza para pasar cable nuevo** | **Es el gran ahorro de una reforma eléctrica.** Verificar que el caño esté continuo y que se pueda pasar la guía. ⚠ Verificar el coeficiente de ocupación con la nueva sección de conductores |
+| **Tablero antiguo de porcelana con fusibles tipo tapón** | ❌ **Se cambia SIEMPRE** | Sin diferencial, sin capacidad de ruptura conocida, sin PE |
+| **Cañería de gas de hierro** | 🔶 **Decide el matriculado** | Se conserva si aprueba la prueba de hermeticidad y si el diámetro es suficiente para los artefactos nuevos. **Si se agrega un artefacto, hay que recalcular** |
+| **Artefacto de gas de CÁMARA ABIERTA** | 🔶 **Se recomienda cambiar a cámara estanca** | Si se hermetiza la vivienda (carpinterías nuevas, aislación), **el artefacto de cámara abierta se vuelve más peligroso**, porque desaparecen las infiltraciones que lo alimentaban. **Este es un riesgo real y poco conocido de las reformas de eficiencia energética** |
+| **Cloaca de hierro fundido sana** | ✅ Se reutiliza | Verificar con videoinspección. n = 0,015 (peor que el plástico): verificar capacidad y pendiente |
+| **Cloaca de cemento comprimido o cerámica** | 🔶 Según estado | Frecuentemente con juntas abiertas y raíces. **Videoinspección obligatoria** |
+| **Tanque de agua de fibrocemento (con asbesto)** | ❌ **Se cambia, con protocolo** | **El fibrocemento con amianto es un residuo peligroso.** Su retiro tiene un protocolo específico de manipulación y disposición. `[VERIFICAR normativa provincial de La Pampa sobre manipulación y disposición de amianto]` |
+| **Termotanque / calefón de más de 15 años** | ❌ Se cambia | Rendimiento bajo, riesgo de corrosión del tanque y de fuga de gas |
+
+---
+
+## 9.3 Plomo, hierro galvanizado y fibrocemento: los tres problemas heredados
+
+### 9.3.1 Plomo
+
+| Aspecto | Detalle |
+|---|---|
+| **Dónde aparece** | Conexiones domiciliarias y ramales interiores de obras anteriores a ≈ 1960-70. También en soldaduras de uniones de cobre antiguas (soldadura estaño-plomo) |
+| **Cómo identificarlo** | Gris mate, **blando (se raya con la uña)**, uniones abocardadas o soldadas, sin rosca. Golpea con sonido sordo |
+| **Riesgo** | **Neurotóxico acumulativo. No hay nivel seguro de exposición.** Afecta especialmente a niños y embarazadas. El agua estancada durante la noche es la más contaminada |
+| **Qué hacer** | **Cambio completo, incluida la conexión domiciliaria.** Si la conexión desde la red es de plomo, **solicitar el cambio a la prestadora** |
+| **Medida transitoria** | Dejar correr el agua 2-3 minutos antes de consumir después de un período de estancamiento. **No es una solución, es una mitigación** |
+
+### 9.3.2 Hierro galvanizado
+
+| Aspecto | Detalle |
+|---|---|
+| **Dónde aparece** | Instalaciones de agua fría y caliente de obras de 1950 a 1990 |
+| **Cómo identificarlo** | Uniones **roscadas** con cuplas, codos y tés de fundición maleable galvanizada; color gris plateado que vira a marrón |
+| **Mecanismo de falla** | El zinc se consume (más rápido en agua caliente y con velocidad alta); queda el acero expuesto que se oxida; **la incrustación reduce la sección interior progresivamente** |
+| **Síntomas** | Agua marrón al abrir después de un tiempo; **pérdida progresiva de caudal**, notoria en la ducha; pérdidas puntuales por picadura (pinholes), típicamente en roscas y en tramos de agua caliente |
+| **Vida útil típica** | **20 a 30 años** en agua fría; **10 a 20 años** en agua caliente |
+| **Por qué NO se parchea** | Al reemplazar un tramo por cobre o plástico se altera el par galvánico y el régimen hidráulico; **los tramos adyacentes fallan más rápido**. Y el problema de sección reducida persiste en el resto |
+| **Qué hacer** | **Cambio completo por PPR, PEX/multicapa o cobre.** En reformas, es la partida que más se subestima |
+
+### 9.3.3 Fibrocemento con amianto
+
+| Aspecto | Detalle |
+|---|---|
+| **Dónde aparece** | Tanques de agua, caños de desagüe pluvial y de ventilación, chapas de cubierta, conductos de gases de calderas, en obras anteriores a la prohibición |
+| **Riesgo** | **Las fibras de amianto liberadas al aire son cancerígenas (mesotelioma, cáncer de pulmón). El riesgo aparece al CORTAR, ROMPER O PERFORAR el material**; el material intacto y encapsulado tiene riesgo bajo |
+| **Qué hacer** | **NO cortar ni romper en seco.** Retiro con protocolo: humectación, EPP (máscara P3), envuelto en polietileno, disposición como **residuo peligroso** |
+| **A verificar** | `[VERIFICAR la normativa nacional (Resolución 823/2001 del Ministerio de Salud que prohíbe el amianto) y la normativa provincial de La Pampa sobre manipulación y disposición]` |
+| **En el pliego** | Incluir un ítem específico de "retiro y disposición de material con amianto" con su protocolo. **No dejarlo como imprevisto** |
+
+---
+
+## 9.4 Instalación eléctrica antigua sin diferencial ni tierra
+
+### 9.4.1 El diagnóstico típico
+
+Una vivienda argentina de los años 60-80 tiene:
+- Tablero con **fusibles de tapón de porcelana** o llaves térmicas viejas, **sin diferencial**
+- **Dos circuitos** (luz y tomas) para toda la casa
+- Cable de **1,5 mm² en toda la instalación**, incluidos los tomas
+- **Sin conductor de protección (tierra)** — tomacorrientes de 2 patas
+- **Sin jabalina**
+- Cañería de acero (que sí suele estar sana)
+- Cables con aislación de PVC viejo o, en las más antiguas, **de goma o tela**
+
+### 9.4.2 Alcance mínimo de la intervención — no negociable
+
+| Ítem | Obligatorio |
+|---|---|
+| **1. Tablero nuevo completo** | Con **interruptor general, diferenciales de 30 mA sectorizados y termomagnéticos por circuito**. Barra de neutro y barra de tierra separadas |
+| **2. Toma de tierra (jabalina) nueva** | **IRAM 2309**, con cámara de inspección, barra de cobre con puente removible y tomacable IRAM 2343. **Medir la resistencia (≤ 40 Ω; recomendable ≤ 10 Ω)** |
+| **3. Conductor de protección (PE) en TODA la instalación** | **2,5 mm² mínimo**, recorriendo integralmente, incluidas cajas y bocas sin tomacorriente |
+| **4. Reemplazo de todos los tomacorrientes** | Por **2x10+T IRAM 2071 con pantalla de protección** |
+| **5. Cable nuevo** en al menos los circuitos de tomacorrientes | **2,5 mm² mínimo** |
+| **6. División en circuitos** según el grado de electrificación resultante | Ver §5.2 y §5.3 |
+| **7. Barra equipotencial principal** | Vinculando estructura, cañerías metálicas de agua y gas en su ingreso |
+| **8. Conexión equipotencial suplementaria en baños** | AEA 90364-7-701 |
+| **9. Medición final** | Aislación, PAT, funcionamiento de diferenciales |
+
+### 9.4.3 Estrategia de mínima intervención (cuando no se puede romper todo)
+
+**Se puede reutilizar la cañería de acero existente si está sana y continua.** El procedimiento:
+
+1. **Verificar la continuidad de la cañería** pasando una guía. Si pasa, sirve.
+2. **Retirar el cable viejo** tirando de él con la guía nueva atada, para no perder el recorrido.
+3. **Verificar el coeficiente de ocupación:** con la nueva sección (2,5 mm² en lugar de 1,5) y el agregado del PE, **el caño puede quedar sobreocupado**. Verificar contra el límite (§5.15). **Si no entra, hay que ir por otro camino.**
+4. **Donde no hay cañería o no se puede pasar:** ir por **cablecanal a la vista**, por **zócalo técnico** o por **cielorraso suspendido**. Ver §9.6.
+5. **Nunca dejar tramos viejos energizados "porque andan".**
+
+> **La trampa a evitar:** poner solo un diferencial en el tablero de una instalación sin tierra y declarar la obra terminada. **Es una mejora, pero no cumple.** El diferencial protege a la persona que toca, pero las masas de los electrodomésticos siguen quedando en tensión ante una falla de aislación, y una falla fase-masa no dispara la protección. **Y ante un siniestro, la responsabilidad profesional es del que firmó.**
+
+---
+
+## 9.5 Mover baños y cocinas: límites reales
+
+### 9.5.1 El límite duro: la pendiente del desagüe primario
+
+**Todo lo demás se puede resolver. La pendiente, no.**
+
+| Dato | Valor |
+|---|---|
+| Pendiente mínima Ø110 | **1,67 % (1:60)** |
+| Pendiente de proyecto recomendada | **2,0 %** |
+| Caída en 1 m con 2 % | 20 mm |
+| **Espesor de contrapiso típico en obra existente** | **8 a 12 cm** |
+| **Diámetro exterior del Ø110** | 110 mm |
+| **Espacio necesario para el caño + pendiente** | El caño solo ya ocupa 110 mm. **En un contrapiso de 10 cm, el Ø110 NO ENTRA** |
+
+> ### ⭐ LA REGLA DE ORO DE LAS REFORMAS DE BAÑO
+>
+> **Con un contrapiso de 10 cm, el desplazamiento máximo del inodoro es de aproximadamente 1,0 a 1,5 metros — y solo si se acepta subir el nivel del piso terminado.**
+>
+> **Cálculo:** para mover el inodoro 3 m con 2 % de pendiente hace falta **6 cm de caída**, más los 11 cm del diámetro del caño, más el espesor de carpeta y solado. **Se necesitan ≈ 20 cm de espacio bajo el nivel del piso terminado.** No existen en un piso existente.
+
+### 9.5.2 Matriz de decisión: ¿puedo mover el baño?
+
+| Situación | ¿Se puede? | Cómo |
+|---|---|---|
+| **Mover el inodoro < 1,0 m dentro del mismo baño** | ✅ **Sí** | Con contrapiso de 10-12 cm, resolviendo la pendiente en el contrapiso |
+| **Mover el inodoro 1,0 a 2,0 m** | 🔶 **Con condiciones** | Requiere **subir el nivel del piso del baño 5-10 cm** (escalón en la puerta) o **piso técnico elevado** |
+| **Mover el inodoro más de 2,0 m** | ❌ **No con desagüe por gravedad** | Ver soluciones abajo |
+| **Mover lavatorio, bidet, ducha (Ø38-50)** | ✅ **Sí, con bastante libertad** | Ø38-50 con 3 % ocupa mucho menos. **Hasta 3-5 m es viable** |
+| **Mover la pileta de cocina** | ✅ Sí | Ø50-60 con 2,5-3 % |
+| **Mover el baño a otro ambiente de la misma planta** | 🔶 Depende | **Solo si hay montante o boca de acceso cerca del nuevo lugar** |
+| **Poner un baño en un lugar sin montante cerca** | ❌ **No con gravedad** | Ver soluciones abajo |
+| **Poner un baño en subsuelo bajo la cota de cámara** | ❌ **No con gravedad** | **Bomba trituradora obligatoria** |
+
+### 9.5.3 Soluciones cuando la gravedad no alcanza
+
+| Solución | Descripción | Pro | Contra |
+|---|---|---|---|
+| **Elevar el nivel del piso del baño** | Piso a 8-12 cm sobre el resto, con escalón o rampa | Simple, económico | Escalón (problema de accesibilidad), reduce la altura libre, cambia el nivel de puertas y de la mesada |
+| **Piso técnico elevado (pedestales)** | Estructura de pedestales con placa | Registrable, permite todas las instalaciones | Costo, altura (mín. 10-15 cm) |
+| **Trituradora / bomba sanitaria** (tipo Sanitrit / SFA) | Bomba con triturador integrada tras el inodoro. Descarga por Ø32-40 mm a presión, con desarrollo horizontal de hasta 50-100 m y elevación de hasta 4-7 m | **Libera completamente el emplazamiento** | **Ruido audible en cada descarga.** Requiere alimentación eléctrica. Requiere mantenimiento. **Falla si se tiran toallitas.** Es un equipo, no una instalación. **Verificar su admisión en el reglamento local** |
+| **Bajar el desagüe al departamento de abajo** | Colgar el caño del cielorraso del piso inferior | Resuelve la pendiente | **REQUIERE ACUERDO CON EL VECINO Y APROBACIÓN DE ASAMBLEA en PH.** En la práctica, casi imposible. **Y jurídicamente es una servidumbre** |
+| **Mover el baño hacia el montante en lugar de alejarlo** | Rediseñar la planta | La mejor solución: **es de proyecto, no de instalación** | Requiere flexibilidad del comitente |
+
+> **RECOMENDACIÓN DEL ESTUDIO: en el anteproyecto de reforma, LO PRIMERO que se marca en la planta existente es la posición de los MONTANTES y de las BOCAS DE ACCESO. La nueva planta se organiza alrededor de ellos.** Es la restricción más rígida de toda la reforma, más que la estructura.
+
+### 9.5.4 Otras limitaciones al mover núcleos húmedos
+
+| Limitación | Detalle |
+|---|---|
+| **Ventilación cloacal** | Si el baño nuevo queda a más de 10-15 m de un punto ventilado, **hay que ventilarlo** (§2.8.4). En una reforma interior, **la ventilación es a menudo más difícil de resolver que el desagüe** |
+| **Ventilación del local** | Un baño sin ventana requiere extracción mecánica con conducto al exterior. **En un departamento en altura, si no hay conducto existente, no hay dónde descargar** |
+| **Gas** | Si el baño nuevo tiene calefón: **solo cámara estanca** (NAG-200, 5.9.2.2), y el terminal debe salir a fachada con las distancias normativas. **En un departamento interior sin fachada disponible, no se puede** |
+| **Estructura** | **NO se puede perforar una viga ni una losa pretensada sin cálculo.** El pase de un Ø110 a través de una losa requiere verificación estructural |
+| **Impermeabilización** | Todo baño nuevo requiere impermeabilización del área húmeda con **membrana líquida o manta, subiendo 20 cm en muros y 180 cm en la zona de ducha** |
+| **Acústica** | Un baño nuevo sobre el dormitorio del vecino de abajo es un problema. Aislar la losa y usar caño insonorizado |
+| **Reglamento de copropiedad** | **En PH, verificar qué es propio y qué común, y si el reglamento prohíbe mover núcleos húmedos.** Muchos lo hacen |
+
+---
+
+## 9.6 Reformar sin romper
+
+### 9.6.1 Estrategias
+
+| Estrategia | Aplicación | Ventajas | Desventajas |
+|---|---|---|---|
+| **Cielorraso técnico suspendido** | Pasar agua, desagües secundarios, eléctrica, datos, conductos de ventilación y de aire acondicionado | **La solución más versátil.** Registrable con tapas o con placa desmontable | **Pierde 15-40 cm de altura libre.** En obra antigua con 3,00 m de altura, es aceptable; con 2,50 m, no |
+| **Zócalo técnico / cablecanal de zócalo** | Circuitos eléctricos y datos | Rápido, sin romper, registrable | Visible; limita la ubicación de muebles. **Solo baja tensión y datos, nunca agua ni gas** |
+| **Cablecanal perimetral a la vista** | Eléctrica en reformas de bajo presupuesto | Muy rápido | Estético |
+| **Piso flotante o piso técnico elevado** | Desagües secundarios, eléctrica, calefacción por losa | Permite pendientes | Sube el nivel; escalones |
+| **Tabique de placa de yeso con estructura de acero (drywall)** | Todo tipo de instalaciones nuevas | **Excelente: permite pasar todo dentro del tabique sin picar mampostería.** Aislación acústica con lana mineral | Menor capacidad de colgar peso; requiere refuerzos |
+| **Trasdosado** (placa sobre muro existente con perfilería) | Instalaciones verticales sobre muro existente + oportunidad de **agregar aislación térmica** | **Doble beneficio: instalaciones + aislación.** Muy recomendable en Santa Rosa | Pierde 5-10 cm por cara |
+| **Canalización por muro exterior (a la vista)** | Bajadas pluviales, montantes en patios | Sin romper | Estético; en Santa Rosa: **protección UV y contra congelamiento** |
+| **Mueble técnico / nicho registrable** | Colectores de agua, tableros | Concentra los puntos de mantenimiento | Ocupa lugar |
+| **Sistema de colector con multicapa/PEX** | Distribución de agua | **Un caño continuo por artefacto, sin uniones en el muro.** Cero riesgo de pérdida oculta. Se pasa por cielorraso o piso | Requiere el nicho del colector |
+
+### 9.6.2 Alturas necesarias para cielorraso técnico
+
+| Contenido del pleno | Altura necesaria (desde losa a cielorraso terminado) |
+|---|---|
+| Solo cableado eléctrico y datos | **10 – 15 cm** |
+| Cañería de agua (PPR/multicapa) + eléctrica | **15 – 20 cm** |
+| Desagüe secundario Ø50 con pendiente + agua + eléctrica | **20 – 30 cm** |
+| **Desagüe primario Ø110 con pendiente** | **30 – 45 cm** |
+| Conducto de aire acondicionado (fan coil ducto o VRF) | **30 – 45 cm** |
+| Conducto de aire + desagüe primario + agua + eléctrica (pleno completo) | **45 – 70 cm** |
+| Conducto de ventilación con recuperador de calor + resto | **50 – 70 cm** |
+
+> **Regla de coordinación de plenos:** **la altura del pleno la fija SIEMPRE el elemento con pendiente (desagüe) o el de mayor sección (conducto de aire), nunca los cables.** En el diseño, resolver primero el desagüe y el conducto, y después acomodar el resto.
+
+---
+
+## 9.7 Orden de trabajo y coordinación de gremios
+
+### 9.7.1 Secuencia estándar de una reforma integral
+
+```
+FASE 0 — PREVIA
+ ├─ Relevamiento completo (§9.1) y ensayos
+ ├─ Verificación de reglamento de copropiedad y permisos
+ ├─ Proyecto ejecutivo de instalaciones
+ └─ Tramitación: permiso municipal, factibilidades de las prestadoras
+
+FASE 1 — DEMOLICIÓN
+ ├─ CORTE Y ANULACIÓN de servicios: agua, gas (POR MATRICULADO), electricidad
+ ├─ Retiro de artefactos y de instalaciones a descartar
+ ├─ Retiro de material con amianto (protocolo, §9.3.3)
+ ├─ Demolición de tabiques y picado de revoques
+ └─ Retiro de escombro
+
+FASE 2 — ESTRUCTURA Y ALBAÑILERÍA GRUESA (si corresponde)
+ ├─ Refuerzos estructurales, dinteles
+ ├─ EJECUCIÓN DE PASES Y CANALETAS  ← COORDINACIÓN CRÍTICA
+ └─ Levantamiento de mampostería nueva
+
+FASE 3 — INSTALACIONES "EN GRUESO"  ← LA FASE QUE DEFINE LA OBRA
+ │  ORDEN INTERNO (de lo más rígido a lo más flexible):
+ ├─ 1. DESAGÜES CLOACALES Y PLUVIALES  (mandan las pendientes: no negocian)
+ ├─ 2. CONDUCTOS de aire acondicionado y ventilación (secciones grandes, no se doblan)
+ ├─ 3. GAS (por MATRICULADO; recorridos rígidos, prohibiciones de trazado)
+ ├─ 4. AGUA fría y caliente (algo de flexibilidad)
+ ├─ 5. ELÉCTRICA y corrientes débiles (la más flexible: se acomoda a lo demás)
+ │
+ ├─ ► PRUEBAS ANTES DE TAPAR:
+ │     • Hermeticidad de gas (matriculado) — NAG-200 cap. 7
+ │     • Presión de agua (24 h con manómetro)
+ │     • Presión de losa radiante (6 bar, 24 h)  ← ANTES de la carpeta
+ │     • Prueba hidráulica de desagües
+ │     • INSPECCIÓN PARCIAL de gas por la prestadora
+ │     • FOTOGRAFIAR TODO antes de tapar (con cinta métrica visible)
+ │
+ └─ ► NO TAPAR NADA SIN PRUEBA Y SIN FOTO
+
+FASE 4 — CERRAMIENTOS Y AISLACIONES
+ ├─ Impermeabilizaciones de áreas húmedas y cubiertas
+ ├─ Aislación térmica (trasdosados, cubierta)
+ ├─ Contrapisos y carpetas (INCLUYE la carpeta de losa radiante)
+ ├─ Tabiques de placa de yeso (con instalaciones adentro)
+ └─ Cielorrasos (dejando REGISTROS)
+
+FASE 5 — TERMINACIONES
+ ├─ Revoques y enduidos
+ ├─ Solados y revestimientos
+ ├─ Carpinterías
+ ├─ Pintura
+ └─ Curado de la carpeta de losa radiante (21 días) + ciclo de puesta en marcha
+
+FASE 6 — INSTALACIONES "EN FINO"
+ ├─ Colocación de artefactos sanitarios y grifería
+ ├─ Colocación de artefactos a gas (POR MATRICULADO)
+ ├─ Tableros, llaves, tomas, artefactos de iluminación
+ ├─ Equipos de climatización
+ └─ Detección, alarma, corrientes débiles
+
+FASE 7 — PRUEBAS FINALES Y HABILITACIÓN
+ ├─ Prueba de hermeticidad final de gas + INSPECCIÓN FINAL de la prestadora
+ ├─ Medición de aislación y de PAT; ensayo de diferenciales
+ ├─ Prueba de funcionamiento de todos los sistemas
+ ├─ Prueba de humo de conductos de evacuación
+ ├─ PLANOS CONFORME A OBRA
+ └─ Manual de uso y mantenimiento al comitente
+```
+
+### 9.7.2 La regla de coordinación de gremios
+
+> **ORDEN DE PRIORIDAD EN EL TRAZADO (de mayor a menor rigidez):**
+>
+> **1. DESAGÜES por gravedad** — no se pueden doblar ni subir. Mandan siempre.
+> **2. CONDUCTOS de aire** — sección grande, radios de curvatura mínimos.
+> **3. GAS** — trazado rígido, prohibiciones normativas de recorrido, y **quien lo hace es un matriculado con su propio criterio**.
+> **4. AGUA a presión** — puede subir, bajar y esquivar.
+> **5. ELÉCTRICA y datos** — el más flexible; se acomoda a todo lo anterior.
+>
+> **El gremio que llega último a un pleno mal coordinado es siempre el electricista, y siempre es el que "no tiene lugar". Eso es un fracaso de coordinación del estudio, no del electricista.**
+
+### 9.7.3 Reglas de convivencia entre instalaciones
+
+| Regla |
+|---|
+| **La eléctrica va SIEMPRE POR ENCIMA del agua** en un cruce vertical. Si hay una pérdida, no moja el cable |
+| **Gas nunca comparte pleno con eléctrica.** NAG-200 exige separación mínima de 0,50 m entre gabinetes de gas e instalaciones eléctricas con riesgo de chispa (0,30 m con ventilación) |
+| **Ninguna instalación pasa por el hueco del ascensor ni por la caja de escalera** |
+| **NAG-200, 4.5: "En ningún caso las instalaciones de gas deben quedar fijadas a cañerías de conducción de otros fluidos o servicios"** |
+| **NAG-200, 6.3.4: los conductos de evacuación de gases no pueden alojarse en el mismo pleno ni compartir recinto cerrado con instalaciones de fluidos combustibles, corrosivos o químicamente nocivos** |
+| **Guía AySA/ERAS: cañerías principales y albañales no suspendidos, separados 0,40 m como mínimo; no se permiten superpuestas** |
+| Separación mínima entre potencia y corrientes débiles: **20 cm en paralelo**, cruces a 90° |
+| **Todo pase de una instalación por un elemento sectorizador de incendio: sellado cortafuego** |
+
+---
+
+# 10. COORDINACIÓN Y DOCUMENTACIÓN
+
+## 10.1 Entregables por instalación y escalas
+
+### 10.1.1 Tabla de entregables del proyecto ejecutivo
+
+| Instalación | Documentos | Escala |
+|---|---|---|
+| **SANITARIA — Agua** | Planta general por nivel con trazado de cañerías, diámetros y llaves<br>Planta de cubierta con tanques, colector, ventilaciones y bajadas<br>Planta de subsuelo con cisterna y sala de bombas<br>**Isométrico general** de agua fría y caliente<br>Detalle de sala de bombas y de tanques<br>Detalle de sala/gabinete de medidores<br>Planilla de artefactos y de cálculo<br>Memoria de cálculo firmada | **1:100 o 1:50** plantas<br>**1:20 o 1:25** detalles<br>**Sin escala** isométricos |
+| **SANITARIA — Cloacal y pluvial** | Planta general por nivel con trazado, diámetros, pendientes, PP, BA, BDA<br>Planta de PB/subsuelo con cámaras, albañales y conexión<br>**Isométrico de desagües** primarios, secundarios y ventilaciones<br>Detalle de cámaras, pozo de bombeo, interceptores<br>Corte del montante con acotación de niveles<br>Memoria y planillas | 1:100 o 1:50<br>1:20 detalles |
+| **GAS** *(lo firma el matriculado)* | Planta con trazado, diámetros, longitudes, artefactos y caudales<br>Ubicación del gabinete/compartimento de medidores<br>**Detalle de ventilaciones (rejillas superior e inferior) con su superficie**<br>Detalle de conductos de evacuación y remates<br>Planilla de cálculo de caudales y diámetros<br>Formularios ENARGAS | Según exigencia de la prestadora |
+| **ELÉCTRICA** | Planta con bocas, circuitos y canalizaciones, por nivel<br>**Esquema unifilar general** (acometida, medición, TP, TSG, montantes)<br>**Esquema unifilar de cada tablero**<br>Planilla de circuitos (destino, bocas, sección, protección, caída de tensión)<br>Planta de la sala de medidores<br>Detalle de puesta a tierra<br>Planta de corrientes débiles (datos, TV, portero, CCTV)<br>Memoria de cálculo de demanda | 1:100 o 1:50 plantas<br>**Sin escala** unifilares<br>1:20 detalles |
+| **TERMOMECÁNICA** | Planta con equipos, conductos, rejillas y difusores<br>Planta de cubierta con condensadoras y su acceso<br>Esquema de principio del sistema hidráulico (si hay agua)<br>**Planta de losa radiante con circuitos, paso y colectores**<br>Planilla de cargas térmicas por local<br>Detalle de sala de máquinas<br>Memoria de cálculo | 1:100 o 1:50<br>1:50 losa radiante<br>1:20 detalles |
+| **INCENDIO** | Planta con sectorización, medios de escape, matafuegos, hidrantes, detección<br>**Plano de "Condiciones contra Incendio"** para presentación<br>Isométrico de la red de incendio<br>Detalle de sala de bombas y de reserva<br>Memoria de cálculo | Según exigencia de la autoridad |
+| **ASCENSORES** | Planta y corte del hueco, foso, sobrerrecorrido y sala (si existe)<br>Planilla de datos técnicos<br>**Estudio de tráfico** | 1:50 o 1:20 |
+| **COORDINACIÓN** | **Plano de PASES** de losa y de muros, por nivel<br>**Plano de coordinación de plenos y cielorrasos**<br>**Cortes de coordinación** por los sectores críticos | **1:50** pases<br>**1:20 o 1:25** cortes de coordinación |
+
+### 10.1.2 Contenido mínimo de una memoria de cálculo
+
+Toda memoria debe contener:
+1. **Datos de partida** (normativa aplicada con su edición, datos de la prestadora, condiciones de diseño)
+2. **Hipótesis adoptadas** y su justificación
+3. **Fórmulas empleadas** con su fuente
+4. **Desarrollo del cálculo**, tramo por tramo o local por local
+5. **Verificaciones** (presión, velocidad, caída de tensión, pendiente, etc.)
+6. **Resultados y elementos adoptados**
+7. **Firma y sello del profesional matriculado**
+
+> La Guía AySA/ERAS es explícita (2.16): *"Se deberá presentar una memoria de cálculo de un profesional con incumbencias en hidráulica que se ajuste a las pautas de diseño citadas en la presente norma."*
+
+## 10.2 Simbología
+
+**Fuente primaria para sanitarias:** **Capítulo 1 de la Guía AySA/ERAS — "Símbolos y abreviaturas"**. Es la simbología oficial y la que espera la prestadora.
+
+### 10.2.1 Abreviaturas sanitarias de uso corriente
+
+| Sigla | Significado |
+|---|---|
+| **AF / AC** | Agua fría / Agua caliente |
+| **BA** | Boca de acceso |
+| **BDA / BDT** | Boca de desagüe abierta / tapada |
+| **CI** | Cámara de inspección |
+| **CDV** | Caño de descarga y ventilación |
+| **CVS** | Caño de ventilación subsidiaria |
+| **PP / PPA / PPT** | Pileta de piso / abierta / tapada |
+| **RP** | Rejilla de piso |
+| **VE** | Ventilación de extremo |
+| **CS** | Canilla de servicio |
+| **LP** | Llave de paso |
+| **LPVS** | Llave de paso a válvula suelta |
+| **TR / TB** | Tanque de reserva / de bombeo |
+| **VL** | Válvula de limpieza |
+| **E** | Embudo |
+| **CLL** | Caño de lluvia |
+| **PL** | Pileta de lavar |
+| **PC** | Pileta de cocina |
+| **IN** | Inodoro |
+| **LAV / BID / BÑ / DU** | Lavatorio / bidet / bañera / ducha |
+
+### 10.2.2 Convención de líneas
+
+| Instalación | Convención habitual |
+|---|---|
+| Agua fría | Línea llena fina, color **azul** |
+| Agua caliente | Línea de trazos, color **rojo** |
+| Recirculación ACS | Línea de trazo y punto, rojo |
+| Desagüe primario | Línea llena gruesa, **negro/marrón** |
+| Desagüe secundario | Línea de trazos, negro |
+| Ventilación cloacal | Línea de trazo y punto, negro |
+| Pluvial | Línea llena, **celeste/verde** |
+| Gas | Línea llena, **amarillo/ocre** |
+| Incendio | Línea llena gruesa, **rojo** |
+| Existente a conservar | Gris o línea fina |
+| **A demoler / anular** | **Línea de trazos, amarillo** (convención de reforma) |
+| **Nuevo** | **Línea llena, rojo** (convención de reforma) |
+
+> **En reformas, usar la convención de tres colores (amarillo = demoler, rojo = nuevo, negro/gris = existente) en TODOS los planos de instalaciones.** Evita malentendidos con el gremio y es lo que espera el municipio.
+
+## 10.3 Plantas, isométricos y esquemas unifilares
+
+| Documento | Para qué sirve | Qué NO puede faltar |
+|---|---|---|
+| **Planta** | Ubicar en el espacio: dónde va cada elemento | Diámetros, pendientes, sentido de escurrimiento, cotas de los elementos, referencia a los detalles |
+| **Isométrico (axonométrica sin escala)** | **Entender la topología del sistema en 3 dimensiones.** Es el documento que realmente usa el instalador para cotizar y ejecutar | **Todos los tramos con su diámetro, todas las derivaciones, todas las llaves, todos los artefactos, cotas de nivel de cada planta.** No lleva escala pero sí proporción |
+| **Esquema unifilar** | La lógica eléctrica: qué alimenta qué, con qué protección y con qué conductor | Para cada circuito: **denominación, destino, sección del conductor, tipo y calibre de la protección, corriente de cálculo**. Y para el conjunto: acometida, medición, secciones de alimentador y de seccionales |
+| **Esquema de principio (termomecánica)** | La lógica hidráulica/aeráulica del sistema | Generadores, bombas, válvulas, colectores, vasos, sensores, lazos de control |
+| **Corte de coordinación** | Resolver el conflicto entre instalaciones en un pleno o cielorraso | Todas las instalaciones que pasan, con sus cotas de nivel superior e inferior, y la altura libre resultante |
+
+> **Sin isométrico, un proyecto sanitario no está terminado.** Es la diferencia entre un plano que "muestra por dónde van los caños" y uno que se puede construir y cotizar.
+
+## 10.4 Coordinación de pases y colisiones (BIM)
+
+### 10.4.1 El problema
+
+En un PB+9, cada losa es atravesada por: montantes cloacales, ventilaciones, pluviales, agua fría, agua caliente, recirculación, gas, incendio, montantes eléctricas, datos, TV, y conductos de ventilación. **Son 15 a 25 pases por losa.** Si no se coordinan antes de armar la losa:
+- Se pican losas terminadas (con riesgo estructural y sobrecosto)
+- Se descubre en obra que dos instalaciones ocupan el mismo pleno
+- El cielorraso no da la altura necesaria
+
+### 10.4.2 Flujo de trabajo BIM
+
+```
+1. MODELO ARQUITECTÓNICO (BIM) — el modelo maestro
+        │
+        ├─► 2. MODELO ESTRUCTURAL — vinculado
+        │
+        ├─► 3. MODELOS MEP (uno por instalación):
+        │      • Sanitaria (agua + desagües)
+        │      • Gas
+        │      • Eléctrica y corrientes débiles
+        │      • Termomecánica
+        │      • Incendio
+        │
+        ▼
+4. FEDERACIÓN DE MODELOS (Navisworks, Solibri, BIM Collab, o el visor del software)
+        │
+        ▼
+5. DETECCIÓN DE INTERFERENCIAS (clash detection)
+        │  • Hard clash: dos elementos ocupan el mismo volumen
+        │  • Soft clash: no chocan pero no dejan espacio de mantenimiento/aislación
+        │  • Workflow clash: el orden de montaje no es posible
+        │
+        ▼
+6. INFORME DE COLISIONES → asignación de responsable → resolución → nueva verificación
+        │
+        ▼
+7. MODELO COORDINADO ► PLANO DE PASES ► entrega al calculista y a la constructora
+        │
+        ▼
+8. AS-BUILT (conforme a obra) — actualización del modelo con lo ejecutado
+```
+
+### 10.4.3 Reglas de coordinación BIM
+
+| Regla |
+|---|
+| **Modelar con las tolerancias reales**, no con el eje del caño: incluir aislaciones, abrazaderas y espacio de mantenimiento |
+| **Definir zonas de prioridad** por nivel de pleno: la instalación con pendiente ocupa la cota más alta del pleno |
+| **Establecer una matriz de responsabilidad** de resolución de colisiones (quién mueve qué) |
+| **El plano de pases se entrega al calculista ANTES del cálculo estructural definitivo** |
+| **Los pases mayores a un cierto diámetro requieren refuerzo estructural**: hay que identificarlos y dimensionarlos, no solo ubicarlos |
+| **La federación se hace en cada hito del proyecto**, no una sola vez al final |
+| **El modelo as-built es un entregable**, no un extra |
+
+### 10.4.4 Si no se trabaja en BIM
+
+Se puede coordinar igual, con más trabajo:
+1. **Planta de pases superpuesta** con todas las instalaciones en capas de distinto color, a escala 1:50.
+2. **Cortes de coordinación a escala 1:20** por cada pleno, por cada cielorraso técnico crítico y por cada sala de máquinas, **con las cotas de nivel de cada instalación**.
+3. **Reunión de coordinación** con todos los proyectistas sobre esos cortes, antes de emitir la documentación.
+
+> **El corte de coordinación 1:20 es la herramienta más barata y más efectiva que existe.** Un plano de 2 horas evita una semana de obra.
+
+## 10.5 Altura de cielorraso técnico necesaria
+
+| Situación | Altura de pleno (losa a cielorraso terminado) |
+|---|---|
+| Solo iluminación y cableado | **10 – 15 cm** |
+| Agua + eléctrica | **15 – 20 cm** |
+| Desagüe secundario con pendiente + agua + eléctrica | **20 – 30 cm** |
+| **Desagüe primario Ø110 con pendiente + resto** | **35 – 45 cm** |
+| Conducto rectangular de aire acondicionado (fan coil ducto) | **30 – 45 cm** |
+| **Pleno de circulación de un edificio (todas las instalaciones)** | **50 – 70 cm** |
+| Sala de máquinas / subsuelo con bandejas y conductos | **60 – 90 cm** |
+
+**Regla de cálculo del pleno:**
+> **H_pleno = (altura del elemento de mayor sección) + (caída por pendiente en el desarrollo) + (espesor de aislaciones) + (10 cm de tolerancia de montaje y de estructura del cielorraso)**
+
+*Ejemplo:* pleno de un pasillo de 8 m de largo con desagüe Ø110 al 2 %:
+> 0,11 m (caño) + 0,16 m (caída en 8 m) + 0,00 (sin aislar) + 0,10 m (tolerancia) = **0,37 m → adoptar 40 cm**
+
+## 10.6 Quién firma cada instalación y qué trámites requiere
+
+### 10.6.1 Tabla de responsabilidades
+
+| Instalación | Quién PROYECTA y FIRMA | Quién EJECUTA | Ante quién se tramita | Documentos |
+|---|---|---|---|---|
+| **Arquitectura / obra civil** | **Arquitecto o Ingeniero Civil matriculado** en el Colegio profesional de La Pampa | Empresa constructora | **Municipalidad de Santa Rosa** | Permiso de obra, planos municipales, final de obra |
+| **Estructura** | **Ingeniero Civil / Ingeniero en Construcciones matriculado** | Constructora | Municipalidad | Cálculo estructural firmado |
+| **SANITARIA** | **Profesional con incumbencia en hidráulica matriculado** (la Guía lo exige expresamente en 2.16) | **Instalador sanitario matriculado** ante la prestadora | **Prestadora de agua y cloaca de Santa Rosa** + **Municipalidad** | Plano sanitario, memoria de cálculo, conforme a obra |
+| **GAS** | **INSTALADOR MATRICULADO ante la prestadora (ENARGAS/Camuzzi).** ⚠ **El arquitecto NO firma gas** | El mismo matriculado | **Camuzzi Gas Pampeana** (o la prestadora que corresponda) | Factibilidad de suministro, pedido de inspección parcial y final, **plano conforme a obra**, habilitación in situ de artefactos |
+| **ELÉCTRICA** | **Ingeniero Electricista / Electromecánico matriculado**, o Técnico según alcance y jurisdicción | **Instalador electricista matriculado en la categoría correspondiente** | **Distribuidora eléctrica de Santa Rosa** + Municipalidad | Proyecto, esquema unifilar, memoria de demanda, certificado de instalación, **mediciones de PAT y aislación** |
+| **TERMOMECÁNICA** | **Ingeniero Mecánico / Electromecánico matriculado** | Instalador especializado | Municipalidad (según Código) | Memoria de cargas térmicas, planos, esquemas |
+| **INCENDIO** | **Profesional matriculado con incumbencia** (Ing. o Arq., según jurisdicción). En algunos casos se exige **Licenciado en Higiene y Seguridad** | Instalador especializado | **Municipalidad de Santa Rosa + Bomberos de La Pampa** | **Plano de condiciones contra incendio**, memoria, certificación de sistemas |
+| **ASCENSORES** | **Ingeniero matriculado** + la empresa instaladora | Empresa instaladora habilitada | **Municipalidad** (registro de ascensores) | Registro del ascensor, **contrato con conservador matriculado**, libro de inspecciones |
+
+> `[VERIFICAR TODAS ESTAS ATRIBUCIONES contra: (a) las incumbencias profesionales según el Consejo Profesional de La Pampa; (b) los reglamentos de cada prestadora; (c) el Código de Edificación de Santa Rosa. Las incumbencias y las categorías de matrícula VARÍAN POR PROVINCIA.]`
+
+### 10.6.2 Trámites: secuencia general para obra nueva en Santa Rosa
+
+```
+ANTEPROYECTO
+   ├─ Consulta de factibilidad urbanística (Municipalidad)
+   ├─ FACTIBILIDAD DE AGUA Y CLOACA (prestadora) ← diámetro y presión disponibles
+   ├─ FACTIBILIDAD DE GAS (Camuzzi) ← caudal y presión disponibles
+   └─ FACTIBILIDAD ELÉCTRICA (distribuidora) ← potencia y tipo de suministro
+        ▼
+   Los tres datos condicionan el proyecto. SIN ELLOS NO SE PUEDE DIMENSIONAR NADA.
+        ▼
+PROYECTO Y PERMISO DE OBRA
+   ├─ Planos de arquitectura y estructura (Municipalidad)
+   ├─ Plano sanitario (prestadora + Municipalidad)
+   ├─ Plano de condiciones contra incendio (Municipalidad + Bomberos)
+   └─ Proyecto eléctrico (distribuidora)
+        ▼
+EJECUCIÓN
+   ├─ Inspecciones parciales: gas (antes de tapar), sanitaria, estructura
+   └─ Libro de obra
+        ▼
+FINAL DE OBRA
+   ├─ Inspección final de gas + habilitación
+   ├─ Conexión definitiva de agua y cloaca
+   ├─ Conexión definitiva de electricidad
+   ├─ Registro y habilitación de ascensores
+   ├─ Certificación de sistemas de incendio
+   ├─ PLANOS CONFORME A OBRA de todas las instalaciones
+   └─ Final de obra municipal
+```
+
+> `[VERIFICAR la secuencia exacta y los requisitos de cada trámite en la Municipalidad de Santa Rosa antes de comprometer plazos con el comitente. Los tiempos de las factibilidades pueden ser de semanas a meses.]`
+
+### 10.6.3 Lo que el estudio de arquitectura debe entregar al comitente al final
+
+| Documento |
+|---|
+| **Planos conforme a obra de TODAS las instalaciones**, en papel y digital |
+| **Memorias de cálculo** firmadas |
+| **Certificados de habilitación**: gas, electricidad, ascensores, incendio |
+| **Manuales de todos los equipos**: bombas, calderas, ascensores, tableros, detección |
+| **Garantías** de equipos y de instalaciones |
+| **Manual de uso y mantenimiento del edificio**, con las frecuencias de: limpieza de tanques, control de matafuegos (IRAM 3517-2), conservación de ascensores, mantenimiento de bombas, limpieza de filtros, verificación de detección, revisión de la instalación de gas |
+| **Planilla de contactos** de los proveedores y conservadores |
+
+> **El "manual de uso y mantenimiento del edificio" es un entregable que casi nadie hace y que evita el 70 % de los problemas de los primeros cinco años.** Es también una protección profesional: documenta que se informó al comitente.
+
+---

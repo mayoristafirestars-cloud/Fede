@@ -261,25 +261,48 @@ Clima **templado continental semiárido**, caracterizado por:
 | **Inviernos fríos con demanda real de calefacción** | La envolvente manda: aislación de cubierta primero, luego carpinterías, luego muros. La calefacción se dimensiona sobre una envolvente ya resuelta, no al revés |
 | **Veranos calurosos con radiación intensa** | Protección solar **fija y calculada** en fachada norte (alero por ángulo solar), y protección **móvil** en este y oeste, donde el alero no sirve |
 | **Viento fuerte y persistente (pampeano)** | Afecta cargas de viento (CIRSOC 102), estanqueidad e infiltración de carpinterías, confort de balcones y terrazas, y la ubicación de expansiones. Reparo del viento dominante = diferencia entre una galería usable y una inusable |
-| **Baja humedad relativa** | Favorece el enfriamiento evaporativo y la ventilación nocturna en verano; en invierno, atención a la sequedad interior con calefacción por combustión |
+| **Humedad relativa: seco en verano (59 %), húmedo en invierno (76 %)** | ⚠ Corrige un lugar común: el clima pampeano **no es seco todo el año**. En verano la HR baja habilita ventilación nocturna y enfriamiento evaporativo; en invierno, con HR 76 % y temperatura de diseño −2,7 °C, **el riesgo de condensación superficial e intersticial es real y hay que verificarlo siempre** (IRAM 11625/11630) |
 | **Cielos despejados frecuentes** | Ganancia solar directa aprovechable en invierno; y potencial solar térmico / fotovoltaico alto en cubierta |
 
-### 4.1 Zona bioambiental — dato a confirmar
+### 4.1 Zona bioambiental — **Zona IVc (templada fría, de transición)**
 
-La **IRAM 11603** zonifica el país en zonas bioambientales I a VI a partir de grados-día de
-calefacción y temperaturas. La **Zona IV (templada fría)** tiene por límites las isolíneas de
-**1.170 y 1.950 grados-día**, inviernos no muy fríos (temperatura media 8–12 °C) y veranos no
-muy calurosos.
+Datos bioclimáticos de la estación **Santa Rosa (La Pampa)**, de las tablas de la
+**IRAM 11603**:
 
-**⚠ La asignación exacta de Santa Rosa/La Pampa a zona y subzona no pudo verificarse en fuente
-primaria.** Por posición geográfica y clima, la ubicación esperable está en el entorno de
-**Zona IV**, pero **hay que confirmarlo en el texto de la IRAM 11603 (edición vigente) o en la
-planilla de localidades del programa de etiquetado de viviendas** antes de fijar valores de K
-máximo admisible. El dato define directamente:
+| Invierno | Valor | | Verano | Valor |
+|---|---|---|---|---|
+| Temperatura de diseño mínima (TDMN) | **−2,7 °C** | | Temperatura de diseño máxima (TDMX) | **33,8 °C** |
+| Temperatura de rocío media | 3,4 °C | | Temperatura media | 22,3 °C |
+| Humedad relativa media | **76 %** | | Humedad relativa media | 59 % |
+| Velocidad media del viento | 10,3 km/h | | Velocidad media del viento | 14 km/h |
+| Heliofanía relativa | 48 % | | Heliofanía relativa | 68 % |
+| **Grados-día base 18 °C (GD18)** | **1.331 °C·día** | | Grados-día de enfriamiento base 25 °C | 297 °C·día |
 
-- Los **K máximos admisibles** de muro y techo por nivel A/B/C de la **IRAM 11605**.
-- El espesor de aislante necesario en cada cerramiento.
-- La verificación de riesgo de condensación (**IRAM 11625 / 11630**).
+**Encuadre:** con GD18 = 1.331 °C·día, Santa Rosa cae en la **Zona IV — Templada Fría**
+(entre las isolíneas de 1.170 y 1.950 GD18). La amplitud térmica —14,1 K en invierno y
+16,5 K en verano— la ubica en la **subzona IVc (de transición)**, la franja entre 14 y 18 °C.
+
+**Lo que la propia IRAM 11603 prescribe para la Zona IV:**
+
+- Muy buena aislación en **toda** la envolvente, con **el doble de aislación en techos que en
+  muros**.
+- Relación superficie vidriada / superficie opaca **no mayor al 15 %**.
+- **En las subzonas c y d se verificará el riesgo de condensación, controlando los puentes
+  térmicos.** Santa Rosa es IVc: **la verificación de condensación no es opcional.**
+- Excelente recurso solar invernal: aprovechar ganancia directa y acumulación solar pasiva.
+
+**La relación GD18/GDe25 es 4,5**: acá domina ampliamente la demanda de **calefacción**. Un
+proyecto que se optimiza para el verano y descuida el invierno está optimizando el problema
+menor.
+
+> *Verificar el encuadre exacto en el mapa de la IRAM 11603 vigente antes de firmar una
+> verificación higrotérmica ante el municipio o la provincia.*
+
+**Consecuencia directa — el muro estándar argentino no verifica.** Un muro de ladrillo hueco
+de 18 cm revocado en ambas caras da **K = 1,58 W/m²K**: **1,7 veces** el máximo admisible de
+Nivel B y **4,6 veces** el de Nivel A para esta zona. Y en cubierta **manda la condición de
+verano**, no la de invierno. El desarrollo con los K máximos interpolados para Santa Rosa y
+los cálculos resueltos está en el documento de tecnología constructiva.
 
 **Desarrollo técnico completo:** `docs/05-construccion/tecnologia-constructiva.md`
 (cálculo de K, puentes térmicos, condensación, aislantes) y `docs/01-anteproyecto/anteproyecto.md`

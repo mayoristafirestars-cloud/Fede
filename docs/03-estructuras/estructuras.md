@@ -4355,3 +4355,1391 @@ Sistema en crecimiento en Argentina, especialmente con **entramado (*platform fr
 
 ---
 ---
+
+# 8. REFORMAS Y REHABILITACIÓN
+
+Este es el capítulo que más diferencia a un estudio que "sabe" de uno que improvisa. En obra nueva conocés todo; en reforma **trabajás con incertidumbre** y el trabajo consiste en reducirla ordenadamente.
+
+## 8.1 Relevamiento y diagnóstico: la secuencia completa
+
+### 8.1.1 Regla n.º 1
+
+> **No se interviene lo que no se conoce.** Ninguna demolición, apertura, ampliación o refuerzo se proyecta sin relevamiento previo. Y ninguna obra empieza sin **acta de estado** documentada de la construcción y de sus linderos.
+
+### 8.1.2 Secuencia de trabajo
+
+```
+1. DOCUMENTAL          → Planos municipales aprobados, memorias, planos
+                          de obra, permisos, antecedentes de siniestros
+                          
+2. HISTÓRICO            → Edad, sistema constructivo de la época,
+                          modificaciones anteriores, cambios de uso,
+                          eventos (incendio, inundación, obra lindera)
+                          
+3. VISUAL / GEOMÉTRICO  → Relevamiento dimensional, mapeo de daños,
+                          fotografía sistemática, verticalidad, niveles
+                          
+4. NO DESTRUCTIVO       → Pacometría, esclerometría, ultrasonido,
+                          termografía, humedad
+                          
+5. SEMI-DESTRUCTIVO     → Calas, picado localizado, extracción de
+                          testigos, calicatas contra el cimiento
+                          
+6. LABORATORIO          → Resistencia de testigos, carbonatación,
+                          cloruros, análisis de morteros, suelos
+                          
+7. MONITOREO            → Fisurómetros, testigos de yeso, topografía,
+                          inclinómetros (si hay proceso activo)
+                          
+8. MODELO Y VERIFICACIÓN → Modelo estructural con los datos reales
+                          
+9. DIAGNÓSTICO Y PROYECTO DE INTERVENCIÓN  [FIRMA]
+```
+
+### 8.1.3 Documentación municipal — qué pedir
+
+| Documento | Dónde | Qué te dice |
+|---|---|---|
+| Legajo de obra aprobado | Dirección de Obras Particulares, Municipalidad | Planos, superficies, año, profesional interviniente |
+| Planos de estructura | Ídem, o archivo del profesional original | Secciones, armaduras, hormigón especificado |
+| Final de obra / conforme a obra | Ídem | Si lo construido coincide con lo aprobado |
+| Estudio de suelos original | Propietario / consorcio | Cotas y tensiones adoptadas |
+| Reglamento de copropiedad y plano de PH | Registro de la Propiedad | Qué es propio y qué es común. **Los muros portantes y las losas suelen ser COMUNES** |
+
+> **Advertencia legal:** en un edificio en propiedad horizontal, **la estructura es cosa común**. Cualquier intervención sobre columnas, vigas, losas o muros portantes requiere **autorización de la asamblea de copropietarios**, no sólo del municipio. Esto no es un tecnicismo: es la causa de la mayoría de los conflictos judiciales en reformas de departamentos.
+
+### 8.1.4 Relevamiento visual — qué mirar y en qué orden
+
+| Zona | Qué buscar |
+|---|---|
+| **Fachada** | Fisuras (mapearlas TODAS con ancho y orientación), desprendimientos, manchas de óxido, eflorescencias, desplomes |
+| **Encuentro con el terreno** | Fisuras en zócalos y veredas, hundimientos, humedad ascendente, raíces de árboles |
+| **Losas y cielorrasos** | Flechas visibles (usar hilo tendido y medir), fisuras paralelas a las vigas, manchas de humedad, armaduras vistas |
+| **Vigas y columnas** | Fisuras (verticales, horizontales, diagonales — cada una dice algo distinto), desprendimientos en aristas, cangrejeras |
+| **Muros interiores** | Fisuras en encuentros con losas, sobre y bajo aberturas, en las esquinas de los vanos |
+| **Aberturas** | Puertas y ventanas que no cierran (indicador clásico de distorsión) |
+| **Pisos** | Desniveles (nivel láser o manguera), fisuras, baldosas sonadas |
+| **Sala de máquinas y azotea** | Sobrecargas no previstas: equipos de aire, tanques, antenas, obras de vecinos |
+| **Sótanos y cámaras** | Humedad, filtraciones, estado de cañerías (¡pérdidas!) |
+| **Linderos** | **SIEMPRE.** Fotos fechadas, mapeo de fisuras existentes, acta firmada por el vecino |
+
+### 8.1.5 Herramientas del relevamiento
+
+| Herramienta | Uso | Costo relativo |
+|---|---|---|
+| **Fisurómetro (regla de fisuras)** | Medir ancho de fisura en mm | Muy bajo |
+| **Testigo de yeso o vidrio** | Detectar si una fisura está viva. Se rompe si hay movimiento | Nulo |
+| **Fisurómetro de placas (tipo Avongard)** | Medir evolución en dos direcciones con precisión de 0,5 mm | Bajo |
+| **Nivel láser / manguera de nivel** | Desniveles de pisos, flechas de losas | Bajo |
+| **Plomada / desplomímetro** | Verticalidad de muros y columnas | Muy bajo |
+| **Cámara fotográfica con fecha** | Documentación. **Imprescindible legalmente** | Nulo |
+| **Higrómetro / humedímetro** | Contenido de humedad de muros | Bajo |
+| **Cámara termográfica** | Puentes térmicos, humedades ocultas, delaminaciones | Medio |
+| **Estación total / nivel óptico** | Monitoreo de asentamientos con precisión mm | Medio |
+| **Endoscopio / boroscopio** | Ver dentro de cavidades con perforación mínima | Bajo |
+
+## 8.2 Ensayos sobre estructura existente
+
+### 8.2.1 Pacometría (detección de armaduras)
+
+**Qué hace:** localiza barras de acero, mide **recubrimiento** y estima **diámetro**.
+
+| Aspecto | Dato |
+|---|---|
+| Principio | Inducción electromagnética (pacómetro) o **georradar (GPR)** para mayor profundidad y resolución |
+| Precisión de recubrimiento | ±2-5 mm hasta 80-100 mm de profundidad |
+| Precisión de diámetro | ±1 escalón de diámetro (estimativa) |
+| Limitación | En zonas muy armadas o con mallas densas, las señales se superponen. **El GPR resuelve mejor** |
+| **Uso crítico** | **ANTES DE PERFORAR CUALQUIER COSA.** Antes de una cala, de un anclaje químico, de un pase de instalación |
+| Norma | [VER: la referencia internacional es BS 1881-204; en Argentina, verificar norma IRAM aplicable] |
+
+> **El pacómetro es la mejor inversión de un estudio que hace reformas.** Un equipo de gama media cuesta lo que una jornada de un albañil y evita cortar una armadura principal.
+
+### 8.2.2 Esclerometría (índice de rebote)
+
+**Qué hace:** mide la **dureza superficial** del hormigón con un martillo Schmidt, correlacionándola con la resistencia.
+
+| Aspecto | Dato |
+|---|---|
+| Norma argentina | **IRAM 1694** [VER número y edición vigente] |
+| Norma internacional | ASTM C805, EN 12504-2 |
+| **Qué mide realmente** | La dureza de los **primeros 30-50 mm**. **NO mide la resistencia del núcleo** |
+| Dispersión | **±20-30%** respecto de la resistencia real. Es enorme |
+| **Uso correcto** | **Comparativo**: identificar zonas de menor calidad dentro de un mismo elemento o edificio. **Mapeo de homogeneidad** |
+| **Uso INCORRECTO** | Tomar el valor absoluto de la curva del fabricante como "la resistencia del hormigón". **Nunca hagas esto** |
+| Factores que distorsionan | Carbonatación (**sube el rebote**, sobreestima), humedad superficial (baja), edad, tipo de agregado, dirección del golpe (hay que corregir), revoque o pintura (hay que retirarlos) |
+| Procedimiento | Superficie lisa, seca y limpia; **mínimo 9-10 impactos** por zona de ensayo, separados ≥ 25 mm; descartar valores anómalos; promediar |
+
+**Cómo usarla bien [PD]:**
+1. Mapeá el edificio con esclerómetro → identificás zonas de baja calidad.
+2. **Calibrás la curva con 3-6 testigos extraídos** de zonas de distinto índice de rebote.
+3. Con la curva calibrada, extendés al resto del edificio.
+
+**Esta combinación (esclerometría + testigos de calibración) es la práctica correcta y la que reconoce cualquier perito.**
+
+### 8.2.3 Extracción de testigos
+
+**Qué hace:** el ensayo **dirimente** para conocer la resistencia real del hormigón.
+
+| Aspecto | Dato |
+|---|---|
+| Norma argentina | **IRAM 1551** [VER número y edición: extracción, acondicionamiento y ensayo de testigos] |
+| Norma internacional | ASTM C42, EN 12504-1 |
+| **Diámetro** | Preferentemente **100 mm**; mínimo **3 veces el TMN del agregado** (típicamente 75-100 mm) |
+| **Relación altura/diámetro** | **Ideal 2,0.** Si es menor, hay que aplicar factores de corrección (h/d=1,75→0,98; 1,50→0,96; 1,25→0,93; 1,00→0,87) [PD, verificar en IRAM 1551] |
+| Preparación | Refrentado con azufre o rectificado de caras |
+| **Dónde extraer** | **NUNCA en zonas de máxima solicitación.** En vigas: cerca del eje neutro, en el tercio central, alejado de armaduras. En columnas: zona media de la altura. **Usar pacómetro antes** |
+| **Reparación del agujero** | Obligatoria: limpieza, imprimación epoxi y relleno con mortero de reparación de retracción compensada |
+| **Criterio de aceptación** | El hormigón se considera aceptable si el promedio de 3 testigos ≥ **0,85·f'c** y ningún testigo individual < **0,75·f'c** [VER criterio exacto en CIRSOC 201 / IRAM 1551] |
+| Cantidad mínima | **3 testigos por zona de ensayo** de resistencia homogénea |
+
+### 8.2.4 Ultrasonido (velocidad de pulso ultrasónico, UPV)
+
+| Aspecto | Dato |
+|---|---|
+| Norma | ASTM C597, EN 12504-4 [VER IRAM equivalente] |
+| Qué mide | Velocidad de propagación de ondas ultrasónicas → **homogeneidad, presencia de fisuras internas, huecos, delaminaciones, profundidad de fisuras** |
+| Velocidad típica en hormigón sano | **3.500 – 4.500 m/s** |
+| Interpretación [PD] | > 4500: excelente / 3500-4500: bueno / 3000-3500: dudoso / 2000-3000: pobre / < 2000: muy pobre |
+| Método | Transmisión directa (caras opuestas — el mejor), semidirecta, o indirecta (misma cara) |
+| **Combinado con esclerómetro** | El método **SonReb** combina UPV + índice de rebote y reduce mucho la dispersión de la estimación de resistencia |
+
+### 8.2.5 Ensayo de profundidad de carbonatación
+
+| Aspecto | Dato |
+|---|---|
+| Método | Pulverizar **fenolftaleína** (solución al 1% en alcohol) sobre una fractura fresca del hormigón |
+| Resultado | **Rosa/fucsia** = hormigón alcalino (pH > 9), **NO carbonatado**, armadura protegida. **Incoloro** = carbonatado, pH < 9, **armadura desprotegida** |
+| Medición | Profundidad del frente incoloro desde la superficie, en mm |
+| Norma | EN 14630 [VER IRAM equivalente] |
+| **Lo que importa** | Comparar la **profundidad de carbonatación** con el **recubrimiento real** (medido con pacómetro). Si `xc ≥ recubrimiento`, la armadura está en riesgo de corrosión activa |
+
+**Modelo de avance [PD]:**
+```
+xc = K · sqrt(t)
+```
+con t en años y K en mm/√año:
+
+| Condición | K (mm/√año) [PD] |
+|---|---|
+| Hormigón de alta calidad (a/c ≤ 0,45), protegido | 1 – 2 |
+| Hormigón normal (a/c ≈ 0,55), interior seco | 3 – 5 |
+| Hormigón normal, exterior protegido de la lluvia | 4 – 7 |
+| Hormigón pobre (a/c ≥ 0,65), exterior | 8 – 15 |
+
+**Ejemplo:** hormigón normal exterior, K = 5. A los 40 años: `xc = 5 × √40 = 32 mm`. Si el recubrimiento real es 20 mm (típico en obras de los 60-70), **la armadura lleva más de 20 años despasivada**.
+
+### 8.2.6 Contenido de cloruros
+
+| Aspecto | Dato |
+|---|---|
+| Método | Extracción de polvo a distintas profundidades (perforación con broca), análisis químico |
+| Umbral crítico | **0,4 % de Cl⁻ respecto del peso de cemento** (aproximadamente 0,05-0,08% respecto del peso de hormigón) [PD; verificar el umbral exacto en el CIRSOC 201] |
+| Cuándo | Ambientes marinos, industrias, edificios donde se usó cloruro de calcio como acelerante (**práctica común hasta los años 70**), garajes con sales |
+| Resultado | Perfil de concentración en profundidad → estima la vida residual |
+
+### 8.2.7 Potencial de corrosión (semipilas / half-cell)
+
+| Aspecto | Dato |
+|---|---|
+| Norma | ASTM C876 |
+| Qué mide | Potencial eléctrico de la armadura respecto de un electrodo de referencia (Cu/CuSO₄) |
+| Interpretación (Cu/CuSO₄) [PD] | > −200 mV: **probabilidad de corrosión < 10%** / −200 a −350 mV: incierto / < −350 mV: **probabilidad > 90%** |
+| Ventaja | Mapea la corrosión **antes de que sea visible**. Permite delimitar la zona a reparar |
+| Complemento | **Resistividad eléctrica** del hormigón (indica velocidad de corrosión) |
+
+### 8.2.8 Prueba de carga
+
+El ensayo definitivo cuando todo lo demás es insuficiente.
+
+| Aspecto | Dato |
+|---|---|
+| Norma | **CIRSOC 201, Capítulo 20** — "Evaluación de la resistencia de estructuras existentes" [VER numeración exacta] |
+| Carga de ensayo | Típicamente `0,85 · (1,4D + 1,7L)` [VER expresión en la edición vigente] |
+| Duración | Carga mantenida **24 horas**, luego descarga |
+| **Criterios de aceptación [VER exactos]** | Flecha máxima `Δmax ≤ ℓt²/(20.000·h)` y recuperación `Δr ≥ 75% de Δmax` tras 24 h de descarga |
+| Cuándo | Cuando el análisis no permite concluir, o cuando hay dudas sobre la ejecución. **Cambio de destino con aumento de sobrecarga** |
+| **Precaución** | Apuntalamiento de seguridad debajo, evacuación del área, instrumentación con comparadores, **procedimiento firmado** |
+
+### 8.2.9 Otros ensayos
+
+| Ensayo | Para qué |
+|---|---|
+| **Arrancamiento (pull-off)** | Adherencia de revoques, morteros de reparación, refuerzos FRP |
+| **Extracción de barras de armadura** | Ensayo de tracción para determinar fy real (destructivo, sólo en casos justificados) |
+| **Análisis de mortero de mampostería** | Composición, resistencia (importante en edificios antiguos) |
+| **Ensayo con gato plano (*flat jack*)** | Tensión in situ en muros de mampostería y módulo de deformación |
+| **Termografía infrarroja** | Delaminaciones, humedades, puentes térmicos, mapeo de mamposterías bajo revoque |
+| **Georradar (GPR)** | Espesores, armaduras profundas, huecos, vainas de postesado |
+
+## 8.3 Patologías: catálogo de fisuras y su diagnóstico
+
+### 8.3.1 Cómo leer una fisura — los cuatro datos
+
+Toda ficha de fisura debe registrar:
+1. **Ubicación y trazado** (croquis sobre plano)
+2. **Ancho** (mm, con fisurómetro) y **variación a lo largo** (¿se abre hacia arriba, hacia abajo?)
+3. **Profundidad** (¿pasante? ¿sólo revoque?)
+4. **Actividad**: ¿viva o muerta? (testigo de yeso, fisurómetro con lectura en 2-3 meses)
+
+**Y la regla más importante:** *"La fisura es perpendicular a la dirección de la tracción que la causó."*
+
+### 8.3.2 Catálogo de fisuras
+
+#### A. Fisuras por ASENTAMIENTO DIFERENCIAL
+
+```
+A.1 — ASENTAMIENTO EN UN EXTREMO (el extremo derecho baja)
+
+  ┌─────────────────────────────────┐
+  │              ╱                  │      Fisuras INCLINADAS a ~45°,
+  │            ╱  ╱                 │      más ANCHAS ARRIBA,
+  │          ╱  ╱                   │      apuntando HACIA el
+  │        ╱  ╱                     │      asentamiento
+  │  ────────────────────────────   │
+  └─────────────────────────────────┘
+      zona estable   ←→   zona que baja
+```
+
+```
+A.2 — ASENTAMIENTO CENTRAL (pandeo hacia abajo, "sagging")
+
+  ┌─────────────────────────────────┐
+  │  ╲                         ╱    │      Fisuras hacia el CENTRO,
+  │    ╲                     ╱      │      más anchas ARRIBA
+  │      ╲                 ╱        │
+  │  ─────────────────────────      │
+  └─────────────────────────────────┘
+        ↓↓↓ centro que baja ↓↓↓
+```
+
+```
+A.3 — LEVANTAMIENTO CENTRAL / ASENTAMIENTO DE BORDES ("hogging")
+
+  ┌─────────────────────────────────┐
+  │    ╱                       ╲    │      Fisuras hacia los EXTREMOS,
+  │  ╱                           ╲  │      más anchas ABAJO
+  │╱                               ╲│
+  └─────────────────────────────────┘
+   ↓↓ bordes bajan ↓↓        ↓↓
+```
+
+**Diagnóstico diferencial:**
+
+| Indicio | Interpretación |
+|---|---|
+| Fisura de **ancho variable, más ancha en un extremo** | Asentamiento (movimiento de rotación) |
+| Fisura que **atraviesa mampuestos** (no sólo juntas) | Movimiento importante y rápido |
+| Fisura que sigue las **juntas de mortero en escalera** | Movimiento más lento, mortero débil |
+| Fisura **pasante** (se ve de los dos lados del muro) | Estructural |
+| Aberturas que **dejan de cerrar** | Distorsión angular significativa |
+| **Pisos desnivelados** en la misma dirección | Confirma asentamiento |
+| Fisura que **continúa en la vereda o el zócalo** | Asentamiento (el revoque no fisura la vereda) |
+| **Actividad estacional** (se abre en verano, se cierra en invierno) | Suelo expansivo o retracción de arcillas por árboles |
+| **Progresión monótona** | Proceso activo — urgente |
+| **Estabilizada** (testigo intacto tras 6 meses) | Proceso concluido — reparación cosmética + monitoreo |
+
+**Causas frecuentes en La Pampa:**
+1. **Colapso de loess por humedecimiento** (§3.5). Localizado, junto a una pérdida de cañería, un canterito, una bajada pluvial.
+2. **Árboles** (eucaliptos, álamos, paraísos) que desecan el suelo y luego se retiran → hinchamiento.
+3. **Excavación lindera** sin protección.
+4. **Ampliación con fundación a distinta cota** o distinta rigidez (el caso clásico: ampliación en el fondo con cimiento superficial, casa original con cimiento más profundo).
+5. **Relleno mal compactado** bajo parte de la construcción.
+6. **Ascenso o descenso de napa.**
+
+#### B. Fisuras por SOBRECARGA / FLEXIÓN
+
+```
+B.1 — FLEXIÓN EN VIGA (tramo)
+
+     ═══════════════════════════════
+     │  │  │  │  │  │  │  │  │  │      Fisuras VERTICALES en el
+     │  │  │  │  │  │  │  │  │  │      TERCIO CENTRAL, en la cara
+     └──┴──┴──┴──┴──┴──┴──┴──┴──┘      INFERIOR, perpendiculares al eje
+   ▲                             ▲
+   
+B.2 — FLEXIÓN EN VIGA (apoyo, momento negativo)
+
+     ═╤═╤═╤═════════════════╤═╤═╤═     Fisuras VERTICALES en la
+      │ │ │                 │ │ │      cara SUPERIOR, sobre los apoyos
+     ───────────────────────────
+   ▲                             ▲
+
+B.3 — CORTE EN VIGA
+
+     ═══════════════════════════════
+     │╱ ╱                   ╲ ╲│      Fisuras DIAGONALES a ~45°
+     │╱                       ╲│      cerca de los APOYOS, ascendentes
+     └─────────────────────────┘      hacia el centro. ¡PELIGROSAS!
+   ▲                             ▲
+```
+
+| Tipo | Ancho | Peligrosidad |
+|---|---|---|
+| **Flexión, ancho ≤ 0,3 mm** | Normal. El hormigón armado **fisura por diseño** | Baja, si el ancho es admisible |
+| **Flexión, ancho 0,3 – 0,5 mm** | Atención. Verificar armadura y cargas | Media. Riesgo de durabilidad |
+| **Flexión, ancho > 0,5 mm** | **Sobrecarga o armadura insuficiente** | **Alta** |
+| **CORTE (diagonal cerca del apoyo)** | Cualquier ancho | **MUY ALTA — falla frágil sin aviso. APUNTALAR** |
+| **Fisura horizontal en el eje neutro cerca del apoyo** | — | **CRÍTICA — falla de adherencia / anclaje** |
+
+**Anchos de fisura admisibles [PD]** (criterio de durabilidad):
+
+| Exposición | w_max |
+|---|---|
+| Interior seco | 0,40 mm |
+| Exterior / húmedo | 0,30 mm |
+| Ambiente agresivo (cloruros) | 0,20 mm |
+| Estanqueidad requerida | 0,10 – 0,20 mm |
+
+#### C. Fisuras por CORROSIÓN DE ARMADURAS
+
+```
+     ┌───────────────────────────────┐
+     │═══════════════════════════════│  ← Fisura PARALELA a la armadura
+     │  ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓    │     Manchas de ÓXIDO
+     │═══════════════════════════════│     Desprendimiento del recubrimiento
+     └───────────────────────────────┘     ("delaminación", "spalling")
+```
+
+**Signo inconfundible: la fisura sigue exactamente el trazado de la barra**, con manchas ocres y, en estado avanzado, **desprendimiento del recubrimiento dejando la barra a la vista**.
+
+**Mecanismo:** el óxido de hierro ocupa **2 a 7 veces** el volumen del acero original. Esa expansión revienta el recubrimiento desde adentro.
+
+Ver §8.4 para el tratamiento completo.
+
+#### D. Fisuras por RETRACCIÓN
+
+```
+D.1 — RETRACCIÓN PLÁSTICA (hormigón fresco, primeras horas)
+
+     ┌───────────────────────────────┐
+     │   ╱      ╱      ╱      ╱      │   Fisuras cortas, paralelas,
+     │  ╱      ╱      ╱      ╱       │   irregulares, superficiales,
+     │ ╱      ╱      ╱      ╱        │   a ~45° del eje. Superficie de
+     └───────────────────────────────┘   losas hormigonadas con viento/sol
+
+D.2 — RETRACCIÓN HIDRÁULICA (semanas-meses)
+
+     Fisuras en zonas de cambio de sección, esquinas de aberturas,
+     encuentros con elementos rígidos. Trazado recto, ancho uniforme.
+
+D.3 — RETRACCIÓN EN REVOQUES / "piel de cocodrilo"
+
+     ┌───────────────────────────────┐
+     │  ╱─╲╱─╲╱─╲╱─╲╱─╲╱─╲╱─╲        │  Fisuración en red, muy fina,
+     │  ╲─╱╲─╱╲─╱╲─╱╲─╱╲─╱╲─╱        │  sólo en el revoque.
+     └───────────────────────────────┘  Exceso de cemento o de agua,
+                                        curado deficiente
+```
+
+| Característica | Retracción | Estructural |
+|---|---|---|
+| Ancho | **Uniforme** a lo largo | Variable |
+| Profundidad | Superficial (plástica) o pasante (hidráulica) | Pasante |
+| Evolución | **Se estabiliza** en meses/años | Puede progresar |
+| Ubicación | Zonas de restricción, cambios de sección | Zonas de máxima solicitación |
+| Ancho típico | 0,1 – 0,5 mm | Variable |
+
+#### E. Fisuras TÉRMICAS
+
+- Trazado **vertical** en muros largos, aproximadamente equidistantes.
+- **Actividad estacional marcada**: se abren en invierno (contracción), se cierran en verano.
+- Típicas en **losas de azotea sin aislación** que dilatan y empujan los muros de la última planta → fisura horizontal en el encuentro muro-losa, y fisuras diagonales en las esquinas del último piso.
+
+```
+   ÚLTIMO PISO — el problema clásico de la losa de azotea sin aislar
+
+   ═══════════════════════════════════════  ← losa de azotea que dilata
+   ────────────────────────────────────────  ← fisura horizontal en el
+   │╲                                   ╱│     encuentro (empuje de la losa)
+   │  ╲                               ╱  │  ← fisuras diagonales en
+   │    ╲                           ╱    │     las esquinas
+   │                                     │
+```
+
+**Solución:** aislación térmica sobre la losa de azotea (cubierta invertida o aislación bajo membrana), y **junta deslizante** entre losa de azotea y muro de la última planta.
+
+#### F. Fisuras por EXPANSIÓN DE MATERIALES
+
+| Causa | Signo |
+|---|---|
+| **Oxidación de perfiles metálicos embebidos** (dinteles de hierro, viguetas de perfil) | Fisura horizontal continua sobre el dintel, con manchas de óxido. **Muy común en construcciones de 1920-1960** |
+| **Ataque por sulfatos** | Fisuración en mapa, desintegración de la pasta, aspecto "blando" y blanquecino. **Relevante en fundaciones en loess con yeso** |
+| **Reacción álcali-sílice (RAS)** | Fisuración en mapa con exudación de gel, en hormigones con agregados reactivos. Rara pero posible |
+| **Expansión de morteros de cal viva mal apagada** | Cráteres ("caliches") en revoques antiguos |
+| **Congelación** (irrelevante en Santa Rosa, relevante en cordillera) | Descascaramiento superficial |
+
+#### G. Fisuras por EMPUJE
+
+| Situación | Signo |
+|---|---|
+| Cubierta a dos aguas sin tensor | **Fisura horizontal** en la parte superior de los muros perimetrales, muros que se desploman hacia afuera |
+| Muro de contención sin drenaje | Fisuras horizontales en el tercio inferior, desplome |
+| Arco o bóveda sin estribo | Fisuras en la clave y en los arranques |
+| **Bóveda de ladrillo sobre perfiles ("bovedilla")** | Fisura en el intradós, oxidación del perfil |
+
+#### H. Fisuras en TABIQUES NO PORTANTES
+
+```
+   Tabique de mampostería trabado a la estructura, que recibe
+   la flecha diferida de la losa superior:
+
+   ═══════════════════════════════════════  ← losa que flecha ↓
+    ╲___                             ___╱
+   ┌────╲─────────────────────────╱─────┐
+   │      ╲                     ╱        │  ← fisuras diagonales
+   │        ╲                 ╱          │     desde las esquinas
+   │  ┌─────┐ ╲             ╱  ┌─────┐   │     superiores
+   │  │vano │   ╲         ╱    │vano │   │  ← y en las esquinas
+   │  └─────┘     ╲     ╱      └─────┘   │     de las aberturas
+   └───────────────────────────────────┘
+```
+
+**Es la patología más frecuente en edificios nuevos y no es estructural**: es la flecha diferida de la losa que "carga" al tabique. Prevención: **junta superior de 2 cm entre el tabique y la losa superior**, rellena con material compresible y sellada. Y **ejecutar los tabiques lo más tarde posible**, cuando la mayor parte de la flecha ya ocurrió.
+
+### 8.3.3 Tabla resumen de diagnóstico rápido
+
+| Trazado | Ubicación | Causa más probable | Urgencia |
+|---|---|---|---|
+| Diagonal ~45°, ancho variable | Muros, cerca de esquinas | **Asentamiento diferencial** | **Alta** |
+| Vertical, tercio central, cara inferior | Vigas y losas | Flexión (normal si w ≤ 0,3 mm) | Baja-Media |
+| Vertical, cara superior sobre apoyos | Vigas y losas continuas | Momento negativo (normal si w ≤ 0,3 mm) | Baja |
+| **Diagonal cerca del apoyo** | **Vigas** | **CORTE** | **CRÍTICA** |
+| Horizontal en el eje neutro cerca del apoyo | Vigas | **Falla de anclaje/adherencia** | **CRÍTICA** |
+| Paralela a la armadura + óxido | Vigas, columnas, losas, balcones | **Corrosión de armaduras** | Media-Alta |
+| Vertical en columna, con desprendimiento | Columnas | **Sobrecarga axial / aplastamiento** | **CRÍTICA** |
+| Horizontal en columna | Columnas | Junta de hormigonado mal ejecutada, o flexión | Media |
+| Red fina superficial | Revoques, losas | Retracción / curado deficiente | Baja |
+| Horizontal, encuentro muro-losa último piso | Última planta | **Dilatación térmica de losa de azotea** | Media |
+| Horizontal sobre dintel con óxido | Dinteles antiguos | **Oxidación de perfil embebido** | Media-Alta |
+| Diagonal desde esquinas superiores de tabique | Tabiques no portantes | Flecha de la losa superior | Baja (no estructural) |
+| En escalera por juntas de mortero | Mampostería | Asentamiento lento / mortero débil | Media |
+
+## 8.4 Corrosión de armaduras y carbonatación
+
+### 8.4.1 El mecanismo
+
+```
+FASE 1 — INICIACIÓN                    FASE 2 — PROPAGACIÓN
+(el hormigón protege)                  (la armadura se corroe)
+
+pH del hormigón ≈ 12,5-13,5            El acero pierde sección
+→ capa pasiva de óxido protege         El óxido expande 2-7 veces
+  el acero                             → fisura el recubrimiento
+                                       → entra más agua y O₂
+El frente de carbonatación             → se acelera
+avanza: CO₂ + Ca(OH)₂ → CaCO₃ + H₂O    → desprendimiento (spalling)
+→ el pH baja a ~8-9                    → pérdida de adherencia
+→ se DESPASIVA el acero                → pérdida de capacidad
+
+O bien: entran cloruros que
+rompen localmente la capa pasiva
+(corrosión por picadura, más grave)
+
+     ─────────────────────────────────────────────────►  tiempo
+     ▲                                    ▲
+   construcción                    fin de vida útil
+```
+
+**Requisitos simultáneos para que haya corrosión:**
+1. **Despasivación** (carbonatación o cloruros)
+2. **Agua** (electrolito)
+3. **Oxígeno**
+
+Si falta cualquiera de los tres, no hay corrosión. Por eso el hormigón permanentemente sumergido no se corroe (falta oxígeno) y el hormigón permanentemente seco tampoco (falta agua). **El peor caso es el ciclo húmedo-seco**: balcones, fachadas, zonas de salpicadura.
+
+### 8.4.2 Diagnóstico de la corrosión
+
+| Ensayo | Qué determina |
+|---|---|
+| **Inspección visual** | Extensión de fisuras, manchas, desprendimientos |
+| **Pacometría** | Recubrimiento real (la causa raíz suele ser recubrimiento insuficiente) |
+| **Carbonatación (fenolftaleína)** | Profundidad del frente vs. recubrimiento |
+| **Cloruros** | Perfil de concentración |
+| **Potencial de corrosión (ASTM C876)** | Mapa de probabilidad de corrosión activa |
+| **Resistividad** | Velocidad de corrosión |
+| **Picado localizado** | Medición de pérdida de sección de la barra (con calibre) |
+
+### 8.4.3 Evaluación de la pérdida de sección
+
+```
+% pérdida = (A_original − A_actual) / A_original × 100
+```
+
+| Pérdida de sección | Consecuencia [PD] |
+|---|---|
+| < 10 % | Generalmente aceptable si se detiene el proceso |
+| 10 – 20 % | Verificar por cálculo. Puede requerir refuerzo |
+| 20 – 30 % | **Refuerzo necesario** casi con certeza |
+| > 30 % | **Sustitución o refuerzo obligatorio.** Apuntalar durante los trabajos |
+| Pérdida de estribos | **Crítica** — puede llevar al pandeo de las barras longitudinales |
+
+### 8.4.4 Reparación — el procedimiento completo
+
+```
+1. APUNTALAR              si la pérdida de sección es significativa
+                          o si se va a picar en zona traccionada
+
+2. DELIMITAR              con martillo de percusión / sondeo sonoro,
+                          marcar TODA la zona con hormigón delaminado
+                          (siempre es mayor que lo que se ve)
+
+3. PICAR                  eliminar todo el hormigón carbonatado,
+                          fisurado y disgregado. Bordes CORTADOS a
+                          disco (no en pico de pato), profundidad
+                          mínima 1 cm en el borde.
+                          ► DEJAR AL DESCUBIERTO LA BARRA EN TODO SU
+                            PERÍMETRO: mínimo 2 cm de espacio libre
+                            detrás de la barra. Si no, el óxido de
+                            atrás sigue trabajando.
+                          ► Extender el picado 5 cm más allá de la
+                            zona corroída visible.
+
+4. LIMPIAR EL ACERO       arenado, granallado o cepillo mecánico
+                          hasta grado Sa 2½ / St 3.
+                          ► Eliminar TODO el óxido, incluido el de
+                            las picaduras.
+
+5. EVALUAR SECCIÓN        medir con calibre. Si pérdida > 20%,
+                          AGREGAR BARRAS nuevas solapadas
+                          (longitud de empalme completa) o soldadas
+                          (sólo si el acero es soldable — verificar)
+
+6. PROTEGER EL ACERO      imprimación anticorrosiva de base cementicia
+                          con inhibidor, o epoxi. Dos manos.
+                          ► NO usar antióxido sintético común
+
+7. PUENTE DE ADHERENCIA   lechada cementicia modificada con polímero,
+                          o resina epoxi, sobre el hormigón saturado
+                          con superficie seca (SSS)
+
+8. RECONSTRUIR            mortero de reparación de RETRACCIÓN
+                          COMPENSADA, tixotrópico, clase R3/R4
+                          (EN 1504-3), aplicado en capas de
+                          10-25 mm. Para volúmenes grandes,
+                          microhormigón fluido con encofrado.
+
+9. CURAR                  imprescindible. 3-7 días con riego,
+                          membrana o film.
+
+10. PROTEGER              revestimiento anticarbonatación
+                          (pintura elastomérica con baja permeabilidad
+                          al CO₂ y alta al vapor de agua), o
+                          hidrofugante de silano/siloxano
+
+11. MONITOREAR            inspección a 6, 12 y 24 meses
+```
+
+**El error clásico:** picar sólo lo que se ve, dejar la barra apoyada en hormigón contaminado por detrás, y tapar con mortero común. **Resultado: reaparece en 1-3 años, y peor** — porque se genera un **efecto de par galvánico** entre la zona reparada (alcalina) y la contigua (carbonatada), que acelera la corrosión justo al borde del parche. Este fenómeno se llama **"efecto ánodo incipiente"** y es la razón por la cual las reparaciones parciales mal hechas fallan sistemáticamente.
+
+### 8.4.5 Protecciones adicionales
+
+| Técnica | Descripción | Cuándo |
+|---|---|---|
+| **Revestimiento anticarbonatación** | Pintura que reduce la difusión de CO₂ | Preventivo y post-reparación en fachadas |
+| **Hidrofugante (silano/siloxano)** | Impregnación que repele el agua sin cerrar el poro | Fachadas expuestas |
+| **Inhibidores de corrosión migratorios (MCI)** | Se aplican en superficie y migran hasta la armadura | Complemento, no sustituto de la reparación |
+| **Ánodos de sacrificio de zinc** | Se embeben en el parche de reparación y protegen catódicamente el perímetro | **Evitan el efecto ánodo incipiente.** Muy recomendable |
+| **Protección catódica por corriente impresa** | Sistema activo con fuente de corriente | Estructuras muy contaminadas por cloruros, de alto valor |
+| **Realcalinización electroquímica** | Restaura el pH del hormigón carbonatado | Casos especiales, caro |
+| **Extracción electroquímica de cloruros** | — | Casos especiales, caro |
+
+## 8.5 Técnicas de refuerzo
+
+### 8.5.1 Tabla comparativa
+
+| Técnica | Aumenta | Aumenta rigidez | Aumenta sección | Peso agregado | Costo | Plazo | Reversible |
+|---|---|---|---|---|---|---|---|
+| **Encamisado de hormigón armado** | Flexión, corte, axial | **Mucho** | **Mucho** | Alto | Medio | Largo | No |
+| **Encamisado metálico (angulares + presillas)** | Axial, confinamiento | Medio | Poco | Medio | Medio | Corto | Sí |
+| **FRP — fibra de carbono (CFRP)** | **Flexión, corte, confinamiento** | **Poco** | **Nada** | **Casi nulo** | Alto | **Muy corto** | Parcial |
+| **Perfiles metálicos adosados (vigas de refuerzo)** | Flexión, corte | Mucho | Medio | Medio | Medio | Corto | Sí |
+| **Postesado exterior** | Flexión, corte | Mucho | Nada | Bajo | Alto | Medio | Sí |
+| **Recrecido de losa (capa colaborante)** | Flexión, rigidez | Mucho | Medio | **Alto** | Bajo | Medio | No |
+| **Chapas de acero encoladas** | Flexión | Medio | Poco | Bajo | Medio | Corto | Parcial |
+| **Nuevos apoyos (columnas, muros)** | Reduce luces | Mucho | — | Bajo | Bajo | Corto | Sí |
+
+### 8.5.2 Encamisado de hormigón armado
+
+```
+   ANTES                          DESPUÉS
+   
+   ┌──────────┐                ┌────────────────┐
+   │          │                │ ┌──────────┐   │  ← nuevo hormigón
+   │ 20 × 30  │      →         │ │ 20 × 30  │   │     6-10 cm de espesor
+   │          │                │ └──────────┘   │
+   └──────────┘                └────────────────┘  → 32 × 42
+   
+   Preparación de la superficie existente:
+   ► Picado / escarificado hasta dejar el agregado a la vista
+     (rugosidad ≥ 5 mm de amplitud)
+   ► Conectores de corte (barras ancladas químicamente) para
+     garantizar el trabajo monolítico
+   ► Armadura nueva con estribos CERRADOS que abracen todo
+     (requiere perforar la losa arriba y abajo)
+   ► Hormigón fluido o autocompactante, o mortero proyectado
+```
+
+| Aspecto | Detalle |
+|---|---|
+| **Espesor mínimo del recrecido** | **6 cm** para hormigón vertido (necesita paso del agregado); **4 cm** para mortero proyectado o autocompactante |
+| **Armadura mínima** | Como columna nueva: ρ ≥ 0,01 del área agregada |
+| **Estribos** | **Cerrados**, atravesando la losa. Es lo más laborioso y lo que más se recorta — **no lo permitas**: sin estribos cerrados no hay confinamiento y el encamisado no funciona |
+| **Conectores** | Barras ϕ8-12 ancladas con resina epoxi en perforaciones, cada 30-50 cm, en tresbolillo |
+| **Hormigón** | H-30 mínimo, con aditivo expansor o retracción compensada. Autocompactante si el espacio es reducido |
+| **Continuidad entre plantas** | **Fundamental.** Un encamisado que se corta en la losa no transmite carga. Hay que perforar la losa y continuar |
+| **Fundación** | **Casi siempre hay que ampliar la base también.** Un encamisado que aumenta la capacidad de la columna pero no la de la base no sirve |
+| **Cuándo usarlo** | Cuando se necesita **mucho** aumento de capacidad axial (ampliación en altura), o cuando la columna está muy deteriorada |
+| **Desventaja principal** | **Invasivo, lento, sucio, ocupa espacio.** Y agrega peso |
+
+**Referencia técnica:** ACI 369R (Guide for Seismic Rehabilitation of Existing Concrete Frame Buildings), ACI 546R (Guide to Concrete Repair). En Argentina, INPRES-CIRSOC 103 **Capítulo 11 "Construcciones existentes"** (verificado en el índice: art. 11.1 Alcances; 11.2 Definiciones; 11.3 Principios fundamentales; 11.4 Clasificación de las construcciones; 11.5 Excepciones permitidas; 11.6 Exigencias y comprobaciones). **[VER] el contenido de este capítulo — es la referencia normativa argentina directa para intervención en existentes.**
+
+### 8.5.3 Refuerzo con FRP (fibra de carbono y afines)
+
+**Materiales:**
+
+| Fibra | Módulo E (GPa) | Resistencia (MPa) | Deformación de rotura | Uso |
+|---|---|---|---|---|
+| **Carbono (CFRP) estándar** | 230 – 240 | 3.500 – 4.900 | 1,5 – 2,0 % | **El más usado.** Alta resistencia y rigidez |
+| Carbono de alto módulo | 350 – 640 | 2.500 – 4.000 | 0,5 – 1,0 % | Cuando se necesita rigidez |
+| **Vidrio (GFRP)** | 70 – 85 | 1.900 – 3.400 | 2,5 – 4,5 % | Más barato, menos rígido. Confinamiento |
+| **Aramida (AFRP)** | 70 – 125 | 3.500 – 4.100 | 2,0 – 4,0 % | Resistencia al impacto |
+| **Acero (SRP/SRG)** | 200 | 3.000 | 1,5 % | Alternativa económica, compatible con matriz cementicia (SRG) |
+
+**Presentaciones:**
+- **Tejido unidireccional** (300-600 g/m²), impregnado in situ con resina epoxi (*wet lay-up*). El más versátil.
+- **Laminado pultruido** (platina de 1,2-1,4 mm × 50-120 mm), pegado con adhesivo epoxi. Más rígido y de mayor calidad, pero sólo para superficies planas.
+- **Barras y tejidos NSM** (*near surface mounted*): ranura en el hormigón + barra o platina de CFRP + adhesivo. Mejor protegido contra el fuego y el vandalismo.
+
+**Normativa:**
+- **ACI 440.2R-17** — "Guide for the Design and Construction of Externally Bonded FRP Systems for Strengthening Concrete Structures". **Es la referencia.**
+- ACI 440.1R-15 — hormigón armado con barras de FRP.
+- fib Bulletin 90 (2019), CNR-DT 200 R1/2013 (Italia).
+- **[VER] En Argentina no existe reglamento CIRSOC específico de FRP.** Se proyecta según ACI 440, lo cual es la práctica aceptada. **Documentalo en la memoria.**
+
+**Tres aplicaciones:**
+
+```
+1. REFUERZO A FLEXIÓN
+   ═════════════════════════════════   viga
+   ▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬   ← laminado CFRP en la cara traccionada
+   
+2. REFUERZO A CORTE
+   ═══╥══╥══╥═══════════╥══╥══╥════
+      ║  ║  ║           ║  ║  ║        ← bandas en U o envolventes
+      ╚══╝  ╚═══════════╝  ╚══╝           cerca de los apoyos
+   
+3. CONFINAMIENTO DE COLUMNAS
+   ┌─────────┐                        ← envoltura circunferencial completa
+   │▓▓▓▓▓▓▓▓▓│                          aumenta f'c efectivo y ductilidad
+   │▓▓▓▓▓▓▓▓▓│                          (esquinas REDONDEADAS R ≥ 20-30 mm)
+   └─────────┘
+```
+
+**Puntos críticos de diseño [FIRMA]:**
+
+1. **El modo de falla que gobierna es el DESPEGUE (*debonding*)**, no la rotura de la fibra. ACI 440 limita la deformación efectiva del FRP a un valor muy inferior al de rotura (típicamente **εfe ≤ 0,9·εfu** y además `εfd = 0,41·sqrt(f'c/(n·Ef·tf)) ≤ 0,9·εfu` [VER expresión exacta en ACI 440.2R-17]).
+2. **El FRP no aporta rigidez significativa** al estado de servicio: es delgado. **No reduce flechas ni fisuración** de manera relevante. Si tu problema es la flecha, el FRP no lo resuelve.
+3. **El FRP sólo trabaja para las cargas que se agregan DESPUÉS de pegarlo.** El estado tensional preexistente lo toma la estructura original. Si querés que el FRP tome parte de la carga permanente, hay que **descargar la estructura** (apuntalar) antes de pegarlo.
+4. **[RC/PD] Límite de capacidad sin refuerzo (ACI 440.2R):** la estructura **sin** el FRP debe poder resistir un nivel mínimo de carga (típicamente `1,1·D + 0,75·L`), para el caso de que el FRP se pierda (fuego, vandalismo, impacto). **Esto limita cuánto podés reforzar con FRP: no podés duplicar la capacidad de una viga.** El aumento realista es del **20-50%**.
+5. **FUEGO: el epoxi pierde propiedades a partir de la Tg (~60-80 °C).** En un incendio, el FRP se pierde en minutos. Por eso el punto 4. Si hay exigencia de resistencia al fuego, **hay que proteger el FRP** con mortero o placas, o usar sistemas SRG con matriz cementicia.
+6. **Preparación de la superficie:** es el 60% del éxito. Superficie sana (arenado/granallado), plana (rellenar irregularidades > 1 mm), seca (humedad < 4%), sin lechada superficial. **Ensayo de arrancamiento (pull-off) previo: ≥ 1,5 MPa con falla en el hormigón** [PD, verificar en ACI 440].
+7. **Esquinas redondeadas** (radio ≥ 13 mm según ACI; en la práctica 20-30 mm) para envolturas de confinamiento. Una esquina viva corta la fibra.
+8. **Anclaje de los extremos:** los laminados a flexión tienden a despegarse por los extremos. Anclajes mecánicos, bandas en U, o **anclajes de fibra (*fiber anchors*)**.
+9. **Control de calidad:** ensayos de arrancamiento sobre el sistema ejecutado, control de espesor de resina, registro de temperatura y humedad durante la aplicación.
+
+**Cuándo el FRP es la mejor opción:**
+- Aumentos de capacidad moderados (20-50%).
+- Cuando **no se puede agregar peso ni sección**.
+- Cuando el **plazo es crítico** (se ejecuta en días).
+- Cuando hay que reforzar por **corte** o **confinar columnas** (es donde mejor funciona).
+- Cuando la geometría es complicada (nudos, elementos curvos).
+
+**Cuándo NO:**
+- Cuando se necesita **más rigidez** (flechas).
+- Cuando el aumento requerido es grande (> 50-60%).
+- Cuando hay exigencia de fuego sin posibilidad de proteger.
+- Cuando el hormigón base está muy deteriorado (hay que repararlo primero).
+- Cuando el problema es la **fundación** (el FRP no baja carga al suelo).
+
+### 8.5.4 Perfiles metálicos
+
+**a) Encamisado metálico de columnas (angulares + presillas):**
+
+```
+   ┌─┐                    ┌─┐         Angulares en las 4 esquinas
+   │ │                    │ │         + presillas (planchuelas)
+   ├─┼────────────────────┼─┤   ← presilla soldada
+   │ │                    │ │
+   │ │      COLUMNA       │ │
+   │ │                    │ │
+   ├─┼────────────────────┼─┤   ← presilla
+   │ │                    │ │
+   └─┘                    └─┘
+```
+
+- Los angulares toman carga axial **sólo si están apretados contra la estructura superior e inferior** (calzado con cuña, mortero de alta resistencia sin retracción, o precarga con gato).
+- Las presillas **confinan** el hormigón (efecto zunchado) y arriostran los angulares.
+- Separación de presillas: `s ≤ 0,5 · lado menor de la columna` y `s ≤ 50 · espesor del angular` [PD].
+- **Ventaja:** rápido, reversible, no agrega casi peso, poco espesor.
+- **Desventaja:** requiere protección contra fuego y corrosión; estéticamente visible.
+
+**b) Vigas metálicas de refuerzo bajo losas o vigas:**
+
+- Perfil I o cajón bajo la viga existente, con separadores o con mortero de contacto.
+- **Precarga:** si querés que tome parte de la carga permanente, hay que **levantar la estructura con gatos** antes de fijar el perfil, o dejar cuñas metálicas apretadas.
+- Apoyo en columnas o en muros nuevos → **verificar la fundación de esos apoyos**.
+
+**c) Perfiles como dinteles en apertura de vanos:** ver §8.6.
+
+### 8.5.5 Recalce de cimientos
+
+```
+RECALCE POR BATACHES (el método tradicional)
+
+  Muro existente
+  ████████████████████████████████████████
+  ┌──────┐          ┌──────┐          ┌──────┐   ← cimiento existente
+  │ old  │          │ old  │          │ old  │
+  └──┬───┘          └──┬───┘          └──┬───┘
+     │  ┌──────┐       │  ┌──────┐       │      ← bataches NUEVOS
+     │  │ NEW  │       │  │ NEW  │       │         (excavados y
+     │  └──────┘       │  └──────┘       │          hormigonados
+     │                 │                 │          POR TRAMOS)
+   
+  REGLA: bataches de 1,00-1,50 m de ancho, alternados,
+  nunca más del 25% del muro descalzado a la vez,
+  y nunca dos bataches contiguos abiertos simultáneamente.
+  Orden: 1 - 4 - 2 - 5 - 3 - 6  (no consecutivo)
+```
+
+| Método | Descripción | Cuándo |
+|---|---|---|
+| **Bataches (recalce tradicional)** | Excavación por tramos alternados bajo el cimiento existente y hormigonado hasta el estrato competente | Profundizaciones de 1-3 m, suelos cohesivos estables, sin napa |
+| **Micropilotes** | Perforación desde arriba o desde el costado, atravesando o junto al cimiento existente | **La solución moderna.** Cualquier profundidad, cualquier suelo, espacio reducido |
+| **Pilotes de reacción (*jacked piles*)** | Se hincan tramos de tubo con un gato que reacciona contra el cimiento existente | Recalce con control de carga y de asentamiento |
+| **Inyección de resinas expansivas** | Resina de poliuretano expansivo inyectada bajo la fundación: densifica el suelo y levanta la estructura | **Rápido, no invasivo, sin obra.** Bueno para asentamientos moderados en suelos granulares y limosos. **Menos confiable en loess autocolapsable** |
+| **Jet grouting** | Columnas de suelo-cemento creadas con inyección a alta presión | Mejora masiva del suelo bajo la estructura. Caro, requiere control estricto |
+| **Ensanchamiento de la base** | Hormigón armado alrededor de la base existente, con conectores | Cuando el problema es capacidad portante, no profundidad |
+
+**Reglas de oro del recalce [FIRMA]:**
+1. **Apuntalar la estructura antes de descalzar.**
+2. **Bataches alternos**, nunca contiguos. Máximo 25% del muro abierto simultáneamente.
+3. **Contacto entre el recalce nuevo y el cimiento viejo:** el hormigón nuevo **retrae** y deja una junta abierta. Hay que **calzar** con mortero expansivo, o con cuñas de acero y luego mortero sin retracción. **Sin este paso, el recalce no toma carga y no sirve para nada.**
+4. **Monitoreo topográfico continuo** durante todo el recalce.
+5. **Nunca recalzar sin conocer la causa del asentamiento.** Si la causa es una pérdida de cañería, arreglá la cañería primero.
+6. **Suelo colapsable:** un recalce que baja la fundación pero deja el manto colapsable alrededor no resuelve el problema si hay fricción negativa.
+
+### 8.5.6 Postesado exterior
+
+Cables de postesado colocados **por fuera** del elemento, desviados con sillas, anclados en los extremos.
+
+| Ventaja | Desventaja |
+|---|---|
+| **Activo**: comprime la estructura desde el momento de tesar, cierra fisuras y reduce flechas | Requiere zonas de anclaje robustas (a menudo hay que construirlas) |
+| Muy eficaz para vigas de gran luz | Los cables son visibles |
+| **Reversible y ajustable** (se puede retesar) | Requiere protección contra fuego y corrosión |
+| Poco peso agregado | Especialista |
+
+Es la técnica de elección para **reforzar vigas de gran luz con problemas de flecha o fisuración**, y para puentes.
+
+## 8.6 Apertura de vanos
+
+### 8.6.1 En muros portantes de mampostería
+
+**Secuencia obligatoria [FIRMA]:**
+
+```
+PASO 1 — VERIFICAR QUE EL MURO ES PORTANTE
+  ► Ver planos, ver espesor, ver si recibe losa o viguetas
+  ► ¿Continúa hasta la fundación? ¿Está en todas las plantas?
+  ► ¿Hay muro encima en la planta superior?
+  ► En PH: ¿es cosa común? → autorización de asamblea
+
+PASO 2 — CALCULAR LA CARGA SOBRE EL DINTEL
+  ► Peso propio del muro sobre el vano (efecto arco: sólo el
+    triángulo/cono de descarga si el muro tiene altura suficiente
+    por encima)
+  ► Reacción de las losas que apoyan sobre el muro
+  ► Carga de plantas superiores
+  ► Cargas concentradas (vigas, columnas que apoyan)
+
+PASO 3 — DIMENSIONAR EL DINTEL Y SUS APOYOS
+  ► Dintel: perfiles metálicos, viga de HºAº in situ, o viga
+    prefabricada
+  ► APOYOS: mínimo 20-30 cm a cada lado, sobre superficie sana
+  ► ► ► VERIFICAR LA TENSIÓN DE APLASTAMIENTO EN EL APOYO ← EL PUNTO
+    MÁS OLVIDADO. Es donde falla.
+  ► Verificar que el muro bajo el apoyo llegue a la fundación
+  ► Verificar la fundación bajo el apoyo
+
+PASO 4 — APUNTALAR
+  ► Puntales bajo la losa/viguetas a ambos lados del vano
+  ► En muros de más de una planta: apuntalar TODAS las plantas
+  ► Puntales sobre durmientes que repartan sobre el piso
+
+PASO 5 — EJECUTAR EL DINTEL POR MITADES
+  ► Abrir la canaleta de UNA cara del muro
+  ► Colocar el primer perfil, calzarlo CONTRA EL MURO SUPERIOR
+    con cuñas de acero y mortero expansivo sin retracción
+  ► Esperar el fragüe
+  ► Repetir del otro lado
+  ► Unir los perfiles con presillas o pasadores
+
+PASO 6 — DEMOLER EL VANO
+  ► De arriba hacia abajo, sin percusión brusca
+  ► NUNCA antes de que el dintel esté colocado y calzado
+
+PASO 7 — RETIRAR PUNTALES
+  ► Gradualmente, a los 7-14 días si hay hormigón nuevo
+  ► Monitorear fisuras
+```
+
+**El error mortal: demoler primero y poner el dintel después.** Aunque "aguante", el muro superior ya se asentó sobre el vacío y el dintel entra sin carga; después trabaja mal y se fisura todo.
+
+**Dimensionado del dintel [PD]:**
+
+Carga sobre el dintel con efecto arco (muro de altura ≥ 0,7·L sobre el vano):
+```
+Se considera el peso del triángulo de 60° sobre el vano, más
+cualquier carga que caiga dentro de ese triángulo:
+
+q_dintel ≈ γ_muro · e_muro · (L · tan60° / 2) / L ... 
+
+Simplificado:  W_triángulo = γ · e · L² · tan(60°) / 4 = 0,433 · γ · e · L²
+```
+Si el muro sobre el vano tiene menos altura, o si hay una losa apoyada dentro del triángulo, **hay que tomar toda la carga**.
+
+**Perfiles orientativos para dinteles [PD]** (muro de 20 cm, un perfil a cada cara):
+
+| Luz del vano | Carga baja (sólo muro) | Carga alta (muro + losa) |
+|---|---|---|
+| 1,00 m | 2 UPN 100 o 2 IPN 100 | 2 UPN 120 |
+| 1,50 m | 2 UPN 120 | 2 UPN 140 / 2 IPN 140 |
+| 2,00 m | 2 UPN 140 | 2 IPN 160 / 2 IPN 180 |
+| 2,50 m | 2 IPN 160 | 2 IPN 200 |
+| 3,00 m | 2 IPN 180 | 2 IPN 220 / viga HºAº 20×40 |
+| 4,00 m | 2 IPN 220 | Viga de HºAº 20×50 |
+| > 4,00 m | **Viga de HºAº o perfil armado, con verificación específica** | |
+
+> **[FIRMA] Esta tabla es orientativa para presupuestar. Cada dintel se calcula.** La carga real depende de si hay losa apoyada, si hay muro arriba, si hay una columna que baja.
+
+**Verificación del aplastamiento en el apoyo [PD]:**
+```
+σ_apoyo = R / (b_apoyo × e_muro)  ≤  f_adm_mampostería
+```
+Con f_adm del orden de **0,8 – 2,0 MPa** según el mampuesto y el mortero [VER en CIRSOC 501/501-E]. Si no verifica: aumentar la longitud de apoyo, colocar una **placa de reparto de acero**, o construir una **jamba de hormigón armado**.
+
+### 8.6.2 En muros de hormigón armado (tabiques)
+
+**Es una intervención de otro orden de gravedad.** Un tabique de hormigón es parte del sistema resistente lateral.
+
+| Consideración | Detalle |
+|---|---|
+| **Antes que nada** | ¿Es un tabique estructural o un muro de cerramiento de hormigón? Ver planos originales |
+| **Efecto sobre el sistema lateral** | Abrir un vano en un tabique **reduce su rigidez de forma no lineal**: un vano del 20% del área puede reducir la rigidez un 40-50%. Hay que **rehacer el análisis lateral de todo el edificio** |
+| **Redistribución** | La rigidez que se pierde se transfiere a otros elementos. Verificarlos |
+| **Torsión** | Si el tabique era parte de la simetría, abrir el vano corre el centro de rigidez |
+| **Refuerzo del borde del vano** | Marco de acero o refuerzo de hormigón armado alrededor. **Los ángulos del vano concentran tensiones** — refuerzo diagonal |
+| **Corte de armaduras** | Hay que reponer la capacidad de las barras cortadas mediante armadura de borde anclada |
+| **Ejecución** | **Corte con sierra de diamante (hilo o disco), NUNCA con percusión.** La percusión fisura el hormigón remanente |
+| **[FIRMA]** | Proyecto específico, cálculo del edificio completo, firma de matriculado, autorización municipal |
+
+### 8.6.3 Perforaciones en losas
+
+**Reglas prácticas [PD]:**
+
+| Tipo de losa | Perforación admisible sin refuerzo |
+|---|---|
+| **Losa maciza en una dirección** | ϕ ≤ 15 cm, alejada de apoyos ≥ 2h, sin cortar armadura principal. Corriendo las barras a los lados |
+| **Losa maciza en dos direcciones** | ϕ ≤ 20-25 cm en el centro del paño |
+| **Losa de viguetas** | **Entre viguetas**, sin cortar ninguna. Máximo el ancho del bloque. **Cortar una vigueta requiere refuerzo con nervios transversales de reparto** |
+| **Losa nervurada / casetonada** | En los casetones, sin cortar nervios |
+| **Losa plana sin vigas** | **PELIGRO: la zona alrededor de las columnas es la de punzonamiento.** Ninguna perforación a menos de 3h de la cara de la columna sin verificación |
+| **Losa POSTESADA** | **DETECCIÓN DE CABLES OBLIGATORIA** (georradar). Cortar un cable puede ser mortal. §7.6.4 |
+
+**Perforaciones grandes (huecos de escalera, ascensores, patios):**
+- Marco perimetral: **vigas de borde** que recojan la carga del paño interrumpido.
+- **Apuntalamiento previo** de toda el área afectada.
+- Corte con **sierra de hilo diamantado**, con la losa apuntalada, y retiro de la pieza con precaución (una losa de 15 cm de 2×2 m pesa 1,5 tn).
+- Verificación del **diafragma** (§6.8) — un hueco grande en la losa afecta la transferencia de fuerzas horizontales.
+- **[FIRMA]**
+
+**Regla de agrupación:** varias perforaciones pequeñas juntas equivalen a una grande. Distancia mínima entre perforaciones ≥ 3 veces el diámetro mayor [PD].
+
+## 8.7 Ampliación en altura sobre edificio existente
+
+Es la intervención de mayor riesgo y la que más plata pierde cuando se hace mal. **Lista de verificación obligatoria — ninguna se puede saltear.**
+
+### 8.7.1 Los seis chequeos que SIEMPRE hay que hacer
+
+```
+┌─────────────────────────────────────────────────────────────────┐
+│  1. FUNDACIÓN                                                    │
+│     ► ¿Qué tipo es? (calicata para verlo, no suponerlo)          │
+│     ► ¿A qué cota apoya? ¿Sobre qué estrato?                     │
+│     ► ¿Cuál es la tensión actual? ¿Y con la ampliación?          │
+│     ► ¿Cuánto se asentó ya? ¿Cuánto más se asentará?             │
+│     ► ► ESTUDIO DE SUELOS NUEVO — no vale el original            │
+├─────────────────────────────────────────────────────────────────┤
+│  2. COLUMNAS Y MUROS PORTANTES                                   │
+│     ► ¿Cuál es la sección real? (relevamiento con pacómetro)     │
+│     ► ¿Cuál es la armadura real?                                 │
+│     ► ¿Cuál es el f'c real? (testigos)                           │
+│     ► ¿Están corroídas? ¿Pérdida de sección?                     │
+│     ► ¿Verifican con la carga nueva? (P-M, esbeltez, corte)      │
+│     ► ¿Hay continuidad hasta la fundación?                       │
+├─────────────────────────────────────────────────────────────────┤
+│  3. LOSA DE APOYO                                                │
+│     ► ¿La losa existente puede recibir la nueva estructura?      │
+│     ► ¿Los apoyos de las nuevas columnas caen sobre columnas     │
+│       existentes? (deben caer sobre columnas, NO sobre losa)     │
+│     ► ¿Hay que reforzarla?                                       │
+├─────────────────────────────────────────────────────────────────┤
+│  4. ESTABILIDAD LATERAL                                          │
+│     ► La ampliación aumenta H → aumenta el momento de vuelco     │
+│       por viento (crece con H²) y el corte basal                 │
+│     ► ¿El sistema resistente lateral existente lo aguanta?       │
+│     ► ¿Hay que agregar tabiques o arriostramientos?              │
+│     ► Nueva verificación del INPRES-CIRSOC 103 (¿supera 12 m?)   │
+├─────────────────────────────────────────────────────────────────┤
+│  5. CONTINUIDAD Y COMPATIBILIDAD                                 │
+│     ► Los ejes nuevos DEBEN coincidir con los existentes         │
+│     ► Compatibilidad de deformaciones entre lo viejo y lo nuevo  │
+│     ► Juntas si los sistemas son distintos                       │
+│     ► ¿El nuevo material (acero, steel framing) es compatible?   │
+├─────────────────────────────────────────────────────────────────┤
+│  6. NORMATIVO Y LEGAL                                            │
+│     ► ¿El código de edificación municipal permite esa altura?    │
+│       (FOT, altura máxima, retiros, plano límite)  [VER]         │
+│     ► ¿Hay que actualizar la protección contra incendio?         │
+│       (¿escalera presurizada? ¿segunda vía de escape?)           │
+│     ► ¿Cambia la categoría del edificio para el 103?             │
+│     ► En PH: autorización de la asamblea + modificación del      │
+│       reglamento de copropiedad                                  │
+│     ► Ascensor: ¿alcanza? ¿Hay que modificar la sala de máquinas?│
+│     ► Instalaciones: presión de agua, capacidad del tanque,      │
+│       capacidad eléctrica, desagües cloacales y pluviales        │
+└─────────────────────────────────────────────────────────────────┘
+```
+
+### 8.7.2 La estrategia dominante: ampliar con material liviano
+
+Comparación de una planta adicional de 200 m²:
+
+| Sistema | Peso propio | Carga adicional total | Aumento sobre la fundación |
+|---|---|---|---|
+| **HºAº convencional** | 7,0 kN/m² + L 2,0 | 200 × 9,0 = **1.800 kN** | Referencia |
+| **Acero + steel deck** | 3,5 kN/m² + L 2,0 | 200 × 5,5 = **1.100 kN** | **−39%** |
+| **Steel framing** | 1,5 kN/m² + L 2,0 | 200 × 3,5 = **700 kN** | **−61%** |
+| **Madera (entramado)** | 2,0 kN/m² + L 2,0 | 200 × 4,0 = **800 kN** | −56% |
+
+> **Ampliar con steel framing o estructura metálica liviana suele ser la única alternativa viable** cuando la fundación existente no tiene margen. La diferencia de 1.100 kN sobre una fundación al límite es la diferencia entre "se puede" y "hay que recalzar todo el edificio".
+
+**Pero atención:** en steel framing hay que verificar que la estructura existente pueda **recibir los anclajes de tracción (hold-downs)** que exige el arriostramiento. Una estructura liviana tiene poco peso estabilizante contra la succión y el vuelco por viento (V = 50 m/s en Santa Rosa).
+
+### 8.7.3 Cálculo del margen disponible en la fundación [PD]
+
+```
+Margen = σ_adm − σ_actual
+
+σ_actual = (Carga existente + peso propio de la base + suelo sobre ella) / Área de la base
+```
+
+**Pero hay una sutileza importante:** el suelo bajo una fundación existente lleva décadas cargado. **Está preconsolidado bajo esa carga.** Un incremento de carga:
+- Si `σ_nueva ≤ σ_actual`: prácticamente no genera asentamiento nuevo (recarga en la rama de descarga-recarga, con Cs << Cc).
+- Si `σ_nueva > σ_actual`: genera asentamiento en la rama virgen.
+
+**Esto es una ventaja** — el edificio existente "ya se asentó". Pero también significa que **cualquier incremento produce asentamiento adicional inmediato**, que el edificio existente (con sus tabiques ya construidos y sin capacidad de acomodarse) va a **acusar con fisuras**.
+
+**Criterio [PD]:** para ampliación sobre edificio existente con tabiquería terminada, apuntá a un **asentamiento adicional ≤ 5-10 mm** y una **distorsión angular adicional ≤ 1/1000**. Es mucho más estricto que en obra nueva.
+
+**En loess:** el incremento de carga puede llevar σ por encima de σF.SAT donde antes estaba por debajo. **Rehacer el análisis de colapsabilidad con las cargas nuevas.**
+
+## 8.8 Demoliciones parciales y apuntalamiento
+
+### 8.8.1 Principio rector
+
+> **Toda demolición es una operación estructural.** El orden de demolición debe ser el **inverso** al de construcción, y en cada etapa la estructura remanente tiene que estar en equilibrio estable.
+
+### 8.8.2 Proyecto de demolición [FIRMA]
+
+Contenido mínimo:
+1. **Relevamiento del sistema estructural existente** (§8.1).
+2. **Identificación de los elementos portantes** y de los que se van a retirar.
+3. **Análisis de la estructura remanente en cada etapa** — no sólo al final.
+4. **Proyecto de apuntalamiento**: ubicación, tipo, capacidad, apoyos, arriostramiento.
+5. **Secuencia de demolición** paso a paso, con planos.
+6. **Protección de linderos**: apuntalamiento del medianero, submuración si hay excavación.
+7. **Acta de estado de linderos** con fotos y fisurómetros.
+8. **Plan de monitoreo** durante la demolición.
+9. **Plan de contingencia**.
+10. **Gestión de residuos y de servicios** (cortar agua, gas, electricidad antes).
+
+### 8.8.3 Apuntalamiento — reglas
+
+| Regla | Detalle |
+|---|---|
+| **Capacidad** | Puntal metálico telescópico común: **10 – 20 kN** de servicio, **decreciendo mucho con la altura extendida** (a 3,5 m puede bajar a 8-10 kN). **Verificar la tabla del fabricante para la altura real** |
+| **Torre de apuntalamiento (multidireccional)** | 20 – 60 kN por pata. Necesaria para cargas altas |
+| **Durmiente inferior** | Tablón o perfil que reparta sobre el piso. **El puntal apoyado directamente sobre un contrapiso lo punzona** |
+| **Durmiente superior** | Idem contra la losa |
+| **Arriostramiento** | Puntales de más de 3 m **deben arriostrarse** horizontalmente en las dos direcciones. Un puntal sin arriostrar pandea |
+| **Verticalidad** | Un puntal inclinado 5° pierde capacidad y genera empuje horizontal |
+| **Continuidad en altura** | Si apuntalás una losa, **la carga baja a la losa inferior**, que puede no aguantarla. **Apuntalar en todas las plantas hasta llegar al terreno o a un elemento capaz** |
+| **Precarga** | Apretar el puntal hasta hacer contacto firme, **sin levantar la estructura** (levantar genera esfuerzos inversos) |
+| **Registro** | Planilla de apuntalamiento firmada, con ubicación y capacidad |
+
+```
+   APUNTALAMIENTO CORRECTO — continuidad hasta el terreno
+
+   ═══════════════════════════════   ← losa a demoler / intervenir
+      ║   ║   ║   ║   ║              ← puntales
+   ═══╬═══╬═══╬═══╬═══╬═══════════   ← losa 1er piso
+      ║   ║   ║   ║   ║              ← puntales ALINEADOS
+   ═══╬═══╬═══╬═══╬═══╬═══════════   ← losa PB
+      ║   ║   ║   ║   ║
+   ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓   ← terreno / platea
+
+   ❌ ERROR: apuntalar sólo la planta intervenida.
+      La carga se transfiere a la losa de abajo, que no
+      estaba dimensionada para eso, y falla.
+```
+
+### 8.8.4 Submuración de medianeras
+
+Cuando se excava junto a una medianera existente (subsuelo, cochera), hay que **submurar**: extender el cimiento del vecino hasta la nueva cota.
+
+**Reglas [FIRMA]:**
+1. **Bataches alternos** (igual que en recalce, §8.5.5): tramos de 1,00-1,50 m, nunca contiguos, máximo 25% abierto.
+2. **Calzar el nuevo hormigón contra el cimiento existente** con mortero expansivo — sin esto, no toma carga.
+3. **Acta de estado del lindero** con fotos, fisurómetros y firma del vecino, **antes de empezar**.
+4. **Monitoreo topográfico diario** durante la submuración.
+5. **Notificación fehaciente al vecino** (carta documento) y, si corresponde, mediación previa.
+6. **Seguro de responsabilidad civil** con cobertura por daño a linderos.
+7. **[VER]** Marco legal: Código Civil y Comercial de la Nación, artículos sobre medianería y restricciones al dominio; código de edificación municipal.
+8. **En loess:** la excavación descomprime lateralmente y puede provocar colapso. Excavación **por tramos cortos y hormigonado inmediato**.
+
+### 8.8.5 Errores mortales en demolición
+
+| Error | Consecuencia |
+|---|---|
+| Demoler un muro portante sin identificarlo como tal | Colapso |
+| Demoler de abajo hacia arriba | Colapso |
+| Retirar apuntalamiento antes de que el elemento nuevo tenga resistencia | Colapso |
+| Acopiar escombro sobre losas | Sobrecarga muy superior a la de diseño (1 m³ de escombro ≈ 16 kN/m² sobre 1 m²) |
+| Usar martillo neumático sobre losa apuntalada con puntales sueltos | Los puntales "saltan" con la vibración |
+| No cortar servicios (gas, electricidad) | Incendio, explosión, electrocución |
+| Demoler tabiques que resultaron ser rigidizadores del pórtico | Cambio no previsto en la rigidez lateral |
+| No verificar la estabilidad de muros que quedan libres | Un muro sin arriostrar es una pared de 20 cm parada de canto |
+
+## 8.9 EJEMPLO NUMÉRICO 3 — Apertura de vano en muro portante
+
+### Enunciado
+
+Vivienda en Santa Rosa. Se quiere unir living y comedor abriendo un vano de **3,00 m** en un muro portante interior.
+
+| Dato | Valor |
+|---|---|
+| Muro | Ladrillo hueco cerámico portante, **18 cm** + revoque a ambas caras (espesor total 22 cm) |
+| Tipología | PB + 1 planta alta |
+| Altura de muro sobre el vano (en PB) | 2,60 − 2,10 (altura del vano) = **0,50 m** hasta la losa de PA |
+| Muro en planta alta sobre el mismo eje | Sí, **2,60 m** de altura |
+| Losa de PA | Viguetas pretensadas, apoyadas **perpendicularmente** al muro, luz 4,00 m |
+| Losa de azotea | Ídem, luz 4,00 m |
+| Sobrecarga | Vivienda L = 2,00 kN/m²; azotea inaccesible Lr = 1,00 kN/m² |
+
+### Paso 1 — Verificar que el muro es portante
+
+✓ Recibe viguetas perpendiculares en PB y en PA. **Es portante.** Espesor 18 cm, dentro del rango 170-240 mm de la Tabla 7.1 del CIRSOC 501-E → **altura máxima de edificio 10 m, distancia máxima entre soportes verticales 4,50 m**. ✓
+
+**Consecuencia importante:** al abrir un vano de 3,00 m, el tramo de muro remanente a cada lado debe seguir cumpliendo la función portante y el arriostramiento. **Hay que verificar que la distancia entre soportes verticales del muro remanente siga siendo ≤ 4,50 m.**
+
+### Paso 2 — Cargas sobre el dintel
+
+**Ancho tributario de las losas:** las viguetas apoyan a ambos lados con luz 4,00 m → tributaria = 4,00/2 × 2 = **4,00 m**.
+
+**a) Peso propio del muro sobre el vano en PB (0,50 m de altura):**
+```
+γ_muro con revoque = 12 kN/m³  (ladrillo hueco portante con revoque, Tabla 3.1 verificada)
+q1 = 12 × 0,18 × 0,50 = 1,08 kN/m
+```
+> **Efecto arco:** con sólo 0,50 m de muro sobre el vano (< 0,7 × 3,00 = 2,10 m), **NO hay efecto arco.** Se toma toda la carga.
+
+**b) Reacción de la losa de PA sobre el muro:**
+```
+D_losa PA = 5,50 kN/m²  (viguetas 2,20 + contrapiso 1,44 + carpeta 0,42 + piso 0,20 + cielorraso 0,20 + tabiquería 1,04)
+L_losa PA = 2,00 kN/m²
+q2_D = 5,50 × 4,00 = 22,00 kN/m
+q2_L = 2,00 × 4,00 =  8,00 kN/m
+```
+
+**c) Peso del muro de planta alta (2,60 m):**
+```
+q3 = 12 × 0,18 × 2,60 = 5,62 kN/m
+```
+
+**d) Reacción de la losa de azotea:**
+```
+D_azotea = 6,00 kN/m²  (viguetas 2,20 + contrapiso pendiente 1,80 + aislaciones 0,65 + membrana 0,10 + cielorraso 0,20 + parapeto repartido 1,05)
+Lr = 1,00 kN/m²
+q4_D = 6,00 × 4,00 = 24,00 kN/m
+q4_Lr = 1,00 × 4,00 = 4,00 kN/m
+```
+
+**Totales:**
+```
+D_total = 1,08 + 22,00 + 5,62 + 24,00 = 52,70 kN/m
+L_total = 8,00 kN/m
+Lr_total = 4,00 kN/m
+```
+
+**Combinación mayorada (9-2):**
+```
+qu = 1,2 × 52,70 + 1,6 × 8,00 + 0,5 × 4,00 = 63,24 + 12,80 + 2,00 = 78,04 kN/m
+```
+
+**Combinación de servicio (para flechas y apoyos):**
+```
+q_serv = 52,70 + 8,00 + 4,00 = 64,70 kN/m
+```
+
+### Paso 3 — Solicitaciones en el dintel
+
+Luz de cálculo (luz libre + apoyo, o luz libre × 1,05):
+```
+L_cálculo = 3,00 + 0,25 = 3,25 m    (asumiendo 25 cm de apoyo a cada lado, centro a centro de apoyos ≈ 3,25 m)
+```
+
+**Momento máximo (biapoyado, conservador):**
+```
+Mu = qu · L² / 8 = 78,04 × 3,25² / 8 = 78,04 × 10,5625 / 8 = 103,0 kNm
+```
+
+**Corte máximo:**
+```
+Vu = qu · L / 2 = 78,04 × 3,25 / 2 = 126,8 kN
+```
+
+**Reacción de servicio en cada apoyo:**
+```
+R_serv = 64,70 × 3,25 / 2 = 105,1 kN
+```
+
+### Paso 4 — Dimensionar el dintel metálico
+
+Se propone **2 perfiles IPN**, uno por cada cara del muro, unidos con pasadores. Cada perfil toma la mitad:
+```
+Mu_perfil = 103,0 / 2 = 51,5 kNm
+```
+
+Acero F-24 (fy = 235 MPa) — el habitual en perfiles nacionales.
+
+**Módulo resistente requerido (LRFD, φb = 0,90, sección compacta):**
+```
+Wx,req = Mu / (φb · fy) = 51,5 × 10⁶ N·mm / (0,90 × 235 N/mm²) = 51,5e6 / 211,5 = 243.500 mm³ = 243,5 cm³
+```
+
+**Selección de perfil:**
+
+| Perfil | Wx (cm³) | Ix (cm⁴) | Peso (kg/m) | ¿Verifica Wx ≥ 243,5? |
+|---|---|---|---|---|
+| IPN 200 | 214 | 2140 | 26,2 | ✗ |
+| **IPN 220** | **278** | **3060** | **31,1** | **✓** |
+| IPN 240 | 354 | 4250 | 36,2 | ✓ (holgado) |
+| IPE 240 | 324 | 3892 | 30,7 | ✓ |
+| IPE 270 | 429 | 5790 | 36,1 | ✓ |
+
+**Adoptar 2 IPN 220** (o 2 IPE 240, más eficiente en peso).
+
+**Verificación de flecha (servicio):**
+```
+q_serv_perfil = 64,70 / 2 = 32,35 kN/m = 32,35 N/mm
+E = 210.000 MPa
+Ix = 3060 cm⁴ = 30,6 × 10⁶ mm⁴
+
+δ = 5 · q · L⁴ / (384 · E · I)
+  = 5 × 32,35 × 3250⁴ / (384 × 210.000 × 30,6e6)
+  = 5 × 32,35 × 1,1157e14 / (2,4676e15)
+  = 1,8047e16 / 2,4676e15
+  = 7,31 mm
+```
+
+**Límite [PD] para dintel que soporta mampostería: L/500** (más estricto que L/360 porque hay muro encima que se fisura):
+```
+δ_adm = 3250 / 500 = 6,50 mm
+
+δ = 7,31 mm  >  6,50 mm      ✗ NO VERIFICA
+```
+
+**Adoptar 2 IPN 240** (Ix = 4250 cm⁴ = 42,5e6 mm⁴):
+```
+δ = 7,31 × 3060/4250 = 5,26 mm  <  6,50 mm      ✓ VERIFICA
+```
+
+O **2 IPE 270** (Ix = 5790 cm⁴):
+```
+δ = 7,31 × 3060/5790 = 3,86 mm      ✓ VERIFICA CON MARGEN
+```
+
+**Adoptamos 2 IPE 270** (36,1 kg/m cada uno; mejor relación rigidez/peso que el IPN 240).
+
+**Verificación de corte:**
+```
+Vu_perfil = 126,8 / 2 = 63,4 kN
+Área del alma IPE 270: Aw ≈ h × tw = 270 × 6,6 = 1782 mm²
+φVn = 0,90 × 0,60 × 235 × 1782 / 1000 = 0,90 × 251,3 = 226 kN
+
+Vu = 63,4 kN  <  226 kN      ✓ VERIFICA CON GRAN MARGEN
+```
+
+**Verificación de pandeo lateral-torsional:** el perfil está embebido en el muro y arriostrado lateralmente de forma continua por la mampostería y por los pasadores al perfil opuesto → **Lb ≈ 0, no hay pandeo lateral-torsional.** ✓
+
+### Paso 5 — VERIFICAR EL APOYO (el punto crítico)
+
+**Reacción de servicio por apoyo: R = 105,1 kN.**
+
+**Longitud de apoyo propuesta: 25 cm.**
+
+**Tensión de aplastamiento sobre la mampostería:**
+```
+σ = R / (L_apoyo × e_muro) = 105.100 N / (250 mm × 180 mm) = 105.100 / 45.000 = 2,34 N/mm² = 2,34 MPa
+```
+
+**Tensión admisible de la mampostería de ladrillo hueco portante [PD]:** del orden de **0,8 – 1,5 MPa** para f'm típico [VER en CIRSOC 501 o 501-E el valor de f'a en función de f'u del mampuesto y del mortero].
+
+```
+σ = 2,34 MPa  >  σ_adm ≈ 1,2 MPa      ✗ NO VERIFICA
+```
+
+**¡Este es el punto que hace fallar los dinteles en la práctica!** El perfil aguanta perfectamente, pero **el muro debajo del apoyo se aplasta.**
+
+**Soluciones:**
+
+**Opción A — Aumentar la longitud de apoyo:**
+```
+L_apoyo,req = 105.100 / (1,2 × 180) = 105.100 / 216 = 487 mm  →  50 cm de apoyo a cada lado
+```
+Reduce el vano útil o exige alargar el dintel. Vano total del dintel: 3,00 + 2×0,50 = 4,00 m → **hay que recalcular el perfil con L = 3,50 m centro a centro**.
+
+**Opción B — Placa de reparto de acero:**
+```
+Placa de 250 × 400 mm × 20 mm bajo el apoyo (repartiendo en 40 cm de altura de muro)
+σ = 105.100 / (400 × 180) = 1,46 MPa   ← todavía alto
+Placa de 250 × 500: σ = 105.100 / (500 × 180) = 1,17 MPa    ✓ VERIFICA (justo)
+```
+
+**Opción C — Jamba de hormigón armado (LA MEJOR):**
+```
+Construir una jamba de HºAº de 20 × 25 cm a cada lado del vano,
+desde la fundación hasta el dintel, armada con 4ϕ12 + estribos ϕ6 c/15.
+
+σ sobre el hormigón = 105.100 / (200 × 250) = 2,10 MPa
+Con H-20:  σ_adm ≈ 0,45 · f'c = 9 MPa       ✓ VERIFICA CON GRAN MARGEN
+```
+
+**Adoptamos Opción C.** Además la jamba:
+- Reemplaza estructuralmente el muro que se quita.
+- Da continuidad de carga hasta la fundación.
+- Sirve de encadenado vertical.
+
+### Paso 6 — Verificar la fundación bajo la jamba
+
+```
+Carga total en la jamba (servicio) = R_dintel + peso propio de la jamba
+Peso propio jamba: 25 kN/m³ × 0,20 × 0,25 × 2,60 m = 3,25 kN
+Carga total ≈ 105,1 + 3,3 = 108,4 kN
+```
+
+**Cimiento existente:** zapata corrida de 0,50 m de ancho bajo el muro.
+
+**Antes de la reforma**, esa zapata recibía la carga distribuida del muro:
+```
+q_muro_antes = 52,70 + 8,00 + 4,00 = 64,70 kN/m (la misma carga, distribuida)
+σ_antes = 64,70 / 0,50 = 129 kPa   ← distribuido uniformemente
+```
+
+**Después de la reforma**, la carga que antes se distribuía en 3,00 m se concentra en las dos jambas:
+```
+Carga concentrada por jamba: 108,4 kN
+Ancho de la jamba: 0,25 m
+Si el cimiento corrido reparte en 3 veces el ancho de la jamba (efecto viga):
+Longitud efectiva ≈ 0,25 + 2 × 0,50 (canto del cimiento) = 1,25 m  [PD]
+σ_después = 108,4 / (1,25 × 0,50) = 108,4 / 0,625 = 173 kPa
+```
+
+```
+σ_después = 173 kPa   vs.   σ_antes = 129 kPa      →  incremento del 34%
+```
+
+**Verificación:**
+
+| Si σ_adm es... | Resultado |
+|---|---|
+| **σ_adm = 200 kPa** (suelo bueno) | ✓ VERIFICA. No hay que hacer nada |
+| **σ_adm = 150 kPa** | ✗ NO VERIFICA. Hay que **ensanchar el cimiento bajo la jamba** |
+| **σ_adm = 130 kPa** (loess) | ✗ NO VERIFICA. **Ensanchar y verificar colapsabilidad** |
+
+**Solución si no verifica:** dado bajo la jamba, de 0,80 × 0,80 m:
+```
+σ = 108,4 / (0,80 × 0,80) = 169 kPa   ← no alcanza
+Dado de 1,00 × 1,00 m:
+σ = 108,4 / 1,00 = 108 kPa      ✓ VERIFICA
+```
+Se ejecuta descalzando por bataches (§8.5.5) y calzando con mortero expansivo.
+
+### Paso 7 — Secuencia de ejecución
+
+```
+1.  Acta de estado con fotos y fisurómetros (incluida la planta alta)
+2.  Ensanchar el cimiento bajo cada jamba (bataches alternos, 
+    calzado con mortero expansivo). Curado 7 días.
+3.  Ejecutar las jambas de HºAº, hormigonadas hasta 5 cm por
+    debajo del nivel del dintel. Curado 7 días.
+    ► Armadura anclada al cimiento nuevo con barras de espera.
+4.  APUNTALAR la losa de PA y la de azotea a ambos lados del muro,
+    con puntales continuos hasta el terreno (PB y PA).
+5.  Abrir la canaleta en UNA cara del muro, a la altura del dintel,
+    de 3,00 m + apoyos sobre las jambas.
+6.  Colocar el primer IPE 270. Calzarlo contra el muro superior
+    con cuñas de acero y mortero de alta resistencia sin retracción
+    (grout expansivo). Rellenar completamente el hueco superior.
+    ► ESTE PASO ES EL CRÍTICO. Sin calzado firme, el dintel no
+      toma carga y el muro superior se asienta y fisura.
+7.  Esperar 48-72 h de fragüe del grout.
+8.  Repetir del otro lado (segundo IPE 270).
+9.  Colocar pasadores ϕ16 c/50 cm atravesando el muro y uniendo
+    ambos perfiles, con tuercas y arandelas.
+10. Rellenar el espacio entre perfiles con hormigón fluido o mortero.
+11. Demoler el muro bajo el dintel, de arriba hacia abajo,
+    sin percusión brusca (sierra + martillo liviano).
+12. Esperar 7 días monitoreando fisuras.
+13. Retirar apuntalamiento gradualmente (primero PA, luego PB),
+    monitoreando.
+14. Proteger los perfiles: antióxido + esmalte, o encajonado con
+    placa de yeso RF (resistencia al fuego).
+15. Terminaciones.
+```
+
+### Paso 8 — Resumen del ejemplo 3
+
+| Item | Resultado |
+|---|---|
+| Vano | 3,00 m en muro portante de 18 cm |
+| Carga sobre el dintel (servicio) | **64,70 kN/m** |
+| Momento mayorado | **103,0 kNm** |
+| **Dintel adoptado** | **2 IPE 270**, unidos con pasadores ϕ16 c/50 cm |
+| Verificación que gobernó el perfil | **FLECHA (L/500)** — no la resistencia |
+| **Apoyo** | **Jambas de HºAº 20×25 cm** con 4ϕ12, desde la fundación |
+| Verificación que casi hace fallar el proyecto | **APLASTAMIENTO EN EL APOYO** (2,34 MPa vs. 1,2 MPa admisible) |
+| Fundación | **Dado de 1,00 × 1,00 m** bajo cada jamba (si σ_adm ≤ 150 kPa) |
+| Apuntalamiento | **PB y PA, hasta el terreno** |
+
+**Las tres lecciones del ejemplo:**
+
+1. **El perfil casi nunca es el problema; el apoyo sí.** La verificación de aplastamiento sobre la mampostería falló por factor 2. Es la causa más frecuente de fisuras después de abrir un vano.
+2. **Abrir un vano concentra cargas que antes estaban repartidas.** La fundación que servía perfectamente para carga distribuida puede no servir para carga concentrada. **Siempre hay que llegar hasta la fundación en el análisis.**
+3. **La flecha gobierna el dintel, no la resistencia** — igual que en el Ejemplo 2. Un dintel que "aguanta" pero flecha 10 mm fisura todo el muro de arriba.
+
+---
+---

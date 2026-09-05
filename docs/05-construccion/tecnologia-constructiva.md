@@ -3155,3 +3155,1288 @@ Es el ruido que más quejas genera en edificios y el que menos se proyecta.
 | **Confundir absorción con aislación** | Se gasta en espuma y el problema persiste | Diagnosticar primero: ¿el problema es lo que entra o cómo suena adentro? |
 
 ---
+
+# 9. Terminaciones
+
+## 9.1 Revoques
+
+### Tabla 9.1 — Tipos de revoque
+
+| Tipo | Composición / dosificación | Espesor | Capas | Ventajas | Desventajas | Aplicación |
+|---|---|---|---|---|---|---|
+| **Tradicional a la cal (3 capas)** | Azotado 1:3 + hidrófugo → grueso ¼:1:3 → fino ⅛:1:3 | 25–30 mm total | 3 | Económico; oficio universal; permeable al vapor; reparable | Lento (3 operaciones + secado); mucha agua; variabilidad; fisuración si mal curado | Uso general en obra tradicional |
+| **Grueso reforzado (interior)** | 1 cemento : 1 cal : 4-5 arena | 15–20 mm | 1 (+ fino) | Base para enlucido de yeso | — | Interiores |
+| **Monocapa (premezclado hidrofugado)** | Mortero industrial de cemento + cal + áridos + aditivos + fibras + pigmento | **12–15 mm** en una sola aplicación | **1** | **Impermeable al agua y permeable al vapor**; color en masa (sin pintura); calidad constante; una sola operación | Costo mayor por m²; requiere despiece de juntas y malla en encuentros; exige sustrato uniforme | **Fachadas exteriores.** Muy buena opción para Santa Rosa |
+| **Proyectado mecánicamente** | Mortero premezclado bombeado y proyectado | 15–25 mm | 1–2 | **Alto rendimiento** (300–500 m²/día vs. 30–60 manual); dosificación mecánica constante; menos desperdicio; mejor compactación | Requiere equipo, energía y volumen de obra que lo justifique | Edificios, obras grandes |
+| **Yeso proyectado / enlucido de yeso** | Yeso de proyección | 10–15 mm | 1 | Muy rápido; superficie muy lisa lista para pintar; buena regulación higrotérmica | **Sólo interiores secos.** No apto para baños, cocinas ni exteriores | Interiores de edificios |
+| **Revoque termoaislante** | Premezclado con perlas de EPS (**λ = 0,076 W/m·K**) o con perlita | 20–40 mm | 1–2 | Aporta algo de aislación y corrige irregularidades | **Aporte térmico modesto**: 30 mm dan R = 0,39 m²K/W. **No sustituye a un aislante** | Corrección de puentes térmicos localizados, rehabilitación |
+
+**Rendimientos orientativos de mano de obra (verificar con registros propios del estudio):**
+
+| Tarea | Rendimiento manual | Rendimiento proyectado |
+|---|---|---|
+| Azotado hidrófugo | 25–40 m²/oficial·día | 150–250 m²/día |
+| Revoque grueso | 20–30 m²/oficial·día | 200–350 m²/día |
+| Revoque fino | 25–40 m²/oficial·día | — |
+| Monocapa | 15–25 m²/oficial·día | 150–250 m²/día |
+
+### Reglas de ejecución del revoque
+
+1. **Fajas o maestras** cada 1,0–1,5 m, aplomadas y niveladas, como guía de la regla.
+2. **Humectación del soporte** antes de aplicar (especialmente en verano y con viento).
+3. **Malla de fibra de vidrio antiálcali** de 20–30 cm centrada en **todo encuentro de materiales distintos** (mampostería/hormigón, mampostería/HCCA), sobre canaletas de instalaciones y en **refuerzo diagonal de 30×50 cm a 45° en cada esquina de vano**.
+4. **Espera entre capas:** el grueso debe fraguar antes del fino (habitualmente 3–7 días según clima).
+5. **Curado con viento:** en Santa Rosa, proteger con film o mojar los primeros días.
+6. **Terminación del fino:** con **fieltro humedecido en agua de cal** (dato verificado, material didáctico UOCRA).
+7. **No revocar con temperatura < 5 °C ni con riesgo de helada nocturna.**
+
+## 9.2 Placa de roca de yeso y construcción en seco
+
+### 9.2.1 Tipos de placa
+
+| Tipo | Color de la cara | Uso | λ (W/m·K) |
+|---|---|---|---|
+| **Estándar (ST)** | Blanca / gris | Tabiques y cielorrasos en locales secos | **0,44** (placa de 1000 kg/m³, IRAM 11601) |
+| **Resistente a la humedad (RH / verde)** | Verde | Baños, cocinas, lavaderos (**zonas húmedas, no mojadas**) | ídem |
+| **Resistente al fuego (RF / rosa)** | Rosa | Sectores con exigencia de resistencia al fuego; núcleo con fibra de vidrio y aditivos | ídem |
+| **RH+RF** | Verde con marca | Baños en sectores con exigencia de fuego | ídem |
+| **Alta dureza / alto impacto** | Según fabricante | Circulaciones, locales de uso intensivo | — |
+| **Placa cementicia / de fibrocemento** | Gris | **Zonas mojadas** (interior de duchas, exteriores, EIFS) | 0,15–0,87 según densidad (IRAM 11601) |
+| **Placa acústica perforada** | Según fabricante | Acondicionamiento acústico | — |
+
+> **Distinción crítica:** la placa **RH (verde) es "resistente a la humedad", NO impermeable**. Sirve para el ambiente húmedo de un baño, **no para recibir agua directa**. **En el interior de una ducha va placa cementicia o mampostería, nunca RH.** Es un error muy frecuente y muy caro.
+
+### 9.2.2 Perfilería
+
+| Perfil | Función |
+|---|---|
+| **Solera** | Horizontal, en piso y techo; recibe los montantes |
+| **Montante** | Vertical, cada **40 cm** (estándar) o **48 cm**; en tabiques altos o con revestimiento pesado, cada 30 cm |
+| **Perfil omega** | Cielorraso aplicado (fijado a la losa) |
+| **Perfil solera y montante de cielorraso suspendido** | Estructura colgada con velas rígidas o reguladores |
+| **Perfil ángulo de ajuste** | Perímetro de cielorraso |
+
+### 9.2.3 Composición de tabiques según prestación
+
+### Tabla 9.2 — Tabiques de placa de roca de yeso
+
+| Composición | Espesor total | Rw orientativo (dB) | Resistencia al fuego orientativa | Altura máxima orientativa |
+|---|---|---|---|---|
+| 1 placa 12,5 por cara + montante 35 mm, sin lana | 60 mm | 30–35 | — | 2,5 m |
+| 1 placa 12,5 por cara + montante 70 mm + **lana de vidrio 50 mm** | 95 mm | **40–45** | RF 30–60 | 3,0–3,5 m |
+| **2 placas 12,5 por cara + montante 70 mm + lana de vidrio 50 mm** | **120 mm** | **48–52** | **RF 60–90** | 3,5–4,0 m |
+| 2 placas RF 12,5 por cara + montante 70 + **lana de roca 50 mm** | 120 mm | 48–54 | **RF 90–120** | 3,5–4,0 m |
+| **Doble estructura independiente + 2 placas por cara + lana en ambas cavidades** | 200–250 mm | **58–65** | RF 90–120 | Según cálculo |
+
+> ### ⚠ VERIFICACIÓN OBLIGATORIA
+> **Los valores de Rw, resistencia al fuego (RF) y altura máxima de esta tabla son ÓRDENES DE MAGNITUD de la práctica del sector, NO valores certificados.** Cada fabricante publica en su manual técnico la **tabla de sistemas** con el Rw ensayado, la resistencia al fuego certificada y la altura máxima calculada de cada composición.
+>
+> **Verificar en:** manual técnico de **Durlock** (durlock.com), manual de **Knauf Argentina** (knauf.com.ar), y en el **Manual de recomendaciones del INCoSe** (incose.org.ar). **Especificar en pliego el código de sistema del fabricante, no una descripción genérica.**
+
+### 9.2.4 Cielorrasos
+
+| Tipo | Descripción | Aplicación |
+|---|---|---|
+| **Aplicado (con perfil omega)** | Perfilería fijada directamente a la losa; placa atornillada | Cuando no hay que pasar instalaciones. Espesor mínimo (~3 cm) |
+| **Suspendido con estructura de perfiles** | Estructura colgada de la losa con velas o reguladores | Cuando hay que pasar conductos, cañerías, luminarias embutidas |
+| **Suspendido con montaje ELÁSTICO (antivibratorio)** | Ídem, con **colgantes de goma o resorte** | **Cuando se busca aislación acústica de impacto** desde la planta superior. **El colgante rígido transmite la vibración de la losa: el cielorraso rígido no aísla del taco del vecino** |
+| **Desmontable (placa modular en bandeja)** | Placas de 60×60 o 60×120 apoyadas en perfilería vista | Oficinas, locales con acceso frecuente a instalaciones |
+| **Junta tomada / sin junta** | Placas con juntas tomadas con cinta y masilla; superficie continua | Vivienda, calidad estándar |
+| **Con junta a la vista (buña)** | Perfil de junta que absorbe el movimiento | Grandes superficies, donde la fisuración es inevitable |
+
+**Reglas:**
+- **Junta perimetral** contra los muros (buña o ángulo de ajuste), nunca masillar rígido contra el muro: la losa flecha y el cielorraso fisura.
+- **Junta de dilatación cada 10–12 m** en cielorrasos continuos de gran superficie.
+- **Refuerzos** para artefactos pesados (ventiladores de techo, luminarias grandes): estructura auxiliar anclada a la losa, nunca colgado de la placa.
+- **En cielorraso bajo cubierta** (última planta): la aislación va **sobre el cielorraso**, apoyada en la estructura, con **barrera de vapor del lado del local** y **cámara ventilada** por encima.
+
+## 9.3 Solados
+
+### Tabla 9.3 — Aptitud de solados por local, tráfico y humedad
+
+| Solado | Interior seco | Baño / cocina | Exterior cubierto | Exterior expuesto (heladas) | Tráfico intenso | Zona húmeda con agua directa | Sobre piso radiante | Observación |
+|---|---|---|---|---|---|---|---|---|
+| **Porcelanato esmaltado** | ✔✔ | ✔✔ | ✔✔ | ✔✔ *(exigir absorción ≤0,5 % y apto heladas)* | ✔✔ | ✔✔ | ✔✔ | El más versátil. Verificar clase de resbaladicidad en zonas mojadas |
+| **Porcelanato técnico (no esmaltado)** | ✔✔ | ✔✔ | ✔✔ | ✔✔ | ✔✔✔ | ✔✔ | ✔✔ | Máxima resistencia; garajes, comercios |
+| **Cerámico esmaltado (monococción)** | ✔✔ | ✔✔ | ✔ | ✖ *(salvo apto heladas)* | ✔ | ✔ | ✔✔ | Absorción mayor: verificar aptitud a heladas para exterior |
+| **Vinílico SPC / LVT clic** | ✔✔ | ✔ *(verificar en la ficha si es apto)* | ✖ | ✖ | ✔ | ✖ | ✔ *(verificar temperatura máxima)* | Muy buena sensación al pie, cálido, silencioso, rápido de colocar. **No apto exterior ni bajo sol directo (dilata)** |
+| **Vinílico en manta / baldosa pegada** | ✔✔ | ✔ | ✖ | ✖ | ✔✔ | ✖ | ✔ | Requiere base perfectamente nivelada (autonivelante) |
+| **Microcemento** | ✔✔ | ✔✔ *(con sellador adecuado)* | ✔ | ✖ | ✔ | ✔ *(con sellador)* | ✔✔ | Continuo, sin juntas. **Exige base sana y sin movimiento**; fisura si la base fisura. **Verificar sistema completo del fabricante** |
+| **Hormigón alisado / llaneado** | ✔✔ | ✔ | ✔✔ | ✔ | ✔✔✔ | ✔ | ✔ | Máxima inercia térmica (ver 4.13). Requiere juntas y sellador |
+| **Madera maciza / entablonado** | ✔✔ | ✖ | ✖ | ✖ | ✔ | ✖ | ✔ *(verificar especie y espesor)* | Bella y cálida; requiere mantenimiento y estabilidad higrométrica |
+| **Piso flotante laminado (HDF)** | ✔✔ | ✖ | ✖ | ✖ | ✔ | ✖ | ✔ | Económico. **Se arruina con agua**: no usar en baño ni cocina |
+| **Piso flotante de madera de ingeniería** | ✔✔ | ✖ | ✖ | ✖ | ✔ | ✖ | ✔✔ | Más estable que la madera maciza; apto radiante |
+| **Baldosón / laja / piedra natural** | ✔ | ✔ | ✔✔ | ✔✔ | ✔✔ | ✔ | ✔ | Exterior; verificar absorción y tratamiento antimanchas |
+| **Alfombra** | ✔✔ | ✖ | ✖ | ✖ | ✔ | ✖ | ✔ | **Excelente para ruido de impacto** (ΔLw 20–30 dB) |
+
+*✔✔✔ óptimo · ✔✔ apto · ✔ apto con recaudos · ✖ no apto*
+
+### 9.3.1 Adhesivos y pastinas
+
+| Adhesivo (clasificación tipo EN 12004, de uso corriente en Argentina) | Uso |
+|---|---|
+| **C1** | Cerámico de formato pequeño, interior, sobre sustrato estable |
+| **C2** | **Porcelanato, formatos grandes, exterior, zonas húmedas.** Adherencia mejorada |
+| **C2 S1 / S2** | Ídem con **deformabilidad**: obligatorio sobre **piso radiante**, sobre soportes con movimiento, sobre placa de yeso o madera, y en fachadas |
+| **Adhesivo epoxi (R2)** | Sustratos difíciles, piletas, industria alimentaria |
+
+*Verificar la designación exacta y las prestaciones en la ficha técnica del producto (Klaukol, Weber, Sika, Iggam y equivalentes).*
+
+**Reglas de colocación:**
+- **Doble encolado** (peine sobre el sustrato **y** sobre el dorso de la pieza) **obligatorio** en piezas ≥ 60×60 cm, en exteriores y en piso radiante. Objetivo: **≥ 90 % de superficie de contacto en exterior y zonas húmedas, ≥ 80 % en interior**.
+- **Peine adecuado al formato**: dientes de 6–8 mm para formatos chicos, 10–12 mm para grandes.
+- **Junta entre piezas: mínimo 2 mm en interior, 3–5 mm en exterior.** La colocación "sin junta" no existe: la pieza dilata.
+- **Tiempo abierto**: no extender más adhesivo del que se coloca en 15–20 min (menos con viento y calor).
+
+| Pastina | Uso |
+|---|---|
+| **Cementicia (CG1/CG2)** | Uso general interior |
+| **Cementicia mejorada con polímeros (CG2 WA)** | Exterior, zonas húmedas: menor absorción de agua |
+| **Epoxi (RG)** | **Duchas, mesadas, industria alimentaria, piletas.** Impermeable, sin absorción, sin hongos. Más cara y más difícil de aplicar |
+| **Sellador elástico (silicona neutra o poliuretano)** | **En todas las juntas de movimiento**: perímetro, ángulos entrantes, encuentro con otro material |
+
+### 9.3.2 Juntas de dilatación en pisos
+
+| Tipo de junta | Ubicación | Ancho |
+|---|---|---|
+| **Junta perimetral (de aislación)** | Contra todos los muros, columnas y elementos verticales | 5–10 mm, oculta bajo zócalo |
+| **Junta de ángulo entrante** | En todo rincón de dos planos (piso-muro, muro-muro en revestimiento) | 3–5 mm, sellada con elástico |
+| **Junta de partición / intermedia** | En interior: paños ≤ **25–30 m²**, lado ≤ 6 m. En exterior: paños ≤ **16–20 m²** | 5–10 mm con perfil de junta |
+| **Junta estructural** | Coincidiendo con la junta de dilatación del edificio | Igual a la junta estructural, con perfil de junta específico |
+| **Junta de cambio de material** | Donde el porcelanato encuentra la madera, el microcemento, etc. | 5 mm sellada o con perfil |
+
+> **La regla que se viola siempre:** **la junta del solado debe coincidir con la junta del contrapiso/carpeta.** Si el contrapiso tiene una junta y el solado se coloca continuo por encima, la junta "reaparece" como una fisura en el solado, corriendo por donde quiera.
+
+## 9.4 Pinturas y revestimientos
+
+### Tabla 9.4 — Pinturas: tipos, rendimientos y aplicación
+
+| Producto | Rendimiento orientativo (m²/l por mano) | Manos | Aplicación | Observaciones |
+|---|---|---|---|---|
+| **Fijador / sellador al agua** | 8–12 (diluido) | 1 | Sobre revoque nuevo o superficie pulverulenta | Imprescindible sobre yeso y revoque nuevo |
+| **Enduido plástico** | 1,5–2,5 kg/m² (según cantidad de manos) | 2–3 | Nivelación fina de interiores | Lijar entre manos |
+| **Látex interior mate** | **10–14** | 2 | Interiores | Económico; poco lavable |
+| **Látex interior satinado / lavable** | 10–13 | 2 | Cocinas, baños, circulaciones | Más lavable, más resistente |
+| **Látex exterior (acrílico)** | **8–11** | 2 | Fachadas | Vida útil 3–5 años en fachada expuesta de Santa Rosa |
+| **Látex acrílico elastomérico** | 4–7 | 2 | Fachadas con microfisuración | **Puentea fisuras** hasta cierto ancho. Verificar en ficha |
+| **Revestimiento SILICONADO (siloxánico) de fachada** | 5–8 | 2 | **Fachadas expuestas** | **La mejor opción para Santa Rosa**: muy baja absorción de agua + alta permeabilidad al vapor. Vida útil 10–20 años |
+| **Revestimiento texturado (símil piedra, fino, medio, grueso)** | **1–3 kg/m²** según granulometría | 1 (a llana) | Fachadas y muros interiores | Enmascara imperfecciones; requiere fijador previo |
+| **Esmalte sintético (solvente)** | 12–16 | 2 | Carpintería metálica y de madera, herrería | Olor fuerte, secado lento, amarillea |
+| **Esmalte AL AGUA (acrílico/poliuretánico)** | 10–14 | 2 | **Reemplazo del sintético en interiores** | Sin olor, secado rápido, no amarillea, lavable. **Es la opción por defecto hoy en interiores** |
+| **Convertidor de óxido / antióxido** | 10–14 | 1–2 | Herrería | Base obligatoria en metal ferroso |
+| **Barniz / lasur para madera exterior** | 10–14 | 2–3 | Carpintería de madera exterior | **En Santa Rosa (UV alto, viento seco) exige renovación cada 2–4 años.** El lasur (poro abierto) se mantiene mejor que el barniz (película) |
+| **Hidrorrepelente silano/siloxano incoloro** | 4–8 | 1–2 (mojado sobre mojado) | Ladrillo visto, hormigón visto, piedra | No forma película, no cambia el aspecto. Renovar cada 5–10 años |
+
+> **Los rendimientos son órdenes de magnitud de la práctica corriente. VERIFICAR el rendimiento declarado en la ficha técnica del producto especificado (Alba, Sherwin Williams, Sinteplast, Tersuave y equivalentes), que además indica dilución, tiempos de secado y repintado, y condiciones de aplicación.**
+
+### Sistema de aplicación (esquema estándar para muro interior nuevo)
+```
+1. Revoque fino curado y seco (esperar el secado de la humedad de obra: semanas)
+2. Lijado y limpieza
+3. FIJADOR AL AGUA diluido según ficha — 1 mano
+4. ENDUIDO PLÁSTICO — 2 a 3 manos, lijando entre manos
+5. Sellado del enduido (fijador diluido) — 1 mano
+6. LÁTEX — 2 manos (3 si hay cambio fuerte de color)
+```
+
+### Condiciones de aplicación en Santa Rosa
+
+| Condición | Límite |
+|---|---|
+| Temperatura ambiente y del sustrato | **Entre 10 °C y 30 °C** (*verificar en ficha*). Con TDMN de –2,7 °C, **no pintar exteriores en invierno temprano ni tarde** |
+| Humedad relativa | < 80 % |
+| **Viento** | **No pintar fachadas con viento fuerte**: el látex "piel" antes de nivelarse y quedan marcas de rodillo; el esmalte arrastra polvo |
+| Sol directo | No pintar sobre superficie caliente al sol: seca antes de nivelar. **Pintar la fachada siguiendo la sombra** |
+| Humedad del sustrato | **Revoque nuevo: esperar 28 días** como mínimo; el pH alto del cemento fresco saponifica las pinturas |
+
+---
+
+# 10. Detalles constructivos críticos
+
+> Cada detalle se describe **capa por capa, de exterior a interior (o de abajo hacia arriba)**, con espesores. Los espesores son los del proyecto tipo de referencia: **muro exterior de ladrillo cerámico hueco 18 con SATE de EPS 90 mm (K = 0,31, Nivel A), cubierta con 180 mm de aislación (K = 0,19, Nivel A verano)**. Adaptar a la solución de cada obra.
+
+## D-01 — Fundación / muro / piso con capa aisladora
+
+**Sección vertical por el arranque del muro exterior.**
+
+```
+                              EXTERIOR              │  INTERIOR
+                                                    │
+  ── Revestimiento siliconado 2 mm                  │
+  ── Revoque base armado con malla 5 mm             │
+  ── EPS 90 mm  [hasta 30 cm sobre nivel terreno]   │
+  ═══ perfil de arranque de aluminio con goterón ═══│
+  ── XPS 60 mm  [de +30 cm a –60 cm respecto NPT]   │  ← el aislante NO se
+  ── Revoque impermeable de protección 15 mm        │     interrumpe: cambia
+  ── Azotado hidrófugo 10 mm                        │     de material
+                                                    │
+   ▓▓▓▓▓ MURO: ladrillo hueco 18 ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓ │  ── Revoque grueso 20 mm
+                                                    │  ── Revoque fino 5 mm
+  ╔══════════════════════════════════════════════╗  │
+  ║ CAPA AISLADORA HORIZONTAL SUPERIOR           ║  │  ← 2 hiladas SOBRE NPT
+  ║ mortero 1:3 + hidrófugo 1:10, e = 10 mm      ║  │
+  ╚══════════════════════════════════════════════╝  │
+   ▓▓▓ mampostería ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓  │       ═══ NPT ═══
+                                                    │  ── Solado 10 mm
+   ┃ capa aisladora VERTICAL (ambas caras)          │  ── Adhesivo C2 5 mm
+   ┃ mortero 1:3 + hidrófugo, e = 10 mm             │  ── Carpeta 20 mm
+                                                    │  ── Contrapiso HºSº 100 mm
+  ╔══════════════════════════════════════════════╗  │  ── EPS/XPS 40 mm (opcional,
+  ║ CAPA AISLADORA HORIZONTAL INFERIOR           ║  │     mejora confort de piso)
+  ║ mortero 1:3 + hidrófugo, e = 10 mm           ║  │  ── FILM DE PE 200 µm
+  ╚══════════════════════════════════════════════╝  │     (solapado 20 cm y
+   ░░░ ENCADENADO DE FUNDACIÓN ░░░░░░░░░░░░░░░░░░░  │      SELLADO contra la
+   ░░░ CIMIENTO ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░  │      capa aisladora)
+                                                    │  ── Suelo compactado
+   ▒▒▒ suelo loéssico ▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒  │
+
+  VEREDA PERIMETRAL: ancho ≥ 0,80 m, pendiente 2 % HACIA AFUERA,
+  junta perimetral sellada contra el muro
+```
+
+**Puntos clave:**
+1. **Las tres capas aisladoras forman un cajón cerrado y continuo.** Cualquier interrupción anula el conjunto.
+2. **El film de PE bajo contrapiso se sella contra la capa aisladora horizontal inferior**, no simplemente se apoya cerca.
+3. **La aislación del muro baja 60 cm bajo el NPT en XPS** (el EPS no se entierra). Esto elimina el puente térmico del arranque, que es uno de los mayores de la envolvente.
+4. **Perfil de arranque de aluminio con goterón** en la transición EPS/XPS, a ≥ 30 cm del terreno, para que el agua que escurre por la fachada no se meta detrás del aislante.
+5. **La vereda perimetral con 2 % hacia afuera es un elemento estructural en suelo loéssico** (ver 0.3).
+6. **Junta perimetral sellada** entre vereda y muro: si se abre, el agua entra directo a la fundación.
+
+## D-02 — Muro doble con aislación en cámara
+
+**Sección horizontal.**
+
+```
+EXTERIOR
+  ── Revoque fino exterior           5 mm    (o ladrillo visto sin revoque)
+  ── Revoque grueso exterior        20 mm
+  ── HOJA EXTERIOR: ladrillo hueco 18 / ladrillo visto 12
+  ── Azotado hidrófugo (cara interna de la hoja exterior)  10 mm
+  ── CÁMARA DE AIRE VENTILADA       20 mm  ← llagas abiertas cada 1,0-1,5 m
+                                              en la hilada inferior, con babeta
+                                              que conduce el agua al exterior
+  ── EPS 60 mm ADHERIDO A LA HOJA INTERIOR
+  ── HOJA INTERIOR: ladrillo hueco 12
+  ── Revoque grueso interior        20 mm
+  ── Revoque fino interior           5 mm
+INTERIOR
+
+  GRAPAS DE VINCULACIÓN: acero inoxidable o galvanizado, 4-5 por m²,
+  con PLIEGUE CENTRAL HACIA ABAJO (goterón) dentro de la cámara
+
+  BABETA / MEMBRANA EN EL FONDO DE LA CÁMARA a nivel de la capa aisladora,
+  con pendiente hacia el exterior, que conduce a las llagas de drenaje
+```
+
+**Puntos clave:**
+1. **La hoja exterior es de sacrificio**: se acepta que se moje. **El azotado hidrófugo va en la cara interna de la hoja exterior**, no en la externa.
+2. **El aislante se adhiere a la hoja interior**, dejando la cámara ventilada del lado frío.
+3. **Limpieza de la cámara cada 4–5 hiladas**: el mortero caído puentea las hojas, conduce agua y cortocircuita el desacople acústico.
+4. **Las llagas de drenaje son obligatorias** si la cámara es ventilada, y deben tener una babeta que las alimente.
+5. **Este detalle NO resuelve los puentes térmicos de estructura** (columnas, encadenados, losas). Para eso, ver D-03.
+
+## D-03 — Encadenado / columna / canto de losa en fachada con SATE (eliminación del puente térmico)
+
+**Sección vertical por el canto de losa de entrepiso.**
+
+```
+EXTERIOR                                                          INTERIOR
+  ── Revestimiento siliconado          2 mm
+  ── Revoque base + malla              5 mm
+  ── EPS 90 mm  ═══════ CONTINUO, SIN INTERRUPCIÓN ═══════════
+  ── Mortero adhesivo                  5 mm
+                                                     │
+  ▓▓▓ mampostería hueco 18 ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓  │ revoque 25 mm
+  ─────────────────────────────────────────────────  │
+  ░░░ VIGA DE BORDE / CANTO DE LOSA (HºAº) ░░░░░░░░  │  ← LOSA DE ENTREPISO
+  ─────────────────────────────────────────────────  │     (contrapiso, carpeta,
+  ▓▓▓ mampostería hueco 18 ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓  │      solado por encima)
+                                                     │
+  ── Mortero adhesivo                  5 mm
+  ── EPS 90 mm  ═══════ CONTINUO ═════════════════════
+  ── Revoque base + malla              5 mm
+  ── Revestimiento siliconado          2 mm
+
+  ►►► REFUERZO DE MALLA (doble capa) en la franja del canto de losa,
+      30 cm arriba y 30 cm abajo, para absorber el movimiento diferencial
+      entre losa y mampostería
+```
+
+**Puntos clave:**
+1. **Toda la fachada, sin excepción, queda por dentro del plano de aislación.** El canto de losa, la viga de borde, la columna y el encadenado no "asoman".
+2. **Refuerzo de malla en la franja de la losa**: es la línea de fisuración natural. Sin doble malla, la fisura aparece en el revoque del SATE a los 6–18 meses.
+3. **Fijación mecánica de las placas de EPS al canto de losa**: en hormigón, taco de expansión; verificar longitud de anclaje.
+4. **Si el proyecto NO admite SATE**, la alternativa parcial es aislar el encadenado por dentro con 40 mm de EPS/XPS **prolongado 60 cm hacia arriba y hacia abajo** por la cara interior del muro, más verificación de condensación obligatoria (IRAM 11630). **Es una mitigación, no una solución.**
+
+## D-04 — Encuentro muro-carpintería: jamba, dintel y antepecho
+
+### D-04a — JAMBA (sección horizontal)
+
+```
+EXTERIOR                                                        INTERIOR
+  ── Revestimiento 2 mm
+  ── Revoque base + malla 5 mm
+  ── EPS 90 mm  ────────────┐
+  ── Mortero adhesivo 5 mm  │
+                            │  ← EL AISLANTE RETORNA hacia el vano
+  ▓▓ mampostería ▓▓▓▓▓▓     │     con EPS de 20-30 mm que SOLAPA
+                            │     20-30 mm SOBRE EL MARCO
+                        ┌───┴──── EPS 20 mm de retorno
+                        │  ═══ MARCO de aluminio con RPT (o PVC) ═══
+                        │   │◄─ Fondo de junta (cordón circular)
+                        │   │◄─ SELLADOR silicona neutra, relación 2:1
+                        │   │◄─ Espuma de PU de baja expansión (relleno)
+                        │  ═══════════════════════════════════════════
+                        └──── ¼ de caña de terminación exterior       │ contramarco
+                                                                      │ (tapajunta)
+```
+
+### D-04b — DINTEL con caja de persiana (sección vertical)
+
+```
+EXTERIOR                                                        INTERIOR
+  ── Revestimiento + revoque base + malla
+  ── EPS 90 mm ─────────────────────────────────┐
+                                                │
+  ░░░ DINTEL DE HºAº ░░░░░░░░░░░░░░░░░░░░░░░░  │
+  ┌──────────────────────────────────────────┐  │
+  │ CAJA DE PERSIANA                         │  │
+  │  ▓ EPS 30-40 mm en cara SUPERIOR         │  │
+  │  ▓ EPS 30-40 mm en cara POSTERIOR        │  │  ← el cajón aislado por
+  │  ▓ EPS 30-40 mm en cara INFERIOR         │  │     dentro en 3 caras
+  │  ○ eje de la cortina                     │  │
+  │  ▬ TAPA DE REGISTRO CON BURLETE          │──┼── (registro desde el interior)
+  │  ▪ PASACINTAS CON CEPILLO                │  │
+  └──────────────────────────────────────────┘  │
+  ── EPS 20 mm de retorno + GOTERÓN ────────────┤
+  ═══ MARCO con RPT ════════════════════════════╪═══
+      ↑ fondo de junta + sellador 2:1           │
+      ↑ espuma de PU                            │  contramarco
+```
+
+**Puntos clave del dintel:**
+1. **GOTERÓN obligatorio** en el borde inferior del retorno del aislante sobre el marco: sin él, el agua corre por el revestimiento y entra por la cabecera de la ventana.
+2. **La caja de persiana aislada en tres caras internas + burlete en tapa + pasacintas con cepillo** es el mínimo admisible. La solución óptima es cajón exterior por delante de la aislación (ver 7.6.1).
+3. **El EPS de fachada pasa por delante del dintel sin interrumpirse.**
+
+### D-04c — ANTEPECHO / ALFÉIZAR (sección vertical)
+
+```
+EXTERIOR                                                        INTERIOR
+  ═══ MARCO con RPT ═════════════════════════════════════
+      ↑ fondo de junta + sellador 2:1  ↑ espuma PU
+  ┌───────────────────────────────────────────┐
+  │ ALFÉIZAR / VIERTEAGUAS                    │  ← pendiente ≥ 5 %  ── Umbral
+  │ chapa plegada de aluminio, piedra o        │     hacia el exterior     interior
+  │ premoldeado                                │
+  │  ▼ GOTERÓN en el borde (canaleta de        │
+  │    3-5 mm bajo el vuelo, a ≥ 30 mm         │
+  │    de la cara del revestimiento)           │
+  │  ► OREJAS LATERALES: el alféizar se       │
+  │    prolonga 3-5 cm a cada lado del vano    │
+  │    y se INTRODUCE bajo el revestimiento    │
+  └───────────────────────────────────────────┘
+  ── Revestimiento + revoque base + malla
+  ── EPS 90 mm ───────────────────────────────
+  ── Mortero adhesivo
+  ▓▓▓ mampostería (antepecho) ▓▓▓▓▓▓▓▓▓▓▓▓▓▓  │  revoque interior
+  ═══ ARMADURA DE JUNTA: 2 Ø6 en las dos hiladas bajo el antepecho,
+      prolongada 60 cm a cada lado del vano
+```
+
+**Puntos clave del antepecho:**
+1. **Pendiente ≥ 5 %.** Un alféizar plano acumula agua.
+2. **Vuelo ≥ 30 mm respecto de la cara del revestimiento, con goterón.** Sin goterón, el agua vuelve por capilaridad y mancha la fachada bajo cada ventana (la mancha que se ve en el 80 % de los edificios argentinos).
+3. **Orejas laterales que entran bajo el revestimiento.** El agua que corre por el alféizar no debe poder entrar por los costados.
+4. **Sellado en el encuentro alféizar-marco**, con banda impermeable bajo el alféizar que suba por el marco.
+5. **Armadura de junta bajo el antepecho** para prevenir la fisura diagonal a 45° desde el vértice del vano.
+
+## D-05 — Losa de balcón sin puente térmico
+
+**Sección vertical por el encuentro balcón-fachada. Tres alternativas, de mejor a peor.**
+
+### Alternativa 1 — Conector estructural con corte térmico (óptima)
+
+```
+                    BALCÓN                    │           INTERIOR
+  Solado antideslizante 10 mm                 │  Solado 10 mm
+  Adhesivo C2 5 mm                            │  Carpeta 20 mm
+  Carpeta hidrófuga 20 mm                     │  Contrapiso 60 mm
+  Contrapiso a pendiente 2 % (40-80 mm)       │
+  IMPERMEABILIZACIÓN poliuretánica            │  ══════ LOSA HºAº 150 mm ═════
+     (sube 20 cm por el muro)                 │
+  ═════ LOSA DE BALCÓN HºAº 120 mm ═══════╗   │
+                                          ║   │
+      ▼ GOTERÓN en el canto               ║ ►►► CONECTOR ESTRUCTURAL
+      ▼ (canaleta 10×10 mm)               ║     CON CORTE TÉRMICO
+                                          ║     (armadura de acero inox
+                                          ║      + bloque de EPS/lana de
+                                          ║      roca de 80-100 mm)
+                                          ║   │
+  ── EPS 90 mm de fachada ────────────────╨───┤  ← la aislación de fachada
+  ── Revoque base + malla + revestimiento     │     ES CONTINUA porque la losa
+                                              │     no atraviesa
+```
+> *El conector con corte térmico (Schöck Isokorb y equivalentes) reduce ψ de valores del orden de 0,6–0,9 W/m·K a 0,08–0,15 W/m·K.* **Verificar disponibilidad, homologación y valores ψ del producto en el mercado argentino y con el agente de estructuras.**
+
+### Alternativa 2 — Envolver la losa de balcón por sus tres caras (buena, la más viable acá)
+
+```
+                    BALCÓN
+  Solado + adhesivo + carpeta + contrapiso a pendiente 2 %
+  IMPERMEABILIZACIÓN
+  ── XPS 40 mm SOBRE la losa (bajo el contrapiso)  ←┐
+  ═════ LOSA DE BALCÓN HºAº 120 mm ═══════════════   │ la losa queda
+  ── XPS 40 mm BAJO la losa + revoque armado 8 mm  ←┤ ENVUELTA en U
+  ── XPS 40 mm en el CANTO + revoque armado        ←┘
+      ▼ GOTERÓN
+```
+> Reduce el puente térmico entre un 50 % y un 70 % (*verificar con cálculo ISO 10211 en el caso concreto*). **Es la solución realista para obra corriente en Santa Rosa.** Requiere prever el espesor: el balcón termina 10 cm más alto y 4 cm más grueso.
+
+### Alternativa 3 — Balcón estructuralmente independiente
+Balcón apoyado en columnas propias o colgado, separado de la losa por una junta. **Elimina el puente térmico por completo** pero exige estructura adicional y resolver la junta (que debe ser estanca al agua y transitable).
+
+**En las tres alternativas:**
+- **Pendiente 1,5–2 % hacia afuera, siempre.**
+- **Goterón en el canto de la losa** (canaleta de 10×10 mm a 20 mm del borde). Sin goterón, mancha negra permanente bajo el balcón.
+- **Nivel del solado del balcón 3–5 cm por debajo del NPT interior**, o canaleta lineal delante del umbral.
+- **La impermeabilización sube 20 cm por el muro** y por debajo del marco de la carpintería.
+- **Baranda anclada a un murete o a insertos previstos**, nunca perforando la impermeabilización.
+
+## D-06 — Junta de dilatación VERTICAL en muro
+
+**Sección horizontal.**
+
+```
+EXTERIOR                                                        INTERIOR
+  ── Revestimiento                    ▐▌                Revoque interior
+  ── Revoque base + malla             ▐▌
+  ── EPS 90 mm                        ▐▌  ← el aislante también se corta
+  ── Mortero adhesivo                 ▐▌
+  ▓▓▓ mampostería hoja A ▓▓▓▓▓▓▓▓▓▓▓  ▐▌  ▓▓▓▓▓▓▓ mampostería hoja B ▓▓▓
+                                      ▐▌
+                       ancho de junta ▐▌ 15-20 mm
+                                      ▐▌
+     ┌────────────────────────────────┴┴────────────────────────────┐
+     │ 1. RELLENO: plancha de poliestireno expandido de baja        │
+     │    densidad / lana mineral / polietileno expandido           │
+     │ 2. FONDO DE JUNTA: cordón de PE de celda cerrada             │
+     │ 3. SELLADOR elastomérico (poliuretánico), RELACIÓN 2:1       │
+     │ 4. (exterior) PERFIL DE JUNTA de aluminio o tapajunta        │
+     │ 5. (interior) tapajunta o buña                               │
+     └──────────────────────────────────────────────────────────────┘
+
+  ►►► LA JUNTA ATRAVIESA: revestimiento + revoque + aislante + mampostería
+      + revoque interior + zócalo + solado. NO SE INTERRUMPE EN NINGÚN PLANO.
+```
+
+**Separaciones (Tabla 2.7):** mampostería cerámica 12–15 m; bloque de hormigón 6–8 m; siempre en cambios de altura, de sección o de material.
+
+## D-07 — Junta de dilatación HORIZONTAL en cubierta
+
+**Sección vertical (ver también 5.3.2).**
+
+```
+              ┌──── tapajunta metálica, FIJADA A UN SOLO LADO ────┐
+              │     (el otro lado apoya libre, permite el         │
+              │      movimiento)                                  │
+   ╔══════════┴═══╗                                    ╔══════════┴═══╗
+   ║ MURETE       ║   ← membrana en FUELLE, HOLGADA →  ║ MURETE       ║
+   ║ 150-200 mm   ║      (nunca tensa)                 ║ 150-200 mm   ║
+   ║ de altura    ║   ← cordón de material compresible ║ de altura    ║
+   ║              ║      dentro del fuelle             ║              ║
+   ║  ▬ media caña║                                    ║ media caña ▬ ║
+   ╚══╤═══════════╝                                    ╚═══════════╤══╝
+  ────┴─── membrana horizontal, solape 15 cm ───────────────────────┴────
+      lastre / protección    │  JUNTA ESTRUCTURAL  │   lastre / protección
+      aislante XPS           │   (todo el edificio) │   aislante XPS
+      impermeabilización     │                      │   impermeabilización
+      carpeta                │                      │   carpeta
+      contrapiso a pendiente │                      │   contrapiso
+  ════ LOSA CUERPO A ════════╡                      ╞═══ LOSA CUERPO B ════
+```
+
+**Puntos clave:**
+1. **La junta de cubierta SIEMPRE se eleva.** Una junta a nivel de cubierta es una filtración anunciada.
+2. **La membrana forma un fuelle holgado**, con material compresible dentro. Si la membrana queda tensa, se rasga al primer ciclo térmico.
+3. **La tapajunta se fija a un solo lado.**
+4. **Pendientes hacia ambos lados de la junta**, nunca hacia ella.
+
+## D-08 — Parapeto y babeta de azotea
+
+**Sección vertical por el parapeto (cubierta invertida).**
+
+```
+                        ┌──────────────────────────┐
+                        │ ALBARDILLA de coronamiento│  ← pendiente 5% HACIA
+                        │ (premoldeado, chapa       │     ADENTRO de la azotea
+                        │  plegada o piedra)        │     GOTERÓN en ambos bordes
+                        └───┬───────────────────┬───┘
+   EXTERIOR                 │                   │              AZOTEA
+   ── Revestimiento         │  ▓▓▓ PARAPETO ▓▓▓ │
+   ── Revoque base + malla  │  ▓ mampostería ▓  │  ── Revoque hidrófugo 20 mm
+   ── EPS 90 mm ────────────┤  ▓  o HºAº     ▓  ├── EPS/XPS 60 mm (el aislante
+   ── Mortero adhesivo      │  ▓             ▓  │     ENVUELVE el parapeto)
+                            │  ▓             ▓  │  ── Revoque armado
+                            │  ▓             ▓  │
+                            │  ▓             ▓  │  ═╗ BABETA: canaleta 20×20 mm
+                            │  ▓             ▓  │  ═╝ labrada a 25-30 cm sobre
+                            │  ▓             ▓  │     el nivel TERMINADO
+                            │  ▓             ▓  │  ── perfil de aluminio
+                            │  ▓             ▓  │     atornillado + sellador PU
+                            │  ▓             ▓  │  ▼ ZÓCALO de membrana,
+                            │  ▓             ▓  │     h ≥ 25 cm, solape 15 cm
+                            │  ▓             ▓  │     sobre la horizontal
+                            │  ▓             ▓  │  ╱ MEDIA CAÑA r ≥ 50 mm
+   ═════════════════════════╧══▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓═╧═════════════════════════
+                                                  ░ canto rodado 40-60 mm
+                                                  ░ geotextil
+                                                  ░ XPS 180 mm
+                                                  ░ MEMBRANA 4 mm
+                                                  ░ carpeta 20 mm
+                                                  ░ contrapiso a pendiente 2 %
+   ══════════════════════ LOSA DE HºAº ═══════════════════════════════════
+                                                  ░ revoque de cielorraso
+```
+
+**Puntos clave:**
+1. **El aislante ENVUELVE el parapeto** por su cara interior, y se encuentra con el de la fachada por arriba (bajo la albardilla) — de lo contrario el parapeto es un puente térmico enorme y el rincón superior interior de la última planta condensa.
+2. **Media caña de radio ≥ 50 mm** en el ángulo. Sin ella, la membrana se fisura en el pliegue.
+3. **Zócalo de membrana de altura ≥ 25 cm sobre el nivel TERMINADO** (incluido el canto rodado).
+4. **Babeta empotrada en canaleta labrada + perfil de aluminio atornillado y sellado.** Nunca membrana terminada "a ras" con silicona.
+5. **Albardilla de coronamiento con pendiente hacia adentro y goterón en ambos bordes.** Un parapeto sin albardilla absorbe agua por el coronamiento y la lleva al interior del muro.
+6. **Refuerzo de membrana** (banda de 40 cm) centrada en el ángulo antes de la membrana general.
+
+## D-09 — Medianera
+
+**Sección horizontal por la medianera entre dos edificios.**
+
+```
+   EDIFICIO PROPIO                     │           LINDERO
+                                       │
+  Revoque fino 5 mm                    │
+  Revoque grueso 20 mm                 │
+  ▓▓▓▓▓ MURO DE MEDIANERA ▓▓▓▓▓▓▓▓▓▓▓▓ │
+  ▓ ladrillo macizo 20 / bloque de   ▓ │   ← masa acústica: Rw objetivo ≥ 50 dB
+  ▓ hormigón 20 relleno              ▓ │
+  ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓ │
+  Azotado hidrófugo 10 mm (cara hacia  │
+  el lindero, si hay riesgo de humedad)│
+                                       │
+  ═══════════════════════════════════════════════════════════════════
+  SI LA MEDIANERA SOBRESALE de la fachada (tramo expuesto):
+  ── EPS 60 mm + revoque armado + revestimiento EN AMBAS CARAS del
+     tramo expuesto, con RETORNO ≥ 60 cm hacia el interior
+  ── Albardilla de coronamiento con goterón en ambos bordes
+```
+
+**Puntos clave:**
+1. **Muro de medianera = muro acústico.** No usar HCCA ni ladrillo hueco: masa insuficiente (ver 8.4).
+2. **Todo tramo de medianera expuesto al exterior es un puente térmico severo** (aleta con dos caras al viento). Aislar ambas caras del tramo expuesto con retorno ≥ 60 cm.
+3. **Coronamiento con albardilla** obligatorio.
+4. **Encuentro medianera-cubierta:** el zócalo de membrana sube por la medianera con la misma altura y detalle que en D-08.
+5. **No apoyar losas ni vigas propias sobre la medianera** sin acuerdo del lindero y verificación estructural (y sin resolver el puente acústico que eso genera).
+
+## D-10 — Embudo de desagüe
+
+Ver esquema y reglas en 5.3.2. Resumen de las siete reglas:
+
+1. Embudo con **ala/pletina ≥ 15 cm**, colocado **antes** de la membrana.
+2. **Parche de refuerzo de membrana de 50×50 cm** debajo del paño general.
+3. **La membrana solapa SOBRE el ala del embudo**, nunca por debajo.
+4. **Pendiente reforzada al 2 %** en el metro alrededor del embudo.
+5. **Reja/cúpula de protección** contra hojas.
+6. **Rebalse de seguridad (gárgola) atravesando el parapeto a 5 cm sobre el nivel del embudo**: obligatorio en toda azotea cerrada por parapetos.
+7. **Mínimo dos desagües por azotea** siempre que sea posible.
+
+## D-11 — Encuentro cubierta inclinada / muro
+
+**Sección vertical por el encuentro de un faldón que muere contra un muro.**
+
+```
+                     ▓▓▓ MURO ▓▓▓
+                     ▓          ▓
+                     ▓          ▓ ══╗ CONTRABABETA: pieza superior
+                     ▓          ▓ ══╝ empotrada en canaleta labrada
+                     ▓          ▓     a 20 cm sobre la cubierta,
+                     ▓          ▓     rellena con mortero hidrófugo
+                     ▓          ▓     y sellada con PU
+                     ▓          ▓  ▼ SOLAPA 10 cm sobre la babeta
+                     ▓          ▓ ┐
+                     ▓          ▓ │ BABETA: pieza inferior, sube 15 cm
+                     ▓          ▓ │ por el muro y se dobla bajo la
+                     ▓          ▓ │ cubierta, con pestaña de goterón
+   ══════════════════▓══════════▓═┘
+   ── CHAPA / TEJA ────────────────────
+   ── cámara ventilada 40 mm (contralistones)
+   ── membrana de agua y viento (transpirable), que SUBE por el muro
+      detrás de la babeta y se sella con cinta
+   ── entablonado / OSB (si corresponde)
+   ── AISLACIÓN: lana de vidrio 180 mm entre y sobre cabios
+   ── BARRERA DE VAPOR sellada
+   ── cielorraso de placa de yeso 12,5 mm
+```
+
+**Puntos clave:**
+1. **Babeta de DOS piezas, siempre.** Pieza inferior bajo la cubierta subiendo 15 cm; contrababeta empotrada en el muro solapando 10 cm sobre la primera.
+2. **Nunca una sola pieza sellada con silicona contra el muro.** La silicona se despega en 2–3 años por el movimiento diferencial y por UV.
+3. **La membrana de agua y viento sube por el muro detrás de la babeta**: es la segunda línea de defensa.
+4. **Cámara ventilada continua** desde el alero hasta la cumbrera; si el faldón muere contra un muro, prever salida de ventilación en el propio muro o en el faldón (teja/chapa ventilada).
+5. **Si el faldón desagua hacia el muro**, canaleta con desagüe propio: nunca dejar que el agua de todo el faldón se acumule contra el muro.
+
+## D-12 — Escalera
+
+**Sección por el arranque y por el encuentro con la losa.**
+
+```
+   ── Solado de peldaño (porcelanato / madera / hormigón alisado)  10 mm
+   ── Adhesivo C2S1                                                 5 mm
+   ── (opcional) LÁMINA RESILIENTE en la huella, si la escalera
+      está entre unidades funcionales distintas
+   ══ PELDAÑO DE HºAº ═══════════════════════════
+   ══ LOSA INCLINADA DE HºAº ════════════════════
+   ── Revoque de intradós 20 mm  (o cielorraso de placa suspendido)
+
+   ARRANQUE (encuentro con losa de planta baja):
+   ── Junta de aislación de 10 mm entre el arranque de la escalera
+      y el contrapiso (si la escalera es estructuralmente independiente)
+
+   ENCUENTRO CON LOSA SUPERIOR:
+   ── Junta elástica sellada de 5-10 mm entre la última huella y la losa
+
+   DESACOPLE ACÚSTICO (escalera común de edificio):
+   ►►► apoyos con NEOPRENO o elastómero entre la losa de escalera
+       y la estructura (el ruido de pisadas en escalera se propaga a
+       todo el edificio por la estructura)
+   ►►► el muro que separa la caja de escalera de las unidades
+       funcionales debe tener Rw ≥ 50 dB y NO debe ser el apoyo
+       directo de la escalera
+
+   PUENTE TÉRMICO (escalera exterior o caja de escalera no calefaccionada):
+   ►►► si la caja de escalera no está calefaccionada, el muro que la
+       separa de las unidades es ENVOLVENTE TÉRMICA: debe verificar K
+       (con el factor γ de IRAM 11604 para locales no calefaccionados)
+   ►►► una escalera exterior vinculada a la estructura es un puente
+       térmico severo: independizarla o aislarla íntegramente
+```
+
+**Dimensiones (relación de Blondel):** `2·CH + P = 62 a 64 cm`, donde CH = contrahuella y P = huella. **Verificar contrahuella y huella máximas/mínimas admitidas en el Código de Edificación de Santa Rosa.**
+
+## D-13 — Baño: impermeabilización y pendientes
+
+Ver 5.5.1 para el orden de capas completo.
+
+```
+   PLANTA (esquema de pendientes)
+
+   ┌────────────────────────────────────────┐
+   │                                        │
+   │   ZONA DE DUCHA                        │
+   │   ┌──────────┐        pendiente        │
+   │   │  ↘ 2% ↘  │        general 1,5 %    │
+   │   │    ▣     │◄─ rejilla de ducha      │
+   │   │  ↗ 2% ↗  │                         │
+   │   └──────────┘              ↘          │
+   │                              ▣ ◄─ rejilla de piso
+   │                                        │
+   └────────────────────────────────────────┘
+
+   SECCIÓN (de abajo hacia arriba)
+
+   ══════════ LOSA ══════════════════════════
+   ── Contrapiso a pendiente (1,5 % general / 2 % en ducha)   40-80 mm
+   ── Carpeta de nivelación con hidrófugo                     20 mm
+   ── IMPERMEABILIZACIÓN cementicia flexible bicomponente,
+      2 manos cruzadas                                        2-3 mm
+      ►► BANDA DE REFUERZO elástica de 12-15 cm embebida
+         entre las dos manos, en TODO el perímetro y en
+         TODOS los ángulos
+      ►► SUBE 20 cm por todos los muros
+      ►► SUBE 180-200 cm en el recinto de ducha
+      ►► COLLARÍN de refuerzo en rejilla y en cada pase
+   ── Adhesivo C2 (doble encolado)                            5 mm
+   ── Solado porcelanato antideslizante                       10 mm
+   ── Pastina: cementicia mejorada en general,
+      EPOXI en zona de ducha
+   ── Sellador elástico (silicona neutra) en TODOS los
+      ángulos entrantes (piso-muro, muro-muro)
+
+   ►►► PRUEBA DE ESTANQUEIDAD OBLIGATORIA: tapar rejilla, llenar
+       con 3-5 cm de agua, esperar 24-48 h, inspeccionar el
+       cielorraso inferior. ANTES de colocar el solado.
+```
+
+## D-14 — Cochera / vereda
+
+**Sección vertical por el encuentro cochera-vereda-calle.**
+
+```
+   INTERIOR COCHERA          │  VEREDA               │  CORDÓN
+                             │                       │
+   ── Solado (porcelanato    │  ── Solado de vereda   │
+      técnico / hormigón     │     antideslizante     │
+      llaneado)              │  ── Carpeta 20 mm      │
+   ── Carpeta 20 mm          │  ── Contrapiso 100 mm  │
+   ── Contrapiso 120 mm      │     PENDIENTE 2 %      │
+   ── FILM DE PE 200 µm      │     HACIA LA CALLE     │
+   ── Suelo compactado       │  ── Suelo compactado   │
+                             │                       │
+   ══╪══ REJILLA LINEAL ═════╡                       │
+     │  con canaleta y        │                       │
+     │  desagüe a pluvial     │                       │
+     │                        │                       │
+   ►►► JUNTA DE DILATACIÓN sellada entre el solado de la
+       cochera y el de la vereda
+   ►►► JUNTA PERIMETRAL sellada entre la vereda y el muro
+       del edificio (crítica en suelo loéssico)
+
+   SI HAY LOCAL HABITABLE SOBRE LA COCHERA (ver 4.6 Caso 3):
+   ── AISLACIÓN BAJO LA LOSA de la cochera: EPS/XPS 60-180 mm
+      + revoque armado con malla, o PUR proyectado protegido
+      + cielorraso de placa cementicia apta exterior
+```
+
+**Puntos clave:**
+1. **Rejilla lineal en el límite cochera-vereda**, con desagüe conducido al pluvial. Sin ella, el agua de la vereda entra a la cochera o el agua de lavado de la cochera sale a la vereda.
+2. **La vereda drena hacia la calle al 2 %**, nunca hacia el edificio (regla de suelo loéssico).
+3. **Junta perimetral vereda-muro sellada y mantenida.** Es el punto por donde el agua llega a la fundación.
+4. **Losa sobre cochera abierta = envolvente térmica.** Ver 4.6 Caso 3: sin aislación, el K es 2,35 y el piso del departamento de arriba es un piso helado permanente.
+5. **Nivel de la cochera:** el umbral debe estar por encima del nivel de la calle, con la pendiente resuelta dentro del terreno.
+
+## D-15 — Encuentro entre construcción existente y ampliación nueva
+
+**Sección horizontal por el encuentro de dos muros de distinta época.**
+
+```
+   CONSTRUCCIÓN EXISTENTE      │      AMPLIACIÓN NUEVA
+   (asentada, sin deformación   │      (va a asentar y a retraer)
+    remanente significativa)    │
+                                │
+   ▓▓▓ muro existente ▓▓▓▓▓▓▓▓  ║  ▓▓▓▓ muro nuevo ▓▓▓▓▓▓▓▓▓▓▓
+                                ║
+                     JUNTA de   ║  15-20 mm
+                                ║
+   ┌────────────────────────────╨─────────────────────────────┐
+   │ 1. NO TRABAR las mamposterías. NUNCA.                    │
+   │ 2. Vinculación con GRAPAS / PELOS de hierro cada 3-4      │
+   │    hiladas, ANCLADOS QUÍMICAMENTE en el muro existente,   │
+   │    que permiten transferencia de esfuerzo horizontal      │
+   │    pero admiten el movimiento vertical diferencial        │
+   │ 3. RELLENO compresible (poliestireno / lana mineral)      │
+   │ 4. FONDO DE JUNTA + SELLADOR elastomérico 2:1             │
+   │ 5. MALLA DE FIBRA DE VIDRIO antiálcali de 30 cm centrada  │
+   │    en la junta, embebida en el revoque, EN AMBAS CARAS    │
+   │ 6. En fachada: PERFIL DE JUNTA o buña de diseño que       │
+   │    "acepte" visualmente la fisura inevitable              │
+   └───────────────────────────────────────────────────────────┘
+
+   FUNDACIÓN:
+   ►►► La fundación nueva NO debe apoyarse sobre la existente ni
+       socavarla. Excavar por bataches (tramos alternados) si hay
+       que trabajar junto a una fundación existente.
+   ►►► En suelo loéssico, el riesgo de descalce por excavación
+       adyacente es alto: CONSULTAR AL AGENTE DE ESTRUCTURAS
+       y al estudio de suelos ANTES de excavar.
+
+   CUBIERTA:
+   ►►► La junta debe continuar en la cubierta, resuelta como D-07
+       (junta elevada con fuelle de membrana).
+
+   ENVOLVENTE TÉRMICA:
+   ►►► Si sólo se aísla la ampliación, el muro existente queda como
+       puente térmico. Idealmente, extender el SATE a la fachada
+       existente: es la oportunidad de mejorar todo el edificio.
+   ►►► Si eso no es posible, prolongar el aislante de la ampliación
+       ≥ 60 cm sobre la fachada existente, con terminación en bisel.
+
+   INSTALACIONES:
+   ►►► Toda cañería que atraviese la junta debe hacerlo con manguito
+       y con un tramo flexible.
+```
+
+**Puntos clave:**
+1. **La regla absoluta: NO TRABAR.** La construcción existente ya asentó; la nueva va a asentar y a retraer. Trabarlas garantiza una fisura, sólo que en un lugar aleatorio en vez de en la junta prevista.
+2. **La junta es un elemento de diseño**, no un defecto: se resuelve con buña o perfil de junta y queda como línea de la fachada.
+3. **Malla en ambas caras** en el revoque.
+4. **Verificar el estado y la capacidad de la fundación existente** antes de apoyarle nada.
+
+---
+
+# 11. Sustentabilidad y eficiencia
+
+## 11.1 Etiquetado energético de viviendas en Argentina (PRONEV)
+
+### Qué es
+
+El **Programa Nacional de Etiquetado de Viviendas (PRONEV)** implementa un sistema unificado de etiquetado de eficiencia energética de viviendas para todo el país. La etiqueta **califica la vivienda según su consumo estimado de energía por metro cuadrado y por año**.
+
+### Datos verificados
+
+| Aspecto | Contenido |
+|---|---|
+| **Escala** | **Siete letras: de A (más eficiente) a G (menos eficiente)** |
+| **Indicador** | **IPE — Índice de Prestaciones Energéticas**: cantidad estimada de **energía primaria** que demandaría el uso normal del inmueble durante un año y por metro cuadrado |
+| **Usos que computa el IPE** | **Calefacción invernal, climatización estival, agua caliente sanitaria e iluminación** |
+| **Rangos de IPE** | **Varían para cada región del país** (una vivienda A en Ushuaia no consume lo mismo que una A en Formosa) |
+| **Qué discrimina el informe** | Refrigeración en verano, calefacción en invierno, producción de ACS, iluminación y **aporte de energías renovables** |
+| **Validez de la etiqueta** | **Máximo 10 años** |
+| **Estado normativo** | Voluntario a nivel nacional; **Santa Fe fue la primera provincia en sancionar ley propia de etiquetado (octubre de 2019)**; CABA y otras jurisdicciones tienen programas propios |
+| **Fuente oficial** | argentina.gob.ar → Energía → Eficiencia Energética → PRONEV |
+
+> ***Verificar en la web del PRONEV el estado de adhesión de la Provincia de La Pampa y de la Municipalidad de Santa Rosa, y el listado de etiquetadores habilitados en la provincia.***
+
+### Por qué le importa al estudio
+
+1. **Es un diferencial comercial hoy y probablemente una obligación mañana.** El camino argentino replica el europeo: voluntario → obligatorio en venta y alquiler.
+2. **Todo lo que este documento propone (Nivel A de IRAM 11605, DVH con RPT, aislación continua) es exactamente lo que sube la letra de la etiqueta.**
+3. **La etiqueta traduce el trabajo técnico a un lenguaje que el comitente entiende.** "K = 0,31 W/m²K" no le dice nada; "esta casa es clase B y la del vecino es F" sí.
+4. **El cálculo del IPE se apoya en los mismos datos** que este documento genera: K de cada cerramiento, superficies, orientaciones, carpinterías, zona bioambiental.
+
+## 11.2 Certificaciones: qué implican realmente
+
+### Tabla 11.1 — Comparación de certificaciones aplicables en Argentina
+
+| Certificación | Origen | Qué certifica | Alcance | Costo relativo | Aplicabilidad realista en Santa Rosa |
+|---|---|---|---|---|---|
+| **Etiqueta PRONEV** | Argentina (Secretaría de Energía) | **Consumo energético estimado** (IPE) de la vivienda | Vivienda individual o edificio | **Bajo** | **Alta.** Es la herramienta local, barata y creciente |
+| **LEED** (USGBC) | EEUU | **Sustentabilidad integral** por sistema de puntos: sitio, agua, energía, materiales, calidad de aire interior, innovación. Niveles: Certified, Silver, Gold, Platinum | Edificio completo (nueva construcción, interiores, operación) | **Muy alto** (consultoría + fees + commissioning) | **Baja para vivienda**; tiene sentido en edificios corporativos o institucionales con inversor que lo demande. **En Argentina hay proyectos certificados, casi todos oficinas y retail** |
+| **EDGE** (IFC / Banco Mundial) | Internacional | **Eficiencia de recursos**: exige **≥ 20 % de ahorro en energía, ≥ 20 % en agua y ≥ 20 % en energía incorporada en materiales**, respecto de una línea base local | Edificio | **Bajo a medio** (mucho más accesible que LEED) | **Media-alta.** **Es la certificación internacional más razonable para vivienda en Argentina**: software gratuito, criterios simples, líneas base locales, y reconocimiento de bancos multilaterales |
+| **Passivhaus** (PHI Darmstadt) | Alemania | **Desempeño energético extremo del edificio**: demanda de calefacción ≤ 15 kWh/m²a, demanda de energía primaria limitada, **estanqueidad n50 ≤ 0,6 renovaciones/h**, ausencia de puentes térmicos (ψ ≤ 0,01 W/m·K), confort térmico verificado | Edificio | **Medio-alto** (el sobrecosto de obra, más que la certificación) | **Media.** Técnicamente muy adecuada al clima pampeano (frío con buen recurso solar). **Requiere ventilación mecánica con recuperador de calor y hermeticidad medida con blower door**; hay profesionales certificados en Argentina |
+| **Certificación de madera FSC / PEFC** | Internacional | Cadena de custodia de la madera | Producto | Bajo (lo asume el proveedor) | Alta: **especificable directamente en pliego** |
+| **CAT** (ver 1.4) | Argentina | **Aptitud técnica de un sistema no tradicional** | Sistema constructivo | — (lo tramita el fabricante) | Obligatoria en obra pública con sistema no tradicional |
+
+> ### La opinión técnica del documento
+> **Para el 95 % de los proyectos del estudio, la ruta correcta NO es certificar: es diseñar bien y etiquetar.**
+>
+> - **Verificar Nivel A de IRAM 11605** cuesta poco y da la mayor parte del beneficio.
+> - **Obtener la etiqueta PRONEV** es barato y comunicable.
+> - **LEED sólo se justifica si el comitente lo pide y lo paga** (típicamente por requerimiento corporativo o de inversor).
+> - **EDGE es la mejor relación costo/beneficio** si se busca un sello internacional.
+> - **Passivhaus tiene sentido como METODOLOGÍA aunque no se certifique:** sus criterios (envolvente continua sin puentes térmicos, hermeticidad medida, ventilación con recuperación) son exactamente lo que el clima de Santa Rosa pide. **Se puede diseñar con criterio Passivhaus y no pagar la certificación.**
+
+## 11.3 Huella de carbono de los materiales
+
+El **carbono incorporado** (*embodied carbon*) es el CO₂ emitido en la extracción, procesamiento, transporte y puesta en obra de los materiales. En un edificio con buena envolvente, **el carbono incorporado puede superar al carbono operativo de toda su vida útil**.
+
+### Tabla 11.2 — Carbono incorporado de materiales de construcción (ÓRDENES DE MAGNITUD)
+
+| Material | kg CO₂e / kg (orden de magnitud) | Comentario |
+|---|---|---|
+| **Cemento portland** | ~0,8 – 0,95 | La calcinación de la caliza libera CO₂ de proceso, además del de combustión. **Es el material más impactante de la construcción por volumen usado** |
+| **Hormigón (según resistencia)** | ~0,10 – 0,17 | Bajo por kg, pero se usan toneladas |
+| **Acero (perfiles, barras) — vía alto horno** | ~1,7 – 2,8 | |
+| **Acero reciclado (horno eléctrico)** | ~0,4 – 0,9 | **La vía de reciclado reduce el impacto entre 3 y 5 veces** |
+| **Aluminio primario** | ~8 – 13 | **El material corriente de mayor intensidad de carbono** |
+| **Aluminio reciclado** | ~1 – 2 | Reducción de ~90 % |
+| **Ladrillo cerámico** | ~0,20 – 0,35 | Depende fuertemente del combustible del horno |
+| **Bloque de hormigón** | ~0,10 – 0,15 | |
+| **EPS** | ~2,5 – 4,0 | Alto por kg, **pero se usan 1–2 kg/m² de placa**: el impacto absoluto es bajo y se amortiza rápidamente con el ahorro operativo |
+| **XPS** | ~3 – 8 (depende del agente espumante; los HFC antiguos eran muy altos) | **Verificar el agente espumante del producto: los modernos (HFO, CO₂) reducen el impacto drásticamente** |
+| **Poliuretano** | ~3 – 5 | |
+| **Lana de vidrio** | ~1,2 – 2,0 | Contenido reciclado alto reduce el valor |
+| **Lana de roca** | ~1,0 – 1,5 | |
+| **Celulosa reciclada** | ~0,1 – 0,3 | **El aislante de menor huella** |
+| **Madera aserrada** | ~0,3 – 0,5 (**sin contar el carbono biogénico almacenado, que es negativo**) | Con contabilidad de carbono biogénico, la madera de origen certificado puede ser **carbono-negativa** |
+| **Vidrio float** | ~1,2 – 1,7 | |
+| **Yeso / placa de roca de yeso** | ~0,12 – 0,40 | |
+| **PVC** | ~2,0 – 3,5 | |
+
+> ### ⚠ VERIFICACIÓN OBLIGATORIA DE ESTOS VALORES
+> **Estos son ÓRDENES DE MAGNITUD de la literatura internacional, no valores argentinos verificados.** La huella real depende de la matriz energética del país, del combustible del horno, de la distancia de transporte y del contenido reciclado.
+>
+> **Fuentes a consultar antes de usar cualquiera de estos números en un informe:**
+> - **ICE Database (Inventory of Carbon and Energy)**, University of Bath — la base de referencia internacional.
+> - **EPD (Environmental Product Declaration)** del fabricante concreto. Cada vez más fabricantes argentinos las publican.
+> - **Base de datos de la Secretaría de Energía / INTI**, si existe una versión local. *Verificar disponibilidad.*
+>
+> **No usar estos valores para declaraciones públicas o certificaciones sin verificarlos.**
+
+### Estrategias de reducción del carbono incorporado
+
+| Estrategia | Impacto |
+|---|---|
+| **Reducir el contenido de cemento**: usar cementos con adiciones (puzolánicos, con escoria, con filler calcáreo) | **Alto.** Es la palanca número uno |
+| **No sobredimensionar la estructura** | Alto. Cada m³ de hormigón evitado son ~350 kg CO₂e |
+| **Usar acero de horno eléctrico / con contenido reciclado** | Alto |
+| **Usar aluminio reciclado** en carpinterías (y verificar el origen con el fabricante) | Alto |
+| **Madera certificada** en estructura de techo y carpinterías | Alto (carbono biogénico) |
+| **Materiales locales** (ladrillo de la región, áridos locales) | Medio: reduce el transporte |
+| **Aislar bien** | **El sobrecosto de carbono del aislante se amortiza en 1–3 años de operación** en clima con 1331 GD18. Es una inversión de carbono con retorno rapidísimo |
+| **Diseñar para durar y para desmontar** | Alto a largo plazo: el edificio que dura 100 años amortiza su carbono en 100 años |
+| **Reutilizar estructuras existentes** (rehabilitación en vez de demolición) | **El mayor ahorro posible**: la estructura es el 50–70 % del carbono incorporado |
+
+## 11.4 Agua
+
+### Cosecha de agua de lluvia
+
+Con **precipitación media de invierno de 17 mm y de verano de 74 mm** en Santa Rosa (datos verificados, Tablas 0.1 y 0.2), y una precipitación anual del orden de los 700–800 mm (*verificar el valor anual exacto en el SMN o el INTA Anguil*):
+
+```
+Volumen captable anual ≈ Superficie de cubierta (m²) × Precipitación anual (mm)
+                          × Coeficiente de escorrentía × Eficiencia del filtro
+
+Ejemplo: cubierta de 120 m², P = 750 mm/año, Ce = 0,85 (cubierta de chapa o membrana),
+         eficiencia de filtrado 0,9:
+
+V = 120 × 0,750 m × 0,85 × 0,9 = 68,9 m³/año ≈ 69.000 litros/año
+```
+
+**Componentes del sistema:**
+1. **Superficie de captación** (cubierta) — evitar materiales que aporten contaminantes.
+2. **Canaletas y bajadas** con **rejillas de hojas**.
+3. **Dispositivo de primer lavado (*first flush*)** — descarta los primeros 0,5–1 mm de lluvia, que arrastran polvo y excrementos de aves. **Imprescindible.**
+4. **Filtro** de sedimentos.
+5. **Cisterna** enterrada o aérea, opaca (evita algas), con rebalse conducido, ventilación con malla y acceso para limpieza.
+6. **Bomba y red separada** (rotulada como agua no potable), con **imposibilidad física de conexión cruzada** con la red potable.
+
+**Usos admisibles:** riego, lavado de vehículos y veredas, **descarga de inodoros** (*verificar aceptación en el Código de Edificación y en la reglamentación sanitaria de Santa Rosa*). **Para uso potable se requiere tratamiento y análisis.**
+
+### Reutilización de aguas grises
+
+| Aspecto | Contenido |
+|---|---|
+| **Qué son** | Aguas de duchas, bañeras, lavatorios y (según criterio) lavarropas. **NO incluye aguas de inodoro (negras) ni de pileta de cocina** (grasas) |
+| **Tratamiento mínimo** | Desbaste + decantación + filtración + desinfección (cloro o UV) |
+| **Usos** | Descarga de inodoros, riego subsuperficial |
+| **Ahorro potencial** | 25–35 % del consumo doméstico total (*verificar con el agente de instalaciones*) |
+| **Condición** | **Red separada y rotulada**, sin posibilidad de conexión cruzada; almacenamiento con tiempo de retención corto (las grises se pudren en 24–48 h) |
+| **Regulación** | ***Verificar en la reglamentación sanitaria provincial y en el Código de Edificación de Santa Rosa la admisibilidad y las condiciones.*** El diseño del sistema corresponde al agente de instalaciones |
+
+### Ahorro de agua en el edificio
+
+| Medida | Ahorro orientativo |
+|---|---|
+| Inodoro de doble descarga (3/6 l) frente a uno de 12 l | 40–50 % del consumo de inodoro |
+| Griferías con aireador | 30–50 % del caudal de canilla |
+| Duchas de bajo caudal (≤ 8 l/min) | 30–40 % |
+| Riego por goteo con programador y sensor de lluvia | 40–60 % del riego |
+| **Especies nativas y xerojardinería** en el jardín | **Hasta el 100 % del riego**, una vez implantadas |
+
+> **Nota regional:** con HR de verano de 59 % y precipitación estival de 74 mm, el riego es una fracción importante del consumo de agua de una vivienda con jardín en Santa Rosa. **La xerojardinería con especies del monte y del pastizal pampeano es la medida de mayor impacto.** Consultar al INTA Anguil.
+
+## 11.5 Fotovoltaica y solar térmica en cubierta
+
+### Recurso solar de Santa Rosa (datos verificados)
+
+| Parámetro | Invierno | Verano |
+|---|---|---|
+| **Heliofanía relativa** | **48 %** | **68 %** |
+| Latitud | 36,6° S | |
+
+Un 68 % de heliofanía relativa en verano y 48 % en invierno indican un **recurso solar bueno**, especialmente para agua caliente sanitaria (que se demanda todo el año).
+
+### Solar térmica (ACS)
+
+| Aspecto | Criterio |
+|---|---|
+| **Inclinación óptima anual** | ≈ latitud = **37°**. Para privilegiar el invierno: latitud + 10–15° = **47–52°** |
+| **Orientación** | **Norte franco**; se admite ±15–20° sin pérdida significativa |
+| **Superficie orientativa** | 1,5–2,0 m² de colector por persona (*verificar con el agente de instalaciones y con el fabricante*) |
+| **Tipo de colector** | **Tubos de vacío** en zonas con heladas (Santa Rosa: sí) — mejor rendimiento con baja temperatura ambiente. Placa plana con anticongelante como alternativa |
+| **Protección antiheladas** | **OBLIGATORIA** con TDMN de –2,7 °C y mínima absoluta registrada de –12,7 °C: circuito primario con anticongelante o sistema de drenaje automático (*drainback*) |
+| **Cobertura solar típica** | 50–70 % de la demanda anual de ACS |
+| **Consideración constructiva** | **El peso del termotanque solar sobre la cubierta debe estar calculado.** Un equipo de 200 l lleno pesa >250 kg concentrados |
+
+### Fotovoltaica
+
+| Aspecto | Criterio |
+|---|---|
+| **Inclinación óptima anual** | ≈ **latitud (37°)**; en cubierta plana, 15–20° suele ser el óptimo práctico (menos sombreado entre filas, menos carga de viento) |
+| **Orientación** | Norte |
+| **Separación entre filas** | Calculada para no sombrearse en el solsticio de invierno al mediodía (h = 30°): `d ≈ h_panel / tan(30°) = 1,73 × altura del panel` |
+| **Fijación** | **CRÍTICA EN LA PAMPA: la succión de viento sobre paneles inclinados en cubierta plana es muy alta.** Estructura lastrada calculada, o fijación mecánica con pases impermeabilizados con manguito y collarín. **Nunca perforar la membrana sin resolver el pase** |
+| **Marco normativo** | **Ley 27.424 de Generación Distribuida** (usuario-generador que inyecta a la red). **Verificar el estado de la reglamentación provincial de La Pampa y las condiciones de la distribuidora local antes de proyectar la inyección a red** |
+| **Consideración constructiva** | Los paneles **sombrean la cubierta**, lo que reduce la carga térmica de verano. Es un beneficio térmico adicional que suele olvidarse |
+
+## 11.6 Economía circular y demolición selectiva
+
+### Jerarquía de gestión de residuos de obra
+
+```
+1. PREVENIR      → proyectar con coordinación modular, cortar menos,
+                    pedir cantidades exactas
+2. REUTILIZAR    → aberturas, herrajes, artefactos, ladrillo de demolición,
+                    tejas, madera estructural
+3. RECICLAR      → hormigón y mampostería triturados como árido de
+                    contrapiso; acero (100 % reciclable); aluminio;
+                    vidrio; cartón y film de embalaje
+4. VALORIZAR     → madera no tratada como biomasa
+5. DISPONER      → sólo lo que no tiene otro destino
+```
+
+### Demolición selectiva
+
+En vez de demoler todo junto y llevarlo a un volquete indiferenciado, se **desmonta en orden inverso a la construcción**, separando por flujos:
+
+| Orden | Qué se retira | Destino |
+|---|---|---|
+| 1 | **Peligrosos**: asbesto/fibrocemento antiguo, PCB de balastos, pinturas con plomo, aceites | **Gestor autorizado.** *Verificar la reglamentación provincial de residuos peligrosos de La Pampa* |
+| 2 | Artefactos, aberturas, herrajes, luminarias, equipos | Reutilización o venta |
+| 3 | Instalaciones: cañerías (cobre, PVC, hierro), cables (cobre) | Reciclado, con valor de mercado |
+| 4 | Terminaciones: solados, revestimientos, placas de yeso, cielorrasos, carpinterías | Reciclado / disposición |
+| 5 | Cubierta: chapa, tejas, membranas, aislantes | Chapa y tejas: reutilizables. Membranas: disposición |
+| 6 | Mampostería y tabiquería | **Triturado como árido de contrapiso** |
+| 7 | Estructura: hormigón (con separación del acero), acero | Acero: **100 % reciclable, con valor**. Hormigón: triturado |
+
+### Diseño para el desmontaje (Design for Disassembly)
+
+| Principio | Aplicación |
+|---|---|
+| **Unir con fijaciones reversibles** | Atornillado y clavado en vez de pegado y soldado, donde sea posible |
+| **Evitar los materiales compuestos inseparables** | Un panel sándwich de EPS + chapa pegados no se separa nunca. Un panel atornillado sí |
+| **Documentar** | Plano as-built con materiales, cantidades y ubicaciones: es el "pasaporte de materiales" del edificio |
+| **Capas independientes** | Estructura, envolvente, instalaciones y terminaciones con vidas útiles muy distintas: no mezclarlas de modo que renovar una obligue a demoler otra. **La construcción en seco es la mejor tecnología en este aspecto** |
+| **Usar materiales monomaterial** | Un cerramiento de un solo material se recicla; uno de siete capas pegadas, no |
+
+### Materiales de bajo impacto disponibles en Argentina
+
+| Material | Observación |
+|---|---|
+| **Ladrillo cerámico de la región** | Bajo transporte; verificar el combustible del horno del proveedor |
+| **Madera de forestación certificada** (pino y eucalipto de Mesopotamia y Delta) | Carbono biogénico; **exigir certificación FSC/PEFC en pliego** |
+| **Celulosa reciclada como aislante** | El aislante de menor huella |
+| **PET reciclado como aislante** | Producción nacional; *verificar disponibilidad y λ ensayado* |
+| **Áridos reciclados de hormigón** | Para contrapisos y rellenos; *verificar disponibilidad en Santa Rosa* |
+| **Cementos con adiciones** | Menor clínker, menor CO₂. **Verificar el tipo de cemento en el remito y en la ficha (CPC, CPP, CPF, según IRAM 50000)** |
+| **Bloque de suelo-cemento** | λ = 0,62 (verificado, IRAM 11601); tecnología apropiada, baja huella; requiere estabilización y protección |
+| **Tierra cruda (adobe, tapial, BTC)** | Huella mínima; tradición constructiva regional. **Requiere protección contra la lluvia y verificación estructural; y CAT si se usa en obra pública** |
+
+---
+
+# 12. Errores constructivos frecuentes en Argentina
+
+> Cada error se presenta con su **causa**, su **efecto** y su **prevención**. Casi todos son errores de detalle, no de material: se cometen por costumbre, por falta de documentación de proyecto o por ahorrar en la parte que no se ve.
+
+## 12.1 Envolvente térmica
+
+| # | ERROR | CAUSA | EFECTO | PREVENCIÓN |
+|---|---|---|---|---|
+| 1 | **Muro de ladrillo hueco 18 revocado como muro exterior, sin aislación** | Es "lo que siempre se hizo"; no hay exigencia normativa local que lo impida | **K = 1,58 W/m²K**: 1,7 veces peor que el Nivel B y 4,6 veces peor que el Nivel A. Facturas de gas altísimas, disconfort, moho en rincones (cálculo 4.9) | Aislación exterior continua de 60–90 mm. Verificar K con IRAM 11601 en cada proyecto |
+| 2 | **Usar aislante reflectivo de 10 mm como único aislante** | Publicidad engañosa que lo equipara a "10 cm de lana" | El aporte real es equivalente a 7–21 mm de EPS **y sólo si hay cámara de aire y la superficie se mantiene limpia**. El edificio no verifica norma | Ver 4.11.1. **Exigir siempre el cálculo de K según IRAM 11601** |
+| 3 | **Aislar por dentro (trasdosado) sin barrera de vapor** | Es más barato y no requiere andamio | **Condensación intersticial**: el vapor atraviesa la placa y condensa contra el muro frío. Aislante empapado, moho detrás de la placa, olor | Barrera de vapor continua del lado cálido + verificación IRAM 11625 |
+| 4 | **Barrera de vapor del lado frío** (o film de PE por fuera) | Confusión entre barrera de vapor y barrera de agua | El muro no puede secar hacia afuera: humedad acumulativa, corrosión de perfiles, podredumbre de madera | Ver 4.10. **Regla del lado cálido**, sin excepciones |
+| 5 | **Aislar el paño y dejar columnas, encadenados y losas sin aislar** | Se aísla "el muro", no "la envolvente" | Puentes térmicos de K 2,9–3,7 en fajas continuas: moho en las líneas de la estructura, pérdida de gran parte del beneficio | **Aislación exterior continua** (D-03). La aislación se dibuja en corte como una línea que no se interrumpe nunca |
+| 6 | **Caja de persiana embutida sin aislar ni sellar** | Nadie la especifica | Puente térmico + puente acústico + infiltración de aire permanente sobre la ventana | Cajón exterior, o cajón aislado en 3 caras con burlete en tapa y pasacintas con cepillo (7.6.1) |
+| 7 | **Aislante del muro que no llega hasta abajo** (arranca en el zócalo) | Se teme mojar el EPS | El muro conduce calor al terreno; condensación en el rincón inferior | Bajar 50–60 cm bajo NPT con XPS (D-01) |
+| 8 | **Cubierta oscura sin aislar suficientemente** | Se calcula la cubierta con la condición de invierno | **En Zona IV manda el VERANO (K adm 0,48 vs. 0,75)**, y la cubierta oscura lo endurece a 0,38. Último piso invivible en verano | Calcular por la condición de verano; **pintar la cubierta de blanco equivale a 30 mm de EPS** (4.6) |
+| 9 | **Aislar la cubierta menos que los muros** | Se aplica el mismo espesor en todos lados | El techo es por donde más se pierde | IRAM 11603 pide **el doble de aislación en techos que en muros** en Zona IV |
+
+## 12.2 Humedad y agua
+
+| # | ERROR | CAUSA | EFECTO | PREVENCIÓN |
+|---|---|---|---|---|
+| 10 | **Capa aisladora interrumpida** (el "cajón" no cierra) | Se ejecuta por tramos, sin control de continuidad | **Humedad ascendente**: el clásico zócalo con revoque flojo y pintura ampollada, que sube 60–100 cm | Inspección obligatoria de la continuidad del cajón antes de revocar (D-01) |
+| 11 | **Revoque exterior que llega hasta el terreno y puentea la capa aisladora** | Se revoca "de arriba abajo" sin pensarlo | El agua asciende por el revoque salteando la capa | Interrumpir el revoque a la altura de la capa aisladora superior, o azotado hidrófugo continuo hacia abajo |
+| 12 | **Vereda perimetral con contrapendiente o sin junta sellada** | Falta de nivelación; junta que se abre y no se mantiene | En suelo loéssico: **saturación del suelo de fundación → colapso → asentamiento diferencial → fisuras estructurales** | Vereda de ≥ 0,80 m con **2 % hacia afuera** y junta perimetral sellada y mantenida (0.3 y D-14) |
+| 13 | **Membrana de azotea doblada en ángulo vivo** (sin media caña) | Se omite la media caña por rapidez | La membrana se fatiga y rasga en el pliegue: filtración en el encuentro con el parapeto | **Media caña de radio ≥ 50 mm** en todo ángulo entrante, siempre (D-08) |
+| 14 | **Zócalo de membrana bajo (< 15 cm) o terminado a ras con silicona** | Se ahorra membrana; se "resuelve" con sellador | El agua batida por viento supera el zócalo; la silicona se despega en 2–3 años | Zócalo ≥ 25 cm sobre nivel terminado, empotrado en babeta labrada + perfil de aluminio (D-08) |
+| 15 | **Membrana solapada POR DEBAJO del ala del embudo** | Se coloca el embudo después de la membrana | El agua entra bajo la membrana. Filtración imposible de localizar | Embudo con ala ≥ 15 cm **colocado antes**, membrana **por encima** del ala, parche de refuerzo (D-10) |
+| 16 | **Azotea sin rebalse de seguridad** | Nadie lo pide | Un embudo tapado convierte la azotea en pileta: **100 kg/m² por cada 10 cm de agua** + filtración por todos lados | Gárgola de rebalse a 5 cm sobre el nivel del embudo, atravesando el parapeto. **Obligatorio** |
+| 17 | **Pendiente insuficiente o ejecutada en la carpeta** | Se pretende dar pendiente con 2 cm de carpeta | Agua estancada permanente; carpeta fisurada en el punto alto y desprendida en el bajo | **Pendiente en el contrapiso (1,5–2 %), carpeta de espesor constante** |
+| 18 | **Balcón con pendiente hacia adentro y sin goterón** | Falta de replanteo de niveles | Agua que entra al departamento + mancha negra permanente bajo el balcón | Pendiente 1,5–2 % hacia afuera; **goterón obligatorio** en el canto; solado 3–5 cm bajo NPT interior (D-05) |
+| 19 | **Alféizar sin goterón ni orejas laterales** | Se usa un premoldeado sin vuelo | La mancha vertical bajo cada ventana: el agua vuelve por capilaridad y escurre por la fachada | Alféizar con pendiente ≥ 5 %, vuelo ≥ 30 mm, goterón y orejas bajo el revestimiento (D-04c) |
+| 20 | **No hacer la prueba de estanqueidad del baño antes del solado** | Apuro de obra | Filtración al departamento de abajo detectada meses después, con el solado colocado y el cliente instalado | Inundación de 24–48 h antes de colocar el solado. **Cuesta nada** (D-13) |
+| 21 | **Pintar la fachada con esmalte o pintura impermeable no transpirable** | Se cree que "más impermeable es mejor" | La humedad interna del muro no sale: ampollas y desprendimiento en 1–2 años | Revestimiento **impermeable al agua líquida y permeable al vapor** (siliconado/acrílico transpirable) (5.6) |
+| 22 | **Sellar el ladrillo visto con película impermeable** | Ídem | Descascaramiento en el primer ciclo de heladas | **Hidrorrepelente de silano/siloxano**, que no forma película |
+
+## 12.3 Mampostería y estructura
+
+| # | ERROR | CAUSA | EFECTO | PREVENCIÓN |
+|---|---|---|---|---|
+| 23 | **Trabar la mampostería rígidamente a la columna de HºAº** | Costumbre; parece "más firme" | Fisura vertical en el borde de columna, sistemática | Junta elástica de 10 mm + grapas de anclaje (no traba) + malla en el revoque (2.3) |
+| 24 | **Acuñar el muro rígido contra la losa superior** | Se rellena "para que quede firme" | La losa flecha y carga sobre el muro: fisura horizontal bajo la losa | Junta compresible de 10–20 mm sellada en el coronamiento |
+| 25 | **Mojar el bloque de hormigón antes de colocarlo** | Se aplica el hábito del ladrillo cerámico | El bloque se contrae al secar: fisura en toda la junta | **Ladrillo cerámico se moja; bloque de hormigón NO** (2.3) |
+| 26 | **No dejar juntas de control en muro de bloque** | Se desconoce la retracción del hormigón | Fisura vertical cada 6–8 m | Juntas de control cada 6–8 m en bloque; 12–15 m en cerámico (2.5) |
+| 27 | **Canaleta horizontal en muro portante** | El instalador la hace sin consultar | Reducción de sección resistente; fisuración y, en el peor caso, falla | Prohibición explícita en pliego; canaletas sólo verticales y en muros no portantes |
+| 28 | **Desencofrar voladizos antes de tiempo** | Presión de plazo; se cuenta el calendario, no la resistencia | **Colapso o deformación permanente del balcón** | 28 días mínimo **y comprobación de resistencia con probetas curadas en obra**. Con temperaturas < 5 °C, no contar esos días (3.7) |
+| 29 | **Agregar agua al hormigón en obra "para que corra"** | Comodidad de colocación | Baja resistencia, alta retracción, alta permeabilidad | **Prohibición explícita en pliego**; fluidez con superfluidificante (3.2) |
+| 30 | **No curar el hormigón ni el revoque** | Se considera un lujo | Fisuración plástica, baja resistencia superficial, revoques que se pulverizan | **Curado 7 días mínimo; membrana filmógena y barreras de viento en Santa Rosa** (3.8) |
+| 31 | **Dintel apoyado sobre un ladrillo cortado o con apoyo insuficiente** | Falta de replanteo | Fisura diagonal y, en casos, falla local | Apoyo ≥ 15–20 cm sobre pieza entera (2.4) |
+| 32 | **No colocar armadura de junta bajo antepechos** | No está en el plano | Fisura diagonal a 45° desde el vértice del vano, sistemática | 2 Ø6 en las dos hiladas bajo el antepecho, prolongadas 60 cm a cada lado |
+
+## 12.4 Carpinterías
+
+| # | ERROR | CAUSA | EFECTO | PREVENCIÓN |
+|---|---|---|---|---|
+| 33 | **Colocar la carpintería con mortero y un cordón de silicona por fuera** | Es lo habitual | La ventana certificada A2/K3 se comporta como una A0: filtra aire y agua por todo el perímetro | Espuma de PU + **fondo de junta + sellador con relación 2:1** + ¼ de caña exterior (7.5.1) |
+| 34 | **Sellador sin fondo de junta (adherencia en tres caras)** | Se ahorra el cordón | El sellador se desgarra al primer movimiento | Fondo de junta obligatorio en todo el perímetro |
+| 35 | **Tapar con silicona los orificios de drenaje del marco** | Se cree que son un defecto | El marco se llena de agua: filtración al interior | Identificarlos y **no taparlos nunca** |
+| 36 | **El aislante de fachada no retorna sobre el marco** | Falta de detalle en documentación | Puente térmico y condensación en toda la jamba | Retorno de aislante con solape de 20–30 mm sobre el marco (D-04) |
+| 37 | **Contacto directo aluminio-acero galvanizado** | Se desconoce el par galvánico | Corrosión electroquímica en el contacto | Separador plástico o pintura de aislación (7.4) |
+| 38 | **Aluminio sin RPT con vidrio simple en Zona IV** | Costo inicial | **No clasificable según IRAM 11507-4** (K = 5,86 > 4,0). Condensación abundante en el marco | Aluminio con RPT o PVC + DVH (7.3) |
+
+## 12.5 Acústica
+
+| # | ERROR | CAUSA | EFECTO | PREVENCIÓN |
+|---|---|---|---|---|
+| 39 | **Cajas de electricidad enfrentadas en el muro divisorio** | Comodidad de instalación | Pérdida de 10–15 dB: se escucha la conversación del vecino por el enchufe | Desplazar 40–60 cm; rellenar con lana y sellar la caja (8.8) |
+| 40 | **Muro divisorio que se detiene en el cielorraso** | Se construye "hasta donde se ve" | El sonido pasa por el pleno | **El muro acústico va de losa a losa, siempre** |
+| 41 | **Zócalo apoyado sobre el piso flotante** | Nadie lo advierte | Cortocircuita el desacople: el piso flotante deja de funcionar | Zócalo fijado sólo al muro, con junta sellada de 3–5 mm |
+| 42 | **Puentes rígidos en la cámara del muro doble** (mortero caído, ladrillo atravesado) | Falta de limpieza durante el levante | Anula el desacople acústico y conduce agua | Limpieza de cámara cada 4–5 hiladas |
+| 43 | **Montante de descarga cloacal en muro de dormitorio** | Se resuelve la instalación sin coordinar con arquitectura | Ruido nocturno permanente e irreparable sin romper | Coordinación de montantes en proyecto; encamisado con lana + doble placa; caño insonorizado |
+| 44 | **Equipos (bombas, exteriores de A/C) fijados rígidamente a muros de dormitorio** | Comodidad de montaje | Vibración estructural permanente | Aisladores + conexiones flexibles + no fijar a muro de dormitorio (8.6) |
+| 45 | **Pegar espuma acústica en el muro para no oír al vecino** | Confusión entre absorción y aislación | No mejora nada; se gastó dinero en el problema equivocado | Diagnosticar antes: absorción ≠ aislación (8.7) |
+
+## 12.6 Terminaciones y organización
+
+| # | ERROR | CAUSA | EFECTO | PREVENCIÓN |
+|---|---|---|---|---|
+| 46 | **Placa RH (verde) en el interior de la ducha** | Se cree que es impermeable | Se desintegra en meses | Placa cementicia o mampostería en zona mojada (9.2.1) |
+| 47 | **Solado sin junta perimetral** | "Queda más prolijo" | El solado dilata contra el muro, se levanta y suena hueco | Junta perimetral de 5–10 mm oculta bajo zócalo, en todo el perímetro |
+| 48 | **La junta del solado no coincide con la del contrapiso** | Se coloca el solado sin ver el contrapiso | La junta "reaparece" como fisura por donde quiere | Relevar y respetar las juntas del contrapiso (9.3.2) |
+| 49 | **Colocar porcelanato grande sin doble encolado** | Rendimiento de colocación | Piezas huecas que se despegan o se rompen al pisar | Doble encolado obligatorio en piezas ≥ 60×60, exterior y piso radiante |
+| 50 | **Pintar sobre revoque nuevo sin esperar** | Presión de plazo | El pH alto saponifica la pintura: ampollas y desprendimiento | **28 días mínimo** de secado del revoque + fijador |
+| 51 | **Pintar fachadas con viento fuerte o sol directo** | Se pinta cuando hay gente disponible | Marcas de rodillo, secado prematuro, adherencia deficiente | Pintar siguiendo la sombra, sin viento fuerte, entre 10 y 30 °C |
+| 52 | **No dejar el as-built ni la documentación de mantenimiento** | Se termina la obra y se entrega la llave | Nadie sabe dónde está el aislante, ni de qué es la membrana, ni cuándo hay que repintarla. La primera reparación destruye lo bien hecho | **Manual de uso y mantenimiento del edificio + planos as-built + fichas técnicas de los materiales de la envolvente**. Debería ser parte del contrato |
+| 53 | **Especificar un "sistema" mezclando productos de distintas marcas** (SATE, construcción en seco, impermeabilización) | Se compra por precio ítem por ítem | Incompatibilidades, fisuración, pérdida total de garantía | **Especificar el sistema completo de un fabricante, con su código de sistema y su manual de colocación** |
+| 54 | **No hacer panel de muestra en hormigón visto, revestimiento o terminación especial** | Se confía en la memoria descriptiva | El resultado no es el esperado y ya no se puede corregir | **Panel de muestra aprobado por escrito antes de ejecutar**, como patrón de recepción (3.10) |
+
+---
+
+# 13. Bibliografía, normas y catálogos técnicos
+
+## 13.1 Normas IRAM (acondicionamiento térmico e higrotérmico)
+
+| Norma | Título | Estado de verificación en este documento |
+|---|---|---|
+| **IRAM 11549** | Aislamiento térmico de edificios. Vocabulario | Citada; no consultada directamente |
+| **IRAM 11601** | Aislamiento térmico de edificios. Métodos de cálculo. Propiedades térmicas de los componentes y elementos de construcción en régimen estacionario | **Tablas de λ, Rsi/Rse, cámaras de aire y Rt de mampuestos VERIFICADAS** (vía manual AAPE que las reproduce) |
+| **IRAM 11603** | Acondicionamiento térmico de edificios. Clasificación bioambiental de la República Argentina | **Datos climáticos de Santa Rosa, zonas y subzonas y recomendaciones VERIFICADOS** (vía Czajkowski & Gómez) |
+| **IRAM 11604** | Ahorro de energía en calefacción. Coeficiente volumétrico G de pérdidas de calor. Cálculo y valores límite | **Texto y Tabla 1 de Gadm VERIFICADOS** (edición 2001) |
+| **IRAM 11605** | Acondicionamiento térmico de edificios. Condiciones de habitabilidad. Valores máximos de transmitancia térmica en cerramientos opacos | **Tablas de K máx adm de Niveles A y B (invierno y verano) VERIFICADAS.** **Nivel C: NO verificado — consultar la norma** |
+| **IRAM 11625** | Verificación del riesgo de condensación de vapor de agua superficial e intersticial en paños centrales | **Método y condiciones de diseño VERIFICADOS** |
+| **IRAM 11630** | Ídem, en puntos singulares | **Tabla de Rsi VERIFICADA** |
+| **IRAM 11507-1** | Carpintería de obra. Ventanas exteriores. Requisitos básicos y clasificación | Parcialmente verificada (a través del ejemplo de designación de 11507-4). **Tablas completas de A, E y V: consultar la norma** |
+| **IRAM 11507-2** | Ídem. Resistencia mecánica | Citada |
+| **IRAM 11507-3** | Ídem. Aislación acústica | Citada |
+| **IRAM 11507-4** | Ídem. Aislación térmica | **VERIFICADA (edición 2010): categorías K1–K5, tablas A.1, A.2 y A.3 de transmitancias** |
+| **IRAM 11507-5** | Ídem. Metodología de ensayos | Citada |
+| **IRAM 11507-6** | Etiquetado de eficiencia energética de ventanas exteriores (vigente desde mayo 2018, voluntaria) | Citada vía manual INCoSe |
+| IRAM 11523 / 11590 / 11591 | Ensayos de infiltración de aire / resistencia al viento / estanqueidad al agua | Citadas |
+| IRAM 11900 | Etiquetado de eficiencia energética de inmuebles destinados a vivienda | Citada; **verificar edición vigente y método de cálculo del IPE** |
+| IRAM 12595 / 12596 | Vidrios de seguridad ante impacto humano accidental. Áreas de riesgo | Citadas vía manual INCoSe |
+| IRAM 12598-1/-2/-3 | Doble vidriado hermético (DVH) | Citadas vía manual INCoSe |
+| IRAM 1572 | Hidrófugo para morteros | **Citada en la hoja técnica verificada de Sika** |
+| IRAM 1536 | Hormigón. Ensayo de asentamiento (cono de Abrams) | Citada |
+| IRAM 1577-1 / 1577-3 / 6693 | Membranas asfálticas. Ensayos y especificaciones | **Citadas en el boletín técnico verificado de Ormiflex** |
+| IRAM 1676 / 1687 | Aislantes térmicos | **Alcance y edición vigente: VERIFICAR antes de citar en pliego** |
+| IRAM 11910-1/-2/-3 | Reacción al fuego de materiales de construcción | **VERIFICAR edición vigente y clasificaciones** |
+| IRAM 12586 | Ladrillos cerámicos (absorción, heladicidad) | **VERIFICAR número, título y requisitos exactos** |
+| **IRAM 4043 / 4044 / 12816** | Acústica en edificios | **NO VERIFICADAS. Consultar el texto vigente antes de especificar valores de Rw o Ln,w** |
+| IRAM-IAS U500-205 | Perfiles de acero galvanizado conformados en frío para steel framing | Citada vía manual INCoSe |
+| IRAM 50000 | Cementos | Citada; **verificar clasificación vigente** |
+
+## 13.2 Reglamentos CIRSOC (referencia; el cálculo corresponde a otro agente)
+
+| Reglamento | Contenido | URL |
+|---|---|---|
+| **CIRSOC 201** | Reglamento argentino de estructuras de hormigón | http://contenidos.inpres.gob.ar/docs/Reglamentos/CIRSOC-201-Reglamento.pdf |
+| CIRSOC 201 — Comentarios | Comentarios al reglamento | http://contenidos.inpres.gob.ar/docs/Reglamentos/CIRSOC-201-Comentarios.pdf |
+| CIRSOC 101 | Cargas permanentes y sobrecargas mínimas | inti.gob.ar/cirsoc |
+| **CIRSOC 102** | **Acción del viento sobre las construcciones** — crítico en La Pampa | inti.gob.ar/cirsoc |
+| CIRSOC 104 | Acción de la nieve y del hielo | inti.gob.ar/cirsoc |
+| CIRSOC 301 / 302 | Estructuras de acero | inti.gob.ar/cirsoc |
+| CIRSOC 501 / 501-E | Estructuras de mampostería / mampostería de bloques de hormigón | inti.gob.ar/cirsoc |
+| CIRSOC 601 | Estructuras de madera | inti.gob.ar/cirsoc |
+| Portal CIRSOC / INTI | Descarga de todos los reglamentos | https://www.inti.gob.ar/areas/servicios-industriales/cirsoc |
+
+## 13.3 Normas internacionales de referencia
+
+| Norma | Contenido |
+|---|---|
+| ISO 6946 | Componentes y elementos de edificación. Resistencia y transmitancia térmica. Métodos de cálculo |
+| **ISO 10211** | **Puentes térmicos. Flujos de calor y temperaturas superficiales. Cálculos detallados** |
+| ISO 14683 | Puentes térmicos. Coeficiente de transmisión térmica lineal. Valores por defecto |
+| **ISO 13788** | **Temperatura superficial interior crítica (fRsi) y condensación intersticial (método de Glaser)** |
+| ISO 13786 | Características térmicas dinámicas. Métodos de cálculo (inercia térmica, desfasaje, amortiguamiento) |
+| EN ISO 10077-1/-2 | Transmitancia térmica de ventanas, puertas y persianas |
+| ISO 717-1 / 717-2 | Evaluación del aislamiento acústico: ruido aéreo (Rw) y ruido de impacto (Ln,w) |
+| **DIN 4108-2** | Protección térmica en edificios. **Exige fRsi ≥ 0,70 para evitar moho** |
+| EN 12004 | Adhesivos para baldosas cerámicas. Clasificación (C1, C2, S1, S2) |
+| **Passivhaus Planning Package (PHPP)** — Passivhaus Institut, Darmstadt | Metodología y criterios: ≤ 15 kWh/m²a de calefacción, n50 ≤ 0,6 h⁻¹, ψ ≤ 0,01 W/m·K |
+
+## 13.4 Organismos y programas argentinos
+
+| Organismo / programa | Qué aporta | URL |
+|---|---|---|
+| **INTI — CIRSOC** | Reglamentos estructurales | https://www.inti.gob.ar/areas/servicios-industriales/cirsoc |
+| **INTI Construcciones** | Ensayos, asistencia técnica, certificación de sistemas | https://www.inti.gob.ar |
+| **Secretaría de Vivienda — CAT** | Certificado de Aptitud Técnica de sistemas no tradicionales | https://www.argentina.gob.ar/habitat/micasa/vivienda-sustentable/estandarizacion-y-certificacion |
+| **Resolución E 3/2018** (CAT) | Marco normativo del CAT | https://www.argentina.gob.ar/normativa/nacional/resoluci%C3%B3n-3-2018-305849/texto |
+| **PRONEV — Etiquetado de Viviendas** | Programa nacional de etiquetado energético | https://www.argentina.gob.ar/economia/energia/eficiencia-energetica/eficiencia-energetica-en-edificaciones/pronev-programa-nacional-de-etiquetado-de-viviendas |
+| Secretaría de Energía — Etiquetado de inmuebles | Marco y documentación | http://www.minem.gob.ar/www/835/26782/etiquetado-de-eficiencia-energetica-en-inmuebles-destinados-a-vivienda |
+| **Etiquetado de Viviendas — Santa Fe** | Primera ley provincial; documentación pública útil | https://www.santafe.gob.ar/ms/eficienciaenergetica/viviendas/etiquetado-de-viviendas/ |
+| **Etiquetado de Viviendas — CABA** | Programa y documentación | http://buenosaires.gob.ar/viviendas-y-edificios-sostenibles/etiquetado-de-viviendas |
+| **ENARGAS — Mapa bioambiental IRAM 11603** | Mapa de zonas bioambientales | https://www.enargas.gob.ar/secciones/zona-fria/mapa_bioambiental.pdf |
+| **Servicio Meteorológico Nacional — Repositorio** | Notas técnicas, cálculos relacionados con IRAM 11603 | https://repositorio.smn.gob.ar |
+| **INTA EEA Anguil (La Pampa)** | Datos climáticos regionales, especies nativas, suelos | https://www.argentina.gob.ar/inta |
+| **Ley 13.059 PBA + Decreto 1030/2010** | Acondicionamiento térmico obligatorio (referencia metodológica) | https://normas.gba.gob.ar/documentos/VGONKpUW.html |
+
+## 13.5 Instituciones sectoriales y manuales técnicos verificados
+
+| Fuente | Contenido | URL |
+|---|---|---|
+| **AAPE — Azqueta, Pablo: "Manual práctico del aislamiento térmico en la construcción (EPS)"** | **FUENTE PRINCIPAL VERIFICADA** de este documento: tablas de λ de IRAM 11601, Rsi/Rse, cámaras de aire, Rt de mampuestos y forjados, K máx adm de IRAM 11605, método y ejemplo numérico de condensación IRAM 11625/11630, coeficientes de absorción α | https://www.fapyd.unr.edu.ar/wp-content/uploads/2014/07/ManualPracticoDelEPS-intectivo-Encriptado-Abril2014.pdf |
+| **INCoSe — "Manual de recomendaciones para construir con Steel Framing", versión 2025.01** | **VERIFICADO**: aberturas, sellado, vidrios, barreras, detalles constructivos | https://incose.org.ar/descargas/58/manuales/4958/manual-de-recomendaciones-para-construir-en-steel-framing-version-2025-01.pdf |
+| INCoSe — capítulos individuales y detalles constructivos | Descarga por capítulo | https://www.incose.org.ar/steel-framing/ |
+| **ICPA — "Manual de la vivienda de hormigón industrializada en sitio"** | Hormigón industrializado, encofrado túnel, ICF | https://icpa.org.ar/ |
+| ICPA — Hormigón en sistema de doble piel aislante (ICF) | Sistema ICF | https://icpa.org.ar/hormigon-en-sistema-de-doble-piel-aislante-icf/ |
+| **Czajkowski, J. & Gómez, A.: "Diseño bioclimático y economía energética edilicia"**, UNLP | **VERIFICADO**: datos bioclimáticos de invierno y verano de Santa Rosa; zonas y subzonas de IRAM 11603; recomendaciones de diseño | http://sedici.unlp.edu.ar/bitstream/handle/10915/72077/Documento_completo.pdf-PDFA.pdf |
+| SEDICI-UNLP — Ley 13059 y su aplicación | Metodología de verificación higrotérmica | http://sedici.unlp.edu.ar/bitstream/handle/10915/73908/Documento_completo.pdf-PDFA.pdf |
+| **UOCRA / SIFOC — "Ejecución de terminaciones definitivas. Albañilería"** | **VERIFICADO**: revoques, dosificaciones, contrapisos y carpetas, juntas | https://sifoc.uocra.org/documentos/md_terminaciones_alb.pdf |
+| Instituto Argentino de Siderurgia — Supervisores certificados de Steel Framing | Listado público de supervisores | https://www.siderurgia.org.ar/cons-supervisores.php |
+| Cámara del Vidrio Plano (Argentina) | Manual de vidrio; transmitancias de referencia citadas en IRAM 11507-4 | *verificar sitio vigente* |
+
+## 13.6 Catálogos técnicos de fabricantes argentinos
+
+> **Todos estos catálogos deben consultarse en su versión vigente antes de especificar.** Los valores citados en este documento provienen de las fuentes verificadas listadas arriba; los que provienen de catálogo están marcados como "verificar".
+
+| Fabricante | Productos | URL |
+|---|---|---|
+| **Loma Negra** | Cementos, hormigón elaborado | https://www.lomanegra.com |
+| **Isolant** | Aislantes reflectivos, lana de vidrio, membranas | https://www.isolant.com.ar |
+| **Knauf Argentina** | Placas de yeso, sistemas de construcción en seco, aislantes | https://www.knauf.com.ar |
+| **Durlock** | Placas de yeso, perfilería, sistemas (tabiques, cielorrasos) con Rw y RF certificados | https://www.durlock.com |
+| **Ternium / Siderar** | Chapa, acero galvanizado, perfilería | https://ar.ternium.com |
+| **Retak** | Bloques de HCCA, sistema ICF | https://retak.com.ar |
+| **Corblock** | Bloques de hormigón, tablas de transmitancia | https://www.corblock.com |
+| **Weber (Saint-Gobain)** | Morteros, adhesivos, revoques monocapa, sistemas SATE | https://www.ar.weber |
+| **Sika Argentina** | Hidrófugos, impermeabilizantes, selladores, aditivos, morteros | https://arg.sika.com |
+| **Megaflex** | Membranas asfálticas, membranas líquidas | https://www.megaflex.com.ar |
+| **Ormiflex** | Membranas asfálticas (boletines técnicos por código de producto) | https://ormiflex.com.ar |
+| **Rehau** | Perfilería de PVC para carpinterías | https://www.rehau.com/ar-es |
+| **Aluar** | Perfilería de aluminio (líneas y catálogos técnicos) | https://www.aluar.com.ar |
+| **VASA / Blindex** | Vidrios float, laminados, templados, DVH, control solar, Low-E | https://www.vasa.com.ar |
+| **Tecnoperfiles** | Perfilería de PVC, ensayos IRAM | https://www.tecnoperfiles.com |
+| Klaukol | Adhesivos y pastinas | https://www.klaukol.com.ar |
+| Iggam | Morteros, SATE, revestimientos | https://www.iggam.com.ar |
+| Alba / Sherwin Williams / Sinteplast / Tersuave | Pinturas y revestimientos de fachada | (sitios respectivos) |
+
+## 13.7 Bibliografía técnica de referencia
+
+| Obra | Autor | Uso |
+|---|---|---|
+| **"Manual práctico de construcción"** | José Nisnovich | Referencia argentina clásica de procedimientos y dosificaciones de obra |
+| **"Cómputo y presupuesto" / "Construcción de edificios"** | Mario Chandías (y Chandías–Ramos) | Referencia argentina de organización de obra y sistemas constructivos |
+| **"Building Construction Illustrated"** (*"Manual de construcción de edificios"*) | Francis D. K. Ching | El mejor atlas gráfico de detalles constructivos; base metodológica de los detalles del capítulo 10 |
+| **"Arquitectura bioclimática en un entorno sostenible"** | F. Javier Neila González | Fundamento de diseño bioclimático, inercia térmica, estrategias pasivas |
+| **"Aislamiento térmico"** / obras sobre envolvente | Fernández Madrid | Fundamento de aislación y patología higrotérmica |
+| **"Manual de diseño pasivo"** / manuales de arquitectura bioclimática | Varios autores | Estrategias pasivas por clima |
+| **"Manual práctico del aislamiento térmico en la construcción"** | Arq. Pablo Azqueta (AAPE) | **La fuente argentina de referencia sobre envolvente térmica.** Consulta obligada |
+| **"Diseño bioclimático y economía energética edilicia"** | Czajkowski & Gómez (UNLP) | **Datos climáticos y método de verificación higrotérmica argentina.** Consulta obligada |
+| "Patología de la construcción" / "Humedades en la edificación" | Varios | Diagnóstico de patologías |
+| Manual de INCoSe (Steel Framing) | INCoSe / IAS | **Referencia argentina de construcción en seco** |
+
+---
+
+## Nota final sobre el uso de este documento
+
+**Lo que está verificado** contra fuente primaria o contra documento técnico que reproduce la fuente primaria: las tablas de conductividades térmicas, resistencias superficiales y cámaras de aire de IRAM 11601; los K máximos admisibles de Niveles A y B de IRAM 11605 (invierno y verano); los datos bioclimáticos de Santa Rosa de IRAM 11603; la tabla de Gadm de IRAM 11604; las categorías K1–K5 y las tablas de transmitancia de ventanas y vidrios de IRAM 11507-4; el método y los Rsi de IRAM 11625/11630; las dosificaciones y consumos del hidrófugo conforme IRAM 1572; las especificaciones de las membranas asfálticas de los boletines técnicos citados; las dosificaciones de morteros, contrapisos y carpetas del material didáctico de UOCRA; los criterios de sellado de carpinterías del manual INCoSe.
+
+**Lo que está marcado como "verificar"** requiere consulta a la norma, al catálogo o al organismo antes de trasladarse a un pliego, a un cómputo o a un informe firmado. En particular: los valores del **Nivel C de IRAM 11605**; las **tablas completas de clasificación de IRAM 11507-1**; **todos los valores de Rw, Ln,w y resistencia al fuego** (IRAM 4043, 4044, 12816 y catálogos de fabricantes); los **valores de carbono incorporado**; las **exigencias del Código de Edificación de la Municipalidad de Santa Rosa** y de la normativa de la Provincia de La Pampa; y los **datos de catálogo de todos los fabricantes citados**.
+
+**Los tres cálculos resueltos** (K de muro en 4.5, espesor de aislante en 4.6 y verificación de condensación en 4.9) están desarrollados paso a paso con los valores verificados y son directamente replicables: cambiando el mampuesto, el aislante o el espesor, se obtiene la verificación de cualquier solución que el estudio proponga. **Ese es el uso principal de este documento: no leerlo, sino recalcular con él.**
+
+---
+
+*Documento técnico de referencia interna. Santa Rosa, La Pampa.*
