@@ -77,8 +77,8 @@ Alcance: vivienda unifamiliar de **planta baja únicamente**, en el ejido urbano
 
 ## 1. Resumen ejecutivo — las 12 cosas que hay que saber
 
-1. **Santa Rosa está fundada sobre un manto eólico cuaternario que apoya sobre la Formación Cerro Azul** (limos arenosos / limolitas del Mioceno superior). El basamento granítico se alcanzó **a 144 m de profundidad** en la ciudad (verificado). Todo lo que le importa a una casa está en los primeros 3 m.
-2. **La tosca (calcrete) es el rasgo determinante de la fundación en La Pampa.** En el entorno Santa Rosa–Anguil los suelos dominantes tienen **tosca entre 0,50 y 1,50 m**, y otros con tosca **por debajo de 1,50 m** (INTA, verificado). En sectores erosionados de la ciudad **aflora en superficie**. Su profundidad **varía dentro de un mismo lote**.
+1. **Santa Rosa se funda sobre un manto eólico suelto (Fm. Meaucó) de 0,20 a 2 m de espesor, que cubre una costra calcárea (tosca) que a su vez corona la Formación Cerro Azul** (verificado, SEGEMAR, Hoja 3763‑I Santa Rosa, 2023). El basamento granítico está a **144 m**. **Todo lo que le importa a una casa está en los primeros 2 m — y ese manto es también donde se aloja la napa freática.**
+2. **La tosca (calcrete) es el rasgo determinante de la fundación en La Pampa.** En el entorno Santa Rosa–Anguil los suelos dominantes tienen **tosca entre 0,50 y 1,50 m**, y otros con tosca **por debajo de 1,50 m** (INTA, verificado). El *hardpan* puede llegar a **1 m de espesor**, pero **hacia el este del área los calcretes son inmaduros y suelen carecer de él** (verificado, SEGEMAR). Su profundidad y calidad **varían dentro de un mismo lote**.
 3. **La napa freática de Santa Rosa subió del orden de 20 m en tres décadas.** Del orden de **25 m en el centro a comienzos de los '90** a **menos de 5 m** hacia 2017 (verificado, Viglizzo); **~6 m en el entorno de la plaza San Martín** hacia 2014 (verificado, Fábregas). Cualquier dato de napa anterior a 2015 **no sirve**.
 4. **El proyecto no puede apoyarse en la napa "histórica" del barrio.** Hay que medirla, con fecha, en el lote, y pedir la tendencia. **[VERIFICAR con estudio de suelos]**
 5. **Una casa de una planta es un caso delicado, no un caso menor.** Poca carga → no se "prueba" el suelo; fundación superficial → dentro de la capa activa; mucho perímetro por m² → máxima exposición al agua de lluvia y riego. El colapso del loess **no lo dispara la carga: lo dispara el agua.**
@@ -98,16 +98,23 @@ Alcance: vivienda unifamiliar de **planta baja únicamente**, en el ejido urbano
 
 Santa Rosa está en el centro‑este de La Pampa, en el borde occidental de la llanura pampeana y en el corazón de la geografía loéssica argentina: al oeste el "Mar de Arena" (arenas eólicas), al este el loess pampeano típico (ver `estructuras.md` §3.5.1). El material que se pisa en la ciudad es **sedimento eólico cuaternario** — arenas y limos transportados por vientos del S‑SO — depositado sobre una plataforma sedimentaria neógena.
 
-La secuencia, de abajo hacia arriba (verificado, Giai & Tullio, UNLPam / Dirección de Aguas de La Pampa):
+La secuencia, de abajo hacia arriba (verificado — SEGEMAR, *Hojas Geológicas 3763‑I Santa Rosa y 3763‑III Darregueira*, 2023; y Giai & Tullio, UNLPam / Dirección de Aguas de La Pampa):
 
 - **Basamento cristalino.** En Santa Rosa se alcanzó, y es **de carácter granítico, a 144 m de profundidad**. Hacia el este se profundiza por un sistema de fracturas (en Uriburu y hacia el este se infiere a 4–5 km, dentro de la cuenca de Macachín).
-- **Formación Macachín** (arcilitas verdes, Mioceno), donde está presente, bajo Cerro Azul.
-- **Formación Cerro Azul** (Mioceno superior): limos arenosos, limolitas y areniscas muy finas. Es la unidad que aloja el acuífero. **Espesor máximo del orden de 190 m.** Entre **50 y 130 m de profundidad** (≈ 70–90 msnm) suele encontrarse una **intercalación arcillosa** que secciona hidráulicamente el acuífero: por debajo el agua es salada, por arriba dulce.
-- **Arenas eólicas** por encima: cubren casi toda el área con espesores disímiles; **los máximos son del orden de los 10 m**. Los médanos de la región alcanzan, en acumulaciones equivalentes, **espesores desde decímetros hasta 32 m**, asignados al Pleistoceno final y Holoceno.
+- **Formación Macachín** (arcilitas verdes, Mioceno), donde está presente, bajo Cerro Azul. Comportamiento hidrogeológico **acuícludo a acuitardo**.
+- **Formación Cerro Azul** (Mioceno superior): limos arenosos, limolitas y areniscas muy finas. Es la unidad que aloja el acuífero de abastecimiento. **Espesor máximo del orden de 190 m.** Entre **50 y 130 m de profundidad** (≈ 70–90 msnm) suele encontrarse una **intercalación arcillosa** que secciona hidráulicamente el acuífero: por debajo el agua es salada, por arriba dulce. Es la **"roca almacén de un acuífero multicapa"**, con comportamiento **acuífero‑acuitardo**, que alberga el **Acuífero Toay–Santa Rosa–Anguil–Catriló** (verificado, SEGEMAR).
+- **Calcrete (tosca)** — corona la Formación Cerro Azul **"conformando la parte superior de una planicie estructural"**. En la Hoja Santa Rosa esa planicie va de **cota 230 m en el límite occidental** y desciende hacia el este con un **gradiente de 1,10 m/km** hasta **cota 120 m**, *"hundiéndose finalmente bajo el campo de dunas que caracteriza el sector oriental"* (verificado, SEGEMAR). Hidrogeológicamente es **una planicie calcárea de baja permeabilidad que reduce la infiltración**.
+- **Formación Meaucó** (Pleistoceno–Holoceno) — los **depósitos eólicos** que forman la superficie actual. Se reconoce *"prácticamente en toda la superficie de las hojas Santa Rosa y Darregueira, ya sea como un manto continuo que cubre al calcrete de la planicie estructural, o en los flancos de los valles transversales o bajos, cubriendo a la Formación Cerro Azul, **con espesores variables entre 0,20 a 2 metros**"* (verificado, SEGEMAR). En los valles transversales y en el campo de dunas, en cambio, alcanza *"espesores que oscilan entre **3 y 30 m** sobre el nivel topográfico"*.
+
+**Litología del manto eólico superficial — el suelo de fundación de tu casa** (verificado, SEGEMAR): *"material eólico areno‑limoso o limo‑arenoso, **suelto**, color castaño, con tintes rojizos o gris parduzcos a negros"*. Granulometría de la facies eólica de manto: **arena muy fina 34 %**, arena fina 16 %, limos medianos 14 %, limos gruesos 13 %, resto 23 %.
 
 Composición de la Fm. Cerro Azul, según su análisis litoestratigráfico (verificado, Rev. Asoc. Geol. Argentina): **alternancia de limolitas y areniscas, que constituye el 92 % de la sucesión**, con intercalaciones de arcilitas en los estratos basales (**7 %**); hacia el techo se desarrollan **calcretes que coronan la sucesión (1 %)**.
 
-> **Traducción para el proyecto:** la casa se funda en el **techo** de todo esto — en los primeros 1 a 3 m, es decir, en el manto eólico y/o en el calcrete que corona la Cerro Azul. Los 144 m de abajo son irrelevantes para la fundación de una vivienda; sí importan para entender la napa.
+> **Traducción para el proyecto — y es el dato que ordena todo el documento:**
+> **La casa se funda en un manto eólico suelto de arena muy fina y limo, de 0,20 a 2 m de espesor, apoyado sobre una costra calcárea.**
+> Es decir: la cota de fundación de una casa de una planta (0,80–1,20 m) cae **exactamente en el rango de espesor de ese manto suelto** — o justo en el contacto con la tosca. Los 144 m de abajo son irrelevantes para la fundación de una vivienda; sí importan para entender la napa.
+
+**Y un dato hidrogeológico que cambia el diagnóstico:** la Unidad Hidroestratigráfica I del SEGEMAR — los depósitos eólicos de la Fm. Meaucó — tiene *"elevada permeabilidad", constituye "zonas de recarga excepcionales"*, y **"en esta unidad se aloja el acuífero freático"** (verificado). Es decir: **el mismo manto eólico suelto en el que apoya la casa es el que aloja la napa freática y el que infiltra el agua de lluvia y de riego.** No hay ninguna barrera entre el agua de superficie y el suelo de fundación.
 
 ### 2.2 Columna estratigráfica típica de la ciudad
 
@@ -116,23 +123,35 @@ Composición de la Fm. Cerro Azul, según su análisis litoestratigráfico (veri
 | Prof. aprox. | Unidad | Descripción esperable | Relevancia para la casa |
 |---|---|---|---|
 | 0,00 – 0,30 m | Suelo vegetal / relleno antrópico | Materia orgánica, escombro, restos de obra. En lotes urbanos casi siempre hay relleno no controlado | **Se retira siempre.** Nunca fundar sobre él |
-| 0,30 – 1,50 m *(muy variable)* | Manto eólico limo‑arenoso (loess / sedimento loessoide) | Limo arenoso fino, castaño claro, poroso, poco denso, seco y aparentemente "firme" | **Es el estrato de apoyo típico de una casa baja. Es el estrato colapsable.** |
-| Variable, entre ~0,50 m y varios metros | **Tosca / calcrete** (banco o nódulos) | Carbonato de calcio, desde nódulos dispersos hasta banco continuo muy consolidado | Si aparece continua y sana: **excelente apoyo**. Si es discontinua: **fuente de asentamiento diferencial** |
+| **0,20 – 2,00 m** *(espesor verificado del manto, SEGEMAR)* | **Fm. Meaucó — manto eólico** | Material areno‑limoso o limo‑arenoso, **suelto**, castaño. Arena muy fina dominante (34 %) | **Es el estrato de apoyo típico de una casa baja. Es el estrato problemático.** Y es donde se aloja la napa freática |
+| Variable, desde ~0,50 m | **Tosca / calcrete** | De nódulos dispersos a **hardpan de hasta 1 m** de espesor. Perfil interno: hospedante → pulverulento → nodular → laminar → macizo | Si aparece continua y madura: **excelente apoyo**. Si es discontinua o inmadura: **fuente de asentamiento diferencial** |
 | Por debajo | Fm. Cerro Azul | Limolitas y areniscas muy finas, con nódulos y bancos de carbonato | Sólo relevante para pozos/pilotines profundos |
+
+**En valles transversales y campo de dunas** (sector oriental y nordeste de la Hoja Santa Rosa) el manto eólico pasa a **3 – 30 m de espesor** (verificado, SEGEMAR) y **desaparece el apoyo en tosca**: escenario completamente distinto, y mucho más exigente.
 
 **[VERIFICAR con estudio de suelos]** — Esta columna es un marco de lectura, **no un perfil de proyecto**. En Santa Rosa la variabilidad lateral es alta a escala de lote: la tosca puede estar a 0,60 m en un extremo del terreno y a 2,50 m en el otro, o aparecer y desaparecer.
 
 ### 2.3 La tosca (calcrete): qué es, dónde está, cuánto mide
 
-**Qué es.** Costra calcárea (calcrete) formada por precipitación y recristalización de carbonato de calcio en el perfil, bajo clima semiárido. En el loess pampeano su origen está ligado a la abundancia de vidrio volcánico y a reacciones puzolánicas que cementan el sedimento (ver `estructuras.md` §3.5.1). No es una roca de fundación uniforme: es un horizonte con estructura interna.
+**Qué es.** Costra calcárea (calcrete) — *"acumulaciones de carbonato cálcico"* — formada por **procesos pedogenéticos** bajo clima semiárido: infiltración, precipitación y recristalización de carbonato en el perfil de suelo, con participación de raíces y microorganismos (verificado, SEGEMAR, citando a Calmels y Carballo 2006). **No es una roca de fundación uniforme: es un horizonte de suelo endurecido, con estructura interna y con grados de madurez.**
 
-**Estructura interna típica de un banco de calcrete** (verificado, estudio de los calcretes del sudeste de La Pampa — Rev. Asoc. Geol. Argentina). De abajo hacia arriba:
+**Perfil típico del calcrete en la Hoja Santa Rosa** (verificado, SEGEMAR, 2023). De abajo hacia arriba:
 
-1. **Sector de transición** — material hospedador invadido por carbonato que lo brecha parcialmente y forma tabiques irregulares en todas direcciones.
-2. **Sector laminado** — muy consolidado, láminas subparalelas de **0,1 a 1 cm** de espesor; en partes brechado y recementado.
-3. **Sector pisolítico** — bien consolidado, cuerpos elipsoidales **de hasta 6 cm**, aspecto botroidal muy irregular.
+1. **Horizonte basal hospedador** — areno‑limoso, grisáceo rosado, con **carbonato pulverulento** (sin consolidar).
+2. **Horizonte prismático transicional** — con **nódulos arenosos calcificados, elongados verticalmente, de hasta 20 cm de longitud y 1 a 5 cm de diámetro**; hacia arriba pasan a forma irregular.
+3. **Lentes y láminas subhorizontales** de carbonato de calcio, de **1 a 10 cm de potencia**.
+4. **Rizolitos** — tubitos de **1 a 2 cm de diámetro** revestidos de carbonato y **rellenos de arena fina a mediana**, dispuestos vertical u horizontalmente.
+5. **Crotovinas** (paleomadrigueras) — *"de forma circular y **tamaño métrico**"*.
+6. **Horizonte macizo de caliza impura (*hardpan*)** — corona el perfil y *"puede llegar a tener **1 m de espesor**"*. Textura bandeada, pisolítica y oolítica; pisolitas de 0,2 a 1 cm.
 
-**Espesores medidos en el sudeste provincial** (verificado, misma fuente — **atención: no es Santa Rosa**, sirve como orden de magnitud del rasgo geológico):
+> **Tres consecuencias de fundación que salen directamente de ese perfil [PD]:**
+> - **Los rizolitos y las láminas son planos de debilidad y vías de agua.** Una tosca "sana" al golpe puede tener conductos rellenos de arena fina que conducen agua directamente hacia abajo.
+> - **Las crotovinas de tamaño métrico son cavidades.** Una oquedad de escala métrica bajo una zapata es una falla local sin aviso. **Es una razón adicional para preferir fundación rígida y repartida (platea) antes que zapatas puntuales.**
+> - **El horizonte pulverulento de la base no es apoyo**: es carbonato sin consolidar. Apoyar sobre "tosca" sin identificar en qué horizonte del calcrete se está apoyando es un error frecuente.
+
+**Grado de madurez — y por qué importa para Santa Rosa** (verificado, SEGEMAR): los calcretes **más desarrollados están en el sector occidental** de las hojas (estadio IV–V de Machette), *"mientras que hacia el este las exposiciones son menores y **en general carecen del horizonte cuspidal duro o hardpan y/o del horizonte laminar**"* (estadio II–III). Es decir: **hacia el este la tosca es más pobre y menos apta como estrato de apoyo.** Santa Rosa está en el sector centro‑oriental de su hoja, con el campo de dunas inmediatamente al este.
+
+**Espesores medidos en el sudeste provincial** (verificado, Rev. Asoc. Geol. Argentina — **atención: no es Santa Rosa**, sirve como orden de magnitud del rasgo geológico):
 
 | Nivel | Cota | Espesor |
 |---|---|---|
@@ -140,7 +159,9 @@ Composición de la Fm. Cerro Azul, según su análisis litoestratigráfico (veri
 | Calcrete II | 130 msnm | máximo **1 m**, mínimo **0,70 m** |
 | Calcrete III | 70 msnm | **0,5 m** promedio |
 
-La misma fuente aclara que **"sus espesores no son constantes lateralmente"** y que los calcretes **"están parcialmente cubiertos por depósitos eólicos del Pleistoceno‑Holoceno"** — exactamente la situación de un lote en Santa Rosa.
+La misma fuente aclara que **"sus espesores no son constantes lateralmente"** y que los calcretes **"están parcialmente cubiertos por depósitos eólicos del Pleistoceno‑Holoceno"**; el SEGEMAR coincide: *"en general las exposiciones son parciales y lateralmente presentan variaciones"*. Exactamente la situación de un lote en Santa Rosa.
+
+**Dato local adicional (verificado, SEGEMAR):** el relevamiento de canteras de tosca de la hoja registra **catorce indicios**, con frentes de explotación *"generalmente en los bordes de la planicie estructural"* y labores **"en las áreas urbanas y suburbanas de Santa Rosa y Toay"**. Es decir: **hay tosca explotable dentro y alrededor del ejido urbano** — confirmación cartográfica oficial de que el rasgo está presente a poca profundidad en la ciudad. El SEGEMAR aclara además que *"si bien los afloramientos de tosca son muy abundantes en toda la región, sólo algunos de ellos pueden ser considerados como yacimientos"*: **abundante no significa uniforme.**
 
 **Profundidad de la tosca en el entorno de Santa Rosa – Anguil** (verificado, INTA EEA Anguil, descripción de zonas y subzonas agroecológicas RIAP):
 
@@ -159,6 +180,9 @@ La misma fuente describe perfiles de secuencia **A‑AC‑C‑Tosca** o **A‑B�
 |---|---|---|
 | **Apoyo mixto** | Parte de la fundación sobre tosca, parte sobre limo suelto | **Nunca.** O se baja todo a tosca, o se aísla todo de la tosca sobre manto compactado uniforme |
 | **Banco delgado sobre suelo blando** | Costra de 0,30–0,60 m con limo flojo debajo: "suena" firme y punzona | Verificar **espesor y qué hay debajo** con calicata que la atraviese |
+| **Crotovinas y rizolitos** | Cavidades **de tamaño métrico** y conductos rellenos de arena dentro del calcrete (verificado, SEGEMAR) | Argumento a favor de **fundación rígida y repartida**; verificar en calicata |
+| **Apoyo en horizonte pulverulento** | La base del calcrete es carbonato **sin consolidar**: no es apoyo | Exigir que el informe **identifique el horizonte** de apoyo, no sólo "tosca" |
+| **Calcrete inmaduro** | Hacia el este del área faltan el *hardpan* y el horizonte laminar (verificado, SEGEMAR) | No suponer resistencia por el solo hecho de "encontrar tosca" |
 | **Excavabilidad** | Tosca sana requiere martillo neumático / retro con pica. Encarece pozos y zapatas profundas | Preverlo en el cómputo y en el pliego de movimiento de suelos |
 | **Falsa seguridad** | "Pegamos tosca, ya está" | La tosca sana es buen apoyo, pero **no exime del manejo del agua** ni de verificar continuidad |
 
@@ -187,8 +211,10 @@ Hay pendientes que en algunos sectores **superan el 3 %**, con descenso pronunci
 
 | Hecho geológico | Consecuencia directa sobre el proyecto |
 |---|---|
-| Manto eólico limo‑arenoso poco denso en superficie | Suelo **potencialmente colapsable** en la cota de fundación de una casa baja |
-| Tosca a profundidad variable, discontinua | Riesgo alto de **asentamiento diferencial por apoyo heterogéneo** |
+| Manto eólico **suelto**, areno‑limoso, de 0,20 a 2 m (verificado, SEGEMAR) | Suelo **potencialmente colapsable** justo en la cota de fundación de una casa baja |
+| Ese mismo manto es de **elevada permeabilidad, zona de recarga excepcional, y aloja el acuífero freático** (verificado, SEGEMAR) | **No hay barrera entre el agua de superficie y el suelo de fundación.** Todo lo que se riega o se derrama llega abajo |
+| Tosca a profundidad variable, discontinua, con crotovinas métricas | Riesgo alto de **asentamiento diferencial por apoyo heterogéneo** y de cavidades locales |
+| Hacia el este/nordeste, manto eólico de **3 a 30 m** sin tosca | Escenario distinto: **no hay estrato competente somero** |
 | Clima semiárido, 686–753 mm/año de lluvia | El suelo está **naturalmente seco**: por eso es firme, y por eso colapsa cuando se moja |
 | Cuenca endorreica sin salida | Todo excedente de agua **queda en el subsuelo urbano** |
 | Napa en ascenso sostenido | El escenario de humedad futuro es **peor** que el del día del sondeo |
@@ -356,7 +382,7 @@ Lo que **sí** existe y está verificado:
 
 | Existe | No existe (públicamente) |
 |---|---|
-| Cartografía geológica regional (SEGEMAR, Hojas 3763‑I Santa Rosa y 3763‑III Darregueira) | Mapa de tensiones admisibles de la ciudad |
+| Cartografía geológica oficial con descripción litológica y de espesores (SEGEMAR, Hojas 3763‑I Santa Rosa y 3763‑III Darregueira, 2023) | Mapa de tensiones admisibles de la ciudad |
 | Estratigrafía e hidrogeología del acuífero (UNLPam / Dirección de Aguas) | Perfiles de N‑SPT publicados por barrio |
 | Profundidad de tosca a escala agronómica (INTA Anguil) | Perfiles de colapsabilidad (σ₀ vs. σ_F.SAT) de la ciudad |
 | Caracterización general del loess argentino (Rocca–Redolfi–Terzariol) | Base de datos de estudios de suelos urbanos |
@@ -612,3 +638,455 @@ No se dan valores en pesos (se desactualizan en semanas). Se da la **relación**
 > **La frase para el cliente:** *"El estudio de suelos es el único ítem del presupuesto que, si lo sacamos, no se puede volver a poner después."*
 
 ---
+
+## 7. Soluciones de fundación para casa de una planta
+
+> **[FIRMA] Todo este capítulo es material de anteproyecto y de discusión con el estructuralista.**
+> El dimensionamiento definitivo, la armadura y la cota de fundación se calculan con los parámetros del informe geotécnico del lote y los firma el profesional matriculado. Los predimensionados que siguen están marcados **[PD]** y sirven para presupuestar y para dibujar el anteproyecto, no para construir.
+
+### 7.1 Profundidad mínima de fundación
+
+La cota de fundación de una casa baja en loess se decide por **tres criterios simultáneos**, y manda el más profundo:
+
+| Criterio | Qué exige | Valor orientativo |
+|---|---|---|
+| **1. Salir del suelo vegetal y del relleno antrópico** | Apoyar en suelo natural inalterado | **[VERIFICAR con estudio de suelos]** — típicamente el relleno urbano llega a 0,30–0,80 m |
+| **2. Salir de la "capa activa"** — zona afectada por variación estacional de humedad, desecación, raíces de césped y arbustos | Que el suelo de apoyo no cambie de humedad con las estaciones | **[PD] 0,80 – 1,00 m** bajo terreno natural. **[VERIFICAR con estudio de suelos]**: el geotécnico debe indicar el espesor real de la capa activa en el lote |
+| **3. Alcanzar el estrato de apoyo recomendado** | Manto natural competente, manto mejorado, o techo de tosca sana | **[VERIFICAR con estudio de suelos]** |
+
+**Criterio de oficina [PD]:** en Santa Rosa, para casa de una planta, **no fundar por encima de 0,80 m** de la cota de terreno natural, salvo que el informe geotécnico lo justifique expresamente por escrito. Y si se llega a tosca sana antes, **limpiar bien el asiento y apoyar sobre ella**, verificando que sea continua bajo todo el elemento.
+
+> **Un dato que juega a favor en Santa Rosa.** Como el manto eólico tiene **0,20 a 2 m de espesor sobre el calcrete** en el sector de planicie estructural (verificado, SEGEMAR — §2.1), en muchos lotes **la cota de fundación de una casa baja cae en el contacto o muy cerca de él**. Cuando el estudio confirma que **la tosca es madura (con *hardpan*), continua bajo toda la impronta y sin crotovinas**, la solución más limpia es **remover íntegramente el manto eólico bajo la casa y apoyar la platea directamente sobre la tosca limpia**, con un hormigón de limpieza inmediato. Eso elimina el estrato colapsable de la ecuación en lugar de convivir con él. **[VERIFICAR con estudio de suelos]** — la palabra clave es *continua*: si no lo es, esta solución se convierte en el peor caso (apoyo mixto).
+
+**Una advertencia sobre la tosca:** apoyar **la mitad de una zapata corrida sobre tosca y la otra mitad sobre limo** es la receta exacta del asentamiento diferencial. Si la tosca es errática bajo la casa, **la respuesta correcta no es "seguir la tosca": es no apoyarse en ella** y resolver con platea sobre manto compactado uniforme (§7.3).
+
+### 7.2 Comparativa de las cuatro soluciones
+
+#### A) Zapata corrida (cimiento corrido de hormigón simple/ciclópeo o armado)
+
+| | |
+|---|---|
+| **Cuándo corresponde** | Suelo homogéneo, no colapsable o de colapsabilidad baja verificada, sin napa somera, con tosca continua o manto firme parejo. Casa de mampostería portante regular |
+| **Ventajas** | La más económica en materiales; ejecución simple y conocida por cualquier contratista local; poco movimiento de suelo |
+| **Riesgos en loess** | **Muy alta.** Ancho pequeño → tensión de contacto concentrada; **rigidez longitudinal casi nula** si no está armada; **cualquier humedecimiento local produce descenso local y la mampostería lo copia fisurando**. No tolera apoyo heterogéneo |
+| **Predimensionado [PD]** | Ancho B ≥ 2× espesor del muro y **B ≥ 0,40 m**; altura del cimiento ≥ B/2; Df ≥ 0,80 m. Con **σ_adm saturada de 0,5 kg/cm²**, un muro que baja 4 t/m necesita **B ≈ 0,80 m** — y ahí ya conviene otra solución |
+| **Costo relativo** | **1,0** (base de comparación) |
+| **Veredicto en Santa Rosa** | **Sólo con estudio de suelos que descarte colapsabilidad, y siempre con encadenado inferior armado continuo.** Nunca "cimiento corrido de cascote" sin viga |
+
+#### B) Viga de fundación con base ensanchada (zapata corrida armada + viga de encadenado)
+
+| | |
+|---|---|
+| **Cuándo corresponde** | La evolución natural de la anterior. Suelo de capacidad media, colapsabilidad baja a moderada, casa de mampostería portante con planta razonablemente regular |
+| **Ventajas** | **Rigidiza la fundación en su plano**: convierte muros y bases en un anillo que se asienta más como un todo; distribuye cargas concentradas; es la medida estructural que recomienda la bibliografía para convivir con el colapso (*"encadenado de las fundaciones y muros"*, ver `estructuras.md` §3.5.6); costo moderado |
+| **Riesgos en loess** | Rigidiza, pero **no reduce la presión de contacto** ni impide el colapso: si se moja un sector, el anillo se deforma igual, sólo que fisura menos y más repartido. **No sirve si el suelo es autocolapsable** |
+| **Predimensionado [PD]** | Base ensanchada 0,50–0,80 m de ancho; viga de 0,20 × 0,40 m sobre la base, armada arriba y abajo (típicamente 4 Ø12 + estribos Ø6 c/20, **a verificar por cálculo**); **continuidad en todo el perímetro y en los muros interiores portantes, sin interrupciones**; empalmes en las esquinas resueltos con barras dobladas, no yuxtapuestas |
+| **Costo relativo** | **1,3 – 1,6** |
+| **Veredicto en Santa Rosa** | **Mínimo aceptable** para una casa de una planta con suelo verificado bueno. Por debajo de esto no se baja |
+
+#### C) Platea de hormigón armado
+
+| | |
+|---|---|
+| **Cuándo corresponde** | **Loess potencialmente colapsable; suelo heterogéneo; tosca discontinua; napa somera; lote con relleno; planta irregular.** Es decir: el escenario típico de Santa Rosa |
+| **Ventajas** | **1)** Baja drásticamente la presión de contacto (reparte sobre toda la superficie). **2)** Es **una sola pieza rígida**: ante un humedecimiento local, la casa se inclina levemente en lugar de partirse — el mecanismo de daño pasa de "fisura" a "desnivel". **3)** Resuelve simultáneamente contrapiso, capa aisladora y base del piso. **4)** Tolera napa somera (con barrera de vapor). **5)** Es la solución que la bibliografía recomienda explícitamente combinada con sustitución de suelo (`estructuras.md` §3.5.6). **6)** Menos excavación → menos exposición del suelo a la intemperie durante la obra |
+| **Riesgos en loess** | Si el colapso es **generalizado y grande**, la platea **acompaña** el descenso: no lo impide, lo uniformiza. **No sirve sobre suelo autocolapsable.** Requiere **buen control de ejecución** (nivelación, densidad del manto, recubrimientos, curado): una platea mal hecha es peor que una zapata bien hecha. Encarece si el proyecto tiene desniveles internos |
+| **Predimensionado [PD]** | Losa de **0,15 – 0,20 m** de espesor, malla superior e inferior (p. ej. Ø8 c/15 en ambas direcciones y ambas caras, **a verificar por cálculo**); **vigas de borde perimetrales invertidas o hacia abajo de 0,25 × 0,40–0,50 m**, más nervios de rigidización bajo los muros portantes interiores; sobre **manto de suelo seleccionado compactado** de 0,30–0,60 m (mín. 95 % Proctor, **[VERIFICAR: espesor y densidad los fija el geotécnico]**); film de polietileno 200 μm como barrera de vapor; hormigón según clase de exposición del informe químico |
+| **Costo relativo** | **1,6 – 2,2** (pero **absorbe el costo del contrapiso y de la carpeta**, así que el sobrecosto neto real es menor de lo que parece: **[PD] ~1,3 – 1,6** una vez descontado eso) |
+| **Veredicto en Santa Rosa** | **La opción por defecto.** Ver §7.3 |
+
+#### D) Pozos / pilotines hasta tosca (fundación indirecta)
+
+| | |
+|---|---|
+| **Cuándo corresponde** | Manto superficial malo o de espesor conocido y acotado, con **tosca sana, continua y verificada** a profundidad alcanzable (típicamente 1,5–3,5 m); o lote con relleno profundo; o recalce de una casa existente |
+| **Ventajas** | Transfiere la carga por debajo de la capa activa y del manto colapsable; poco movimiento de suelo; ejecutable con equipo liviano; el **pilotín helicoidal** es una alternativa industrializada apta para cargas bajas de vivienda |
+| **Riesgos en loess** | **Los más contraintuitivos, y están documentados.** Cita verificada (`estructuras.md` §3.5.6): *"existen numerosos casos donde este tipo de solución **no ha sido satisfactoria** [...] aún estructuras fundadas sobre pilotes han sufrido daños de importancia al colapsar el suelo que las rodea"*, por **pérdida de fricción lateral** y **fricción negativa**. Además: la casa queda quieta mientras **el terreno de alrededor baja** → se rompen veredas, contrapisos, cañerías y escalones de acceso; y **la tosca discontinua da longitudes de pilote dispares** |
+| **Predimensionado [PD]** | Pozos Ø0,30–0,40 m u hormigonados in situ, separados 1,50–2,50 m bajo vigas de fundación armadas continuas; empotramiento en tosca sana **≥ 0,30–0,50 m** verificado en obra pozo por pozo. **No computar fricción lateral en el manto colapsable**; diseñar **por punta** y **sumar la fricción negativa** como carga descendente **[FIRMA]** |
+| **Costo relativo** | **1,8 – 3,0** (muy sensible a la dureza de la tosca y a la profundidad) |
+| **Veredicto en Santa Rosa** | **Buena solución cuando la tosca está verificada y continua.** Mala idea "por las dudas": si el manto es colapsable y no se controla el agua, los pilotines **no salvan la casa, sólo cambian el modo de falla** |
+
+#### Cuadro resumen
+
+| | Zapata corrida | Viga con base ensanchada | **Platea** | Pozos/pilotines a tosca |
+|---|---|---|---|---|
+| Reduce presión de contacto | No | Poco | **Sí, mucho** | Concentra en la punta |
+| Rigidiza el conjunto | No | Sí | **Sí, mucho** | Sí (con vigas) |
+| Tolera suelo heterogéneo | No | Poco | **Sí** | Sólo si la tosca es continua |
+| Tolera napa somera | Regular | Regular | **Sí** | Difícil de ejecutar |
+| Sensible a mala ejecución | Media | Media | **Alta** | Alta |
+| Vulnerable a fricción negativa | — | — | — | **Sí** |
+| Resuelve el colapso por sí sola | **No** | **No** | **No** | **No** |
+| Costo relativo | 1,0 | 1,3–1,6 | 1,6–2,2 | 1,8–3,0 |
+
+> **La fila que importa es la anteúltima: ninguna resuelve el colapso por sí sola.** El colapso se evita con el capítulo 8.
+
+### 7.3 Recomendación por defecto en Santa Rosa
+
+> ## **Platea de hormigón armado, con vigas perimetrales y nervios de rigidización bajo muros portantes, apoyada sobre manto de suelo seleccionado compactado, con la cota de fundación por debajo de la capa activa.**
+
+**Por qué es la opción por defecto para una casa de una planta en Santa Rosa [PD, fundado]:**
+
+1. **Es la respuesta correcta al problema real, que es la heterogeneidad.** El riesgo dominante acá no es que el suelo no aguante: es que **aguante distinto en cada punto** (tosca errática, relleno urbano, humedecimiento local). La platea **promedia** esa heterogeneidad.
+2. **Convierte fisura en desnivel.** Con una casa liviana de mampostería, la diferencia entre una fundación rígida y una flexible es la diferencia entre una casa que se inclina 1 cm y una casa rajada de punta a punta. La bibliografía es explícita: *"la cimentación en losa, sobre todo si tiene rigidez y resistencia holgadas, puede amortiguar mucho los efectos de un fallo local del terreno, evitando el efecto de asiento diferencial"* (verificado, De Miguel).
+3. **Es literalmente la receta publicada para este suelo.** Rocca–Redolfi–Terzariol, sobre edificaciones arquitectónicas en loess colapsable (texto verificado, ver `estructuras.md` §3.5.6): *"suele dar mejor resultado la adopción de medidas de diseño que minimicen el riesgo de ingreso de agua al terreno, **o mejoras en el terreno mediante sustitución de suelo combinados con plateas** que disminuyan significativamente las presiones en el suelo."*
+4. **Baja la presión de contacto por debajo de la presión de fluencia saturada.** Ése es el objetivo mecánico concreto: mantener `σ_actuante < σ_F.SAT` incluso con el suelo mojado. Con una casa liviana repartida en toda la planta, es alcanzable.
+5. **Tolera el escenario de napa en ascenso**, que es el escenario probable de los próximos 30 años (§3.1).
+6. **Su sobrecosto neto es modesto**, porque reemplaza contrapiso y carpeta.
+
+**Cuándo NO es la opción por defecto:**
+
+| Situación | Alternativa |
+|---|---|
+| **Tosca sana, continua y somera verificada bajo toda la casa** (p. ej. a 0,60–1,00 m en todos los puntos) | **Viga de fundación con base ensanchada apoyada en tosca**, más barata y perfectamente adecuada |
+| **Suelo autocolapsable** identificado por el informe | **Ninguna fundación directa sirve.** Tratamiento de suelo o fundación profunda con diseño por punta y fricción negativa **[FIRMA]** |
+| **Relleno profundo (> 1,5 m) o material heterogéneo no removible** | Pilotines a tosca, o sustitución total del relleno |
+| Casa con desniveles internos importantes o terreno con mucha pendiente | Platea escalonada o combinación; evaluar caso por caso |
+| Napa prácticamente aflorante | Platea **con** verificación de subpresión y barrera hidráulica **[FIRMA]** |
+
+### 7.4 Predimensionado orientativo de la platea **[PD]**
+
+Para una casa de una planta, mampostería portante, cubierta liviana o losa cerámica, sin sobrecargas especiales:
+
+| Ítem | Valor orientativo **[PD]** | Se define finalmente por |
+|---|---|---|
+| Espesor de losa | **0,15 – 0,20 m** | Cálculo con módulo de balasto del informe **[FIRMA]** |
+| Armadura | Mallas en ambas caras y direcciones; refuerzos bajo muros | Cálculo **[FIRMA]** |
+| Viga perimetral | **0,25 – 0,30 m de ancho × 0,40 – 0,50 m de altura** | Cálculo + cota de fundación |
+| Nervios interiores bajo muros portantes | 0,20 × 0,30–0,40 m | Cálculo |
+| Cota de fondo de viga perimetral | **≥ 0,80 m bajo terreno natural** | Informe geotécnico |
+| Manto de suelo seleccionado compactado bajo platea | **0,30 – 0,60 m**, en capas de ≤ 0,20 m, **≥ 95 % Proctor estándar** | **[VERIFICAR con estudio de suelos]** |
+| Film de polietileno | **200 μm**, continuo, solapes ≥ 0,20 m sellados, subiendo por los bordes | — |
+| Hormigón | Según **clase de exposición** del análisis químico (CIRSOC 201) | Informe químico |
+| Tensión de contacto resultante estimada | **0,25 – 0,50 kg/cm²** para casa liviana sobre platea de toda la planta | Verificar contra σ_adm **saturada** |
+
+> **El chequeo que hay que hacer siempre:** tensión de contacto de la platea **contra la tensión admisible en condición SATURADA**, no contra la de humedad natural. Si no verifica, la respuesta es aumentar la superficie de apoyo o mejorar el suelo — **no** adoptar el valor a humedad natural "porque va a estar seco".
+
+### 7.5 Detalles constructivos que deciden el resultado
+
+| Detalle | Por qué | Qué hacer |
+|---|---|---|
+| **El fondo de excavación no puede quedar abierto y expuesto** | Una lluvia sobre el fondo de excavación **satura el suelo de apoyo antes de hormigonar** — el colapso empieza antes de que exista la casa | Hormigón de limpieza el mismo día; si no se puede, cubrir con film y prever desagote. **Nunca dejar la excavación abierta un fin de semana con pronóstico de lluvia** |
+| **Compactación del fondo** | El "escarificado y compactado" que nadie controla | Exigir densidad medida, no "a ojo" |
+| **Continuidad de encadenados** | Un encadenado interrumpido en una abertura no rigidiza | Continuidad total; refuerzos sobre y bajo aberturas |
+| **Juntas de trabajo en la platea** | Una junta mal resuelta es la primera fisura | Planificar el hormigonado en una sola etapa si es posible |
+| **Curado** | La platea es una superficie enorme expuesta al sol y al viento pampeano | Curado obligatorio ≥ 7 días; hormigonar temprano en verano |
+| **Capa aisladora** | Con napa somera y ascenso capilar | Horizontal **y vertical**, sin discontinuidades |
+| **Cañerías que atraviesan la platea** | Cada pasaje es un punto de entrada de agua y una rotura futura | Pasantes con vaina, sellados; **evitar empalmes bajo la platea** |
+| **Nivelación del terreno terminado** | El detalle más barato y el más olvidado | Ver §8 completo |
+
+---
+
+## 8. Mitigación no estructural — el capítulo que salva la casa
+
+### 8.1 El principio
+
+> **En loess colapsable, el manejo del agua es un asunto estructural.**
+> Una fundación correctamente calculada, ejecutada sobre un manejo del agua incorrecto, **falla igual**. Una fundación modesta con un manejo del agua impecable, **no falla**.
+> Esto no es una recomendación de mantenimiento: es **parte del proyecto estructural**, y se dibuja, se especifica y se presupuesta.
+
+Las tres reglas, en orden de importancia:
+
+1. **Que el agua no entre.** Alejar toda descarga y toda infiltración del perímetro.
+2. **Que si entra, se vea.** Instalaciones inspeccionables: una pérdida oculta durante dos años es lo que rompe la casa.
+3. **Que si entra y se ve, no importe.** Fundación rígida y suelo mejorado que toleren un evento local.
+
+### 8.2 Vereda perimetral
+
+Es la medida más barata y más eficaz del documento.
+
+| Parámetro | Especificación **[PD, criterio de oficina; el ancho mínimo de 1,20 m surge de `estructuras.md` §3.5.6]** |
+|---|---|
+| **Ancho** | **Mínimo 1,20 m. Recomendado 1,50 m.** Debe cubrir toda la zona donde el agua de escurrimiento podría infiltrar junto a la fundación |
+| **Pendiente** | **≥ 2 % alejándose de la casa** (2 cm por metro). En loess conviene **3 %** si el sector recibe descarga de cubierta |
+| **Continuidad** | **Perimetral completa, sin interrupciones.** El sector "que no se ve" del contrafrente es donde falla |
+| **Junta contra el muro** | **Junta elástica sellada** (sellador poliuretánico o similar), no mortero rígido. Reponer el sellado es mantenimiento previsto |
+| **Juntas de contracción** | Cada 2,00–3,00 m, selladas. Una vereda fisurada sin sellar **es un embudo dirigido a la fundación** |
+| **Terminación** | Superficie impermeable (hormigón, baldosón sobre contrapiso con carpeta). **No** solado permeable, **no** piedra suelta, **no** deck sobre tierra pegado al muro |
+| **Cordón / babeta exterior** | Cordón bajo en el borde exterior sólo si conduce a un desagüe; si no, obstaculiza y embalsa |
+| **Nivel** | Vereda **por debajo** del nivel de piso terminado interior (≥ 0,15 m) y **por encima** del terreno natural circundante |
+
+> **Error clásico local:** vereda de 0,60 m con pendiente hacia la casa (porque el terreno bajaba hacia allá), fisurada y sin sellar. Es un **canal de recarga localizada** sobre la fundación. En loess, ese detalle solo puede producir la patología.
+
+### 8.3 Pluviales
+
+| Medida | Especificación |
+|---|---|
+| **Prohibición absoluta** | **Ninguna bajada pluvial descarga junto a la fundación.** Ni "a la vereda perimetral", ni "sobre una piedra", ni a un caño corto que termina a 50 cm del muro |
+| **Descarga mínima alejada del perímetro** | **≥ 3,00 m** del perímetro de la construcción (criterio de `estructuras.md` §3.5.6 — verificado como recomendación de la bibliografía de loess). Preferible: conducir a cordón cuneta / red pluvial |
+| **Conducción** | Cañería enterrada **estanca**, con pendiente ≥ 1 %, **con cámaras de inspección**, hasta la vía pública o hasta un punto de descarga controlado y alejado |
+| **Nunca** | Bajada pluvial a **pozo absorbente**, ni compartida con cloacal, ni descargando en el jardín contra la casa |
+| **Canaletas** | Con pendiente y limpieza accesible. Una canaleta tapada **rebalsa exactamente sobre el perímetro** |
+| **Techos sin canaleta** | Si el partido arquitectónico no lleva canaletas (cubierta con goterón libre), **es obligatorio** proyectar una **canaleta de piso** con pendiente y desagüe conducido bajo la línea de goteo, o ensanchar la vereda perimetral más allá del goterón |
+| **Nivelación general del lote** | Pendiente que **aleje el agua superficial de la construcción** en todas las direcciones. Si el lote recibe escurrimiento del vecino, resolverlo con cuneta perimetral conducida **antes** de empezar la obra |
+
+### 8.4 Instalaciones enterradas
+
+**El principio: toda pérdida oculta es un colapso en formación.**
+
+| Medida | Especificación |
+|---|---|
+| **Cañerías enterradas dentro del predio** | Toda cañería de agua o cloaca enterrada **dentro de vaina, con pendiente y cámara de inspección testigo**, de modo que una pérdida **se vea y se drene**, no se infiltre (criterio verificado, `estructuras.md` §3.5.6) |
+| **Empalmes** | **Ninguno bajo la platea ni bajo muros portantes.** Los empalmes van en cámaras accesibles |
+| **Cámaras** | **Estancas**, con tapa hermética, base y paredes impermeabilizadas. Una cámara de inspección que filtra es un pozo absorbente clandestino junto a la fundación |
+| **Cañería de agua fría de entrada** | Recorrido conocido y registrable; llave de paso general accesible |
+| **Prueba hidráulica** | Prueba de estanqueidad **antes** de tapar. Documentarla con fotos |
+| **Tendido paralelo al muro** | Evitar cañerías enterradas **paralelas y adyacentes** a la fundación. Si es inevitable, separar ≥ 1,00 m **[PD]** y envainar |
+| **Riego automático enterrado** | Si lo hay: **no** contra la casa, con llave de corte sectorizada y **caudalímetro o control de consumo** para detectar una pérdida |
+
+### 8.5 Pozo absorbente y cámara séptica
+
+Este es el punto donde la reglamentación disponible **no alcanza** y hay que aplicar criterio.
+
+**Lo que sí está normado (verificado, ordenanzas municipales argentinas de referencia — Bahía Blanca, Colonia Caroya):** el pozo distará **no menos de 1,50 m de la línea divisoria entre predios y de la línea municipal**, **no menos de 2,00 m de cualquier otro pozo absorbente**, y **no menos de 10 m de cualquier pozo o perforación de captación de agua** propio o del predio vecino.
+
+> **[VER] Verificar el Código de Edificación y el reglamento de instalaciones sanitarias vigentes de la Municipalidad de Santa Rosa y de la Administración Provincial del Agua antes de proyectar.** Las distancias citadas arriba son de otras jurisdicciones y se dan como orden de magnitud.
+
+**Lo que la reglamentación NO fija y hay que resolver por criterio geotécnico [PD]:**
+
+| Cuestión | Criterio de oficina |
+|---|---|
+| **Distancia mínima del pozo absorbente a la fundación** | **Lo más lejos posible dentro del lote, y nunca menos de 5,00 m** de cualquier elemento de fundación. Si el lote no permite 5 m, **el pozo absorbente no es una solución aceptable en este suelo** y hay que ir a red cloacal o a un sistema estanco con retiro. Referencia de la bibliografía de loess: *"Un pozo ciego a 3 m de una base en loess es una bomba de tiempo"* (verificado, `estructuras.md` §3.5.6) |
+| **Posición relativa** | **Aguas abajo** de la casa según la pendiente del terreno, nunca aguas arriba |
+| **Napa** | **Verificar cota de napa antes de proyectarlo.** Con napa somera el pozo no absorbe: se llena, rebalsa y satura el entorno. Y contamina el acuífero (§3.4) |
+| **Cámara séptica** | **Estanca, verificada con prueba hidráulica.** Una séptica que filtra es peor que un pozo absorbente, porque nadie la sospecha |
+| **Alternativa preferible** | **Conexión a red cloacal** siempre que exista. Es el mejor dinero que se gasta en una casa en loess |
+| **Doble pozo** | Si se ejecutan dos pozos alternados, **ambos** cumplen la distancia mínima a la fundación |
+
+### 8.6 Jardín, riego y árboles
+
+> **Es la causa n.º 1 de colapso localizado en vivienda** (criterio verificado en la bibliografía de loess, `estructuras.md` §3.5.6). Y es una decisión que se toma en el proyecto de paisajismo, cuando la estructura ya está calculada y nadie la vuelve a mirar.
+
+| Elemento | Regla | Distancia mínima al perímetro de la casa |
+|---|---|---|
+| **Cantero regado / césped regado** | **Prohibido contra el muro.** Entre la casa y cualquier superficie regada va la **vereda perimetral impermeable** | **≥ 1,20 m (ancho de la vereda); recomendado 1,50 m** |
+| **Riego por aspersión** | Ningún aspersor debe mojar la franja perimetral ni el muro | **[PD] ≥ 2,00 m**, y orientado hacia afuera |
+| **Riego por goteo** | Aceptable más allá de la vereda; nunca sobre ella ni bajo ella | **[PD] ≥ 1,50 m** |
+| **Cantero elevado contra el muro** | Prohibido. Es un depósito de agua permanente contra la fundación | — |
+| **Arbustos y árboles pequeños (< 5 m)** | Alejados del perímetro | **[PD] ≥ 2,00 m** (referencia general de bibliografía europea, no local) |
+| **Árboles medianos (5 – 10 m)** | Alejados del perímetro | **[PD] 3,00 – 5,00 m** |
+| **Árboles grandes o de raíz agresiva** (eucaliptos, pinos, álamos, sauces, ficus, paraísos, moras) | **No plantar cerca de la casa.** En La Pampa el eucalipto y el álamo son de uso corriente en cortinas: mantenerlos fuera del entorno inmediato | **[PD] 5,00 – 10,00 m como mínimo**, idealmente ≥ 1 vez la altura adulta |
+| **Árbol existente muy próximo** | **No talarlo sin consultar.** La eliminación de un árbol grande cambia bruscamente el régimen de humedad del suelo, y el efecto puede ser tan dañino como su presencia | Consultar a estructuralista **[FIRMA]** |
+| **Pozo de árbol en vereda perimetral** | Prohibido. Es un embudo | — |
+
+> **Dos mecanismos distintos, no confundirlos:**
+> - **Riego contra el muro → humedece el loess → colapso → la casa BAJA en ese sector.** Éste es el mecanismo dominante en Santa Rosa.
+> - **Raíces → desecan el suelo → retracción; y la tala posterior → rehumedecimiento → hinchamiento.** Este mecanismo es propio de suelos arcillosos expansivos, mucho menos relevante en el loess pampeano de baja plasticidad, **pero las raíces sí levantan veredas y rompen cañerías**, y una cañería rota **sí** dispara el colapso.
+
+**Qué sí se puede hacer en el jardín:** todo, más allá de la franja perimetral protegida. Especies de bajo requerimiento hídrico (el clima es semiárido: 686–753 mm/año), gramíneas nativas, cubresuelos xerófitos, riego eficiente y sectorizado. **La consigna para el cliente: el jardín empieza a 1,50 m de la casa.**
+
+### 8.7 Pileta de natación
+
+Una pileta es **un depósito de decenas de m³ de agua enterrado junto a la casa**. En loess colapsable es el mayor riesgo puntual que se puede introducir en un lote.
+
+| Medida | Especificación |
+|---|---|
+| **Distancia a la fundación de la casa** | **[PD] ≥ 5,00 m** entre el paramento exterior del vaso y cualquier elemento de fundación. Si el lote no lo permite: **[FIRMA]** el estructuralista debe verificar expresamente la interacción, y probablemente haga falta fundación profunda o tratamiento del suelo |
+| **Cota relativa** | La pileta, **aguas abajo** de la casa. Nunca en el sector alto del lote descargando hacia la construcción |
+| **Estanqueidad del vaso** | **Impermeabilización verificada con prueba de estanqueidad documentada** antes de terminar el entorno |
+| **Detección de pérdida** | **Cañería de recirculación registrable** (no embutida en el terreno sin acceso) y **control de nivel**: una pérdida lenta de pileta puede pasar meses inadvertida disfrazada de "evaporación" |
+| **Vaciado y retrolavado del filtro** | **Conducidos a desagüe alejado**, nunca al terreno junto a la casa ni al pozo absorbente. Un retrolavado semanal descargando al jardín es un ensayo de hidrocompactación |
+| **Vereda perimetral de la pileta** | Igual criterio que la de la casa: ancho, pendiente hacia afuera, juntas selladas |
+| **Excavación** | La excavación de la pileta **descomprime y expone el suelo** junto a la casa. Coordinar con el estructuralista si es posterior a la construcción **[FIRMA]** |
+| **Subpresión** | Con napa somera, verificar **flotación del vaso vacío**. Ver `estructuras.md` §3.6.2 |
+
+> **Si el cliente quiere pileta, hay que saberlo en el anteproyecto**, no cuando la casa está terminada. Cambia la implantación y puede cambiar el tipo de fundación.
+
+### 8.8 Tabla maestra de distancias
+
+Resumen operativo. Los valores **[PD]** son criterio de oficina; los **(verificado)** provienen de las fuentes citadas.
+
+| Elemento | Distancia mínima al perímetro de fundación | Origen |
+|---|---|---|
+| Vereda perimetral impermeable (**ancho**) | **1,20 m mínimo / 1,50 m recomendado**, pendiente ≥ 2 % hacia afuera | (verificado, bibliografía de loess) |
+| Descarga de pluviales | **≥ 3,00 m** | (verificado, bibliografía de loess) |
+| Cantero, césped o superficie regada | **≥ 1,20 m** (borde exterior de la vereda) | [PD] |
+| Aspersor de riego | **≥ 2,00 m** | [PD] |
+| Arbusto / árbol pequeño | **≥ 2,00 m** | [PD, referencia no local] |
+| Árbol mediano (5–10 m) | **3,00 – 5,00 m** | [PD, referencia no local] |
+| Árbol grande / raíz agresiva | **5,00 – 10,00 m** | [PD, referencia no local] |
+| **Pozo absorbente** | **≥ 5,00 m** (y si no entra, cambiar de sistema) | [PD] |
+| Pozo absorbente a línea divisoria / línea municipal | ≥ 1,50 m | (verificado, otras jurisdicciones) **[VER Santa Rosa]** |
+| Pozo absorbente a otro pozo absorbente | ≥ 2,00 m | (verificado, otras jurisdicciones) **[VER Santa Rosa]** |
+| Pozo absorbente a captación de agua | ≥ 10,00 m | (verificado, otras jurisdicciones) **[VER Santa Rosa]** |
+| **Pileta de natación** | **≥ 5,00 m** | [PD] |
+| Cañería enterrada paralela al muro | ≥ 1,00 m, envainada | [PD] |
+
+### 8.9 Manual del usuario para el comitente
+
+**Entregar por escrito con la documentación final de obra.** Una página, en lenguaje llano:
+
+> **Su casa está construida sobre suelo loéssico. Es un suelo firme mientras está seco, y pierde resistencia cuando se moja de forma prolongada. Estas seis cosas mantienen su casa sana:**
+>
+> 1. **No plante ni riegue contra las paredes.** La vereda perimetral está para eso. El jardín empieza más allá.
+> 2. **No modifique el nivel del terreno junto a la casa.** Si trae tierra para el jardín, que nunca quede más alta que la vereda ni tape la capa aisladora.
+> 3. **Mantenga selladas las juntas de la vereda perimetral.** Reviselas una vez por año y reponga el sellador. Es media hora de trabajo y es lo más importante de esta lista.
+> 4. **Si se rompe un caño, arréglelo enseguida.** Una pérdida enterrada durante meses es lo único que puede dañar seriamente la estructura. Señales: consumo de agua alto sin motivo, mancha húmeda que no seca, hundimiento localizado del piso o de la vereda.
+> 5. **Limpie las canaletas y no cambie las descargas pluviales.** Nada de bajadas que descarguen al pie de la pared.
+> 6. **Si aparece una fisura nueva que crece, avísenos y no la tape.** Fotografíela con una regla al lado y con fecha. Una fisura tapada sin diagnóstico vuelve a aparecer.
+>
+> **Si va a hacer una pileta, un quincho, una ampliación o plantar árboles: consúltenos antes.**
+
+---
+
+## 9. Patologías locales — leer las fisuras
+
+### 9.1 Cómo se ve un asentamiento diferencial en una casa de una planta
+
+**Patrón característico** (verificado, De Miguel, *Fisuras y grietas*): fisuras **inclinadas** en los paños alrededor del punto que asienta, **apuntando hacia él**. En una casa de planta baja hay que buscar además:
+
+| Síntoma | Descripción |
+|---|---|
+| **Fisura diagonal desde el ángulo de una abertura** | Arranca en el vértice superior o inferior de una ventana o puerta y sube/baja a ~45°. Es el sitio más débil del paño |
+| **Fisura vertical en el encuentro de dos muros** (esquina) | Típica del sector perimetral que baja: la esquina se "despega" |
+| **Fisura que atraviesa el dintel y sigue en el antepecho** | Indica movimiento del apoyo, no del dintel |
+| **Aberturas que dejan de cerrar / marcos desescuadrados** | Es la confirmación de que hay distorsión, no sólo fisura superficial |
+| **Piso interior desnivelado**, zócalos que se separan | Buscarlo con nivel de manguera o láser. Es el dato más objetivo |
+| **Rotura de solados y de la vereda perimetral en el mismo sector** | Confirma que el movimiento es del terreno |
+| **Fisuras que se abren más arriba que abajo, o al revés** | Indica el sentido del giro y ayuda a ubicar el punto que cede |
+| **La fisura se ve por dentro y por fuera, en el mismo lugar** | Atraviesa el muro: es estructural, no de revoque |
+
+**Ubicación esperable en Santa Rosa [PD]:** **perimetral y de esquina**, del lado donde está el cantero regado, la bajada pluvial, el pozo absorbente o la pileta (§4.4). Antes de peritar la casa, **caminar el perímetro y mirar el agua**.
+
+### 9.2 Asentamiento vs. retracción vs. otras causas
+
+| | **Asentamiento diferencial** | **Retracción (hormigón / revoque / mortero)** | **Expansión / hinchamiento** | **Dilatación térmica** |
+|---|---|---|---|---|
+| **Trazado** | **Inclinado, apuntando al punto que baja**; diagonal desde ángulos de aberturas | **Mapeada** (piel de cocodrilo) en revoques; **a mitad de la luz** en dinteles; siguiendo la geometría del elemento | Inclinado **de trazado contrario** al de asentamiento (verificado, De Miguel) | Vertical u horizontal, cerca de encuentros de materiales distintos |
+| **Profundidad** | **Atraviesa el muro**: se ve por dentro y por fuera en el mismo punto | Superficial, sólo en el revoque o sólo en el elemento afectado | Atraviesa | Suele ser superficial |
+| **Involucra otros elementos** | Sí: pisos, zócalos, veredas, aberturas | **No**: *"las fisuras de retracción [...] no involucran necesariamente a los demás elementos constructivos"* (verificado) | Sí | Poco |
+| **Evolución** | **Progresiva** mientras dura la causa; se estabiliza cuando ésta cesa | Aparece temprano (semanas/meses) y **se detiene** | Progresiva y estacional | **Cíclica**: abre y cierra con las estaciones |
+| **Relación con el agua** | Aparece o empeora **después de lluvias intensas, de una pérdida o del riego** | Aparece en **secado** rápido: verano, viento, curado deficiente | Aparece con **humedecimiento** | Con cambios de temperatura |
+| **Ancho típico** | Crece con el tiempo; puede superar 1–2 mm y llegar a grieta | Fina, generalmente < 0,3 mm y estable | Variable | Fina y estable |
+| **Qué hacer** | **Diagnóstico geotécnico. No sellar y olvidar** | Reparación de terminación | Diagnóstico | Junta de dilatación |
+
+> **La prueba decisiva en una casa de una planta.** En un edificio, De Miguel usa el criterio de que la fisura por asiento se repite **en la misma vertical en todas las plantas** (verificado). En una casa de PB **no hay ese chequeo**. Los sustitutos son:
+> 1. **¿Se ve por dentro y por fuera en el mismo lugar?** Si sí → estructural.
+> 2. **¿Hay desnivel de piso medible?** Si sí → asentamiento.
+> 3. **¿La vereda perimetral y el solado exterior también están rotos ahí?** Si sí → es el terreno.
+> 4. **¿Hay una fuente de agua en ese sector?** Si sí → ya tenés el diagnóstico.
+
+### 9.3 Qué hacer cuando aparecen
+
+**Protocolo, en orden:**
+
+1. **No tapar.** Un revoque nuevo sobre una fisura viva sólo borra la evidencia y retrasa el diagnóstico.
+2. **Documentar.** Fotografías con **regla y fecha** en cada fisura, croquis de planta y alzados con la ubicación de todas ellas, y **relevamiento de niveles de piso** (manguera o láser) en una grilla.
+3. **Instalar testigos.** Testigos de yeso, o mejor **fisurómetros** (testigos graduados) numerados, con lectura y fecha. **Leer al menos cada 15 días durante 3 meses.** Es la única forma de saber si el movimiento está activo.
+4. **Buscar la fuente de agua** en el sector afectado: cantero, bajada pluvial, pozo absorbente, pileta, cañería. Verificar consumo de agua con todas las canillas cerradas.
+5. **Cortar la fuente inmediatamente** si se identifica. En muchos casos el movimiento se detiene solo cuando el suelo deja de recibir agua.
+6. **Convocar al estructuralista.** **[FIRMA]** Con los testigos leídos, el relevamiento de niveles y el informe geotécnico original en la mano.
+7. **Decidir con datos.** Si el movimiento **se detuvo** y no hay pérdida de nivel importante: reparar (sellar, restituir revoques, reponer maniobrabilidad de aberturas). Si **sigue activo**: recalce. Dato verificado (De Miguel): *"Si el fenómeno se estabiliza, y no ha habido alteraciones geométricas importantes, bastará restañar las fisuras [...] Si el fenómeno prosigue incesantemente, es, en general, imparable"* — pero también: *"la propia dinámica de los acontecimientos hace que, en general, la situación acabe encajando en otro punto, encontrando de nuevo el equilibrio, aunque los daños hayan podido ser severos."*
+
+**Sobre el recalce.** El asentamiento *"es en general, no subsanable, aunque sí se puede detener su progreso, mediante intervenciones de recalce"* (verificado, De Miguel). En vivienda baja sobre loess, la alternativa más difundida son los **pilotines** (incluidos los helicoidales), que se adaptan a las bajas cargas de obras de pequeña escala **[VER — verificar profundidad del estrato competente en cada caso; no adoptar profundidades "típicas"]**. Pero:
+
+> **[FIRMA] Recalzar sin haber cortado la fuente de agua es tirar el dinero.** Primero se elimina la causa, se verifica con testigos que el movimiento se detuvo, y recién entonces se decide si hace falta recalce. El orden inverso es el error más caro que se comete con estas patologías.
+
+---
+
+## 10. Checklist de suelo y fundación del proyecto
+
+### A. Antes de comprar / de aceptar el encargo
+
+- [ ] Ubicación del lote **dentro de la cuenca centrípeta** de Santa Rosa (sector alto E/N, casco, sector bajo SO). §2.4
+- [ ] Relevamiento planialtimétrico del lote y de los linderos. ¿El lote recibe escorrentía de arriba?
+- [ ] ¿Hay **relleno**? Preguntar historia del lote (¿era un bajo? ¿hubo excavación previa? ¿hubo demolición?)
+- [ ] Recorrer la manzana: **fisuras en construcciones vecinas**, veredas rotas, hundimientos de pavimento, bombas de achique
+- [ ] Consulta a la **APA** por profundidad de napa registrada en el sector
+- [ ] ¿Hay **red cloacal** en la cuadra? (cambia todo el capítulo 8.5)
+- [ ] ¿Hay **árboles grandes** existentes y dónde?
+
+### B. Estudio de suelos
+
+- [ ] Contratado **antes** del proyecto ejecutivo, con el anteproyecto en la mano del geotécnico. §6.4
+- [ ] **Mínimo 2 prospecciones (Clase C‑1) — recomendado 3 (Clase C‑2)**, CIRSOC 401 Tabla 3.1. §6.2
+- [ ] **Profundidad mínima 6,00 m**, art. 3.5.6.2. §6.2
+- [ ] **Calicatas con muestreo en damas de ≥ 0,25 m de lado**, art. 3.6.7. §5.3
+- [ ] **Doble ensayo edométrico** y **potencial de colapso** solicitados explícitamente. §6.4
+- [ ] **σ_adm pedida a humedad natural Y saturada**. §5.2
+- [ ] **Cota y espesor de tosca en cada punto** + opinión sobre continuidad. §2.3
+- [ ] **Napa medida, estabilizada a 24 h, con fecha** + opinión sobre tendencia. §3.5
+- [ ] **Análisis químico** (sulfatos, cloruros, sales, pH, MO) + clase de exposición CIRSOC 201. §5.4
+- [ ] Informe **firmado por matriculado con incumbencia en geotecnia**. **[FIRMA]**
+- [ ] Las **10 preguntas** hechas y respondidas por escrito. §6.6
+
+### C. Proyecto de fundación
+
+- [ ] Tipo de fundación **decidido con el informe en la mano**, no antes. §7.2
+- [ ] Verificación de la tensión de contacto **contra σ_adm SATURADA**. §7.4 **[FIRMA]**
+- [ ] Cota de fundación **por debajo de la capa activa** (orientativo ≥ 0,80 m). §7.1
+- [ ] **Ningún elemento con apoyo mixto tosca / suelo suelto**. §7.1
+- [ ] **Encadenado / rigidización continua** en todo el perímetro y bajo muros portantes. §7.2
+- [ ] Espesor y densidad del **manto de suelo compactado** especificados por el geotécnico. §7.4
+- [ ] Clase de exposición y tipo de cemento del hormigón según análisis químico. §5.4
+- [ ] Plano de fundaciones con **cota de fondo, tensión admisible adoptada, cota del estrato resistente y hormigón de limpieza**. **[FIRMA]**
+- [ ] **Sin subsuelo** — o, si lo hay, verificación de subpresión y estanqueidad. §3.4 **[FIRMA]**
+
+### D. Manejo del agua (dibujado y presupuestado, no "de palabra")
+
+- [ ] **Vereda perimetral continua ≥ 1,20 m (mejor 1,50 m), pendiente ≥ 2 % hacia afuera, junta elástica contra el muro**, en planos y en cómputo. §8.2
+- [ ] Pluviales conducidos y con **descarga a ≥ 3,00 m** del perímetro. §8.3
+- [ ] **Ninguna bajada pluvial** descarga al pie de la fundación. §8.3
+- [ ] Cañerías enterradas **envainadas**, con cámaras de inspección **estancas**, sin empalmes bajo platea. §8.4
+- [ ] **Pozo absorbente a ≥ 5,00 m** de la fundación, aguas abajo, con napa verificada. §8.5
+- [ ] Nivelación general del terreno alejando el agua de la casa. §8.3
+- [ ] **Paisajismo coordinado**: nada regado dentro de la franja perimetral, árboles a distancia. §8.6
+- [ ] Pileta (si la hay) a ≥ 5,00 m, con vaciado y retrolavado conducidos. §8.7
+
+### E. Obra
+
+- [ ] Excavación **no abierta bajo lluvia**; hormigón de limpieza el mismo día. §7.5
+- [ ] **Densidad del manto compactado medida**, no estimada. §7.5
+- [ ] **Prueba de estanqueidad** de cañerías y cámaras antes de tapar. §8.4
+- [ ] Curado de la platea ≥ 7 días. §7.5
+- [ ] Capa aisladora horizontal **y vertical** continua. §7.5
+- [ ] Registro fotográfico de fundaciones e instalaciones **antes de tapar** (documentación para el futuro). 
+
+### F. Entrega
+
+- [ ] **Manual del usuario** entregado y explicado al comitente. §8.9
+- [ ] Planos conforme a obra de instalaciones enterradas, con cotas.
+- [ ] Informe geotécnico y planos de fundación archivados y entregados al propietario.
+
+---
+
+## 11. Fuentes
+
+**Geología y suelos de la zona**
+
+- **Giai, S. B. y Tullio, J. O.** — *Características de los principales acuíferos de la provincia de La Pampa.* Facultad de Ciencias Humanas UNLPam y Dirección de Aguas de La Pampa. [chadileuvu.org.ar/pdf/acuiferos.pdf](https://chadileuvu.org.ar/pdf/acuiferos.pdf) — *(basamento granítico a 144 m en Santa Rosa; Fm. Cerro Azul hasta ~190 m; intercalación arcillosa entre 50 y 130 m; arenas eólicas de espesores máximos del orden de 10 m; niveles estáticos históricos; recarga 20–120 mm/año, media ~60 mm/año; superficie del acuífero 841 km²).*
+- **Servicio Geológico Minero Argentino (SEGEMAR)** — *Hojas Geológicas 3763‑I y 3763‑III, Santa Rosa y Darregueira, provincias de La Pampa y Buenos Aires*, Boletín, 2023. [repositorio.segemar.gov.ar/handle/308849217/4394](https://repositorio.segemar.gov.ar/handle/308849217/4394) — **cartografía geológica oficial de la ciudad. Fuente principal del §2.** *(Fm. Meaucó, manto eólico suelto areno‑limoso de 0,20 a 2 m sobre el calcrete y de 3 a 30 m en valles y dunas; granulometría de la facies de manto; perfil del calcrete con horizontes hospedante, pulverulento, nodular, laminar y hardpan de hasta 1 m; nódulos de hasta 20 cm, láminas de 1 a 10 cm, rizolitos de 1–2 cm, crotovinas de tamaño métrico; grados de madurez IV–V al oeste y II–III al este; planicie estructural de cota 230 m al oeste a 120 m al este con gradiente 1,10 m/km; unidades hidroestratigráficas I a VII, con el acuífero freático alojado en la Fm. Meaucó; catorce indicios de canteras de tosca, con labores en áreas urbanas y suburbanas de Santa Rosa y Toay).* El mapa geológico 3763‑I está disponible por separado en el mismo repositorio.
+- **Análisis litoestratigráfico de la Formación Cerro Azul** — Revista de la Asociación Geológica Argentina. [scielo.org.ar/img/revistas/raga/v67n2/html/v67n2a09.htm](https://www.scielo.org.ar/img/revistas/raga/v67n2/html/v67n2a09.htm) — *(limolitas y areniscas 92 % de la sucesión; arcilitas basales 7 %; calcretes al techo 1 %).*
+- **Los calcretes del sudeste de la provincia de La Pampa: caracterización y origen** — Revista de la Asociación Geológica Argentina. [revista.geologica.org.ar/raga/article/download/438/484/1412](https://revista.geologica.org.ar/raga/article/download/438/484/1412) — *(espesores de calcrete 0,5 a 2 m; estructura transición/laminado/pisolítico; cobertura eólica pleistocena‑holocena; **datos del SE provincial, no de Santa Rosa**).*
+- **INTA EEA Anguil** — *Descripción de las zonas y subzonas agroecológicas RIAP, área de influencia de la EEA Anguil* — *(Haplustoles énticos con tosca entre 0,50 y 1,50 m, y con tosca por debajo de 1,50 m; textura franco arenosa muy fina, ~16 % arcilla, hasta ~32 % limo).*
+
+**Napa freática de Santa Rosa**
+
+- **Viglizzo, E. F.** — *"¿Cayó Santa Rosa en una trampa hídrica?"*, La Arena, 13/06/2017. [laarena.com.ar](https://www.laarena.com.ar/la-ciudad/2017-6-13-0-50-11--cayo-santa-rosa-en-una-trampa-hidrica) — *(napa ~25 m en el centro a comienzos de los '90 → menos de 5 m en 2017; balance hídrico 1.400 mm entrada / 1.000 mm salida; Bajo Giuliani 550 ha en 1985 → 1.300 ha en 2015).*
+- **Fábregas, G.** (geólogo, docente de Geotecnia, UNLPam) — *"La napa, a seis metros en el centro"*, La Arena, 02/08/2014. [laarena.com.ar](https://www.laarena.com.ar/la-ciudad/2014-8-2-4-36-14-la-napa-a-seis-metros-en-el-centro) — *(napa a ~6 m en el entorno de la plaza San Martín; filtraciones en edificios de los '70 fundados a 7 m; causas: fin del bombeo local, acueductos de Anguil y del Río Colorado, pérdidas de red).*
+- **Consejo Federal de Inversiones** — *Registros y análisis del comportamiento piezométrico de las aguas subterráneas del subsuelo de la Ciudad de Santa Rosa, provincia de La Pampa.* [biblioteca.cfi.org.ar](http://biblioteca.cfi.org.ar/documento/registros-y-analisis-del-comportamiento-piezometrico-de-las-aguas-subterraneas-del-subsuelo-de-la-ciudad-de-santa-rosa-provincia-de-la-pamp/) — *(censo de 148 perforaciones de la APA en el radio urbano + 21 domiciliarias).* **Documento a solicitar.**
+- **Administración Provincial del Agua (APA) de La Pampa** — organismo de consulta obligada para el dato de napa del sector.
+
+**Reglamentación**
+
+- **CIRSOC 401 — Reglamento Argentino de Estudios Geotécnicos** (INTI‑CIRSOC). Arts. 3.5.2, 3.5.4, 3.5.6.2, 3.6.7; Tablas 3.1 y 3.2. [contenidos.inpres.gob.ar/docs/Reglamentos/CIRSOC-401-Reglamento.pdf](http://contenidos.inpres.gob.ar/docs/Reglamentos/CIRSOC-401-Reglamento.pdf)
+- **CIRSOC 401 — Comentarios.** C 3.5.5 y C 3.6.7 (suelos colapsables). [contenidos.inpres.gob.ar/docs/Reglamentos/CIRSOC-401-Comentarios.pdf](http://contenidos.inpres.gob.ar/docs/Reglamentos/CIRSOC-401-Comentarios.pdf)
+- **CIRSOC 201** — clases de exposición del hormigón (agresividad química del suelo y del agua).
+- **[VER]** Código de Edificación y reglamento de instalaciones sanitarias de la **Municipalidad de Santa Rosa**; normativa de la APA para pozos absorbentes. **Verificar antes de proyectar el sistema de efluentes.**
+
+**Geotecnia del loess**
+
+- **Rocca, R. J., Redolfi, E. R. y Terzariol, R. E.** — *Características geotécnicas de los loess de Argentina.* Rev. Int. de Desastres Naturales, Accidentes e Infraestructura Civil, Vol. 6(2). [fceia.unr.edu.ar/geologiaygeotecnia/Loess Rocca_Redolfi_Terzariol.pdf](https://www.fceia.unr.edu.ar/geologiaygeotecnia/Loess%20Rocca_Redolfi_Terzariol.pdf) — **fuente principal del §3.5 de `estructuras.md`.**
+- **Redolfi, E. R.** — *Suelos colapsables.* Área Geotecnia, FCEFyN, Universidad Nacional de Córdoba, 2007. [fceia.unr.edu.ar/geologiaygeotecnia/Redolfi_2007_Suelos Colapsables.pdf](https://www.fceia.unr.edu.ar/geologiaygeotecnia/Redolfi_2007_Suelos%20Colapsables.pdf) — *(métodos de mejoramiento; densidades de 1,70–1,80 t/m³ suficientes para evitar el colapso por peso propio y aptas como manto de fundación; criterios de presión inicial de colapso).*
+
+**Patología**
+
+- **De Miguel, J. L.** — *Fisuras y grietas*, 2015. — *(patrones de fisuración por asiento, expansividad y retracción; criterio de la repetición en la misma vertical; efecto amortiguador de la cimentación en losa).*
+
+**Documento interno relacionado**
+
+- [`docs/03-estructuras/estructuras.md`](../03-estructuras/estructuras.md) — §3.1 a §3.7 (estudio de suelos, ensayos, correlaciones, loess colapsable, napa freática, contenido mínimo del informe geotécnico) y §4 (fundaciones).
+
+---
+
+> **Nota final sobre el alcance de este documento.** Es material de proyecto y de discusión profesional del estudio. **No sustituye al informe geotécnico del lote ni al cálculo estructural firmado.** Todos los valores marcados **[PD]** son órdenes de magnitud para anteproyecto; todos los marcados **[VERIFICAR con estudio de suelos]** sólo pueden salir del ensayo. **Cuando este documento y el informe geotécnico del lote digan cosas distintas, manda el informe.**
