@@ -343,3 +343,24 @@ Doc: `manual-operacion-costos-impuestos-agosto-2026.md/.pdf`. Reglas nuevas al m
 - Dólar MEP sin PAIS ni percepción. Money market pesos exento. Operar por cuenta comitente (evita impuesto al cheque).
 
 **PROTOCOLO DE VENTA:** NO predecir crashes, NO vender núcleo en pánico. Vender SOLO por: (1) tesis rota (precedente Pepsi/Ternium), (2) satélite táctico en objetivo (Pampa pre-2027, IRSA/TGS, IBIT sobre 5%), (3) rebalanceo extremo (>7-8%, primero diluir con aportes). ANTE CRASH >20%: NO huir, desplegar colchón (renta fija+oro+emergencia) comprando lo castigado. Vender por el negocio o el plan, nunca por precio/miedo. Cada venta+recompra ~1,3%.
+
+---
+
+## CARTERA A 10 AÑOS — análisis mundial definitivo (6-sep-2026, 4 agentes)
+
+Doc: `cartera-10-anios-septiembre-2026.md/.pdf`. Síntesis de CMAs (Vanguard/JPM/GMO/BlackRock/Goldman/SSgA) + megatendencias + valuaciones CAPE + construcción.
+
+**Ancla objetiva:** CAPE inicial explica ~85% del retorno a 10 años. EE.UU. carísimo (CAPE ~40) → proyecta 3-6%. Ex-US barato: internacional desarrollado 6-7% (consenso más firme), EM 7-8%. Bonos volvieron (4-5%). Oro estructural (bancos centrales). Megatendencia #1 = ELECTRICIDAD/cobre (cuello de botella físico de la IA, déficit cobre 30% a 2035).
+
+**CARTERA ÓPTIMA 10 AÑOS (70 acciones/22 renta fija/8 oro):**
+1. Núcleo calidad global (monopolios) 28% — ya lo tiene
+2. Internacional desarrollado (Europa) 10% — EFA+SAP (sumar ASML/Ferrari)
+3. Emergentes value/LatAm 10% — EEM+MELI+Nu
+4. EE.UU. de-concentrado/value 8% — RSP/SPHQ/IVE (FALTA)
+5. Megatendencias 14% — cobre (Vale/BHP/FCX, FALTA)+energía+defensa(Lockheed)+salud
+6. Oro 8% — GLD (subir de ~4%)
+7. Renta fija USD 22% — BAHUSDA
+
+**Ya está ~85% ahí.** 3 ajustes: (1) subir oro 4→8%, (2) agregar factor value/de-concentración RSP/SPHQ, (3) tapar megatendencia eléctrica con COBRE (Vale/BHP). Retorno esperado ~6-8% USD.
+
+**5 principios no negociables:** diversificar, minimizar costo, rebalancear con regla, NO timing, proteger poder adquisitivo (oro/infra).
