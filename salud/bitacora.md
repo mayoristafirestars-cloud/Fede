@@ -12,6 +12,55 @@
 **Impacto:** qué archivos se tocaron
 ```
 
+## 2026-09-09
+**Autor:** @psicologo
+**Qué:** Fede reporta despertar precoz: se acuesta 22h, duerme bien, se despierta ~3am (5h totales) y no logra retomar el sueño. Se arma protocolo de manejo para esa misma noche (brain dump pre-sueño, regla de "3 noes" al despertar, respiración 4-7-8, regla de los 20 min si no vuelve a dormir) + ajustes estructurales de la semana (bajar arousal nocturno, anclaje horario fijo, no subir exigencia en gym/negocio mientras está con los hijos).
+**Por qué:** Coincidencia de 3 factores en simultáneo — semana 2 de cambio grande de rutina de gym (arranca arousal nocturno típico de las primeras 2-3 semanas), semana con los hijos (cambio logístico/emocional aunque sea deseado), y corte reciente de alcohol sin reemplazo aún consolidado de la función de "apagador" nocturno que cumplía. Se suma que la adherencia real al journal 21:00 y meditación 21:45 del bot no está confirmada — si no se están haciendo, se perdió la única herramienta de descarga cognitiva pre-sueño ya diseñada. No hay reporte espontáneo de ánimo bajo ni pérdida de interés — se marca para vigilar, no se asume cuadro depresivo.
+**Alertas levantadas:** se pide a @medico sumar perfil tiroideo si el patrón persiste 1-2 semanas o se suma fatiga diurna/aumento de peso/intolerancia al frío (el hipotiroidismo puede imitar bajón anímico y alterar sueño). Se marca además que sigue pendiente el screening completo (ECG/análisis) desde abril — sin eso, cualquier síntoma físico nocturno (sudoración, palpitaciones, ronquidos) debe ir directo a consulta médica, no quedarse en lo psicológico.
+**Impacto:** `salud/estado-animo.md` — nueva fila en la tabla de ánimo, nota en "Temas recurrentes", y nueva sección completa "Protocolo despertar precoz (3 am)" con protocolo nocturno, ajustes de semana, señales de alarma y qué trackear.
+**Próximo paso:** Fede registra en los próximos días hora de despertar, si logró volver a dormir, qué parte del protocolo usó, y ánimo/energía del día siguiente, para ver si el patrón cede al asentarse la rutina de gym o si se sostiene (ahí se prioriza turno médico).
+
+---
+
+## 2026-09-09
+**Autor:** @medico
+**Qué:** Fede reporta síntoma nuevo: **despertar precoz** — se acuesta 22:00, se duerme bien, pero se despierta ~03:00 y no logra volver a dormir. Sueño efectivo bajó de 6 h (ya insuficiente, registrado desde abril) a **~5 h**. Está en semana 2 del bloque de gym 4×/semana (arrancó 31/08) y esta semana además va a estar con los hijos (cambio de contexto emocional/logístico).
+
+**Contexto revisado:** `perfil.md`, `historia-familiar.md`, `lesiones.md`, `mediciones.md`, `suplementacion.md`, `dieta-actual.md`, `estado-animo.md`, `agenda.md`, `salud/bitacora/2026-08-21` a `2026-08-28` (últimos datos disponibles del bot; no hay entradas de septiembre). Sigue sin existir ni un solo estudio en `salud/estudios/` — ECG, análisis de sangre y TA continúan pendientes desde abril (5 meses).
+
+**Diagnóstico diferencial del despertar a las 3 am (ranked, sin poder confirmar sin más datos ni estudios):**
+
+1. **Hipoglucemia nocturna funcional / contrarregulación (más probable dado el patrón dietario actual).** Cena (19:00, ~8 g carbohidratos) y snack ancla (22:00, yogur + chía, ~6 g carbohidratos) son ambos muy bajos en carbohidratos dentro de un esquema paleo + déficit calórico + entrenamiento de fuerza 4×/semana recién intensificado (semana 2). El nadir fisiológico de glucosa/cortisol de la madrugada (~3-4 h post-medianoche) puede gatillar una respuesta contrarreguladora (adrenalina) que despierta de golpe. Encaja con el timing casi exacto (~5 h después de acostarse / de la última ingesta real de las 22:00).
+2. **Activación ansiosa / cortisol elevado (componente situacional + antecedente).** Estrés "medio" crónico ya registrado, antecedente paterno de ansiedad, semana de cambio de rutina (hijos) + inicio de exigencia física nueva. El despertar con imposibilidad de volver a dormir y "cabeza que arranca a pensar" es un patrón clásico de hiperactivación del eje HPA. Coexiste fácilmente con el punto 1.
+3. **SAHOS (apnea obstructiva del sueño) no diagnosticado.** Obesidad grado II + cintura 102 cm son factores de riesgo fuertes; falta dato de circunferencia de cuello. El patrón típico de apnea es de múltiples micro-despertares no recordados más que un despertar único a hora fija, pero un evento de apnea/hipopnea que termina en arousal completo es compatible, sobre todo combinado con 1 o 2.
+4. **Nicturia por TA no controlada.** Dato crítico: la tensión arterial de Fede **nunca fue medida** (ni en farmacia ni en casa) desde abril. Imposible descartar HTA no diagnosticada como factor.
+5. **Reflujo gastroesofágico silente.** Cena con grasas (~28 g) 3 h antes de acostarse; margen razonable pero no descartable, sobre todo sin síntoma típico de ardor.
+6. **Déficit de testosterona (a confirmar en labs, ya pendientes).** Contribuye a mala arquitectura de sueño en 47 años + obesidad, pero es más un factor de fragmentación general que causa específica de un despertar puntual a hora fija.
+7. **Arritmia paroxística nocturna (antecedente paterno de marcapasos/arritmia).** Baja probabilidad estadística en ausencia de palpitaciones referidas, pero es el diagnóstico de mayor gravedad y el que más urge descartar por historia clínica antes de asumir benignidad — no se puede cerrar sin ECG (pendiente hace 5 meses).
+
+**Preguntas pendientes de hacerle a Fede (checklist, sin respuesta aún):** ¿se despierta sudando? ¿ronca / alguien le notó pausas al respirar? ¿va al baño cuando se despierta? ¿palpitaciones al despertar? ¿sueños vívidos o pesadillas? ¿ardor/reflujo? ¿ansiedad o "pensamientos que giran"? ¿retomó alcohol nocturno o sigue cortado? ¿hora exacta y contenido real de la última comida/snack de las 22:00 (lo está haciendo)? ¿café o mate después de las 13:30? ¿hambre real al despertarse (a favor de hipoglucemia)? ¿el patrón arrancó junto con el gym 4×/semana (31/08) o es más reciente/independiente?
+
+**Ajustes a probar YA (sin esperar labs):**
+- Sumar carbohidrato de absorción algo más lenta al snack de las 22:00 (ej. fruta entera en vez de solo chía, o un puñado extra de frutos secos) para sostener mejor la glucemia nocturna — a instrumentar con @nutricionista, no cambiar la dieta por cuenta propia.
+- Confirmar si el magnesio glicinato 300 mg nocturno (aparece "sumar AHORA" en el ajuste de `dieta-actual.md` del 27/08 pero sigue listado como "pendiente/a considerar" en `suplementacion.md`) se está tomando realmente — inconsistencia a resolver con @nutricionista.
+- Higiene de sueño estándar: cortar pantallas 60-90 min antes de las 22:00, oscuridad total, temperatura fresca. Si se despierta y no vuelve a dormir en ~20 min, levantarse un rato (no quedarse dando vueltas mirando el reloj).
+- Reforzar el corte de cafeína a las 13:30 (ya indicado, confirmar que se cumple).
+- Usar el journal de las 21:00 (ya existe en el sistema del bot/psicólogo) para descargar pensamientos del negocio antes de acostarse — relevante por el componente ansioso.
+- **NO** se recomienda melatonina ni ningún hipnótico sin consulta médica presencial. **NO** se recomienda bajar ni suspender el gym por ahora — solo evitar sumar más déficit o volumen hasta ver evolución.
+
+**Screening adicional a sumar (mismo pedido de abril, ahora con más urgencia):**
+- ECG + análisis de sangre completo (glucemia, HbA1c, insulina/HOMA-IR, perfil lipídico, hepatograma, TSH, **testosterona total + libre**, cortisol matinal) — ya estaban pedidos, siguen sin hacerse.
+- TA en casa (comprar tensiómetro, ya en agenda) — medir también si se despierta de madrugada.
+- Si el patrón se sostiene, considerar **polisomnografía / estudio de sueño domiciliario** dada la combinación obesidad grado II + cintura 102 cm + antecedente CV paterno.
+
+**Red flags — guardia YA si aparece:** palpitaciones sostenidas o irregulares al despertar, dolor u opresión torácica, disnea desproporcionada, sudoración fría fuera de lo esperable, mareo/presíncope. Esto no cambia por tratarse de un despertar "solo por insomnio" — con este antecedente familiar cardíaco, cualquier síntoma cardíaco concurrente con el despertar se trata como urgencia, no como parte del cuadro de sueño.
+
+**Impacto:** `bitacora.md` (esta entrada). `agenda.md` — se sube la prioridad del ECG/análisis/TA y se agrega polisomnografía condicional a la lista de estudios. No se tocó `perfil.md`, `lesiones.md` ni `dieta-actual.md` — los ajustes de snack/magnesio quedan derivados a @nutricionista, no prescriptos acá.
+
+**Próximo paso:** que Fede responda el checklist de preguntas (ideal por el bot o directo). Sin ECG/análisis en mano, este diagnóstico sigue siendo orientativo — no reemplaza consulta presencial.
+
+---
+
 ## 2026-08-27
 **Autor:** @entrenador-fisico
 **Qué:** Reemplazo completo del bloque de fuerza. Sale "Complexes A/B/A/B" (full body encadenado con barra, vigente desde 2026-04-21), entra bloque de 12 semanas **Torso-Pierna A/B** (Superior A lunes, Inferior A martes, Superior B jueves, Inferior B viernes), con periodización Adaptación (mes 1) → Acumulación (mes 2) → Intensificación (mes 3) y deload en semanas 4/8/12.
