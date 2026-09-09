@@ -7,6 +7,13 @@
 
 ## Estudios pendientes de hacer
 
+### ⚠️ ALERTA 2026-09-09 (@medico) — despertar precoz (3 am), sube urgencia del screening pendiente
+
+Fede reporta despertar a las 3 am (se acuesta 22:00, se duerme bien, no logra volver a dormir), sueño efectivo bajó de 6 h a ~5 h. Ver detalle del diferencial en `bitacora.md` 2026-09-09. **Esto NO es un estudio nuevo, es la misma lista de abajo (ECG, análisis, TA) que ya estaba pendiente desde abril — ahora hay un síntoma nuevo que depende de tenerlos para cerrar el diagnóstico** (descartar arritmia paroxística nocturna, HTA no controlada, alteración tiroidea/glucémica). Se agrega:
+
+- [ ] **Testosterona total + libre** y **cortisol matinal** — sumar al pedido de análisis de sangre ya pendiente.
+- [ ] **Polisomnografía / estudio de sueño domiciliario** — condicional: si el patrón de despertar a las 3 am se sostiene 2+ semanas, o si aparecen ronquidos/pausas respiratorias referidas por terceros. Justificado por obesidad grado II + cintura 102 cm (factores de riesgo de SAHOS).
+
 ### ⚠️ ALERTA 2026-08-27 (@medico) — validación plan gym 4×/semana
 
 Se está formalizando con el entrenador un plan de gym 4×/semana (Complexes A/B/A/B, hipertrofia). **A la fecha (27/08/2026, +4 meses desde la evaluación inicial del 17/04) NINGÚN estudio de la lista de abajo fue realizado**: no hay ECG, no hay análisis de sangre, no hay registro de TA. Fede ya viene entrenando desde el 21/04 con el límite de FC 121 lpm autoimpuesto (sin validación por ECG), lo cual mitigaba el riesgo pero no lo elimina.
