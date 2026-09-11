@@ -1,165 +1,178 @@
-# Rutina actual (fuerza) — 4 días/semana — BLOQUE NUEVO
+# Rutina actual (fuerza) — 4 días/semana — REDISEÑO "CADENA DE MOVIMIENTOS"
 
-**Vigente desde:** 2026-08-31 (lunes)
-**Duración del bloque:** 12 semanas (3 meses: Adaptación / Acumulación / Intensificación)
-**Frecuencia:** 4 días/semana
-**Formato:** Torso-Pierna (Upper/Lower) — **A/B rotado** (Superior A, Inferior A, Superior B, Inferior B)
-**Reemplaza a:** bloque "Complexes A/B/A/B" vigente desde 2026-04-21 (ver razones del cambio más abajo)
-**Propuesta por:** @entrenador-fisico — 2026-08-27
-**Basada en:** `perfil.md`, `objetivos.md`, `mediciones.md`, `historia-familiar.md`, `lesiones.md`, `rutina-actual.md` (bloque previo), `agenda.md`, `suplementacion.md`, `plan-longevidad.md`, `dieta-actual.md`, `salud/bitacora/` (21–27 ago 2026), `recordatorios_plan_fede.py`.
-
----
-
-## ⚠️ ALERTA — gap de datos detectado antes de armar este bloque
-
-Antes de nada, dos cosas que encontré revisando el contexto y que **no bloquean el arranque del bloque pero sí condicionan cómo lo leemos**:
-
-1. **`mediciones.md` no se actualizó desde el 2026-04-17** (peso 105 kg, cintura 102 cm). Estamos en agosto: han pasado más de 4 meses sin una sola remedición registrada. No sé si bajaste de peso, si la cintura bajó, ni si el gym viene rindiendo. **Pedido directo: pesate y medite (cintura, cadera) este fin de semana, en ayunas, y cargalo en `mediciones.md` antes del lunes.** Sin ese dato, las cargas de este bloque arrancan por autorregulación (RIR), no por kg fijos — es lo correcto de todos modos, pero quiero el dato para journaling y para que nutrición ajuste kcal si hace falta.
-2. **`agenda.md` sigue con TODOS los estudios de prioridad alta sin tildar** (análisis de sangre, ECG, TA, consulta clínico) — los mismos que estaban pendientes en abril. Si ya los hiciste y no se cargó el resultado, avisame porque cambia lo que puedo habilitar (ver sección VO2max/HIIT más abajo). Si **no** los hiciste, van casi 5 meses de demora en un screening que vos mismo definiste como prioridad alta con antecedente paterno de arritmia/marcapasos — se lo marco fuerte a `@medico` al final.
-
-Con eso dicho, armo el bloque asumiendo que las restricciones vigentes de `lesiones.md` (FC de trabajo ≤121 lpm, sin HIIT/sprints hasta ECG) **siguen activas**, porque no tengo evidencia de que se hayan levantado.
+**Vigente desde:** 2026-09-14 (lunes que viene) — hasta entonces se termina la semana en curso con el bloque anterior.
+**Duración del bloque:** 12 semanas (Adaptación / Acumulación / Intensificación) — se mantiene la periodización, cambia la selección de ejercicios.
+**Frecuencia:** 4 días/semana, formato **Torso-Pierna A/B** (se mantiene, es la variable de recuperación que NO se toca).
+**Reemplaza a:** bloque "Torso-Pierna A/B" con ejercicios por grupo muscular (aislados incluidos), vigente desde 2026-08-31.
+**Propuesta por:** @entrenador-fisico — 2026-09-11, a pedido explícito de Fede.
+**Basada en:** `perfil.md`, `objetivos.md`, `historia-familiar.md`, `lesiones.md`, `mediciones.md`, `estado-animo.md`, `sueño.md`, `dieta-actual.md`, `bitacora.md`, `recordatorios_plan_fede.py`.
 
 ---
 
-## Racional científico (por qué este bloque y no otro)
+## Qué pediste y cómo lo interpreto
 
-**Frecuencia por grupo muscular (2x/semana):**
-El meta-análisis de Schoenfeld, Grgic & Krieger (2016, *J Sports Sci*) y su follow-up con más estudios (Grgic et al. 2018) muestran que, a volumen semanal igualado, entrenar cada grupo muscular **2 veces por semana** produce igual o mejor hipertrofia que 1x/semana, y que arriba de 2-3x/semana los retornos son marginales para alguien que no compite. Para vos, a los 47, con articulaciones que hay que cuidar y sesiones de 45-60 min, 2x/semana por grupo es el punto óptimo: reparte el volumen en más sesiones (menos fatiga acumulada por sesión, mejor técnica de principio a fin) sin sacrificar frecuencia.
+Tu pedido fue: **"que el entrenamiento sea con cadena de movimientos, no músculos aislados"**. Antes de tocar una sola tabla, dejo clara la distinción — porque hay dos cosas que suenan parecidas y NO lo son:
 
-**Volumen semanal (sets efectivos):**
-La curva dosis-respuesta de Schoenfeld et al. (2017) y la revisión de Baz-Valle et al. (2022) ubican el rango de mayor retorno en **10-20 sets efectivos por grupo muscular por semana** para hipertrofia en entrenados; con menos de 10 el estímulo es subóptimo, arriba de 20 el retorno marginal cae y sube el riesgo de sobreuso — especialmente relevante en un cuerpo de 47 años en déficit calórico moderado (peor capacidad de recuperación que en superávit). Este bloque arranca en **~8-10 sets/grupo/semana** (mes 1, adaptación), sube a **~12-14** (mes 2, acumulación) y vuelve a bajar a **~8-10** con más intensidad (mes 3). Nunca se pasa de 14-16: no hace falta más para tu objetivo (composición corporal + salud, no competir).
+### "Cadena de movimientos" (lo que pediste, lo que arma este bloque)
+Entrenamiento por **patrones de movimiento fundamentales** (empuje, tracción, sentadilla, bisagra, locomoción, carga, anti-rotación) usando **ejercicios multi-articulares** que integran varias articulaciones y grupos musculares trabajando en conjunto — como se mueve el cuerpo en la vida real, no músculo por músculo. Series y descansos son **tradicionales** (90-150 s entre series, foco 1 ejercicio a la vez). Esto es lo que arma este documento.
 
-**Intensidad — RIR/RPE, no %1RM ciego:**
-Sin 1RM real medido (y no te lo voy a testear a máximo esfuerzo dado tu perfil cardiovascular — ver más abajo), trabajamos por **RIR (reps en reserva)**, que es más seguro y más preciso que adivinar un %1RM. Rango general: **RIR 3-4 en mes 1** (técnica primero), **RIR 2-3 en mes 2** (empujar volumen), **RIR 1-2 en mes 3 en los ejercicios principales, nunca RIR 0** (fallo absoluto). Esto sigue la lógica de Helms et al. (2016) sobre autorregulación en entrenamiento de fuerza, y es coherente con las guías de la AHA/ACSM para entrenamiento de fuerza en perfiles con riesgo cardiovascular: RPE moderado-alto sí, esfuerzo máximo con Valsalva sostenida no. En cada levantamiento pesado (prensa, peso muerto trap bar, press banca) la instrucción es **exhalar en el esfuerzo**, nunca aguantar el aire a fondo — eso evita picos agudos de presión arterial, que es exactamente el riesgo que tu antecedente paterno (marcapasos/arritmia) nos obliga a respetar hasta tener ECG.
+### "Complexes" (lo que ya descartamos en agosto, NO es lo que pediste)
+Una barra con 4-5 ejercicios encadenados sin soltar ni descansar entre ellos (sentadilla → RDL → remo → press seguidos), que sostiene la FC elevada de forma continua durante todo el complejo. Eso **es un método de condición metabólica**, no "cadena de movimiento" en el sentido de patrones funcionales — y ya lo sacamos del plan en agosto justamente porque con tu restricción de FC ≤121 lpm (sin ECG) rompía el estímulo constantemente y no permitía progresar carga por ejercicio. **No vuelve.**
 
-**Por qué cambio el split de "Complexes A/B/A/B" a Torso-Pierna:**
-El bloque anterior (complejos de barra encadenados: sentadilla → RDL → remo → press → good morning, sin pausa entre ejercicios) es una herramienta excelente para condición metabólica y quema calórica, y funcionó bien 4 meses como entrada al gym. Pero tiene tres límites para la fase que sigue:
-1. **No permite progresión de carga limpia por ejercicio** — subís o bajás la barra para los 5 movimientos a la vez, así que el eslabón más débil de la cadena (para vos, probablemente el press u OHP) frena el progreso de los demás.
-2. **Sostiene la FC elevada de forma continua** durante 5 ejercicios seguidos — con tu límite de 121 lpm, eso obliga a pausas largas y rompe el estímulo. Con series tradicionales y descansos de 90-150 s, los picos de FC son más cortos y controlados, lo cual **es una ventaja directa para tu restricción cardiovascular**, no solo un cambio de estilo.
-3. **Menor frecuencia efectiva por patrón de movimiento** en su forma actual (A y B se repiten idénticos), versus un torso-pierna A/B que te da variedad de ángulos (banca plana vs inclinada, prensa vs sentadilla goblet, RDL con mancuerna vs peso muerto trap bar) manteniendo la frecuencia 2x/semana por grupo.
-
-Torso-pierna con 4 días es, además, la opción que mejor calza con tu agenda real (Lun/Mar/Jue mañana + Vie tarde) sin necesitar un 5to día ni sesiones de más de 60 minutos — cosa que un Push/Pull/Legs rotativo sí te exigiría (PPL con 4 días queda desbalanceado en frecuencia, y con 6 días no entra en tu semana de comerciante).
-
-**Selección de ejercicios — criterio de articulación amigable a los 47 con obesidad grado II:**
-- **Prensa de piernas en vez de sentadilla trasera pesada como principal de cuádriceps**: menor carga axial en columna lumbar, más fácil de controlar con tu circunferencia abdominal actual (102 cm), y permite cargar más volumen sin comprometer técnica. La sentadilla libre no desaparece — la mantengo como goblet squat (carga frontal, menor estrés lumbar, patrón de sentadilla preservado por movilidad y equilibrio a largo plazo).
-- **Trap bar (hex bar) en vez de peso muerto convencional con barra recta**: la evidencia biomecánica (Swinton et al. 2011) muestra menor momento de cizalla lumbar y menor exigencia de movilidad de cadera con trap bar — mejor punto de partida dado que no hay antecedente reciente de práctica de deadlift técnico y tu antropometría actual.
-- **Ejercicios unilaterales (búlgara, step-up, zancadas)**: mejoran estabilidad de cadera/rodilla y equilibrio — literatura de longevidad (Newman et al., estudios de fuerza unilateral en 40+) los asocia con menor riesgo de caídas a largo plazo, un objetivo de "healthspan" real aunque hoy no lo sientas urgente a los 47.
-- **Face pull + elevaciones laterales**: no son estética, son mantenimiento de salud del manguito rotador — con vida sedentaria de mostrador, la postura con hombros hacia adelante es la norma, y esto es profilaxis barata.
-- **Nada de alto impacto** (sin saltos, sin pliometría, sin Olympic lifting balístico como el Power Clean que tenía el bloque anterior): a los 47, con obesidad grado II y sin antecedente de entrenamiento de levantamientos olímpicos, el riesgo técnico/lumbar del Power Clean supera el beneficio. Se reemplaza por trabajo de cadera controlado (hip thrust, RDL, trap bar deadlift) que da fuerza de cadena posterior sin el componente balístico.
-
-**Creatina — rol y timing:**
-Sin cambios respecto a lo ya indicado en `suplementacion.md`: 5 g/día TODOS los días (no solo días de gym) — la saturación muscular de creatina depende de la dosis diaria total, no del timing puntual (revisión de Candow et al. 2022 en población 40+: la creatina en adultos mayores de 40 mejora fuerza, preserva masa magra en déficit calórico y tiene señal — aún preliminar — de beneficio cognitivo). El timing post-entreno que ya tenés (con la whey) es una buena costumbre por adherencia, no porque sea metabólicamente crítico; si un día te la olvidás a la mañana, tomala en cualquier otro momento del día, lo importante es no saltear el día.
-
-**Zona 2 en bici (días de descanso Mié/Sáb/Dom):**
-Se mantiene exactamente como está: 40 min, FC 105-118 lpm, post-almuerzo. Es la palanca de longevidad #2 de tu plan y ya está bien calibrada. Combinado con las 4 sesiones de fuerza (que ahora generan picos de FC más cortos por el cambio de formato) y tu caminata diaria de ~7-8 km, tu volumen aeróbico semanal total (~150+ min en zona 2 solo contando bici + caminatas dedicadas) ya cumple la recomendación de guías internacionales de actividad física para adultos. No se toca.
-
-**HIIT / VO2max — sigue bloqueado, y es el ítem más urgente para @medico:**
-Tu objetivo de longevidad dice explícitamente "VO2max es el marcador MÁS asociado con longevidad" — es verdad (Mandsager et al. 2018 JAMA Netw Open: VO2max es mejor predictor de mortalidad por todas las causas que fumar, diabetes o cardiopatía; Kodama et al. 2009 metanálisis similar). El protocolo noruego 4x4 que tenés previsto en Fase 2 de tu plan de longevidad **sigue bloqueado** porque no hay ECG registrado. Zona 2 + fuerza es exactamente lo que la evidencia recomienda mientras tanto (mejora sensibilidad a la insulina, reduce grasa visceral, no tiene el riesgo agudo de arritmia/pico de PA que sí tiene el HIIT en un perfil sin screening). Pero cada mes que pasa sin el ECG es un mes que no podés sumar la palanca de longevidad más potente que tenés disponible. Lo marco como pedido urgente al final.
+En criollo: lo que armo ahora no es "menos ejercicios aislados metidos en un circuito", es **cambiar qué ejercicios elegimos** (multi-articulares por patrón) dentro de la misma estructura segura de series-descanso-serie que ya veníamos usando.
 
 ---
 
-## Distribución semanal
+## Racional científico del cambio
 
-| Día | Hora | Sesión | Foco | Grupos 2x/semana |
+**Por qué movement pattern training tiene sentido para tu perfil (evidencia, no moda):**
+
+1. **Transferencia funcional real.** Los patrones fundamentales (squat, hinge, push, pull, carry, locomotion, anti-rotation) son la base de la taxonomía de movimiento usada en rehabilitación y en fuerza funcional (Cook, *Movement*, 2010; Boyle, *Functional Training for Sports*). Entrenar el patrón en vez del músculo aislado mejora la capacidad de moverte bien en la vida real (agacharte, cargar bolsas, subir escaleras) — que es exactamente tu objetivo de healthspan, más que "verte" de determinada forma.
+
+2. **Eficiencia de tiempo con más estímulo por ejercicio.** Un ejercicio multi-articular (remo a un brazo, zancada caminando, farmer walk) recluta más masa muscular por serie que un curl o una elevación lateral. Con tus 50-60 min de sesión y un cuerpo de 47 años en déficit calórico (peor recuperación que en superávit — dato de tu `dieta-actual.md`), esto es más "retorno por minuto de gimnasio" sin necesitar sumar volumen total.
+
+3. **Menor fatiga articular específica, más fatiga sistémica distribuida.** Los ejercicios de aislamiento (curl, extensión, elevación lateral) generan fatiga muy localizada en una articulación pequeña sin aportar mucho al objetivo de fuerza funcional/composición corporal en tu caso. Al sacarlos y poner multi-articulares, distribuís el trabajo entre más músculos por serie — mejor relación estímulo/costo articular, relevante con tu obesidad grado II (más carga per se sobre articulaciones de carga).
+
+4. **Loaded carries — evidencia específica para tu perfil.** Los ejercicios de carga (farmer walk, suitcase carry) tienen evidencia de mejorar fuerza de agarre, estabilidad de core y salud de columna con **muy bajo riesgo técnico** (McGill & Marshall, 2012 — análisis biomecánico de loaded carries: bajo estrés de cizalla lumbar, alta demanda de estabilización). Para vos, con obesidad abdominal (cintura 102 cm) y sin antecedente de entrenamiento de fuerza estructurado, es de los ejercicios más seguros y con mejor curva de aprendizaje que existen — literal "agarrar algo pesado y caminar".
+
+5. **Turkish get-up y trabajo anti-rotación — profilaxis de columna, no estética.** Con tu perfil (vida sedentaria de mostrador + obesidad + sin antecedente de entrenamiento de core), el trabajo de anti-rotación (pallof press, dead bug, plancha con toque de hombro) y el TGU en su versión regresiva (sin peso, foco técnico) construyen la capacidad de tu columna de resistir fuerzas sin moverse — que es más protector para lumbalgia futura que cualquier abdominal aislado (McGill, *Low Back Disorders*, 2015).
+
+6. **Restricción cardiovascular — sigue mandando el diseño.** El kettlebell swing es el único ejercicio "explosivo" que sumo, y lo hago con series cortas (8-12 reps ≈ 15-20 segundos de trabajo real), carga ligera-moderada y descansos amplios (90-120s) — el objetivo es el patrón de bisagra con extensión de cadera potente, NO sostener una FC alta tipo condicionamiento metabólico. Nada de EMOM, AMRAP, ni circuitos: cada ejercicio se hace en serie tradicional, con descanso completo antes del siguiente, exactamente como pediste que se mantenga por tu restricción de FC ≤121 lpm sin ECG.
+
+7. **Qué sale y por qué.** Sale todo lo que era aislamiento puro: curl bíceps, curl martillo, extensión de tríceps, elevaciones laterales, curl femoral en máquina, elevación de talones. Ninguno de estos aporta al patrón de movimiento funcional que pediste, y su ausencia no compromete nada — los músculos que trabajaban (bíceps, tríceps, deltoides lateral, isquios, gemelos) siguen recibiendo estímulo indirecto abundante como sinergistas en los ejercicios multi-articulares que quedan (remo, press, RDL, zancada, swing). El face pull, que no es aislamiento clásico sino activación de manguito rotador/postura, lo bajo de "ejercicio principal" a parte del **calentamiento** de torso (ver más abajo) — mantiene su función de profilaxis de hombro sin ocupar un lugar en el cuerpo principal de la sesión.
+
+**Sobre el contexto actual que también pesa en el diseño:**
+- **Sueño reducido (despertar precoz 3 am, ~5h en vez de 6h — ver `estado-animo.md` y bitácora del 2026-09-09):** no subo volumen ni intensidad de partida respecto al bloque anterior. Arranco este bloque en la misma fase de Adaptación (RIR 3-4) que ya tenías, no en Acumulación, aunque técnicamente estemos en semana 2-3 del bloque de agosto — con recuperación comprometida, es mejor consolidar técnica de los ejercicios nuevos que empujar volumen.
+- **Déficit calórico:** seguís en `dieta-actual.md` con ~2.100-2.250 kcal/día, déficit moderado. El volumen total semanal de este bloque (sumando series efectivas) es similar o levemente menor al bloque anterior — no hace falta pedirle más calorías a nutrición todavía. Si en mes 2 el rendimiento cae, ahí se coordina.
+- **RIR nunca 0, sin HIIT, sin Valsalva sostenida:** sin cambios — todo el diseño respeta lo mismo que el bloque anterior.
+
+---
+
+## Distribución semanal (sin cambios respecto al bloque de agosto)
+
+| Día | Hora | Sesión | Foco de patrones | Grupos 2x/semana |
 |---|---|---|---|---|
-| Lunes | **07:00** | Superior A | Press plano + Remo horizontal | Pecho, espalda, hombros, brazos |
-| Martes | **07:00** | Inferior A | Prensa + Goblet squat + RDL | Cuádriceps, isquios, glúteo, core |
+| Lunes | **07:00** | Superior A | Empuje horizontal + Tracción horizontal + Empuje vertical + Carry | Pecho, espalda, hombros, core |
+| Martes | **07:00** | Inferior A | Sentadilla + Locomoción + Bisagra + Carry | Cuádriceps, isquios, glúteo, core |
 | Miércoles | — | DESCANSO | Bici zona 2 (40 min, FC 105-118) | — |
-| Jueves | **07:00** | Superior B | Tracción vertical + Press inclinado | Pecho, espalda, hombros, brazos |
-| Viernes | **13:30** | Inferior B | Trap bar deadlift + Hip thrust | Cuádriceps, isquios, glúteo, core |
+| Jueves | **07:00** | Superior B | Tracción vertical + Empuje (ángulo distinto) + Carry | Pecho, espalda, hombros, core |
+| Viernes | **13:30** | Inferior B | Bisagra fuerte + Sentadilla unilateral + Integrados | Cuádriceps, isquios, glúteo, core |
 | Sábado | — | DESCANSO | Bici zona 2 (40 min) | — |
 | Domingo | — | DESCANSO | Bici zona 2 (40 min) + batch cooking | — |
 
-**Por qué esta distribución y no otra:** Superior A (lunes) y Superior B (jueves) quedan a 3-4 días de distancia entre sí — de sobra para recuperación de tren superior a los 47. Inferior A (martes) e Inferior B (viernes) quedan a 3 días de distancia, con el fin de semana completo de por medio antes de volver a entrenar piernas el lunes siguiente (que es sesión de torso, no de pierna) — así las piernas tienen 4 días reales de descanso entre Inferior B del viernes y la próxima sesión de pierna (Inferior A del martes siguiente).
-
-**Nota viernes 13:30:** se mantiene el esquema de tu dieta actual — pre-entreno liviano (pasas + café) a las 12:00-12:30, nada sólido pesado entre 11:00 y 14:00, post-entreno con whey a las 14:45.
+**Por qué mantengo Torso-Pierna A/B y no full body 4 días:** lo evalué y lo descarto por dos motivos. (1) Vos mismo lo pediste como no-negociable — "mantener la lógica torso/pierna alternada". (2) Aunque un full body de 4 días es una opción válida para movement pattern training, con tu recuperación actual comprometida (sueño 5h, despertar precoz, déficit calórico) un full body metería sentadilla + bisagra + empuje + tracción en la misma sesión 4 veces por semana — más fatiga sistémica acumulada por sesión que el torso-pierna, que reparte la carga. Torso-pierna sigue siendo la opción más conservadora con tu recuperación de hoy.
 
 ---
 
-## Cómo leer las tablas de ejercicios
+## Cómo leer las tablas
 
-- **RIR (Reps en Reserva):** cuántas reps te quedan en el tanque al terminar la serie. RIR 3 = podrías hacer 3 reps más con buena técnica.
-- **Series / Reps / RIR con formato "M1→M2→M3":** valores para Mes 1 (Adaptación) → Mes 2 (Acumulación) → Mes 3 (Intensificación). Ver tabla de progresión completa más abajo.
-- **Carga:** NO hay kg fijos de arranque — no tengo tu 1RM real ni una medición reciente. **Semana 1 es semana de calibración**: en cada ejercicio principal, hacé 1-2 series de aproximación subiendo de a poco hasta encontrar el peso con el que llegás al rango de reps prescripto dejando el RIR indicado. Anotá esa carga (podés usar `/nota` en el bot de Telegram: ej. "Prensa piernas 80kg 4x8 RIR3") — esa nota queda en tu bitácora y yo la uso para calibrar semana 2 en adelante.
-- **Tempo:** cuando se indica (ej. 2-1-2) es concéntrico-pausa-excéntrico en segundos. Donde no se indica, controlado, sin rebote ni impulso.
-- **Descanso:** el mínimo entre series. Si tu FC no bajó de 115 lpm al terminar el descanso indicado, esperá 20-30 s más — la restricción de 121 lpm sigue vigente.
-- **Progresión dentro del mes:** doble progresión. Si en 2 sesiones seguidas completás todas las series en el techo del rango de reps con el RIR objetivo (o mejor), subís carga 2,5-5% la próxima sesión de ese ejercicio.
-
----
-
-## CALENTAMIENTO — Superior (Lunes y Jueves, 6-8 min)
-
-1. **Cinta o bici suave** — 3 min, subir FC a 90-100 lpm.
-2. **Movilidad de hombro:** círculos con banda o palo (10 c/sentido), dislocaciones de hombro con banda (10), rotación externa con banda (15/lado), scapular push-ups (10).
-3. **Activación:** 1-2 series de aproximación del primer ejercicio del día con carga muy liviana, para grabar el patrón antes de cargar en serio.
-
-## CALENTAMIENTO — Inferior (Martes y Viernes, 6-8 min)
-
-1. **Cinta o bici suave** — 3 min, subir FC a 90-100 lpm.
-2. **Movilidad de cadera/rodilla/tobillo:** hip circles de pie (10/lado), sentadilla con peso corporal (10), bisagra de cadera sin peso (10), tobillo contra pared (rocks, 10/lado), puente de glúteo (15).
-3. **Activación:** caminata lateral con banda (10 pasos/lado), 1-2 series de aproximación del primer ejercicio del día con carga liviana.
+- **RIR (Reps en Reserva):** cuántas reps te quedan en el tanque. RIR 3 = podrías hacer 3 más con buena técnica.
+- **Series/Reps/RIR "M1→M2→M3":** valores para Mes 1 (Adaptación) → Mes 2 (Acumulación) → Mes 3 (Intensificación).
+- **Carga:** semana 1 es de calibración en los ejercicios nuevos (la mayoría lo son). Subí de a poco hasta encontrar el peso que te deja en el RIR indicado al final de la serie. Anotalo con `/nota` en el bot.
+- **Carries (loaded carries):** se miden en metros o segundos de caminata sostenida con el peso, no en reps.
+- **Tempo:** concéntrico-pausa-excéntrico en segundos, donde se indica. "Controlado" = sin rebote ni impulso, sin cronometrar estricto.
+- **Descanso:** mínimo entre series. Si tu FC no bajó de 115 lpm al terminar el descanso indicado, esperá 20-30s más — la restricción de 121 lpm sigue vigente.
+- **Progresión dentro del mes:** doble progresión — si completás 2 sesiones seguidas en el techo del rango de reps/metros con el RIR objetivo, subís carga 2,5-5% la próxima sesión de ese ejercicio.
+- **Si dormiste mal esa noche** (como puede pasar ahora con el despertar de las 3am): sacá 1 serie de cada ejercicio principal y priorizá técnica. Esto es regla de oro, no sugerencia — ver más abajo.
 
 ---
 
-## DÍA 1 — Superior A (Lunes)
+## Tabla resumen — patrones fundamentales y qué ejercicio cubre cada uno
 
-| # | Ejercicio | Series M1→M2→M3 | Reps M1→M2→M3 | RIR M1→M2→M3 | Tempo | Descanso | Notas técnicas |
-|---|---|---|---|---|---|---|---|
-| 1 | **Press banca con barra** | 3→4→3 | 8-10→8-10→4-6 | 3-4→2-3→1-2 | 2-1-2 | 120s | Escápulas retraídas, pies firmes, barra al esternón sin rebote, exhalar al subir. Si molesta el hombro en algún punto: sustituir por press banca con mancuernas (ROM más natural). |
-| 2 | **Remo con mancuerna a un brazo** (apoyo en banco) | 3→4→3 | 8-10→8-10→6-8 | 3→2-3→1-2 | 2-0-2 | 90s | Torso paralelo al piso, tirar con el codo (no con la mano), apretar el omóplato arriba, sin rotar el tronco. |
-| 3 | **Press militar con mancuernas sentado** | 3→3→3 | 8-10→8-10→6-8 | 3→2-3→2 | 2-0-2 | 90s | Core apretado, sin hiperextender lumbar, bajar hasta codo ~90°. |
-| 4 | **Jalón al pecho polea, agarre neutro** | 2→3→2 | 10-12→10-12→8-10 | 3→2-3→2 | 2-0-2 | 75s | Llevar la barra al pecho alto, sentir dorsal, no compensar con bíceps. |
-| 5 | **Elevaciones laterales con mancuernas** | 2→3→2 | 12-15→12-15→12-15 | 2→2→2 | Controlado | 60s | Codos ligeramente flexionados, hasta altura de hombro, sin encoger el trapecio. |
-| 6 | **Superserie: curl bíceps + extensión tríceps polea** | 2→2→2 | 10-12 c/u | 2→2→2 | Controlado | 60s entre superseries | Accesorio — priorizar técnica sobre carga. |
-| 7 | **Plancha** | 3 | Máximo sostenible (objetivo 30-45s a 3-6 meses) | — | — | 45s | No dejar caer la cadera, respirar sin aguantar el aire. |
+| Patrón | Ejercicio principal de este bloque | Alternativa si no hay equipo |
+|---|---|---|
+| Empuje horizontal | Press banca con mancuernas | Push-up con pies elevados (lastrado con mochila) |
+| Empuje vertical | Landmine press / Push press ligero con mancuernas | Press militar de pie con mancuernas, carga liviana |
+| Tracción horizontal | Remo con mancuerna a un brazo / Remo en polea baja o sentado | Remo invertido bajo barra fija, o banda elástica |
+| Tracción vertical | Jalón al pecho agarre neutro / dominada asistida | Banda elástica de resistencia alta anclada arriba |
+| Sentadilla | Goblet squat | Sentadilla con mochila cargada |
+| Sentadilla unilateral | Zancada búlgara | Zancada estática con mochila |
+| Bisagra de cadera | Peso muerto rumano (torso) / Trap bar deadlift (pierna) | RDL con mancuernas, carga conservadora |
+| Bisagra explosiva | Kettlebell swing ruso | Hip thrust con banda, tempo rápido en la extensión |
+| Locomoción | Zancada caminando con mancuernas | Zancada caminando sin peso o con mochila |
+| Loaded carry (carga) | Farmer walk / Suitcase carry / Waiter carry | Caminar con 2 bolsas de compras pesadas parejas |
+| Anti-rotación | Pallof press / Dead bug / Plancha con toque de hombro | Pallof press con banda anclada a una puerta |
+| Integrado full-body | Turkish get-up progresivo (técnica, carga mínima) | Half get-up sin peso (solo el patrón, sin kettlebell) |
+
+---
+
+## CALENTAMIENTO — Superior (Lunes y Jueves, 8 min) — con foco en cadena
+
+1. **Cinta o bici suave** — 2-3 min, subir FC a 90-100 lpm.
+2. **Band pull-apart** — 15 reps. Activación de manguito rotador y deltoides posterior — esto reemplaza al face pull que antes era ejercicio principal; sigue siendo tu "seguro de salud del hombro" ante la vida sedentaria de mostrador.
+3. **Rotación torácica en cuadrupedia** ("open book" a 4 patas) — 8/lado. Moviliza la columna torácica que necesitás libre para los patrones de empuje/tracción y para el anti-rotación de la sesión.
+4. **Scapular push-up** — 10 reps.
+5. **Bear crawl** — 2 series de 6-8 m. Activa hombro-core-cadera en cadena, prepara el sistema para trabajar integrado, no solo el músculo que sigue.
+6. **Activación:** 1-2 series de aproximación del primer ejercicio del día con carga muy liviana.
+
+## CALENTAMIENTO — Inferior (Martes y Viernes, 8 min) — con foco en cadena
+
+1. **Cinta o bici suave** — 2-3 min, subir FC a 90-100 lpm.
+2. **Hip circles de pie** — 10/lado.
+3. **90/90 hip switch** (movilidad rotacional de cadera, sentado) — 6/lado. Prepara la cadera para sentadilla, bisagra y locomoción del día.
+4. **Dead bug** — 8/lado. Activa el core antes de cargar el patrón de bisagra/sentadilla — trabajarlo acá también sirve de "ensayo" del anti-rotación que puede aparecer en el cuerpo principal.
+5. **Sentadilla a bisagra sin peso** (bajar a sentadilla, subir a bisagra, fluido) — 10 reps. Patrón combinado, cadena completa de tren inferior sin carga.
+6. **Caminata lateral con banda** — 10 pasos/lado. Activa glúteo medio, clave para la locomoción y el trabajo unilateral que sigue.
+7. **Activación:** 1-2 series de aproximación del primer ejercicio con carga liviana.
+
+---
+
+## DÍA 1 — Superior A (Lunes 07:00) — Empuje horizontal + Tracción horizontal + Empuje vertical + Carry
+
+| # | Patrón | Ejercicio | Series M1→M2→M3 | Reps/Distancia M1→M2→M3 | RIR M1→M2→M3 | Tempo | Descanso | Notas técnicas |
+|---|---|---|---|---|---|---|---|---|
+| 1 | Empuje horizontal | **Press banca con mancuernas** | 3→4→3 | 8-10→8-10→5-6 | 3-4→2-3→1-2 | 2-1-2 | 120s | Mancuernas en vez de barra: ROM más natural, menos estrés de hombro. Exhalar al subir, sin rebote en el pecho. |
+| 2 | Tracción horizontal | **Remo con mancuerna a un brazo** (apoyo en banco) | 3→4→3 | 8-10/lado | 3→2-3→1-2 | 2-0-2 | 90s | Tirar con el codo, apretar omóplato arriba, tronco fijo sin rotar. |
+| 3 | Empuje vertical | **Landmine press a una mano** (de pie) | 3→3→3 | 8-10/lado→8-10/lado→6-8/lado | 3→2-3→2 | 2-0-2 | 90s | El ángulo de la barra en landmine es más amigable de hombro que press militar recto — core trabaja para resistir la rotación del peso, es "anti-rotación" gratis dentro del empuje. |
+| 4 | Tracción horizontal | **Remo en polea baja, agarre neutro bilateral** | 2→3→2 | 10-12→10-12→8-10 | 3→2-3→2 | 2-0-2 | 75s | Espalda recta, tirar con el codo, sentir dorsal, no compensar con bíceps. |
+| 5 | Anti-rotación | **Pallof press de pie** (polea o banda anclada al costado) | 3 | 10-12/lado | 2 (técnica, no fallo) | Controlado, pausa 1-2s en extensión | 60s | Empujás hacia adelante resistiendo que el peso te rote el tronco. Core rígido, respiración normal, sin aguantar el aire. |
+| 6 | Loaded carry | **Suitcase carry** (mancuerna o kettlebell, un lado) | 2→3→3 | 20-25m/lado→25-30m/lado→30-35m/lado | RIR2 (esfuerzo moderado, sin arrastrar) | Paso normal, postura erguida | 75s | Hombros nivelados, no te inclines hacia el lado libre — eso es exactamente el trabajo anti-rotación de este ejercicio. |
+| 7 | Cadena anterior (isométrico) | **Plancha frontal** | 3 | Máximo sostenible (objetivo 30-45s a 3-6 meses) | — | — | 45s | No dejar caer la cadera, respirar sin aguantar el aire. |
 
 **Duración estimada:** 50-55 min (incluye calentamiento y cool-down).
 
 ---
 
-## DÍA 2 — Inferior A (Martes)
+## DÍA 2 — Inferior A (Martes 07:00) — Sentadilla + Locomoción + Bisagra + Carry
 
-| # | Ejercicio | Series M1→M2→M3 | Reps M1→M2→M3 | RIR M1→M2→M3 | Tempo | Descanso | Notas técnicas |
-|---|---|---|---|---|---|---|---|
-| 1 | **Prensa de piernas 45°** | 3→4→3 | 8-10→8-10→5-6 | 3-4→2-3→1-2 | 2-0-2 | 120s | Pies a la altura de los hombros, no bloquear rodillas arriba, bajar hasta 90° sin despegar la zona lumbar del respaldo. Menor carga axial que sentadilla con barra — principal de cuádriceps de este bloque. |
-| 2 | **Sentadilla goblet** (mancuerna o kettlebell) | 2→3→2 | 8-10→8-10→6-8 | 3→2-3→2 | 3-0-2 | 90s | Talones al piso, rodillas siguen la línea del pie, profundidad hasta donde la técnica se mantenga limpia. |
-| 3 | **Peso muerto rumano con mancuernas** | 3→3→3 | 8-10→8-10→6-8 | 3→2-3→2 | 3-1-2 | 90s | Bisagra de cadera, espalda neutra, bajar solo hasta donde la lumbar se mantenga estable. |
-| 4 | **Zancada búlgara** (pie trasero elevado) | 2→3→2 | 8/lado→8/lado→6/lado | 3→2-3→2 | Controlado | 75s | Unilateral: corrige asimetrías, trabaja estabilidad de cadera/rodilla. |
-| 5 | **Curl femoral en máquina** (o con fitball) | 2→3→2 | 10-12 | 2→2→2 | Controlado | 60s | — |
-| 6 | **Elevación de talones de pie** | 2→3→2 | 12-15 | 2→2→2 | Controlado | 45s | — |
-| 7 | **Dead bug** | 3 | 10/lado | — | Controlado | 45s | Control lumbo-pélvico — base para todos los movimientos de bisagra. |
+| # | Patrón | Ejercicio | Series M1→M2→M3 | Reps/Distancia M1→M2→M3 | RIR M1→M2→M3 | Tempo | Descanso | Notas técnicas |
+|---|---|---|---|---|---|---|---|---|
+| 1 | Sentadilla | **Goblet squat** (mancuerna o kettlebell) | 3→4→3 | 8-10→8-10→5-6 | 3-4→2-3→1-2 | 3-0-2 | 120s | Carga frontal = menor estrés lumbar que sentadilla con barra en espalda. Talones al piso, profundidad hasta donde la técnica se mantenga limpia. Principal de sentadilla del bloque. |
+| 2 | Locomoción | **Zancada caminando con mancuernas** | 2→3→2 | 8 pasos/lado→8 pasos/lado→6 pasos/lado | 3→2-3→2 | Controlado | 90s | El patrón de locomoción real (caminar cargando peso, alternando apoyo) que reemplaza a la zancada estática — más transferencia a caminar/subir escaleras. |
+| 3 | Bisagra | **Peso muerto rumano con mancuernas** | 3→3→3 | 8-10→8-10→6-8 | 3→2-3→2 | 3-1-2 | 90s | Bisagra de cadera, espalda neutra, bajar solo hasta donde la lumbar se mantenga estable. |
+| 4 | Sentadilla unilateral | **Zancada búlgara** (pie trasero elevado) | 2→3→2 | 8/lado→8/lado→6/lado | 3→2-3→2 | Controlado | 75s | Unilateral: corrige asimetrías, trabaja estabilidad de cadera/rodilla — clave a los 47 para prevención de caídas a largo plazo. |
+| 5 | Loaded carry | **Farmer walk bilateral** (mancuernas o kettlebells, ambas manos) | 2→3→3 | 25-30m→30-35m→35-40m | RIR2 | Paso normal, postura erguida, core apretado | 75s | Agarre fuerte, hombros atrás y abajo, pasos cortos y rápidos, no arrastrar los pies. |
+| 6 | Anti-rotación / core | **Dead bug** | 3 | 10/lado | — | Controlado | 45s | Control lumbo-pélvico — base para todos los movimientos de bisagra y carry de la sesión. |
 
 **Duración estimada:** 55-60 min.
 
 ---
 
-## DÍA 3 — Superior B (Jueves)
+## DÍA 3 — Superior B (Jueves 07:00) — Tracción vertical + Empuje + Carry
 
-| # | Ejercicio | Series M1→M2→M3 | Reps M1→M2→M3 | RIR M1→M2→M3 | Tempo | Descanso | Notas técnicas |
-|---|---|---|---|---|---|---|---|
-| 1 | **Jalón al pecho agarre supino** (o dominada asistida si el nivel lo permite) | 3→4→3 | 8-10→8-10→5-6 | 3-4→2-3→1-2 | 2-0-2 | 120s | Principal de tracción vertical de la semana — la dominada asistida progresa hacia dominada estricta con el tiempo si querés ese objetivo. |
-| 2 | **Press inclinado con mancuernas** (30°) | 3→4→3 | 8-10→8-10→6-8 | 3→2-3→2 | 2-1-2 | 90s | Ángulo distinto al banco plano del lunes — trabaja pecho superior, variedad de estímulo articular. |
-| 3 | **Remo en polea sentado, agarre neutro** | 3→3→3 | 10-12→10-12→8-10 | 3→2-3→2 | 2-0-2 | 90s | Espalda recta, tirar con el codo, apretar omóplatos al final. |
-| 4 | **Face pull en polea alta** | 3→3→3 | 15-20 | 2→2→2 | Controlado | 60s | Rotadores externos + deltoides posterior. Es "seguro de salud del hombro" — codos altos, rotación externa al final. |
-| 5 | **Curl martillo con mancuernas** | 2→2→2 | 10-12 | 2→2→2 | Controlado | 60s | — |
-| 6 | **Extensión de tríceps overhead con mancuerna** | 2→2→2 | 10-12 | 2→2→2 | Controlado | 60s | — |
-| 7 | **Plancha lateral** | 2→3→3 | 20-30s/lado | — | — | 45s | — |
+| # | Patrón | Ejercicio | Series M1→M2→M3 | Reps/Distancia M1→M2→M3 | RIR M1→M2→M3 | Tempo | Descanso | Notas técnicas |
+|---|---|---|---|---|---|---|---|---|
+| 1 | Tracción vertical | **Jalón al pecho agarre neutro** (o dominada asistida si el nivel lo permite) | 3→4→3 | 8-10→8-10→5-6 | 3-4→2-3→1-2 | 2-0-2 | 120s | Principal de tracción vertical de la semana. La dominada asistida progresa hacia dominada estricta con el tiempo si te copa ese objetivo. |
+| 2 | Empuje horizontal (ángulo distinto) | **Press inclinado con mancuernas** (30°) | 3→4→3 | 8-10→8-10→6-8 | 3→2-3→2 | 2-1-2 | 90s | Ángulo distinto al banco plano del lunes — trabaja el patrón de empuje con otro vector, variedad de estímulo articular sin sumar ejercicios nuevos innecesarios. |
+| 3 | Empuje vertical | **Push press ligero con mancuernas** (de pie) | 3→3→3 | 8-10→8-10→6-8 | 3→2-3→2 | Controlado | 90s | Impulso leve de piernas + empuje overhead — es "empuje vertical integrado" (pierna-core-hombro en cadena), NO es un push press de peso pesado tipo olímpico. Carga liviana, técnica antes que nada, nunca cerca del fallo. |
+| 4 | Tracción horizontal | **Remo en polea sentado, agarre neutro** | 3→3→3 | 10-12→10-12→8-10 | 3→2-3→2 | 2-0-2 | 90s | Espalda recta, tirar con el codo, apretar omóplatos al final. |
+| 5 | Loaded carry | **Waiter carry** (mancuerna o kettlebell overhead, un brazo, carga liviana) | 2→3→3 | 15-20m/lado→20-25m/lado→20-25m/lado | RIR2 | Paso lento, controlado | 75s | Brazo trabado, hombro empaquetado (no colgado), core anti-lateral — trabaja estabilidad de hombro en cadena con el resto del cuerpo. Carga bien liviana, es más técnica que fuerza bruta. |
+| 6 | Anti-rotación | **Plancha con toque de hombro** | 3 | 10/lado | — | Controlado | 45s | Cadera fija, mínimo balanceo — eso es lo que estás entrenando. |
 
 **Duración estimada:** 50-55 min.
 
 ---
 
-## DÍA 4 — Inferior B (Viernes 13:30)
+## DÍA 4 — Inferior B (Viernes 13:30) — Bisagra fuerte + Sentadilla unilateral + Integrados
 
-| # | Ejercicio | Series M1→M2→M3 | Reps M1→M2→M3 | RIR M1→M2→M3 | Tempo | Descanso | Notas técnicas |
-|---|---|---|---|---|---|---|---|
-| 1 | **Peso muerto con trap bar (hex bar)** | 3→4→3 | 6-8→6-8→4-5 | 3-4→2-3→1-2 | 1-0-2 | 150s | **Exhalar en el esfuerzo, no sostener la respiración a fondo** (Valsalva prolongada eleva la PA de forma aguda — clave con tu perfil CV). Trap bar reduce el estrés de cizalla lumbar frente a barra recta. Si no hay trap bar disponible: sustituir por RDL con barra recta y carga conservadora. |
-| 2 | **Sentadilla búlgara con mancuernas** | 2→3→2 | 8/lado→8/lado→6/lado | 3→2-3→2 | Controlado | 90s | Variante unilateral de cuádriceps respecto al martes. |
-| 3 | **Hip thrust con barra** | 3→3→3 | 8-10→8-10→6-8 | 3→2-3→2 | Controlado | 90s | Glúteo — salud de cadera y prevención de lumbalgia, relevante en sedentarismo de mostrador. |
-| 4 | **Curl femoral tumbado** | 2→3→2 | 10-12 | 2→2→2 | Controlado | 60s | — |
-| 5 | **Step-up en banco con mancuernas** | 2→3→2 | 8-10/lado | 2→2→2 | Controlado | 75s | — |
-| 6 | **Elevación de talones sentado** (soleo) | 2→3→2 | 15 | 2→2→2 | Controlado | 45s | — |
-| 7 | **Plancha con toque de hombro** (anti-rotación) | 3 | 10/lado | — | — | 45s | — |
+| # | Patrón | Ejercicio | Series M1→M2→M3 | Reps/Distancia M1→M2→M3 | RIR M1→M2→M3 | Tempo | Descanso | Notas técnicas |
+|---|---|---|---|---|---|---|---|---|
+| 1 | Bisagra (carga axial) | **Peso muerto con trap bar (hex bar)** | 3→4→3 | 6-8→6-8→4-5 | 3-4→2-3→1-2 | 1-0-2 | 150s | **Exhalar en el esfuerzo, no sostener la respiración a fondo** (Valsalva prolongada eleva la PA aguda — clave con tu antecedente CV paterno). Trap bar reduce el estrés de cizalla lumbar frente a barra recta. Principal de bisagra del bloque. |
+| 2 | Bisagra (glúteo) | **Hip thrust con barra** | 3→3→3 | 8-10→8-10→6-8 | 3→2-3→2 | Controlado | 90s | Cadena posterior — salud de cadera y prevención de lumbalgia, relevante en tu sedentarismo de mostrador. |
+| 3 | Sentadilla unilateral | **Sentadilla búlgara con mancuernas** | 2→3→2 | 8/lado→8/lado→6/lado | 3→2-3→2 | Controlado | 90s | Variante de sentadilla unilateral respecto al martes, misma lógica de estabilidad de cadera/rodilla. |
+| 4 | Bisagra explosiva controlada | **Kettlebell swing ruso** (carga ligera-moderada) | 3→4→3 | 8-10→10-12→10-12 | 2-3 (nunca al fallo) | Explosivo en la extensión de cadera, controlado en el descenso | 90-120s | Series cortas (≈15-20s de trabajo real por serie) — esto es clave: el objetivo es el patrón de extensión de cadera potente, NO sostener la FC alta como en un complex. Si la FC sube fuerte, alargá el descanso antes de la próxima serie. Es el único ejercicio "explosivo" del bloque — carga conservadora siempre. |
+| 5 | Loaded carry | **Farmer walk pesado bilateral** | 2→3→3 | 30m→35m→40m | RIR2 | Paso normal, postura erguida | 90s | Cierre de la sesión de pierna con el patrón de carga más pesado de la semana — agarre, core y piernas en cadena completa. |
+| 6 | Integrado full-body (técnica) | **Turkish get-up progresivo** (regresión: half get-up sin peso en mes 1) | 2→3→2 | 2-3/lado→3-4/lado→3-4/lado | RIR alto (foco 100% en técnica, nunca cerca de esfuerzo) | Lento y controlado, sin cronometrar | 90s | **Mes 1: sin peso, solo el patrón** (rolido a codo, a mano, puente de glúteo, estocada, de pie y vuelta). Mes 2-3: si la técnica está sólida, sumar una kettlebell muy liviana (4-6 kg). Es el ejercicio más técnico del bloque — nunca se apura la progresión de carga acá. |
 
 **Duración estimada:** 55-60 min.
 
@@ -168,76 +181,69 @@ Tu objetivo de longevidad dice explícitamente "VO2max es el marcador MÁS asoci
 ## COOL-DOWN (los 4 días — 5-7 min)
 
 1. **Caminata lenta en cinta** — 3 min, bajar la FC de forma progresiva.
-2. **Estiramiento estático** (20-30 s por grupo trabajado ese día): pectoral, dorsal ancho, isquios, cuádriceps, gemelos, glúteo (según corresponda torso o pierna).
-3. **Respiración diafragmática** — 1 min, para bajar del todo antes de ducharte e ir a laburar (en el caso de lunes/martes/jueves) o antes de la cena libre (viernes).
+2. **Estiramiento estático** (20-30s por grupo trabajado ese día): pectoral y dorsal (días torso), isquios y cuádriceps (días pierna), glúteo y flexor de cadera (los 4 días, por el trabajo de bisagra/carry).
+3. **Respiración diafragmática** — 1 min, para bajar del todo antes de ducharte e ir a laburar (lunes/martes/jueves) o antes de la cena libre (viernes).
 
 ---
 
-## Progresión mes a mes
+## Progresión mes a mes (se mantiene el bloque de 12 semanas)
 
 ### Mes 1 — Semanas 1-4 — ADAPTACIÓN
-**Objetivo:** técnica limpia, calibrar cargas reales, volumen bajo-moderado (~8-10 sets/grupo/semana), RIR 3-4.
-- **Semana 1:** semana de calibración de cargas (ver arriba). No fuerces progresión, priorizá que la técnica se sienta sólida en cada ejercicio.
-- **Semana 2:** si semana 1 se sintió técnicamente limpia, subí 2,5-5% en los ejercicios principales.
-- **Semana 3:** repetí la lógica — si llegaste al techo del rango de reps con el RIR objetivo, subí carga.
-- **Semana 4 — DELOAD:** quitá 1 serie de cada ejercicio principal (compound), mantené la misma carga o bajala 10%, RIR sube a 4-5 (esfuerzo cómodo). Esta semana además: **remedición completa** (peso, cintura, cadera) y chequeo de cualquier molestia articular antes de subir intensidad en mes 2.
+**Objetivo:** aprender los patrones nuevos con técnica limpia (varios ejercicios de este bloque son nuevos para vos: landmine press, carries, kettlebell swing, TGU regresivo), calibrar cargas, RIR 3-4.
+- **Semana 1 (2026-09-14):** semana de calibración total. Casi todos los ejercicios son nuevos — priorizá aprender el patrón sobre cargar peso. Con farmer walk y suitcase carry, arrancá con una carga que puedas sostener 30-40m sin que se rompa la postura, no con la carga máxima que puedas agarrar.
+- **Semana 2:** si semana 1 se sintió técnicamente sólida, subí 2,5-5% en los ejercicios de carga fija (press, remo, RDL, trap bar) y sumá algo de distancia/tiempo en los carries.
+- **Semana 3:** misma lógica — techo del rango con el RIR objetivo → subís carga.
+- **Semana 4 — DELOAD:** quitá 1 serie de cada ejercicio principal, misma carga o -10%, RIR sube a 4-5. **Remedición completa** (peso, cintura, cadera) — seguís sin una sola fila cargada en `mediciones.md` desde abril, este es el momento de arrancar el hábito.
 
 ### Mes 2 — Semanas 5-8 — ACUMULACIÓN
-**Objetivo:** máximo volumen del bloque (~12-14 sets/grupo/semana), RIR 2-3.
-- Se suma **+1 serie** en los ejercicios principales (marcado en la columna "M2" de cada tabla).
-- Reps se mantienen en rango 8-12 (zona óptima para composición corporal/hipertrofia).
-- Progresión semanal: doble progresión (primero completar reps al techo del rango con el RIR objetivo, después subir carga).
-- **Semana 8 — DELOAD:** mismo esquema que semana 4 (quitar series, bajar intensidad, RIR 4-5). Remedición.
+**Objetivo:** máximo volumen del bloque, RIR 2-3, técnica ya consolidada en los patrones nuevos.
+- Se suma **+1 serie** en los ejercicios principales (marcado en columna "M2").
+- Turkish get-up: si la técnica sin peso fue sólida en mes 1, sumar kettlebell 4-6 kg.
+- **Semana 8 — DELOAD:** mismo esquema que semana 4. Remedición.
 
 ### Mes 3 — Semanas 9-12 — INTENSIFICACIÓN
-**Objetivo:** cargas más altas, volumen vuelve a bajar (~8-10 sets/grupo/semana) para poder sostener mayor intensidad sin sobreentrenar.
-- Ejercicios principales bajan a rango de **4-6 reps** (fuerza), RIR baja a **1-2** (nunca 0, nunca fallo absoluto — ver racional CV arriba).
-- Ejercicios accesorios se mantienen en 10-15 reps, RIR 2 (no se intensifican igual — no lo necesitan para tu objetivo).
-- **Semana 12 — DELOAD + cierre de bloque:** remedición completa (peso, cintura, cadera, y si querés, fotos), test opcional de plancha máxima y flexiones máximas (para comparar con los objetivos de tu `plan-longevidad.md`), y revisión conjunta con el equipo antes de armar el bloque 4 (meses 4-6).
-
-**Registro semanal de progreso:** anotá reps + carga real de cada ejercicio principal (bench, prensa, jalón/dominada, trap bar deadlift) cada semana — con eso alcanza para ver la curva, no hace falta trackear los accesorios con el mismo detalle. Podés usar el comando `/nota` del bot de Telegram para que quede en la bitácora.
+**Objetivo:** cargas más altas en los ejercicios bilaterales de fuerza (press, remo, trap bar, RDL, hip thrust), volumen vuelve a bajar, RIR baja a 1-2 en esos ejercicios (nunca 0).
+- Ejercicios principales bajan a 4-6 reps donde está indicado.
+- Carries, swing y TGU **no** se intensifican del mismo modo — no es su objetivo. Se progresa distancia/carga de forma conservadora, siempre con margen.
+- **Opcional, solo si todo viene sólido (técnica de goblet squat y push press impecables, sin ninguna molestia articular):** evaluar sumar un thruster con mancuernas muy livianas como variante ocasional del empuje vertical — combina sentadilla + press en un solo patrón integrado. No es obligatorio ni default de este bloque; se decide en la revisión de fin de mes 2 según cómo vengas.
+- **Semana 12 — DELOAD + cierre de bloque:** remedición completa, test opcional de plancha máxima, revisión conjunta del equipo antes de armar el bloque siguiente.
 
 ---
 
 ## Reglas de oro de la sesión
 
-1. **Calentamiento siempre**, aunque tengas apuro. 6-8 min no es negociable.
-2. **Técnica antes que carga.** Si se rompe la forma, bajás peso esa serie, no "aguantás".
-3. **FC de trabajo ≤121 lpm** (restricción vigente hasta ECG). Si se dispara, descansás más entre series.
-4. **Exhalar en el esfuerzo, siempre**, especialmente en prensa, trap bar deadlift y press banca. Nada de aguantar el aire a fondo (Valsalva).
+1. **Calentamiento siempre**, aunque tengas apuro. 8 min no es negociable — más todavía con ejercicios técnicos nuevos como el TGU y el swing.
+2. **Técnica antes que carga**, sobre todo en los ejercicios nuevos de este bloque. Si se rompe la forma, bajás peso esa serie, no "aguantás".
+3. **FC de trabajo ≤121 lpm** (restricción vigente hasta ECG). El kettlebell swing es el ejercicio que más puede subirla — si se dispara, descansás más entre series, no acortás el descanso para "sostener el ritmo".
+4. **Exhalar en el esfuerzo, siempre**, especialmente en trap bar deadlift, press banca y hip thrust. Nada de aguantar el aire a fondo (Valsalva).
 5. **RIR nunca en 0.** No hay fallo absoluto en este bloque, ni siquiera en mes 3.
-6. **Si dormiste mal esa noche** (menos de 6 h o mala calidad): sacá 1 serie de cada ejercicio principal esa sesión y priorizá técnica. El sueño sigue siendo tu variable más floja — con 6h no hay volumen que compense la recuperación.
-7. **Dolor articular ≠ dolor muscular normal.** DOMS del día siguiente es esperable. Dolor agudo, punzante, o que persiste más de 72h en una articulación: parás ese ejercicio, avisás, y se deriva a `@medico` si no mejora en unos días.
+6. **Con tu sueño actual (despertar precoz ~3am, ~5h efectivas — ver `estado-animo.md` 2026-09-09): sacá 1 serie de cada ejercicio principal esa sesión y priorizá técnica.** Esto ya era regla antes, la reforzamos ahora porque tu recuperación está más floja que en agosto. Con 5h no hay volumen que compense — mejor sesión corta y limpia que sesión completa y sucia.
+7. **Dolor articular ≠ dolor muscular normal.** DOMS del día siguiente es esperable, más ahora que hay patrones nuevos (vas a sentir cosas distintas, sobre todo core y agarre por los carries). Dolor agudo, punzante, o que persiste más de 72h en una articulación: parás ese ejercicio, avisás, y se deriva a `@medico` si no mejora en unos días.
+8. **Carries y swing no son para "aguantar como sea".** Si en un farmer walk perdés la postura antes de llegar a la distancia objetivo, parás ahí — la distancia se ajusta a lo que podés sostener con buena forma, no al revés.
 
 ---
 
 ## Coordinación con el resto del plan
 
-**Con la bici zona 2 (Mié/Sáb/Dom):** sin cambios — 40 min, FC 105-118 lpm. Las piernas ya tienen suficiente estímulo de fuerza los martes y viernes; la bici de zona 2 en los días intermedios es aeróbica pura, no compite con la recuperación de fuerza (más bien la favorece por flujo sanguíneo).
+**Con la bici zona 2 (Mié/Sáb/Dom):** sin cambios — 40 min, FC 105-118 lpm.
 
-**Con la nutrición (`dieta-actual.md`):** no hace falta tocar nada. Los horarios de entreno no cambian (Lun/Mar/Jue 07:00, Vie 13:30-14:00), así que el timing de pre/post-entreno (banana o pasas antes, whey + creatina después) sigue calzando igual. Proteína ~190-200 g/día se mantiene — con este bloque el volumen de trabajo por sesión es similar o levemente mayor al de los complexes, así que no se necesita subir calorías todavía. Si en mes 2 (acumulación) notás que te falta energía para completar las series, avisale a nutrición para evaluar +100-150 kcal los días de gym, no antes.
+**Con la nutrición (`dieta-actual.md`):** no hace falta tocar nada por ahora. Los horarios de entreno no cambian (Lun/Mar/Jue 07:00, Vie 13:30-14:00), el timing de pre/post-entreno se mantiene igual. El volumen total de trabajo de este bloque es similar al anterior — no se sube calorías todavía. Si en mes 2 notás que te falta energía para completar carries/swing, avisale a nutrición.
 
-**Con la agenda:** viernes gym 13:30 se mantiene igual que el bloque anterior. Resto de días, mañana 07:00.
+**Con el sueño/psicólogo:** este bloque arranca deliberadamente en fase de Adaptación (RIR 3-4, sin pisar el acelerador) mientras se resuelve el patrón de despertar precoz. Si el sueño mejora en las próximas 1-2 semanas, mes 2 avanza como está planificado. Si se sostiene o empeora, mes 2 se pospone o se aliviana — coordino con `@psicologo` y `@medico` en la revisión de semana 4.
 
-**Con lesiones:** no hay restricciones activas de una lesión puntual (el brazo derecho fue dado de alta en abril). La única restricción vigente es la cardiovascular (FC ≤121, sin HIIT) — respetada en todo el diseño de este bloque.
+**Con lesiones:** sin restricciones puntuales activas más que la cardiovascular (FC ≤121, sin HIIT), respetada en todo el diseño — el swing y el push press son los ejercicios de mayor demanda cardiovascular puntual, y ambos están acotados a series cortas con descanso amplio.
 
 ---
 
 ## Próximos pasos
 
-**Qué medir para saber si el plan funciona:**
-- **Semanal:** peso y cintura (lunes en ayunas, como ya está definido en tu checklist de longevidad).
-- **Cada 4 semanas (fin de cada mes):** cintura, cadera, ICC, y carga/reps de los 4 ejercicios principales (bench, prensa, jalón/dominada, trap bar deadlift) — comparar contra el mes anterior.
-- **Test funcional mensual (opcional pero recomendado):** plancha máxima sostenida y flexiones máximas — ya están en tu tabla de métricas de longevidad (objetivo plancha 30-45s a 6 meses, 45-60 kg... perdón, 45-60s a 12 meses; flexiones 25-30 a 6 meses).
+**Primera revisión de este bloque:** fin de semana 4 (≈12 de octubre 2026), coincidiendo con el deload de mes 1. Ahí evaluamos: ¿los patrones nuevos (carries, swing, TGU) se sienten técnicamente sólidos?, ¿la FC se mantuvo controlada en el swing?, ¿el sueño mejoró?, ¿avanzamos a mes 2 con más volumen o sostenemos Adaptación una semana más?
 
-**Primera revisión de este bloque:** **fin de semana 4 (≈28 de septiembre 2026)**, coincidiendo con el deload de mes 1. Ahí evaluamos: ¿las cargas subieron semana a semana sin dolor?, ¿la FC se mantuvo controlada?, ¿el peso/cintura se movieron?, ¿el sueño mejoró o sigue en 6h? Con esas respuestas decido si mes 2 arranca como está planificado o si hay que ajustar volumen.
-
-**Señales de sobreentrenamiento a vigilar (avisame si aparecen, no esperes a la revisión mensual):**
-- FC en reposo matutina subiendo de forma sostenida (si tenés el Watch, mirá la tendencia, no un día puntual).
-- Cargas que bajan en vez de subir 2 sesiones seguidas en el mismo ejercicio, sin causa clara (mal dormir puntual sí es causa clara).
-- Dolor articular persistente (>72h) en hombro, rodilla o zona lumbar.
-- Motivación/ánimo cayendo de forma sostenida, sensación de "no llegar" a las sesiones — esto lo charlamos también con el psicólogo si aparece, porque en tu perfil el estrés del negocio y el entrenamiento comparten el mismo balde de recuperación.
-- Sueño empeorando en vez de mejorar (si baja de 6h de forma sostenida con este volumen, bajamos volumen antes que forzar el sueño).
+**Señales de sobreentrenamiento a vigilar:**
+- FC en reposo matutina subiendo de forma sostenida.
+- Cargas o distancias de carry que bajan en vez de subir 2 sesiones seguidas, sin causa clara (mal dormir puntual sí es causa clara).
+- Dolor articular persistente (>72h) en hombro, rodilla, muñeca (por los carries) o zona lumbar.
+- Sueño empeorando en vez de mejorar — si el patrón de despertar a las 3am se sostiene, se baja volumen antes de forzar.
 
 ---
 
@@ -245,9 +251,11 @@ Tu objetivo de longevidad dice explícitamente "VO2max es el marcador MÁS asoci
 
 | Ejercicio principal | Alternativa sin máquina/barra especializada |
 |---|---|
-| Prensa de piernas | Sentadilla goblet con mochila cargada o mancuernas pesadas |
-| Trap bar deadlift | Peso muerto rumano con mancuernas, carga conservadora |
+| Press banca con mancuernas | Push-up con pies elevados (lastrado con mochila si hace falta) |
+| Landmine press | Press militar de pie con mancuernas, carga liviana |
 | Jalón al pecho / dominada asistida | Remo invertido bajo una barra fija, o banda elástica de resistencia alta |
-| Press banca con barra | Press banca o flexiones con pies elevados (lastradas con mochila si es necesario) |
+| Trap bar deadlift | Peso muerto rumano con mancuernas, carga conservadora |
+| Farmer walk / Suitcase carry / Waiter carry | Caminar con 2 bolsas de compras cargadas parejas (o 1 sola, para suitcase/waiter) |
+| Kettlebell swing | Hip thrust con banda elástica, tempo rápido en la extensión de cadera |
+| Turkish get-up | Half get-up sin peso (solo el patrón, sin carga) |
 | Hip thrust con barra | Hip thrust a una pierna con peso corporal, o puente de glúteo con banda |
-| Face pull en polea | Face pull con banda elástica anclada a una puerta/reja |
