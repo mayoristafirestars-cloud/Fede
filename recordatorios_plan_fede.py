@@ -46,7 +46,7 @@ GITHUB_BRANCH = os.environ.get(
 )
 
 DIAS = ["Lun", "Mar", "Mié", "Jue", "Vie", "Sáb", "Dom"]
-OBJETIVO_KCAL = 2100
+OBJETIVO_KCAL = 1800
 OBJETIVO_PROT = 190
 
 logging.basicConfig(
@@ -66,9 +66,8 @@ RECORDATORIOS = [
     (0, "09:15", "💊 Suplementos en 30 min: Vit D3 + Omega-3.", 0, 0, 0),
     (0, "12:30", "🍽️ Almuerzo en 30 min: pollo 220 g + papa hervida 100 g + ensalada + oliva 12 ml + limón.", 555, 55, 0),
     (0, "13:30", "☕ ¡Último mate del día en 30 min! Después solo agua o infusiones sin cafeína.", 0, 0, 0),
-    (0, "16:00", "🥛 Merienda en 30 min: yogur griego 170 g + nueces 12 g + canela.", 175, 15, 0),
-    (0, "18:30", "🐟 Cena en 30 min: pescado merluza 200 g + verdura zapallo 150 g + verdura morrón 70 g + anchoa 20 g + 1 huevo duro + oliva 12 ml.", 470, 55, 0),
-    (0, "21:30", "🌙 Snack ancla en 30 min: yogur griego 170 g + chía 10 g + magnesio 300 mg. Bajá luces.", 150, 12, 0),
+    (0, "16:30", "🍽️ Merienda-cena · Yogur y huevos en 30 min: yogur griego 200 g + 2 huevos duros + nueces 15 g + canela.", 300, 33, 0),
+    (0, "21:30", "🌙 Snack ancla MÍNIMO (opcional) en 30 min: yogur griego 100 g + chía 5 g + magnesio 300 mg. Bajá luces.", 100, 10, 0),
     (0, "22:00", "😴 A dormir en 30 min. Celular afuera del cuarto.", 0, 0, 0),
     # Total lun: ~2130 kcal · 198g p · 350 quema · neto 1780
 
@@ -81,9 +80,8 @@ RECORDATORIOS = [
     (1, "09:15", "💊 Suplementos: Vit D3 + Omega-3.", 0, 0, 0),
     (1, "12:30", "🍽️ Almuerzo en 30 min: pollo 220 g + boniato hervido 100 g + ensalada + oliva 12 ml.", 530, 55, 0),
     (1, "13:30", "☕ ¡Último mate del día en 30 min!", 0, 0, 0),
-    (1, "16:00", "🥛 Merienda en 30 min: cottage 200 g + fruta frutillas 30 g + canela.", 180, 24, 0),
-    (1, "18:30", "🐟 Cena en 30 min: pescado salmón 180 g + verdura espinaca salteada 150 g + hongos 80 g + oliva 12 ml.", 430, 40, 0),
-    (1, "21:30", "🌙 Snack ancla + magnesio 300 mg.", 150, 12, 0),
+    (1, "16:30", "🍽️ Merienda-cena · Cottage con frutillas en 30 min: cottage 200 g + 2 huevos duros + frutillas 30 g + nueces 10 g + canela.", 300, 33, 0),
+    (1, "21:30", "🌙 Snack ancla MÍNIMO (opcional): yogur griego 100 g + chía 5 g + magnesio 300 mg.", 100, 10, 0),
     (1, "22:00", "😴 A dormir en 30 min.", 0, 0, 0),
     # Total mar: ~2105 kcal · 194g p · 400 quema · neto 1705
 
@@ -95,10 +93,8 @@ RECORDATORIOS = [
     (2, "12:30", "🍽️ Almuerzo en 30 min: pescado atún 180 g + 2 huevos duros + verdura espinaca 150 g + queso 30 g + ensalada + palta 60 g + oliva 15 ml.", 620, 62, 0),
     (2, "13:00", "🚴 Bici 40 min en 30 min. Zona 2 (FC 105-118 lpm), ruta plana, post-almuerzo.", 0, 0, 300),
     (2, "13:30", "☕ Último mate del día en 30 min.", 0, 0, 0),
-    (2, "16:00", "🥛 Merienda en 30 min: ricota 150 g + almendras 10 g + cacao amargo 3 g.", 200, 20, 0),
-    (2, "16:30", "⭐ Momento hobby en 30 min (30-45 min).", 0, 0, 0),
-    (2, "18:30", "🐟 Cena en 30 min: pescado sardinas 120 g + verdura tomate 100 g + palta 60 g + aceitunas 15 g + oliva + limón.", 450, 40, 0),
-    (2, "21:30", "🌙 Snack ancla + magnesio 300 mg.", 150, 12, 0),
+    (2, "16:30", "🍽️ Merienda-cena · Sardinas con palta en 30 min: sardinas al natural 100 g + palta 50 g + tomate 100 g + aceitunas 10 g + oliva 5 ml + limón.", 300, 32, 0),
+    (2, "21:30", "🌙 Snack ancla MÍNIMO (opcional): yogur griego 100 g + chía 5 g + magnesio 300 mg.", 100, 10, 0),
     (2, "22:00", "😴 A dormir en 30 min.", 0, 0, 0),
     # Total mie: ~2400 kcal · 204g p · 300 quema · neto 2100
 
@@ -111,9 +107,8 @@ RECORDATORIOS = [
     (3, "09:15", "💊 Suplementos: Vit D3 + Omega-3.", 0, 0, 0),
     (3, "12:30", "🍽️ Almuerzo en 30 min: pollo 200 g + papa hervida 100 g + 1 huevo duro + ensalada nicoise (hojas verdes + verdura tomate) + palta 50 g + oliva 12 ml.", 620, 55, 0),
     (3, "13:30", "☕ ¡Último mate!", 0, 0, 0),
-    (3, "16:00", "🥛 Merienda en 30 min: yogur griego 170 g + nueces 12 g + fruta arándanos 20 g.", 180, 15, 0),
-    (3, "18:30", "🐟 Cena en 30 min: pescado merluza 200 g + verdura brócoli 200 g + 1 huevo duro + anchoa 20 g + oliva 12 ml.", 450, 50, 0),
-    (3, "21:30", "🌙 Snack ancla + magnesio 300 mg.", 150, 12, 0),
+    (3, "16:30", "🍽️ Merienda-cena · Tabla mediterránea en 30 min: queso feta o port salut 60 g + pavita fiambre 60 g + aceitunas 15 g + tomate cherry 80 g + palta 40 g + nueces 10 g.", 300, 32, 0),
+    (3, "21:30", "🌙 Snack ancla MÍNIMO (opcional): yogur griego 100 g + chía 5 g + magnesio 300 mg.", 100, 10, 0),
     (3, "22:00", "😴 A dormir.", 0, 0, 0),
     # Total jue: ~2160 kcal · 201g p · 350 quema · neto 1810
 
@@ -126,7 +121,7 @@ RECORDATORIOS = [
     (4, "13:30", "🏋️ Inferior B empieza en 30 min (CADENAS)\n\n1. Peso muerto Trap bar (hex) 3×6-8 RIR3-4 · 150s\n2. Hip thrust con barra 3×8-10 RIR3 · 90s\n3. Sentadilla búlgara mancuernas 2×8/lado RIR3 · 90s\n4. Kettlebell swing (carga ligera, series cortas) 3×8-10 RIR2-3 · 90-120s\n5. Farmer walk pesado 2×30m RIR2 · 90s\n6. Turkish get-up sin peso (solo patrón, técnica) 2×2-3/lado · 90s\n\nCalent 8 min (hip circles, 90/90, dead bug) · FC ≤121 · Exhalar en el esfuerzo · RIR nunca 0\nTrap bar: menor cizalla lumbar · Swing: series cortas, no sostener FC\nDuración: 55-60 min", 0, 0, 0),
     (4, "14:45", "🥤 Post-entreno + Inferior B hecho. En 30 min: whey 35 g + creatina 5 g + banana chica 80 g (carbo rápido).", 210, 28, 400),
     (4, "15:30", "🍽️ Almuerzo-merienda en 30 min: pollo 220 g + papa hervida 150 g + ensalada + palta 70 g + almendras + oliva.", 620, 55, 0),
-    (4, "18:30", "🎉 CENA LIBRE en 30 min. Elegí UNA: pizza 2 porciones / parrilla 250 g magra / sushi 12-15 piezas / pasta 300 g. Máx 1 vino tinto.", 700, 35, 0),
+    (4, "21:30", "🌙 Snack ancla MÍNIMO (opcional): yogur griego 100 g + chía 5 g + magnesio 300 mg.", 100, 10, 0),
     (4, "22:00", "😴 A dormir.", 0, 0, 0),
     # Total vie: ~2320 kcal · 169g p · 400 quema · neto 1920
 
@@ -138,10 +133,8 @@ RECORDATORIOS = [
     (5, "12:30", "🍽️ Almuerzo en 30 min: pollo 220 g + verdura brócoli 150 g + verdura zapallo hervido 100 g + ensalada + palta 40 g + oliva 12 ml.", 500, 55, 0),
     (5, "13:00", "🚴 Bici 40 min en 30 min. Zona 2, ruta plana.", 0, 0, 300),
     (5, "13:30", "☕ ¡Último mate!", 0, 0, 0),
-    (5, "16:00", "🐟 Merienda en 30 min: pescado sardinas 100 g + palta 50 g + verdura tomate cherry 80 g + galleta de arroz 1.", 260, 22, 0),
-    (5, "16:30", "⭐ Hobby / familia.", 0, 0, 0),
-    (5, "18:30", "🍽️ Cena en 30 min: pollo 180 g + 2 huevos duros + queso 25 g + verdura espinaca al vapor 150 g + hongos + anchoa 15 g + oliva.", 500, 55, 0),
-    (5, "21:30", "🌙 Snack ancla + magnesio.", 150, 12, 0),
+    (5, "16:30", "🍽️ Merienda-cena · Sardinas gourmet en 30 min: sardinas 120 g + palta 50 g + tomate cherry 80 g + galleta de arroz 1 + oliva 5 ml + limón.", 320, 30, 0),
+    (5, "21:30", "🌙 Snack ancla MÍNIMO (opcional): yogur griego 100 g + chía 5 g + magnesio 300 mg.", 100, 10, 0),
     (5, "22:00", "😴 A dormir.", 0, 0, 0),
     # Total sab: ~2090 kcal · 198g p · 300 quema · neto 1790
 
@@ -153,10 +146,8 @@ RECORDATORIOS = [
     (6, "12:30", "🍽️ Almuerzo en 30 min: pollo del horno 220 g + ensalada completa + palta 60 g + aceitunas + nueces + oliva.", 620, 55, 0),
     (6, "13:30", "☕ ¡Último mate!", 0, 0, 0),
     (6, "14:00", "🚴 Bici 40 min en 30 min. Zona 2, al sol.", 0, 0, 300),
-    (6, "16:00", "🥛 Merienda en 30 min: yogur griego 200 g + nueces 10 g + cacao amargo 3 g.", 195, 15, 0),
-    (6, "16:30", "⭐ Hobby / hijos (30-45 min).", 0, 0, 0),
-    (6, "18:30", "🍽️ Cena Caesar en 30 min: pollo 180 g + hojas verdes lechuga romana + 1 huevo duro + anchoa 20 g + parmesano 15 g + aderezo.", 470, 40, 0),
-    (6, "21:30", "🌙 Snack ancla + magnesio.", 150, 12, 0),
+    (6, "16:30", "🍽️ Merienda-cena · Atún con palta en 30 min: atún al natural 120 g + palta 50 g + tomate 100 g + 1 huevo duro + aceitunas 10 g + oliva 5 ml.", 300, 32, 0),
+    (6, "21:30", "🌙 Snack ancla MÍNIMO (opcional): yogur griego 100 g + chía 5 g + magnesio 300 mg.", 100, 10, 0),
     (6, "22:00", "😴 A dormir. Cargar tensiómetro para lunes.", 0, 0, 0),
     # Total dom: ~1935 kcal · 150g p · 300 quema · neto 1635
 
