@@ -387,94 +387,93 @@ def day_page(pdf, dia, info):
 
     color = DIAS_COLOR[dia]
 
-    # Header hero del día
-    draw_rect_filled(pdf, 0, 0, 210, 45, color)
+    # Header hero del día — compacto (28mm)
+    draw_rect_filled(pdf, 0, 0, 210, 28, color)
 
     pdf.set_text_color(*WHITE)
-    pdf.set_font("Helvetica", "B", 26)
-    pdf.set_xy(15, 12)
-    pdf.cell(180, 10, dia)
+    pdf.set_font("Helvetica", "B", 22)
+    pdf.set_xy(15, 6)
+    pdf.cell(120, 9, dia)
 
-    pdf.set_font("Helvetica", "", 14)
-    pdf.set_xy(15, 25)
-    pdf.cell(180, 6, info["subtitulo"])
+    pdf.set_font("Helvetica", "", 12)
+    pdf.set_xy(15, 17)
+    pdf.cell(120, 6, info["subtitulo"])
 
-    # Badges totales con borde blanco sobre color
+    # Badges totales
     pdf.set_draw_color(255, 255, 255)
     pdf.set_line_width(0.4)
-    pdf.rect(130, 12, 30, 10, style="D")
-    pdf.set_font("Helvetica", "B", 11)
+    pdf.rect(135, 7, 28, 8, style="D")
+    pdf.set_font("Helvetica", "B", 10)
     pdf.set_text_color(*WHITE)
-    pdf.set_xy(130, 12)
-    pdf.cell(30, 10, f"{info['kcal_total']} kcal", align="C")
+    pdf.set_xy(135, 7)
+    pdf.cell(28, 8, f"{info['kcal_total']} kcal", align="C")
 
-    pdf.rect(163, 12, 32, 10, style="D")
-    pdf.set_xy(163, 12)
-    pdf.cell(32, 10, f"{info['prot_total']}g proteina", align="C")
+    pdf.rect(166, 7, 30, 8, style="D")
+    pdf.set_xy(166, 7)
+    pdf.cell(30, 8, f"{info['prot_total']}g proteina", align="C")
 
-    # Comidas
-    y = 55
+    # Comidas — compact cards
+    n_comidas = len(info["comidas"])
+    # espacio disponible entre y=32 y y=290 = 258mm
+    # cada card debe caber en ~258/n_comidas
+    y = 33
+    max_y = 290
+
     for comida in info["comidas"]:
-        # Card
-        card_h = 6 + 6 + (len(comida["ingredientes"]) * 5) + 5
-        if y + card_h > 280:  # nueva página si no entra
-            pdf.add_page()
-            y = 20
+        # Concatenar ingredientes con separador (excepto listas muy largas)
+        ings = " · ".join(comida["ingredientes"])
 
-        # Sombra sutil (rectangulo gris claro desplazado)
-        # Fondo card
+        # Calcular altura de la card en base a wrapping
+        # Ancho útil texto: 160mm, fuente 10 → aprox 82 chars por línea
+        chars_por_linea = 82
+        n_lineas = max(1, (len(ings) // chars_por_linea) + (1 if len(ings) % chars_por_linea else 0))
+        n_lineas = min(n_lineas, 2)  # máximo 2 líneas
+        # Si con 2 líneas no entra, truncar
+        if len(ings) > chars_por_linea * 2:
+            ings = ings[:chars_por_linea * 2 - 3] + "..."
+            n_lineas = 2
+
+        card_h = 10 + (n_lineas * 4.5) + 2
+
+        # Fondo blanco
         draw_rect_filled(pdf, 15, y, 180, card_h, WHITE)
         # Borde
         pdf.set_draw_color(*GRAY_MID)
-        pdf.set_line_width(0.3)
+        pdf.set_line_width(0.2)
         pdf.rect(15, y, 180, card_h, style="D")
-
-        # Barrita de color a la izquierda
+        # Barrita color izq
         draw_rect_filled(pdf, 15, y, 3, card_h, color)
 
-        # Header interno de la card
         # Hora
         pdf.set_text_color(*NAVY)
-        pdf.set_font("Helvetica", "B", 14)
-        pdf.set_xy(22, y + 3)
-        pdf.cell(25, 7, comida["hora"])
+        pdf.set_font("Helvetica", "B", 12)
+        pdf.set_xy(21, y + 2)
+        pdf.cell(20, 6, comida["hora"])
 
         # Nombre
-        pdf.set_font("Helvetica", "B", 13)
-        pdf.set_text_color(*NAVY)
-        pdf.set_xy(48, y + 3)
-        pdf.cell(90, 7, comida["nombre"])
+        pdf.set_font("Helvetica", "B", 11)
+        pdf.set_xy(43, y + 2)
+        pdf.cell(90, 6, comida["nombre"])
 
-        # Badges kcal y prot (solo si hay valores)
+        # Badges kcal y prot
         if comida["kcal"] > 0 or comida["prot"] > 0:
-            # kcal
-            draw_rect_filled(pdf, 140, y + 3, 25, 7, color)
+            draw_rect_filled(pdf, 140, y + 2, 24, 6, color)
             pdf.set_text_color(*WHITE)
-            pdf.set_font("Helvetica", "B", 10)
-            pdf.set_xy(140, y + 3)
-            pdf.cell(25, 7, f"{comida['kcal']} kcal", align="C")
-            # prot
-            draw_rect_filled(pdf, 168, y + 3, 22, 7, NAVY)
-            pdf.set_xy(168, y + 3)
-            pdf.cell(22, 7, f"{comida['prot']}g p", align="C")
+            pdf.set_font("Helvetica", "B", 9)
+            pdf.set_xy(140, y + 2)
+            pdf.cell(24, 6, f"{comida['kcal']} kcal", align="C")
 
-        # Línea separadora sutil
-        pdf.set_draw_color(*GRAY_MID)
-        pdf.set_line_width(0.2)
-        pdf.line(22, y + 12, 188, y + 12)
+            draw_rect_filled(pdf, 167, y + 2, 22, 6, NAVY)
+            pdf.set_xy(167, y + 2)
+            pdf.cell(22, 6, f"{comida['prot']}g p", align="C")
 
-        # Ingredientes
+        # Ingredientes (multi_cell para wrapping automatico)
         pdf.set_text_color(*SLATE)
-        pdf.set_font("Helvetica", "", 11)
-        ing_y = y + 14
-        for ing in comida["ingredientes"]:
-            pdf.set_xy(22, ing_y)
-            pdf.cell(5, 5, "-")
-            pdf.set_xy(28, ing_y)
-            pdf.cell(160, 5, ing)
-            ing_y += 5
+        pdf.set_font("Helvetica", "", 10)
+        pdf.set_xy(21, y + 9)
+        pdf.multi_cell(170, 4.5, ings)
 
-        y += card_h + 3
+        y += card_h + 1.5
 
 
 def notes_page(pdf):
