@@ -307,6 +307,31 @@ def day_page(pdf, dia, info):
         y += 4.5
     y += 3
 
+    # Core entre series (nuevo bloque)
+    draw_rect_filled(pdf, 15, y, 4, 8, RED)
+    pdf.set_text_color(*NAVY)
+    pdf.set_font("Helvetica", "B", 11)
+    pdf.set_xy(22, y + 1)
+    pdf.cell(170, 6, "CORE ENTRE SERIES (rotar, elegir uno por serie)")
+    y += 10
+
+    core_items = [
+        "Dead bug 10/lado (anti-extension)",
+        "Hollow hold 20s (isometrico)",
+        "Bird dog 8/lado (estabilidad)",
+        "Side plank 20s/lado (anti-flexion lateral)",
+        "Plancha 30s (isometrico)",
+    ]
+    pdf.set_font("Helvetica", "", 9)
+    pdf.set_text_color(*SLATE)
+    for item in core_items:
+        pdf.set_xy(22, y)
+        pdf.cell(5, 4, "-")
+        pdf.set_xy(27, y)
+        pdf.cell(165, 4, item)
+        y += 4.5
+    y += 3
+
     # Ejercicios
     draw_rect_filled(pdf, 15, y, 4, 8, color)
     pdf.set_text_color(*NAVY)
