@@ -59,9 +59,9 @@ log = logging.getLogger("recordatorios-fede")
 RECORDATORIOS = [
     # ===== LUNES (gym A) =====
     (0, "05:30", "💧 En 30 min a despertar. Vaso 300 ml + pizca de sal.", 0, 0, 0),
-    (0, "06:00", "🍌 Pre-entreno en 30 min: media banana (80 g) + café 150 ml + agua con sal 300 ml.", 70, 1, 0),
-    (0, "06:30", "🏋️ Superior A empieza en 30 min (CADENAS)\n\n1. Press banca mancuernas 3×8-10 RIR3-4 · 120s\n2. Remo mancuerna a un brazo 3×8-10/lado RIR3 · 90s\n3. Landmine press a una mano 3×8-10/lado RIR3 · 90s\n4. Remo polea baja neutro 2×10-12 RIR3 · 75s\n5. Pallof press de pie 3×10-12/lado RIR2 · 60s\n6. Suitcase carry 2×20-25m/lado RIR2 · 75s\n\n🔥 CORE entre series (rotar): Dead bug 10/lado · Hollow hold 20s · Bird dog 8/lado · Side plank 20s/lado · Plancha 30s\n\nCalent 8 min · FC ≤121 · Exhalar en el esfuerzo · RIR nunca 0\nDuración: 55-60 min", 0, 0, 0),
-    (0, "07:30", "🥤 Post-entreno + Superior A hecho. En 30 min: whey 35 g + creatina 5 g + banana chica 80 g (carbo rápido).", 210, 28, 350),
+    (0, "06:30", "🍌 Pre-entreno en 30 min: media banana (80 g) + café 150 ml + agua con sal 300 ml.", 70, 1, 0),
+    (0, "06:35", "🏋️ Superior A empieza en 30 min (CADENAS)\n\n1. Press banca mancuernas 3×8-10 RIR3-4 · 120s\n2. Remo mancuerna a un brazo 3×8-10/lado RIR3 · 90s\n3. Landmine press a una mano 3×8-10/lado RIR3 · 90s\n4. Remo polea baja neutro 2×10-12 RIR3 · 75s\n5. Pallof press de pie 3×10-12/lado RIR2 · 60s\n6. Suitcase carry 2×20-25m/lado RIR2 · 75s\n\n🔥 CORE entre series (rotar): Dead bug 10/lado · Hollow hold 20s · Bird dog 8/lado · Side plank 20s/lado · Plancha 30s\n\nCalent 8 min · FC ≤121 · Exhalar en el esfuerzo · RIR nunca 0\nDuración: 55-60 min", 0, 0, 0),
+    (0, "08:20", "🥤 Post-entreno + Superior A hecho. En shaker apenas termines: whey 35 g + creatina 5 g + banana chica 80 g (carbo rápido). Después ducha y al negocio.", 210, 28, 350),
     (0, "09:00", "🍳 Desayuno en 30 min: 4 huevos duros + palta 90 g + verdura tomate 100 g + queso port salut 20 g + oliva 5 ml.", 570, 32, 0),
     (0, "09:15", "💊 Suplementos en 30 min: Vit D3 + Omega-3.", 0, 0, 0),
     (0, "12:30", "🍽️ Almuerzo en 30 min: pollo 220 g + papa hervida 100 g + ensalada + oliva 12 ml + limón.", 555, 55, 0),
@@ -73,9 +73,9 @@ RECORDATORIOS = [
 
     # ===== MARTES (gym B) =====
     (1, "05:30", "💧 En 30 min a despertar. Vaso 300 ml + sal.", 0, 0, 0),
-    (1, "06:00", "🍇 Pre-entreno en 30 min: pasas 30 g + café 150 ml + agua con sal 300 ml.", 85, 1, 0),
-    (1, "06:30", "🏋️ Inferior A empieza en 30 min (CADENAS)\n\n1. Goblet squat 3×8-10 RIR3-4 · 120s\n2. Zancada caminando con mancuernas 2×8 pasos/lado RIR3 · 90s\n3. Peso muerto rumano mancuernas 3×8-10 RIR3 · 90s\n4. Zancada búlgara 2×8/lado RIR3 · 75s\n5. Farmer walk bilateral 2×25-30m RIR2 · 75s\n\n🔥 CORE entre series (rotar): Dead bug 10/lado · Hollow hold 20s · Bird dog 8/lado · Side plank 20s/lado · Plancha 30s\n\nCalent 8 min · FC ≤121 · Exhalar en el esfuerzo · RIR nunca 0\nDuración: 60-65 min", 0, 0, 0),
-    (1, "07:30", "🥤 Post-entreno + Inferior A hecho. En 30 min: whey 35 g + creatina 5 g + banana chica 80 g (carbo rápido).", 210, 28, 400),
+    (1, "06:30", "🍇 Pre-entreno en 30 min: pasas 30 g + café 150 ml + agua con sal 300 ml.", 85, 1, 0),
+    (1, "06:35", "🏋️ Inferior A empieza en 30 min (CADENAS)\n\n1. Goblet squat 3×8-10 RIR3-4 · 120s\n2. Zancada caminando con mancuernas 2×8 pasos/lado RIR3 · 90s\n3. Peso muerto rumano mancuernas 3×8-10 RIR3 · 90s\n4. Zancada búlgara 2×8/lado RIR3 · 75s\n5. Farmer walk bilateral 2×25-30m RIR2 · 75s\n\n🔥 CORE entre series (rotar): Dead bug 10/lado · Hollow hold 20s · Bird dog 8/lado · Side plank 20s/lado · Plancha 30s\n\nCalent 8 min · FC ≤121 · Exhalar en el esfuerzo · RIR nunca 0\nDuración: 60-65 min", 0, 0, 0),
+    (1, "08:20", "🥤 Post-entreno + Inferior A hecho. En shaker apenas termines: whey 35 g + creatina 5 g + banana chica 80 g. Después ducha y al negocio.", 210, 28, 400),
     (1, "09:00", "🍳 Desayuno en 30 min: 4 huevos duros + queso port salut 30 g + palta 80 g + verdura tomate 100 g + oliva 5 ml.", 590, 34, 0),
     (1, "09:15", "💊 Suplementos: Vit D3 + Omega-3.", 0, 0, 0),
     (1, "12:30", "🍽️ Almuerzo en 30 min: pollo 220 g + boniato hervido 100 g + ensalada + oliva 12 ml.", 530, 55, 0),
@@ -100,9 +100,9 @@ RECORDATORIOS = [
 
     # ===== JUEVES (gym A) =====
     (3, "05:30", "💧 En 30 min a despertar. Agua + sal.", 0, 0, 0),
-    (3, "06:00", "🍌 Pre-entreno en 30 min: media banana 80 g + café + agua con sal.", 70, 1, 0),
-    (3, "06:30", "🏋️ Superior B empieza en 30 min (CADENAS)\n\n1. Jalón al pecho neutro / dominada asistida 3×8-10 RIR3-4 · 120s\n2. Press inclinado mancuernas 30° 3×8-10 RIR3 · 90s\n3. Push press ligero mancuernas 3×8-10 RIR3 · 90s\n4. Remo polea sentado neutro 3×10-12 RIR3 · 90s\n5. Waiter carry 2×15-20m/lado RIR2 · 75s\n\n🔥 CORE entre series (rotar): Dead bug 10/lado · Hollow hold 20s · Bird dog 8/lado · Side plank 20s/lado · Plancha 30s\n\nCalent 8 min · FC ≤121 · Exhalar en el esfuerzo · RIR nunca 0\nDuración: 55-60 min", 0, 0, 0),
-    (3, "07:30", "🥤 Post-entreno + Superior B hecho. En 30 min: whey 35 g + creatina 5 g + banana chica 80 g (carbo rápido).", 210, 28, 350),
+    (3, "06:30", "🍌 Pre-entreno en 30 min: media banana 80 g + café + agua con sal.", 70, 1, 0),
+    (3, "06:35", "🏋️ Superior B empieza en 30 min (CADENAS)\n\n1. Jalón al pecho neutro / dominada asistida 3×8-10 RIR3-4 · 120s\n2. Press inclinado mancuernas 30° 3×8-10 RIR3 · 90s\n3. Push press ligero mancuernas 3×8-10 RIR3 · 90s\n4. Remo polea sentado neutro 3×10-12 RIR3 · 90s\n5. Waiter carry 2×15-20m/lado RIR2 · 75s\n\n🔥 CORE entre series (rotar): Dead bug 10/lado · Hollow hold 20s · Bird dog 8/lado · Side plank 20s/lado · Plancha 30s\n\nCalent 8 min · FC ≤121 · Exhalar en el esfuerzo · RIR nunca 0\nDuración: 55-60 min", 0, 0, 0),
+    (3, "08:20", "🥤 Post-entreno + Superior B hecho. En shaker apenas termines: whey 35 g + creatina 5 g + banana chica 80 g. Después ducha y al negocio.", 210, 28, 350),
     (3, "09:00", "🍳 Desayuno diferente en 30 min: yogur griego 200 g + fruta frutillas 100 g + almendras 15 g + canela + 3 huevos duros aparte.", 550, 40, 0),
     (3, "09:15", "💊 Suplementos: Vit D3 + Omega-3.", 0, 0, 0),
     (3, "12:30", "🍽️ Almuerzo en 30 min: pollo 200 g + papa hervida 100 g + 1 huevo duro + ensalada nicoise (hojas verdes + verdura tomate) + palta 50 g + oliva 12 ml.", 620, 55, 0),
