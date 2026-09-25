@@ -1,8 +1,12 @@
 #!/usr/bin/env python3
-"""Bloque de FUERZA de Fede — 4 días, 8 semanas, con pesos proyectados.
+"""Bloque de FUERZA CON BARRA de Fede — 4 días, 8 semanas, pesos proyectados.
 
 Fuente única de verdad: de acá salen el PDF, `salud/rutina-actual.md` y los
 recordatorios del bot de Telegram (con el peso que toca cada semana).
+
+Los 4 básicos (sentadilla, banca, peso muerto, militar) se programan como
+% de un Training Max (TM ≈ 90 % del 1RM estimado). Si en la semana 1 el
+peso queda liviano, se cambia el TM acá arriba y se recalcula todo.
 
 Sin dependencias externas: el bot lo importa tal cual.
 """
@@ -11,32 +15,41 @@ from datetime import date, timedelta
 INICIO = date(2026, 9, 29)          # lunes de la semana 1
 N_SEMANAS = 8
 
-# ─────────────────────── Esquemas por semana ───────────────────────
-# Doble progresión: primero suben las reps, después el peso.
-# Semana 4 = descarga. Semana 8 = test (1 serie a máximas reps dejando 1).
-
-# (series×reps, RIR)
-ESQ_PRINCIPAL = {
-    1: ("4×8-10", "3"),      # calibración
-    2: ("4×10", "2"),
-    3: ("4×8", "2"),
-    4: ("3×8", "4"),         # descarga
-    5: ("4×10", "2"),
-    6: ("4×6-8", "1-2"),
-    7: ("4×8", "1-2"),
-    8: ("1×máx + 2×6", "1"),  # test
+# ─────────────── Training Max de los básicos (kg) ───────────────
+# Estimados desde los pesos con mancuerna/rumano/hip thrust del 25/09.
+# (TM semanas 1-4, suba de TM para semanas 5-8)
+TM = {
+    "banca":      (60.0, 2.5),  # 1RM est. ~66 kg (mancuernas 20 c/u × 10 → barra ×1,15)
+    "sentadilla": (80.0, 5.0),  # 1RM est. ~90 kg (≈ 80 % del peso muerto)
+    "muerto":     (100.0, 5.0), # 1RM est. ~110 kg (rumano 70 × 8-10 → ×1,25)
+    "militar":    (37.5, 2.5),  # 1RM est. ~42 kg (≈ 62 % de la banca)
 }
-PASOS_PRINCIPAL = [0, 0, 1, 0, 1, 2, 2, 2]
 
+# ─────────────── Esquema de los básicos (% del TM) ───────────────
+# Lista de (porcentaje, series×reps). La primera es la serie más pesada.
+ESQ_BASICO = {
+    1: [(0.75, "5×5")],
+    2: [(0.80, "5×5")],
+    3: [(0.875, "1×3"), (0.775, "4×5")],
+    4: [(0.65, "3×5")],                        # descarga
+    5: [(0.825, "5×5")],
+    6: [(0.90, "1×3"), (0.80, "4×4")],
+    7: [(0.95, "1×2"), (0.85, "3×3")],
+    8: [(1.00, "1×máx dejando 1"), (0.80, "3×3")],  # test
+}
+RIR_BASICO = {1: "2-3", 2: "2", 3: "1-2", 4: "4", 5: "2", 6: "1-2", 7: "1-2", 8: "1"}
+
+# ─────────────── Secundarios con barra (progresión lineal) ───────────────
+ESQ_SECUNDARIO = {
+    1: ("4×8", "2-3"), 2: ("4×8", "2"), 3: ("4×6", "2"), 4: ("3×6", "4"),
+    5: ("4×6", "2"), 6: ("4×5", "1-2"), 7: ("4×5", "1-2"), 8: ("4×5", "1-2"),
+}
+PASOS_SECUNDARIO = [0, 1, 2, 0, 2, 3, 4, 4]
+
+# ─────────────── Accesorios y carries ───────────────
 ESQ_ACCESORIO = {
-    1: ("3×10-12", "2-3"),
-    2: ("3×12", "2"),
-    3: ("3×10", "2"),
-    4: ("2×10", "4"),
-    5: ("3×12", "2"),
-    6: ("3×10", "1-2"),
-    7: ("3×12", "1-2"),
-    8: ("3×10", "2"),
+    1: ("3×10-12", "2"), 2: ("3×12", "2"), 3: ("3×10", "1-2"), 4: ("2×10", "4"),
+    5: ("3×12", "2"), 6: ("3×10", "1-2"), 7: ("3×12", "1-2"), 8: ("3×10", "1-2"),
 }
 PASOS_ACCESORIO = [0, 0, 1, 0, 1, 1, 2, 2]
 
@@ -46,95 +59,90 @@ ESQ_CARRY = {
 }
 PASOS_CARRY = [0, 0, 1, 0, 1, 2, 2, 2]
 
-ESQ_SWING = {
-    1: "4×12", 2: "4×12", 3: "5×12", 4: "3×10",
-    5: "4×12", 6: "5×12", 7: "5×12", 8: "4×12",
-}
-KG_SWING = [16, 16, 16, 12, 20, 20, 20, 20]
-
-# tipo: P = principal · A = accesorio · C = carry · KB = swing · BW = peso corporal
-# (nombre, tipo, base_kg, incremento, unidad, descanso, nota, calibrar)
+# tipo: P = básico con barra (% TM) · S = secundario con barra · A = accesorio
+#       C = carry · BW = peso corporal
+# (nombre, tipo, base_kg | clave_TM, incremento, unidad, descanso, nota, calibrar)
 DIAS = {
     0: {
-        "dia": "LUNES", "hora": "07:00", "sesion": "Torso A · Empuje",
+        "dia": "LUNES", "hora": "07:00", "sesion": "Torso A · Press banca",
         "ejercicios": [
-            ("Press banca con mancuernas", "P", 20, 2.5, "c/u", "150 s",
-             "Exhalá al subir, bajá en 2 s. Codos a 45°.", False),
-            ("Remo con mancuerna a un brazo", "P", 20, 2.5, "", "120 s",
-             "Tirá con el codo hacia la cadera, tronco quieto.", False),
-            ("Press militar sentado con mancuernas", "A", 12.5, 2.5, "c/u", "90 s",
-             "Espalda apoyada, sin arquear la lumbar.", True),
-            ("Jalón al pecho agarre neutro", "A", 40, 5, "", "90 s",
+            ("Press banca con barra", "P", "banca", None, "", "3 min",
+             "Pies firmes, omóplatos juntos. Bajá al pecho en 2 s, sin rebotar.", False),
+            ("Remo con barra", "S", 45, 2.5, "", "2 min",
+             "Torso a 45°, tirá la barra al ombligo. Sin tirón con la cadera.", False),
+            ("Jalón al pecho", "A", 45, 5, "", "90 s",
              "Pecho arriba, bajá la barra al esternón.", False),
-            ("Farmer walk", "C", 22.5, 2.5, "c/u", "90 s",
-             "Hombros atrás y abajo, pasos cortos.", True),
-            ("Plancha", "BW", None, None, "", "45 s",
-             "3 × máximo sostenible (objetivo 45 s). Respirá, no aguantes el aire.", False),
+            ("Superserie: Fondos asistidos + Curl con barra", "A", 20, 2.5, "", "90 s",
+             "Fondos 3×máx dejando 2 y sin descanso curl con barra (el kg es del curl).", True),
+            ("Face pull en polea", "A", 15, 2.5, "", "60 s",
+             "Tirá la soga a la frente, codos altos. Salud de hombro.", True),
         ],
     },
     1: {
         "dia": "MARTES", "hora": "07:00", "sesion": "Pierna A · Sentadilla",
         "ejercicios": [
-            ("Goblet squat", "P", 22.5, 2.5, "", "150 s",
-             "Talones al piso, bajá 3 s, rodillas siguen la punta del pie.", True),
-            ("Peso muerto rumano con barra", "P", 70, 5, "", "150 s",
+            ("Sentadilla trasera con barra", "P", "sentadilla", None, "", "3 min",
+             "Barra sobre trapecio, bajá hasta la paralela como mínimo, rodillas afuera.", False),
+            ("Peso muerto rumano con barra", "S", 70, 2.5, "", "2 min",
              "Cadera atrás, barra pegada a las piernas, espalda neutra.", False),
             ("Sentadilla búlgara con mancuernas", "A", 15, 2.5, "c/u", "90 s",
-             "Las reps son por pierna. Torso levemente inclinado.", False),
-            ("Prensa 45°", "A", 100, 10, "", "90 s",
-             "Exhalá al empujar, no bloquees rodillas arriba. No aguantes el aire.", True),
-            ("Dead bug", "BW", None, None, "", "45 s",
-             "3 × 10 por lado, lumbar pegada al piso.", False),
+             "Las reps son por pierna.", False),
+            ("Curl femoral en máquina", "A", 30, 5, "", "75 s",
+             "Subida explosiva, bajada en 3 s.", True),
+            ("Rueda abdominal", "BW", None, None, "", "60 s",
+             "3 × 8-12. Si no sale desde las rodillas completa, rango corto.", False),
         ],
     },
     3: {
-        "dia": "JUEVES", "hora": "07:00", "sesion": "Torso B · Tracción",
+        "dia": "JUEVES", "hora": "07:00", "sesion": "Torso B · Press militar",
         "ejercicios": [
-            ("Jalón al pecho", "P", 45, 5, "", "150 s",
-             "Principal de tracción. Bajá en 2 s.", False),
-            ("Press inclinado con mancuernas 30°", "P", 20, 2.5, "c/u", "150 s",
-             "Exhalá al subir, omóplatos juntos.", False),
-            ("Remo en polea sentado", "A", 40, 5, "", "90 s",
-             "Apretá omóplatos al final, sin balancearte.", True),
-            ("Flexiones de brazos", "BW", None, None, "", "75 s",
-             "3 × máximo dejando 2 en reserva. Si salen más de 20, elevá los pies.", False),
-            ("Suitcase carry (una mano)", "C", 20, 2.5, "", "90 s",
-             "La distancia es por lado. No te inclines hacia el peso.", True),
-            ("Pallof press", "BW", None, None, "", "60 s",
-             "3 × 10 por lado, resistí la rotación.", False),
+            ("Press militar de pie con barra", "P", "militar", None, "", "3 min",
+             "Glúteos y abdomen apretados, barra en línea recta, cabeza pasa adelante al final.", False),
+            ("Press inclinado con barra", "S", 35, 2.5, "", "2 min",
+             "Banco a 30°, bajá a la clavícula.", False),
+            ("Dominadas (asistidas si hace falta)", "BW", None, None, "", "2 min",
+             "4 × máximo dejando 1. Cuando salgan 8 limpias, sumá peso con cinturón.", False),
+            ("Remo en polea sentado", "A", 45, 5, "", "90 s",
+             "Apretá omóplatos al final, sin balancearte.", False),
+            ("Superserie: Extensión de tríceps en polea + Curl martillo", "A", 20, 2.5, "", "75 s",
+             "Sin descanso entre los dos. Martillo con 10-12,5 kg c/u (el kg es del tríceps).", True),
         ],
     },
     4: {
-        "dia": "VIERNES", "hora": "13:30", "sesion": "Pierna B · Bisagra",
+        "dia": "VIERNES", "hora": "13:30", "sesion": "Pierna B · Peso muerto",
         "ejercicios": [
-            ("Peso muerto con trap bar", "P", 80, 10, "", "180 s",
-             "Exhalá al subir. Nada de aguantar el aire a fondo.", True),
-            ("Hip thrust con barra", "P", 80, 10, "", "120 s",
-             "Pausa 1 s arriba apretando glúteo, mentón al pecho.", False),
-            ("Zancada caminando con mancuernas", "A", 12.5, 2.5, "c/u", "90 s",
+            ("Peso muerto convencional con barra", "P", "muerto", None, "", "3-4 min",
+             "Barra sobre el medio del pie, espalda neutra, empujá el piso. Cada rep desde el piso.", False),
+            ("Sentadilla frontal con barra", "S", 40, 2.5, "", "2 min",
+             "Codos altos, torso vertical. Si la muñeca molesta, agarre cruzado.", True),
+            ("Hip thrust con barra", "S", 80, 5, "", "2 min",
+             "Pausa 1 s arriba apretando glúteo.", False),
+            ("Zancada caminando con mancuernas", "A", 15, 2.5, "c/u", "90 s",
              "Las reps son pasos por pierna.", True),
-            ("Kettlebell swing", "KB", None, None, "", "90-120 s",
-             "Explosivo con la cadera, no con los brazos. Series cortas.", False),
-            ("Farmer walk pesado", "C", 27.5, 2.5, "c/u", "120 s",
-             "El carry más pesado de la semana.", True),
+            ("Farmer walk pesado", "C", 27.5, 2.5, "c/u", "2 min",
+             "El carry más pesado de la semana. Hombros atrás.", True),
         ],
     },
 }
 
 REGLAS = [
-    "Calentamiento de 8 min siempre (bici suave + movilidad + 2 series livianas del primer ejercicio).",
-    "Exhalá en el esfuerzo. Nunca aguantes el aire a fondo (sube mucho la presión).",
-    "Mínimo 1 repetición en reserva: nada de fallo hasta tener el ECG.",
-    "Descansá lo indicado; empezá la serie siguiente cuando puedas hablar normal.",
-    "Si no te salen las reps con el peso proyectado: repetí ese peso la semana siguiente.",
-    "Si en la semana 1 el peso te queda muy liviano (sobran más de 4 reps): subí un escalón y corré toda la proyección.",
-    "Si dormiste menos de 5 h: sacá 1 serie de cada principal y no subas peso esa sesión.",
+    "Calentamiento 8 min (bici + movilidad) y aproximación antes del básico: barra sola ×10, 50 % ×5, 70 % ×3, 85 % ×1 del peso del día.",
+    "Respiración con barra: tomá aire y apretá el abdomen antes de bajar, soltalo durante la subida. Nunca más de 1 repetición sin respirar.",
+    "Mínimo 1 repetición en reserva: nada de fallo hasta tener el ECG. La semana 8 también es dejando 1.",
+    "Semana 1 = calibración: si el 5×5 sale sobrado (más de 3 en reserva), subí 5 kg por serie y anotalo con /nota. Se ajusta el TM y se recalcula todo.",
+    "Si no te salen las reps del peso proyectado: repetí esa semana antes de seguir.",
+    "Sentadilla y banca con barras de seguridad o ayudante. Siempre.",
+    "Si dormiste menos de 5 h: hacé el básico solo hasta las series livianas y cortá ahí.",
     "Dolor en el pecho, mareo, falta de aire rara o palpitaciones: cortás la sesión.",
     "Miércoles, sábado y domingo: bici zona 2, 40 min (FC 105-118).",
 ]
 
 
 # ─────────────────────── Cálculos ───────────────────────
+
+def redondear(v: float, paso: float = 2.5) -> float:
+    return round(v / paso - 1e-9) * paso
+
 
 def fecha_semana(n: int) -> date:
     return INICIO + timedelta(weeks=n - 1)
@@ -146,27 +154,38 @@ def semana_de(fecha: date) -> int:
     return max(1, min(N_SEMANAS, n))
 
 
+def tm_de(clave: str, n: int) -> float:
+    base, suba = TM[clave]
+    return base + (suba if n >= 5 else 0)
+
+
+def series_basico(ej: tuple, n: int) -> list[tuple[float, str]]:
+    """[(kg, series×reps), ...] para un básico en la semana n."""
+    tm = tm_de(ej[2], n)
+    return [(redondear(tm * pct), sr) for pct, sr in ESQ_BASICO[n]]
+
+
 def kg(ej: tuple, n: int) -> float | None:
-    nombre, tipo, base, inc, *_ = ej
-    if tipo == "KB":
-        return KG_SWING[n - 1]
-    if base is None:
+    """Peso más pesado del ejercicio en la semana n."""
+    tipo = ej[1]
+    if tipo == "P":
+        return series_basico(ej, n)[0][0]
+    if tipo == "BW":
         return None
-    pasos = {"P": PASOS_PRINCIPAL, "A": PASOS_ACCESORIO, "C": PASOS_CARRY}[tipo]
+    base, inc = ej[2], ej[3]
+    pasos = {"S": PASOS_SECUNDARIO, "A": PASOS_ACCESORIO, "C": PASOS_CARRY}[tipo]
     return base + inc * pasos[n - 1]
 
 
 def esquema(ej: tuple, n: int) -> tuple[str, str]:
     tipo = ej[1]
-    if tipo == "P":
-        return ESQ_PRINCIPAL[n]
+    if tipo == "S":
+        return ESQ_SECUNDARIO[n]
     if tipo == "A":
         return ESQ_ACCESORIO[n]
     if tipo == "C":
         return ESQ_CARRY[n]
-    if tipo == "KB":
-        return ESQ_SWING[n], "2-3"
-    return "3×", "2"
+    return "", "2"
 
 
 def fmt_kg(v: float | None) -> str:
@@ -176,10 +195,22 @@ def fmt_kg(v: float | None) -> str:
     return s.replace(".", ",")
 
 
+def detalle_basico(ej: tuple, n: int) -> str:
+    """Ej: '1×3 con 47,5 kg + 4×5 con 42,5 kg'."""
+    return " + ".join(f"{sr} con {fmt_kg(k)} kg" for k, sr in series_basico(ej, n))
+
+
+def celda_basico(ej: tuple, n: int) -> str:
+    """Para tablas: '47,5/42,5' (serie pesada / series de volumen)."""
+    return "/".join(fmt_kg(k) for k, _ in series_basico(ej, n))
+
+
 def linea(ej: tuple, n: int) -> str:
     nombre, tipo, base, inc, unidad, descanso, nota, _ = ej
     if tipo == "BW":
-        return f"{nombre} — {nota}"
+        return f"{nombre} — {nota.split('.')[0]}"
+    if tipo == "P":
+        return f"{nombre} — {detalle_basico(ej, n)} · RIR {RIR_BASICO[n]} · {descanso}"
     sr, rir = esquema(ej, n)
     peso = f"{fmt_kg(kg(ej, n))} kg{(' ' + unidad) if unidad else ''}"
     return f"{nombre} — {peso} · {sr} · RIR {rir} · {descanso}"
@@ -203,12 +234,12 @@ def mensaje_sesion(dia_idx: int, fecha: date | None = None) -> str:
         lineas.append(f"{i}. {linea(ej, n)}")
     lineas.append("")
     if n == 1:
-        lineas.append("📏 Semana de calibración: si sobran más de 4 reps, subí un escalón.")
+        lineas.append("📏 Calibración: si el 5×5 sale sobrado, subí 5 kg y avisá con /nota.")
     if n == 8:
-        lineas.append("🏁 Test: 1 serie a máximas reps dejando 1, anotalo con /nota.")
+        lineas.append("🏁 Test: serie pesada a máximas reps dejando 1. Anotalo con /nota.")
     if fecha > fecha_semana(N_SEMANAS) + timedelta(days=6):
         lineas.append("✅ Bloque terminado — pedí el siguiente.")
-    lineas.append("Exhalá en el esfuerzo · RIR mínimo 1 · Dormiste <5 h: −1 serie")
+    lineas.append("Aproximación antes del básico · Aire adentro al bajar, afuera al subir · RIR mínimo 1")
     return "\n".join(lineas)
 
 
@@ -222,13 +253,18 @@ def tabla_markdown(dia_idx: int) -> str:
         if tipo == "BW":
             out.append(f"| {nombre} | " + " | ".join(["—"] * N_SEMANAS) + f" | {descanso} |")
             continue
-        celdas = [fmt_kg(kg(ej, n)) for n in range(1, N_SEMANAS + 1)]
-        etiqueta = nombre + (f" (kg {unidad})" if unidad else " (kg)") + (" ⚠ calibrar" if calibrar else "")
+        if tipo == "P":
+            celdas = [celda_basico(ej, n) for n in range(1, N_SEMANAS + 1)]
+            etiqueta = f"**{nombre}** (pesada/volumen)"
+        else:
+            celdas = [fmt_kg(kg(ej, n)) for n in range(1, N_SEMANAS + 1)]
+            etiqueta = nombre + (f" (kg {unidad})" if unidad else "") + (" ⚠ calibrar" if calibrar else "")
         out.append(f"| {etiqueta} | " + " | ".join(celdas) + f" | {descanso} |")
     return "\n".join(out)
 
 
 if __name__ == "__main__":
     for d in DIAS:
-        print(mensaje_sesion(d, INICIO + timedelta(days=d)))
-        print("-" * 40)
+        for n in (1, 7):
+            print(mensaje_sesion(d, fecha_semana(n) + timedelta(days=d)))
+            print("-" * 40)

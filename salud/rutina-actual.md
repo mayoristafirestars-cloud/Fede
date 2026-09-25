@@ -1,127 +1,127 @@
-# Rutina actual (fuerza) — 4 días/semana — BLOQUE DE FUERZA CON PESOS PROYECTADOS
+# Rutina actual (fuerza) — 4 días/semana — FUERZA CON BARRA, PESOS PROYECTADOS
 
 **Vigente desde:** 29/09/2026 (lunes) hasta 21/11/2026 — 8 semanas.
-**Reemplaza a:** bloque "Cadena de movimientos" (14/09/2026), cortado a las 2 semanas a pedido de Fede: quiere más exigencia, pesos controlados y proyección de cargas.
+**Reemplaza a:** bloque "Cadena de movimientos" (14/09/2026). Fede pidió más dificultad y los principales con barra para cargar peso.
 **Fuente única:** `rutina_fuerza.py` (de ahí salen este documento, `Plan-Fede-Rutina-Fuerza.pdf` y los recordatorios del bot con el peso de cada semana).
 
-## Qué cambia respecto al bloque anterior
+## Estructura
 
-- **Más carga, menos técnica exótica.** Salen Turkish get-up, waiter carry, landmine press y push press. Quedan 8 ejercicios principales de fuerza con peso proyectado semana a semana.
-- **4 series en los principales** (antes 3) y descansos de 2 a 3 min para poder mover más peso.
-- **Doble progresión programada:** primero suben las reps, después el peso. Proyección de +20 a +25 % de carga en 8 semanas en los básicos.
-- **Semana 4 descarga, semana 8 test** (1 serie a máximas reps dejando 1 en reserva, para medir y armar el bloque siguiente).
-- **Se mantiene:** Torso/Pierna A-B en los mismos horarios, carries, core, bici zona 2 los días libres.
+- **4 básicos con barra**, uno por día: press banca (lunes), sentadilla (martes), press militar de pie (jueves), peso muerto convencional (viernes).
+- Se programan en **% del Training Max** (TM ≈ 90 % del máximo estimado): 5×5 en las semanas 1-2 y 5; serie pesada de 2-3 reps al 87,5-95 % + series de volumen en las semanas 3, 6 y 7.
+- **Secundarios con barra** (remo, rumano, press inclinado, sentadilla frontal, hip thrust) con progresión lineal semanal.
+- **Accesorios en superseries** (fondos + curl, tríceps + martillo) y dominadas.
+- **Semana 4 descarga** y **semana 8 test**: serie pesada a máximas reps dejando 1, para medir y armar el bloque siguiente.
 
-## Punto de partida (pesos que reportó Fede el 25/09/2026)
+## Training Max (estimados desde los pesos del 25/09/2026)
 
-Press banca mancuernas 20 kg c/u · Remo 1 brazo 20 kg · Jalón 45 kg · Press inclinado 20 kg c/u · Peso muerto rumano 70 kg (tomado como barra) · Hip thrust 80 kg · Búlgara 30 kg (tomado como 15 kg c/u). Peso corporal 105 kg.
-Sin dato: goblet, trap bar, farmer, press militar, prensa, remo polea, zancada → marcados **⚠ calibrar** en la semana 1.
+| Básico | TM semanas 1-4 | TM semanas 5-8 |
+|---|---|---|
+| Press banca | 60 kg | 62,5 kg |
+| Sentadilla | 80 kg | 85 kg |
+| Peso muerto | 100 kg | 105 kg |
+| Press militar | 37,5 kg | 40 kg |
+
+Estimación: mancuernas 20 kg c/u en press → barra ×1,15; rumano 70 kg → peso muerto ×1,25; sentadilla ≈ 80 % del peso muerto; militar ≈ 62 % de la banca. **La semana 1 calibra**: si el 5×5 sale con más de 3 en reserva, se sube 5 kg y se cambia el TM en `rutina_fuerza.py` (se recalcula todo).
 
 ## Seguridad — restricción médica vigente
 
-El ECG y la presión en farmacia siguen pendientes (carpeta `estudios/` vacía). Hasta tenerlos:
-- Mínimo **1 repetición en reserva**, nunca fallo.
-- **Exhalar en el esfuerzo**, sin aguantar el aire a fondo.
-- Con ECG normal se habilitan series al fallo controlado y singles pesados en los principales.
+ECG y presión en farmacia siguen pendientes (carpeta `estudios/` vacía). Hasta tenerlos: mínimo 1 repetición en reserva siempre (también en el test), respiración controlada (aire adentro al bajar, afuera al subir, nunca más de 1 repetición sin respirar), sentadilla y banca con barras de seguridad o ayudante. Con ECG normal se habilitan singles pesados y test de máximo real.
 
 ## Series × reps por semana
 
-| Semana | Tipo | Principales | Accesorios | Carries |
+| Semana | Tipo | Básicos (% del TM) | Secundarios | Accesorios |
 |---|---|---|---|---|
-| S1 · 29/09 | Carga | 4×8-10 · RIR 3 | 3×10-12 · RIR 2-3 | 3×30 m |
-| S2 · 06/10 | Carga | 4×10 · RIR 2 | 3×12 · RIR 2 | 3×35 m |
-| S3 · 13/10 | Carga | 4×8 · RIR 2 | 3×10 · RIR 2 | 3×30 m |
-| S4 · 20/10 | Descarga | 3×8 · RIR 4 | 2×10 · RIR 4 | 2×30 m |
-| S5 · 27/10 | Carga | 4×10 · RIR 2 | 3×12 · RIR 2 | 3×35 m |
-| S6 · 03/11 | Carga | 4×6-8 · RIR 1-2 | 3×10 · RIR 1-2 | 3×30 m |
-| S7 · 10/11 | Carga | 4×8 · RIR 1-2 | 3×12 · RIR 1-2 | 3×35 m |
-| S8 · 17/11 | Test | 1×máx + 2×6 · RIR 1 | 3×10 · RIR 2 | 3×40 m |
-
-Kettlebell swing: S1 4×12 con 16 kg, S2 4×12 con 16 kg, S3 5×12 con 16 kg, S4 3×10 con 12 kg, S5 4×12 con 20 kg, S6 5×12 con 20 kg, S7 5×12 con 20 kg, S8 4×12 con 20 kg.
+| S1 · 29/09 | Carga | 5×5 al 75 % · RIR 2-3 | 4×8 · RIR 2-3 | 3×10-12 · RIR 2 |
+| S2 · 06/10 | Carga | 5×5 al 80 % · RIR 2 | 4×8 · RIR 2 | 3×12 · RIR 2 |
+| S3 · 13/10 | Carga | 1×3 al 87.5 % + 4×5 al 77.5 % · RIR 1-2 | 4×6 · RIR 2 | 3×10 · RIR 1-2 |
+| S4 · 20/10 | Descarga | 3×5 al 65 % · RIR 4 | 3×6 · RIR 4 | 2×10 · RIR 4 |
+| S5 · 27/10 | Carga | 5×5 al 82.5 % · RIR 2 | 4×6 · RIR 2 | 3×12 · RIR 2 |
+| S6 · 03/11 | Carga | 1×3 al 90 % + 4×4 al 80 % · RIR 1-2 | 4×5 · RIR 1-2 | 3×10 · RIR 1-2 |
+| S7 · 10/11 | Carga | 1×2 al 95 % + 3×3 al 85 % · RIR 1-2 | 4×5 · RIR 1-2 | 3×12 · RIR 1-2 |
+| S8 · 17/11 | Test | 1×máx dejando 1 al 100 % + 3×3 al 80 % · RIR 1 | 4×5 · RIR 1-2 | 3×10 · RIR 1-2 |
 
 ## Pesos proyectados por día (kg)
 
-## Lunes 07:00 — Torso A · Empuje
+En los básicos: serie pesada / series de volumen.
+
+## Lunes 07:00 — Torso A · Press banca
 
 | Ejercicio | S1 | S2 | S3 | S4 | S5 | S6 | S7 | S8 | Descanso |
 |---|---|---|---|---|---|---|---|---|---|
-| Press banca con mancuernas (kg c/u) | 20 | 20 | 22,5 | 20 | 22,5 | 25 | 25 | 25 | 150 s |
-| Remo con mancuerna a un brazo (kg) | 20 | 20 | 22,5 | 20 | 22,5 | 25 | 25 | 25 | 120 s |
-| Press militar sentado con mancuernas (kg c/u) ⚠ calibrar | 12,5 | 12,5 | 15 | 12,5 | 15 | 15 | 17,5 | 17,5 | 90 s |
-| Jalón al pecho agarre neutro (kg) | 40 | 40 | 45 | 40 | 45 | 45 | 50 | 50 | 90 s |
-| Farmer walk (kg c/u) ⚠ calibrar | 22,5 | 22,5 | 25 | 22,5 | 25 | 27,5 | 27,5 | 27,5 | 90 s |
-| Plancha | — | — | — | — | — | — | — | — | 45 s |
+| **Press banca con barra** (pesada/volumen) | 45 | 47,5 | 52,5/47,5 | 40 | 52,5 | 55/50 | 60/52,5 | 62,5/50 | 3 min |
+| Remo con barra | 45 | 47,5 | 50 | 45 | 50 | 52,5 | 55 | 55 | 2 min |
+| Jalón al pecho | 45 | 45 | 50 | 45 | 50 | 50 | 55 | 55 | 90 s |
+| Superserie: Fondos asistidos + Curl con barra ⚠ calibrar | 20 | 20 | 22,5 | 20 | 22,5 | 22,5 | 25 | 25 | 90 s |
+| Face pull en polea ⚠ calibrar | 15 | 15 | 17,5 | 15 | 17,5 | 17,5 | 20 | 20 | 60 s |
 
-- **Press banca con mancuernas:** Exhalá al subir, bajá en 2 s. Codos a 45°.
-- **Remo con mancuerna a un brazo:** Tirá con el codo hacia la cadera, tronco quieto.
-- **Press militar sentado con mancuernas:** Espalda apoyada, sin arquear la lumbar.
-- **Jalón al pecho agarre neutro:** Pecho arriba, bajá la barra al esternón.
-- **Farmer walk:** Hombros atrás y abajo, pasos cortos.
-- **Plancha:** 3 × máximo sostenible (objetivo 45 s). Respirá, no aguantes el aire.
+- **Press banca con barra:** Pies firmes, omóplatos juntos. Bajá al pecho en 2 s, sin rebotar.
+- **Remo con barra:** Torso a 45°, tirá la barra al ombligo. Sin tirón con la cadera.
+- **Jalón al pecho:** Pecho arriba, bajá la barra al esternón.
+- **Superserie: Fondos asistidos + Curl con barra:** Fondos 3×máx dejando 2 y sin descanso curl con barra (el kg es del curl).
+- **Face pull en polea:** Tirá la soga a la frente, codos altos. Salud de hombro.
 
 ## Martes 07:00 — Pierna A · Sentadilla
 
 | Ejercicio | S1 | S2 | S3 | S4 | S5 | S6 | S7 | S8 | Descanso |
 |---|---|---|---|---|---|---|---|---|---|
-| Goblet squat (kg) ⚠ calibrar | 22,5 | 22,5 | 25 | 22,5 | 25 | 27,5 | 27,5 | 27,5 | 150 s |
-| Peso muerto rumano con barra (kg) | 70 | 70 | 75 | 70 | 75 | 80 | 80 | 80 | 150 s |
+| **Sentadilla trasera con barra** (pesada/volumen) | 60 | 65 | 70/62,5 | 52,5 | 70 | 77,5/67,5 | 80/72,5 | 85/67,5 | 3 min |
+| Peso muerto rumano con barra | 70 | 72,5 | 75 | 70 | 75 | 77,5 | 80 | 80 | 2 min |
 | Sentadilla búlgara con mancuernas (kg c/u) | 15 | 15 | 17,5 | 15 | 17,5 | 17,5 | 20 | 20 | 90 s |
-| Prensa 45° (kg) ⚠ calibrar | 100 | 100 | 110 | 100 | 110 | 110 | 120 | 120 | 90 s |
-| Dead bug | — | — | — | — | — | — | — | — | 45 s |
+| Curl femoral en máquina ⚠ calibrar | 30 | 30 | 35 | 30 | 35 | 35 | 40 | 40 | 75 s |
+| Rueda abdominal | — | — | — | — | — | — | — | — | 60 s |
 
-- **Goblet squat:** Talones al piso, bajá 3 s, rodillas siguen la punta del pie.
+- **Sentadilla trasera con barra:** Barra sobre trapecio, bajá hasta la paralela como mínimo, rodillas afuera.
 - **Peso muerto rumano con barra:** Cadera atrás, barra pegada a las piernas, espalda neutra.
-- **Sentadilla búlgara con mancuernas:** Las reps son por pierna. Torso levemente inclinado.
-- **Prensa 45°:** Exhalá al empujar, no bloquees rodillas arriba. No aguantes el aire.
-- **Dead bug:** 3 × 10 por lado, lumbar pegada al piso.
+- **Sentadilla búlgara con mancuernas:** Las reps son por pierna.
+- **Curl femoral en máquina:** Subida explosiva, bajada en 3 s.
+- **Rueda abdominal:** 3 × 8-12. Si no sale desde las rodillas completa, rango corto.
 
-## Jueves 07:00 — Torso B · Tracción
+## Jueves 07:00 — Torso B · Press militar
 
 | Ejercicio | S1 | S2 | S3 | S4 | S5 | S6 | S7 | S8 | Descanso |
 |---|---|---|---|---|---|---|---|---|---|
-| Jalón al pecho (kg) | 45 | 45 | 50 | 45 | 50 | 55 | 55 | 55 | 150 s |
-| Press inclinado con mancuernas 30° (kg c/u) | 20 | 20 | 22,5 | 20 | 22,5 | 25 | 25 | 25 | 150 s |
-| Remo en polea sentado (kg) ⚠ calibrar | 40 | 40 | 45 | 40 | 45 | 45 | 50 | 50 | 90 s |
-| Flexiones de brazos | — | — | — | — | — | — | — | — | 75 s |
-| Suitcase carry (una mano) (kg) ⚠ calibrar | 20 | 20 | 22,5 | 20 | 22,5 | 25 | 25 | 25 | 90 s |
-| Pallof press | — | — | — | — | — | — | — | — | 60 s |
+| **Press militar de pie con barra** (pesada/volumen) | 27,5 | 30 | 32,5/30 | 25 | 32,5 | 35/32,5 | 37,5/35 | 40/32,5 | 3 min |
+| Press inclinado con barra | 35 | 37,5 | 40 | 35 | 40 | 42,5 | 45 | 45 | 2 min |
+| Dominadas (asistidas si hace falta) | — | — | — | — | — | — | — | — | 2 min |
+| Remo en polea sentado | 45 | 45 | 50 | 45 | 50 | 50 | 55 | 55 | 90 s |
+| Superserie: Extensión de tríceps en polea + Curl martillo ⚠ calibrar | 20 | 20 | 22,5 | 20 | 22,5 | 22,5 | 25 | 25 | 75 s |
 
-- **Jalón al pecho:** Principal de tracción. Bajá en 2 s.
-- **Press inclinado con mancuernas 30°:** Exhalá al subir, omóplatos juntos.
+- **Press militar de pie con barra:** Glúteos y abdomen apretados, barra en línea recta, cabeza pasa adelante al final.
+- **Press inclinado con barra:** Banco a 30°, bajá a la clavícula.
+- **Dominadas (asistidas si hace falta):** 4 × máximo dejando 1. Cuando salgan 8 limpias, sumá peso con cinturón.
 - **Remo en polea sentado:** Apretá omóplatos al final, sin balancearte.
-- **Flexiones de brazos:** 3 × máximo dejando 2 en reserva. Si salen más de 20, elevá los pies.
-- **Suitcase carry (una mano):** La distancia es por lado. No te inclines hacia el peso.
-- **Pallof press:** 3 × 10 por lado, resistí la rotación.
+- **Superserie: Extensión de tríceps en polea + Curl martillo:** Sin descanso entre los dos. Martillo con 10-12,5 kg c/u (el kg es del tríceps).
 
-## Viernes 13:30 — Pierna B · Bisagra
+## Viernes 13:30 — Pierna B · Peso muerto
 
 | Ejercicio | S1 | S2 | S3 | S4 | S5 | S6 | S7 | S8 | Descanso |
 |---|---|---|---|---|---|---|---|---|---|
-| Peso muerto con trap bar (kg) ⚠ calibrar | 80 | 80 | 90 | 80 | 90 | 100 | 100 | 100 | 180 s |
-| Hip thrust con barra (kg) | 80 | 80 | 90 | 80 | 90 | 100 | 100 | 100 | 120 s |
-| Zancada caminando con mancuernas (kg c/u) ⚠ calibrar | 12,5 | 12,5 | 15 | 12,5 | 15 | 15 | 17,5 | 17,5 | 90 s |
-| Kettlebell swing (kg) | 16 | 16 | 16 | 12 | 20 | 20 | 20 | 20 | 90-120 s |
-| Farmer walk pesado (kg c/u) ⚠ calibrar | 27,5 | 27,5 | 30 | 27,5 | 30 | 32,5 | 32,5 | 32,5 | 120 s |
+| **Peso muerto convencional con barra** (pesada/volumen) | 75 | 80 | 87,5/77,5 | 65 | 87,5 | 95/85 | 100/90 | 105/85 | 3-4 min |
+| Sentadilla frontal con barra ⚠ calibrar | 40 | 42,5 | 45 | 40 | 45 | 47,5 | 50 | 50 | 2 min |
+| Hip thrust con barra | 80 | 85 | 90 | 80 | 90 | 95 | 100 | 100 | 2 min |
+| Zancada caminando con mancuernas (kg c/u) ⚠ calibrar | 15 | 15 | 17,5 | 15 | 17,5 | 17,5 | 20 | 20 | 90 s |
+| Farmer walk pesado (kg c/u) ⚠ calibrar | 27,5 | 27,5 | 30 | 27,5 | 30 | 32,5 | 32,5 | 32,5 | 2 min |
 
-- **Peso muerto con trap bar:** Exhalá al subir. Nada de aguantar el aire a fondo.
-- **Hip thrust con barra:** Pausa 1 s arriba apretando glúteo, mentón al pecho.
+- **Peso muerto convencional con barra:** Barra sobre el medio del pie, espalda neutra, empujá el piso. Cada rep desde el piso.
+- **Sentadilla frontal con barra:** Codos altos, torso vertical. Si la muñeca molesta, agarre cruzado.
+- **Hip thrust con barra:** Pausa 1 s arriba apretando glúteo.
 - **Zancada caminando con mancuernas:** Las reps son pasos por pierna.
-- **Kettlebell swing:** Explosivo con la cadera, no con los brazos. Series cortas.
-- **Farmer walk pesado:** El carry más pesado de la semana.
+- **Farmer walk pesado:** El carry más pesado de la semana. Hombros atrás.
 
 ## Reglas de oro
 
-1. Calentamiento de 8 min siempre (bici suave + movilidad + 2 series livianas del primer ejercicio).
-2. Exhalá en el esfuerzo. Nunca aguantes el aire a fondo (sube mucho la presión).
-3. Mínimo 1 repetición en reserva: nada de fallo hasta tener el ECG.
-4. Descansá lo indicado; empezá la serie siguiente cuando puedas hablar normal.
-5. Si no te salen las reps con el peso proyectado: repetí ese peso la semana siguiente.
-6. Si en la semana 1 el peso te queda muy liviano (sobran más de 4 reps): subí un escalón y corré toda la proyección.
-7. Si dormiste menos de 5 h: sacá 1 serie de cada principal y no subas peso esa sesión.
+1. Calentamiento 8 min (bici + movilidad) y aproximación antes del básico: barra sola ×10, 50 % ×5, 70 % ×3, 85 % ×1 del peso del día.
+2. Respiración con barra: tomá aire y apretá el abdomen antes de bajar, soltalo durante la subida. Nunca más de 1 repetición sin respirar.
+3. Mínimo 1 repetición en reserva: nada de fallo hasta tener el ECG. La semana 8 también es dejando 1.
+4. Semana 1 = calibración: si el 5×5 sale sobrado (más de 3 en reserva), subí 5 kg por serie y anotalo con /nota. Se ajusta el TM y se recalcula todo.
+5. Si no te salen las reps del peso proyectado: repetí esa semana antes de seguir.
+6. Sentadilla y banca con barras de seguridad o ayudante. Siempre.
+7. Si dormiste menos de 5 h: hacé el básico solo hasta las series livianas y cortá ahí.
 8. Dolor en el pecho, mareo, falta de aire rara o palpitaciones: cortás la sesión.
 9. Miércoles, sábado y domingo: bici zona 2, 40 min (FC 105-118).
 
 ## Revisión
 
-- **Semana 4 (20/10):** descarga + remedición (peso, cintura, cadera). Ajustar la proyección con los pesos reales anotados en el bot.
-- **Semana 8 (17/11):** test + cierre del bloque. Con esos números se arma el siguiente.
+- **Semana 1:** ajustar los TM con lo que salió en el 5×5.
+- **Semana 4 (20/10):** descarga + remedición (peso, cintura, cadera).
+- **Semana 8 (17/11):** test + cierre. Con esos números se arma el bloque siguiente.

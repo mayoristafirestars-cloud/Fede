@@ -53,7 +53,7 @@ def portada(pdf):
     pdf.add_page()
     rect(pdf, 0, 0, 210, 72, NAVY)
     txt(pdf, 15, 18, 180, 12, "PLAN GYM FEDE", 30, "B", WHITE)
-    txt(pdf, 15, 34, 180, 8, "Bloque de fuerza - 4 dias - 8 semanas", 17, "", WHITE)
+    txt(pdf, 15, 34, 180, 8, "Fuerza con barra - 4 dias - 8 semanas", 17, "", WHITE)
     fin = rf.fecha_semana(rf.N_SEMANAS)
     txt(pdf, 15, 50, 180, 6,
         f"Del {rf.INICIO.strftime('%d/%m/%Y')} al {(fin + timedelta(days=4)).strftime('%d/%m/%Y')} - pesos proyectados semana a semana",
@@ -63,12 +63,12 @@ def portada(pdf):
     rect(pdf, 15, y, 180, 58, GRAY_LIGHT)
     txt(pdf, 20, y + 5, 170, 8, "COMO FUNCIONA", 14, "B")
     items = [
-        "Cada ejercicio tiene el peso de cada semana ya calculado: vos solo cumplis.",
-        "Doble progresion: primero suben las reps, despues sube el peso.",
-        "Semana 1 = calibracion. Si sobran mas de 4 reps, subi un escalon y corre todo.",
-        "Semana 4 = descarga (menos series, mismo peso de la semana 1).",
-        "Semana 8 = test: 1 serie a maximas reps dejando 1 en reserva.",
-        "Si no salen las reps con el peso proyectado, repetis ese peso la semana siguiente.",
+        "4 basicos con barra: sentadilla, press banca, peso muerto y press militar.",
+        "Se programan en % de tu Training Max (TM = 90% del maximo estimado).",
+        "Semanas 1-2: 5x5. Semanas 3, 6 y 7: serie pesada de 2-3 reps al 87-95% + volumen.",
+        "Secundarios con barra (remo, rumano, inclinado, frontal, hip thrust) suben cada semana.",
+        "Semana 4 = descarga. Semana 8 = test: serie pesada a maximas reps dejando 1.",
+        "Semana 1 calibra: si el 5x5 sale sobrado, +5 kg y se recalcula todo el bloque.",
         "El bot te manda los pesos del dia 30 min antes de cada sesion.",
     ]
     yy = y + 16
@@ -90,7 +90,14 @@ def portada(pdf):
         txt(pdf, x + 0.5, y + 9, ancho - 1, 5, rf.fecha_semana(n).strftime("%d/%m"), 9, "", WHITE, "C")
         txt(pdf, x + 0.5, y + 15, ancho - 1, 5, tipo.capitalize(), 7, "B", WHITE, "C")
 
-    y += 32
+    y += 27
+    txt(pdf, 15, y, 60, 6, "TRAINING MAX (sem 1-4 -> 5-8):", 8, "B", SLATE)
+    x = 64
+    nombres = {"banca": "Banca", "sentadilla": "Sentadilla", "muerto": "Peso muerto", "militar": "Militar"}
+    for clave, (base, suba) in rf.TM.items():
+        txt(pdf, x, y, 33, 6, f"{nombres[clave]} {rf.fmt_kg(base)}->{rf.fmt_kg(base + suba)}", 7.5, "B", NAVY)
+        x += 33
+    y += 10
     txt(pdf, 15, y, 180, 8, "LA SEMANA", 14, "B")
     y += 11
     semana = [
@@ -122,7 +129,7 @@ def pagina_dia(pdf, idx):
 
     y = 34
     rect(pdf, 15, y, 4, 7, ORANGE)
-    txt(pdf, 22, y + 0.5, 170, 6, "CALENTAMIENTO 8 MIN: bici suave 3 min + movilidad + 2 series livianas del 1er ejercicio", 9, "B")
+    txt(pdf, 22, y + 0.5, 170, 6, "CALENTAMIENTO 8 MIN + APROXIMACION AL BASICO: barra sola x10, 50% x5, 70% x3, 85% x1", 9, "B")
     y += 11
 
     ancho_sem = 16
@@ -137,7 +144,8 @@ def pagina_dia(pdf, idx):
         rect(pdf, 15, y, 3, alto, color)
         rect(pdf, 21, y + 3, 7, 7, color)
         txt(pdf, 21, y + 3, 7, 7, str(i), 10, "B", WHITE, "C")
-        etiqueta = {"P": "PRINCIPAL", "A": "ACCESORIO", "C": "CARRY", "KB": "POTENCIA", "BW": "CORE / PESO CORPORAL"}[tipo]
+        etiqueta = {"P": "BASICO CON BARRA - % del TM", "S": "SECUNDARIO CON BARRA", "A": "ACCESORIO",
+                    "C": "CARRY", "BW": "PESO CORPORAL"}[tipo]
         txt(pdf, 31, y + 2, 120, 5, nombre, 11, "B")
         txt(pdf, 31, y + 7.5, 120, 4, f"{etiqueta} - descanso {descanso}" + ("  - CALIBRAR EN S1" if calibrar else ""), 7, "B",
             RED if calibrar else SLATE)
@@ -149,22 +157,34 @@ def pagina_dia(pdf, idx):
         if tipo != "BW":
             yy = y + 19
             txt(pdf, 31, yy + 1, 40, 4, ("kg " + unidad if unidad else "kg") + " por semana:", 7, "B", SLATE)
+            if tipo == "P":
+                txt(pdf, 31, yy + 5, 40, 4, "(pesada / volumen)", 6, "", SLATE)
             for n in range(1, rf.N_SEMANAS + 1):
                 x = x_sem + (n - 1) * ancho_sem
                 tipo_s = rf.tipo_semana(n)
                 fondo = (254, 243, 199) if tipo_s == "DESCARGA" else (254, 226, 226) if tipo_s == "TEST" else GRAY_LIGHT
                 rect(pdf, x + 0.3, yy - 1, ancho_sem - 0.6, 10, fondo)
                 txt(pdf, x + 0.3, yy - 1, ancho_sem - 0.6, 4, f"S{n}", 6, "", SLATE, "C")
-                txt(pdf, x + 0.3, yy + 3, ancho_sem - 0.6, 5, rf.fmt_kg(rf.kg(ej, n)), 9, "B", NAVY, "C")
+                valor = rf.celda_basico(ej, n) if tipo == "P" else rf.fmt_kg(rf.kg(ej, n))
+                txt(pdf, x + 0.3, yy + 3, ancho_sem - 0.6, 5, valor, 7 if "/" in valor else 9, "B", NAVY, "C")
         y += alto + 2
 
     # Esquema de series x reps por semana
     y += 2
     rect(pdf, 15, y, 4, 7, color)
-    txt(pdf, 22, y + 0.5, 170, 6, "SERIES x REPS Y RIR POR SEMANA", 9, "B")
+    txt(pdf, 22, y + 0.5, 170, 6, "SERIES x REPS POR SEMANA (basicos en % del TM)", 9, "B")
     y += 9
-    filas = [("Principales", rf.ESQ_PRINCIPAL), ("Accesorios", rf.ESQ_ACCESORIO)]
-    for label, esq in filas:
+    def corto(n):
+        partes = [f"{sr.split(' ')[0]} {int(round(p * 100))}%" for p, sr in rf.ESQ_BASICO[n]]
+        return partes[0], (partes[1] if len(partes) > 1 else "")
+    txt(pdf, 22, y, 25, 5, "Basicos", 7, "B", SLATE)
+    for n in range(1, rf.N_SEMANAS + 1):
+        x = 48 + (n - 1) * 18.4
+        a, b = corto(n)
+        txt(pdf, x, y, 18.4, 4, f"S{n} {a}", 6.2, "B", NAVY, "C")
+        txt(pdf, x, y + 3.3, 18.4, 4, f"+{b}" if b else f"RIR {rf.RIR_BASICO[n]}", 6, "", SLATE, "C")
+    y += 9
+    for label, esq in (("Secundarios", rf.ESQ_SECUNDARIO), ("Accesorios", rf.ESQ_ACCESORIO)):
         txt(pdf, 22, y, 25, 5, label, 7, "B", SLATE)
         for n in range(1, rf.N_SEMANAS + 1):
             x = 48 + (n - 1) * 18.4
@@ -196,7 +216,7 @@ def pagina_reglas(pdf):
     pdf.set_xy(20, y + 12)
     pdf.multi_cell(170, 4.6, t(
         "Hasta tenerlos, el tope es 1 repeticion en reserva y nada de aguantar el aire. "
-        "Con el ECG normal se habilitan series al fallo controlado y singles pesados en los principales."))
+        "Con el ECG normal se habilitan singles pesados y test de maximo real en los basicos."))
 
 
 def main():
