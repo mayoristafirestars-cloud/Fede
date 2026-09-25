@@ -31,6 +31,14 @@ from zoneinfo import ZoneInfo
 
 import requests
 
+try:  # rutina_fuerza.py va en la misma carpeta que este script
+    import rutina_fuerza as RF
+except ImportError:
+    RF = None
+
+# Recordatorios de gym que se arman con los pesos de la semana en curso
+GYM_SLOTS = {(0, "06:35"), (1, "06:35"), (3, "06:35"), (4, "13:30")}
+
 TZ = ZoneInfo("America/Argentina/Buenos_Aires")
 BOT_TOKEN = os.environ["TELEGRAM_BOT_TOKEN"]
 CHAT_ID = str(os.environ["TELEGRAM_CHAT_ID"])
@@ -709,6 +717,8 @@ def scheduler_loop():
             key = f"{DIAS[d]}-{hora}"
             if d == dia and hora == hhmm and key not in ya_enviados:
                 try:
+                    if RF and (d, hora) in GYM_SLOTS:
+                        mensaje = RF.mensaje_sesion(d, ahora.date())
                     enviar_recordatorio(key, mensaje)
                     ya_enviados.add(key)
                 except Exception as e:
