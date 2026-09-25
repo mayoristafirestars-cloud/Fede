@@ -136,7 +136,7 @@ def pagina_dia(pdf, idx):
     x_sem = 195 - ancho_sem * rf.N_SEMANAS
     for i, ej in enumerate(info["ejercicios"], 1):
         nombre, tipo, base, inc, unidad, descanso, nota, calibrar = ej
-        alto = 30 if tipo != "BW" else 17
+        alto = 37 if tipo != "BW" else 17
         rect(pdf, 15, y, 180, alto, WHITE)
         pdf.set_draw_color(*GRAY_MID)
         pdf.set_line_width(0.2)
@@ -155,43 +155,25 @@ def pagina_dia(pdf, idx):
         pdf.multi_cell(160 if tipo == "BW" else 160, 3.6, t(nota))
 
         if tipo != "BW":
-            yy = y + 19
-            txt(pdf, 31, yy + 1, 40, 4, ("kg " + unidad if unidad else "kg") + " por semana:", 7, "B", SLATE)
+            yy = y + 18
+            txt(pdf, 31, yy + 1, 40, 4, ("kg " + unidad if unidad else "kg") + " por semana", 7, "B", SLATE)
+            txt(pdf, 31, yy + 5, 40, 4, "series x reps", 7, "B", (37, 99, 235))
+            txt(pdf, 31, yy + 9, 40, 4, "RIR (reps en reserva)", 6, "", SLATE)
             if tipo == "P":
-                txt(pdf, 31, yy + 5, 40, 4, "(pesada / volumen)", 6, "", SLATE)
+                txt(pdf, 31, yy + 13, 40, 4, "kg = pesada / volumen", 6, "", SLATE)
             for n in range(1, rf.N_SEMANAS + 1):
                 x = x_sem + (n - 1) * ancho_sem
                 tipo_s = rf.tipo_semana(n)
                 fondo = (254, 243, 199) if tipo_s == "DESCARGA" else (254, 226, 226) if tipo_s == "TEST" else GRAY_LIGHT
-                rect(pdf, x + 0.3, yy - 1, ancho_sem - 0.6, 10, fondo)
-                txt(pdf, x + 0.3, yy - 1, ancho_sem - 0.6, 4, f"S{n}", 6, "", SLATE, "C")
+                rect(pdf, x + 0.3, yy - 1, ancho_sem - 0.6, 18, fondo)
+                txt(pdf, x + 0.3, yy - 1, ancho_sem - 0.6, 3.5, f"S{n}", 6, "", SLATE, "C")
                 valor = rf.celda_basico(ej, n) if tipo == "P" else rf.fmt_kg(rf.kg(ej, n))
-                txt(pdf, x + 0.3, yy + 3, ancho_sem - 0.6, 5, valor, 7 if "/" in valor else 9, "B", NAVY, "C")
+                txt(pdf, x + 0.3, yy + 2.5, ancho_sem - 0.6, 4.5, valor, 7 if "/" in valor else 9, "B", NAVY, "C")
+                sr, rir = rf.series_reps(ej, n)
+                txt(pdf, x + 0.3, yy + 7.5, ancho_sem - 0.6, 4, sr, 6.2 if len(sr) > 7 else 7.5, "B", (37, 99, 235), "C")
+                txt(pdf, x + 0.3, yy + 11.8, ancho_sem - 0.6, 4, f"RIR {rir}", 6, "", SLATE, "C")
         y += alto + 2
 
-    # Esquema de series x reps por semana
-    y += 2
-    rect(pdf, 15, y, 4, 7, color)
-    txt(pdf, 22, y + 0.5, 170, 6, "SERIES x REPS POR SEMANA (basicos en % del TM)", 9, "B")
-    y += 9
-    def corto(n):
-        partes = [f"{sr.split(' ')[0]} {int(round(p * 100))}%" for p, sr in rf.ESQ_BASICO[n]]
-        return partes[0], (partes[1] if len(partes) > 1 else "")
-    txt(pdf, 22, y, 25, 5, "Basicos", 7, "B", SLATE)
-    for n in range(1, rf.N_SEMANAS + 1):
-        x = 48 + (n - 1) * 18.4
-        a, b = corto(n)
-        txt(pdf, x, y, 18.4, 4, f"S{n} {a}", 6.2, "B", NAVY, "C")
-        txt(pdf, x, y + 3.3, 18.4, 4, f"+{b}" if b else f"RIR {rf.RIR_BASICO[n]}", 6, "", SLATE, "C")
-    y += 9
-    for label, esq in (("Secundarios", rf.ESQ_SECUNDARIO), ("Accesorios", rf.ESQ_ACCESORIO)):
-        txt(pdf, 22, y, 25, 5, label, 7, "B", SLATE)
-        for n in range(1, rf.N_SEMANAS + 1):
-            x = 48 + (n - 1) * 18.4
-            sr, rir = esq[n]
-            txt(pdf, x, y, 18.4, 5, f"S{n} {sr}", 6.5, "", NAVY, "C")
-            txt(pdf, x, y + 3.5, 18.4, 4, f"RIR {rir}", 6, "", SLATE, "C")
-        y += 9
 
 
 def pagina_reglas(pdf):

@@ -42,17 +42,17 @@ ECG y presión en farmacia siguen pendientes (carpeta `estudios/` vacía). Hasta
 
 ## Pesos proyectados por día (kg)
 
-En los básicos: serie pesada / series de volumen.
+En los básicos: kg de la serie pesada / kg de las series de volumen, seguido de series × reps.
 
 ## Lunes 07:00 — Torso A · Press banca
 
 | Ejercicio | S1 | S2 | S3 | S4 | S5 | S6 | S7 | S8 | Descanso |
 |---|---|---|---|---|---|---|---|---|---|
-| **Press banca con barra** (pesada/volumen) | 45 | 47,5 | 52,5/47,5 | 40 | 52,5 | 55/50 | 60/52,5 | 62,5/50 | 3 min |
-| Remo con barra | 45 | 47,5 | 50 | 45 | 50 | 52,5 | 55 | 55 | 2 min |
-| Jalón al pecho | 45 | 45 | 50 | 45 | 50 | 50 | 55 | 55 | 90 s |
-| Superserie: Fondos asistidos + Curl con barra ⚠ calibrar | 20 | 20 | 22,5 | 20 | 22,5 | 22,5 | 25 | 25 | 90 s |
-| Face pull en polea ⚠ calibrar | 15 | 15 | 17,5 | 15 | 17,5 | 17,5 | 20 | 20 | 60 s |
+| **Press banca con barra** (pesada/volumen) | 45 kg · 5×5 | 47,5 kg · 5×5 | 52,5/47,5 kg · 1×3+4×5 | 40 kg · 3×5 | 52,5 kg · 5×5 | 55/50 kg · 1×3+4×4 | 60/52,5 kg · 1×2+3×3 | 62,5/50 kg · 1×máx+3×3 | 3 min |
+| Remo con barra | 45 kg · 4×8 | 47,5 kg · 4×8 | 50 kg · 4×6 | 45 kg · 3×6 | 50 kg · 4×6 | 52,5 kg · 4×5 | 55 kg · 4×5 | 55 kg · 4×5 | 2 min |
+| Jalón al pecho | 45 kg · 3×10-12 | 45 kg · 3×12 | 50 kg · 3×10 | 45 kg · 2×10 | 50 kg · 3×12 | 50 kg · 3×10 | 55 kg · 3×12 | 55 kg · 3×10 | 90 s |
+| Superserie: Fondos asistidos + Curl con barra ⚠ calibrar | 20 kg · 3×10-12 | 20 kg · 3×12 | 22,5 kg · 3×10 | 20 kg · 2×10 | 22,5 kg · 3×12 | 22,5 kg · 3×10 | 25 kg · 3×12 | 25 kg · 3×10 | 90 s |
+| Face pull en polea ⚠ calibrar | 15 kg · 3×10-12 | 15 kg · 3×12 | 17,5 kg · 3×10 | 15 kg · 2×10 | 17,5 kg · 3×12 | 17,5 kg · 3×10 | 20 kg · 3×12 | 20 kg · 3×10 | 60 s |
 
 - **Press banca con barra:** Pies firmes, omóplatos juntos. Bajá al pecho en 2 s, sin rebotar.
 - **Remo con barra:** Torso a 45°, tirá la barra al ombligo. Sin tirón con la cadera.
@@ -64,10 +64,10 @@ En los básicos: serie pesada / series de volumen.
 
 | Ejercicio | S1 | S2 | S3 | S4 | S5 | S6 | S7 | S8 | Descanso |
 |---|---|---|---|---|---|---|---|---|---|
-| **Sentadilla trasera con barra** (pesada/volumen) | 60 | 65 | 70/62,5 | 52,5 | 70 | 77,5/67,5 | 80/72,5 | 85/67,5 | 3 min |
-| Peso muerto rumano con barra | 70 | 72,5 | 75 | 70 | 75 | 77,5 | 80 | 80 | 2 min |
-| Sentadilla búlgara con mancuernas (kg c/u) | 15 | 15 | 17,5 | 15 | 17,5 | 17,5 | 20 | 20 | 90 s |
-| Curl femoral en máquina ⚠ calibrar | 30 | 30 | 35 | 30 | 35 | 35 | 40 | 40 | 75 s |
+| **Sentadilla trasera con barra** (pesada/volumen) | 60 kg · 5×5 | 65 kg · 5×5 | 70/62,5 kg · 1×3+4×5 | 52,5 kg · 3×5 | 70 kg · 5×5 | 77,5/67,5 kg · 1×3+4×4 | 80/72,5 kg · 1×2+3×3 | 85/67,5 kg · 1×máx+3×3 | 3 min |
+| Peso muerto rumano con barra | 70 kg · 4×8 | 72,5 kg · 4×8 | 75 kg · 4×6 | 70 kg · 3×6 | 75 kg · 4×6 | 77,5 kg · 4×5 | 80 kg · 4×5 | 80 kg · 4×5 | 2 min |
+| Sentadilla búlgara con mancuernas (kg c/u) | 15 kg · 3×10-12 | 15 kg · 3×12 | 17,5 kg · 3×10 | 15 kg · 2×10 | 17,5 kg · 3×12 | 17,5 kg · 3×10 | 20 kg · 3×12 | 20 kg · 3×10 | 90 s |
+| Curl femoral en máquina ⚠ calibrar | 30 kg · 3×10-12 | 30 kg · 3×12 | 35 kg · 3×10 | 30 kg · 2×10 | 35 kg · 3×12 | 35 kg · 3×10 | 40 kg · 3×12 | 40 kg · 3×10 | 75 s |
 | Rueda abdominal | — | — | — | — | — | — | — | — | 60 s |
 
 - **Sentadilla trasera con barra:** Barra sobre trapecio, bajá hasta la paralela como mínimo, rodillas afuera.
@@ -80,11 +80,11 @@ En los básicos: serie pesada / series de volumen.
 
 | Ejercicio | S1 | S2 | S3 | S4 | S5 | S6 | S7 | S8 | Descanso |
 |---|---|---|---|---|---|---|---|---|---|
-| **Press militar de pie con barra** (pesada/volumen) | 27,5 | 30 | 32,5/30 | 25 | 32,5 | 35/32,5 | 37,5/35 | 40/32,5 | 3 min |
-| Press inclinado con barra | 35 | 37,5 | 40 | 35 | 40 | 42,5 | 45 | 45 | 2 min |
+| **Press militar de pie con barra** (pesada/volumen) | 27,5 kg · 5×5 | 30 kg · 5×5 | 32,5/30 kg · 1×3+4×5 | 25 kg · 3×5 | 32,5 kg · 5×5 | 35/32,5 kg · 1×3+4×4 | 37,5/35 kg · 1×2+3×3 | 40/32,5 kg · 1×máx+3×3 | 3 min |
+| Press inclinado con barra | 35 kg · 4×8 | 37,5 kg · 4×8 | 40 kg · 4×6 | 35 kg · 3×6 | 40 kg · 4×6 | 42,5 kg · 4×5 | 45 kg · 4×5 | 45 kg · 4×5 | 2 min |
 | Dominadas (asistidas si hace falta) | — | — | — | — | — | — | — | — | 2 min |
-| Remo en polea sentado | 45 | 45 | 50 | 45 | 50 | 50 | 55 | 55 | 90 s |
-| Superserie: Extensión de tríceps en polea + Curl martillo ⚠ calibrar | 20 | 20 | 22,5 | 20 | 22,5 | 22,5 | 25 | 25 | 75 s |
+| Remo en polea sentado | 45 kg · 3×10-12 | 45 kg · 3×12 | 50 kg · 3×10 | 45 kg · 2×10 | 50 kg · 3×12 | 50 kg · 3×10 | 55 kg · 3×12 | 55 kg · 3×10 | 90 s |
+| Superserie: Extensión de tríceps en polea + Curl martillo ⚠ calibrar | 20 kg · 3×10-12 | 20 kg · 3×12 | 22,5 kg · 3×10 | 20 kg · 2×10 | 22,5 kg · 3×12 | 22,5 kg · 3×10 | 25 kg · 3×12 | 25 kg · 3×10 | 75 s |
 
 - **Press militar de pie con barra:** Glúteos y abdomen apretados, barra en línea recta, cabeza pasa adelante al final.
 - **Press inclinado con barra:** Banco a 30°, bajá a la clavícula.
@@ -96,11 +96,11 @@ En los básicos: serie pesada / series de volumen.
 
 | Ejercicio | S1 | S2 | S3 | S4 | S5 | S6 | S7 | S8 | Descanso |
 |---|---|---|---|---|---|---|---|---|---|
-| **Peso muerto convencional con barra** (pesada/volumen) | 75 | 80 | 87,5/77,5 | 65 | 87,5 | 95/85 | 100/90 | 105/85 | 3-4 min |
-| Sentadilla frontal con barra ⚠ calibrar | 40 | 42,5 | 45 | 40 | 45 | 47,5 | 50 | 50 | 2 min |
-| Hip thrust con barra | 80 | 85 | 90 | 80 | 90 | 95 | 100 | 100 | 2 min |
-| Zancada caminando con mancuernas (kg c/u) ⚠ calibrar | 15 | 15 | 17,5 | 15 | 17,5 | 17,5 | 20 | 20 | 90 s |
-| Farmer walk pesado (kg c/u) ⚠ calibrar | 27,5 | 27,5 | 30 | 27,5 | 30 | 32,5 | 32,5 | 32,5 | 2 min |
+| **Peso muerto convencional con barra** (pesada/volumen) | 75 kg · 5×5 | 80 kg · 5×5 | 87,5/77,5 kg · 1×3+4×5 | 65 kg · 3×5 | 87,5 kg · 5×5 | 95/85 kg · 1×3+4×4 | 100/90 kg · 1×2+3×3 | 105/85 kg · 1×máx+3×3 | 3-4 min |
+| Sentadilla frontal con barra ⚠ calibrar | 40 kg · 4×8 | 42,5 kg · 4×8 | 45 kg · 4×6 | 40 kg · 3×6 | 45 kg · 4×6 | 47,5 kg · 4×5 | 50 kg · 4×5 | 50 kg · 4×5 | 2 min |
+| Hip thrust con barra | 80 kg · 4×8 | 85 kg · 4×8 | 90 kg · 4×6 | 80 kg · 3×6 | 90 kg · 4×6 | 95 kg · 4×5 | 100 kg · 4×5 | 100 kg · 4×5 | 2 min |
+| Zancada caminando con mancuernas (kg c/u) ⚠ calibrar | 15 kg · 3×10-12 | 15 kg · 3×12 | 17,5 kg · 3×10 | 15 kg · 2×10 | 17,5 kg · 3×12 | 17,5 kg · 3×10 | 20 kg · 3×12 | 20 kg · 3×10 | 90 s |
+| Farmer walk pesado (kg c/u) ⚠ calibrar | 27,5 kg · 3×30 m | 27,5 kg · 3×35 m | 30 kg · 3×30 m | 27,5 kg · 2×30 m | 30 kg · 3×35 m | 32,5 kg · 3×30 m | 32,5 kg · 3×35 m | 32,5 kg · 3×40 m | 2 min |
 
 - **Peso muerto convencional con barra:** Barra sobre el medio del pie, espalda neutra, empujá el piso. Cada rep desde el piso.
 - **Sentadilla frontal con barra:** Codos altos, torso vertical. Si la muñeca molesta, agarre cruzado.

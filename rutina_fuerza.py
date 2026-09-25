@@ -205,6 +205,14 @@ def celda_basico(ej: tuple, n: int) -> str:
     return "/".join(fmt_kg(k) for k, _ in series_basico(ej, n))
 
 
+def series_reps(ej: tuple, n: int) -> tuple[str, str]:
+    """(series×reps corto, RIR) de un ejercicio en la semana n. Ej: ('1×3+4×5', '1-2')."""
+    if ej[1] == "P":
+        sr = "+".join(s.replace(" dejando 1", "") for _, s in ESQ_BASICO[n])
+        return sr, RIR_BASICO[n]
+    return esquema(ej, n)
+
+
 def linea(ej: tuple, n: int) -> str:
     nombre, tipo, base, inc, unidad, descanso, nota, _ = ej
     if tipo == "BW":
@@ -254,10 +262,10 @@ def tabla_markdown(dia_idx: int) -> str:
             out.append(f"| {nombre} | " + " | ".join(["—"] * N_SEMANAS) + f" | {descanso} |")
             continue
         if tipo == "P":
-            celdas = [celda_basico(ej, n) for n in range(1, N_SEMANAS + 1)]
+            celdas = [f"{celda_basico(ej, n)} kg · {series_reps(ej, n)[0]}" for n in range(1, N_SEMANAS + 1)]
             etiqueta = f"**{nombre}** (pesada/volumen)"
         else:
-            celdas = [fmt_kg(kg(ej, n)) for n in range(1, N_SEMANAS + 1)]
+            celdas = [f"{fmt_kg(kg(ej, n))} kg · {series_reps(ej, n)[0]}" for n in range(1, N_SEMANAS + 1)]
             etiqueta = nombre + (f" (kg {unidad})" if unidad else "") + (" ⚠ calibrar" if calibrar else "")
         out.append(f"| {etiqueta} | " + " | ".join(celdas) + f" | {descanso} |")
     return "\n".join(out)
