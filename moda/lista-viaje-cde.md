@@ -1,21 +1,21 @@
 # Lista para el próximo viaje a Ciudad del Este
 
 > Franquicia por tierra: USD 300 por persona (lo que exceda paga 50% del excedente).
-> Precios de referencia = precio de lista en EE.UU. (sep 2026). En CDE suelen ser iguales o
+> Precios CDE de Compras Paraguai / Shopping China (sep 2026, ver investigacion-marcas.md); el resto = lista EE.UU. En CDE suelen ser iguales o
 > menores: usarlos como TOPE. Si algo sale más caro que esto, no conviene.
 
 ## Viajando solo — USD 300
 | # | Prenda | Modelo | Talle | Color | Tope aprox. |
 |---|--------|--------|-------|-------|-------------|
-| 1 | Zapatilla para caminar | Nike Pegasus 41 · Asics Gel-Nimbus · New Balance 880 | 42 (US 9–9.5) | Negra o gris | USD 140 |
-| 2 | Polo Lacoste | L.12.12 Classic Fit (o L.12.12 LIGHT, más fresco) | 6 (probar 7) | Azul marino | USD 115 |
+| 1 | Zapatilla para caminar | Hoka Bondi 8 (máxima amortiguación, ~USD 110 en Infinity Sport) · Nike Pegasus 41 · Asics Gel-Nimbus | 42 (US 9–9.5) | Negra o gris | USD 110–140 |
+| 2 | Polo Lacoste | L.12.12 Classic Fit (o L.12.12 LIGHT, más fresco) | 6 (probar 7) | Azul marino | USD 60–89 en CDE |
 | 3 | Remera de gym | Nike Dri-FIT, Standard fit | XL | Negra | USD 35 |
-| | | | | **Total** | **~USD 290** |
+| | | | | **Total** | **~USD 210–265** → sobra para un 2º polo Lacoste Sport (~USD 45) |
 
 ## Con pareja — +USD 300 (total 600)
 | # | Prenda | Modelo | Talle | Color | Tope aprox. |
 |---|--------|--------|-------|-------|-------------|
-| 4 | 2º polo Lacoste | L.12.12 Classic Fit | 6 | Blanco | USD 115 |
+| 4 | 2º polo Lacoste | L.12.12 Classic Fit o Lacoste Sport Ultra Dry (~USD 45) | 6 | Blanco | USD 45–89 |
 | 5 | Jogger | Under Armour Unstoppable (verano) | XL | Negro | USD 90 |
 | 6 | Short de gym | Nike Dri-FIT | XL | Negro o gris oscuro | USD 35 |
 | 7 | 2ª remera de gym | Under Armour "Loose" | XL | Azul marino | USD 30 |
