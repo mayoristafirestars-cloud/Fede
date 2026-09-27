@@ -22,3 +22,6 @@
   es su prenda estrella porque es liso y disimula la panza.
 - 2026-09-27 — Vive en Santa Rosa (La Pampa): priorizar telas frescas en verano y capas en
   invierno; calzado que aguante polvo.
+- 2026-09-27 — Hace gym y camina: la ropa de entrenamiento es de uso diario, no accesoria.
+- 2026-09-27 — Sin presupuesto fijo ("todo lo que pueda"): proponer siempre una lista por
+  prioridad para que corte donde se le termine la plata, y aprovechar al máximo la franquicia.

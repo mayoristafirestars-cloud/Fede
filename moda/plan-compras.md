@@ -9,11 +9,11 @@
 
 | # | Prenda | Modelo / calce | Colores | Dónde conviene | Estado |
 |---|--------|----------------|---------|----------------|--------|
-| 1 | Ropa de entrenamiento | Remeras dry-fit, short, jogger | Negro, gris, azul | CDE (Nike, Adidas, Under Armour) | Pendiente |
-| 2 | Zapatilla de training/running | Según actividad | Neutros | CDE | Pendiente |
+| 1 | Ropa de gym y caminata | 3 remeras dry-fit calce regular, 2 shorts, 1 jogger | Negro, gris, azul marino | CDE (Nike Dri-FIT, Adidas, Under Armour) | Pendiente |
+| 2 | Zapatilla para caminar/gym | Con buena amortiguación (por el peso) | Negra o gris | CDE (Nike, Adidas, New Balance, Asics) | Pendiente |
 | 3 | Polos piqué Lacoste | L.12.12 classic fit, talle 6 (probar 6 y 7) | Azul marino, blanco, verde oscuro, gris | CDE (Lacoste) | Pendiente |
 | 3b | Remeras lisas | Algodón grueso, cuello redondo, calce regular | Azul marino, negro, gris topo, blanco | CDE (Lacoste TH, Tommy, Levi's) | Pendiente |
-| 4 | Jeans | Regular/straight con stretch, índigo oscuro | Índigo oscuro | CDE o AR (Levi's 505/514) | Pendiente |
+| 4 | Jeans | Levi's 505 regular o 514 straight, con stretch, W36 aprox. | Índigo oscuro | CDE o AR | Pendiente |
 | 5 | Chinos | Regular con elastano | Azul marino, arena | AR o CDE (Levi's, Tommy, Kevingston) | Pendiente |
 | 6 | Zapatilla blanca de cuero | Lisa, minimalista | Blanca | CDE o AR | Pendiente |
 | 7 | Overshirt / campera liviana | Recta, se usa abierta | Verde oliva o azul | AR o CDE | Pendiente |

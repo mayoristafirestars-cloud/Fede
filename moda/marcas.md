@@ -28,4 +28,8 @@
 | Deportivo | Nike, Adidas, Under Armour | — | CDE |
 
 ## Notas descubiertas (agregar con fecha)
-- (vacío)
+- 2026-09-27 — Franquicia CDE → Argentina por tierra: USD 300 por persona; lo que exceda paga
+  50% del excedente. Se puede sumar en grupo familiar (cónyuge/pareja e hijos menores de 16).
+  Celular y notebook/tablet de uso personal no cuentan. Fuente: La Nación / Noticias Argentinas.
+- 2026-09-27 — Chomba Lacoste L1212 en Argentina: ~$190.000–260.000 ARS (tiendas online).
+  Usar como referencia para comparar con CDE. Precio en CDE: no verificado todavía.
