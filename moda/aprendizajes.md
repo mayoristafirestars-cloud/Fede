@@ -37,3 +37,6 @@
 - 2026-09-27 — Miró en MercadoLibre el Under Armour Drive Tapered Pant (1364410) azul marino,
   $139.990 ARS. Talle recomendado: 36/32 (si aprieta en cintura o muslo → 38/32). Largo 32
   con 171 cm puede quedar 2-3 cm largo → acortar en modista.
+- 2026-09-27 — Pidió looks con Ralph Lauren RLX: le interesa la línea deportiva premium
+  (golf/técnica). RLX no se encontró en AR ni CDE → conseguir online/viaje; en CDE sí hay
+  Polo Ralph Lauren Classic Fit (US$59–130 en Shopping China).
