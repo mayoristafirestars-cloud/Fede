@@ -1,5 +1,6 @@
 # Plan de compras
 
+> Temporada actual: primavera/verano 2026-27 (Santa Rosa) → priorizar telas frescas.
 > Borrador inicial basado en lo que se sabe hoy (48 años, robusto con pancita, objetivo
 > atlético, compra en Argentina y CDE). Se ajusta cuando se completen talles, presupuesto,
 > ocasiones y guardarropa actual. Precios: a verificar en cada compra.
@@ -10,7 +11,8 @@
 |---|--------|----------------|---------|----------------|--------|
 | 1 | Ropa de entrenamiento | Remeras dry-fit, short, jogger | Negro, gris, azul | CDE (Nike, Adidas, Under Armour) | Pendiente |
 | 2 | Zapatilla de training/running | Según actividad | Neutros | CDE | Pendiente |
-| 3 | Polos piqué | Calce regular/classic, cuello firme | Azul marino, blanco, verde | CDE (Lacoste, Polo RL, Tommy) | Pendiente |
+| 3 | Polos piqué Lacoste | L.12.12 classic fit, talle 6 (probar 6 y 7) | Azul marino, blanco, verde oscuro, gris | CDE (Lacoste) | Pendiente |
+| 3b | Remeras lisas | Algodón grueso, cuello redondo, calce regular | Azul marino, negro, gris topo, blanco | CDE (Lacoste TH, Tommy, Levi's) | Pendiente |
 | 4 | Jeans | Regular/straight con stretch, índigo oscuro | Índigo oscuro | CDE o AR (Levi's 505/514) | Pendiente |
 | 5 | Chinos | Regular con elastano | Azul marino, arena | AR o CDE (Levi's, Tommy, Kevingston) | Pendiente |
 | 6 | Zapatilla blanca de cuero | Lisa, minimalista | Blanca | CDE o AR | Pendiente |

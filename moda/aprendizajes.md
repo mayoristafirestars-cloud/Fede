@@ -4,7 +4,9 @@
 > lo que Fede rechazó no se vuelve a sugerir.
 
 ## Le gusta
-- (todavía nada)
+- 2026-09-27 — Remeras y prendas lisas (sin estampados).
+- 2026-09-27 — Lacoste es su marca preferida.
+- 2026-09-27 — Estilo casual moderno.
 
 ## No le gusta / no usaría
 - (todavía nada)
@@ -15,3 +17,8 @@
 - 2026-09-27 — Compra en Argentina y en Ciudad del Este: comparar siempre precio de ambos.
 - 2026-09-27 — Prefiere responder escribiendo, no con formularios de opciones: hacerle
   preguntas en texto, cortas.
+- 2026-09-27 — 171 cm / 104 kg / XL: las remeras lisas tienen que ser de algodón grueso y
+  calce regular (nunca finas ni slim), en colores oscuros; el polo piqué Lacoste classic fit
+  es su prenda estrella porque es liso y disimula la panza.
+- 2026-09-27 — Vive en Santa Rosa (La Pampa): priorizar telas frescas en verano y capas en
+  invierno; calzado que aguante polvo.
