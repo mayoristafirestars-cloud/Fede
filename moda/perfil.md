@@ -17,7 +17,7 @@
 - Peso: 104 kg (27/09/2026)
 - Talle remera/camisa: XL (en Lacoste equivale aprox. a talle 6 — confirmar probándose)
 - Talle pantalón: 46 argentino (≈ W36 en Levi's/talles americanos — confirmar probándose)
-- Talle calzado: PENDIENTE
+- Talle calzado: 42 / 41.5 argentino (≈ US 9–9.5 en Nike/Adidas — probarse siempre)
 - Particularidades (espalda ancha, brazos, largo de piernas): PENDIENTE
 - Actividad física actual: gimnasio + caminatas
 
@@ -32,7 +32,7 @@
 - Clima donde vive: Santa Rosa — verano muy caluroso, invierno frío con heladas, mucho viento y polvo; gran amplitud térmica (capas)
 
 ## Estilo
-- Estilo que le gusta / quiere lograr: casual moderno
+- Estilo que le gusta / quiere lograr: casual moderno con onda ATLÉTICA / deportiva (athleisure) — elegido 27/09
 - Referentes (gente cuya ropa le gusta): no tiene ("no sé")
 - Colores que le gustan: PENDIENTE (le gustan las prendas lisas)
 - Colores / prendas que NO usaría: PENDIENTE
