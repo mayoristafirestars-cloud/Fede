@@ -40,3 +40,5 @@
 - 2026-09-27 — Pidió looks con Ralph Lauren RLX: le interesa la línea deportiva premium
   (golf/técnica). RLX no se encontró en AR ni CDE → conseguir online/viaje; en CDE sí hay
   Polo Ralph Lauren Classic Fit (US$59–130 en Shopping China).
+- 2026-10-03 — Pidió los cuidados corporales para su edad → guía en cuidado-personal.md.
+  Preguntarle más adelante qué rutina sigue hoy y si ya hizo los controles médicos.
