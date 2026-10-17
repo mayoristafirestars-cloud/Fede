@@ -42,3 +42,5 @@
   Polo Ralph Lauren Classic Fit (US$59–130 en Shopping China).
 - 2026-10-03 — Pidió los cuidados corporales para su edad → guía en cuidado-personal.md.
   Preguntarle más adelante qué rutina sigue hoy y si ya hizo los controles médicos.
+- 2026-10-17 — Objetivo explícito: "sacarse 10 años de encima" → plan en rejuvenecer.md.
+  En cada recomendación, priorizar lo que lo haga verse más joven y moderno.
