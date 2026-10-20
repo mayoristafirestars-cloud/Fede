@@ -1,0 +1,295 @@
+<title>Plataforma Mayoristas AR</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@112,600;112,800&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: una columna de lectura tipo "lista de precios / remito": encabezados anchos, cifras en mono, tablas como planillas. */
+:root{
+  --paper:#F5F6F8; --sheet:#FFFFFF; --ink:#161A24; --muted:#5A6172; --rule:#D9DCE4;
+  --carbon:#3036A8;          /* azul copiativo de remito */
+  --carbon-soft:#E6E7F7;
+  --tag:#E7A11A;             /* etiqueta de precio */
+  --bad:#B4372B; --good:#21784A;
+  --f-display:"Archivo", "Arial Narrow", Arial, sans-serif;
+  --f-body:"IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --f-mono:"IBM Plex Mono", ui-monospace, Menlo, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --paper:#11131A; --sheet:#181B24; --ink:#E7E9F0; --muted:#9BA2B4; --rule:#2B3040;
+  --carbon:#9EA3FF; --carbon-soft:#262A4A; --tag:#F0B43C; --bad:#F07A6E; --good:#5CC48A; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --paper:#11131A; --sheet:#181B24; --ink:#E7E9F0; --muted:#9BA2B4; --rule:#2B3040;
+  --carbon:#9EA3FF; --carbon-soft:#262A4A; --tag:#F0B43C; --bad:#F07A6E; --good:#5CC48A; color-scheme:dark}
+
+body{background:var(--paper);color:var(--ink);font-family:var(--f-body);font-size:16px;line-height:1.6;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.wrap{max-width:860px;margin:0 auto;padding-block:40px 80px;display:flex;flex-direction:column;gap:56px}
+h1,h2,h3{font-family:var(--f-display);font-stretch:112%;text-wrap:balance;line-height:1.1;margin:0}
+h1{font-size:clamp(2rem,6vw,3.2rem);font-weight:800;letter-spacing:-.01em}
+h2{font-size:1.55rem;font-weight:800}
+h3{font-size:1.05rem;font-weight:600}
+p{margin:0;max-width:68ch}
+.eyebrow{font-family:var(--f-mono);font-size:.75rem;letter-spacing:.12em;text-transform:uppercase;color:var(--carbon)}
+section{display:flex;flex-direction:column;gap:18px}
+.sec-head{display:flex;flex-direction:column;gap:6px;border-top:2px solid var(--ink);padding-top:14px}
+.muted{color:var(--muted)}
+.num{font-family:var(--f-mono);font-variant-numeric:tabular-nums}
+ul{margin:0;padding-left:1.2em;display:flex;flex-direction:column;gap:6px}
+li{max-width:68ch}
+a{color:var(--carbon)}
+
+/* hero */
+header{display:flex;flex-direction:column;gap:18px}
+.meta{font-family:var(--f-mono);font-size:.8rem;color:var(--muted);display:flex;flex-wrap:wrap;gap:6px 18px}
+.thesis{background:var(--sheet);border:1px solid var(--rule);border-left:6px solid var(--carbon);padding:18px 20px;font-size:1.08rem}
+.thesis strong{color:var(--carbon)}
+
+/* verdict strip */
+.verdict{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:1px;background:var(--rule);border:1px solid var(--rule)}
+.verdict div{background:var(--sheet);padding:14px 16px;display:flex;flex-direction:column;gap:4px;min-width:0}
+.verdict .k{font-family:var(--f-mono);font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.verdict .v{font-family:var(--f-display);font-stretch:112%;font-weight:800;font-size:1.5rem;line-height:1.15}
+.verdict .s{font-size:.85rem;color:var(--muted)}
+
+/* tables as planillas */
+.tbl{overflow-x:auto;border:1px solid var(--rule);background:var(--sheet)}
+table{border-collapse:collapse;width:100%;font-size:.92rem}
+th,td{text-align:left;padding:10px 12px;border-bottom:1px solid var(--rule);vertical-align:top}
+th{font-family:var(--f-mono);font-weight:500;font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);background:var(--paper)}
+tr:last-child td{border-bottom:0}
+td.r,th.r{text-align:right;font-family:var(--f-mono);font-variant-numeric:tabular-nums;white-space:nowrap}
+.pill{display:inline-block;font-family:var(--f-mono);font-size:.72rem;padding:1px 8px;border-radius:99px;white-space:nowrap}
+.pill.bad{color:var(--bad);border:1px solid currentColor}
+.pill.good{color:var(--good);border:1px solid currentColor}
+
+/* chart */
+.chart{background:var(--sheet);border:1px solid var(--rule);padding:18px 16px 12px;overflow-x:auto}
+.chart svg{display:block;width:100%;min-width:520px;height:auto}
+.chart text{font-family:var(--f-mono);font-size:12px;fill:var(--ink)}
+.chart .lab{fill:var(--muted);font-size:11px}
+.legend{display:flex;flex-wrap:wrap;gap:14px;font-family:var(--f-mono);font-size:.78rem;color:var(--muted);margin-top:8px}
+.legend i{display:inline-block;width:12px;height:12px;margin-right:6px;vertical-align:-1px}
+
+/* checklist del hueco */
+.gap{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:10px}
+.gap div{background:var(--sheet);border:1px solid var(--rule);padding:12px 14px;display:flex;gap:10px;align-items:flex-start;min-width:0}
+.gap b{font-family:var(--f-mono);color:var(--carbon);font-weight:500}
+
+/* roadmap */
+.road{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:0;border:1px solid var(--rule);background:var(--sheet)}
+.road div{padding:14px;border-right:1px solid var(--rule);display:flex;flex-direction:column;gap:8px;min-width:0}
+.road div:last-child{border-right:0}
+.road .m{font-family:var(--f-mono);font-size:.78rem;color:var(--carbon)}
+.road ul{font-size:.9rem;gap:4px}
+.road .kpi{margin-top:auto;font-family:var(--f-mono);font-size:.78rem;background:var(--carbon-soft);padding:4px 8px}
+@media (max-width:720px){.road{grid-template-columns:1fr 1fr}.road div:nth-child(2){border-right:0}.road div:nth-child(-n+2){border-bottom:1px solid var(--rule)}}
+@media (max-width:440px){.road{grid-template-columns:1fr}.road div{border-right:0;border-bottom:1px solid var(--rule)}.road div:last-child{border-bottom:0}}
+
+/* pricing tags */
+.tags{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px}
+.tagc{position:relative;background:var(--sheet);border:1px solid var(--rule);padding:16px 14px 14px;display:flex;flex-direction:column;gap:4px;min-width:0}
+.tagc::before{content:"";position:absolute;top:0;left:0;right:0;height:4px;background:var(--tag)}
+.tagc .p{font-family:var(--f-mono);font-size:1.3rem;font-weight:500}
+.tagc .d{font-size:.85rem;color:var(--muted)}
+
+.steps{counter-reset:s;list-style:none;padding:0;display:flex;flex-direction:column;gap:10px}
+.steps li{counter-increment:s;display:grid;grid-template-columns:2.2em 1fr;gap:8px;max-width:none}
+.steps li::before{content:counter(s);font-family:var(--f-mono);color:var(--sheet);background:var(--carbon);width:1.8em;height:1.8em;display:grid;place-items:center;font-size:.85rem}
+.note{font-size:.85rem;color:var(--muted);border-top:1px solid var(--rule);padding-top:14px}
+code{font-family:var(--f-mono);font-size:.88em}
+</style>
+
+<div class="wrap">
+
+<header>
+  <span class="eyebrow">Investigación de mercado · octubre 2026</span>
+  <h1>Una plataforma para mayoristas argentinos</h1>
+  <p class="muted">Qué existe en el mundo, qué funcionó, cuánto vale el mercado local y qué proponemos construir. Síntesis de cinco informes de detalle.</p>
+  <div class="thesis">Propuesta: <strong>software vertical, sin inventario</strong>, que equipa al mayorista PyME para venderle a sus comercios por <strong>WhatsApp, portal web y preventista</strong>, conectado al sistema que ya usa. Pagos y financiación llegan en una segunda etapa, con un socio.</div>
+  <div class="meta"><span>Rama: claude/exciting-gates-7aqgni</span><span>Carpeta: investigacion/</span></div>
+</header>
+
+<div class="verdict" aria-label="Respuestas cortas">
+  <div><span class="k">¿Existen?</span><span class="v">Sí</span><span class="s">Choco, Pepper, Mercos. Categoría con mucho capital.</span></div>
+  <div><span class="k">Mayoristas en AR</span><span class="v num">35.379</span><span class="s">con empleados registrados (OEDE 2024)</span></div>
+  <div><span class="k">Ingreso posible</span><span class="v num">USD 1–4 M</span><span class="s">anual en 3–5 años, solo Argentina</span></div>
+  <div><span class="k">¿Hay hueco?</span><span class="v">Sí</span><span class="s">Nadie integra pedido, preventa y cuenta corriente para PyMEs</span></div>
+</div>
+
+<section id="mundo">
+  <div class="sec-head"><span class="eyebrow">01 · Mundo</span><h2>Estas plataformas existen y crecen</h2></div>
+  <p>El portal de pedidos solo ya es commodity: Shopify lo incluye gratis y Tiendanube tiene listas mayoristas. Lo que gana es el producto vertical que resuelve todo el circuito del distribuidor.</p>
+  <div class="tbl"><table>
+    <thead><tr><th>Empresa</th><th>País</th><th>Qué hace</th><th>Escala</th></tr></thead>
+    <tbody>
+      <tr><td><b>Mercos</b></td><td>Brasil</td><td>Fuerza de ventas y pedidos B2B para distribuidoras PyME. El comparable más directo.</td><td class="r">+9.000 clientes</td></tr>
+      <tr><td><b>Choco</b></td><td>Alemania</td><td>Pedidos para distribuidores de alimentos, carga de pedidos con IA.</td><td class="r">USD 1.200 M valuación</td></tr>
+      <tr><td><b>Pepper</b></td><td>EE.UU.</td><td>Plataforma para distribuidores de alimentos, pagos y publicidad.</td><td class="r">~USD 30.000 M GMV</td></tr>
+      <tr><td><b>Ordermentum</b></td><td>Australia</td><td>Gratis para el comprador, abono al proveedor según cantidad de clientes.</td><td class="r">AUD 200–1.050/mes</td></tr>
+      <tr><td><b>Faire</b></td><td>EE.UU.</td><td>Marketplace mayorista con 60 días de plazo al minorista.</td><td class="r">15–25 % comisión</td></tr>
+    </tbody>
+  </table></div>
+  <p><b>Tendencia 2024–2026:</b> IA que toma el pedido como llega (mail, audio, foto de una lista, WhatsApp) y lo carga en el sistema. El cliente no cambia su forma de pedir. En EE.UU. y Europa el canal es el mail; acá es WhatsApp, y esa es nuestra ventaja local.</p>
+</section>
+
+<section id="lecciones">
+  <div class="sec-head"><span class="eyebrow">02 · Emergentes y LatAm</span><h2>Los que movieron mercadería quebraron</h2></div>
+  <div class="tbl"><table>
+    <thead><tr><th>Modelo</th><th>Casos</th><th>Resultado</th></tr></thead>
+    <tbody>
+      <tr><td>Comprar y distribuir mercadería propia</td><td>Frubana, Merqueo, Jüsto, Ula, Twiga, Wasoko, Udaan</td><td><span class="pill bad">cierres y defaults</span></td></tr>
+      <tr><td>Equipar al distribuidor que ya existe</td><td>Mercos, BEES, Yalo + Coca-Cola FEMSA, OmniRetail, Scanntech</td><td><span class="pill good">crecen y son rentables</span></td></tr>
+    </tbody>
+  </table></div>
+  <ul>
+    <li>Margen de 5–10 % que no paga la logística de pedidos chicos.</li>
+    <li>Crecimiento comprado con subsidios: Merqueo perdió el 44 % de sus usuarios en un año.</li>
+    <li>Competían contra el distribuidor en vez de darle herramientas.</li>
+    <li>Prestaron plata sin datos propios y se expandieron a varios países antes de funcionar en uno.</li>
+  </ul>
+  <p><b>Conclusión:</b> software, sin stock y sin prestar plata propia.</p>
+</section>
+
+<section id="mercado">
+  <div class="sec-head"><span class="eyebrow">03 · Argentina</span><h2>Cuánto vale el mercado</h2></div>
+  <div class="tbl"><table>
+    <thead><tr><th>Rubro (venden a comercios)</th><th class="r">Empresas</th></tr></thead>
+    <tbody>
+      <tr><td>Alimentos</td><td class="r">7.381</td></tr>
+      <tr><td>Ferretería y construcción</td><td class="r">3.246</td></tr>
+      <tr><td>Textil</td><td class="r">2.687</td></tr>
+      <tr><td>Farmacia y cosmética</td><td class="r">1.903</td></tr>
+      <tr><td>Bazar y juguetes</td><td class="r">1.704</td></tr>
+      <tr><td>Bebidas</td><td class="r">1.513</td></tr>
+      <tr><td>Librería</td><td class="r">1.010</td></tr>
+      <tr><td><b>Total rubros objetivo (con otros)</b></td><td class="r"><b>~28.000</b></td></tr>
+    </tbody>
+  </table></div>
+  <p class="muted">Fuente: OEDE, Ministerio de Trabajo, 2024. Sin contar 10–20 mil informales estimados. El segmento realista con capacidad de pago es de 12–18 mil empresas, que atienden a más de 194.700 comercios del canal tradicional.</p>
+
+  <div class="chart" role="img" aria-label="Tamaño de mercado en millones de USD por año, por escenario">
+    <svg viewBox="0 0 640 250" xmlns="http://www.w3.org/2000/svg">
+      <!-- escala: 0–140 M USD sobre 120..620 px => 3.5714 px por M -->
+      <g stroke="var(--rule)" stroke-width="1">
+        <line x1="120" y1="10" x2="120" y2="215"/><line x1="191.4" y1="10" x2="191.4" y2="215"/>
+        <line x1="262.9" y1="10" x2="262.9" y2="215"/><line x1="334.3" y1="10" x2="334.3" y2="215"/>
+        <line x1="405.7" y1="10" x2="405.7" y2="215"/><line x1="477.1" y1="10" x2="477.1" y2="215"/>
+        <line x1="548.6" y1="10" x2="548.6" y2="215"/><line x1="620" y1="10" x2="620" y2="215"/>
+      </g>
+      <g class="lab" text-anchor="middle">
+        <text x="120" y="232" class="lab">0</text><text x="191.4" y="232" class="lab">20</text><text x="262.9" y="232" class="lab">40</text>
+        <text x="334.3" y="232" class="lab">60</text><text x="405.7" y="232" class="lab">80</text><text x="477.1" y="232" class="lab">100</text>
+        <text x="548.6" y="232" class="lab">120</text><text x="620" y="232" class="lab">140</text>
+      </g>
+      <text x="370" y="248" class="lab" text-anchor="middle">millones de USD por año</text>
+      <!-- Conservador -->
+      <text x="0" y="44">Conservador</text>
+      <rect x="120" y="18" width="114.3" height="14" fill="var(--carbon-soft)" stroke="var(--carbon)"/><text x="240" y="30">TAM 32</text>
+      <rect x="120" y="34" width="30.7" height="14" fill="var(--carbon)"/><text x="156" y="46">SAM 8,6</text>
+      <rect x="120" y="50" width="2" height="14" fill="var(--tag)"/><text x="128" y="62">SOM 0,17</text>
+      <!-- Base -->
+      <text x="0" y="110" font-weight="500">Base</text>
+      <rect x="120" y="84" width="257.1" height="14" fill="var(--carbon-soft)" stroke="var(--carbon)"/><text x="383" y="96">TAM 72</text>
+      <rect x="120" y="100" width="77.1" height="14" fill="var(--carbon)"/><text x="203" y="112">SAM 21,6</text>
+      <rect x="120" y="116" width="3.9" height="14" fill="var(--tag)"/><text x="130" y="128">SOM 1,1</text>
+      <!-- Optimista -->
+      <text x="0" y="176">Optimista</text>
+      <rect x="120" y="150" width="471.4" height="14" fill="var(--carbon-soft)" stroke="var(--carbon)"/><text x="597" y="162" text-anchor="end" style="fill:var(--carbon)">TAM 132</text>
+      <rect x="120" y="166" width="153.6" height="14" fill="var(--carbon)"/><text x="279" y="178">SAM 43</text>
+      <rect x="120" y="182" width="15.4" height="14" fill="var(--tag)"/><text x="141" y="194">SOM 4,3</text>
+    </svg>
+    <div class="legend"><span><i style="background:var(--carbon-soft);border:1px solid var(--carbon)"></i>TAM: todo el mercado</span><span><i style="background:var(--carbon)"></i>SAM: lo alcanzable</span><span><i style="background:var(--tag)"></i>SOM: ingreso anual posible a 3–5 años</span></div>
+  </div>
+  <ul>
+    <li>Escenario base: <span class="num">USD 1,1 M</span> de ingreso anual con unos <span class="num">750</span> clientes.</li>
+    <li>Para crecer más hace falta la región: México tiene 4–5 veces más mayoristas y Chile paga mejor. SAM regional de USD 100–140 M.</li>
+    <li>Macro 2026: inflación de 1,9 % mensual, consumo masivo −3,3 %, crédito caro. Las listas de precios cambian todo el tiempo: ese es el dolor que vendemos.</li>
+  </ul>
+</section>
+
+<section id="competencia">
+  <div class="sec-head"><span class="eyebrow">04 · Competencia local</span><h2>Un mercado partido en tres capas</h2></div>
+  <div class="tbl"><table>
+    <thead><tr><th>Capa</th><th>Jugadores</th><th>Qué les falta</th></tr></thead>
+    <tbody>
+      <tr><td>Gestión y facturación</td><td>Tango, Bejerman, Xubio, Colppy, Contabilium, Dux, FactuPyme</td><td>No resuelven el pedido B2B ni la preventa. FactuPyme está pensado para retail.</td></tr>
+      <tr><td>Portales de pedidos</td><td>Tiendanube, VentasxMayor (~500 mayoristas), Commercy, VentaClick, Pedix</td><td>Sin preventista offline, poca cuenta corriente, algunos cobran comisión.</td></tr>
+      <tr><td>Preventa y reparto</td><td>CHESS/Nextbyn, Cair, BCNSoft, Flexxus</td><td>Caros, cotizan a medida, apuntan a empresas grandes.</td></tr>
+      <tr><td>Gigantes</td><td>BEES (Quilmes), Juntos+ (Coca-Cola), Mercado Libre Negocios</td><td>Le venden al almacén su propio portafolio y saltean al mayorista.</td></tr>
+    </tbody>
+  </table></div>
+  <h3>El hueco: un "Mercos argentino" para PyMEs</h3>
+  <div class="gap">
+    <div><b>✓</b><span>Precios distintos por cliente</span></div>
+    <div><b>✓</b><span>Actualización masiva de precios desde las listas de proveedores</span></div>
+    <div><b>✓</b><span>Pedidos por WhatsApp con IA: texto, audio y foto</span></div>
+    <div><b>✓</b><span>App de preventista que funciona sin señal</span></div>
+    <div><b>✓</b><span>Cuenta corriente y cobranzas</span></div>
+    <div><b>✓</b><span>Factura ARCA y conexión con Tango, Dux o FactuPyme</span></div>
+  </div>
+  <p>Todo junto, por USD 80–250 por mes, sin comisión y listo para usar en un día. Desde el 1/12/2026 ARCA rechaza comprobantes sin la condición de IVA del receptor: buena excusa para ordenar la base de clientes.</p>
+</section>
+
+<section id="propuesta">
+  <div class="sec-head"><span class="eyebrow">05 · Propuesta</span><h2>Qué construimos, en qué orden</h2></div>
+  <div class="road">
+    <div><span class="m">Meses 0–3</span><h3>Catálogo y portal</h3><ul><li>Listas por cliente</li><li>Actualización masiva</li><li>Importador desde FactuPyme (ya existe en Coronel Sur)</li><li>Portal web de pedidos</li></ul><span class="kpi">Coronel Sur usándolo</span></div>
+    <div><span class="m">Meses 3–6</span><h3>WhatsApp y cobranza</h3><ul><li>Pedidos por WhatsApp con IA</li><li>Cuenta corriente</li><li>Recordatorios de cobro</li></ul><span class="kpi">10 clientes pagos</span></div>
+    <div><span class="m">Meses 6–9</span><h3>Preventa y factura</h3><ul><li>App de preventista offline</li><li>Factura electrónica ARCA</li></ul><span class="kpi">25–30 clientes</span></div>
+    <div><span class="m">Meses 9–12</span><h3>Inteligencia y pagos</h3><ul><li>Reposición sugerida</li><li>Chatbot de catálogo</li><li>Cobro con Mercado Pago</li></ul><span class="kpi">50–60 clientes · ~USD 120k/año</span></div>
+  </div>
+
+  <h3>Cómo cobramos</h3>
+  <div class="tags">
+    <div class="tagc"><span class="d">Inicial</span><span class="p">USD 59–79</span><span class="d">por mes · mayorista chico</span></div>
+    <div class="tagc"><span class="d">Pro</span><span class="p">USD 149–199</span><span class="d">por mes · con WhatsApp IA</span></div>
+    <div class="tagc"><span class="d">Empresa</span><span class="p">USD 349+</span><span class="d">por mes · muchos clientes</span></div>
+    <div class="tagc"><span class="d">Preventista</span><span class="p">USD 15–20</span><span class="d">por usuario por mes</span></div>
+  </div>
+  <p class="muted">Abono en pesos indexado. Sin porcentaje sobre las ventas del mayorista y gratis para el minorista. Metas: churn mensual menor a 2,5 %, recuperar el costo de adquisición en menos de 9 meses.</p>
+
+  <h3>Cómo vendemos</h3>
+  <ul>
+    <li>Coronel Sur como primer cliente y caso de éxito publicado.</li>
+    <li>Un solo rubro al principio. Mejor uno donde no llegan BEES ni Coca-Cola: ferretería, librería, bazar, limpieza.</li>
+    <li>Venta directa de los fundadores, más contadores, revendedores de Tango y FactuPyme, y cámaras (CADAM, CAME).</li>
+    <li>Efecto red: cada mayorista trae a sus comercios, y esos comercios piden que sus otros mayoristas se sumen.</li>
+  </ul>
+
+  <h3>Tecnología y equipo</h3>
+  <ul>
+    <li>Seguimos con FastAPI. Pasamos de SQLite a PostgreSQL con varios mayoristas en una base, separados por seguridad a nivel de fila.</li>
+    <li>Web instalable primero; app nativa solo si los preventistas la piden. Infraestructura de USD 200–400 por mes hasta 50 clientes.</li>
+    <li>Equipo de 2 fundadores, 1 desarrollador y 1 persona de soporte. Gasto de USD 60–90 mil en el primer año.</li>
+  </ul>
+</section>
+
+<section id="riesgos">
+  <div class="sec-head"><span class="eyebrow">06 · Riesgos</span><h2>Qué puede salir mal</h2></div>
+  <div class="tbl"><table>
+    <thead><tr><th>Riesgo</th><th>Cómo lo cubrimos</th></tr></thead>
+    <tbody>
+      <tr><td>Tiendanube, Mercado Libre o VentasxMayor suman preventa y cuenta corriente</td><td>Velocidad, foco en un rubro, conexión con el sistema local y soporte cercano</td></tr>
+      <tr><td>BEES o Juntos+ saltean al mayorista de almacén</td><td>Empezar por rubros donde no llegan</td></tr>
+      <tr><td>La IA carga mal un pedido</td><td>El mayorista confirma antes de aceptar; la IA aprende por cliente</td></tr>
+      <tr><td>Meta cambia precios o reglas de WhatsApp</td><td>Portal web como canal alternativo y trasladar el costo</td></tr>
+      <tr><td>La inflación licúa el abono</td><td>Precio indexado o en dólares</td></tr>
+      <tr><td>Las PyMEs abandonan rápido</td><td>Onboarding asistido; migramos sus datos nosotros</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<section id="pasos">
+  <div class="sec-head"><span class="eyebrow">07 · Próximas 4 semanas</span><h2>Por dónde empezar</h2></div>
+  <ol class="steps">
+    <li><span><b>Entrevistar 15–20 mayoristas</b> del rubro, empezando por proveedores y colegas de Coronel Sur. Cómo toman pedidos, cómo actualizan precios, cuánto pierden en cuenta corriente, qué usan hoy.</span></li>
+    <li><span><b>Elegir el rubro inicial</b> con lo que salga de las entrevistas.</span></li>
+    <li><span><b>Prototipo:</b> adaptar Coronel Sur para varios mayoristas y armar el portal con listas por cliente.</span></li>
+    <li><span><b>Pre-venta:</b> conseguir 3–5 mayoristas que paguen un piloto antes de construir la IA.</span></li>
+  </ol>
+</section>
+
+<p class="note">Varias cifras salen de comparadores o de comparativas publicadas por proveedores, y algunas son estimaciones propias. Los informes de detalle en <code>investigacion/</code> las marcan como [EST] o "referencial" y citan cada fuente. Conviene verificarlas antes de presentarlas a inversores.</p>
+
+</div>
