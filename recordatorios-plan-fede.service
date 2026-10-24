@@ -1,0 +1,19 @@
+[Unit]
+Description=Recordatorios del Plan Fede (Telegram, cada 30 s)
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=root
+WorkingDirectory=/opt/coronel-sur
+Environment="TELEGRAM_BOT_TOKEN=REEMPLAZAR_CON_TU_TOKEN"
+Environment="TELEGRAM_CHAT_ID=REEMPLAZAR_CON_TU_CHAT_ID"
+ExecStart=/usr/bin/python3 /opt/coronel-sur/backend/bot/recordatorios_plan_fede.py
+Restart=always
+RestartSec=10
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=multi-user.target
