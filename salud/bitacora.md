@@ -12,6 +12,14 @@
 **Impacto:** qué archivos se tocaron
 ```
 
+## 2026-11-11
+**Autor:** @entrenador-fisico
+**Qué:** Nueva rutina de 5 días / 8 semanas (lunes torso, martes pierna, jueves torso, viernes pierna, sábado Hyrox base), desde el 16/11/2026, con calentamiento, activación y vuelta a la calma específicos por día.
+**Por qué:** Pedido de Fede para bajar % de grasa con pesos variables y progresión proyectada; marcas nuevas (sentadilla 140x2, banca 80x5) que superan el bloque anterior. Se respetan FC ≤121 lpm, sin HIIT/1RM y el déficit calórico.
+**Impacto:** `salud/rutina-actual.md`, `salud/bitacora/2026-11-11.md`. Pide al médico ECG antes de la S3 y al nutricionista alinear kcal (bot 1.800 vs dieta 2.250).
+
+---
+
 ## 2026-09-11
 **Autor:** @entrenador-fisico
 **Qué:** Rediseño completo de la selección de ejercicios del bloque de fuerza a pedido explícito de Fede: "que el entrenamiento sea con cadena de movimientos, no músculos aislados". Se mantiene el split Torso-Pierna A/B (Superior A lunes, Inferior A martes, Superior B jueves, Inferior B viernes), la periodización de 12 semanas (Adaptación/Acumulación/Intensificación con deload en semanas 4/8/12) y todas las restricciones cardiovasculares vigentes (FC ≤121 lpm, sin HIIT/complexes, RIR nunca 0, exhalar en el esfuerzo). Lo que cambia es **qué ejercicios llenan cada slot**: se reorganiza cada sesión por patrones de movimiento fundamentales (empuje horizontal/vertical, tracción horizontal/vertical, sentadilla, bisagra, locomoción, loaded carry, anti-rotación, integrado full-body) con ejercicios multi-articulares.
