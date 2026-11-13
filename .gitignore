@@ -1,0 +1,15 @@
+venv/
+__pycache__/
+*.pyc
+*.pyo
+*.db
+*.sqlite
+.env
+.DS_Store
+data/csv_originales/
+*.zip
+*.db-wal
+*.db-shm
+.pytest_cache/
+backend/db/respaldos/
+respaldos/
