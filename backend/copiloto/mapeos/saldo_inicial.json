@@ -1,0 +1,12 @@
+{
+  "nombre": "Saldo inicial de cuentas corrientes (planilla de Coronel Sur)",
+  "campos": {
+    "cliente":    {"alias": ["Cliente", "Razón social", "Nombre"], "obligatorio": true},
+    "cuit":       {"alias": ["CUIT", "CUIT/CUIL", "Nro. Doc."]},
+    "saldo":      {"alias": ["Saldo", "Deuda", "Importe"], "obligatorio": true},
+    "fecha":      {"alias": ["Fecha", "Fecha del comprobante más antiguo", "Desde"], "obligatorio": true},
+    "vencimiento":{"alias": ["Vencimiento", "Vence", "Fecha de vencimiento"]},
+    "condicion":  {"alias": ["Condición de pago (días)", "Condicion", "Días", "Plazo"]},
+    "telefono":   {"alias": ["Teléfono", "Telefono", "Celular", "WhatsApp"]}
+  }
+}

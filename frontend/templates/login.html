@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Coronel Sur — Ingresar</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0c0c0e;--panel:#131316;--surface:#1a1a1f;--border:#2c2c36;--border2:#3a3a46;--accent:#f0c93a;--red:#e84545;--red-dim:rgba(232,69,69,.12);--text:#e2e2e8;--text2:#9494a4;--text3:#55555f;--F:'Instrument Sans',sans-serif;--FH:'Syne',sans-serif}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--F);background:var(--bg);color:var(--text);min-height:100vh;display:flex;align-items:center;justify-content:center;font-size:14px;padding:16px}
+.caja{width:100%;max-width:360px;background:var(--panel);border:1px solid var(--border);border-radius:12px;padding:28px 26px;display:flex;flex-direction:column;gap:18px}
+.logo{display:flex;align-items:center;gap:10px}
+.logo-mark{width:36px;height:36px;border-radius:8px;background:var(--accent);color:#0c0c0e;font-family:var(--FH);font-weight:800;display:grid;place-items:center}
+.logo h1{font-family:var(--FH);font-size:18px;font-weight:800}
+.logo span{font-size:11px;color:var(--text2)}
+form{display:flex;flex-direction:column;gap:12px}
+label{display:flex;flex-direction:column;gap:6px;font-size:12px;color:var(--text2);font-weight:500}
+input{background:var(--surface);border:1px solid var(--border);border-radius:7px;padding:10px 12px;color:var(--text);font:inherit;font-size:14px}
+input:focus{outline:none;border-color:var(--accent)}
+button{margin-top:4px;padding:10px 12px;border-radius:7px;border:0;background:var(--accent);color:#0c0c0e;font:inherit;font-weight:600;cursor:pointer}
+button:disabled{opacity:.6;cursor:wait}
+button:focus-visible{outline:2px solid var(--text);outline-offset:2px}
+.error{background:var(--red-dim);border:1px solid var(--red);color:var(--text);border-radius:7px;padding:10px 12px;font-size:12.5px;line-height:1.45}
+.pie{font-size:11px;color:var(--text3);text-align:center}
+</style>
+</head>
+<body>
+<main class="caja">
+  <div class="logo">
+    <div class="logo-mark">CS</div>
+    <div><h1>Coronel Sur</h1><span>Distribuidora</span></div>
+  </div>
+  <form id="form-login" autocomplete="on">
+    <label for="usuario">Usuario
+      <input id="usuario" name="usuario" autocomplete="username" required autofocus>
+    </label>
+    <label for="contrasena">Contraseña
+      <input id="contrasena" name="contrasena" type="password" autocomplete="current-password" required>
+    </label>
+    <div class="error" id="error" hidden></div>
+    <button id="btn-ingresar" type="submit">Ingresar</button>
+  </form>
+  <p class="pie">Acceso sólo para personal autorizado.</p>
+</main>
+<script>
+document.getElementById('form-login').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const btn = document.getElementById('btn-ingresar');
+  const err = document.getElementById('error');
+  err.hidden = true; btn.disabled = true; btn.textContent = 'Ingresando...';
+  try {
+    const r = await fetch('/api/auth/login', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      credentials: 'same-origin',
+      body: JSON.stringify({usuario: document.getElementById('usuario').value, contrasena: document.getElementById('contrasena').value})
+    });
+    if (r.ok) { location.href = '/'; return; }
+    const d = await r.json().catch(() => ({}));
+    err.textContent = d.detail || 'No se pudo ingresar.';
+    err.hidden = false;
+  } catch (_) {
+    err.textContent = 'No hay conexión con el servidor.';
+    err.hidden = false;
+  }
+  btn.disabled = false; btn.textContent = 'Ingresar';
+  document.getElementById('contrasena').value = '';
+});
+</script>
+</body>
+</html>
