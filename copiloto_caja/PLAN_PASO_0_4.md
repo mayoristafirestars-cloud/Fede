@@ -1,6 +1,6 @@
 # Paso 0.4 — Importes y fechas: plan para aprobar
 
-**Estado: NO ejecutado.** El prompt pide frenar antes de esta migración porque transforma datos existentes.
+**Estado: EJECUTADO** (aprobado por el dueño). Ver el commit "Paso 0.4" y tests/test_importes_fechas.py.
 
 ## Qué hay hoy [Observado]
 

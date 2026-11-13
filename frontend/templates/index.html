@@ -356,6 +356,9 @@ async function cargarUsuario(){
 }
 function salir(){fetch('/api/auth/logout',{method:'POST'}).finally(()=>{location.href='/login';});}
 cargarUsuario();
+// Fechas: la API usa AAAA-MM-DD; en pantalla se muestran dd/mm/aaaa.
+function hoyISO(){const d=new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');}
+function fmtFecha(f){const m=/^(\d{4})-(\d{2})-(\d{2})$/.exec(f||'');return m?`${m[3]}/${m[2]}/${m[1]}`:(f||'—');}
 const STATE={items:[],tipo:'factura',nextNum:1,searchIdx:-1,cmdIdx:-1,draftTimer:null,buscarTimer:null};
 
 function goPage(id,el){
@@ -569,7 +572,7 @@ async function cargarHistorial(tipo){
     body.innerHTML=data.map(c=>{
       const cls=c.tipo==='factura'?'badge-f':'badge-p';
       const cls2=c.estado==='anulado'?'badge-a':'badge-f';
-      return `<tr><td style="font-family:var(--FM);font-size:12px">${c.numero||'—'}</td><td>${c.fecha}</td>
+      return `<tr><td style="font-family:var(--FM);font-size:12px">${c.numero||'—'}</td><td>${fmtFecha(c.fecha)}</td>
         <td style="color:${c.cliente_nombre?'var(--text)':'var(--text3)'}">${c.cliente_nombre||'—'}</td>
         <td><span class="badge ${cls}">${c.tipo}</span></td>
         <td style="text-align:right;font-family:var(--FM)">${fmt(c.total)}</td>
@@ -596,7 +599,7 @@ async function confirmarAnular(id,num){
 async function cargarKPIs(){
   try{
     const r=await fetch('/api/facturacion/historial?limit=200');const data=await r.json();
-    const hoy=new Date().toLocaleDateString('es-AR',{day:'2-digit',month:'2-digit',year:'numeric'});
+    const hoy=hoyISO();
     const hd=data.filter(c=>c.fecha===hoy&&c.estado!=='anulado');
     const v=hd.reduce((s,c)=>s+(c.total||0),0);
     const g=v*0.44;

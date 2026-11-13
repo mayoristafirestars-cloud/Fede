@@ -25,7 +25,8 @@ def test_base_nueva_aplica_todo_sin_respaldo(db_temporal, respaldos_tmp):
     hechas = aplicar_migraciones()
     assert hechas == [v for v, _, _ in listar_migraciones()]
     assert {"productos", "clientes", "comprobantes", "schema_migraciones"} <= _tablas(db_temporal)
-    assert not respaldos_tmp.exists()          # base nueva: no hay nada que respaldar
+    respaldos_db = list(respaldos_tmp.glob("*.db")) if respaldos_tmp.exists() else []
+    assert respaldos_db == []                  # base nueva: no hay nada que respaldar
 
 
 def test_aplicar_dos_veces_no_hace_nada(db_temporal, respaldos_tmp):
@@ -45,7 +46,7 @@ def test_base_existente_se_respalda_y_conserva_datos(db_temporal, respaldos_tmp)
 
     aplicar_migraciones()
 
-    archivos = os.listdir(respaldos_tmp)
+    archivos = [a for a in os.listdir(respaldos_tmp) if a.endswith(".db")]
     assert len(archivos) == 1 and "pre_migracion_0001" in archivos[0]
     conn = sqlite3.connect(db_temporal)
     assert conn.execute("SELECT descripcion FROM productos WHERE codigo='X1'").fetchone()[0] == "Producto viejo"

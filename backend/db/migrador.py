@@ -1,10 +1,13 @@
 """
 Migraciones versionadas.
-Cada archivo backend/db/migraciones/NNNN_nombre.sql se aplica una sola vez,
+Cada archivo backend/db/migraciones/NNNN_nombre.sql (o .py) se aplica una sola vez,
 en orden y dentro de una transacción. Antes de aplicar, se respalda la base.
+Una migración .py define migrar(conn); se usa cuando hace falta Python
+(por ejemplo, convertir importes con Decimal).
 """
 
 import hashlib
+import importlib.util
 import json
 import os
 import re
@@ -15,7 +18,7 @@ from db.database import ruta_db
 from db import respaldos
 
 DIR_MIGRACIONES = os.path.join(os.path.dirname(os.path.abspath(__file__)), "migraciones")
-PATRON = re.compile(r"^(\d{4})_([\w-]+)\.sql$")
+PATRON = re.compile(r"^(\d{4})_([\w-]+)\.(sql|py)$")
 
 
 def listar_migraciones(directorio: str = None) -> list[tuple[int, str, str]]:
@@ -45,6 +48,14 @@ def _sentencias(sql: str) -> list[str]:
     if actual.strip():
         raise ValueError("La migración termina con una sentencia incompleta")
     return sentencias
+
+
+def _modulo(version: int, archivo: str):
+    """Carga una migración escrita en Python."""
+    spec = importlib.util.spec_from_file_location(f"migracion_{version:04d}", archivo)
+    modulo = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(modulo)
+    return modulo
 
 
 def _checksum(ruta: str) -> str:
@@ -95,12 +106,14 @@ def aplicar_migraciones(ruta: str = None, directorio: str = None, respaldar: boo
 
         hechas = []
         for version, nombre, archivo in pendientes:
-            with open(archivo, "r", encoding="utf-8") as f:
-                sql = f.read()
             conn.execute("BEGIN")
             try:
-                for sentencia in _sentencias(sql):
-                    conn.execute(sentencia)
+                if archivo.endswith(".py"):
+                    _modulo(version, archivo).migrar(conn)
+                else:
+                    with open(archivo, "r", encoding="utf-8") as f:
+                        for sentencia in _sentencias(f.read()):
+                            conn.execute(sentencia)
                 conn.execute(
                     "INSERT INTO schema_migraciones (version, nombre, checksum, aplicada_en) VALUES (?,?,?,?)",
                     (version, nombre, _checksum(archivo), datetime.now().isoformat(timespec="seconds")),

@@ -11,6 +11,7 @@ sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from db.database import conectar
 import seguridad
 from db.auditoria import registrar
+from dinero import a_centavos, a_decimal, a_pesos, redondear
 from db.secuencias import siguiente_numero
 
 EMPRESA_ID = 1   # una sola empresa por ahora
@@ -68,36 +69,41 @@ def crear_comprobante(data: NuevoComprobante, request: Request,
 
     conn = conectar()
     try:
-        # Calcular totales
-        subtotal = sum(i.cantidad * i.precio_unitario for i in data.items)
-        total    = subtotal * (1 - data.descuento / 100)
+        # Calcular totales en Decimal: cada ítem se redondea al centavo y el total
+        # se redondea después de aplicar el descuento (porcentaje).
+        items_c = [a_centavos(a_decimal(i.cantidad) * a_decimal(i.precio_unitario)) for i in data.items]
+        subtotal_c = sum(items_c)
+        total_c = a_centavos(redondear(a_decimal(subtotal_c) / 100 * (1 - a_decimal(data.descuento) / 100)))
 
         # Generar número de comprobante
         prefijo  = "F" if data.tipo == "factura" else "P"
         numero   = f"{prefijo}-{str(siguiente_numero(conn, EMPRESA_ID, data.tipo)).zfill(6)}"
 
-        from datetime import datetime
-        fecha = datetime.now().strftime("%d-%m-%Y")
+        from datetime import date
+        fecha = date.today().isoformat()          # AAAA-MM-DD
 
-        # Insertar cabecera
+        # Insertar cabecera (las columnas REAL se siguen escribiendo por compatibilidad)
         cur = conn.execute("""
             INSERT INTO comprobantes
-                (tipo, numero, cliente_id, cliente_nombre, fecha, subtotal, descuento, total)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+                (tipo, numero, cliente_id, cliente_nombre, fecha, subtotal, descuento, total,
+                 subtotal_centavos, total_centavos)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
         """, (data.tipo, numero, data.cliente_id, data.cliente_nombre,
-              fecha, subtotal, data.descuento, total))
+              fecha, a_pesos(subtotal_c), data.descuento, a_pesos(total_c), subtotal_c, total_c))
         comprobante_id = cur.lastrowid
 
         # Insertar ítems y actualizar stock
-        for item in data.items:
-            item_subtotal = item.cantidad * item.precio_unitario
+        for item, item_c in zip(data.items, items_c):
+            precio_c = a_centavos(item.precio_unitario)
+            costo_c  = a_centavos(item.precio_costo)
             conn.execute("""
                 INSERT INTO comprobante_items
                     (comprobante_id, producto_id, producto_desc, cantidad,
-                     precio_unitario, precio_costo, subtotal)
-                VALUES (?, ?, ?, ?, ?, ?, ?)
-            """, (comprobante_id, item.producto_id, item.producto_desc,
-                  item.cantidad, item.precio_unitario, item.precio_costo, item_subtotal))
+                     precio_unitario, precio_costo, subtotal,
+                     precio_unitario_centavos, precio_costo_centavos, subtotal_centavos)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            """, (comprobante_id, item.producto_id, item.producto_desc, item.cantidad,
+                  a_pesos(precio_c), a_pesos(costo_c), a_pesos(item_c), precio_c, costo_c, item_c))
 
             # Descontar stock si es factura y tiene producto_id
             if data.tipo == "factura" and item.producto_id:
@@ -109,7 +115,7 @@ def crear_comprobante(data: NuevoComprobante, request: Request,
                 """, (item.cantidad, item.producto_id))
 
         registrar(conn, "comprobante.emitir", entidad="comprobante", entidad_id=comprobante_id,
-                  despues={"numero": numero, "tipo": data.tipo, "total": total,
+                  despues={"numero": numero, "tipo": data.tipo, "total_centavos": total_c,
                            "cliente_nombre": data.cliente_nombre, "items": len(data.items)},
                   usuario=usuario, ip=seguridad.ip_de(request))
         conn.commit()
@@ -117,13 +123,27 @@ def crear_comprobante(data: NuevoComprobante, request: Request,
             "ok": True,
             "comprobante_id": comprobante_id,
             "numero": numero,
-            "total": total
+            "total": a_pesos(total_c)
         }
     except Exception as e:
         conn.rollback()
         raise HTTPException(status_code=500, detail=str(e))
     finally:
         conn.close()
+
+
+def _en_pesos(fila, campos: tuple) -> dict:
+    """Devuelve la fila con los importes en pesos calculados desde los centavos."""
+    d = dict(fila)
+    for campo in campos:
+        centavos = d.get(f"{campo}_centavos")
+        if centavos is not None:
+            d[campo] = a_pesos(centavos)
+    return d
+
+
+CAMPOS_COMPROBANTE = ("subtotal", "total")
+CAMPOS_ITEM = ("precio_unitario", "precio_costo", "subtotal")
 
 
 @router.get("/historial")
@@ -140,7 +160,7 @@ def historial(tipo: str = None, limit: int = 50, offset: int = 0,
         query += " ORDER BY id DESC LIMIT ? OFFSET ?"
         params += [limit, offset]
         filas = conn.execute(query, params).fetchall()
-        return [dict(f) for f in filas]
+        return [_en_pesos(f, CAMPOS_COMPROBANTE) for f in filas]
     finally:
         conn.close()
 
@@ -159,7 +179,7 @@ def detalle_comprobante(comprobante_id: int,
         items = conn.execute(
             "SELECT * FROM comprobante_items WHERE comprobante_id = ?", (comprobante_id,)
         ).fetchall()
-        return {**dict(cab), "items": [dict(i) for i in items]}
+        return {**_en_pesos(cab, CAMPOS_COMPROBANTE), "items": [_en_pesos(i, CAMPOS_ITEM) for i in items]}
     finally:
         conn.close()
 
