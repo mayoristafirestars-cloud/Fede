@@ -1,0 +1,15 @@
+{
+  "nombre": "ARCA — Mis Comprobantes Emitidos (CSV o Excel)",
+  "nota": "Nombres de columna según la descarga de Mis Comprobantes. Si ARCA cambia alguno, agregar el alias acá.",
+  "campos": {
+    "fecha":       {"alias": ["Fecha de Emisión", "Fecha"], "obligatorio": true},
+    "tipo":        {"alias": ["Tipo de Comprobante", "Tipo"], "obligatorio": true},
+    "punto_venta": {"alias": ["Punto de Venta"], "obligatorio": true},
+    "numero":      {"alias": ["Número Desde", "Número", "Nro. Comprobante"], "obligatorio": true},
+    "cuit":        {"alias": ["Nro. Doc. Receptor", "Nro. Doc. Receptor/Emisor", "Nro Doc Receptor"], "obligatorio": true},
+    "cliente":     {"alias": ["Denominación Receptor", "Denominación Receptor/Emisor", "Receptor"]},
+    "total":       {"alias": ["Imp. Total", "Importe Total", "Total"], "obligatorio": true},
+    "moneda":      {"alias": ["Moneda"]},
+    "vencimiento": {"alias": ["Fecha Vto. Pago", "Fecha de Vencimiento del Pago", "Vencimiento"]}
+  }
+}
