@@ -14,6 +14,14 @@
 
 ## 2026-11-13
 **Autor:** @entrenador-fisico
+**Qué:** Rutina pasa a 6 días/semana (pedido de Fede). El miércoles, antes Z2 de 60 min, es ahora la sesión F: brazos, deltoide lateral/posterior, core antiextensión/antirrotación, farmer carry liviano, cuello y antebrazos, más Z2 de 30-35 min; sin básicos ni carga axial, RIR 1-2. Se bajan a 3 rondas la superserie fondos + face pull del lunes y laterales + martillo del jueves (sin dropsets en hombro) para no pasar el volumen semanal. Regla nueva de autorregulación para 6 días (con poco sueño o agujetas fuertes se saca primero el miércoles, luego el sábado). Deloads en S4 y S8 también en F.
+**Por qué:** "la idea del entrenamiento es hacerlo 6 días a la semana". El miércoles queda entre sentadilla y press militar/dominadas, por eso suma sin competir con los básicos. Restricciones médicas intactas (FC ≤121, picos ≤131, sin HIIT/1RM, RIR ≥1).
+**Impacto:** `salud/rutina-actual.md`, `salud/bitacora/2026-11-13.md`, `plan.json` del scratchpad. Se pide al médico validar 6 días/semana y al nutricionista revisar kcal por el día extra.
+
+---
+
+## 2026-11-13
+**Autor:** @entrenador-fisico
 **Qué:** Rutina de 5 días endurecida (versión dura): 5 series en los básicos, back-off en banca y sentadilla, rest-pause/dropsets/tempo en aislados seguros, farmer y suitcase carry más pesados, más Z2 (miércoles 60 min, 11.000 pasos) y más volumen de estaciones el sábado. Agrega "Fase 2 – desbloqueo con ECG aprobado" (sin programar). Mismas 8 semanas, deloads en S4 y S8.
 **Por qué:** Pedido de Fede de más intensidad. Se endurece dentro de los límites médicos (FC ≤121 lpm, picos ≤131, sin HIIT/1RM, RIR ≥1 en básicos) hasta tener el ECG; la dureza viene de lo muscular y el volumen, no del pulso.
 **Impacto:** `salud/rutina-actual.md`, `salud/bitacora/2026-11-13.md`, `plan.json` del scratchpad. Sin ECG no se pasa de S3; nutricionista debe revisar kcal por el volumen nuevo.

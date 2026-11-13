@@ -1,7 +1,7 @@
-# Rutina actual (fuerza + Hyrox base) — VERSIÓN DURA — 5 días/semana — bajar % de grasa
+# Rutina actual (fuerza + Hyrox base) — VERSIÓN DURA — 6 días/semana — bajar % de grasa
 
 **Vigente desde:** 16/11/2026 (lunes) hasta 10/01/2027 — 8 semanas.
-**Versión:** dura (13/11/2026). Reemplaza la versión del 11/11/2026 a pedido de Fede ("realmente quiero que seas duro, que sea un entrenamiento fuerte"). Mismo calendario y mismos días; sube el volumen y la exigencia muscular, no el pulso.
+**Versión:** dura, 6 días (13/11/2026). Reemplaza la versión del 11/11/2026 a pedido de Fede ("realmente quiero que seas duro, que sea un entrenamiento fuerte") y su aclaración "la idea del entrenamiento es hacerlo 6 días a la semana". Mismo calendario; sube el volumen y la exigencia muscular, no el pulso. El miércoles (antes solo Z2) pasa a ser la sesión F de gym accesorio.
 **Reemplaza a:** bloque "Fuerza con barra, pesos proyectados" (29/09/2026), que se cierra antes de su test de la semana 8 porque Fede ya tiene marcas nuevas.
 **Objetivo:** bajar grasa corporal (panza), mantener y ganar fuerza, sumar base para Hyrox.
 
@@ -23,7 +23,8 @@ El peso muerto y el militar son estimaciones. La semana 1 calibra: si la primera
 - **Accesorios:** RIR 0-1 solo en máquinas, poleas y mancuernas livianas, con rest-pause, dropsets y tempo 3-0-1. Nunca en barra libre ni en fondos/dominadas lastradas.
 - **Densidad:** superseries de antagonistas, con pausa hasta bajar de 110 lpm.
 - **Cargas pesadas que suben poco el pulso:** farmer carry de 2 × 32 a 2 × 40 kg, suitcase carry, empuje de disco hasta 60 kg, planchas con lastre, colgados y holds en dominadas.
-- **Aeróbico:** miércoles Z2 de 60 min, finales Z2 más largos, 11.000 pasos.
+- **Aeróbico:** bloque Z2 de 30-35 min al final del miércoles, finales Z2 más largos, 11.000 pasos.
+- **Sexto día sin robar recuperación:** el miércoles no tiene básicos ni carga axial ni cargas sobre la cabeza, todo a RIR 1-2 y sin técnicas de intensidad en deltoide. Para no pasarse de volumen semanal: lunes baja a 3 rondas de fondos + face pull (sin dropset) y jueves baja a 3 rondas de laterales + martillo (sin dropsets en laterales).
 
 ## Semana tipo
 
@@ -31,13 +32,13 @@ El peso muerto y el militar son estimaciones. La semana 1 calibra: si la primera
 |---|---|---|
 | Lunes | A · Torso: press banca y empuje (final: farmer carry pesado) | 07:00 |
 | Martes | B · Pierna: sentadilla (final: bici de aire Z2 12-20 min) | 07:00 |
-| Miércoles | Bici o remo Z2 60 min + pasos | post-almuerzo |
+| Miércoles | F · Brazos, hombro y core, sin básicos (final: bici o remo Z2 30-35 min) + pasos | a definir (el Z2 puede ir post-almuerzo) |
 | Jueves | C · Torso: press militar y tracción vertical (final: SkiErg Z2) | 07:00 |
 | Viernes | D · Pierna: peso muerto y glúteo (final: remo Z2) | 14:00 |
 | Sábado | E · Hyrox base: más estaciones y más carga, pausas largas | mañana |
 | Domingo | Descanso activo: caminata 30-40 min + batch cooking | — |
 
-Sesiones de hasta 85 min. Cada día tiene calentamiento general, movilidad, activación y vuelta a la calma propios.
+Sesiones de hasta 85 min (miércoles hasta 90 con el Z2). Cada día tiene calentamiento general, movilidad, activación y vuelta a la calma propios.
 
 ## Progresión (porcentaje del máximo estimado × series × reps)
 
@@ -60,7 +61,7 @@ Nunca se llega al fallo en un básico ni a un máximo real. La S8 es descarga y 
 
 ### Lunes — Torso A (85 min)
 - Calentamiento: bici de aire 5 min, remo suave 2 min, círculos de brazos. Movilidad: extensión torácica, open book, pectoral en puerta. Activación: band pull-apart, rotación externa con banda, flexiones escapulares, aproximación de banca.
-- Press de banca (fuerza, 3 min) · Press de banca back-off (−12 %, 2 series) · Remo con barra inclinado (media, 5 series) · Press inclinado con mancuernas (4 series) · Jalón al pecho con tempo 3-0-1 y rest-pause en la última serie · Superserie fondos + face pull (4 rondas desde S3, dropset de face pull en S6-S7).
+- Press de banca (fuerza, 3 min) · Press de banca back-off (−12 %, 2 series) · Remo con barra inclinado (media, 5 series) · Press inclinado con mancuernas (4 series) · Jalón al pecho con tempo 3-0-1 y rest-pause en la última serie · Superserie fondos + face pull (3 rondas, sin dropset: el deltoide posterior y el tríceps se completan el miércoles).
 - Final: farmer carry 5-6 × 40 m con 2 × 32 a 2 × 40 kg (pausa 75 s hasta bajar de 110 lpm) + colgado de barra al límite de agarre.
 - Calma: pectoral, dorsal, tríceps y antebrazos, respiración nasal.
 
@@ -70,9 +71,16 @@ Nunca se llega al fallo en un básico ni a un máximo real. La S8 es descarga y 
 - Final: bici de aire Z2, 12 a 20 min.
 - Calma: cuádriceps, psoas, aductores, respiración diafragmática.
 
+### Miércoles — F: brazos, hombro y core, sin básicos (90 min)
+- Objetivo: sumar volumen sin robar recuperación a la sentadilla del martes ni al press militar y dominadas del jueves. Sin básicos, sin carga axial, sin cargas sobre la cabeza; RIR 1-2 y sin dropsets ni rest-pause en laterales.
+- Calentamiento: bici o remo 5 min, círculos de brazos y muñecas, chin tuck. Movilidad: extensión torácica, trapecio superior, gato-vaca. Activación: rotación externa con banda, dead bug, lateral y curl muy livianos.
+- Superserie elevación lateral en polea + pájaros en máquina (3 rondas, 4 en S5-S7; dropset solo en pájaros S6-S7) · Superserie curl inclinado + extensión de tríceps sobre la cabeza en polea (3 rondas; rest-pause solo en el curl desde S3) · Superserie core: rollout desde rodillas (antiextensión) + plancha con toque de hombro (antirrotación) · Farmer carry liviano 4 × 30-40 m con 2 × 20 a 2 × 26 kg (agarre de reserva para el jueves) · Cuello isométrico en 4 direcciones al 50 % + curl y extensión de muñeca.
+- Final: bici de aire o remo Z2, 30 min (S1-S3), 35 min (S5-S7), FC 105-118. En deload (S4 y S8) 2 series por ejercicio a RIR 3, sin técnicas, y Z2 de 20 y 25 min.
+- Calma: bíceps, tríceps, antebrazos, deltoide posterior, niño con respiración diafragmática.
+
 ### Jueves — Torso B (85 min)
 - Calentamiento: remo 5 min, SkiErg o polea alta liviana. Movilidad: dislocaciones con banda, colgado pasivo, dorsal en banco. Activación: band pull-apart, scapular pull-up, wall slide, aproximación de militar.
-- Press militar de pie (media, 5 series) · Press inclinado con barra (3 series) · Dominadas 5 × 5 a 5 × 8 con hold de 5 s en la última desde S5 · Remo unilateral con mancuerna con rest-pause · Superserie laterales + martillo (4 rondas desde S3, dropsets).
+- Press militar de pie (media, 5 series) · Press inclinado con barra (3 series) · Dominadas 5 × 5 a 5 × 8 con hold de 5 s en la última desde S5 · Remo unilateral con mancuerna con rest-pause · Superserie laterales + martillo (3 rondas a RIR 1-2; rest-pause solo en el martillo en S6-S7, sin dropsets).
 - Final: SkiErg 6-7 × 1 a 1 min 30 s a ritmo cómodo (o tirones de polea alta con brazos rectos).
 - Calma: colgado, niño con brazos largos, trapecio, tríceps.
 
@@ -98,22 +106,33 @@ Nunca se llega al fallo en un básico ni a un máximo real. La S8 es descarga y 
 - ECG y tensión siguen sin hacerse. Pedir ECG antes de la S3; sin ECG no se pasa de S3 (se repiten los porcentajes de S2) y las S5-S7 requieren visto bueno médico.
 - Si dormiste menos de 5 h: sin back-off ni técnicas de intensidad, básico hasta 3 series, accesorios a la mitad y sin final. Dolor en el pecho, mareo, falta de aire rara o palpitaciones: cortás y consultás.
 
+## Autorregulación de 6 días (poco sueño o agujetas fuertes)
+
+Con menos de 5 h de sueño o agujetas fuertes (más de 6/10, dolor al caminar o que cambian la técnica), sacá en este orden y parando apenas mejore:
+1. Miércoles F: pasa a Z2 suave 30 min + pasos (si las agujetas son solo de brazos u hombros, hacé únicamente core, carry y Z2).
+2. Sábado E: pasa a bici Z2 suave 30-40 min.
+3. Finales Z2 de martes, jueves y viernes.
+4. Recién al final se recortan series de los básicos (nunca antes que F y el sábado).
+
+Dos noches seguidas de menos de 5 h o promedio semanal bajo 6 h: quedan 4 días de fuerza (lunes, martes, jueves, viernes) y miércoles y sábado pasan a Z2 suave o descanso. Un día salteado no se recupera sumándolo a otro.
+
 ## Fase 2 — desbloqueo con ECG aprobado (no programada todavía)
 
 Solo se activa con ECG, tensión y visto bueno del médico, y se programa semana a semana recién entonces.
-- 4 × 4 min de VO2max una vez por semana (85-95 % de la FC máxima, 3 min de pausa activa), en lugar de la bici Z2 del miércoles.
+- 4 × 4 min de VO2max una vez por semana (85-95 % de la FC máxima, 3 min de pausa activa), en lugar del bloque Z2 del miércoles.
 - Finales metabólicos de alta intensidad en martes y jueves (circuitos de 6-10 min con remo, SkiErg, carries y bici de aire).
 - Hyrox a ritmo de carrera el sábado: trineo y arrastre reales, carreras de 1 km entre estaciones, pausas cortas.
 - RIR 0-1 controlado en accesorios compuestos (búlgaras, press inclinado, remos, dominadas); los básicos siguen a RIR ≥ 1 hasta que el médico habilite tests de 3RM.
 
 ## Fuera del gym
 
-- 11.000 pasos diarios, miércoles bici o remo Z2 60 min (FC 105-118), domingo caminata de 30-40 min.
+- 11.000 pasos diarios, miércoles bloque Z2 de 30-35 min dentro de la sesión F (FC 105-118), domingo caminata de 30-40 min.
 - Peso y cintura en ayunas todos los lunes en `mediciones.md`.
 
 ## Coordinación
 
+- Médico: avisar que ahora son 6 días de entrenamiento por semana y consultar si hay límite de frecuencia hasta tener el ECG.
 - Médico: ECG, análisis y tensión pendientes desde abril (ahora condicionan pasar de S3); validar estaciones Hyrox, carries pesados y técnicas de intensidad con el tope de 121 lpm; el ECG es lo que habilita la Fase 2.
-- Nutricionista: alinear kcal reales (bot 1.800 vs dieta 2.250) con 5 días de entreno y más volumen; revisar carbohidrato del sábado y de los días de sentadilla y peso muerto. Si el rendimiento cae dos semanas, primero subir calorías y recién después bajar volumen.
+- Nutricionista: alinear kcal reales (bot 1.800 vs dieta 2.250) con 6 días de entreno y más volumen; revisar carbohidrato del sábado y de los días de sentadilla y peso muerto. Si el rendimiento cae dos semanas, primero subir calorías y recién después bajar volumen.
 - Sueño: sigue en 5-6 h. Con más volumen es el principal riesgo; si el promedio semanal queda bajo 6 h, se sacan primero back-off y técnicas de intensidad.
 - Fuente de los datos: `plan.json` del scratchpad (de ahí salen el PDF y los kilos).
