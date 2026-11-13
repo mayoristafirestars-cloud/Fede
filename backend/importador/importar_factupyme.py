@@ -16,7 +16,7 @@ import re
 
 # Agregar el directorio padre al path para importar database
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-from db.database import conectar, inicializar_db
+from db.database import conectar, inicializar_db, ruta_db
 
 DATA_DIR = os.path.join(
     os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))),
@@ -206,7 +206,7 @@ def importar_todo(
     conn.close()
 
     print(f"\n✅ Importación completa — {total} registros procesados")
-    print(f"📂 Base de datos: {os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'db', 'coronel_sur.db')}")
+    print(f"📂 Base de datos: {ruta_db()}")
 
 
 if __name__ == "__main__":

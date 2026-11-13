@@ -1,11 +1,27 @@
+# Propuesta (no desplegada): base SQLite en un disco persistente de Render.
+# Sin disco persistente, el archivo de la base se borra en cada despliegue.
+# Los discos de Render requieren un plan pago (no funcionan en el plan gratuito).
 services:
   - type: web
     name: coronel-sur
     runtime: python
+    plan: starter
     buildCommand: pip install -r requirements.txt
     startCommand: python backend/main.py
+    disk:
+      name: datos
+      mountPath: /var/data
+      sizeGB: 1
     envVars:
       - key: PORT
         value: 8000
       - key: PYTHON_VERSION
         value: 3.11.0
+      - key: ENTORNO
+        value: produccion
+      - key: DB_PATH
+        value: /var/data/coronel_sur.db
+      - key: BACKUP_DIR
+        value: /var/data/respaldos
+      - key: SECRET_KEY
+        generateValue: true

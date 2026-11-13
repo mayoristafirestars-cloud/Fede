@@ -1,3 +1,5 @@
+-- 0001: esquema inicial (el mismo schema.sql de la versión anterior).
+-- Usa IF NOT EXISTS: en una base existente no cambia nada, sólo queda registrada.
 -- ============================================================
 -- CORONEL SUR — Base de datos principal
 -- ============================================================
