@@ -2,13 +2,14 @@
 Módulo de Facturación — Rutas API
 """
 
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, Request
 from pydantic import BaseModel
 from typing import Optional
 import sys, os
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from db.database import conectar
+import seguridad
 from db.secuencias import siguiente_numero
 
 EMPRESA_ID = 1   # una sola empresa por ahora
@@ -36,7 +37,8 @@ class NuevoComprobante(BaseModel):
 # ─── Endpoints ─────────────────────────────────────────────
 
 @router.get("/buscar-producto")
-def buscar_producto(q: str = "", limit: int = 10):
+def buscar_producto(q: str = "", limit: int = 10,
+                    _u=Depends(seguridad.requiere("producto.ver"))):
     """Busca productos por código o descripción para el buscador de la factura."""
     conn = conectar()
     try:
@@ -57,7 +59,8 @@ def buscar_producto(q: str = "", limit: int = 10):
 
 
 @router.post("/nuevo")
-def crear_comprobante(data: NuevoComprobante):
+def crear_comprobante(data: NuevoComprobante, request: Request,
+                      usuario=Depends(seguridad.requiere("comprobante.emitir"))):
     """Crea una nueva factura o presupuesto."""
     if not data.items:
         raise HTTPException(status_code=400, detail="El comprobante no tiene ítems")
@@ -119,7 +122,8 @@ def crear_comprobante(data: NuevoComprobante):
 
 
 @router.get("/historial")
-def historial(tipo: str = None, limit: int = 50, offset: int = 0):
+def historial(tipo: str = None, limit: int = 50, offset: int = 0,
+              _u=Depends(seguridad.requiere("comprobante.ver"))):
     """Lista los comprobantes con filtro opcional por tipo."""
     conn = conectar()
     try:
@@ -137,7 +141,8 @@ def historial(tipo: str = None, limit: int = 50, offset: int = 0):
 
 
 @router.get("/{comprobante_id}")
-def detalle_comprobante(comprobante_id: int):
+def detalle_comprobante(comprobante_id: int,
+                        _u=Depends(seguridad.requiere("comprobante.ver"))):
     """Devuelve el detalle completo de un comprobante."""
     conn = conectar()
     try:
@@ -155,7 +160,8 @@ def detalle_comprobante(comprobante_id: int):
 
 
 @router.post("/{comprobante_id}/anular")
-def anular_comprobante(comprobante_id: int):
+def anular_comprobante(comprobante_id: int, request: Request,
+                       usuario=Depends(seguridad.requiere("comprobante.anular"))):
     """Anula un comprobante y revierte el stock si era factura."""
     conn = conectar()
     try:

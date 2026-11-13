@@ -35,7 +35,10 @@ def test_secuencia_arranca_desde_el_maximo_existente(db_temporal):
 
     from fastapi.testclient import TestClient
     from main import app
+    from conftest import crear_usuario, login
     with TestClient(app) as cliente:
+        crear_usuario("admin", {"admin"})
+        login(cliente, "admin")
         assert _emitir(cliente)["numero"] == "F-000006"
         assert _emitir(cliente, "presupuesto")["numero"] == "P-000008"
 

@@ -175,8 +175,9 @@ a{text-decoration:none;color:inherit}button{cursor:pointer;font-family:var(--F)}
   </nav>
   <div class="sidebar-footer">
     <div class="user-row">
-      <div class="user-av">F</div>
-      <div><div class="user-name">Fede</div><div class="user-role">Administrador</div></div>
+      <div class="user-av" id="user-av">·</div>
+      <div><div class="user-name" id="user-name">—</div><div class="user-role" id="user-role"></div></div>
+      <button class="btn-sm" style="margin-left:auto" onclick="salir()" title="Cerrar sesión">Salir</button>
     </div>
   </div>
 </aside>
@@ -330,6 +331,31 @@ a{text-decoration:none;color:inherit}button{cursor:pointer;font-family:var(--F)}
 <div id="toast"></div>
 
 <script>
+// Sesión: agrega el token CSRF a toda operación que modifica datos y vuelve al login si la sesión venció.
+(function(){
+  const fetchOriginal=window.fetch.bind(window);
+  window.fetch=function(url,opt){
+    opt=Object.assign({credentials:'same-origin'},opt||{});
+    const metodo=(opt.method||'GET').toUpperCase();
+    if(metodo!=='GET'&&metodo!=='HEAD'){
+      const m=document.cookie.match(/(?:^|; )cs_csrf=([^;]*)/);
+      opt.headers=Object.assign({},opt.headers||{},{'X-CSRF-Token':m?decodeURIComponent(m[1]):''});
+    }
+    return fetchOriginal(url,opt).then(r=>{if(r.status===401)location.href='/login';return r;});
+  };
+})();
+const NOMBRES_ROL={admin:'Administrador',responsable_cobranza:'Responsable de cobranza',cobrador:'Cobrador',consulta:'Consulta'};
+async function cargarUsuario(){
+  try{
+    const r=await fetch('/api/auth/yo'); if(!r.ok)return;
+    const u=await r.json();
+    document.getElementById('user-name').textContent=u.nombre;
+    document.getElementById('user-av').textContent=(u.nombre||'·').charAt(0).toUpperCase();
+    document.getElementById('user-role').textContent=u.roles.map(x=>NOMBRES_ROL[x]||x).join(', ');
+  }catch(_){}
+}
+function salir(){fetch('/api/auth/logout',{method:'POST'}).finally(()=>{location.href='/login';});}
+cargarUsuario();
 const STATE={items:[],tipo:'factura',nextNum:1,searchIdx:-1,cmdIdx:-1,draftTimer:null,buscarTimer:null};
 
 function goPage(id,el){

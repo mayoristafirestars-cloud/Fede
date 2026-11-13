@@ -9,7 +9,7 @@ Antes de reemplazar la base, se guarda un respaldo de la base actual.
 import json
 import sys
 
-import _ruta  # noqa: F401
+import _ruta  # noqa: F401  (agrega backend/ al path y carga .env)
 from db import respaldos
 from db.database import conectar, ruta_db
 
