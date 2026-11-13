@@ -4,3 +4,4 @@ uvicorn[standard]==0.30.6
 python-multipart==0.0.9
 pydantic==2.8.2
 argon2-cffi==25.1.0
+openpyxl==3.1.5
