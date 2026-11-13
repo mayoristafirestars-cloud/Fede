@@ -9,6 +9,9 @@ import sys, os
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from db.database import conectar
+from db.secuencias import siguiente_numero
+
+EMPRESA_ID = 1   # una sola empresa por ahora
 
 router = APIRouter(prefix="/api/facturacion", tags=["facturacion"])
 
@@ -67,10 +70,7 @@ def crear_comprobante(data: NuevoComprobante):
 
         # Generar número de comprobante
         prefijo  = "F" if data.tipo == "factura" else "P"
-        ultimo   = conn.execute(
-            "SELECT COUNT(*) FROM comprobantes WHERE tipo = ?", (data.tipo,)
-        ).fetchone()[0]
-        numero   = f"{prefijo}-{str(ultimo + 1).zfill(6)}"
+        numero   = f"{prefijo}-{str(siguiente_numero(conn, EMPRESA_ID, data.tipo)).zfill(6)}"
 
         from datetime import datetime
         fecha = datetime.now().strftime("%d-%m-%Y")
