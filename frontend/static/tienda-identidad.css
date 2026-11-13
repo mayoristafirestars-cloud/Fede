@@ -1,0 +1,13 @@
+/* Selected Nativa identity. Display the complete lockup without changing the source PNG. */
+.nativa-brand{position:relative;display:block;flex-shrink:0;width:160px;height:136px;overflow:hidden;line-height:1}
+.nativa-brand img{position:absolute;display:block;width:320px;max-width:none;height:auto;left:-80px;top:-38px;mix-blend-mode:multiply}
+.store-header{padding-top:12px;padding-bottom:12px}
+.store-footer .nativa-brand{width:100px;height:85px}
+.store-footer .nativa-brand img{width:200px;left:-50px;top:-24px}
+.sidebar .nativa-brand{width:100px;height:85px;background:#fff;border-radius:9px}
+.sidebar .nativa-brand img{width:200px;left:-50px;top:-24px}
+.sidebar{overflow-y:auto}
+.login-brand{width:240px;height:204px;margin:0 auto 20px}
+.login-brand img{width:480px;left:-120px;top:-57px}
+.brand-sr{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+@media(max-width:620px){.store-header .nativa-brand{width:120px;height:102px}.store-header .nativa-brand img{width:240px;left:-60px;top:-28px}.sidebar .nativa-brand{width:80px;height:68px}.sidebar .nativa-brand img{width:160px;left:-40px;top:-19px}}

@@ -1,0 +1,8 @@
+<!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>$title · $business · $number</title><link rel="stylesheet" href="/static/documento.css"><script src="/static/documento.js" defer></script></head>
+<body data-missing="$missing" data-complete-url="$complete_url">
+<nav class="document-toolbar"><a href="/#caja">← Volver al sistema</a><button id="complete-photos" $complete_disabled>Completar fotos desde catálogo</button><button id="print-document" $disabled>Imprimir / Guardar PDF</button></nav>
+<aside class="document-notice" role="status">$notice <p id="document-message"></p><a href="/#productos" target="_blank" rel="noopener">Abrir catálogo para cargar fotos →</a></aside>
+<p class="print-guard">Documento incompleto: falta cargar o verificar la imagen de uno o más productos. Completá las fotos antes de imprimir.</p>
+<article class="document-content"><header><div><h1>$business</h1><p>$locality</p></div><div><h2>$title</h2><strong>$number</strong><p>$date</p></div></header><div class="document-info"><p>Estado: <b>$status</b> · Cobro: $payment</p><p>Cliente: $client</p></div>
+<div class="document-table-wrap"><table><thead><tr><th>#</th><th>Foto</th><th>Producto</th><th class="number">Cantidad / unidad</th>$price_columns</tr></thead><tbody>$rows</tbody></table></div>$totals
+<footer><strong>Documento interno. No válido como factura fiscal.</strong><p>Las cantidades e importes son los originales; las correcciones se conservan en el sistema. Las imágenes corresponden a las fichas de los productos y no certifican el estado del alimento entregado.</p></footer></article></body></html>
