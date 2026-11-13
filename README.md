@@ -28,6 +28,7 @@ El `.env` no se sube al repositorio. En producción (`ENTORNO=produccion`) la `S
 | `DB_PATH` | Archivo de la base | `backend/db/coronel_sur.db` |
 | `BACKUP_DIR` | Carpeta de respaldos | `backend/db/respaldos` |
 | `SESION_HORAS` | Duración de la sesión | `12` |
+| `IVA_ALICUOTA` | IVA (%) que se asume para mostrar la ganancia sin IVA | `21` |
 
 ## Crear el primer usuario administrador
 

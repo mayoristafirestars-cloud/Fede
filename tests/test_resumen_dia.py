@@ -89,3 +89,37 @@ def test_funciona_con_comprobantes_migrados(db_temporal):
         login(c, "admin")
         d = c.get("/api/facturacion/resumen-dia?fecha=2026-11-13").json()
         assert (d["facturas"], d["total"], d["costo"], d["ganancia"]) == (1, 1800.0, 1200.0, 600.0)
+
+
+# ─── Ganancia sin IVA (Responsable Inscripto: precios y costos con IVA incluido) ───
+
+def test_sin_iva(cliente):
+    _emitir(cliente, [_item(2, 1000.0, 600.0)], descuento=10)
+    _emitir(cliente, [_item(1.5, 1000.0, 700.0), _item(3, 50.0, 20.0)])
+    d = cliente.get("/api/facturacion/resumen-dia").json()
+    assert d["alicuota_iva"] == 21.0
+    assert d["total_sin_iva"] == 2851.24          # 3450 / 1,21
+    assert d["costo_sin_iva"] == 1909.09          # 2310 / 1,21
+    assert d["ganancia_sin_iva"] == 942.15        # 1140 / 1,21
+    assert d["margen_pct"] == 33.04               # el margen no cambia
+
+
+def test_sin_iva_con_perdida(cliente):
+    _emitir(cliente, [_item(1, 800.0, 1000.0)])
+    d = cliente.get("/api/facturacion/resumen-dia").json()
+    assert d["ganancia_sin_iva"] == -165.29
+
+
+def test_alicuota_configurable(cliente, monkeypatch):
+    monkeypatch.setenv("IVA_ALICUOTA", "10.5")
+    _emitir(cliente, [_item(1, 1105.0, 0.0)])
+    d = cliente.get("/api/facturacion/resumen-dia").json()
+    assert d["alicuota_iva"] == 10.5 and d["total_sin_iva"] == 1000.0
+
+
+def test_quitar_iva():
+    from decimal import Decimal
+    from dinero import sin_iva
+    assert sin_iva(121000, Decimal("21")) == 100000
+    assert sin_iva(0, Decimal("21")) == 0
+    assert sin_iva(100, Decimal("0")) == 100

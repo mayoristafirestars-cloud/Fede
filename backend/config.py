@@ -29,3 +29,16 @@ def es_produccion() -> bool:
 
 def sesion_horas() -> int:
     return int(os.environ.get("SESION_HORAS", "12"))
+
+
+def iva_alicuota() -> "Decimal":
+    """
+    Alícuota de IVA supuesta para mostrar la ganancia sin IVA (Responsable Inscripto).
+    Precios y costos se cargan con IVA incluido. Hasta tener la alícuota de cada
+    producto, se asume la misma para todo: IVA_ALICUOTA (por defecto 21).
+    """
+    from decimal import Decimal
+    valor = Decimal(os.environ.get("IVA_ALICUOTA", "21"))
+    if not (0 <= valor < 100):
+        raise ValueError("IVA_ALICUOTA debe estar entre 0 y 100")
+    return valor

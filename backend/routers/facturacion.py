@@ -11,7 +11,8 @@ sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from db.database import conectar
 import seguridad
 from db.auditoria import registrar
-from dinero import a_centavos, a_decimal, a_pesos, redondear
+from dinero import a_centavos, a_decimal, a_pesos, redondear, sin_iva
+import config
 from db.secuencias import siguiente_numero
 
 EMPRESA_ID = 1   # una sola empresa por ahora
@@ -169,7 +170,7 @@ def historial(tipo: str = None, limit: int = 50, offset: int = 0,
 def resumen_dia(fecha: Optional[str] = None,
                 _u=Depends(seguridad.requiere("comprobante.ver"))):
     """
-    Ventas, costo, ganancia y margen de un día (por defecto, hoy).
+    Ventas, costo, ganancia y margen de un día (por defecto, hoy), con y sin IVA.
     Sólo facturas no anuladas: un presupuesto no es una venta.
     El costo es el que tenía cada producto al momento de vender (precio_costo del ítem).
     """
@@ -206,13 +207,22 @@ def resumen_dia(fecha: Optional[str] = None,
     ganancia_c = total_c - costo_c
     margen = float(redondear(a_decimal(ganancia_c) * 100 / a_decimal(total_c))) if total_c > 0 else None
 
+    # Precios y costos incluyen IVA. Para un Responsable Inscripto, la ganancia real es sin IVA:
+    # el IVA de la diferencia se le debe a ARCA. Se asume una sola alícuota (config.iva_alicuota).
+    alicuota = config.iva_alicuota()
+    total_neto_c, costo_neto_c = sin_iva(total_c, alicuota), sin_iva(costo_c, alicuota)
+
     return {
         "fecha":           dia.isoformat(),
         "facturas":        len(comps),
         "total":           a_pesos(total_c),
         "costo":           a_pesos(costo_c),
         "ganancia":        a_pesos(ganancia_c),
-        "margen_pct":      margen,             # ganancia / venta, en %; None si no hubo ventas
+        "margen_pct":      margen,             # ganancia / venta, en %; None si no hubo ventas (igual con o sin IVA)
+        "alicuota_iva":    float(alicuota),    # supuesta, igual para todos los productos
+        "total_sin_iva":   a_pesos(total_neto_c),
+        "costo_sin_iva":   a_pesos(costo_neto_c),
+        "ganancia_sin_iva": a_pesos(total_neto_c - costo_neto_c),
         "items":           len(items),
         "items_sin_costo": sin_costo,          # si es > 0, la ganancia está sobreestimada
     }

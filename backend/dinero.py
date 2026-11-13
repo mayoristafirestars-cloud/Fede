@@ -32,3 +32,8 @@ def formato_ar(centavos: int) -> str:
     signo = "-" if centavos < 0 else ""
     entero, cent = divmod(abs(centavos), 100)
     return f"{signo}$ {entero:,}".replace(",", ".") + f",{cent:02d}"
+
+
+def sin_iva(centavos: int, alicuota_pct: Decimal) -> int:
+    """Quita el IVA incluido: 1.210 con 21 % → 1.000."""
+    return a_centavos(Decimal(centavos) / 100 / (1 + alicuota_pct / 100))

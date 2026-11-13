@@ -187,7 +187,7 @@ a{text-decoration:none;color:inherit}button{cursor:pointer;font-family:var(--F)}
   <div class="topbar-title" id="topbar-title">Facturación</div>
   <div class="kpi-strip">
     <div class="kpi-item"><span class="kpi-label">Hoy</span><span class="kpi-val up" id="kpi-hoy">$0</span></div>
-    <div class="kpi-item"><span class="kpi-label">Ganancia</span><span class="kpi-val up" id="kpi-gan">$0</span></div>
+    <div class="kpi-item"><span class="kpi-label">Ganancia s/IVA</span><span class="kpi-val up" id="kpi-gan">$0</span></div>
     <div class="kpi-item"><span class="kpi-label">Margen</span><span class="kpi-val" id="kpi-mar">—</span></div>
     <div class="kpi-item"><span class="kpi-label">Nro.</span><span class="kpi-val" id="kpi-comp">0</span></div>
   </div>
@@ -603,12 +603,14 @@ async function cargarKPIs(){
     const gan=document.getElementById('kpi-gan'),mar=document.getElementById('kpi-mar');
     document.getElementById('kpi-hoy').textContent=fmtK(d.total);
     document.getElementById('kpi-hoy').className='kpi-val'+(d.total>0?' up':'');
-    gan.textContent=(d.ganancia<0?'-':'')+fmtK(Math.abs(d.ganancia))+(d.items_sin_costo>0?'*':'');
-    gan.className='kpi-val'+(d.ganancia>0?' up':d.ganancia<0?' down':'');
+    const g=d.ganancia_sin_iva;
+    gan.textContent=(g<0?'-':'')+fmtK(Math.abs(g))+(d.items_sin_costo>0?'*':'');
+    gan.className='kpi-val'+(g>0?' up':g<0?' down':'');
     mar.textContent=d.margen_pct===null?'—':d.margen_pct.toLocaleString('es-AR',{maximumFractionDigits:1})+'%';
     mar.className='kpi-val'+(d.margen_pct!==null&&d.margen_pct<0?' down':'');
     const aviso=d.items_sin_costo>0?' · '+d.items_sin_costo+' ítem(s) sin costo cargado: la ganancia está sobreestimada':'';
-    gan.title='Venta '+fmt(d.total)+' − costo '+fmt(d.costo)+aviso;
+    const iva=d.alicuota_iva.toLocaleString('es-AR')+' %';
+    gan.title='Sin IVA (se asume '+iva+' para todo): venta '+fmt(d.total_sin_iva)+' − costo '+fmt(d.costo_sin_iva)+'. Con IVA: '+fmt(d.ganancia)+aviso;
     mar.title='Ganancia / venta de las facturas de hoy'+aviso;
     document.getElementById('kpi-comp').textContent=d.facturas;
   }catch(e){}
