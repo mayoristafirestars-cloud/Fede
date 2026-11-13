@@ -10,6 +10,7 @@ import sys, os
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from db.database import conectar
 import seguridad
+from db.auditoria import registrar
 from db.secuencias import siguiente_numero
 
 EMPRESA_ID = 1   # una sola empresa por ahora
@@ -107,6 +108,10 @@ def crear_comprobante(data: NuevoComprobante, request: Request,
                     WHERE id = ?
                 """, (item.cantidad, item.producto_id))
 
+        registrar(conn, "comprobante.emitir", entidad="comprobante", entidad_id=comprobante_id,
+                  despues={"numero": numero, "tipo": data.tipo, "total": total,
+                           "cliente_nombre": data.cliente_nombre, "items": len(data.items)},
+                  usuario=usuario, ip=seguridad.ip_de(request))
         conn.commit()
         return {
             "ok": True,
@@ -188,6 +193,10 @@ def anular_comprobante(comprobante_id: int, request: Request,
         conn.execute(
             "UPDATE comprobantes SET estado = 'anulado' WHERE id = ?", (comprobante_id,)
         )
+        registrar(conn, "comprobante.anular", entidad="comprobante", entidad_id=comprobante_id,
+                  antes={"numero": comp["numero"], "estado": comp["estado"]},
+                  despues={"numero": comp["numero"], "estado": "anulado"},
+                  usuario=usuario, ip=seguridad.ip_de(request))
         conn.commit()
         return {"ok": True, "mensaje": "Comprobante anulado"}
     finally:

@@ -10,6 +10,7 @@ sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 import config
 import seguridad
 from db.database import conectar
+from db.auditoria import registrar
 
 router = APIRouter(prefix="/api/auth", tags=["auth"])
 
@@ -39,11 +40,22 @@ def login(data: Credenciales, request: Request, response: Response):
     """Inicia sesión. Responde siempre el mismo error para no revelar si el usuario existe."""
     conn = conectar()
     try:
+        ip = seguridad.ip_de(request)
         fila, motivo = seguridad.autenticar(conn, data.usuario, data.contrasena)
         if not fila:
-            conn.commit()     # guarda el contador de intentos / bloqueo
+            # Si el usuario no existe no se guarda lo tecleado: podría ser una contraseña.
+            existente = conn.execute("SELECT id, empresa_id, usuario FROM usuario WHERE usuario = ?",
+                                     (data.usuario.strip().lower(),)).fetchone()
+            registrar(conn, "login.fallido", entidad="usuario",
+                      entidad_id=existente["id"] if existente else None,
+                      despues={"motivo": motivo},
+                      actor_texto=existente["usuario"] if existente else "(usuario inexistente)",
+                      empresa_id=existente["empresa_id"] if existente else None, ip=ip)
+            conn.commit()     # guarda el contador de intentos / bloqueo y el evento
             raise HTTPException(status_code=401, detail=seguridad.MENSAJE_LOGIN)
-        token, csrf = seguridad.crear_sesion(conn, fila["id"], fila["empresa_id"], seguridad.ip_de(request))
+        token, csrf = seguridad.crear_sesion(conn, fila["id"], fila["empresa_id"], ip)
+        registrar(conn, "login", entidad="usuario", entidad_id=fila["id"],
+                  actor_texto=fila["usuario"], empresa_id=fila["empresa_id"], ip=ip)
         conn.commit()
     finally:
         conn.close()
@@ -58,6 +70,10 @@ def logout(request: Request, response: Response):
     try:
         if token:
             seguridad.revocar_sesion(conn, token)
+        usuario = getattr(request.state, "usuario", None)
+        if usuario:
+            registrar(conn, "logout", entidad="usuario", entidad_id=usuario.id,
+                      usuario=usuario, ip=seguridad.ip_de(request))
         conn.commit()
     finally:
         conn.close()

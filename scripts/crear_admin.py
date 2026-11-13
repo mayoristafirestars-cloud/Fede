@@ -11,12 +11,16 @@ import sys
 import _ruta  # noqa: F401  (agrega backend/ al path y carga .env)
 import seguridad
 from db.database import conectar, inicializar_db
+from db.auditoria import registrar
 
 
 def crear(usuario: str, nombre: str, contrasena: str, roles: set) -> int:
     conn = conectar()
     try:
         uid = seguridad.crear_usuario(conn, usuario, nombre, contrasena, roles)
+        registrar(conn, "usuario.crear", entidad="usuario", entidad_id=uid,
+                  despues={"usuario": usuario.strip().lower(), "nombre": nombre.strip(), "roles": sorted(roles)},
+                  actor_texto="consola", empresa_id=1)
         conn.commit()
         return uid
     except Exception:
