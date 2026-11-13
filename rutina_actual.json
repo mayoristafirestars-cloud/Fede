@@ -1,0 +1,920 @@
+{
+  "titulo": "Plan Fede 6 días · VERSIÓN DURA: más músculo y más volumen, mismo techo de pulso",
+  "subtitulo": "8 semanas, 6 días de entrenamiento: 4 días de fuerza con series extra, back-off y técnicas de intensidad en aislados seguros, un miércoles de brazos, hombro, core y agarre sin carga axial más Z2, y un sábado Hyrox con más volumen. Domingo descanso activo. Todo dentro de FC ≤ 121 lpm hasta tener el ECG.",
+  "semanas": 8,
+  "contexto_leido": [
+    "47 años, 171 cm, 105 kg y cintura 102 cm (última medición del 17/04, sin %grasa medido): hay que remedir peso y cintura el 16/11 y cada 2 semanas para ver si la grasa baja de verdad.",
+    "Fede pidió textual: realmente quiero que seas duro, que sea un entrenamiento fuerte, y después aclaró: la idea del entrenamiento es hacerlo 6 días a la semana. Esta versión sube la dureza por el lado muscular (series, back-off, técnicas de intensidad, cargas de agarre) y no por el pulso; el sexto día es el miércoles, que pasa de Z2 solo a una sesión de gym accesoria.",
+    "Restricciones médicas vigentes, sin excepción: FC sostenida máx 121 lpm (picos breves hasta 131), sin HIIT/sprints/Tabata, sin 1RM real, al menos 1 rep en reserva en los básicos y tensión antes de cada sesión; ECG y análisis siguen sin hacerse desde abril.",
+    "Dieta en déficit (2.250 kcal días de gym / 2.100 descanso, proteína ~200 g; el bot muestra 1.800 kcal y 190 g, hay que alinearlo) y sueño de 5-6 h con despertares a las 3 am: más volumen exige más recuperación, por eso hay reglas de recorte automáticas y deloads en S4 y S8. El bloque anterior termina el 21/11; este arranca el lunes 16/11."
+  ],
+  "marcas": {
+    "pc": 105,
+    "sq": [140, 2],
+    "bp": [80, 5],
+    "dl": [150, 3],
+    "ohp": [50, 5],
+    "notas": "Sentadilla (140x2) y banca (80x5) las dio Fede. Peso muerto (máx estimado 165 kg, 110 % del máximo de sentadilla) y press militar (máx estimado 58 kg, 62 % del máximo de banca) son ESTIMADOS. Peso corporal de abril, sin actualizar. Todo se calibra en la semana 1 con el RIR."
+  },
+  "principios": [
+    "6 días: lunes/jueves torso, martes/viernes pierna, sábado Hyrox base y miércoles F (brazos, deltoide lateral y posterior, core, carry liviano, cuello y antebrazos + Z2). El domingo es descanso activo con caminata. Cada patrón de los básicos se entrena 2 veces por semana; el miércoles suma volumen sin básicos ni carga axial. Sesiones de hasta 85-90 min.",
+    "Miércoles F sin robar recuperación: va entre la sentadilla del martes y el press militar/dominadas del jueves, por eso todo es RIR 1-2, sin dropsets ni rest-pause en hombro, carry liviano (agarre de reserva para el jueves) y nada de cargas sobre la espalda ni sobre la cabeza. Para que el volumen semanal no se pase, el jueves baja a 3 rondas de laterales + martillo sin técnicas de intensidad y el lunes baja a 3 rondas de fondos + face pull.",
+    "Cómo se hace duro sin tocar el pulso: más series efectivas en los básicos (5 en vez de 4), una o dos series back-off, técnicas de intensidad en aislados seguros, tempo lento, carries y holds pesados, y más minutos en Z2. Lo que nunca se toca: 121 lpm sostenido, sin HIIT, sin 1RM.",
+    "Básicos (banca, sentadilla, peso muerto): 79-88 % del máximo estimado, nunca más. Las primeras series quedan a RIR 2 y la última a RIR 1. Si una serie sale sin 1 rep en reserva, bajá 5 % en la siguiente y anotalo. Back-off = 1-2 series con 12 % menos de carga y más reps (RIR 1) en banca y sentadilla; el peso muerto no lleva back-off para cuidar la espalda baja.",
+    "Aislados seguros (máquinas, poleas, mancuernas livianas): RIR 0-1 con rest-pause (RIR 1, 15 s de pausa y 3-4 reps más), dropsets (−30 % sin descanso) y tempo 3-0-1 (3 s bajando, sin pausa, 1 s subiendo). Nunca en barra libre ni en fondos/dominadas lastradas, y respirando siempre: sin aguantar el aire.",
+    "Superseries de antagonistas para densidad: la pausa se estira hasta bajar de 110 lpm; si no baja, descansá más. La densidad se gana con el orden de los ejercicios, no con el pulso.",
+    "Cargas pesadas que suben poco el pulso: farmer carry más pesado y largo (lunes), suitcase carry (viernes), empuje de disco más pesado (sábado), planchas con lastre y colgados. Respirá todo el tiempo.",
+    "Volumen aeróbico: miércoles bloque Z2 de 30-35 min en bici o remo (FC 105-118) al final de la sesión F, finales Z2 en martes, jueves, viernes y sábado, y 11.000 pasos diarios.",
+    "Deload en S4 y S8: se saca el back-off, el rest-pause y los dropsets, se baja a RIR 3 y a 2-3 series. Se queda en 8 semanas porque el ECG está pendiente, el déficit y el sueño limitan la recuperación, y así se re-estima todo con datos nuevos.",
+    "Fase 2 – desbloqueo con ECG aprobado (no se programa todavía): el médico fija el nuevo techo de pulso. Se habilita 1 vez por semana 4 × 4 min a 85-95 % de la FC máxima (VO2max) con 3 min de pausa activa, en lugar del bloque Z2 del miércoles.",
+    "Fase 2 – los finales Z2 de martes y jueves pasan a finales metabólicos de alta intensidad (circuitos de 6-10 min con remo, SkiErg, carries y bici de aire).",
+    "Fase 2 – el sábado pasa a Hyrox a ritmo de carrera: trineo y arrastre reales, carreras de 1 km entre estaciones y pausas cortas en lugar de esperar los 110 lpm.",
+    "Fase 2 – RIR 0-1 controlado también en accesorios compuestos (búlgaras, press inclinado, remos, dominadas). Los básicos recién pasan de RIR 1 a tests de 3RM con ECG y tensión normales y visto bueno médico. Hasta entonces todo lo de este plan sigue vigente."
+  ],
+  "semana_tipo": [
+    {"dia": "Lunes", "clave": "A", "nombre": "Torso A · Press banca y empuje (final: farmer carry pesado)"},
+    {"dia": "Martes", "clave": "B", "nombre": "Pierna A · Sentadilla (final: bici Z2)"},
+    {"dia": "Miércoles", "clave": "F", "nombre": "Brazos, hombro y core · sin básicos (final: bici o remo Z2 30-35 min)"},
+    {"dia": "Jueves", "clave": "C", "nombre": "Torso B · Press militar y tracción vertical (final: SkiErg Z2)"},
+    {"dia": "Viernes", "clave": "D", "nombre": "Pierna B · Peso muerto y glúteo (final: remo Z2)"},
+    {"dia": "Sábado", "clave": "E", "nombre": "Hyrox base · más volumen de estaciones con pausas largas"},
+    {"dia": "Domingo", "clave": "-", "nombre": "Descanso activo: caminata y batch cooking"}
+  ],
+  "esquemas": {
+    "fuerza": {
+      "1": [5, 5, 0.80],
+      "2": [5, 5, 0.82],
+      "3": [5, 4, 0.83],
+      "4": [3, 4, 0.70],
+      "5": [5, 4, 0.84],
+      "6": [5, 3, 0.87],
+      "7": [4, 3, 0.88],
+      "8": [3, 3, 0.74]
+    },
+    "bo_fuerza": {
+      "1": [2, 10, 0.70],
+      "2": [2, 10, 0.72],
+      "3": [2, 9, 0.73],
+      "4": [1, 8, 0.60],
+      "5": [2, 8, 0.74],
+      "6": [2, 8, 0.76],
+      "7": [2, 8, 0.77],
+      "8": [1, 8, 0.62]
+    },
+    "bo_sq": {
+      "1": [1, 10, 0.70],
+      "2": [1, 10, 0.72],
+      "3": [1, 9, 0.73],
+      "4": [1, 8, 0.60],
+      "5": [1, 8, 0.74],
+      "6": [1, 8, 0.76],
+      "7": [1, 8, 0.77],
+      "8": [1, 8, 0.62]
+    },
+    "dl": {
+      "1": [4, 5, 0.76],
+      "2": [4, 5, 0.78],
+      "3": [4, 4, 0.81],
+      "4": [2, 4, 0.64],
+      "5": [4, 4, 0.83],
+      "6": [4, 3, 0.86],
+      "7": [4, 3, 0.88],
+      "8": [2, 3, 0.68]
+    },
+    "media": {
+      "1": [5, 8, 0.72],
+      "2": [5, 8, 0.73],
+      "3": [5, 8, 0.74],
+      "4": [3, 8, 0.60],
+      "5": [5, 6, 0.78],
+      "6": [5, 6, 0.79],
+      "7": [5, 6, 0.80],
+      "8": [3, 6, 0.66]
+    },
+    "hiper": {
+      "1": [4, 10, 0.70],
+      "2": [4, 10, 0.72],
+      "3": [4, 10, 0.74],
+      "4": [2, 10, 0.58],
+      "5": [4, 8, 0.77],
+      "6": [4, 8, 0.79],
+      "7": [4, 8, 0.81],
+      "8": [2, 8, 0.62]
+    },
+    "hiper_b": {
+      "1": [3, 10, 0.69],
+      "2": [3, 10, 0.71],
+      "3": [3, 10, 0.73],
+      "4": [2, 10, 0.58],
+      "5": [3, 8, 0.76],
+      "6": [3, 8, 0.78],
+      "7": [3, 8, 0.80],
+      "8": [2, 8, 0.62]
+    }
+  },
+  "dias": [
+    {
+      "clave": "A",
+      "dia": "Lunes",
+      "nombre": "Torso A · Press banca y empuje",
+      "foco": "Banca pesada con back-off, tracción de espalda y farmer carry pesado como final de agarre y core. Sin subir el pulso.",
+      "duracion_min": 85,
+      "calentamiento": [
+        ["Bici de aire progresiva", "5 min, FC hasta 105 lpm"],
+        ["Remo en ergómetro suave", "2 min, brazadas largas"],
+        ["Círculos de brazos y apertura de pecho", "2 × 10"]
+      ],
+      "movilidad": [
+        ["Extensión torácica sobre rodillo o banco", "2 × 8"],
+        ["Open book (rotación de columna torácica) en el piso", "2 × 8 por lado"],
+        ["Estiramiento de pectoral en marco de puerta", "2 × 30 s por lado"]
+      ],
+      "activacion": [
+        ["Band pull-apart con banda", "2 × 15"],
+        ["Rotación externa de hombro con banda", "2 × 12 por lado"],
+        ["Flexiones escapulares (protracción y retracción)", "2 × 10"],
+        ["Aproximación press banca: barra vacía ×10, 40 % ×6, 60 % ×4, 75 % ×2", "1 vuelta, sin fatigar"]
+      ],
+      "ejercicios": [
+        {
+          "nombre": "Press de banca con barra",
+          "tipo": "carga",
+          "base": "bp",
+          "factor": 1.0,
+          "esquema": "fuerza",
+          "mancuerna": false,
+          "descanso": "3 min",
+          "nota": "Omóplatos juntos, pies firmes, bajá en 2 s y empujá fuerte sin rebotar; barras de seguridad puestas. Las primeras series a RIR 2 y la última a RIR 1: si una sale sin 1 rep en reserva, bajá 2,5-5 kg en la siguiente. Soltá el aire al subir.",
+          "fijo": {}
+        },
+        {
+          "nombre": "Press de banca back-off (−12 % de carga, más reps)",
+          "tipo": "carga",
+          "base": "bp",
+          "factor": 1.0,
+          "esquema": "bo_fuerza",
+          "mancuerna": false,
+          "descanso": "2 min",
+          "nota": "Sin cambiar de banco, sacá peso y hacé las reps de la tabla a RIR 1 con bajada de 3 s. Si sobran más de 2 reps, subí 2,5 kg la semana siguiente. En descarga queda 1 serie liviana.",
+          "fijo": {}
+        },
+        {
+          "nombre": "Remo con barra inclinado",
+          "tipo": "carga",
+          "base": "bp",
+          "factor": 0.8,
+          "esquema": "media",
+          "mancuerna": false,
+          "descanso": "2 min",
+          "nota": "Torso a 45°, tirá la barra al ombligo con pausa de 1 s arriba y sin impulso de cadera. Última serie a RIR 1.",
+          "fijo": {}
+        },
+        {
+          "nombre": "Press inclinado con mancuernas",
+          "tipo": "carga",
+          "base": "bp",
+          "factor": 0.72,
+          "esquema": "hiper",
+          "mancuerna": true,
+          "descanso": "90 s",
+          "nota": "Banco a 30°, bajá en 3 s hasta que los codos queden apenas por debajo del banco. Las 4 series a RIR 1-2; no llegues al fallo con mancuernas pesadas.",
+          "fijo": {}
+        },
+        {
+          "nombre": "Jalón al pecho agarre ancho",
+          "tipo": "fijo",
+          "base": null,
+          "factor": 1.0,
+          "esquema": null,
+          "mancuerna": false,
+          "descanso": "90 s",
+          "nota": "Pecho arriba, llevá la barra al esternón y pensá en los codos hacia los bolsillos. Rest-pause: al llegar a RIR 1 soltá, respirá 15 s y hacé las reps extra con el mismo peso.",
+          "fijo": {
+            "1": "3 × 10 · tempo 3-0-1 · RIR 2; la 3ª con rest-pause (15 s de pausa + 3 reps)",
+            "2": "3 × 11 · tempo 3-0-1 · RIR 1-2; la 3ª con rest-pause (15 s + 4 reps)",
+            "3": "3 × 12 · tempo 3-0-1 · RIR 1; la 3ª con rest-pause; si salen 12 limpias subí 2,5-5 kg",
+            "4": "2 × 10 · liviano, RIR 3, sin rest-pause (descarga)",
+            "5": "3 × 10 con el peso nuevo · tempo 3-0-1 · RIR 1; la 3ª con rest-pause (15 s + 4 reps)",
+            "6": "3 × 11 · RIR 1; la 3ª con rest-pause doble (15 s + 3 reps, 15 s + 2 reps)",
+            "7": "3 × 12 · RIR 0-1 en la 3ª con rest-pause doble; subí 2,5-5 kg si sale limpio",
+            "8": "2 × 10 · liviano, RIR 3 (descarga)"
+          }
+        },
+        {
+          "nombre": "Superserie: fondos en paralelas (o asistidos) + face pull en polea",
+          "tipo": "fijo",
+          "base": null,
+          "factor": 1.0,
+          "esquema": null,
+          "mancuerna": false,
+          "descanso": "90 s o hasta bajar de 110 lpm",
+          "nota": "Fondos bajando hasta 90° de codo y siempre con 1 rep en reserva (con lastre no hay rest-pause ni dropset); el face pull es salud de hombro, codos altos, y ahí sí se puede apretar el final.",
+          "fijo": {
+            "1": "3 × 8 fondos + 3 × 15 face pull · RIR 2",
+            "2": "3 × 9 fondos + 3 × 15 face pull · fondos RIR 1-2",
+            "3": "3 × 10 fondos (RIR 1) + 3 × 15 face pull con tempo 2-1-2",
+            "4": "2 × 6 fondos + 2 × 15 face pull (descarga)",
+            "5": "3 × 8 fondos con 5 kg de lastre + 3 × 15 face pull · RIR 1",
+            "6": "3 × 9 fondos con lastre + 3 × 15 face pull con tempo 2-1-2 · RIR 1-2 (el dropset de deltoide posterior pasa al miércoles)",
+            "7": "3 × 10 fondos con lastre (+2,5 kg) + 3 × 15 face pull con pausa de 2 s · RIR 1-2 (sin dropset: el miércoles ya trabaja deltoide posterior y tríceps)",
+            "8": "2 × 6 fondos + 2 × 15 face pull (descarga)"
+          }
+        }
+      ],
+      "final": {
+        "1": "Farmer carry: 5 × 40 m con 2 × 32 kg, 75 s de pausa. Cerrá con 1 colgado de barra al límite de agarre (30 s). Respirá todo el tiempo y esperá a bajar de 110 lpm entre vueltas.",
+        "2": "Farmer carry: 5 × 40 m con 2 × 34 kg, 75 s de pausa. Colgado final de 35 s.",
+        "3": "Farmer carry: 6 × 40 m con 2 × 34 kg, 75 s de pausa. Colgado final de 40 s.",
+        "4": "Farmer carry (descarga): 3 × 30 m con 2 × 28 kg. Sin colgado.",
+        "5": "Farmer carry: 6 × 40 m con 2 × 36 kg, 75 s de pausa. Colgado final de 40 s.",
+        "6": "Farmer carry: 6 × 40 m con 2 × 38 kg, 75 s de pausa. Colgado final de 45 s.",
+        "7": "Farmer carry: 6 × 40 m con 2 × 40 kg (o el par más pesado con técnica limpia), 75 s de pausa. Colgado final de 45 s.",
+        "8": "Farmer carry (descarga): 3 × 30 m con 2 × 30 kg. Sin colgado."
+      },
+      "calma": [
+        ["Caminata lenta", "3 min hasta bajar de 100 lpm"],
+        ["Estiramiento de pectoral en marco de puerta", "2 × 40 s por lado"],
+        ["Estiramiento de dorsal agarrado a un poste", "2 × 40 s por lado"],
+        ["Estiramiento de tríceps por detrás de la cabeza", "30 s por lado"],
+        ["Estiramiento de antebrazos (flexores y extensores)", "30 s cada uno"],
+        ["Respiración nasal 4 s inhalo, 6 s exhalo", "2 min"]
+      ]
+    },
+    {
+      "clave": "B",
+      "dia": "Martes",
+      "nombre": "Pierna A · Sentadilla",
+      "foco": "Sentadilla pesada con back-off de 10 reps, cadena posterior y superserie de piernas con técnicas de intensidad en máquina. Final: bici Z2 más larga.",
+      "duracion_min": 85,
+      "calentamiento": [
+        ["Bici de aire progresiva", "5 min, FC hasta 105 lpm"],
+        ["Sentadilla goblet con pausa de 2 s abajo", "2 × 8 con kettlebell liviana"],
+        ["Caminata lateral con banda en rodillas", "2 × 10 pasos por lado"]
+      ],
+      "movilidad": [
+        ["Tobillo contra la pared (rodilla a la pared)", "2 × 10 por lado"],
+        ["Cadera 90/90 con rotaciones", "2 × 6 por lado"],
+        ["Sentadilla profunda sostenida agarrado a un poste", "2 × 30 s"]
+      ],
+      "activacion": [
+        ["Puente de glúteo con banda", "2 × 15"],
+        ["Clamshell (apertura de cadera) con banda", "2 × 12 por lado"],
+        ["Aproximación sentadilla: barra vacía ×8, 40 % ×5, 60 % ×3, 75 % ×2", "1 vuelta, sin fatigar"]
+      ],
+      "ejercicios": [
+        {
+          "nombre": "Sentadilla trasera con barra",
+          "tipo": "carga",
+          "base": "sq",
+          "factor": 1.0,
+          "esquema": "fuerza",
+          "mancuerna": false,
+          "descanso": "3 min 30 s",
+          "nota": "Bajá hasta la paralela como mínimo, rodillas afuera, aire adentro al bajar y afuera al subir; barras de seguridad puestas. Las primeras series a RIR 2 y la última a RIR 1; descansá hasta bajar de 110 lpm antes de cada serie.",
+          "fijo": {}
+        },
+        {
+          "nombre": "Sentadilla back-off (−12 % de carga, más reps)",
+          "tipo": "carga",
+          "base": "sq",
+          "factor": 1.0,
+          "esquema": "bo_sq",
+          "mancuerna": false,
+          "descanso": "3 min",
+          "nota": "Una sola serie larga con menos peso, a RIR 1 y respirando entre reps. Si el pulso pasa 131 lpm cortá la serie dos reps antes. Sin cambiar la técnica: misma profundidad que las pesadas.",
+          "fijo": {}
+        },
+        {
+          "nombre": "Peso muerto rumano con barra",
+          "tipo": "carga",
+          "base": "dl",
+          "factor": 0.85,
+          "esquema": "hiper_b",
+          "mancuerna": false,
+          "descanso": "2 min",
+          "nota": "Cadera atrás, barra pegada a las piernas, espalda neutra; bajada de 3 s y sentí el estiramiento en el isquiotibial. Última serie a RIR 1, sin soltar la barra en el piso entre reps.",
+          "fijo": {}
+        },
+        {
+          "nombre": "Sentadilla búlgara con mancuernas (reps por pierna)",
+          "tipo": "carga",
+          "base": "sq",
+          "factor": 0.45,
+          "esquema": "hiper_b",
+          "mancuerna": true,
+          "descanso": "90 s entre piernas",
+          "nota": "Torso levemente inclinado, rodilla delantera siguiendo la punta del pie; bajada de 3 s. Las reps son por pierna y la última serie va a RIR 1.",
+          "fijo": {}
+        },
+        {
+          "nombre": "Superserie: curl femoral + extensión de cuádriceps en máquina",
+          "tipo": "fijo",
+          "base": null,
+          "factor": 1.0,
+          "esquema": null,
+          "mancuerna": false,
+          "descanso": "75 s o hasta bajar de 110 lpm",
+          "nota": "Máquinas guiadas: acá sí se puede llegar a RIR 0. Subida explosiva, bajada en 3 s y respiración continua. Dropset = al llegar a RIR 0 sacás 30 % de peso y seguís sin descanso hasta la falla técnica.",
+          "fijo": {
+            "1": "3 rondas de 12 + 12 · tempo 3-0-1 · RIR 1-2",
+            "2": "3 rondas de 12 + 12 · RIR 1 · +2,5 kg en el curl",
+            "3": "3 rondas de 12 + 12 · RIR 0-1; la 3ª ronda con dropset en el curl",
+            "4": "2 rondas de 12 + 12 · liviano, RIR 3 (descarga)",
+            "5": "3 rondas de 10 + 12 · RIR 0-1 · +2,5 kg; la 3ª con rest-pause en la extensión (15 s + 4 reps)",
+            "6": "3 rondas de 10 + 12 · +2,5 kg · RIR 0-1; dropset en el curl y en la extensión en la 3ª ronda",
+            "7": "4 rondas de 10 + 12 · RIR 0-1; la 3ª con rest-pause en el curl y la 4ª con dropset en la extensión",
+            "8": "2 rondas de 10 + 12 · liviano, RIR 3 (descarga)"
+          }
+        },
+        {
+          "nombre": "Plancha frontal con lastre (isométrico)",
+          "tipo": "fijo",
+          "base": null,
+          "factor": 1.0,
+          "esquema": null,
+          "mancuerna": false,
+          "descanso": "60 s",
+          "nota": "Glúteos y abdomen apretados, el disco en la espalda baja apoyado por un compañero o con la barra a un costado; respirá sin cortar el aire, sin aguantar la respiración para sostener.",
+          "fijo": {
+            "1": "3 × 30 s sin lastre",
+            "2": "3 × 40 s sin lastre",
+            "3": "3 × 45 s con 5 kg de disco",
+            "4": "2 × 30 s (descarga)",
+            "5": "3 × 50 s con 5 kg",
+            "6": "3 × 45 s con 10 kg",
+            "7": "3 × 60 s con 10 kg",
+            "8": "2 × 40 s (descarga)"
+          }
+        }
+      ],
+      "final": {
+        "1": "Bici de aire Z2: 12 min continuos, FC 105-118 lpm.",
+        "2": "Bici de aire Z2: 14 min continuos, FC 105-118 lpm.",
+        "3": "Bici de aire Z2: 16 min continuos, FC 105-118 lpm.",
+        "4": "Bici de aire Z2 (descarga): 10 min suaves.",
+        "5": "Bici de aire Z2: 18 min continuos, FC 105-118 lpm.",
+        "6": "Bici de aire Z2: 20 min continuos, FC 105-118 lpm.",
+        "7": "Bici de aire Z2: 20 min continuos, FC 105-118 lpm.",
+        "8": "Bici de aire Z2 (descarga): 12 min suaves."
+      },
+      "calma": [
+        ["Pedaleo muy suave o caminata", "3 min hasta bajar de 100 lpm"],
+        ["Estiramiento de cuádriceps de rodillas", "2 × 40 s por lado"],
+        ["Estiramiento de psoas en zancada baja", "2 × 40 s por lado"],
+        ["Aductores en posición mariposa", "2 × 40 s"],
+        ["Respiración diafragmática boca arriba con las piernas sobre un banco", "2 min"]
+      ]
+    },
+    {
+      "clave": "F",
+      "dia": "Miércoles",
+      "nombre": "Brazos, hombro y core · sin básicos",
+      "foco": "Sesión accesoria sin carga axial ni básicos: deltoide lateral y posterior, brazos, core antiextensión y antirrotación, carry liviano, cuello y antebrazos, más un bloque Z2. Todo a RIR 1-2 y sin técnicas de intensidad en el hombro, para no robarle recuperación a la sentadilla del martes ni al press militar y las dominadas del jueves.",
+      "duracion_min": 90,
+      "calentamiento": [
+        ["Bici de aire o remo suave", "5 min, FC hasta 105 lpm"],
+        ["Círculos de brazos y rotaciones de muñeca", "2 × 10"],
+        ["Retracción de mentón (chin tuck) de pie contra la pared", "2 × 10"]
+      ],
+      "movilidad": [
+        ["Extensión torácica sobre rodillo o banco", "2 × 8"],
+        ["Estiramiento suave de trapecio superior (oreja al hombro)", "2 × 20 s por lado"],
+        ["Gato-vaca en cuadrupedia", "2 × 8"]
+      ],
+      "activacion": [
+        ["Rotación externa de hombro con banda", "2 × 12 por lado"],
+        ["Dead bug con brazos extendidos", "2 × 8 por lado"],
+        ["Elevación lateral con mancuernas de 2 kg", "1 × 15, sin fatigar"],
+        ["Curl con barra vacía o mancuernas muy livianas", "1 × 12, sin fatigar"]
+      ],
+      "ejercicios": [
+        {
+          "nombre": "Superserie: elevación lateral en polea unilateral + pájaros en máquina (deltoide posterior)",
+          "tipo": "fijo",
+          "base": null,
+          "factor": 1.0,
+          "esquema": null,
+          "mancuerna": false,
+          "descanso": "60 s o hasta bajar de 110 lpm",
+          "nota": "Polea baja sin balanceo y tempo 3-0-1 en la lateral; pájaros con el pecho apoyado y codos apenas flexionados. Laterales siempre a RIR 1-2, sin dropsets ni rest-pause: el jueves viene el press militar. Respirá todo el tiempo.",
+          "fijo": {
+            "1": "3 × 12 lateral por lado + 3 × 15 pájaros · RIR 2",
+            "2": "3 × 12 + 3 × 15 · RIR 1-2 · +1 kg en la lateral",
+            "3": "3 × 12 + 3 × 15 · RIR 1-2 · +1 kg en pájaros",
+            "4": "2 × 12 + 2 × 15 · liviano, RIR 3 (descarga)",
+            "5": "4 × 12 + 4 × 15 · RIR 1-2 · tempo 3-0-1 en la lateral",
+            "6": "4 × 12 + 4 × 15 · +1 kg en la lateral · la 4ª de pájaros con dropset (−30 %)",
+            "7": "4 × 12 + 4 × 15 · +1 kg en pájaros · la 4ª de pájaros con dropset; la lateral sigue a RIR 1-2",
+            "8": "2 × 12 + 2 × 15 · liviano, RIR 3 (descarga)"
+          }
+        },
+        {
+          "nombre": "Superserie: curl inclinado con mancuernas + extensión de tríceps sobre la cabeza en polea",
+          "tipo": "fijo",
+          "base": null,
+          "factor": 1.0,
+          "esquema": null,
+          "mancuerna": false,
+          "descanso": "75 s o hasta bajar de 110 lpm",
+          "nota": "Banco a 60° con bajada de 3 s y sin balanceo; extensión con cuerda y codos cerrados. El tríceps ya recibe banca, inclinado, fondos y militar en la semana: acá va a RIR 1-2 y la técnica de intensidad queda solo para el curl. Sin aguantar el aire.",
+          "fijo": {
+            "1": "3 × 10 curl + 3 × 12 tríceps · RIR 2 · tempo 3-0-1 en el curl",
+            "2": "3 × 10 + 3 × 12 · RIR 1-2 · +1 kg en el curl",
+            "3": "3 × 10 + 3 × 12 · RIR 1-2 · +2,5 kg en la cuerda; la 3ª de curl con rest-pause (15 s + 3 reps)",
+            "4": "2 × 10 + 2 × 12 · liviano, RIR 3 (descarga)",
+            "5": "3 × 10 + 3 × 12 con los kg de la S3 · RIR 1-2 · tempo 3-0-1 en el curl",
+            "6": "3 × 10 + 3 × 12 · +1 kg en el curl · la 3ª de curl con rest-pause (15 s + 4 reps)",
+            "7": "3 × 10 + 3 × 12 · +2,5 kg en la cuerda · más una 4ª serie de solo curl con dropset (−30 %) · RIR 1 en curl, RIR 1-2 en tríceps",
+            "8": "2 × 10 + 2 × 12 · liviano, RIR 3 (descarga)"
+          }
+        },
+        {
+          "nombre": "Superserie core: rollout con rueda desde rodillas (antiextensión) + plancha con toque de hombro (antirrotación)",
+          "tipo": "fijo",
+          "base": null,
+          "factor": 1.0,
+          "esquema": null,
+          "mancuerna": false,
+          "descanso": "60 s",
+          "nota": "Rollout: costillas abajo, glúteos apretados y solo el rango que controlás sin hundir la zona lumbar. Plancha con pies abiertos y cadera quieta al tocar el hombro. Sin lastre, porque la plancha con lastre ya se hizo el martes. Respirá sin cortar el aire.",
+          "fijo": {
+            "1": "3 × 8 rollout + 3 × 10 toques por lado · RIR 2",
+            "2": "3 × 10 + 3 × 12 · RIR 2",
+            "3": "3 × 10 + 3 × 12 · RIR 1-2 · pausa de 2 s con el brazo extendido",
+            "4": "2 × 6 + 2 × 8 · liviano (descarga)",
+            "5": "3 × 12 + 3 × 12 · pausa de 2 s al extender",
+            "6": "3 × 12 rollout con pausa de 3 s + 3 × 14 toques por lado",
+            "7": "4 × 12 + 4 × 14 · RIR 1-2",
+            "8": "2 × 8 + 2 × 10 (descarga)"
+          }
+        },
+        {
+          "nombre": "Farmer carry liviano (técnico, no es el pesado del lunes)",
+          "tipo": "fijo",
+          "base": null,
+          "factor": 1.0,
+          "esquema": null,
+          "mancuerna": false,
+          "descanso": "60 s o hasta bajar de 110 lpm",
+          "nota": "Peso moderado, postura alta, pasos cortos y hombros bajos. Terminá cada vuelta con agarre de sobra: el jueves hay dominadas y remo y el viernes peso muerto. Respirá todo el tiempo.",
+          "fijo": {
+            "1": "4 × 30 m con 2 × 20 kg",
+            "2": "4 × 30 m con 2 × 22 kg",
+            "3": "4 × 30 m con 2 × 24 kg",
+            "4": "2 × 25 m con 2 × 16 kg (descarga)",
+            "5": "4 × 35 m con 2 × 24 kg",
+            "6": "4 × 35 m con 2 × 26 kg",
+            "7": "4 × 40 m con 2 × 26 kg",
+            "8": "2 × 25 m con 2 × 18 kg (descarga)"
+          }
+        },
+        {
+          "nombre": "Cuello isométrico (4 direcciones) + antebrazos (curl y extensión de muñeca)",
+          "tipo": "fijo",
+          "base": null,
+          "factor": 1.0,
+          "esquema": null,
+          "mancuerna": false,
+          "descanso": "45 s",
+          "nota": "Cuello: empujá con la mano contra la cabeza al 50 % de esfuerzo en frente, atrás y ambos costados, sin mover el cuello y respirando; nada de tirones ni cargas externas. Antebrazos: mancuerna liviana, rango completo y sin fallo, para llegar con agarre al jueves.",
+          "fijo": {
+            "1": "1 vuelta de cuello × 15 s por dirección + 2 × 15 curl y 2 × 15 extensión de muñeca · RIR 3",
+            "2": "2 vueltas de cuello × 15 s + 2 × 15 y 2 × 15 de muñeca · RIR 2-3",
+            "3": "2 vueltas de cuello × 20 s + 2 × 15 y 2 × 15 · +1 kg · RIR 2",
+            "4": "1 vuelta de cuello × 10 s + 1 × 15 y 1 × 15 de muñeca (descarga)",
+            "5": "2 vueltas de cuello × 20 s + 3 × 15 y 3 × 15 de muñeca · RIR 2",
+            "6": "3 vueltas de cuello × 20 s + 3 × 15 y 3 × 15 · +1 kg · RIR 1-2",
+            "7": "3 vueltas de cuello × 25 s + 3 × 15 y 3 × 15 · RIR 1-2",
+            "8": "1 vuelta de cuello × 10 s + 1 × 15 y 1 × 15 de muñeca (descarga)"
+          }
+        }
+      ],
+      "final": {
+        "1": "Bici de aire o remo Z2: 30 min continuos, FC 105-118 lpm (nunca sobre 121). Más los 11.000 pasos del día.",
+        "2": "Bici de aire o remo Z2: 30 min continuos, FC 105-118 lpm.",
+        "3": "Bici de aire o remo Z2: 30 min continuos, FC 105-118 lpm.",
+        "4": "Bici de aire o remo Z2 (descarga): 20 min suaves, FC 100-112 lpm.",
+        "5": "Bici de aire o remo Z2: 35 min continuos, FC 105-118 lpm.",
+        "6": "Bici de aire o remo Z2: 35 min continuos, FC 105-118 lpm.",
+        "7": "Bici de aire o remo Z2: 35 min continuos, FC 105-118 lpm.",
+        "8": "Bici de aire o remo Z2 (descarga): 25 min suaves, FC 100-112 lpm."
+      },
+      "calma": [
+        ["Pedaleo o caminata muy suave", "3 min hasta bajar de 100 lpm"],
+        ["Estiramiento de bíceps con el brazo apoyado en la pared", "2 × 30 s por lado"],
+        ["Estiramiento de tríceps por detrás de la cabeza", "30 s por lado"],
+        ["Estiramiento de antebrazos (flexores y extensores)", "30 s cada uno"],
+        ["Estiramiento de deltoide posterior cruzando el brazo", "30 s por lado"],
+        ["Postura del niño con respiración diafragmática", "2 min"]
+      ]
+    },
+    {
+      "clave": "C",
+      "dia": "Jueves",
+      "nombre": "Torso B · Press militar y tracción vertical",
+      "foco": "Empuje vertical y tracción con 5 series de 6-8 reps, dominadas con holds y brazos y hombro en 3 rondas (el volumen de brazos y deltoide lateral grueso se hace el miércoles). Final: SkiErg Z2.",
+      "duracion_min": 85,
+      "calentamiento": [
+        ["Remo en ergómetro progresivo", "5 min, FC hasta 105 lpm"],
+        ["SkiErg o jalón de polea alta muy liviano", "2 × 12"],
+        ["Rotaciones de hombro con palo o banda", "2 × 10"]
+      ],
+      "movilidad": [
+        ["Pasar el palo por encima de la cabeza (dislocaciones con banda)", "2 × 10"],
+        ["Colgado pasivo de barra", "2 × 20 s"],
+        ["Estiramiento de dorsal en banco (brazos largos)", "2 × 30 s"]
+      ],
+      "activacion": [
+        ["Band pull-apart", "2 × 15"],
+        ["Scapular pull-up (depresión de escápula colgado)", "2 × 8"],
+        ["Wall slide para serrato con antebrazos en la pared", "2 × 10"],
+        ["Aproximación press militar: barra vacía ×10, 50 % ×5, 70 % ×3", "1 vuelta, sin fatigar"]
+      ],
+      "ejercicios": [
+        {
+          "nombre": "Press militar de pie con barra",
+          "tipo": "carga",
+          "base": "ohp",
+          "factor": 1.0,
+          "esquema": "media",
+          "mancuerna": false,
+          "descanso": "2 min 30 s",
+          "nota": "Glúteos y abdomen apretados, barra en línea recta y pasá la cabeza adelante al llegar arriba. Última serie a RIR 1 y exhalá al subir, sin aguantar el aire.",
+          "fijo": {}
+        },
+        {
+          "nombre": "Press inclinado con barra",
+          "tipo": "carga",
+          "base": "bp",
+          "factor": 0.8,
+          "esquema": "hiper_b",
+          "mancuerna": false,
+          "descanso": "2 min",
+          "nota": "Banco a 30°, bajá a la clavícula con codos a 45° del tronco y en 3 s. RIR 1 en la última serie.",
+          "fijo": {}
+        },
+        {
+          "nombre": "Dominadas (asistidas con banda si hace falta)",
+          "tipo": "fijo",
+          "base": null,
+          "factor": 1.0,
+          "esquema": null,
+          "mancuerna": false,
+          "descanso": "2 min",
+          "nota": "Arrancá desde colgado con escápulas activas, mentón sobre la barra y bajada de 3 s. Con lastre siempre queda 1 rep en reserva; el hold de la última serie es isométrico y se respira.",
+          "fijo": {
+            "1": "5 × 5 · RIR 1-2 (con banda si hace falta)",
+            "2": "5 × 5 · una rep más en la primera serie, RIR 1",
+            "3": "5 × 6 · RIR 1",
+            "4": "3 × 5 · RIR 3 (descarga)",
+            "5": "5 × 6 · RIR 1; la última con hold de 5 s arriba",
+            "6": "5 × 7 · RIR 1; la última con hold de 5 s arriba",
+            "7": "5 × 8 · RIR 1; si salen 8 limpias sumá 2,5-5 kg de lastre y hold de 5 s en la última",
+            "8": "3 × 5 · RIR 3 (descarga)"
+          }
+        },
+        {
+          "nombre": "Remo unilateral con mancuerna",
+          "tipo": "fijo",
+          "base": null,
+          "factor": 1.0,
+          "esquema": null,
+          "mancuerna": false,
+          "descanso": "75 s",
+          "nota": "Apoyo en banco, tirá el codo hacia la cadera sin rotar el torso, pausa de 1 s arriba. Es un ejercicio seguro para llegar a RIR 0-1; el rest-pause se hace con el mismo peso.",
+          "fijo": {
+            "1": "3 × 10 por lado · RIR 1-2",
+            "2": "3 × 10 por lado · +2 kg · RIR 1",
+            "3": "3 × 10 por lado · +2 kg · RIR 1; la 3ª con rest-pause (15 s + 3 reps)",
+            "4": "2 × 10 por lado · liviano, RIR 3 (descarga)",
+            "5": "3 × 10 por lado con el kg de la S3 · RIR 1",
+            "6": "3 × 10 por lado · +2 kg · la 3ª con rest-pause (15 s + 4 reps)",
+            "7": "3 × 10 por lado · +2 kg · RIR 0-1; la 3ª con rest-pause doble (15 s + 3 reps, 15 s + 2 reps)",
+            "8": "2 × 10 por lado · liviano, RIR 3 (descarga)"
+          }
+        },
+        {
+          "nombre": "Superserie: elevaciones laterales + curl martillo",
+          "tipo": "fijo",
+          "base": null,
+          "factor": 1.0,
+          "esquema": null,
+          "mancuerna": false,
+          "descanso": "60 s o hasta bajar de 110 lpm",
+          "nota": "Mancuernas livianas y sin balanceo, RIR 1-2: el miércoles ya hiciste laterales y curl, así que acá no hay dropsets en laterales y el único rest-pause es el del martillo en S6-S7. Tempo 3-0-1 en las laterales.",
+          "fijo": {
+            "1": "3 × 12 laterales + 3 × 10 martillo · RIR 1 · tempo 3-0-1 en laterales",
+            "2": "3 × 12 + 3 × 10 · RIR 1 · +1 kg en laterales",
+            "3": "3 × 12 + 3 × 10 · RIR 1-2 · +1 kg en martillo; sin dropsets (el miércoles ya hace laterales)",
+            "4": "2 × 12 + 2 × 10 · RIR 3 (descarga)",
+            "5": "3 × 12 + 3 × 10 con los kg de la S3 · RIR 1-2; tempo 3-0-1 en laterales",
+            "6": "3 × 12 + 3 × 10 · +1 kg en laterales · RIR 1-2; la 3ª de martillo con rest-pause (15 s + 3 reps)",
+            "7": "3 × 12 + 3 × 10 · +1 kg en martillo · RIR 1; la 3ª de martillo con rest-pause (15 s + 4 reps), sin técnicas en laterales",
+            "8": "2 × 12 + 2 × 10 · RIR 3 (descarga)"
+          }
+        }
+      ],
+      "final": {
+        "1": "SkiErg: 6 × 1 min a ritmo cómodo (FC máx 118 lpm) con 1 min de pausa. Sin SkiErg: 6 × 15 tirones de polea alta con brazos rectos, 25-30 kg.",
+        "2": "SkiErg: 7 × 1 min con 1 min de pausa (o 7 × 15 en polea alta).",
+        "3": "SkiErg: 8 × 1 min con 1 min de pausa (o 8 × 15 en polea alta).",
+        "4": "SkiErg (descarga): 5 × 1 min con 1 min de pausa.",
+        "5": "SkiErg: 6 × 1 min 30 s con 1 min de pausa (o 6 × 20 en polea alta).",
+        "6": "SkiErg: 7 × 1 min 30 s con 1 min de pausa (o 7 × 20 en polea alta).",
+        "7": "SkiErg: 7 × 1 min 30 s con 1 min de pausa (o 7 × 20 en polea alta), 3 kg más en la polea.",
+        "8": "SkiErg (descarga): 5 × 1 min con 1 min de pausa."
+      },
+      "calma": [
+        ["Remo o caminata muy suave", "3 min hasta bajar de 100 lpm"],
+        ["Colgado pasivo de barra", "2 × 30 s"],
+        ["Postura del niño con brazos largos", "2 × 40 s"],
+        ["Estiramiento de trapecio y cuello", "30 s por lado"],
+        ["Estiramiento de tríceps por detrás de la cabeza", "30 s por lado"],
+        ["Respiración nasal 4 s inhalo, 6 s exhalo", "2 min"]
+      ]
+    },
+    {
+      "clave": "D",
+      "dia": "Viernes",
+      "nombre": "Pierna B · Peso muerto y glúteo",
+      "foco": "Bisagra pesada con 4 series, hip thrust con volumen, suitcase carry y holds. Final: remo Z2.",
+      "duracion_min": 85,
+      "calentamiento": [
+        ["Bici de aire progresiva", "5 min, FC hasta 105 lpm"],
+        ["Buenos días con palo", "2 × 10"],
+        ["Peso muerto con kettlebell liviana", "2 × 8"]
+      ],
+      "movilidad": [
+        ["Gato-vaca en cuadrupedia", "2 × 8"],
+        ["Estiramiento dinámico de isquiotibiales (patada al frente)", "2 × 10 por lado"],
+        ["Zancada con rotación torácica", "2 × 6 por lado"]
+      ],
+      "activacion": [
+        ["Puente de glúteo a una pierna", "2 × 10 por lado"],
+        ["Bird dog", "2 × 8 por lado"],
+        ["Dead bug", "2 × 8 por lado"],
+        ["Aproximación peso muerto: 40 % ×6, 60 % ×4, 75 % ×2", "1 vuelta, sin fatigar"]
+      ],
+      "ejercicios": [
+        {
+          "nombre": "Peso muerto convencional con barra",
+          "tipo": "carga",
+          "base": "dl",
+          "factor": 1.0,
+          "esquema": "dl",
+          "mancuerna": false,
+          "descanso": "3 min 30 s",
+          "nota": "Barra sobre el medio del pie, espalda neutra, empujá el piso y soltá el aire arriba sin aguantarlo; cada rep desde el piso. Sin back-off para cuidar la espalda baja. El máximo es estimado: si la primera serie sale con menos de 1 rep en reserva, bajá 5 %.",
+          "fijo": {}
+        },
+        {
+          "nombre": "Sentadilla frontal con barra",
+          "tipo": "carga",
+          "base": "sq",
+          "factor": 0.75,
+          "esquema": "hiper_b",
+          "mancuerna": false,
+          "descanso": "2 min",
+          "nota": "Codos altos y torso vertical; si la muñeca molesta, usá agarre cruzado. Última serie a RIR 1.",
+          "fijo": {}
+        },
+        {
+          "nombre": "Hip thrust con barra",
+          "tipo": "carga",
+          "base": "sq",
+          "factor": 1.0,
+          "esquema": "hiper",
+          "mancuerna": false,
+          "descanso": "2 min",
+          "nota": "Pausa de 2 s arriba apretando el glúteo, mentón al pecho y bajada de 3 s. Última serie a RIR 1; ejercicio seguro para sentir el glúteo sin cargar la espalda.",
+          "fijo": {}
+        },
+        {
+          "nombre": "Suitcase carry (una mancuerna, caminata erguida)",
+          "tipo": "fijo",
+          "base": null,
+          "factor": 1.0,
+          "esquema": null,
+          "mancuerna": false,
+          "descanso": "60 s o hasta bajar de 110 lpm",
+          "nota": "Una sola mancuerna al costado: el tronco no se inclina ni rota, hombros nivelados. Respirá todo el tiempo y cambiá de mano en cada vuelta.",
+          "fijo": {
+            "1": "4 × 30 m por lado con 28 kg",
+            "2": "4 × 30 m por lado con 30 kg",
+            "3": "4 × 35 m por lado con 32 kg",
+            "4": "3 × 25 m por lado con 24 kg (descarga)",
+            "5": "4 × 35 m por lado con 34 kg",
+            "6": "4 × 40 m por lado con 36 kg",
+            "7": "5 × 40 m por lado con 36-38 kg",
+            "8": "3 × 25 m por lado con 28 kg (descarga)"
+          }
+        },
+        {
+          "nombre": "Superserie: Pallof press en polea + elevación de talones parado",
+          "tipo": "fijo",
+          "base": null,
+          "factor": 1.0,
+          "esquema": null,
+          "mancuerna": false,
+          "descanso": "60 s",
+          "nota": "Pallof: resistí la rotación sin mover la cadera, aguantando 3 s con los brazos estirados. Talones: rango completo con pausa de 1 s abajo y arriba; es seguro para ir a RIR 0-1 con dropset.",
+          "fijo": {
+            "1": "3 × 10 por lado + 3 × 15 · RIR 1-2",
+            "2": "3 × 10 por lado · +2,5 kg + 3 × 15 · +5 kg",
+            "3": "3 × 12 por lado + 3 × 15 · talones RIR 0-1 con pausa de 2 s abajo",
+            "4": "2 × 10 por lado + 2 × 15 · liviano (descarga)",
+            "5": "3 × 10 por lado · +2,5 kg + 3 × 12 · +5 kg, tempo 3-1-1; la 3ª de talones con dropset",
+            "6": "3 × 12 por lado + 3 × 12 · talones +5 kg; la 3ª con dropset",
+            "7": "4 × 12 por lado + 4 × 12 · talones +5 kg · RIR 0-1; la 4ª con rest-pause (15 s + 4 reps)",
+            "8": "2 × 10 por lado + 2 × 12 · liviano (descarga)"
+          }
+        }
+      ],
+      "final": {
+        "1": "Remo en ergómetro: 3 × 4 min a ritmo Z2 (FC máx 118 lpm) con 1 min de pausa.",
+        "2": "Remo en ergómetro: 3 × 4 min 30 s con 1 min de pausa.",
+        "3": "Remo en ergómetro: 3 × 5 min con 1 min de pausa.",
+        "4": "Remo en ergómetro (descarga): 2 × 4 min con 1 min de pausa.",
+        "5": "Remo en ergómetro: 3 × 5 min con 1 min de pausa.",
+        "6": "Remo en ergómetro: 3 × 5 min 30 s con 1 min de pausa.",
+        "7": "Remo en ergómetro: 3 × 6 min con 1 min de pausa.",
+        "8": "Remo en ergómetro (descarga): 2 × 4 min con 1 min de pausa."
+      },
+      "calma": [
+        ["Caminata lenta", "3 min hasta bajar de 100 lpm"],
+        ["Estiramiento de isquiotibiales boca arriba con banda", "2 × 40 s por lado"],
+        ["Piriforme en figura 4", "2 × 40 s por lado"],
+        ["Postura del niño", "60 s"],
+        ["Torsión lumbar suave boca arriba", "30 s por lado"],
+        ["Respiración diafragmática", "2 min"]
+      ]
+    },
+    {
+      "clave": "E",
+      "dia": "Sábado",
+      "nombre": "Hyrox base · más volumen de estaciones con pausas largas",
+      "foco": "Más series y más carga en las estaciones, pero con pausas hasta bajar de 110 lpm: FC sostenida bajo 121 lpm y picos breves hasta 131 lpm. Sin carreras ni trineo real.",
+      "duracion_min": 85,
+      "calentamiento": [
+        ["Bici de aire progresiva", "4 min, FC hasta 105 lpm"],
+        ["Remo en ergómetro suave", "3 min"],
+        ["Sentadilla al aire con peso corporal", "2 × 10"]
+      ],
+      "movilidad": [
+        ["Sentadilla profunda sostenida", "2 × 30 s"],
+        ["Rotación torácica en cuadrupedia", "2 × 8 por lado"],
+        ["Tobillo contra la pared", "2 × 10 por lado"]
+      ],
+      "activacion": [
+        ["Wall ball sin pelota (sentadilla + empuje de brazos)", "2 × 8"],
+        ["Caminata de oso", "2 × 10 m"],
+        ["Plancha lateral", "2 × 20 s por lado"]
+      ],
+      "ejercicios": [
+        {
+          "nombre": "Wall balls (pelota 6 kg al blanco de 3 m)",
+          "tipo": "fijo",
+          "base": null,
+          "factor": 1.0,
+          "esquema": null,
+          "mancuerna": false,
+          "descanso": "2 min o hasta bajar de 110 lpm",
+          "nota": "Sentadilla completa y lanzamiento fluido; si la FC pasa 131 lpm, cortá la serie. Es la estación que más sube el pulso: no acortes la pausa.",
+          "fijo": {
+            "1": "4 × 12",
+            "2": "4 × 14",
+            "3": "5 × 14",
+            "4": "3 × 10 (descarga)",
+            "5": "5 × 16",
+            "6": "5 × 18",
+            "7": "5 × 20",
+            "8": "3 × 10 (descarga)"
+          }
+        },
+        {
+          "nombre": "Empuje de disco sobre toalla (en lugar de trineo)",
+          "tipo": "fijo",
+          "base": null,
+          "factor": 1.0,
+          "esquema": null,
+          "mancuerna": false,
+          "descanso": "2 min o hasta bajar de 110 lpm",
+          "nota": "Disco en piso liso sobre una toalla, brazos estirados, cuerpo inclinado y pasos cortos y potentes. Más peso y poco pulso: es la estación para ir pesado.",
+          "fijo": {
+            "1": "4 × 15 m con 35 kg",
+            "2": "4 × 15 m con 40 kg",
+            "3": "5 × 15 m con 45 kg",
+            "4": "3 × 10 m con 30 kg (descarga)",
+            "5": "5 × 15 m con 50 kg",
+            "6": "5 × 15 m con 55 kg",
+            "7": "5 × 15 m con 60 kg",
+            "8": "3 × 10 m con 40 kg (descarga)"
+          }
+        },
+        {
+          "nombre": "Polea con cuerda caminando hacia atrás (en lugar de arrastre)",
+          "tipo": "fijo",
+          "base": null,
+          "factor": 1.0,
+          "esquema": null,
+          "mancuerna": false,
+          "descanso": "2 min o hasta bajar de 110 lpm",
+          "nota": "Polea baja con cuerda, caminá hacia atrás con la pila en movimiento; si no da el recorrido, hacelo mano sobre mano.",
+          "fijo": {
+            "1": "4 × 15 m con 30 kg",
+            "2": "4 × 15 m con 35 kg",
+            "3": "4 × 15 m con 40 kg",
+            "4": "3 × 10 m con 30 kg (descarga)",
+            "5": "4 × 15 m con 40 kg",
+            "6": "4 × 15 m con 45 kg",
+            "7": "4 × 15 m con 45 kg",
+            "8": "3 × 10 m con 30 kg (descarga)"
+          }
+        },
+        {
+          "nombre": "Zancadas caminando con sandbag o disco al pecho",
+          "tipo": "fijo",
+          "base": null,
+          "factor": 1.0,
+          "esquema": null,
+          "mancuerna": false,
+          "descanso": "2 min o hasta bajar de 110 lpm",
+          "nota": "Paso largo, rodilla trasera cerca del piso sin golpear y torso erguido; sin correr.",
+          "fijo": {
+            "1": "4 × 20 m con 20 kg",
+            "2": "4 × 25 m con 20 kg",
+            "3": "4 × 30 m con 20 kg",
+            "4": "3 × 20 m con 10 kg (descarga)",
+            "5": "4 × 30 m con 25 kg",
+            "6": "4 × 30 m con 30 kg",
+            "7": "4 × 40 m con 30 kg",
+            "8": "3 × 20 m con 15 kg (descarga)"
+          }
+        },
+        {
+          "nombre": "Burpee con paso atrás y salto largo suave",
+          "tipo": "fijo",
+          "base": null,
+          "factor": 1.0,
+          "esquema": null,
+          "mancuerna": false,
+          "descanso": "2 min o hasta bajar de 110 lpm",
+          "nota": "Paso atrás en lugar de tirarte al piso y salto largo sin impacto fuerte; ritmo lento y controlado. Si el pulso pasa 131 lpm, terminá la serie ahí.",
+          "fijo": {
+            "1": "3 × 6",
+            "2": "3 × 8",
+            "3": "4 × 8",
+            "4": "2 × 5 (descarga)",
+            "5": "4 × 8",
+            "6": "4 × 10",
+            "7": "4 × 10",
+            "8": "2 × 5 (descarga)"
+          }
+        }
+      ],
+      "final": {
+        "1": "Remo en ergómetro 1.500 m continuos a ritmo conversacional (FC máx 118 lpm).",
+        "2": "Remo en ergómetro 1.800 m continuos a ritmo conversacional.",
+        "3": "Remo en ergómetro 2.000 m continuos a ritmo conversacional.",
+        "4": "Remo en ergómetro (descarga) 1.000 m suaves.",
+        "5": "Remo en ergómetro 2.500 m continuos a ritmo conversacional.",
+        "6": "Remo en ergómetro 2.500 m continuos a ritmo conversacional.",
+        "7": "Remo en ergómetro 3.000 m continuos a ritmo conversacional.",
+        "8": "Remo en ergómetro (descarga) 1.200 m suaves."
+      },
+      "calma": [
+        ["Caminata lenta hasta bajar de 100 lpm", "5 min"],
+        ["Estiramiento de pantorrillas contra la pared", "2 × 30 s por lado"],
+        ["Estiramiento de cuádriceps y psoas", "40 s por lado"],
+        ["Estiramiento de pectoral y dorsal", "30 s cada uno"],
+        ["Respiración nasal 4 s inhalo, 6 s exhalo", "3 min"]
+      ]
+    }
+  ],
+  "reglas_ajuste": [
+    "Si sobra: si la primera serie del básico sale con más de 3 reps en reserva, subí 2,5-5 kg en el acto y anotalo; si en dos semanas seguidas sobra, recalculá el máximo estimado.",
+    "Si falta: si una serie de un básico sale sin 1 rep en reserva, bajá 5 % en la siguiente, saltá el back-off de ese día y anotalo; si pasa dos semanas seguidas, repetí esa semana antes de avanzar.",
+    "Si dormiste menos de 5 h: sin back-off, sin rest-pause ni dropsets, básico solo hasta 3 series y accesorios a la mitad; salteá el final y el sábado pasa a bici Z2 suave 30-40 min. Si el sueño promedio de la semana queda por debajo de 6 h, sacá primero las técnicas de intensidad y recién después tocá los básicos.",
+    "Autorregulación de 6 días: si dormiste menos de 5 h o tenés agujetas fuertes (más de 6 sobre 10, dolor al caminar o que te cambia la técnica), sacá en este orden y parando apenas mejore: 1) el miércoles F pasa a Z2 suave 30 min + pasos (si las agujetas son solo de brazos u hombros, hacé nada más core, carry y Z2); 2) el sábado E pasa a bici Z2 suave 30-40 min; 3) los finales Z2 de martes, jueves y viernes; 4) recién al final se recortan series de los básicos (nunca se sacan antes que F y el sábado). Con dos noches seguidas de menos de 5 h o un promedio semanal bajo 6 h, quedan 4 días de fuerza (lunes, martes, jueves, viernes) y miércoles y sábado se vuelven Z2 suave o descanso. Un día salteado no se recupera sumándolo a otro: se pierde.",
+    "Si el rendimiento cae dos semanas seguidas, hay mareos o te despertás con el pulso de reposo más alto de lo normal: pasá a la mitad del volumen y avisá al nutricionista y al médico antes de seguir subiendo.",
+    "Dolor articular, dolor en el pecho, mareo, falta de aire rara o palpitaciones: cortás la sesión y consultás al médico. Dolor puntual en un ejercicio: bajá carga, revisá técnica o sustituí.",
+    "Frecuencia cardíaca: reloj puesto siempre. Sostenido por encima de 121 lpm bajá el ritmo; los picos breves hasta 131 lpm solo en series cortas de menos de 45 s. Antes de cada serie de superserie, carry, Hyrox o técnica de intensidad esperá a bajar de 110 lpm. Si un rest-pause o dropset te lleva sobre 131 lpm, esa técnica se saca.",
+    "Tensión antes de cada sesión mientras no haya registro estable. Sin ECG hecho y tensión registrada no se pasa de la S3: se repiten los porcentajes de S2 hasta tenerlos, y las S5-S7 (84-88 %) se hacen recién con el visto bueno médico.",
+    "Si el peso o la cintura no bajan en 3 semanas, no se sube volumen de gym: se revisa dieta y pasos con el nutricionista."
+  ],
+  "fuera_del_gym": [
+    "Pasos: 11.000 por día, con la caminata de 10 min post-almuerzo que ya tenés en el bot; es lo que más grasa mueve sin sumar pulso ni fatiga.",
+    "Miércoles: sesión F de gym accesorio con bloque final de bici de aire, común o remo, Zona 2, 30-35 min, FC 105-118 lpm (podés pasar el Z2 al post-almuerzo si el día lo exige).",
+    "Domingo: caminata de 30-40 min al sol y batch cooking; sin entrenar.",
+    "Medí peso y cintura en ayunas todos los lunes y registralo en mediciones.md.",
+    "Alcohol en 0 y snack ancla de las 22:00 todos los días; con más volumen, el sueño es lo que sostiene el plan."
+  ],
+  "coordinacion": [
+    "Médico: ECG, análisis de sangre y tensión siguen pendientes desde abril. Pedir ECG antes de la S3 (hasta tenerlo no se pasa de ahí) y que valide las estaciones, los carries pesados y las técnicas de intensidad con el tope de FC de 121 lpm; ergometría si es posible para definir las zonas reales y habilitar la Fase 2.",
+    "Médico: avisar que ahora son 6 días de entrenamiento por semana (el miércoles suma una sesión de gym accesorio a RIR 1-2 y Z2, sin básicos); consultar si hay algún límite de frecuencia semanal hasta tener el ECG.",
+    "Médico: si el despertar a las 3 am persiste, estudio de sueño; si hay palpitaciones, dolor torácico o mareo, guardia directa.",
+    "Nutricionista: alinear las kcal reales (el bot muestra 1.800 kcal y 190 g de proteína, la dieta dice 2.250 y 200 g) con 6 días de entreno y más volumen; ver carbohidrato para el sábado y los días de peso muerto y sentadilla. Con esta versión dura, si el rendimiento cae dos semanas seguidas, subir calorías antes de bajar volumen.",
+    "Nutricionista: validar con el médico la creatina (5 g/día) como herramienta de entrenamiento.",
+    "Psicólogo: el sábado de entrenamiento, el sueño de 5 h y la exigencia de ir duro entran en el seguimiento de adherencia, de reemplazo del alcohol y de no convertir la dureza en culpa si hay que recortar un día."
+  ]
+}

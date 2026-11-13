@@ -31,13 +31,18 @@ from zoneinfo import ZoneInfo
 
 import requests
 
-try:  # rutina_fuerza.py va en la misma carpeta que este script
+try:  # rutina_fuerza.py va en la misma carpeta que este script (bloque anterior, hasta el 15/11)
     import rutina_fuerza as RF
 except ImportError:
     RF = None
+try:  # rutina_actual.py + rutina_actual.json: rutina dura de 6 días, desde el lunes 16/11
+    import rutina_actual as RA
+except Exception:
+    RA = None
 
 # Recordatorios de gym que se arman con los pesos de la semana en curso
-GYM_SLOTS = {(0, "06:35"), (1, "06:35"), (3, "06:35"), (4, "13:30")}
+# Lun, Mar, Mié, Jue 07:00 · Vie 14:00 · Sáb 08:30 (el aviso sale 30 min antes)
+GYM_SLOTS = {(0, "06:35"), (1, "06:35"), (2, "06:35"), (3, "06:35"), (4, "13:30"), (5, "08:00")}
 
 TZ = ZoneInfo("America/Argentina/Buenos_Aires")
 BOT_TOKEN = os.environ["TELEGRAM_BOT_TOKEN"]
@@ -93,18 +98,20 @@ RECORDATORIOS = [
     (1, "22:00", "😴 A dormir en 30 min.", 0, 0, 0),
     # Total mar: ~2105 kcal · 194g p · 400 quema · neto 1705
 
-    # ===== MIÉRCOLES (descanso + bici) =====
-    (2, "05:30", "💧 En 30 min a despertar. Vaso 300 ml de agua.", 0, 0, 0),
-    (2, "06:00", "🍳 Desayuno en 30 min: 3 huevos duros + ricota 80 g + palta 60 g + verdura tomate 100 g + oliva 5 ml.", 550, 32, 0),
-    (2, "06:15", "💊 Suplementos: Vit D3 + Omega-3 + Creatina 5 g.", 0, 0, 0),
-    (2, "09:30", "🥛 Media mañana en 30 min: yogur griego 200 g + nueces 10 g + fruta arándanos 20 g.", 250, 18, 0),
+    # ===== MIÉRCOLES (gym F: brazos, hombro, core + Z2) =====
+    (2, "05:30", "💧 En 30 min a despertar. Vaso 300 ml + pizca de sal.", 0, 0, 0),
+    (2, "06:30", "🍌 Pre-entreno en 30 min: media banana (80 g) + café 150 ml + agua con sal 300 ml.", 70, 1, 0),
+    (2, "06:35", "🏋️ Brazos, hombro y core empieza en 30 min (se completa con la rutina de la semana)", 0, 0, 0),
+    (2, "08:20", "🥤 Post-entreno + sesión F hecha. En shaker apenas termines: whey 35 g + creatina 5 g + banana chica 80 g. Después ducha y al negocio.", 210, 28, 450),
+    (2, "09:00", "🍳 Desayuno en 30 min: 3 huevos duros + ricota 80 g + palta 60 g + verdura tomate 100 g + oliva 5 ml.", 550, 32, 0),
+    (2, "09:15", "💊 Suplementos: Vit D3 + Omega-3.", 0, 0, 0),
+    (2, "11:00", "🥛 Media mañana en 30 min: yogur griego 200 g + nueces 10 g + fruta arándanos 20 g.", 250, 18, 0),
     (2, "12:30", "🍽️ Almuerzo en 30 min: pescado atún 180 g + 2 huevos duros + verdura espinaca 150 g + queso 30 g + ensalada + palta 60 g + oliva 15 ml.", 620, 62, 0),
-    (2, "13:00", "🚴 Bici 40 min en 30 min. Zona 2 (FC 105-118 lpm), ruta plana, post-almuerzo.", 0, 0, 300),
     (2, "13:30", "☕ Último mate del día en 30 min.", 0, 0, 0),
     (2, "16:30", "🍽️ Merienda-cena · Sardinas con palta en 30 min: sardinas al natural 100 g + palta 50 g + tomate 100 g + aceitunas 10 g + oliva 5 ml + limón.", 300, 32, 0),
     (2, "21:30", "🌙 Snack ancla MÍNIMO (opcional): yogur griego 100 g + chía 5 g + magnesio 300 mg.", 100, 10, 0),
     (2, "22:00", "😴 A dormir en 30 min.", 0, 0, 0),
-    # Total mie: ~2400 kcal · 204g p · 300 quema · neto 2100
+    # Total mie: ~2100 kcal · 183g p · 450 quema · neto 1650
 
     # ===== JUEVES (gym A) =====
     (3, "05:30", "💧 En 30 min a despertar. Agua + sal.", 0, 0, 0),
@@ -133,27 +140,28 @@ RECORDATORIOS = [
     (4, "22:00", "😴 A dormir.", 0, 0, 0),
     # Total vie: ~2320 kcal · 169g p · 400 quema · neto 1920
 
-    # ===== SÁBADO (descanso + bici) =====
-    (5, "05:30", "💧 En 30 min a despertar. Agua 300 ml.", 0, 0, 0),
+    # ===== SÁBADO (gym E: Hyrox base 08:30) =====
+    (5, "05:30", "💧 En 30 min a despertar. Agua 300 ml + pizca de sal.", 0, 0, 0),
     (5, "06:00", "🍳 Desayuno en 30 min: 3 huevos duros + jamón cocido magro 30 g + queso port salut 30 g + palta 50 g + verdura tomate 100 g + oliva 5 ml.", 500, 32, 0),
-    (5, "06:15", "💊 Suplementos: Vit D3 + Omega-3 + Creatina 5 g.", 0, 0, 0),
-    (5, "09:30", "🥛 Media mañana en 30 min: cottage 150 g + fruta frutillas 50 g + nueces 7 g.", 180, 22, 0),
+    (5, "06:15", "💊 Suplementos: Vit D3 + Omega-3.", 0, 0, 0),
+    (5, "08:00", "🏋️ Hyrox base empieza en 30 min (se completa con la rutina de la semana)", 0, 0, 0),
+    (5, "10:00", "🥤 Post-entreno + Hyrox base hecho. En shaker: whey 35 g + creatina 5 g + banana chica 80 g.", 210, 28, 500),
+    (5, "11:00", "🥛 Media mañana en 30 min: cottage 150 g + fruta frutillas 50 g + nueces 7 g.", 180, 22, 0),
     (5, "12:30", "🍽️ Almuerzo en 30 min: pollo 220 g + verdura brócoli 150 g + verdura zapallo hervido 100 g + ensalada + palta 40 g + oliva 12 ml.", 500, 55, 0),
-    (5, "13:00", "🚴 Bici 40 min en 30 min. Zona 2, ruta plana.", 0, 0, 300),
     (5, "13:30", "☕ ¡Último mate!", 0, 0, 0),
     (5, "16:30", "🍽️ Merienda-cena · Sardinas gourmet en 30 min: sardinas 120 g + palta 50 g + tomate cherry 80 g + galleta de arroz 1 + oliva 5 ml + limón.", 320, 30, 0),
     (5, "21:30", "🌙 Snack ancla MÍNIMO (opcional): yogur griego 100 g + chía 5 g + magnesio 300 mg.", 100, 10, 0),
     (5, "22:00", "😴 A dormir.", 0, 0, 0),
-    # Total sab: ~2090 kcal · 198g p · 300 quema · neto 1790
+    # Total sab: ~1810 kcal · 177g p · 500 quema · neto 1310
 
-    # ===== DOMINGO (descanso + bici + batch cooking) =====
+    # ===== DOMINGO (descanso activo: caminata + batch cooking) =====
     (6, "05:30", "💧 En 30 min a despertar. Agua 300 ml.", 0, 0, 0),
     (6, "06:00", "🍳 Desayuno en 30 min: 3 huevos duros + palta 60 g + verdura tomate 100 g + queso 30 g + oliva 5 ml.", 500, 28, 0),
     (6, "06:15", "💊 Suplementos: Vit D3 + Omega-3 + Creatina 5 g.", 0, 0, 0),
     (6, "09:30", "🍳 BATCH COOKING en 30 min: pollo 1,8 kg horno + 20 huevos duros + papa/boniato hervidos + verduras al vapor + aderezos.", 0, 0, 0),
     (6, "12:30", "🍽️ Almuerzo en 30 min: pollo del horno 220 g + ensalada completa + palta 60 g + aceitunas + nueces + oliva.", 620, 55, 0),
     (6, "13:30", "☕ ¡Último mate!", 0, 0, 0),
-    (6, "14:00", "🚴 Bici 40 min en 30 min. Zona 2, al sol.", 0, 0, 300),
+    (6, "14:00", "🚶 Caminata larga en 30 min: 60 min suaves al sol, ritmo de charla (FC por debajo de 110). Es el día de recuperar.", 0, 0, 250),
     (6, "16:30", "🍽️ Merienda-cena · Atún con palta en 30 min: atún al natural 120 g + palta 50 g + tomate 100 g + 1 huevo duro + aceitunas 10 g + oliva 5 ml.", 300, 32, 0),
     (6, "21:30", "🌙 Snack ancla MÍNIMO (opcional): yogur griego 100 g + chía 5 g + magnesio 300 mg.", 100, 10, 0),
     (6, "22:00", "😴 A dormir. Cargar tensiómetro para lunes.", 0, 0, 0),
@@ -169,10 +177,10 @@ RECORDATORIOS = [
     *[(d, "21:45", "🧘 Meditación 10 min pre-sueño. App: Insight Timer / Calm / YouTube (10 min sleep).", 0, 0, 0) for d in range(7)],
     # Días laborales (Lun-Vie): micro-pausa de tarde
     *[(d, "17:00", "🧠 Micro-pausa 3 min. Lejos del celular. Cuello, hombros, mirada lejos.", 0, 0, 0) for d in range(5)],
-    # Días de descanso (Mié, Sáb, Dom): sol matinal para ritmo circadiano
-    *[(d, "07:00", "☀️ 10 min al sol / aire libre. Vit D natural y ritmo circadiano.", 0, 0, 0) for d in [2, 5, 6]],
-    # Caminatas post-almuerzo en días sin bici (Lun, Mar, Jue)
-    *[(d, "13:15", "🚶 Caminata 10 min post-almuerzo. Zona 2 tranquila, al aire libre si podés.", 0, 0, 0) for d in [0, 1, 3]],
+    # Domingo (descanso): sol matinal para ritmo circadiano
+    *[(d, "07:00", "☀️ 10 min al sol / aire libre. Vit D natural y ritmo circadiano.", 0, 0, 0) for d in [6]],
+    # Caminatas post-almuerzo los días de gym de mañana (Lun, Mar, Mié, Jue, Sáb)
+    *[(d, "13:15", "🚶 Caminata 10 min post-almuerzo. Zona 2 tranquila, al aire libre si podés.", 0, 0, 0) for d in [0, 1, 2, 3, 5]],
 ]
 
 # Index por key = "Dia-HH:MM" para lookup rápido
@@ -687,6 +695,20 @@ def cargar_enviados_hoy():
     return {e.get("key", "") for e in events if e.get("kind") == "sent"}
 
 
+def mensaje_gym(d, fecha):
+    """Rutina del día con los kilos de la semana: la de 6 días desde el 16/11, antes la anterior."""
+    try:
+        if RA and RA.activo(fecha):
+            return RA.mensaje_sesion(d, fecha)
+        if RF and d in RF.DIAS:
+            return RF.mensaje_sesion(d, fecha)
+        # Días que en el bloque anterior eran de descanso (hasta el 15/11)
+        return "🚴 Hoy todavía va el bloque anterior: bici 40 min en Zona 2 (FC 105-118). La rutina de 6 días arranca el lunes 16/11."
+    except Exception as e:
+        log.error("no pude armar la rutina del día %s: %s", d, e)
+    return None
+
+
 def scheduler_loop():
     log.info(
         "scheduler iniciado — %d recordatorios cargados", len(RECORDATORIOS)
@@ -717,8 +739,8 @@ def scheduler_loop():
             key = f"{DIAS[d]}-{hora}"
             if d == dia and hora == hhmm and key not in ya_enviados:
                 try:
-                    if RF and (d, hora) in GYM_SLOTS:
-                        mensaje = RF.mensaje_sesion(d, ahora.date())
+                    if (d, hora) in GYM_SLOTS:
+                        mensaje = mensaje_gym(d, ahora.date()) or mensaje
                     enviar_recordatorio(key, mensaje)
                     ya_enviados.add(key)
                 except Exception as e:
