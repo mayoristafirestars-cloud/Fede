@@ -12,6 +12,14 @@
 **Impacto:** qué archivos se tocaron
 ```
 
+## 2026-11-13
+**Autor:** @entrenador-fisico
+**Qué:** Rutina de 5 días endurecida (versión dura): 5 series en los básicos, back-off en banca y sentadilla, rest-pause/dropsets/tempo en aislados seguros, farmer y suitcase carry más pesados, más Z2 (miércoles 60 min, 11.000 pasos) y más volumen de estaciones el sábado. Agrega "Fase 2 – desbloqueo con ECG aprobado" (sin programar). Mismas 8 semanas, deloads en S4 y S8.
+**Por qué:** Pedido de Fede de más intensidad. Se endurece dentro de los límites médicos (FC ≤121 lpm, picos ≤131, sin HIIT/1RM, RIR ≥1 en básicos) hasta tener el ECG; la dureza viene de lo muscular y el volumen, no del pulso.
+**Impacto:** `salud/rutina-actual.md`, `salud/bitacora/2026-11-13.md`, `plan.json` del scratchpad. Sin ECG no se pasa de S3; nutricionista debe revisar kcal por el volumen nuevo.
+
+---
+
 ## 2026-11-11
 **Autor:** @entrenador-fisico
 **Qué:** Nueva rutina de 5 días / 8 semanas (lunes torso, martes pierna, jueves torso, viernes pierna, sábado Hyrox base), desde el 16/11/2026, con calentamiento, activación y vuelta a la calma específicos por día.
