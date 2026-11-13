@@ -150,6 +150,34 @@ a{text-decoration:none;color:inherit}button{cursor:pointer;font-family:var(--F)}
 #toast{position:fixed;bottom:24px;right:24px;background:var(--surface2);border:1px solid var(--border2);border-radius:8px;padding:12px 18px;font-size:13px;transform:translateY(20px);opacity:0;transition:.25s;z-index:999;pointer-events:none;max-width:340px;display:flex;align-items:center;gap:8px}
 #toast.show{transform:translateY(0);opacity:1}#toast.ok{border-color:var(--green);color:var(--green)}#toast.err{border-color:var(--red);color:var(--red)}#toast.info{border-color:var(--accent);color:var(--accent)}
 @keyframes rowIn{from{opacity:0;transform:translateY(-4px)}to{opacity:1;transform:translateY(0)}}
+
+[hidden]{display:none!important}
+/* ── Cartera ── */
+.cc-wrap{flex:1;overflow-y:auto;padding:18px 24px;display:flex;flex-direction:column;gap:16px}
+.cc-aviso{padding:9px 14px;border-radius:7px;font-size:12.5px;border:1px solid var(--border2);background:var(--surface);color:var(--text2)}
+.cc-aviso.malo{border-color:var(--orange);color:var(--orange);background:rgba(240,140,58,.08)}
+.cc-tramos{display:grid;grid-template-columns:repeat(auto-fit,minmax(118px,1fr));gap:1px;background:var(--border);border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.cc-tramos div{background:var(--panel);padding:10px 12px;display:flex;flex-direction:column;gap:3px;min-width:0}
+.cc-tramos .k{font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--text3)}
+.cc-tramos .v{font-family:var(--FM);font-size:14px;font-weight:600;white-space:nowrap}
+.cc-tramos .v.rojo{color:var(--red)} .cc-tramos .v.nar{color:var(--orange)}
+.num{text-align:right;font-family:var(--FM);font-variant-numeric:tabular-nums;white-space:nowrap}
+.cc-fila{cursor:pointer}
+.cc-fila.sel td{background:var(--accent-dim)!important}
+.cc-detalle{border:1px solid var(--border);border-radius:8px;background:var(--panel);padding:16px;display:flex;flex-direction:column;gap:12px}
+.cc-detalle h3{font-family:var(--FH);font-size:16px}
+.cc-sub{font-size:12px;color:var(--text2)}
+.cc-form{display:flex;flex-wrap:wrap;gap:8px;align-items:flex-end;padding:10px;border:1px dashed var(--border2);border-radius:7px}
+.cc-form label{display:flex;flex-direction:column;gap:4px;font-size:11px;color:var(--text2)}
+.cc-in{padding:7px 10px;background:var(--surface);border:1px solid var(--border);border-radius:6px;color:var(--text);font-size:12.5px;font-family:var(--F)}
+.cc-in:focus{outline:none;border-color:var(--accent)}
+.badge-o{background:rgba(240,140,58,.12);color:var(--orange)}
+.imp-pasos{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px}
+.imp-caja{border:1px solid var(--border);border-radius:8px;background:var(--panel);padding:16px;display:flex;flex-direction:column;gap:10px}
+.imp-caja h3{font-family:var(--FH);font-size:14px}
+.imp-lista{max-height:220px;overflow-y:auto;font-size:12px;border:1px solid var(--border);border-radius:6px}
+.imp-lista div{padding:6px 10px;border-bottom:1px solid var(--border)}
+.imp-lista div:last-child{border-bottom:0}
 </style>
 </head>
 <body>
@@ -167,7 +195,8 @@ a{text-decoration:none;color:inherit}button{cursor:pointer;font-family:var(--F)}
     <div class="nav-item" onclick="goPage('historial',this)"><span class="ni">📋</span> Historial</div>
     <div class="nav-item" onclick="goPage('inventario',this)"><span class="ni">📦</span> Inventario</div>
     <div class="nav-section">Clientes</div>
-    <div class="nav-item" onclick="goPage('crm',this)"><span class="ni">👥</span> CRM <span class="nav-badge">Pronto</span></div>
+    <div class="nav-item" onclick="goPage('cartera',this)"><span class="ni">💳</span> Cartera</div>
+    <div class="nav-item" onclick="goPage('importar',this)"><span class="ni">📥</span> Importar cartera</div>
     <div class="nav-item" onclick="goPage('agente',this)"><span class="ni">🤖</span> Agente IA <span class="nav-badge">Pronto</span></div>
     <div class="nav-section">Canal digital</div>
     <div class="nav-item" onclick="goPage('tienda',this)"><span class="ni">🛒</span> Tienda Online <span class="nav-badge">Pronto</span></div>
@@ -298,7 +327,53 @@ a{text-decoration:none;color:inherit}button{cursor:pointer;font-family:var(--F)}
 
 <!-- PLACEHOLDERS -->
 <div class="page" id="page-inventario"><div style="display:flex;align-items:center;justify-content:center;flex:1;flex-direction:column;gap:8px;color:var(--text3)"><span style="font-size:48px">📦</span><p style="font-size:16px;font-weight:600;color:var(--text)">Inventario</p><p>En construcción</p></div></div>
-<div class="page" id="page-crm"><div style="display:flex;align-items:center;justify-content:center;flex:1;flex-direction:column;gap:8px;color:var(--text3)"><span style="font-size:48px">👥</span><p style="font-size:16px;font-weight:600;color:var(--text)">CRM — 4.180 clientes</p><p>En construcción</p></div></div>
+<div class="page" id="page-cartera">
+  <div class="hist-toolbar">
+    <input type="text" class="hist-search" id="cc-buscar" placeholder="Buscar cliente o CUIT..." oninput="filtrarCartera(this.value)">
+    <span class="cc-sub" id="cc-datos-al"></span>
+    <button class="btn-sm" style="margin-left:auto" onclick="exportarCartera()">⬇ Exportar CSV</button>
+    <button class="btn-sm primary" onclick="goPage('importar')">📥 Importar</button>
+  </div>
+  <div class="cc-wrap">
+    <div class="cc-aviso" id="cc-aviso" hidden></div>
+    <div class="cc-tramos" id="cc-tramos"></div>
+    <table class="hist-table">
+      <thead><tr><th>Cliente</th><th>CUIT</th><th class="num">Saldo</th><th class="num">Vencido</th><th class="num">+90 días</th><th class="num">Atraso</th><th class="num">Créditos s/imputar</th></tr></thead>
+      <tbody id="cc-body"><tr><td colspan="7" style="text-align:center;padding:30px;color:var(--text3)">Cargando...</td></tr></tbody>
+    </table>
+    <div class="cc-detalle" id="cc-detalle" hidden></div>
+  </div>
+</div>
+
+<div class="page" id="page-importar">
+  <div class="cc-wrap">
+    <div class="cc-aviso">Importá primero el <b>saldo inicial</b> (lo que te debe cada cliente hoy, con la planilla de <code>data/plantillas</code>). Después, cada semana, el archivo de <b>ARCA → Mis Comprobantes → Emitidos</b>: se toman sólo las facturas y notas de crédito de clientes con cuenta corriente.</div>
+    <div class="imp-pasos">
+      <div class="imp-caja">
+        <h3>1 · Archivo</h3>
+        <label class="cc-sub">Tipo de archivo
+          <select class="cc-in" id="imp-formato" onchange="document.getElementById('imp-corte-l').hidden=this.value!=='saldo_inicial'">
+            <option value="saldo_inicial">Saldo inicial (planilla)</option>
+            <option value="arca_emitidos">ARCA · Mis Comprobantes Emitidos</option>
+          </select>
+        </label>
+        <label class="cc-sub" id="imp-corte-l">Fecha de corte (el día al que corresponde el saldo)
+          <input class="cc-in" type="date" id="imp-corte">
+        </label>
+        <label class="cc-sub">Archivo CSV o Excel
+          <input class="cc-in" type="file" id="imp-archivo" accept=".csv,.xlsx,.txt">
+        </label>
+        <button class="btn-sm primary" id="imp-btn-ver" onclick="verVistaPrevia()">Ver vista previa</button>
+      </div>
+      <div class="imp-caja" id="imp-previa" hidden></div>
+    </div>
+    <div class="imp-caja">
+      <h3>Importaciones anteriores</h3>
+      <table class="hist-table"><thead><tr><th>Lote</th><th>Tipo</th><th>Archivo</th><th>Estado</th><th class="num">Filas OK</th><th class="num">Total</th><th>Fecha</th><th></th></tr></thead>
+      <tbody id="imp-lotes"></tbody></table>
+    </div>
+  </div>
+</div>
 <div class="page" id="page-agente"><div style="display:flex;align-items:center;justify-content:center;flex:1;flex-direction:column;gap:8px;color:var(--text3)"><span style="font-size:48px">🤖</span><p style="font-size:16px;font-weight:600;color:var(--text)">Agente IA</p><p>En construcción</p></div></div>
 <div class="page" id="page-tienda"><div style="display:flex;align-items:center;justify-content:center;flex:1;flex-direction:column;gap:8px;color:var(--text3)"><span style="font-size:48px">🛒</span><p style="font-size:16px;font-weight:600;color:var(--text)">Tienda Online</p><p>En construcción</p></div></div>
 <div class="page" id="page-reportes"><div style="display:flex;align-items:center;justify-content:center;flex:1;flex-direction:column;gap:8px;color:var(--text3)"><span style="font-size:48px">📊</span><p style="font-size:16px;font-weight:600;color:var(--text)">Reportes</p><p>En construcción</p></div></div>
@@ -365,10 +440,13 @@ function goPage(id,el){
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
   document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
   document.getElementById('page-'+id).classList.add('active');
+  if(!el)el=document.querySelector(`.nav-item[onclick*="'${id}'"]`);
   if(el)el.classList.add('active');
-  const titles={facturacion:'Facturación',historial:'Historial',inventario:'Inventario',crm:'CRM',agente:'Agente IA',tienda:'Tienda Online',reportes:'Reportes'};
+  const titles={facturacion:'Facturación',historial:'Historial',inventario:'Inventario',cartera:'Cartera',importar:'Importar cartera',agente:'Agente IA',tienda:'Tienda Online',reportes:'Reportes'};
   document.getElementById('topbar-title').textContent=titles[id]||id;
   if(id==='historial')cargarHistorial();
+  if(id==='cartera')cargarCartera();
+  if(id==='importar')cargarLotes();
   if(id==='facturacion')setTimeout(()=>document.getElementById('buscador').focus(),50);
 }
 
@@ -538,6 +616,8 @@ const CMD_ITEMS=[
   {icon:'🧾',text:'Nueva Factura',sub:'Ctrl+N',action:()=>{closeCmd();goPage('facturacion')}},
   {icon:'📋',text:'Ver Historial',sub:'',action:()=>{closeCmd();goPage('historial')}},
   {icon:'📦',text:'Ver Inventario',sub:'',action:()=>{closeCmd();goPage('inventario')}},
+  {icon:'💳',text:'Ver Cartera',sub:'',action:()=>{closeCmd();goPage('cartera')}},
+  {icon:'📥',text:'Importar cartera',sub:'',action:()=>{closeCmd();goPage('importar')}},
   {icon:'👁',text:'Preview imprimible',sub:'Ctrl+P',action:()=>{closeCmd();verPreview()}},
   {icon:'⎘',text:'Clonar último',sub:'',action:()=>{closeCmd();clonarUltimo()}},
   {icon:'✕',text:'Limpiar comprobante',sub:'',action:()=>{closeCmd();limpiar()}},
@@ -647,6 +727,176 @@ async function getNextNum(){
 window.addEventListener('DOMContentLoaded',()=>{
   getNextNum();cargarKPIs();cargarClientesRecientes();loadDraft();renderItems();recalcular();
 });
+
+// ══════════ CARTERA ══════════
+const CC={clientes:[],sel:null};
+const NOMBRE_TRAMO={al_dia:'Al día','1_30':'1–30 días','31_60':'31–60 días','61_90':'61–90 días',mas_90:'Más de 90'};
+const ESTADO_DOC={emitido:['Pendiente','badge-f'],parcialmente_cancelado:['Parcial','badge-o'],cancelado:['Cancelado','badge-p'],anulado:['Anulado','badge-a'],sin_imputar:['Sin imputar','badge-c'],aplicada:['Aplicada','badge-p']};
+function esc(t){return String(t??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+function fmtP(n){return n===null||n===undefined?'—':'$ '+Number(n).toLocaleString('es-AR',{minimumFractionDigits:2,maximumFractionDigits:2});}
+function fmtCuit(c){return c&&c.length===11?`${c.slice(0,2)}-${c.slice(2,10)}-${c.slice(10)}`:(c||'—');}
+async function api(url,opt){
+  const r=await fetch(url,opt);const d=await r.json().catch(()=>({}));
+  if(!r.ok)throw new Error(d.detail||('Error '+r.status));
+  return d;
+}
+function avisoDatos(d){
+  const el=document.getElementById('cc-aviso');
+  document.getElementById('cc-datos-al').textContent=d.datos_al?'Datos al '+fmtFecha(d.datos_al):'';
+  el.hidden=!d.aviso;el.className='cc-aviso'+(d.desactualizado?' malo':'');el.textContent=d.aviso||'';
+}
+async function cargarCartera(){
+  try{
+    const [res,cli]=await Promise.all([api('/api/cartera/resumen'),api('/api/cartera/clientes')]);
+    avisoDatos(res);
+    const t=res.tramos;
+    document.getElementById('cc-tramos').innerHTML=
+      `<div><span class="k">Saldo total</span><span class="v">${fmtP(res.saldo)}</span></div>`+
+      `<div><span class="k">Vencido</span><span class="v ${res.vencido>0?'rojo':''}">${fmtP(res.vencido)}</span></div>`+
+      Object.keys(NOMBRE_TRAMO).map(k=>`<div><span class="k">${NOMBRE_TRAMO[k]}</span><span class="v ${k==='mas_90'&&t[k]>0?'rojo':k!=='al_dia'&&t[k]>0?'nar':''}">${fmtP(t[k])}</span></div>`).join('')+
+      `<div><span class="k">Créditos s/imputar</span><span class="v">${fmtP(res.creditos_sin_imputar)}</span></div>`;
+    CC.clientes=cli;filtrarCartera(document.getElementById('cc-buscar').value);
+  }catch(e){toast('❌ '+e.message,'err');}
+}
+function filtrarCartera(q){
+  q=(q||'').toLowerCase();
+  const lista=CC.clientes.filter(c=>!q||(c.nombre+' '+(c.cuit||'')).toLowerCase().includes(q));
+  const body=document.getElementById('cc-body');
+  if(!lista.length){body.innerHTML=`<tr><td colspan="7" style="text-align:center;padding:30px;color:var(--text3)">${CC.clientes.length?'Ningún cliente coincide con la búsqueda.':'Todavía no hay cartera. Empezá por <a href="#" onclick="goPage(\'importar\');return false" style="color:var(--accent)">importar el saldo inicial</a>.'}</td></tr>`;return;}
+  body.innerHTML=lista.map(c=>`<tr class="cc-fila ${CC.sel===c.id?'sel':''}" onclick="verCliente(${c.id})">
+    <td>${esc(c.nombre)}</td><td style="font-family:var(--FM);font-size:12px">${esc(fmtCuit(c.cuit))}</td>
+    <td class="num">${fmtP(c.saldo)}</td><td class="num" style="color:${c.vencido>0?'var(--red)':'inherit'}">${fmtP(c.vencido)}</td>
+    <td class="num">${c.tramos.mas_90?fmtP(c.tramos.mas_90):'—'}</td><td class="num">${c.dias_mayor_atraso?c.dias_mayor_atraso+' d':'—'}</td>
+    <td class="num">${c.creditos_sin_imputar?fmtP(c.creditos_sin_imputar):'—'}</td></tr>`).join('');
+}
+function nroDoc(d){return d.tipo==='SI'?'Saldo inicial':`${d.tipo} ${d.letra||''} ${String(d.punto_venta??'').padStart(5,'0')}-${String(d.numero??'').padStart(8,'0')}`;}
+async function verCliente(id){
+  CC.sel=id;filtrarCartera(document.getElementById('cc-buscar').value);
+  const box=document.getElementById('cc-detalle');box.hidden=false;box.innerHTML='Cargando...';
+  try{
+    const d=await api('/api/cartera/clientes/'+id);const c=d.cliente,r=d.resumen;
+    const deudores=d.documentos.filter(x=>['FC','ND','SI'].includes(x.tipo)&&x.saldo>0);
+    const ncs=d.documentos.filter(x=>x.tipo==='NC'&&x.disponible>0);
+    box.innerHTML=`
+      <div style="display:flex;gap:12px;align-items:baseline;flex-wrap:wrap">
+        <h3>${esc(c.nombre)}</h3><span class="cc-sub">CUIT ${esc(fmtCuit(c.cuit))} · condición ${c.condicion_pago_dias??'30 (por defecto)'} días${c.limite_informativo?' · límite '+fmtP(c.limite_informativo):''}</span>
+        <button class="btn-sm" style="margin-left:auto" onclick="document.getElementById('cc-detalle').hidden=true;CC.sel=null;filtrarCartera('')">Cerrar</button>
+      </div>
+      <div class="cc-tramos">
+        <div><span class="k">Saldo</span><span class="v">${fmtP(r.saldo)}</span></div>
+        <div><span class="k">Vencido</span><span class="v ${r.vencido>0?'rojo':''}">${fmtP(r.vencido)}</span></div>
+        ${Object.keys(NOMBRE_TRAMO).map(k=>`<div><span class="k">${NOMBRE_TRAMO[k]}</span><span class="v">${fmtP(r.tramos[k])}</span></div>`).join('')}
+        <div><span class="k">Créditos s/imputar</span><span class="v">${fmtP(r.creditos_sin_imputar)}</span></div>
+      </div>
+      <table class="hist-table"><thead><tr><th>Comprobante</th><th>Emisión</th><th>Vence</th><th class="num">Importe</th><th class="num">Saldo</th><th>Estado</th><th class="num">Atraso</th></tr></thead><tbody>
+      ${d.documentos.map(x=>{const e=ESTADO_DOC[x.estado]||[x.estado,'badge-c'];return `<tr><td style="font-family:var(--FM);font-size:12px">${esc(nroDoc(x))}</td><td>${fmtFecha(x.fecha_emision)}</td><td>${x.tipo==='NC'?'—':fmtFecha(x.fecha_vencimiento)}</td>
+        <td class="num">${x.tipo==='NC'?'−':''}${fmtP(x.importe)}</td><td class="num">${x.tipo==='NC'?fmtP(x.disponible):fmtP(x.saldo)}</td>
+        <td><span class="badge ${e[1]}">${e[0]}</span></td><td class="num" style="color:${x.dias_vencido>90?'var(--red)':'inherit'}">${x.dias_vencido?x.dias_vencido+' d':'—'}</td></tr>`;}).join('')||'<tr><td colspan="7" style="color:var(--text3)">Sin comprobantes.</td></tr>'}
+      </tbody></table>
+      ${d.ajustes.length?`<div class="cc-sub"><b>Ajustes</b><br>${d.ajustes.map(a=>`${fmtFecha(a.creado_en.slice(0,10))} · ${a.sentido==='credito'?'Crédito':'Débito'} ${fmtP(a.importe)} · ${esc(a.motivo)} ${a.revierte_a?'(reverso)':(d.ajustes.some(b=>b.revierte_a===a.id)?'(revertido)':`<button class="btn-sm" onclick="revertirAjuste(${a.id},${id})">Revertir</button>`)}`).join('<br>')}</div>`:''}
+      ${d.aplicaciones.length?`<div class="cc-sub"><b>Aplicaciones</b><br>${d.aplicaciones.map(a=>`${fmtFecha(a.fecha)} · ${a.origen_tipo==='nota_credito'?'NC':'Ajuste'} → documento ${a.documento_id}: ${fmtP(a.importe)} ${a.revierte_a||a.importe<0?'(reverso)':(d.aplicaciones.some(b=>b.revierte_a===a.id)?'(revertida)':(a.origen_tipo==='nota_credito'?`<button class="btn-sm" onclick="revertirAplicacion(${a.id},${id})">Revertir</button>`:''))}`).join('<br>')}</div>`:''}
+      ${ncs.length&&deudores.length?`<div class="cc-form"><b style="width:100%;font-size:12px">Aplicar nota de crédito</b>
+        <label>Nota de crédito<select class="cc-in" id="ap-nc">${ncs.map(n=>`<option value="${n.id}">${esc(nroDoc(n))} · disp. ${fmtP(n.disponible)}</option>`).join('')}</select></label>
+        <label>A documento<select class="cc-in" id="ap-doc">${deudores.map(n=>`<option value="${n.id}">${esc(nroDoc(n))} · saldo ${fmtP(n.saldo)}</option>`).join('')}</select></label>
+        <label>Importe<input class="cc-in" id="ap-imp" placeholder="0,00" style="width:110px"></label>
+        <button class="btn-sm primary" onclick="aplicarNC(${id})">Aplicar</button></div>`:''}
+      <div class="cc-form"><b style="width:100%;font-size:12px">Nuevo ajuste (sólo administrador)</b>
+        <label>Tipo<select class="cc-in" id="aj-sentido"><option value="credito">Crédito (baja la deuda)</option><option value="debito">Débito (sube la deuda)</option></select></label>
+        <label>Importe<input class="cc-in" id="aj-imp" placeholder="0,00" style="width:110px"></label>
+        <label>Aplicar a<select class="cc-in" id="aj-doc"><option value="">— a cuenta —</option>${deudores.map(n=>`<option value="${n.id}">${esc(nroDoc(n))}</option>`).join('')}</select></label>
+        <label style="flex:1;min-width:180px">Motivo<input class="cc-in" id="aj-motivo" placeholder="Ej.: bonificación acordada"></label>
+        <button class="btn-sm primary" onclick="crearAjuste(${id})">Registrar</button></div>
+      <div class="cc-form"><b style="width:100%;font-size:12px">Cuenta corriente</b>
+        <label>Condición de pago (días)<input class="cc-in" id="cf-cond" type="number" min="0" max="365" value="${c.condicion_pago_dias??''}" style="width:90px"></label>
+        <label>Límite informativo<input class="cc-in" id="cf-lim" value="${c.limite_informativo??''}" style="width:120px"></label>
+        <label>CUIT<input class="cc-in" id="cf-cuit" value="${esc(c.cuit||'')}" style="width:140px"></label>
+        <label style="flex-direction:row;align-items:center;gap:6px"><input type="checkbox" id="cf-cc" ${c.cuenta_corriente?'checked':''}> Tiene cuenta corriente</label>
+        <button class="btn-sm" onclick="guardarCliente(${id})">Guardar</button></div>
+      ${d.contactos.length?`<div class="cc-sub">Contactos: ${d.contactos.map(k=>`${esc(k.telefono_e164||k.email||'')} ${k.consentimiento_fecha?'· con consentimiento':'· <span style="color:var(--orange)">sin consentimiento (no se usa para mensajes)</span>'}`).join(' · ')}</div>`:''}`;
+    box.scrollIntoView({behavior:'smooth',block:'nearest'});
+  }catch(e){box.innerHTML='';toast('❌ '+e.message,'err');}
+}
+const JSONPOST=b=>({method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(b)});
+async function aplicarNC(cid){
+  try{await api('/api/cartera/aplicaciones',JSONPOST({nota_credito_id:+document.getElementById('ap-nc').value,aplicaciones:[{documento_id:+document.getElementById('ap-doc').value,importe:document.getElementById('ap-imp').value}]}));
+    toast('✅ Nota de crédito aplicada','ok');await cargarCartera();verCliente(cid);}catch(e){toast('❌ '+e.message,'err');}
+}
+async function crearAjuste(cid){
+  const doc=document.getElementById('aj-doc').value;
+  try{await api('/api/cartera/ajustes',JSONPOST({cliente_id:cid,sentido:document.getElementById('aj-sentido').value,importe:document.getElementById('aj-imp').value,motivo:document.getElementById('aj-motivo').value,documento_id:doc?+doc:null}));
+    toast('✅ Ajuste registrado','ok');await cargarCartera();verCliente(cid);}catch(e){toast('❌ '+e.message,'err');}
+}
+async function revertirAjuste(aid,cid){
+  const motivo=prompt('Motivo de la reversión del ajuste:');if(!motivo)return;
+  try{await api(`/api/cartera/ajustes/${aid}/revertir`,JSONPOST({motivo}));toast('✅ Ajuste revertido','ok');await cargarCartera();verCliente(cid);}catch(e){toast('❌ '+e.message,'err');}
+}
+async function revertirAplicacion(apid,cid){
+  const motivo=prompt('Motivo de la reversión de la aplicación:');if(!motivo)return;
+  try{await api(`/api/cartera/aplicaciones/${apid}/revertir`,JSONPOST({motivo}));toast('✅ Aplicación revertida','ok');await cargarCartera();verCliente(cid);}catch(e){toast('❌ '+e.message,'err');}
+}
+async function guardarCliente(cid){
+  const cond=document.getElementById('cf-cond').value;
+  const b={cuenta_corriente:document.getElementById('cf-cc').checked,condicion_pago_dias:cond===''?null:+cond,limite_informativo:document.getElementById('cf-lim').value,cuit:document.getElementById('cf-cuit').value||null};
+  try{await api('/api/cartera/clientes/'+cid,{method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify(b)});toast('✅ Cliente actualizado','ok');await cargarCartera();verCliente(cid);}catch(e){toast('❌ '+e.message,'err');}
+}
+async function exportarCartera(){
+  try{const r=await fetch('/api/cartera/exportar.csv');if(!r.ok){const d=await r.json().catch(()=>({}));throw new Error(d.detail||'No se pudo exportar');}
+    const url=URL.createObjectURL(await r.blob());const a=document.createElement('a');a.href=url;a.download='cartera_'+hoyISO()+'.csv';a.click();URL.revokeObjectURL(url);
+  }catch(e){toast('❌ '+e.message,'err');}
+}
+
+// ══════════ IMPORTAR CARTERA ══════════
+async function verVistaPrevia(){
+  const archivo=document.getElementById('imp-archivo').files[0];
+  if(!archivo){toast('Elegí un archivo','info');return;}
+  const fd=new FormData();fd.append('archivo',archivo);fd.append('formato',document.getElementById('imp-formato').value);
+  const corte=document.getElementById('imp-corte').value;if(corte&&document.getElementById('imp-formato').value==='saldo_inicial')fd.append('fecha_corte',corte);
+  const btn=document.getElementById('imp-btn-ver');btn.disabled=true;btn.textContent='Leyendo...';
+  try{mostrarPrevia(await api('/api/cartera/importaciones',{method:'POST',body:fd}));}catch(e){toast('❌ '+e.message,'err');}
+  btn.disabled=false;btn.textContent='Ver vista previa';cargarLotes();
+}
+function mostrarPrevia(l){
+  const box=document.getElementById('imp-previa');box.hidden=false;
+  const si=l.formato==='saldo_inicial';
+  box.innerHTML=`<h3>2 · Vista previa — lote ${l.id}</h3>
+    <div class="cc-tramos"><div><span class="k">Para importar</span><span class="v">${l.filas_ok}</span></div>
+      <div><span class="k">Con error</span><span class="v ${l.filas_error?'rojo':''}">${l.filas_error}</span></div>
+      <div><span class="k">Omitidas</span><span class="v">${l.filas_omitidas}</span></div>
+      <div><span class="k">Total del archivo</span><span class="v">${fmtP(l.total_archivo)}</span></div></div>
+    ${l.errores.length?`<div class="cc-sub"><b>Errores</b> (estas filas no se importan)</div><div class="imp-lista">${l.errores.map(e=>`<div>Fila ${e.fila}: ${esc(e.error)}</div>`).join('')}</div>`:''}
+    ${l.omitidas.length?`<div class="cc-sub"><b>Omitidas</b></div><div class="imp-lista">${l.omitidas.map(e=>`<div>Fila ${e.fila}: ${esc(e.motivo)}</div>`).join('')}</div>`:''}
+    ${l.muestra.length?`<div class="cc-sub"><b>Primeras filas</b></div><div class="imp-lista">${l.muestra.map(m=>`<div>${esc(m.cliente||fmtCuit(m.cuit))} · ${m.tipo} · ${fmtP(m.importe/100)} · ${fmtFecha(m.fecha_emision)}</div>`).join('')}</div>`:''}
+    ${l.estado==='vista_previa'?`<h3>3 · Confirmar</h3>
+      <label class="cc-sub">Total ${si?'que informa tu registro (cuaderno, planilla o sistema anterior) — obligatorio':'esperado (opcional)'}
+        <input class="cc-in" id="imp-total" placeholder="0,00"></label>
+      <label class="cc-sub" id="imp-motivo-l" hidden>Si no coincide: motivo de la diferencia (queda registrado)
+        <input class="cc-in" id="imp-motivo" placeholder="Ej.: dos clientes sin CUIT, los cargo después"></label>
+      <div style="display:flex;gap:8px"><button class="btn-sm primary" onclick="confirmarLote(${l.id})">Confirmar importación</button>
+      <button class="btn-sm" onclick="document.getElementById('imp-previa').hidden=true">Descartar</button></div>`:`<div class="cc-sub">Estado: <b>${esc(l.estado)}</b></div>`}`;
+}
+async function confirmarLote(id){
+  const b={total_informado:document.getElementById('imp-total').value||null,motivo_diferencia:(document.getElementById('imp-motivo')||{}).value||null};
+  try{const r=await api(`/api/cartera/importaciones/${id}/confirmar`,JSONPOST(b));
+    toast(`✅ ${r.documentos_creados} comprobantes importados${r.clientes_nuevos?' · '+r.clientes_nuevos+' clientes nuevos':''}`,'ok');
+    document.getElementById('imp-previa').hidden=true;document.getElementById('imp-archivo').value='';cargarLotes();
+  }catch(e){if(/no coincide/.test(e.message))document.getElementById('imp-motivo-l').hidden=false;toast('❌ '+e.message,'err');}
+}
+async function cargarLotes(){
+  if(!document.getElementById('imp-corte').value)document.getElementById('imp-corte').value=hoyISO();
+  try{const lotes=await api('/api/cartera/importaciones');
+    const nombre={saldo_inicial:'Saldo inicial',arca_emitidos:'ARCA emitidos'};
+    const est={vista_previa:['Vista previa','badge-c'],confirmado:['Confirmado','badge-p'],revertido:['Revertido','badge-a']};
+    document.getElementById('imp-lotes').innerHTML=lotes.map(l=>`<tr><td>${l.id}</td><td>${nombre[l.formato]||esc(l.formato)}</td><td>${esc(l.archivo)}</td>
+      <td><span class="badge ${est[l.estado][1]}">${est[l.estado][0]}</span></td><td class="num">${l.filas_ok}</td><td class="num">${fmtP(l.total_archivo_centavos/100)}</td>
+      <td>${esc((l.confirmado_en||l.creado_en||'').slice(0,16).replace('T',' '))}</td>
+      <td>${l.estado==='confirmado'?`<button class="btn-sm" onclick="revertirLote(${l.id})">Revertir</button>`:l.estado==='vista_previa'?`<button class="btn-sm" onclick="abrirLote(${l.id})">Ver</button>`:''}</td></tr>`).join('')||'<tr><td colspan="8" style="color:var(--text3)">Todavía no hay importaciones.</td></tr>';
+  }catch(e){}
+}
+async function abrirLote(id){try{mostrarPrevia(await api('/api/cartera/importaciones/'+id));}catch(e){toast('❌ '+e.message,'err');}}
+async function revertirLote(id){
+  const motivo=prompt('Revertir anula los comprobantes de este lote (no se borran). Motivo:');if(!motivo)return;
+  try{const r=await api(`/api/cartera/importaciones/${id}/revertir`,JSONPOST({motivo}));toast(`✅ Lote revertido: ${r.documentos_anulados} comprobantes anulados`,'ok');cargarLotes();}catch(e){toast('❌ '+e.message,'err');}
+}
 </script>
 </body>
 </html>

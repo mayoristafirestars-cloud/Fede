@@ -40,6 +40,13 @@ PERMISOS = {
     "comprobante.emitir": frozenset({"admin", "responsable_cobranza"}),
     "comprobante.anular": frozenset({"admin"}),
     "usuario.gestionar":  frozenset({"admin"}),
+    # Cartera (Hito 1). Todavía no hay asignación de clientes por cobrador: todos ven todo.
+    "cartera.ver":        TODOS,
+    "cartera.importar":   frozenset({"admin", "responsable_cobranza"}),
+    "cartera.configurar": frozenset({"admin", "responsable_cobranza"}),
+    "cartera.aplicar":    frozenset({"admin", "responsable_cobranza"}),
+    "cartera.ajustar":    frozenset({"admin"}),
+    "cartera.exportar":   frozenset({"admin"}),
 }
 
 _hasher = PasswordHasher()

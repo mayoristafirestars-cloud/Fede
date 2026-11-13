@@ -29,6 +29,8 @@ El `.env` no se sube al repositorio. En producción (`ENTORNO=produccion`) la `S
 | `BACKUP_DIR` | Carpeta de respaldos | `backend/db/respaldos` |
 | `SESION_HORAS` | Duración de la sesión | `12` |
 | `IVA_ALICUOTA` | IVA (%) que se asume para mostrar la ganancia sin IVA | `21` |
+| `CONDICION_PAGO_DIAS_DEFECTO` | Días de plazo para calcular vencimientos si el cliente no tiene condición | `30` |
+| `DIAS_DATOS_DESACTUALIZADOS` | Días sin importar a partir de los cuales la cartera muestra el aviso | `3` |
 
 ## Crear el primer usuario administrador
 
@@ -57,6 +59,29 @@ Sin sesión, la página lleva al login y toda ruta `/api` responde 401. `/salud`
    - **Informe de Presupuestos** → `presupuestos.csv`
 2. Copiar los 3 archivos a `data/csv_originales/`. Esa carpeta no se sube al repositorio.
 3. Doble click en `importar.bat` (o `python backend/importador/importar_factupyme.py`).
+
+## Cartera de cuentas corrientes (Copiloto de Caja · Hito 1)
+
+FactuPyme emite las facturas, pero no exporta saldos ni cobros. Por eso **la cuenta corriente vive en este sistema**. Ver `copiloto_caja/ANALISIS_Y_DECISIONES_HITO1.md`.
+
+1. **Saldo inicial (una sola vez).**
+   - Completá `data/plantillas/saldo_inicial.csv` con lo que te debe cada cliente a una fecha de corte. Las instrucciones están en `data/plantillas/LEEME.md`.
+   - En **Importar cartera** elegí "Saldo inicial", la fecha de corte y el archivo. Revisá la vista previa: filas con error y omitidas.
+   - Escribí el **total de tu registro** (cuaderno o planilla). Si no coincide con el total del archivo, corregí el archivo o explicá la diferencia: queda registrada.
+2. **Novedades (cada semana).**
+   - En ARCA → Mis Comprobantes → **Emitidos**, descargá el período en CSV o Excel y subilo como "ARCA · Mis Comprobantes Emitidos".
+   - Se toman sólo facturas, notas de débito y notas de crédito **de clientes con cuenta corriente** y **posteriores a su saldo inicial**. Las ventas de contado quedan omitidas.
+   - Si ARCA cambia el nombre de una columna, agregá el alias en `backend/copiloto/mapeos/arca_emitidos.json`.
+3. **Cartera.**
+   - Muestra el saldo total y lo vencido por antigüedad (al día, 1-30, 31-60, 61-90, más de 90), y los clientes ordenados por vencido.
+   - En el detalle de cada cliente: comprobantes con saldo y estado, aplicar notas de crédito, ajustes (solo admin) y configuración de la cuenta corriente.
+   - Siempre muestra **"Datos al …"** y avisa si pasaron más de 3 días sin importar.
+4. **Errores.**
+   - Un lote confirmado se puede **revertir**: anula sus comprobantes, no los borra.
+   - Ajustes y aplicaciones también se revierten con un reverso vinculado. Todo queda en la auditoría.
+   - **Reimportar el mismo archivo o las mismas filas no duplica nada.**
+
+Las notas de crédito que no se aplican a una factura quedan como "créditos sin imputar": restan del saldo, pero no del vencido. Por eso el vencido de un cliente puede ser mayor que su saldo.
 
 ## Respaldos
 

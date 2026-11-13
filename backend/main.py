@@ -16,6 +16,7 @@ import seguridad
 from db.database import inicializar_db, conectar
 from routers.facturacion import router as router_facturacion
 from routers.auth import router as router_auth
+from routers.cartera import router as router_cartera
 
 # En producción no se publica la documentación automática de la API.
 _docs = {} if not config.es_produccion() else {"docs_url": None, "redoc_url": None, "openapi_url": None}
@@ -35,6 +36,7 @@ os.makedirs(STATIC, exist_ok=True)
 app.mount("/static", StaticFiles(directory=STATIC), name="static")
 app.include_router(router_auth)
 app.include_router(router_facturacion)
+app.include_router(router_cartera)
 
 
 @app.middleware("http")
