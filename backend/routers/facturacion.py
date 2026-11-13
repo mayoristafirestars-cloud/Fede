@@ -165,6 +165,59 @@ def historial(tipo: str = None, limit: int = 50, offset: int = 0,
         conn.close()
 
 
+@router.get("/resumen-dia")
+def resumen_dia(fecha: Optional[str] = None,
+                _u=Depends(seguridad.requiere("comprobante.ver"))):
+    """
+    Ventas, costo, ganancia y margen de un día (por defecto, hoy).
+    Sólo facturas no anuladas: un presupuesto no es una venta.
+    El costo es el que tenía cada producto al momento de vender (precio_costo del ítem).
+    """
+    from datetime import date
+    try:
+        dia = date.fromisoformat(fecha) if fecha else date.today()
+    except ValueError:
+        raise HTTPException(status_code=400, detail="Fecha inválida: usar AAAA-MM-DD")
+
+    conn = conectar()
+    try:
+        comps = conn.execute("""
+            SELECT id, total, total_centavos FROM comprobantes
+            WHERE tipo = 'factura' AND estado != 'anulado' AND fecha = ?
+        """, (dia.isoformat(),)).fetchall()
+        ids = [c["id"] for c in comps]
+        items = []
+        if ids:
+            marcas = ",".join("?" * len(ids))
+            items = conn.execute(f"""
+                SELECT cantidad, precio_costo, precio_costo_centavos FROM comprobante_items
+                WHERE comprobante_id IN ({marcas})
+            """, ids).fetchall()
+    finally:
+        conn.close()
+
+    total_c = sum(c["total_centavos"] if c["total_centavos"] is not None else a_centavos(c["total"] or 0) for c in comps)
+    costo_c, sin_costo = 0, 0
+    for i in items:
+        unitario_c = i["precio_costo_centavos"] if i["precio_costo_centavos"] is not None else a_centavos(i["precio_costo"] or 0)
+        if not unitario_c:
+            sin_costo += 1
+        costo_c += a_centavos(a_decimal(i["cantidad"]) * a_decimal(unitario_c) / 100)
+    ganancia_c = total_c - costo_c
+    margen = float(redondear(a_decimal(ganancia_c) * 100 / a_decimal(total_c))) if total_c > 0 else None
+
+    return {
+        "fecha":           dia.isoformat(),
+        "facturas":        len(comps),
+        "total":           a_pesos(total_c),
+        "costo":           a_pesos(costo_c),
+        "ganancia":        a_pesos(ganancia_c),
+        "margen_pct":      margen,             # ganancia / venta, en %; None si no hubo ventas
+        "items":           len(items),
+        "items_sin_costo": sin_costo,          # si es > 0, la ganancia está sobreestimada
+    }
+
+
 @router.get("/{comprobante_id}")
 def detalle_comprobante(comprobante_id: int,
                         _u=Depends(seguridad.requiere("comprobante.ver"))):

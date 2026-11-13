@@ -31,7 +31,7 @@ a{text-decoration:none;color:inherit}button{cursor:pointer;font-family:var(--F)}
 .topbar-title{font-family:var(--FH);font-size:15px;font-weight:700}
 .kpi-strip{display:flex;gap:1px;margin-left:auto;background:var(--border);border-radius:8px;overflow:hidden;border:1px solid var(--border)}
 .kpi-item{padding:5px 14px;background:var(--surface);display:flex;flex-direction:column;align-items:center;min-width:85px}
-.kpi-label{font-size:9px;text-transform:uppercase;letter-spacing:.1em;color:var(--text3)}.kpi-val{font-family:var(--FM);font-size:13px;font-weight:600;color:var(--text);margin-top:1px}.kpi-val.up{color:var(--green)}
+.kpi-label{font-size:9px;text-transform:uppercase;letter-spacing:.1em;color:var(--text3)}.kpi-val{font-family:var(--FM);font-size:13px;font-weight:600;color:var(--text);margin-top:1px}.kpi-val.up{color:var(--green)}.kpi-val.down{color:var(--red)}
 .topbar-actions{display:flex;gap:8px;flex-shrink:0}
 .btn-sm{padding:6px 12px;border-radius:6px;border:1px solid var(--border);background:var(--surface);color:var(--text2);font-size:12px;font-weight:500;transition:.12s;white-space:nowrap}
 .btn-sm:hover{color:var(--text);border-color:var(--border2)}.btn-sm.primary{background:var(--accent);color:#0c0c0e;border-color:var(--accent);font-weight:700}.btn-sm.primary:hover{background:#f5d455}
@@ -597,17 +597,20 @@ async function confirmarAnular(id,num){
 }
 
 async function cargarKPIs(){
+  // Ventas, ganancia y margen de hoy calculados en el servidor con el costo real de cada ítem (sólo facturas).
   try{
-    const r=await fetch('/api/facturacion/historial?limit=200');const data=await r.json();
-    const hoy=hoyISO();
-    const hd=data.filter(c=>c.fecha===hoy&&c.estado!=='anulado');
-    const v=hd.reduce((s,c)=>s+(c.total||0),0);
-    const g=v*0.44;
-    document.getElementById('kpi-hoy').textContent=fmtK(v);
-    document.getElementById('kpi-gan').textContent=fmtK(g);
-    document.getElementById('kpi-mar').textContent=v>0?'44%':'—';
-    document.getElementById('kpi-comp').textContent=hd.length;
-    document.getElementById('kpi-hoy').className='kpi-val'+(v>0?' up':'');
+    const r=await fetch('/api/facturacion/resumen-dia');if(!r.ok)return;const d=await r.json();
+    const gan=document.getElementById('kpi-gan'),mar=document.getElementById('kpi-mar');
+    document.getElementById('kpi-hoy').textContent=fmtK(d.total);
+    document.getElementById('kpi-hoy').className='kpi-val'+(d.total>0?' up':'');
+    gan.textContent=(d.ganancia<0?'-':'')+fmtK(Math.abs(d.ganancia))+(d.items_sin_costo>0?'*':'');
+    gan.className='kpi-val'+(d.ganancia>0?' up':d.ganancia<0?' down':'');
+    mar.textContent=d.margen_pct===null?'—':d.margen_pct.toLocaleString('es-AR',{maximumFractionDigits:1})+'%';
+    mar.className='kpi-val'+(d.margen_pct!==null&&d.margen_pct<0?' down':'');
+    const aviso=d.items_sin_costo>0?' · '+d.items_sin_costo+' ítem(s) sin costo cargado: la ganancia está sobreestimada':'';
+    gan.title='Venta '+fmt(d.total)+' − costo '+fmt(d.costo)+aviso;
+    mar.title='Ganancia / venta de las facturas de hoy'+aviso;
+    document.getElementById('kpi-comp').textContent=d.facturas;
   }catch(e){}
 }
 async function cargarClientesRecientes(){
