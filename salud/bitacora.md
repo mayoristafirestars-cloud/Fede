@@ -12,6 +12,14 @@
 **Impacto:** qué archivos se tocaron
 ```
 
+## 2026-11-16
+**Autor:** @nutricionista
+**Qué:** Dieta nueva de definición estricta (8 semanas). Lunes a sábado ~2.170 kcal (P ~205 g, C ~200 g, G ~64 g); domingo 1.926 kcal (P 199 g, C 116 g, G 77 g). 8 tomas con gramos exactos, galletas de arroz solo peri-entreno y peri-bici (pre-bici 13:30, bici Z2 14:00, post-bici 15:15). Viernes sin bici por el gym de las 14:00; miércoles bici corta; domingo caminata o bici. Alcohol 0, sin comida libre semanas 1-4. Ritmo esperado de 0,6 a 0,8 kg/semana desde la semana 2. La dieta Paleo + lácteos anterior queda en `dieta-actual-anterior.md`.
+**Por qué:** pedido de Fede de dieta estricta para bajar bastante, con rutina de 6 días y bici diaria. Resuelve la discrepancia bot 1.800 kcal / 190 g vs dieta 2.250 kcal / 200 g: 1.800 era un déficit de ~1.200 kcal con este volumen y 2.250 estaba calculada para 4 días. Pendientes: pesaje inicial (último dato 105 kg del 17/04), ECG, análisis y validación médica del déficit y de los suplementos; el bot muestra 0 % de adherencia marcada.
+**Impacto:** `salud/dieta-actual.md`, `salud/dieta-actual-anterior.md`, `salud/bitacora/2026-11-16.md`. El bot (`recordatorios_plan_fede.py`) debe actualizar OBJETIVO_KCAL/OBJETIVO_PROT y las comidas.
+
+---
+
 ## 2026-11-13
 **Autor:** @entrenador-fisico
 **Qué:** Rutina pasa a 6 días/semana (pedido de Fede). El miércoles, antes Z2 de 60 min, es ahora la sesión F: brazos, deltoide lateral/posterior, core antiextensión/antirrotación, farmer carry liviano, cuello y antebrazos, más Z2 de 30-35 min; sin básicos ni carga axial, RIR 1-2. Se bajan a 3 rondas la superserie fondos + face pull del lunes y laterales + martillo del jueves (sin dropsets en hombro) para no pasar el volumen semanal. Regla nueva de autorregulación para 6 días (con poco sueño o agujetas fuertes se saca primero el miércoles, luego el sábado). Deloads en S4 y S8 también en F.

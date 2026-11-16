@@ -1,518 +1,210 @@
-# Dieta actual — PALEO + LACTEOS (Primal), 4 dias gym + 3 dias bici Z2
+# Dieta actual — DEFINICIÓN ESTRICTA, 6 días de gym + bici Z2 diaria (8 semanas)
 
-**Vigente desde:** 2026-04-21 (lunes) | **Actualizado:** 2026-08-27
-**Tipo:** Paleo + lacteos (Primal) — sin cereales, sin legumbres, sin ultraprocesados, sin azucares refinados, sin aceites industriales. MANTIENE lacteos (yogur griego, ricota, queso) por eleccion del paciente.
-**Frecuencia gym (fuerza):** 4 dias/semana (Lun/Mar/Jue/Vie, complexes A/B/A/B)
-**Frecuencia bici Zona 2:** 3 dias/semana (Mie/Sab/Dom, 40 min post-almuerzo, ~300 kcal)
-**Horarios gym:** Lun/Mar/Jue **07:00 AM** | Vie **14:00 hs**
-**Calorias objetivo:** 2.250 kcal (dias gym) | **2.100-2.150 kcal (dias descanso CON bici Z2 — subido desde 2.050, ver ajuste 2026-08-27)**
-**Macros dias gym:** P: 200 g / **C: ~95-100 g** / G: 100-105 g
-**Macros dias descanso:** P: 190 g / **C: ~65-70 g (subido desde 55 g)** / G: 105-110 g
-**Propuesta por:** @nutricionista (via coordinador)
-**Basada en:** TDEE 2.650–2.850 kcal (estimacion Apple Watch abril 2026, PENDIENTE actualizar con datos recientes), deficit ~400 kcal, alta sospecha resistencia insulina, obesidad grado II, complexes A/B/A/B, sueno 6 h, corte alcohol, comerciante (batch cooking).
+**Vigente desde:** 2026-11-16 (lunes) hasta 2027-01-10 | **Propuesta por:** @nutricionista
+**Reemplaza a:** Paleo + lácteos (archivada en `salud/dieta-actual-anterior.md`)
+**Resuelve la discrepancia bot (1.800 kcal / 190 g) vs dieta (2.250 kcal / 200 g):** objetivo único de 2.170 kcal (lun-sáb) y 1.930 kcal (domingo), proteína 205 g.
+**Fuente de datos para el PDF:** `dieta.json` del scratchpad.
 
----
+## Objetivos
 
-## AJUSTE 2026-08-27 — contraparte nutricional del plan de fuerza 4x/semana + bici Z2
-
-**Motivo del ajuste:** el entrenador confirmo el esquema de fuerza A/B/A/B (Lun/Mar/Jue/Vie) y el bot de Telegram ya viene enviando recordatorios de **bici Zona 2, 40 min, post-almuerzo, los Mie/Sab/Dom** — actividad NO contemplada en el calculo calorico original de "dias descanso" (que asumia solo caminata basal). Se revisa la dieta con base cientifica para sostener 7 dias/semana de actividad estructurada (4 fuerza + 3 cardio Z2) en un hombre de 47 anos en deficit calorico.
-
-### Racional cientifico aplicado
-
-1. **Proteina (~1,9-2,0 g/kg peso actual, ~200 g/dia):** en deficit calorico + entrenamiento de fuerza, la evidencia (Helms et al. 2014; Morton et al. 2018, meta-analisis; Iraki et al. 2019) recomienda 1,6-2,2 g/kg para preservar masa magra, en el extremo alto cuando el deficit es mayor. A los 47 anos hay "resistencia anabolica" (se necesita mas proteina por comida para el mismo estimulo de sintesis proteica que a los 25). El plan actual (~200 g/dia) ya esta en el rango correcto — **no se sube mas**, se ordena mejor la distribucion.
-2. **Umbral de leucina por comida (~30-40 g proteina, ~2,5-3 g leucina):** las comidas principales (desayuno, almuerzo, cena) ya superan el umbral. Los puntos debiles son merienda (15-20 g) y snack nocturno (12-15 g) — se recomienda subir la merienda a ~25-30 g de proteina (ej: sumar un huevo o mas queso cottage) para maximizar estimulos de sintesis proteica a lo largo del dia, en vez de concentrar todo en 3 comidas.
-3. **Carbohidratos peri-entreno:** la "ventana anabolica" estricta de 30-60 min post-entreno **no tiene el respaldo que se penso hace 15 anos** (Aragon & Schoenfeld 2013) — lo que importa es el total diario y la proximidad razonable (horas, no minutos). PERO en un perfil con sospecha de resistencia a la insulina, el post-entreno SI es una ventana metabolicamente favorable: la contraccion muscular activa GLUT4 de forma insulino-independiente, mejorando la tolerancia a la glucosa en esa franja mas que en cualquier otro momento del dia. Por eso conviene mover algo de carbohidrato hacia el post-entreno en vez de dejar el shake "pelado" (solo whey + agua).
-4. **Dias consecutivos de fuerza (Lunes→Martes):** al entrenar dos dias seguidos, la resintesis de glucogeno muscular importa mas que en un esquema con descanso entre sesiones. Recomendacion: sumar 20-25 g de carbohidrato de rapida absorcion al shake post-entreno de Lunes y Martes (banana o miel), no solo proteina.
-5. **Bici Zona 2 (Mie/Sab/Dom):** es entrenamiento aerobico de baja-moderada intensidad (mejora mitocondrial, no depleciona glucogeno tanto como el complex de fuerza) pero sigue gastando ~300 kcal y requiere algo de sustrato. No hace falta "cargar carbos" como en un dia de fuerza, pero SI hay que reponer las ~300 kcal gastadas — de lo contrario el dia "descanso" termina siendo el de mayor deficit relativo de la semana (paradoja: el dia que menos deberia exigir es hoy el que mas hambre/fatiga genera). Se sube el objetivo calorico de estos dias de 2.050 a 2.100-2.150 kcal y los carbos de 55 a 65-70 g.
-6. **Cafeina:** el corte de mate/cafe a las 13:30 ya presente en el plan es correcto (evita interferir en las 8 h previas al sueno). No se agrega cafeina extra pre-entreno (pre-entreno comercial, capsulas) — contraindicado mientras el sueno siga en 6 h y la FC este topeada en 121 lpm. Unica fuente de cafeina del dia: cafe de la manana + mate hasta 13:30.
-7. **Suplementos nuevos (beta-alanina, citrulina malato):** evaluados y **NO se agregan por ahora**. Beta-alanina tiene evidencia solida para esfuerzos sostenidos de 1-4 min a alta intensidad (bufer de carnosina) — los complexes de Fede son series de 6 reps a tempo controlado (2-3 seg), no el dominio donde beta-alanina rinde. Citrulina malato tiene evidencia modesta (mas reps, menos dolor muscular) pero no es prioritaria con el objetivo actual (perdida de grasa + salud cardiovascular, no rendimiento de fuerza maxima) y puede dar molestias digestivas. Prioridad real: **cerrar la validacion medica pendiente desde abril** de creatina, omega-3 y vitamina D3 (ver seccion "Que le pido al medico").
-
-### Cambios concretos aplicados a la logica del plan
-
-- **Post-entreno (Lun/Mar/Jue 07:30 y Vie 14:45):** sumar 20-25 g carbohidrato al shake — banana chica (60-80 g) o miel (15-20 g) — especialmente Lunes y Martes por ser dias consecutivos. Pasa de "whey + agua" a "whey + banana/miel + agua".
-- **Dias de descanso con bici (Mie/Sab/Dom):** subir calorias de 2.050 a 2.100-2.150 kcal y carbos de 55 a 65-70 g. Sumar una porcion de fruta (80-100 g) en la merienda post-bici (bici es ~13:00-14:00, merienda 16:00).
-- **Domingo especificamente:** el dia venia quedando bajo en proteina (~150 g vs objetivo) y calorias (~1.935 vs objetivo) en el detalle del bot — corregir sumando 1 huevo duro extra + 20 g mas de pollo en la cena Caesar.
-- **Viernes:** la cena libre no tiene proteina fija — pedir a Fede que use `/comi` para registrar aunque sea aproximado, para no perder el track semanal de proteina.
-- **Merienda (todos los dias):** subir proteina de ~15-20 g a ~25-30 g (sumar huevo, mas queso cottage o mas yogur) para cruzar el umbral de leucina tambien en esta comida.
-
----
-
-## Logica del plan (4 dias gym)
-
-- **Paleo + lacteos (Primal):** sin cereales, sin legumbres, sin ultraprocesados, sin azucares refinados. Mantiene lacteos por eleccion.
-- **Huevos: SIEMPRE hervidos.** No hay huevos revueltos, omelette, ni poche. Esto simplifica el batch cooking y la digestion (mas facil de transportar al local).
-- **Papa o boniato HERVIDO:** acompanamiento estandar en almuerzos de dias gym. Cocido al agua, sin manteca ni aceite caliente.
-- **Pre-entreno alterna banana y pasas:** Lun/Jue media banana 80 g + café. Mar/Vie pasas de uva 30 g + café. Menos volumen, más práctico.
-- **Post-entreno:** solo whey + agua (sin fruta — se baja el volumen porque el desayuno viene 90 min después).
-- **Pechuga de pollo** como base de proteina (batch cooking domingo).
-- **Carbos peri-entreno LUN/MAR/JUE/VIE:** frutillas + miel pre (~25 g) + frutillas post (~8 g) + papa/boniato hervido en almuerzo (~17 g).
-- **Carbos resto del dia:** vegetales no almidonados libres, 1 rebanada pan integral en desayuno (~15 g), frutos rojos, palta.
-- **Dias descanso (MIE/SAB/DOM):** sin frutillas pre/post, sin papa, solo vegetales + frutos rojos. Carbos bajan a ~50 g.
-- **Proteina alta 200 g:** preservacion muscular.
-- **Grasas mediterraneas 105 g:** palta, oliva, frutos secos, pescado azul, huevo duro, queso descremado.
-- **Snack nocturno ancla** (yogur griego + chia): TODOS los dias.
-- **Comida libre del viernes:** se mantiene.
-
----
-
-## HIDRATACION
-
-| Tipo de dia | Total | Distribucion clave |
+| | Lun-Sáb (entreno) | Domingo (descanso activo) |
 |---|---|---|
-| Gym (Lun/Mar/Jue/Vie) | 3,2–3,5 L | 400 ml al despertar con sal, 600-800 ml durante entreno |
-| Descanso (Mie/Sab/Dom) | 2,7–3,0 L | Mate sin azucar OK hasta 14 h |
-
----
-
-## TIMING DIA GYM 7 AM (Lun / Mar / Jue)
-
-| Hora | Momento | Kcal | P | C | G |
-|---|---|---|---|---|---|
-| 06:30 | Pre-entreno (banana + cafe) | 110 | 1 | 27 | 0 |
-| 07:00 | **Entreno (complex 50-60 min)** | — | — | — | — |
-| 08:15 | Post-entreno (whey + frutos rojos) | 200 | 32 | 12 | 3 |
-| 09:30 | Desayuno principal | 530 | 38 | 18 | 35 |
-| 13:00 | Almuerzo | 580 | 50 | 12 | 35 |
-| 16:30 | Merienda | 220 | 20 | 5 | 13 |
-| 19:00 | Cena | 470 | 45 | 8 | 28 |
-| 22:00 | Snack nocturno | 140 | 15 | 6 | 6 |
-| **TOTAL** | | **~2.250** | **~200** | **~80** | **~105** |
-
-## TIMING DIA GYM 14 HS (Viernes)
-
-| Hora | Momento | Kcal | P | C | G |
-|---|---|---|---|---|---|
-| 06:30 | Desayuno normal | 480 | 38 | 12 | 32 |
-| 10:30 | Media manana | 200 | 20 | 5 | 12 |
-| 12:30 | Pre-entreno LIVIANO (banana + cafe) | 110 | 1 | 27 | 0 |
-| 14:00 | **Entreno (complex 50-60 min)** | — | — | — | — |
-| 15:15 | Post-entreno (whey + frutos rojos) | 200 | 32 | 12 | 3 |
-| 16:00 | Almuerzo-merienda (sustancial) | 580 | 50 | 12 | 35 |
-| 19:00 | **CENA LIBRE** | 600-900 | — | — | — |
-| 22:00 | Snack opcional | — | — | — | — |
-| **TOTAL** | | **~2.500-2.700** | | | |
-
-## TIMING DEL DIA DE DESCANSO
-
-| Hora | Momento | Kcal | P | C | G |
-|---|---|---|---|---|---|
-| 06:30 | Desayuno | 480 | 38 | 12 | 32 |
-| 10:00 | Media manana | 220 | 22 | 5 | 12 |
-| 13:00 | Almuerzo | 550 | 50 | 10 | 33 |
-| 16:30 | Merienda | 220 | 20 | 5 | 13 |
-| 19:00 | Cena | 470 | 40 | 8 | 28 |
-| 22:00 | Snack nocturno | 140 | 15 | 6 | 6 |
-| **TOTAL** | | **~2.080** | **~185** | **~46** | **~124** |
-
----
-
-## LUNES (GYM 07:00 — Dia A: Empuje + Bisagra)
-
-### 06:30 Pre-entreno LUNES (~90 kcal | P 1 / C 20 / G 0)
-- Banana chica: 80 g (media banana mediana, pesada sin cascara)
-- Cafe negro sin azucar: 150 ml
-- Agua + pizca de sal: 300 ml
-
-### 08:15 Post-entreno (~160 kcal | P 32 / C 3 / G 3)
-- Whey protein: 35 g
-- Agua: 300 ml
-- (Sin fruta hoy — el desayuno viene en 75 min con carbos)
-
-### 09:30 Desayuno — "Plato proteico Primal" (~530 kcal | P 40 / C 8 / G 40)
-- Huevos duros: 4 unidades (200 g)
-- Palta: 90 g
-- Tomate: 100 g rodajas
-- Queso port salut descremado: 20 g
-- Aceite oliva: 5 ml (sobre la palta y el tomate)
-- Cafe o mate sin azucar
-
-### 13:00 Almuerzo — "Pollo con papa hervida y ensalada" (~580 kcal | P 50 / C 30 / G 28)
-- Pechuga pollo grille: 220 g (COCIDO)
-- **Papa o boniato HERVIDO: 100 g (cocido al agua)**
-- Lechuga: 80 g + rucula 50 g
-- Tomate: 100 g + pepino 80 g
-- Palta: 60 g
-- Aceitunas negras: 20 g (7 unidades)
-- Aceite oliva: 12 ml + limon + oregano
-
-### 16:30 Merienda (~220 kcal | P 20 / C 5 / G 13)
-- Yogur griego proteico sin azucar: 170 g
-- Nueces peladas: 12 g (5-6 mitades)
-- Canela: 1 g
-
-### 19:00 Cena — "Merluza con zapallitos y anchoas" (~470 kcal | P 45 / C 8 / G 28)
-- Merluza al horno: 200 g (COCIDO)
-- Zapallito verde rodajas: 150 g
-- Morron rojo: 70 g
-- Ajo: 1 diente (3 g)
-- **Anchoas en aceite (escurridas): 20 g (4 filetes)**
-- Huevo duro: 1 unidad (50 g)
-- Aceite oliva: 12 ml
-- Limon
-
-### 22:00 Snack nocturno ANCLA (~140 kcal | P 15 / C 6 / G 6)
-- Yogur griego natural sin azucar: 170 g
-- Chia: 10 g
-- Canela: 1 g
-
-**TOTAL LUNES: ~2.250 kcal | P 201 / C 88 / G 120 | Agua: 3,2 L**
-
----
-
-## MARTES (GYM 07:00 — Dia B: Tiron + Sentadilla)
-
-### 06:30 Pre-entreno MARTES (~110 kcal | P 1 / C 25 / G 0)
-- Pasas de uva: 30 g (1 puñadito)
-- Cafe negro sin azucar: 150 ml
-- Agua + pizca de sal: 300 ml
-
-### 08:15 Post-entreno:
-- Whey 35 g + agua 300 ml (sin fruta)
-
-### 09:30 Desayuno — "Huevos duros con queso y palta" (~530 kcal | P 40 / C 8 / G 40)
-- Huevos duros: 4 unidades (200 g)
-- Queso port salut descremado: 30 g
-- Palta: 80 g + tomate 100 g
-- Aceite oliva: 5 ml
-
-### 13:00 Almuerzo — "Pechuga de pollo con boniato hervido y ensalada" (~580 kcal | P 50 / C 30 / G 28)
-- Pechuga pollo grille: 220 g (COCIDO)
-- **Boniato HERVIDO: 100 g (cocido al agua)**
-- Lechuga: 80 g + rucula 50 g + tomate 100 g
-- Cebolla morada: 30 g
-- Palta: 60 g
-- Aceitunas: 15 g + nueces 10 g
-- Aceite oliva: 12 ml + vinagre o limon
-
-### 16:30 Merienda (~220 kcal | P 20 / C 5 / G 13)
-- Queso cottage descremado: 200 g
-- Frutos rojos mix: 30 g
-- Canela: 1 g
-
-### 19:00 Cena — "Salmon con verduras" (~470 kcal | P 45 / C 8 / G 28)
-- Salmon grille: 180 g (COCIDO)
-- Espinaca salteada: 150 g
-- Champignones: 80 g
-- Ajo: 1 diente
-- Aceite oliva: 12 ml + limon
-
-### 22:00 Snack nocturno: yogur griego 170 g + chia 10 g
-
-**TOTAL MARTES: ~2.250 kcal | P 201 / C 86 / G 117 | Agua: 3,2 L**
-
----
-
-## MIERCOLES (descanso — recuperacion)
-
-### 06:30 Desayuno — "Huevos duros con palta y ricota" (~480 kcal | P 38 / C 12 / G 32)
-- Huevos duros: 3 unidades (150 g)
-- Ricota descremada: 80 g
-- Palta: 60 g
-- Tomate: 100 g rodajas
-- Aceite oliva: 5 ml (sobre la palta)
-- (Sin pan hoy)
-
-### 10:00 Media manana (~220 kcal):
-- Yogur griego proteico: 200 g + nueces 10 g + arandanos 20 g
-
-### 13:00 Almuerzo — "Atun con espinaca y huevos duros" (~550 kcal | P 50 / C 10 / G 33)
-- Atun al natural escurrido: 180 g
-- Huevos duros: 2 unidades (100 g)
-- Espinaca cocida o cruda: 150 g
-- Queso descremado: 30 g
-- Cebolla: 30 g
-- Lechuga: 60 g + tomate 100 g + palta 60 g
-- Aceite oliva: 15 ml + limon
-
-### 16:30 Merienda (~220 kcal):
-- Ricota descremada: 150 g
-- Almendras: 10 g
-- Cacao amargo: 3 g (mezclar con ricota)
-
-### 19:00 Cena — "Pollo a la mediterranea" (~470 kcal | P 40 / C 8 / G 28)
-- Pechuga pollo grille: 180 g (COCIDO)
-- Brocoli al vapor: 200 g
-- Champignones salteados: 80 g
-- Aceitunas verdes: 15 g (5 unidades)
-- Aceite oliva: 12 ml + limon + oregano
-
-### 22:00 Snack nocturno: yogur griego 170 g + chia 10 g
-
-**TOTAL MIERCOLES: ~2.080 kcal | P 188 / C 49 / G 122 | Agua: 2,7 L**
-
----
-
-## JUEVES (GYM 07:00 — Dia A: Empuje + Bisagra)
-
-### 06:30 Pre-entreno JUEVES (~90 kcal | P 1 / C 20 / G 0)
-- Banana chica: 80 g (media banana mediana)
-- Cafe negro sin azucar: 150 ml
-- Agua + pizca de sal: 300 ml
-
-### 08:15 Post-entreno:
-- Whey 35 g + agua 300 ml (sin fruta)
-
-### 09:30 Desayuno — "Yogur proteico con frutillas y huevos duros" (~530 kcal | P 40 / C 12 / G 38)
-- Yogur griego proteico sin azucar: 200 g
-- Frutillas: 100 g
-- Almendras: 15 g
-- Canela: 1 g
-- + Huevos duros: 3 unidades (150 g) aparte
-
-### 13:00 Almuerzo — "Pollo con papa hervida y ensalada nicoise" (~580 kcal | P 50 / C 30 / G 28)
-- Pechuga pollo grille: 200 g (COCIDO)
-- **Papa o boniato HERVIDO: 100 g (cocido al agua)**
-- Huevos duros: 1 unidad (50 g)
-- Lechuga: 80 g + rucula 50 g
-- Tomate: 100 g + pepino 80 g + cebolla 30 g
-- Aceitunas negras: 20 g (7 unidades)
-- Palta: 50 g
-- Aceite oliva: 15 ml + limon
-
-### 16:30 Merienda (~220 kcal):
-- Yogur griego: 170 g + nueces 12 g + frutos rojos 20 g
-
-### 19:00 Cena — "Brotola con brocoli y anchoas" (~470 kcal | P 45 / C 8 / G 28)
-- Brotola al horno: 200 g (COCIDO)
-- Brocoli al vapor: 200 g
-- Huevo duro: 1 unidad (50 g)
-- **Anchoas (escurridas): 20 g (4 filetes) — encima del brocoli con limon**
-- Aceite oliva: 12 ml + limon
-
-### 22:00 Snack nocturno: yogur griego 170 g + chia 10 g
-
-**TOTAL JUEVES: ~2.250 kcal | P 200 / C 85 / G 119 | Agua: 3,2 L**
-
----
-
-## VIERNES (GYM 14:00 — Dia B: Tiron + Sentadilla, CENA = COMIDA LIBRE)
-
-> Hoy el entreno es a la tarde. La estructura del dia cambia: desayuno y media manana normales, almuerzo se mueve POST-entreno, y la cena es LIBRE.
-
-### 06:30 Desayuno — "Huevos duros con palta y queso" (~480 kcal | P 38 / C 12 / G 32)
-- Huevos duros: 3 unidades (150 g)
-- Queso port salut descremado: 30 g
-- Palta: 60 g
-- Tomate: 100 g
-- Aceite oliva: 5 ml
-- (Sin pan hoy — el pan integral va al almuerzo post-entreno)
-
-### 10:30 Media manana (~200 kcal):
-- Yogur griego proteico: 150 g
-- Nueces: 10 g
-- Arandanos: 30 g
-
-### 12:30 Pre-entreno VIERNES LIVIANO (~110 kcal | P 1 / C 25 / G 0)
-- Pasas de uva: 30 g (1 puñadito)
-- Cafe negro sin azucar: 150 ml
-- Agua + pizca de sal: 400 ml
-- **NO comer algo solido pesado entre 11:00 y 14:00. Estomago liviano para el complex.**
-
-### 15:15 Post-entreno (~160 kcal | P 32 / C 3 / G 3)
-- Whey protein: 35 g
-- Agua: 300 ml
-- (Sin fruta — el almuerzo viene a las 17:00 con carbos)
-
-### 16:00 Almuerzo-merienda combinado — "Pechuga de pollo con papa hervida" (~580 kcal | P 50 / C 32 / G 30)
-- Pechuga pollo grille: 220 g (COCIDO)
-- **Papa o boniato HERVIDO: 150 g (cocido al agua)** — aumentado por el pan que sale
-- Espinaca fresca: 80 g + rucula 50 g
-- Tomates cherry: 100 g
-- Palta: 70 g
-- Almendras fileteadas: 12 g
-- Aceite oliva: 12 ml + limon
-
-### 19:00 CENA LIBRE (~600-900 kcal)
-**Reglas:**
-- Porcion normal, no hasta reventar.
-- Elegi UNA: parrilla (250 g carne magra + ensalada, sin achuras ni choripan), sushi (12-15 piezas sin tempura), milanesa al horno + ensalada, pizza (2 porciones masa fina).
-- Alcohol: idealmente cero. Si vas a tomar igual, UNA copa de vino tinto. Avisa al psicologo.
-
-### 22:00 Snack nocturno: OPCIONAL hoy. Si la cena fue abundante, salteala.
-
-**TOTAL VIERNES: ~2.500-2.700 kcal | Agua: 3,2 L**
-
----
-
-## SABADO (descanso)
-
-### 06:30 Desayuno — "Huevos duros con jamon, queso y palta" (~480 kcal | P 38 / C 12 / G 32)
-- Huevos duros: 3 unidades (150 g)
-- Jamon cocido magro: 30 g (1 fetita)
-- Queso port salut descremado: 30 g
-- Palta: 50 g
-- Tomate: 100 g
-- Aceite oliva: 5 ml (sobre la palta)
-- (Sin pan hoy)
-
-### 10:00 Media manana (~220 kcal):
-- Queso cottage: 150 g + arandanos 30 g + nueces 7 g
-
-### 13:00 Almuerzo — "Pechuga de pollo con verduras al vapor" (~550 kcal | P 50 / C 10 / G 33)
-- Pechuga pollo grille: 220 g (COCIDO)
-- Brocoli al vapor: 150 g
-- Zapallitos hervidos o al vapor: 100 g
-- Lechuga: 60 g + tomate 100 g + aceitunas 15 g
-- Palta: 40 g
-- Aceite oliva: 12 ml + limon
-
-### 16:30 Merienda (~220 kcal):
-- Huevo duro: 1 unidad
-- Tomate: 100 g + aceite oliva 5 ml
-- Almendras: 10 g
-
-### 19:00 Cena — "Pollo con vegetales al vapor y anchoas" (~470 kcal | P 40 / C 8 / G 28)
-- Pechuga pollo grille: 180 g (COCIDO)
-- Huevos duros: 2 unidades (100 g)
-- Espinaca hervida o al vapor: 150 g
-- Champignones: 80 g (hervidos o crudos en ensalada)
-- Queso port salut descremado: 25 g
-- **Anchoas (escurridas): 15 g (3 filetes)**
-- Aceite oliva: 10 ml
-
-### 22:00 Snack nocturno: yogur griego 170 g + chia 10 g
-
-**TOTAL SABADO: ~2.080 kcal | P 187 / C 47 / G 124 | Agua: 2,7 L**
-
----
-
-## DOMINGO (descanso + BATCH COOKING 10–12 h)
-
-### 06:30 Desayuno — "Huevos duros con palta y queso" (~480 kcal | P 38 / C 12 / G 32)
-- Huevos duros: 3 unidades (150 g)
-- Palta: 60 g
-- Tomate: 100 g
-- Queso descremado: 30 g
-- Aceite oliva: 5 ml (sobre palta y tomate)
-- (Sin pan hoy)
-
-### 10:00–12:00 BATCH COOKING (ver guia abajo)
-- Durante: mate sin azucar + arandanos 30 g
-
-### 13:30 Almuerzo — "Pechuga de pollo al horno con ensalada" (~550 kcal | P 50 / C 10 / G 33)
-- Pechuga pollo al horno: 220 g (COCIDO)
-- Lechuga: 80 g + tomate 100 g + cebolla 30 g
-- Pepino: 80 g + zanahoria rallada 40 g
-- Palta: 60 g
-- Aceitunas: 15 g + nueces 10 g
-- Aceite oliva: 12 ml + limon + oregano
-
-### 16:30 Merienda (~220 kcal):
-- Yogur griego proteico: 200 g
-- Nueces: 10 g + cacao amargo 3 g
-
-### 19:00 Cena liviana — "Ensalada Caesar low-carb" (~470 kcal | P 40 / C 8 / G 28)
-- Pechuga pollo grille: 180 g (COCIDO)
-- Lechuga romana: 100 g
-- Huevo duro: 1 unidad
-- **Anchoas: 20 g (4 filetes) — algunas en el aderezo, otras encima**
-- Queso parmesano rallado: 15 g
-- Aceite oliva: 12 ml + limon + ajo + 1 yema (aderezo)
-
-### 22:00 Snack nocturno: yogur griego 170 g + chia 10 g
-
-**TOTAL DOMINGO: ~2.080 kcal | P 187 / C 47 / G 124 | Agua: 2,7 L**
-
----
-
-## RESUMEN ROTACION SEMANAL
-
-| Dia | Tipo | Almuerzo | Cena |
-|---|---|---|---|
-| Lunes | GYM (A) | Pollo + papa hervida + ensalada | Merluza + zapallitos + anchoas |
-| Martes | GYM (B) | Pollo + boniato hervido + ensalada | Salmon con verduras |
-| Miercoles | DESCANSO | Atun + espinaca + huevos duros | Pollo a la mediterranea |
-| Jueves | GYM (A) | Pollo + papa hervida + ensalada nicoise | Brotola con brocoli + anchoas |
-| Viernes | GYM (B) | Pollo + papa hervida (post-entreno 17h) | **LIBRE** |
-| Sabado | DESCANSO | Pollo con verduras al vapor | Pollo + huevos duros + anchoas |
-| Domingo | DESCANSO | Pollo al horno con ensalada | Ensalada Caesar low-carb |
-
-Rotacion COMPLETA de proteinas: pollo, pescado blanco, pescado graso, carne vacuna, huevos, atun, embutidos magros.
-
----
-
-## 3 REGLAS DE ORO
-
-1. **Carbos: vegetales, frutos rojos y palta SIEMPRE.** Pan integral SOLO en desayuno los dias de gym (1 rebanada). Banana SOLO pre-gym. Cero arroz, fideos, papa diaria, batata diaria, avena, dulces.
-2. **Proteina en CADA comida.** No hay excepcion.
-3. **Snack nocturno = ancla anti-recaida alcohol.** No es opcional.
-
----
-
-## LISTA DE COMPRAS SEMANAL (low-carb, 4 dias gym)
-
-### Proteinas
-- Pechuga de pollo: 1,8 kg (batch domingo + dia a dia)
-- Carne magra (cuadrada/peceto): 600 g
-- Salmon: 600 g (2 raciones)
-- Merluza o brotola: 600 g
-- Atun al natural: 5 latas
-- **Anchoas en aceite: 1 frasco grande (4 cenas: Lun, Jue, Sab, Dom)**
-- Huevos: 36 unidades
-- Yogur griego proteico sin azucar: 1,8 kg
-- Ricota descremada: 600 g
-- Queso port salut descremado: 300 g
-- Queso cottage: 350 g
-- Queso parmesano: 50 g
-- Whey protein: bolsa (35 g x 4 dias gym)
-
-### Grasas buenas
-- Palta: 7-8 unidades
-- Aceite oliva extra virgen: 750 ml
-- Aceitunas negras y verdes: 300 g
-- Almendras: 120 g
-- Nueces peladas: 120 g
-- Semillas de chia: 200 g
-
-### Vegetales (libres)
-- Lechuga, rucula, espinaca: en cantidad
-- Tomate, pepino, morron, cebolla, zanahoria (poca), zapallitos, brocoli, champignones
-- Limones: 12 unidades
-- Ajo
-
-### Frutas / carbos rapidos
-- **Bananas: 6 unidades** (Lun/Jue pre-gym + desayuno jueves + 1 de resguardo)
-- **Pasas de uva: 300 g** (Mar/Vie pre-gym + snacks)
-- **Frutillas: 500 g** (desayuno jueves + meriendas)
-- Arandanos: 200 g
-- Frambuesas (opc): 100 g
-
-### Almidonados (peri-entreno)
-- **Papa: 1 kg** (hervir, guardar en heladera)
-- **Boniato: 1 kg** (alternar con papa)
-
-### Otros
-- Miel: 1 frasco chico (10 g pre-entreno x 4 dias)
-- Mate, cafe, canela, cacao amargo, oregano, sal marina
-- **(Sin pan — Primal)**
-
----
-
-## BATCH COOKING DOMINGO (90 min)
-
-1. **Pollo al horno:** 1,8 kg pechuga con limon, oregano, ajo, oliva. 35 min a 180 °C. Portionar en raciones de 200-220 g.
-2. **Huevos duros:** 20 huevos (3-4 por dia). Hervir 10 min, pelados en heladera. Duran 5 dias.
-3. **Papa y boniato hervidos:** 500 g de cada uno. Hervir 20 min, cortar en cubos. Guardar en tupper. Duran 4-5 dias.
-4. **Verduras al vapor:** brocoli + zapallitos + espinaca. Para varios dias.
-5. **Aderezo Caesar low-carb:** licuar 1 yema + 2 anchoas + 1 ajo + 30 ml oliva + limon + parmesano. Dura 5 dias.
-6. **Aderezo verde:** licuar palta + limon + ajo + oliva.
-
----
-
-## SUPLEMENTACION AJUSTADA
-
-Igual a `suplementacion.md` PERO:
-- **Sal extra 2 g/dia los primeros 7 dias** (los dias de gym mas importante).
-- **Magnesio glicinato 300 mg/noche** (sumar AHORA).
-- **Creatina 5 g/dia** (sube respecto a 3 g antes — entrenas 4 dias).
-- **Whey:** 35 g x 4 dias/semana (uno mas).
-
----
-
-## AJUSTE POR PROGRESO
-
-- **Semana 1:** posible "low-carb flu". Subi sal y agua. Si dura mas de 5 dias, avisa.
-- **Semana 2-3:** evaluar peso y cintura cada 2 semanas.
-- **Si peso no baja en 3 semanas:** revisar adherencia. Si OK: bajar 100 kcal de grasas (NO de carbos peri-entreno, NO de proteina).
-- **Si rendimiento cae en gym:** sumar 1 banana extra pre-gym (+20 g carbos).
-- **Con analisis en mano:** revisar lipidograma. Si LDL sube mucho, ajustar tipo de grasas (mas pescado, menos lacteos grasos).
+| Calorías | ~2.170 (2.121 a 2.218 según el día) | 1.926 |
+| Proteína | ~205 g (1,95 g/kg) | 199 g |
+| Carbohidratos | ~200 g | 116 g |
+| Grasas | ~64 g | 77 g |
+
+- **Base de cálculo:** peso 105 kg (dato de abril, SIN pesaje reciente: pesar hoy en ayunas), TMB ~1.890 kcal, gasto de un día de entreno con bici ~3.000 kcal (estimado, con descuento por sobreestimación del reloj), domingo ~2.700 kcal.
+- **Déficit:** 800-900 kcal/día (~27 %). Agresivo pero dentro de lo responsable: menos de 1 % del peso por semana, proteína alta y carbohidratos pegados al entrenamiento.
+- **Ritmo esperado:** semana 1 de -1,5 a -2,5 kg (agua y glucógeno incluidos); desde la semana 2, 0,6 a 0,8 kg/semana de grasa. En 8 semanas: -5 a -7 kg (~98-100 kg) y -5 a -7 cm de cintura.
+- **Por qué no 1.800 kcal (bot):** con 6 días de gym de 85 min + bici sería un déficit de ~1.200 kcal/día, con 5-6 h de sueño y FC topeada: pérdida de músculo, hambre nocturna y riesgo de atracón/alcohol.
+- **Por qué no 2.250 kcal (dieta vieja):** estaba calculada para 4 días de gym y 3 de bici; con 6 días + bici diaria no baja grasa a este ritmo.
+
+## Restricciones respetadas
+
+- FC sostenida hasta 121 lpm: la bici es Z2 (FC 105-118), nada de intervalos.
+- Sospecha de resistencia a la insulina (sin glucemia ni insulina cargadas): carbohidratos de bajo IG (avena, lentejas, arroz integral, boniato y papa hervidos), fruta entera; banana y galletas de arroz solo alrededor del entrenamiento.
+- Tensión sin medir: sodio prudente (solo una pizca en el agua del despertar y de la bici).
+- Sin alergias ni intolerancias en `perfil.md`. Alcohol 0 (objetivos.md).
+- Suplementos: ver sección al final (varios siguen pendientes de validación médica).
+
+## Viernes y bici
+
+- **Viernes:** el gym de pierna B es a las 14:00 y ocupa el horario de la bici. Hoy NO hay bici (el gym ya termina con remo Z2); la dieta del viernes está armada sin pre-bici ni post-bici.
+- **Miércoles:** la bici de las 14:00 es corta (30-40 min) porque la sesión F ya trae 30-35 min de Z2; si el Z2 del miércoles se pasa a las 14:00, esa bici REEMPLAZA al Z2 (no se suma otra). Con menos de 5 h de sueño se saltea.
+- **Domingo:** caminata de 60 min O bici de 40 min a las 14:00, una sola.
+- **Sin bici un día:** sacar las 2 galletas del pre-bici y la fruta/galletas de la merienda (~120-140 kcal). La proteína no se toca.
+
+## Reglas estrictas
+
+1. Todo con balanza. Pollo, peceto, pescado, arroz y lentejas se pesan COCIDOS; avena, whey y creatina en seco.
+2. Alcohol: cero las 8 semanas.
+3. Sin comida libre en las semanas 1-4. Desde la semana 5, solo si el peso baja según lo esperado: una comida de referencia por semana (sábado a la noche) que REEMPLAZA la cena: máx 700 kcal, proteína ≥ 40 g, sin alcohol.
+4. No se saltea ninguna comida ni se recorta proteína; lo que no se comió se completa con whey 35 g o yogur griego 200 g.
+5. No se compensa ayunando. Culpa, conteo obsesivo o castigo con comida: avisar al psicólogo.
+6. Sin bebidas con calorías ni azúcar/miel. Último mate o café a las 14:00.
+7. Galletas de arroz solo donde figuran (pre/post entreno, pre/post bici).
+8. Marcar TODAS las comidas en el bot (los registros de la última semana tienen 0 % de adherencia marcada: sin datos no se puede ajustar).
+9. Pesaje lunes en ayunas + cintura a nivel ombligo en `mediciones.md`.
+
+## Plan por día
+
+Las comidas del bot y de la dieta tienen que coincidir con esta tabla. Kcal / P = por comida.
+
+### Lunes — Gym 07:00 torso A + bici 14:00 — 2.192 kcal | P 209 | C 206 | G 63
+
+| Hora | Comida | Alimentos | Kcal | P |
+|---|---|---|---|---|
+| 05:30 | Despertar | Agua 300 ml + 1 pizca de sal | 0 | 0 |
+| 06:30 | Pre-entreno | Banana 80 g, galleta de arroz 1 (9 g), café 150 ml | 105 | 2 |
+| 08:30 | Post-entreno | Whey 35 g, galletas de arroz 2 (18 g), creatina 5 g, agua 300 ml | 210 | 29 |
+| 10:00 | Desayuno | Avena cruda 40 g (cocida en agua), yogur griego 200 g, frutillas 100 g, huevo duro 1 | 372 | 32 |
+| 12:30 | Almuerzo | Pollo cocido 160 g, arroz integral cocido 150 g, ensalada 200 g, palta 50 g, oliva 5 ml | 604 | 56 |
+| 13:30 | Pre-bici | Galletas de arroz 2 (18 g), mate o café | 70 | 1 |
+| 14:00 | Bici Z2 | 45-60 min, FC 105-118, agua con pizca de sal 500-750 ml | 0 | 0 |
+| 15:15 | Post-bici | Yogur griego 200 g, frutillas 150 g, nueces 15 g | 266 | 23 |
+| 19:30 | Cena | Merluza cocida 220 g, zapallitos 150 g, boniato hervido 100 g, oliva 15 ml | 450 | 50 |
+| 21:30 | Snack ancla | Yogur griego 150 g, chía 5 g, magnesio 300 mg | 115 | 16 |
+
+### Martes — Gym 07:00 pierna A (sentadilla) + bici 14:00 — 2.218 kcal | P 208 | C 209 | G 66
+
+| Hora | Comida | Alimentos | Kcal | P |
+|---|---|---|---|---|
+| 06:30 | Pre-entreno | Banana 80 g, galletas de arroz 2 (18 g), café | 140 | 2 |
+| 08:30 | Post-entreno | Whey 35 g, banana 80 g, creatina 5 g | 210 | 29 |
+| 10:00 | Desayuno | Cottage 200 g, huevos duros 2, tomate 100 g, galletas de arroz 2 (18 g) | 378 | 36 |
+| 12:30 | Almuerzo | Peceto cocido 130 g, lentejas cocidas 150 g, ensalada 200 g, oliva 10 ml | 529 | 55 |
+| 13:30 | Pre-bici | Galletas de arroz 2 (18 g) | 70 | 1 |
+| 15:15 | Post-bici | Yogur griego 200 g, manzana 100 g, galletas de arroz 2 (18 g), nueces 10 g | 307 | 23 |
+| 19:30 | Cena | Salmón cocido 150 g, brócoli cocido 150 g, boniato 100 g, claras cocidas 2 (66 g) | 469 | 46 |
+| 21:30 | Snack ancla | Yogur griego 150 g, chía 5 g, magnesio 300 mg | 115 | 16 |
+
+### Miércoles — Gym 07:00 brazos/hombro/core + Z2 + bici corta 14:00 — 2.127 kcal | P 205 | C 195 | G 65
+
+| Hora | Comida | Alimentos | Kcal | P |
+|---|---|---|---|---|
+| 06:30 | Pre-entreno | Banana 80 g, café | 70 | 1 |
+| 08:30 | Post-entreno | Whey 35 g, galletas de arroz 2 (18 g), creatina 5 g | 210 | 29 |
+| 10:00 | Desayuno | Yogur griego 200 g, avena cruda 30 g, arándanos 50 g, nueces 10 g | 328 | 26 |
+| 12:30 | Almuerzo | Atún escurrido 150 g, lentejas cocidas 150 g, huevo duro 1, ensalada 200 g, palta 50 g, oliva 5 ml | 570 | 61 |
+| 13:30 | Pre-bici | Galletas de arroz 2 (18 g) | 70 | 1 |
+| 14:00 | Bici Z2 corta | 30-40 min | 0 | 0 |
+| 15:15 | Post-bici | Huevos duros 2, cottage 100 g, galletas de arroz 2 (18 g), tomate 80 g | 299 | 25 |
+| 19:30 | Cena | Pollo cocido 130 g, zapallitos 150 g, morrón 100 g, arroz integral cocido 100 g, oliva 10 ml | 465 | 46 |
+| 21:30 | Snack ancla | Yogur griego 150 g, chía 5 g, magnesio 300 mg | 115 | 16 |
+
+### Jueves — Gym 07:00 torso B + bici 14:00 — 2.146 kcal | P 203 | C 209 | G 58
+
+| Hora | Comida | Alimentos | Kcal | P |
+|---|---|---|---|---|
+| 06:30 | Pre-entreno | Banana 80 g, galleta de arroz 1 (9 g), café | 105 | 2 |
+| 08:30 | Post-entreno | Whey 35 g, galletas de arroz 2 (18 g), creatina 5 g | 210 | 29 |
+| 10:00 | Desayuno | Avena cruda 40 g, yogur griego 200 g, frutillas 100 g, huevo duro 1 | 372 | 32 |
+| 12:30 | Almuerzo | Pollo cocido 160 g, boniato 150 g, brócoli cocido 150 g, oliva 10 ml | 524 | 56 |
+| 13:30 | Pre-bici | Galletas de arroz 2 (18 g) | 70 | 1 |
+| 15:15 | Post-bici | Yogur griego 200 g, frutillas 150 g, nueces 15 g | 266 | 23 |
+| 19:30 | Cena | Peceto cocido 130 g, papa hervida 150 g, ensalada 200 g, oliva 10 ml | 484 | 44 |
+| 21:30 | Snack ancla | Yogur griego 150 g, chía 5 g, magnesio 300 mg | 115 | 16 |
+
+### Viernes — Gym 14:00 pierna B (peso muerto), SIN bici — 2.121 kcal | P 201 | C 189 | G 66
+
+| Hora | Comida | Alimentos | Kcal | P |
+|---|---|---|---|---|
+| 06:30 | Desayuno | Cottage 200 g, huevos duros 2, tomate 100 g, palta 50 g | 388 | 36 |
+| 10:00 | Media mañana | Yogur griego 200 g, avena cruda 30 g, arándanos 50 g, nueces 10 g | 328 | 26 |
+| 12:00 | Almuerzo | Pollo cocido 130 g, boniato 150 g, brócoli cocido 150 g, oliva 10 ml | 475 | 46 |
+| 13:20 | Pre-entreno | Banana 80 g, galletas de arroz 2 (18 g), café, agua 400 ml con pizca de sal | 140 | 2 |
+| 15:35 | Post-entreno | Whey 35 g, banana 80 g, creatina 5 g | 210 | 29 |
+| 19:30 | Cena | Pollo cocido 130 g, zapallitos 150 g, morrón 100 g, arroz integral cocido 100 g, oliva 10 ml | 465 | 46 |
+| 21:30 | Snack ancla | Yogur griego 150 g, chía 5 g, magnesio 300 mg | 115 | 16 |
+
+### Sábado — Hyrox 08:30 + bici 14:00 — 2.209 kcal | P 210 | C 203 | G 66
+
+| Hora | Comida | Alimentos | Kcal | P |
+|---|---|---|---|---|
+| 07:30 | Pre-entreno | Banana 80 g, galletas de arroz 2 (18 g), café | 140 | 2 |
+| 10:05 | Post-entreno | Whey 35 g, banana 80 g, creatina 5 g | 210 | 29 |
+| 11:15 | Desayuno | Avena cruda 40 g, yogur griego 200 g, frutillas 100 g, huevo duro 1 | 372 | 32 |
+| 13:30 | Pre-bici | Galletas de arroz 2 (18 g) | 70 | 1 |
+| 15:15 | Almuerzo post-bici | Pollo cocido 160 g, arroz integral cocido 150 g, ensalada 200 g, palta 50 g, oliva 5 ml | 604 | 56 |
+| 17:45 | Merienda | Cottage 200 g, nueces 15 g | 248 | 24 |
+| 19:30 | Cena | Merluza o brotola cocida 220 g, zapallitos 150 g, boniato 100 g, oliva 15 ml | 450 | 50 |
+| 21:30 | Snack ancla | Yogur griego 150 g, chía 5 g, magnesio 300 mg | 115 | 16 |
+
+### Domingo — Descanso activo: caminata 60 min o bici 40 min + batch cooking — 1.926 kcal | P 199 | C 116 | G 77
+
+| Hora | Comida | Alimentos | Kcal | P |
+|---|---|---|---|---|
+| 07:00 | Desayuno | Cottage 200 g, huevos duros 2, tomate 100 g, palta 50 g, creatina 5 g | 388 | 36 |
+| 10:00 | Media mañana (batch cooking) | Yogur griego 200 g, frutillas 100 g, chía 5 g | 177 | 22 |
+| 12:30 | Almuerzo | Peceto cocido 130 g, lentejas cocidas 150 g, ensalada 200 g, oliva 10 ml | 529 | 55 |
+| 14:00 | Caminata o bici | Una sola de las dos | 0 | 0 |
+| 15:15 | Merienda | Cottage 200 g, nueces 15 g | 248 | 24 |
+| 19:30 | Cena | Salmón cocido 150 g, brócoli cocido 150 g, boniato 100 g, claras cocidas 2 (66 g) | 469 | 46 |
+| 21:30 | Snack ancla | Yogur griego 150 g, chía 5 g, magnesio 300 mg | 115 | 16 |
+
+## Batch cooking del domingo (para toda la semana)
+
+1. Pollo: 1,2 kg de pechuga al horno 35 min a 180 °C con limón, orégano y ajo; porciones de 130 y 160 g cocidos.
+2. Peceto: 550 g al horno o a la olla; 3 porciones de 130 g cocidos.
+3. Arroz integral 250 g crudo (≈ 500 g cocido) y lentejas 250 g secas (≈ 450 g cocidas): porciones de 100-150 g.
+4. Boniato 800 g y papa 300 g hervidos y enfriados en heladera (el almidón enfriado baja el impacto glucémico).
+5. Huevos duros: 16 unidades (12 se usan enteros; de las otras 4 se usan solo las claras del martes y el domingo, y las yemas se descartan para no sumar calorías fuera del plan). Quedan 2 huevos de reserva en la compra de 18.
+6. Brócoli y zapallitos al vapor; morrón en tiras. Duran 4 días; el resto del brócoli y el pescado se cocinan el día.
+7. Pescado (merluza, salmón): se cocina el día, 15 min al horno.
+
+## Lista de compras semanal
+
+- **Carnes y pescados:** pechuga de pollo cruda 1,2 kg; peceto crudo 550 g; merluza o brotola 600 g; salmón 400 g; atún al natural 2 latas de 170 g.
+- **Lácteos y huevos:** huevos 18; queso cottage descremado 1,1 kg; yogur griego natural descremado sin azúcar 3 kg.
+- **Almacén:** avena arrollada 200 g; arroz integral 250 g; lentejas secas 250 g; galletas de arroz 30 unidades (~270 g); whey 210 g; creatina 35 g; chía 50 g; nueces 100 g; aceite de oliva 250 ml; café y yerba.
+- **Verduras:** lechuga y rúcula 600 g; tomate 1 kg; pepino 200 g; zanahoria 150 g; zapallitos 700 g; morrón rojo 200 g; brócoli 700 g; boniato 800 g; papa 300 g; limones 4; ajo 1 cabeza.
+- **Frutas:** bananas chicas 10; frutillas 750 g (congeladas sirven); arándanos 100 g; manzana 1; palta 2 grandes.
+- **Condimentos:** orégano, pimentón, pimienta, sal fina (poca).
+
+## Intercambios equivalentes
+
+| Si no tenés | Usá |
+|---|---|
+| 160 g pollo cocido | 165 g peceto cocido, o 235 g merluza cocida, o 200 g atún escurrido |
+| 130 g peceto cocido | 130 g pollo cocido, o 190 g merluza cocida |
+| 150 g salmón cocido | 160 g trucha cocida, o 130 g caballa fresca |
+| Merluza | Brotola, abadejo o pescadilla (mismo peso cocido) |
+| 150 g arroz integral cocido | 190 g boniato o papa hervida, o 185 g lentejas cocidas, o 55 g avena cruda |
+| Boniato | Papa, mismo peso hervida |
+| Banana 80 g | 2,5 galletas de arroz (22 g), o 130 g de manzana |
+| 2 galletas de arroz (18 g) | 70 g de banana |
+| 200 g yogur griego | 180 g cottage |
+| 35 g whey | 280 g yogur griego, o 90 g pollo cocido |
+| 2 huevos duros | 110 g cottage, o 4 claras cocidas (130 g) |
+| 10 g nueces | 11 g almendras, o 8 ml aceite de oliva |
+| 50 g palta | 9 ml aceite de oliva, o 12 g nueces |
+| 150 g frutillas | 100 g manzana, o 75 g arándanos |
+| Zapallitos, brócoli, morrón | Coliflor, berenjena, zucchini o espinaca, mismo peso |
+
+## Hidratación
+
+- Lun-Sáb 3,5-4 L; domingo 3 L.
+- Despertar: 300 ml con pizca de sal. Gym 600-800 ml. Bici 500-750 ml con pizca de sal.
+- Mate y café sin azúcar hasta las 14:00.
+
+## Suplementos (respetan `suplementacion.md`)
+
+- Whey 35 g post-entreno (lun-sáb): sin restricción.
+- Creatina 5 g/día: pendiente de validar con el médico (función renal).
+- Omega-3 2-3 g y vitamina D3 2.000-4.000 UI: pendientes de validar con el médico (lipidograma, 25-OH D).
+- Magnesio glicinato 300 mg a las 21:30: figura como "a considerar"; el bot ya lo manda. Validar con el médico.
+- Sin quemadores, termogénicos, cafeína en cápsulas ni pre-entrenos comerciales.
+
+## Control y ajuste
+
+- Pesaje lunes en ayunas + cintura. Decisión cada 2 semanas con el promedio.
+- Baja menos de 0,4 kg/semana con adherencia cumplida: -150 kcal sacando la avena del desayuno (40 g) y 1 galleta de la merienda. Nunca se toca proteína ni pre/post entreno.
+- Baja más de 1 kg/semana, mareos, rendimiento en caída 2 semanas o sueño < 5 h dos noches seguidas: +200 kcal (150 g de arroz integral o boniato en la cena).
+- Semanas 4 y 8 (descarga): mismas calorías.
+
+## Qué se le pide al equipo
+
+- **Médico:** ECG, tensión (3 mediciones), glucemia, insulina, HbA1c, perfil lipídico, función renal y hepática, 25-OH D, TSH. Validar el déficit de ~850 kcal con 6 días de gym + bici diaria y los suplementos.
+- **Entrenador:** confirmar bici Z2 diaria 14:00 (40-60 min), viernes sin bici y miércoles con bici corta.
+- **Psicólogo:** déficit estricto + 5-6 h de sueño + historia de alcohol: vigilar hambre emocional y señales de TCA.
