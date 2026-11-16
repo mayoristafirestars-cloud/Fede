@@ -39,6 +39,11 @@ try:  # rutina_actual.py + rutina_actual.json: rutina dura de 6 días, desde el 
     import rutina_actual as RA
 except Exception:
     RA = None
+try:  # dieta_actual.py + dieta_actual.json: comidas del plan vigente (gramos, kcal, proteína)
+    import dieta_actual as DA
+except Exception as _e:  # sin dieta el bot sigue con gym, bici y bienestar
+    DA = None
+    print(f"ATENCIÓN: no se pudo cargar dieta_actual ({_e}); sin recordatorios de comidas")
 
 # Recordatorios de gym que se arman con los pesos de la semana en curso
 # Lun, Mar, Mié, Jue 07:00 · Vie 14:00 · Sáb 08:30 (el aviso sale 30 min antes)
@@ -59,8 +64,13 @@ GITHUB_BRANCH = os.environ.get(
 )
 
 DIAS = ["Lun", "Mar", "Mié", "Jue", "Vie", "Sáb", "Dom"]
-OBJETIVO_KCAL = 1800
-OBJETIVO_PROT = 190
+OBJETIVO_KCAL = DA.OBJETIVO_KCAL if DA else 2185                     # días de gym
+OBJETIVO_KCAL_DESCANSO = DA.OBJETIVO_KCAL_DESCANSO if DA else 1890   # domingo
+OBJETIVO_PROT = DA.OBJETIVO_PROT if DA else 204
+
+
+def objetivo_kcal(dia_idx: int) -> int:
+    return OBJETIVO_KCAL_DESCANSO if dia_idx == 6 else OBJETIVO_KCAL
 
 logging.basicConfig(
     format="%(asctime)s [%(levelname)s] %(message)s",
@@ -69,103 +79,30 @@ logging.basicConfig(
 log = logging.getLogger("recordatorios-fede")
 
 # (dia, "HH:MM", mensaje, kcal_ingerida, proteina_g, kcal_quemada)
+# Las comidas salen de dieta_actual.json (DA.recordatorios()); acá van gym, bici, sueño y bienestar.
+_GYM = "(se completa con la rutina de la semana)"
+_BICI = "🚴 Bici en 30 min (14:00): Zona 2, FC 105-118, {min}. Llevá agua con 1 pizca de sal (500-750 ml). ☕ Último mate ahora."
 RECORDATORIOS = [
-    # ===== LUNES (gym A) =====
-    (0, "05:30", "💧 En 30 min a despertar. Vaso 300 ml + pizca de sal.", 0, 0, 0),
-    (0, "06:30", "🍌 Pre-entreno en 30 min: media banana (80 g) + café 150 ml + agua con sal 300 ml.", 70, 1, 0),
-    (0, "06:35", "🏋️ Superior A empieza en 30 min (CADENAS)\n\n1. Press banca mancuernas 3×8-10 RIR3-4 · 120s\n2. Remo mancuerna a un brazo 3×8-10/lado RIR3 · 90s\n3. Landmine press a una mano 3×8-10/lado RIR3 · 90s\n4. Remo polea baja neutro 2×10-12 RIR3 · 75s\n5. Pallof press de pie 3×10-12/lado RIR2 · 60s\n6. Suitcase carry 2×20-25m/lado RIR2 · 75s\n\n🔥 CORE entre series (rotar): Dead bug 10/lado · Hollow hold 20s · Bird dog 8/lado · Side plank 20s/lado · Plancha 30s\n\nCalent 8 min · FC ≤121 · Exhalar en el esfuerzo · RIR nunca 0\nDuración: 55-60 min", 0, 0, 0),
-    (0, "08:20", "🥤 Post-entreno + Superior A hecho. En shaker apenas termines: whey 35 g + creatina 5 g + banana chica 80 g (carbo rápido). Después ducha y al negocio.", 210, 28, 350),
-    (0, "09:00", "🍳 Desayuno en 30 min: 4 huevos duros + palta 90 g + verdura tomate 100 g + queso port salut 20 g + oliva 5 ml.", 570, 32, 0),
-    (0, "09:15", "💊 Suplementos en 30 min: Vit D3 + Omega-3.", 0, 0, 0),
-    (0, "12:30", "🍽️ Almuerzo en 30 min: pollo 220 g + papa hervida 100 g + ensalada + oliva 12 ml + limón.", 555, 55, 0),
-    (0, "13:30", "☕ ¡Último mate del día en 30 min! Después solo agua o infusiones sin cafeína.", 0, 0, 0),
-    (0, "16:30", "🍽️ Merienda-cena · Yogur y huevos en 30 min: yogur griego 200 g + 2 huevos duros + nueces 15 g + canela.", 300, 33, 0),
-    (0, "21:30", "🌙 Snack ancla MÍNIMO (opcional) en 30 min: yogur griego 100 g + chía 5 g + magnesio 300 mg. Bajá luces.", 100, 10, 0),
-    (0, "22:00", "😴 A dormir en 30 min. Celular afuera del cuarto.", 0, 0, 0),
-    # Total lun: ~2130 kcal · 198g p · 350 quema · neto 1780
+    # ===== GYM (rutina de 6 días: el mensaje trae los kilos de la semana) =====
+    (0, "06:35", f"🏋️ Torso A en 30 min {_GYM}", 0, 0, 400),
+    (1, "06:35", f"🏋️ Pierna A en 30 min {_GYM}", 0, 0, 450),
+    (2, "06:35", f"🏋️ Brazos, hombro y core en 30 min {_GYM}", 0, 0, 350),
+    (3, "06:35", f"🏋️ Torso B en 30 min {_GYM}", 0, 0, 400),
+    (4, "13:30", f"🏋️ Pierna B en 30 min {_GYM}", 0, 0, 450),
+    (5, "08:00", f"🏋️ Hyrox base en 30 min {_GYM}", 0, 0, 500),
 
-    # ===== MARTES (gym B) =====
-    (1, "05:30", "💧 En 30 min a despertar. Vaso 300 ml + sal.", 0, 0, 0),
-    (1, "06:30", "🍇 Pre-entreno en 30 min: pasas 30 g + café 150 ml + agua con sal 300 ml.", 85, 1, 0),
-    (1, "06:35", "🏋️ Inferior A empieza en 30 min (CADENAS)\n\n1. Goblet squat 3×8-10 RIR3-4 · 120s\n2. Zancada caminando con mancuernas 2×8 pasos/lado RIR3 · 90s\n3. Peso muerto rumano mancuernas 3×8-10 RIR3 · 90s\n4. Zancada búlgara 2×8/lado RIR3 · 75s\n5. Farmer walk bilateral 2×25-30m RIR2 · 75s\n\n🔥 CORE entre series (rotar): Dead bug 10/lado · Hollow hold 20s · Bird dog 8/lado · Side plank 20s/lado · Plancha 30s\n\nCalent 8 min · FC ≤121 · Exhalar en el esfuerzo · RIR nunca 0\nDuración: 60-65 min", 0, 0, 0),
-    (1, "08:20", "🥤 Post-entreno + Inferior A hecho. En shaker apenas termines: whey 35 g + creatina 5 g + banana chica 80 g. Después ducha y al negocio.", 210, 28, 400),
-    (1, "09:00", "🍳 Desayuno en 30 min: 4 huevos duros + queso port salut 30 g + palta 80 g + verdura tomate 100 g + oliva 5 ml.", 590, 34, 0),
-    (1, "09:15", "💊 Suplementos: Vit D3 + Omega-3.", 0, 0, 0),
-    (1, "12:30", "🍽️ Almuerzo en 30 min: pollo 220 g + boniato hervido 100 g + ensalada + oliva 12 ml.", 530, 55, 0),
-    (1, "13:30", "☕ ¡Último mate del día en 30 min!", 0, 0, 0),
-    (1, "16:30", "🍽️ Merienda-cena · Cottage con frutillas en 30 min: cottage 200 g + 2 huevos duros + frutillas 30 g + nueces 10 g + canela.", 300, 33, 0),
-    (1, "21:30", "🌙 Snack ancla MÍNIMO (opcional): yogur griego 100 g + chía 5 g + magnesio 300 mg.", 100, 10, 0),
-    (1, "22:00", "😴 A dormir en 30 min.", 0, 0, 0),
-    # Total mar: ~2105 kcal · 194g p · 400 quema · neto 1705
+    # ===== BICI 14:00 (el viernes no: gym a las 14:00) =====
+    *[(d, "13:30", _BICI.format(min="45-60 min"), 0, 0, 350) for d in [0, 1, 3, 5]],
+    (2, "13:30", _BICI.format(min="30-40 min (corta: ya hiciste Z2 en el gym)"), 0, 0, 250),
+    (6, "09:30", "🍳 Batch cooking en 30 min (90 min): cociná la semana — proteínas al horno, zapallo en la freidora, boniato, huevos duros. Cantidades en la lista de compras del PDF de la dieta.", 0, 0, 0),
+    (6, "13:30", "🚶 Caminata larga en 30 min: 60 min suaves al sol, ritmo de charla (FC por debajo de 110). ☕ Último mate ahora.", 0, 0, 250),
 
-    # ===== MIÉRCOLES (gym F: brazos, hombro, core + Z2) =====
-    (2, "05:30", "💧 En 30 min a despertar. Vaso 300 ml + pizca de sal.", 0, 0, 0),
-    (2, "06:30", "🍌 Pre-entreno en 30 min: media banana (80 g) + café 150 ml + agua con sal 300 ml.", 70, 1, 0),
-    (2, "06:35", "🏋️ Brazos, hombro y core empieza en 30 min (se completa con la rutina de la semana)", 0, 0, 0),
-    (2, "08:20", "🥤 Post-entreno + sesión F hecha. En shaker apenas termines: whey 35 g + creatina 5 g + banana chica 80 g. Después ducha y al negocio.", 210, 28, 450),
-    (2, "09:00", "🍳 Desayuno en 30 min: 3 huevos duros + ricota 80 g + palta 60 g + verdura tomate 100 g + oliva 5 ml.", 550, 32, 0),
-    (2, "09:15", "💊 Suplementos: Vit D3 + Omega-3.", 0, 0, 0),
-    (2, "11:00", "🥛 Media mañana en 30 min: yogur griego 200 g + nueces 10 g + fruta arándanos 20 g.", 250, 18, 0),
-    (2, "12:30", "🍽️ Almuerzo en 30 min: pescado atún 180 g + 2 huevos duros + verdura espinaca 150 g + queso 30 g + ensalada + palta 60 g + oliva 15 ml.", 620, 62, 0),
-    (2, "13:30", "☕ Último mate del día en 30 min.", 0, 0, 0),
-    (2, "16:30", "🍽️ Merienda-cena · Sardinas con palta en 30 min: sardinas al natural 100 g + palta 50 g + tomate 100 g + aceitunas 10 g + oliva 5 ml + limón.", 300, 32, 0),
-    (2, "21:30", "🌙 Snack ancla MÍNIMO (opcional): yogur griego 100 g + chía 5 g + magnesio 300 mg.", 100, 10, 0),
-    (2, "22:00", "😴 A dormir en 30 min.", 0, 0, 0),
-    # Total mie: ~2100 kcal · 183g p · 450 quema · neto 1650
+    # ===== SUEÑO =====
+    *[(d, "22:00", "😴 A dormir en 30 min. Celular afuera del cuarto.", 0, 0, 0) for d in range(6)],
+    (6, "22:00", "😴 A dormir en 30 min. Cargá el tensiómetro para el lunes.", 0, 0, 0),
 
-    # ===== JUEVES (gym A) =====
-    (3, "05:30", "💧 En 30 min a despertar. Agua + sal.", 0, 0, 0),
-    (3, "06:30", "🍌 Pre-entreno en 30 min: media banana 80 g + café + agua con sal.", 70, 1, 0),
-    (3, "06:35", "🏋️ Superior B empieza en 30 min (CADENAS)\n\n1. Jalón al pecho neutro / dominada asistida 3×8-10 RIR3-4 · 120s\n2. Press inclinado mancuernas 30° 3×8-10 RIR3 · 90s\n3. Push press ligero mancuernas 3×8-10 RIR3 · 90s\n4. Remo polea sentado neutro 3×10-12 RIR3 · 90s\n5. Waiter carry 2×15-20m/lado RIR2 · 75s\n\n🔥 CORE entre series (rotar): Dead bug 10/lado · Hollow hold 20s · Bird dog 8/lado · Side plank 20s/lado · Plancha 30s\n\nCalent 8 min · FC ≤121 · Exhalar en el esfuerzo · RIR nunca 0\nDuración: 55-60 min", 0, 0, 0),
-    (3, "08:20", "🥤 Post-entreno + Superior B hecho. En shaker apenas termines: whey 35 g + creatina 5 g + banana chica 80 g. Después ducha y al negocio.", 210, 28, 350),
-    (3, "09:00", "🍳 Desayuno diferente en 30 min: yogur griego 200 g + fruta frutillas 100 g + almendras 15 g + canela + 3 huevos duros aparte.", 550, 40, 0),
-    (3, "09:15", "💊 Suplementos: Vit D3 + Omega-3.", 0, 0, 0),
-    (3, "12:30", "🍽️ Almuerzo en 30 min: pollo 200 g + papa hervida 100 g + 1 huevo duro + ensalada nicoise (hojas verdes + verdura tomate) + palta 50 g + oliva 12 ml.", 620, 55, 0),
-    (3, "13:30", "☕ ¡Último mate!", 0, 0, 0),
-    (3, "16:30", "🍽️ Merienda-cena · Tabla mediterránea en 30 min: queso feta o port salut 60 g + pavita fiambre 60 g + aceitunas 15 g + tomate cherry 80 g + palta 40 g + nueces 10 g.", 300, 32, 0),
-    (3, "21:30", "🌙 Snack ancla MÍNIMO (opcional): yogur griego 100 g + chía 5 g + magnesio 300 mg.", 100, 10, 0),
-    (3, "22:00", "😴 A dormir.", 0, 0, 0),
-    # Total jue: ~2160 kcal · 201g p · 350 quema · neto 1810
-
-    # ===== VIERNES (gym 14:00 + cena LIBRE) =====
-    (4, "05:30", "💧 En 30 min a despertar. Agua 400 ml.", 0, 0, 0),
-    (4, "06:00", "🍳 Desayuno en 30 min: 4 huevos duros + queso 30 g + palta 80 g + verdura tomate 100 g + oliva 5 ml.", 585, 35, 0),
-    (4, "06:15", "💊 Suplementos: Vit D3 + Omega-3.", 0, 0, 0),
-    (4, "10:00", "🥛 Media mañana en 30 min: yogur griego 150 g + nueces 10 g + fruta frutillas 30 g.", 190, 15, 0),
-    (4, "12:00", "🍇 Pre-entreno LIVIANO en 30 min: pasas 30 g + café + agua con sal 400 ml. NO comer sólido pesado 11-14 h.", 85, 1, 0),
-    (4, "13:30", "🏋️ Inferior B empieza en 30 min (CADENAS)\n\n1. Peso muerto Trap bar (hex) 3×6-8 RIR3-4 · 150s\n2. Hip thrust con barra 3×8-10 RIR3 · 90s\n3. Sentadilla búlgara mancuernas 2×8/lado RIR3 · 90s\n4. Kettlebell swing (carga ligera, series cortas) 3×8-10 RIR2-3 · 90-120s\n5. Farmer walk pesado 2×30m RIR2 · 90s\n6. Turkish get-up sin peso (solo patrón, técnica) 2×2-3/lado · 90s\n\n🔥 CORE entre series (rotar): Dead bug 10/lado · Hollow hold 20s · Bird dog 8/lado · Side plank 20s/lado · Plancha 30s\n\nCalent 8 min · FC ≤121 · Exhalar en el esfuerzo · RIR nunca 0\nTrap bar: menor cizalla lumbar · Swing: series cortas, no sostener FC\nDuración: 60-65 min", 0, 0, 0),
-    (4, "14:45", "🥤 Post-entreno + Inferior B hecho. En 30 min: whey 35 g + creatina 5 g + banana chica 80 g (carbo rápido).", 210, 28, 400),
-    (4, "15:30", "🍽️ Almuerzo-merienda en 30 min: pollo 220 g + papa hervida 150 g + ensalada + palta 70 g + almendras + oliva.", 620, 55, 0),
-    (4, "21:30", "🌙 Snack ancla MÍNIMO (opcional): yogur griego 100 g + chía 5 g + magnesio 300 mg.", 100, 10, 0),
-    (4, "22:00", "😴 A dormir.", 0, 0, 0),
-    # Total vie: ~2320 kcal · 169g p · 400 quema · neto 1920
-
-    # ===== SÁBADO (gym E: Hyrox base 08:30) =====
-    (5, "05:30", "💧 En 30 min a despertar. Agua 300 ml + pizca de sal.", 0, 0, 0),
-    (5, "06:00", "🍳 Desayuno en 30 min: 3 huevos duros + jamón cocido magro 30 g + queso port salut 30 g + palta 50 g + verdura tomate 100 g + oliva 5 ml.", 500, 32, 0),
-    (5, "06:15", "💊 Suplementos: Vit D3 + Omega-3.", 0, 0, 0),
-    (5, "08:00", "🏋️ Hyrox base empieza en 30 min (se completa con la rutina de la semana)", 0, 0, 0),
-    (5, "10:00", "🥤 Post-entreno + Hyrox base hecho. En shaker: whey 35 g + creatina 5 g + banana chica 80 g.", 210, 28, 500),
-    (5, "11:00", "🥛 Media mañana en 30 min: cottage 150 g + fruta frutillas 50 g + nueces 7 g.", 180, 22, 0),
-    (5, "12:30", "🍽️ Almuerzo en 30 min: pollo 220 g + verdura brócoli 150 g + verdura zapallo hervido 100 g + ensalada + palta 40 g + oliva 12 ml.", 500, 55, 0),
-    (5, "13:30", "☕ ¡Último mate!", 0, 0, 0),
-    (5, "16:30", "🍽️ Merienda-cena · Sardinas gourmet en 30 min: sardinas 120 g + palta 50 g + tomate cherry 80 g + galleta de arroz 1 + oliva 5 ml + limón.", 320, 30, 0),
-    (5, "21:30", "🌙 Snack ancla MÍNIMO (opcional): yogur griego 100 g + chía 5 g + magnesio 300 mg.", 100, 10, 0),
-    (5, "22:00", "😴 A dormir.", 0, 0, 0),
-    # Total sab: ~1810 kcal · 177g p · 500 quema · neto 1310
-
-    # ===== DOMINGO (descanso activo: caminata + batch cooking) =====
-    (6, "05:30", "💧 En 30 min a despertar. Agua 300 ml.", 0, 0, 0),
-    (6, "06:00", "🍳 Desayuno en 30 min: 3 huevos duros + palta 60 g + verdura tomate 100 g + queso 30 g + oliva 5 ml.", 500, 28, 0),
-    (6, "06:15", "💊 Suplementos: Vit D3 + Omega-3 + Creatina 5 g.", 0, 0, 0),
-    (6, "09:30", "🍳 BATCH COOKING en 30 min: pollo 1,8 kg horno + 20 huevos duros + papa/boniato hervidos + verduras al vapor + aderezos.", 0, 0, 0),
-    (6, "12:30", "🍽️ Almuerzo en 30 min: pollo del horno 220 g + ensalada completa + palta 60 g + aceitunas + nueces + oliva.", 620, 55, 0),
-    (6, "13:30", "☕ ¡Último mate!", 0, 0, 0),
-    (6, "14:00", "🚶 Caminata larga en 30 min: 60 min suaves al sol, ritmo de charla (FC por debajo de 110). Es el día de recuperar.", 0, 0, 250),
-    (6, "16:30", "🍽️ Merienda-cena · Atún con palta en 30 min: atún al natural 120 g + palta 50 g + tomate 100 g + 1 huevo duro + aceitunas 10 g + oliva 5 ml.", 300, 32, 0),
-    (6, "21:30", "🌙 Snack ancla MÍNIMO (opcional): yogur griego 100 g + chía 5 g + magnesio 300 mg.", 100, 10, 0),
-    (6, "22:00", "😴 A dormir. Cargar tensiómetro para lunes.", 0, 0, 0),
-    # Total dom: ~1935 kcal · 150g p · 300 quema · neto 1635
+    # ===== COMIDAS (dieta_actual.json) =====
+    *(DA.recordatorios() if DA else []),
 
     # ===== WELLNESS: mindfulness, hidratación, movimiento =====
     # Diarios (todos los días): respiración, agua, journal, meditación
@@ -179,8 +116,6 @@ RECORDATORIOS = [
     *[(d, "17:00", "🧠 Micro-pausa 3 min. Lejos del celular. Cuello, hombros, mirada lejos.", 0, 0, 0) for d in range(5)],
     # Domingo (descanso): sol matinal para ritmo circadiano
     *[(d, "07:00", "☀️ 10 min al sol / aire libre. Vit D natural y ritmo circadiano.", 0, 0, 0) for d in [6]],
-    # Caminatas post-almuerzo los días de gym de mañana (Lun, Mar, Mié, Jue, Sáb)
-    *[(d, "13:15", "🚶 Caminata 10 min post-almuerzo. Zona 2 tranquila, al aire libre si podés.", 0, 0, 0) for d in [0, 1, 2, 3, 5]],
 ]
 
 # Index por key = "Dia-HH:MM" para lookup rápido
@@ -337,7 +272,7 @@ def resumen_hoy():
         f"✅ Cumplidas: {stats['ok']}/{stats['sent']} ({pct}%)\n"
         f"⏭️ Skips: {stats['skip']}\n"
         f"✏️ Modificadas: {stats['edit']}\n\n"
-        f"🍽️ Kcal ingeridas: {stats['kcal_in']} / {OBJETIVO_KCAL}\n"
+        f"🍽️ Kcal ingeridas: {stats['kcal_in']} / {objetivo_kcal(datetime.now(TZ).weekday())}\n"
         f"🥩 Proteína: {stats['prot']} g / {OBJETIVO_PROT} g\n"
         f"🔥 Quemadas: {stats['quema']} kcal\n"
         f"⚖️ Balance neto: {stats['neto']} kcal"
@@ -404,7 +339,7 @@ def generar_reporte_dia_md(events, fecha):
         "## Resumen",
         f"- **Adherencia**: {stats['ok']}/{stats['sent']} recordatorios ({pct}%)",
         f"- **Skips**: {stats['skip']} · **Modificadas**: {stats['edit']}",
-        f"- **Kcal ingeridas**: {stats['kcal_in']} / {OBJETIVO_KCAL}",
+        f"- **Kcal ingeridas**: {stats['kcal_in']} / {objetivo_kcal(fecha.weekday())}",
         f"- **Proteína**: {stats['prot']} g / {OBJETIVO_PROT} g",
         f"- **Kcal quemadas**: {stats['quema']}",
         f"- **Balance neto**: {stats['neto']} kcal",

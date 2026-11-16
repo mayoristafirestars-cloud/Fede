@@ -12,6 +12,14 @@
 **Impacto:** qué archivos se tocaron
 ```
 
+## 2026-11-16 (ajuste: 4 comidas + mini)
+**Autor:** @nutricionista
+**Qué:** Dieta simplificada: de unas 10 tomas a 4 comidas grandes + 1 mini (lun-jue: mini 06:30, post-entreno 08:30, almuerzo 12:30, merienda post-bici 15:15, cena 19:30; viernes, sábado y domingo con horarios propios; domingo sin mini). Se agrega pasta de maní 100 % maní pesada (20 g en la comida 1 y 20 g en la comida 3). El arroz se reemplaza por zapallo anco en freidora de aire (400 g crudos en almuerzo de lunes y sábado, 300 g en cena de miércoles y viernes, 200 °C, 15-20 min, 3 ml de aceite en spray). El snack de las 21:30 queda como postre de la cena. Kcal: lun-sáb 2.185 en promedio (antes 2.170), domingo 1.892 (antes 1.926); proteína ~204 g; carbohidratos ~215 g; grasas ~62 g. Lista de compras e intercambios actualizados (sin arroz, con pasta de maní y zapallo).
+**Por qué:** pedido de Fede: pasta de maní, zapallo en la freidora en vez de arroz y menos comidas ("me vas a volver loco"). Menos tomas facilita marcar todo en el bot.
+**Impacto:** `salud/dieta-actual.md`, `salud/bitacora/2026-11-16-nutricionista.md`, `dieta.json` del scratchpad. El bot (`recordatorios_plan_fede.py`) debe pasar a 5 tomas marcables y actualizar OBJETIVO_KCAL (2185 / 1890) y OBJETIVO_PROT (204 / 197).
+
+---
+
 ## 2026-11-16
 **Autor:** @nutricionista
 **Qué:** Dieta nueva de definición estricta (8 semanas). Lunes a sábado ~2.170 kcal (P ~205 g, C ~200 g, G ~64 g); domingo 1.926 kcal (P 199 g, C 116 g, G 77 g). 8 tomas con gramos exactos, galletas de arroz solo peri-entreno y peri-bici (pre-bici 13:30, bici Z2 14:00, post-bici 15:15). Viernes sin bici por el gym de las 14:00; miércoles bici corta; domingo caminata o bici. Alcohol 0, sin comida libre semanas 1-4. Ritmo esperado de 0,6 a 0,8 kg/semana desde la semana 2. La dieta Paleo + lácteos anterior queda en `dieta-actual-anterior.md`.
