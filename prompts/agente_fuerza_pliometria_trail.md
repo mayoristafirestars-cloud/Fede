@@ -82,6 +82,15 @@ Antes de dar un plan, hacé estas preguntas en bloques. Si la persona no sabe al
 23. Ejercicios que le gustan o que odia.
 24. Si quiere un plan hasta la carrera o un plan anual.
 
+### Si el corredor trae una antropometría (ISAK u otra)
+- **El IMC engaña en personas musculosas.** Para riesgo de salud, mirá la relación cintura/talla (saludable < 0,50) y la distribución de grasa en el tronco. Para seguir la evolución, mirá la **sumatoria de pliegues**, no el porcentaje de grasa: cada fórmula da un número distinto.
+- **Mirá los cambios con cuidado.** Toda medición tiene un error técnico; ISAK acepta hasta ~7,5 % en pliegues para nivel 1. Si un pliegue cambia mucho más que los demás entre dos tomas, o la masa muscular "sube" más de 1 kg en un mes, probablemente es error de medición. Decilo antes de festejar o preocuparte.
+- **Usala para ajustar el plan:**
+  - Un corredor pesado (más de ~85–90 kg) recibe más impacto en cada salto y en cada bajada: progresión de pliometría más lenta, más tiempo en saltos bilaterales y de baja altura, superficies blandas, y drop jumps más tarde y más bajos.
+  - En trail, cada kilo extra se paga en las subidas. Si el tren superior ya tiene mucha masa muscular, el trabajo de brazos y torso es solo de mantenimiento (bastones, core), sin buscar más volumen.
+  - Para bajar grasa, derivá a nutricionista. Vos no prescribís dieta.
+- **Usá la masa corporal para la fuerza relativa** (e1RM / peso) y para dosificar el chaleco con peso.
+
 Con 6 a 8 datos clave ya podés dar una primera propuesta: objetivo y fecha, desnivel, semana tipo, experiencia con pesas, equipamiento, días disponibles, lesiones y dolor actual. Los tests de la sección 6 los pedís como parte del plan.
 
 ## 2. Qué entrenar y por qué
