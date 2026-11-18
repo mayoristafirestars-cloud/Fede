@@ -5,35 +5,41 @@
     "Perfil: 47 años, 171 cm, 105 kg (dato de abril, sin pesaje desde entonces), IMC 35,9, cintura 102 cm, sospecha de resistencia a la insulina y sin análisis ni ECG cargados: carbohidratos de bajo índice glucémico salvo alrededor del entrenamiento, sodio prudente y proteína alta.",
     "Rutina de 6 días (sesiones de 85-90 min) más bici Z2 diaria a las 14:00 (el viernes el gym ocupa ese horario): el gasto estimado de un día de entreno ronda 3.000 kcal y el de domingo 2.700 kcal. FC sostenida hasta 121 lpm hasta tener ECG, por eso la bici es Z2 (FC 105-118).",
     "Pedido de Fede del 16/11: menos comidas (pasamos de unas 10 tomas a 4 comidas grandes y 1 mini), pasta de maní en la dieta y zapallo en la freidora de aire en lugar de arroz. El snack de las 21:30 queda integrado a la cena como postre.",
-    "La pasta de maní (100 % maní, pesada) entra en 2 comidas por día, 20 g cada una (236 kcal y 20 g de grasa por día en total) y reemplaza a las nueces, la palta y parte del aceite. El zapallo tiene menos calorías y carbohidratos que el arroz: se compensa con más avena, banana, boniato, papa y lentejas alrededor del entreno.",
-    "Sueño de 5-6 horas y 0 % de adherencia marcada en el bot de los últimos días: el plan es repetitivo y simple a propósito, con pocas tomas para poder marcarlas todas y ajustar con datos reales."
+    "Pedido de Fede del 18/11: antes del gym come banana, 2 galletas de arroz con pasta de maní y café (le gusta porque no le cae pesado), y después del gym no quiere otro desayuno de avena sino algo con huevos que deja cocinado antes de salir. La comida 1 pasa a ser de huevos (3 variantes que rotan) y la pasta de maní del bowl se mueve a la mini pre-entreno (10 g).",
+    "La pasta de maní (100 % maní, pesada) suma 30 g por día de lunes a sábado: 10 g en la mini pre-entreno y 20 g en la merienda (177 kcal y 15 g de grasa por día; el viernes va en la mini y en el desayuno). Reemplaza a las nueces, la palta y parte del aceite. El zapallo tiene menos calorías y carbohidratos que el arroz: se compensa con boniato, papa, banana y lentejas alrededor del entreno.",
+    "Huevos y colesterol: no hay lipidograma cargado, así que el tope provisorio es de 3 yemas por día y unas 15 por semana (lo habitual son 2 por día). La proteína se completa con claras y con whey. Sueño de 5-6 horas y 0 % de adherencia marcada en el bot de los últimos días: el plan es repetitivo y simple a propósito, con pocas tomas para poder marcarlas todas y ajustar con datos reales."
   ],
   "objetivos": {
     "kcal_entreno": 2185,
     "kcal_descanso": 1890,
     "proteina_g": 204,
-    "carbos_g_entreno": 215,
+    "carbos_g_entreno": 209,
     "carbos_g_descanso": 113,
-    "grasas_g": 62,
-    "ritmo_esperado": "Déficit estimado de 800-900 kcal por día sobre un gasto de unas 3.000 kcal en días de entreno con bici y unas 2.700 kcal el domingo (estimación: no hay peso reciente). Cambio respecto de la versión anterior: lunes a sábado 2.185 kcal en promedio (antes 2.170) y domingo 1.892 kcal (antes 1.926); la proteína y el déficit no cambian. Semana 1: baja de 1,5 a 2,5 kg, en parte agua y glucógeno. Desde la semana 2: 0,6 a 0,8 kg por semana de grasa. En 8 semanas: de 5 a 7 kg menos (unos 98-100 kg) y de 5 a 7 cm menos de cintura. Si baja más de 1 kg por semana durante 2 semanas seguidas, se sube la ingesta.",
-    "control": "Pesaje cada lunes en ayunas y cintura a nivel del ombligo, anotados en mediciones.md. Cada 2 semanas se mira el promedio. Si baja menos de 0,4 kg por semana con adherencia cumplida: restar unas 170 kcal (avena del bowl de 50 g a 30 g, pasta de maní de la merienda de 20 g a 10 g y 1 galleta de arroz), sin tocar proteína ni los carbohidratos del pre y post entreno. Si baja más de 1 kg por semana, se cae el rendimiento dos semanas, hay mareos o duerme menos de 5 h dos noches seguidas: sumar unas 190 kcal con 150 g de boniato hervido y 10 g de pasta de maní en la cena. Semanas 4 y 8 (descarga de la rutina): mismas calorías."
+    "grasas_g": 63,
+    "ritmo_esperado": "Déficit estimado de 800-900 kcal por día sobre un gasto de unas 3.000 kcal en días de entreno con bici y unas 2.700 kcal el domingo (estimación: no hay peso reciente). Cambio del 18/11 (comida 1 con huevos y pasta de maní en la mini): lunes a sábado 2.181 kcal en promedio (de 2.167 a 2.196 según el día) y 205 g de proteína en promedio; el domingo no cambia (1.892 kcal). Semana 1: baja de 1,5 a 2,5 kg, en parte agua y glucógeno. Desde la semana 2: 0,6 a 0,8 kg por semana de grasa. En 8 semanas: de 5 a 7 kg menos (unos 98-100 kg) y de 5 a 7 cm menos de cintura. Si baja más de 1 kg por semana durante 2 semanas seguidas, se sube la ingesta.",
+    "control": "Pesaje cada lunes en ayunas y cintura a nivel del ombligo, anotados en mediciones.md. Cada 2 semanas se mira el promedio. Si baja menos de 0,4 kg por semana con adherencia cumplida: restar unas 140 kcal (boniato de la comida 1 de 100 g a 50 g, pasta de maní de la merienda de 20 g a 10 g y 1 galleta de arroz de la merienda), sin tocar proteína ni la mini pre-entreno. Si baja más de 1 kg por semana, se cae el rendimiento dos semanas, hay mareos o duerme menos de 5 h dos noches seguidas: sumar unas 190 kcal con 150 g de boniato hervido y 10 g de pasta de maní en la cena. Semanas 4 y 8 (descarga de la rutina): mismas calorías."
   },
   "principios": [
-    "Esquema fijo de lunes a jueves y sábado: mini pre-entreno, comida 1 post-entreno, comida 2 almuerzo, comida 3 merienda post-bici y comida 4 cena. Cinco tomas en total, y solo la mini es de agarrar y listo. El viernes y el domingo se adaptan (ver cada día).",
+    "Esquema fijo de lunes a jueves y sábado: mini pre-entreno, comida 1 post-entreno (de huevos, lista de antes), comida 2 almuerzo, comida 3 merienda post-bici y comida 4 cena. Cinco tomas en total, y solo la mini es de agarrar y listo. El viernes y el domingo se adaptan (ver cada día).",
     "Cada comida grande lleva 35-65 g de proteína: el total diario es de unos 204 g (1,95 g/kg) para no perder músculo en un déficit alto con 6 días de fuerza.",
-    "Carbohidratos pegados al entrenamiento: banana y galletas de arroz en la mini pre-entreno, avena en el bowl post-entreno, y boniato, papa, lentejas o zapallo en el almuerzo antes de la bici. El resto del día, carbohidratos de bajo índice glucémico (boniato y papa hervidos y enfriados, legumbres, fruta entera).",
-    "Pasta de maní 100 % maní, sin azúcar, pesada: 20 g en el bowl post-entreno y 20 g en la merienda (118 kcal, 5 g de proteína y 10 g de grasa cada porción). Es la grasa principal del día, por eso baja la palta, el aceite y no hay nueces.",
-    "Zapallo anco en la freidora de aire en lugar de arroz: 400 g crudos (unos 300 g cocidos) en el almuerzo de lunes y sábado y 300 g crudos (unos 225 g cocidos) en la cena de miércoles y viernes, con 3 ml de aceite de oliva en spray. Tiene unas 30 kcal y 7 g de carbohidratos cada 100 g crudos, mucho menos que el arroz, así que se suma boniato en el almuerzo y más avena y banana en el día.",
+    "Carbohidratos pegados al entrenamiento: banana y galletas de arroz en la mini pre-entreno, boniato o papa dentro de la comida 1 post-entreno, y boniato, papa, lentejas o zapallo en el almuerzo antes de la bici. El resto del día, carbohidratos de bajo índice glucémico (boniato y papa hervidos y enfriados, legumbres, fruta entera).",
+    "Mini pre-entreno liviana: banana 80 g, 2 galletas de arroz con 10 g de pasta de maní untada y café (199 kcal, 5 g de proteína, 5 g de grasa). Es lo que Fede ya tolera bien antes de entrenar; 10 g es poco volumen para que no caiga pesado.",
+    "Comida 1 post-entreno de huevos: 2 huevos enteros (2 yemas) más 3 o 4 claras, con verdura y boniato o papa, cocinada la noche anterior y guardada en tupper en la heladera. Se come fría o 30 segundos en microondas. Tres variantes que rotan: tortilla de espinaca y boniato (lunes y viernes), omelette de champiñones, morrón y papa (martes y jueves), huevos duros con boniato y tomate (miércoles y sábado). Whey 15 g con creatina 5 g en un shake con agua completa la proteína (viernes 20 g).",
+    "Tope de yemas: máximo 3 por día (lo normal son 2) y unas 15 por semana hasta tener el lipidograma. El miércoles son 3 porque el almuerzo ya trae 1 huevo duro. No se agregan huevos extra: lo que falta de proteína lo ponen las claras o el whey.",
+    "Pasta de maní 100 % maní, sin azúcar, pesada: 10 g en la mini pre-entreno y 20 g en la merienda post-bici (118 kcal, 5 g de proteína y 10 g de grasa cada 20 g). El viernes va en la mini (10 g) y en el desayuno (20 g). Es la grasa principal del día junto con los huevos, por eso baja la palta, el aceite y no hay nueces.",
+    "Zapallo anco en la freidora de aire en lugar de arroz: 400 g crudos (unos 300 g cocidos) en el almuerzo de lunes y sábado y 300 g crudos (unos 225 g cocidos) en la cena de miércoles y viernes, con 3 ml de aceite de oliva en spray. Tiene unas 30 kcal y 7 g de carbohidratos cada 100 g crudos, mucho menos que el arroz, así que se suma boniato y papa alrededor del entreno.",
     "El snack de las 21:30 desaparece como toma: el yogur con chía (150 g y 5 g) y el magnesio van como postre al final de la cena. Si hay hambre nocturna real, ese mismo postre se repite como única toma mínima.",
-    "Pollo, peceto, pescado, lentejas, boniato y papa se pesan cocidos; zapallo, avena, whey, creatina y pasta de maní, en seco o crudos. Agua, sal, café, mate, suplementos y bici no son comidas: van dentro de una comida o en hidratación."
+    "Pollo, peceto, pescado, lentejas, boniato y papa se pesan cocidos; zapallo, whey, creatina y pasta de maní, en seco o crudos. Los huevos se cuentan por unidad (50 g) y las claras por unidad (33 g). Agua, sal, café, mate, suplementos y bici no son comidas: van dentro de una comida o en hidratación."
   ],
   "reglas_estrictas": [
     "Alcohol: cero durante las 8 semanas, sin excepciones. Es parte del plan de objetivos.md.",
     "Sin comida libre las semanas 1 a 4. Desde la semana 5, y solo si el peso viene bajando según lo esperado, una comida de referencia por semana (sábado a la noche) que reemplaza la cena: máximo 700 kcal, al menos 40 g de proteína, sin alcohol, sin postre extra.",
     "No se saltea ninguna de las 4 comidas ni se recorta la proteína. Si algo no se pudo comer, se completa con whey 35 g o yogur griego 200 g. No se pica entre comidas.",
     "No se compensa un exceso ayunando: la comida siguiente es la del plan. Si aparece culpa, conteo obsesivo o ganas de castigarse con comida, se avisa al psicólogo.",
-    "Nada de bebidas con calorías (gaseosas, jugos, licuados): solo agua, soda, mate, café y té sin azúcar ni miel.",
+    "Nada de bebidas con calorías (gaseosas, jugos, licuados): solo agua, soda, mate, café y té sin azúcar ni miel. El shake de whey con agua es parte de la comida 1, no una bebida aparte.",
     "Pasta de maní: solo 100 % maní, sin azúcar, sin aceite de palma ni sal agregada, y siempre pesada en balanza (no en cucharadas). 10 g de más son 59 kcal. No se come de la cuchara fuera de la comida.",
+    "Huevos: máximo 3 yemas por día y unas 15 por semana hasta tener lipidograma. Para completar proteína se usan claras o whey, nunca un huevo extra. Si el médico pide menos, se pasa a 1 yema por día reemplazando por 2 claras más.",
+    "Seguridad de los huevos cocidos: la tortilla, el omelette y los huevos duros se cocinan completos (sin yema líquida), se guardan en tupper en la heladera apenas se enfrían y se comen dentro de las 48 horas.",
     "Zapallo: se pesa crudo y pelado antes de cocinarlo. En la freidora a 200 °C, 15-20 min, con 3 ml de aceite en spray; no se agrega más aceite.",
     "Galletas de arroz solo donde figuran en el plan (mini pre-entreno y merienda post-bici); no como picoteo.",
     "Último mate o café a las 14:00. No se agrega cafeína extra ni pre-entrenos comerciales.",
@@ -45,13 +51,13 @@
     {
       "dia": "Lunes",
       "tipo": "Gym 07:00 torso A + bici Z2 14:00",
-      "kcal": 2196,
-      "prot": 205,
-      "carb": 228,
-      "grasa": 57,
+      "kcal": 2186,
+      "prot": 207,
+      "carb": 217,
+      "grasa": 60,
       "comidas": [
-        { "hora": "06:30", "nombre": "Mini: pre-entreno", "items": [["Banana pelada", "80 g"], ["Galletas de arroz", "2 unidades (18 g)"], ["Café negro sin azúcar", "150 ml"]], "kcal": 140, "prot": 2, "nota": "Agarrar y listo. Al despertar, 300 ml de agua con 1 pizca de sal. Gym 07:00 a 08:25, FC hasta 121 lpm" },
-        { "hora": "08:30", "nombre": "Comida 1: post-entreno", "items": [["Whey protein", "35 g"], ["Avena arrollada cruda (cocida en agua)", "50 g"], ["Pasta de maní 100 % maní, sin azúcar", "20 g"], ["Frutillas", "100 g"], ["Creatina monohidrato", "5 g"]], "kcal": 480, "prot": 40, "nota": "Cocinar la avena en agua, dejar entibiar y recién ahí mezclar el whey y la creatina. La pasta de maní va arriba" },
+        { "hora": "06:30", "nombre": "Mini: pre-entreno", "items": [["Banana pelada", "80 g"], ["Galletas de arroz", "2 unidades (18 g)"], ["Pasta de maní 100 % maní, sin azúcar (untada en las galletas)", "10 g"], ["Café negro sin azúcar", "150 ml"]], "kcal": 199, "prot": 5, "nota": "Agarrar y listo. Al despertar, 300 ml de agua con 1 pizca de sal. Gym 07:00 a 08:25, FC hasta 121 lpm" },
+        { "hora": "08:30", "nombre": "Comida 1: post-entreno (tortilla de espinaca y boniato)", "items": [["Huevos enteros", "2 unidades (100 g)"], ["Claras", "3 unidades (99 g)"], ["Espinaca cruda picada", "60 g"], ["Boniato hervido y enfriado, en cubitos", "100 g"], ["Aceite de oliva en spray (para la sartén)", "3 ml"], ["Frutillas", "100 g"], ["Whey protein (shake con 250 ml de agua)", "15 g"], ["Creatina monohidrato (en el shake)", "5 g"]], "kcal": 411, "prot": 39, "nota": "Cocinar la noche anterior: batir los huevos y las claras, mezclar con la espinaca y el boniato y cocinar en sartén antiadherente tapada, 4 min por lado (o en la freidora a 180 °C, 10-12 min, en un molde). Dejar enfriar y guardar en tupper en la heladera. Al volver del gym comerla fría o 30 segundos en microondas, con las frutillas y el shake" },
         { "hora": "12:30", "nombre": "Comida 2: almuerzo", "items": [["Pechuga de pollo cocida", "160 g"], ["Zapallo anco pelado, crudo, en cubos de 2 cm (unos 300 g cocido en freidora de aire)", "400 g"], ["Aceite de oliva en spray (para el zapallo)", "3 ml"], ["Boniato hervido y enfriado", "100 g"], ["Ensalada mixta (lechuga, rúcula, tomate, pepino)", "200 g"], ["Aceite de oliva (para la ensalada)", "5 ml"]], "kcal": 569, "prot": 57, "nota": "Zapallo a 200 °C, 15-20 min, dándolo vuelta a los 10. Bici Z2 a las 14:00: 45-60 min, FC 105-118, agua con 1 pizca de sal 500-750 ml" },
         { "hora": "15:15", "nombre": "Comida 3: merienda post-bici", "items": [["Yogur griego natural descremado sin azúcar", "300 g"], ["Pasta de maní 100 % maní, sin azúcar", "20 g"], ["Banana pelada", "80 g"], ["Galletas de arroz", "2 unidades (18 g)"]], "kcal": 438, "prot": 37 },
         { "hora": "19:30", "nombre": "Comida 4: cena", "items": [["Merluza cocida al horno", "220 g"], ["Zapallitos verdes cocidos", "150 g"], ["Papa hervida y enfriada", "150 g"], ["Aceite de oliva", "10 ml"], ["Yogur griego natural descremado sin azúcar (postre)", "150 g"], ["Chía", "5 g"], ["Magnesio glicinato", "300 mg"]], "kcal": 569, "prot": 69, "nota": "El yogur con chía y el magnesio reemplazan al snack de las 21:30: no hay toma aparte" }
@@ -60,28 +66,28 @@
     {
       "dia": "Martes",
       "tipo": "Gym 07:00 pierna A (sentadilla) + bici Z2 14:00",
-      "kcal": 2198,
-      "prot": 201,
-      "carb": 206,
+      "kcal": 2186,
+      "prot": 204,
+      "carb": 203,
       "grasa": 67,
       "comidas": [
-        { "hora": "06:30", "nombre": "Mini: pre-entreno", "items": [["Banana pelada", "80 g"], ["Galletas de arroz", "2 unidades (18 g)"], ["Café negro sin azúcar", "150 ml"]], "kcal": 140, "prot": 2, "nota": "Agarrar y listo. Al despertar, 300 ml de agua con 1 pizca de sal. Gym de pierna 07:00 a 08:25" },
-        { "hora": "08:30", "nombre": "Comida 1: post-entreno", "items": [["Whey protein", "35 g"], ["Avena arrollada cruda (cocida en agua)", "50 g"], ["Pasta de maní 100 % maní, sin azúcar", "20 g"], ["Frutillas", "100 g"], ["Creatina monohidrato", "5 g"]], "kcal": 480, "prot": 40, "nota": "Cocinar la avena en agua, dejar entibiar y recién ahí mezclar el whey y la creatina" },
+        { "hora": "06:30", "nombre": "Mini: pre-entreno", "items": [["Banana pelada", "80 g"], ["Galletas de arroz", "2 unidades (18 g)"], ["Pasta de maní 100 % maní, sin azúcar (untada en las galletas)", "10 g"], ["Café negro sin azúcar", "150 ml"]], "kcal": 199, "prot": 5, "nota": "Agarrar y listo. Al despertar, 300 ml de agua con 1 pizca de sal. Gym de pierna 07:00 a 08:25" },
+        { "hora": "08:30", "nombre": "Comida 1: post-entreno (omelette de champiñones, morrón y papa)", "items": [["Huevos enteros", "2 unidades (100 g)"], ["Claras", "3 unidades (99 g)"], ["Champiñones laminados", "100 g"], ["Morrón rojo en tiras", "100 g"], ["Papa hervida y enfriada, en cubitos", "100 g"], ["Aceite de oliva en spray (para la sartén)", "3 ml"], ["Whey protein (shake con 250 ml de agua)", "15 g"], ["Creatina monohidrato (en el shake)", "5 g"]], "kcal": 400, "prot": 42, "nota": "Cocinar la noche anterior: saltear los champiñones y el morrón 5 min con el spray, sumar la papa, volcar los huevos y las claras batidos, cocinar tapado 5 min a fuego bajo y doblar. Enfriar y guardar en tupper en la heladera. Al volver comerlo frío o 30 segundos en microondas, con el shake" },
         { "hora": "12:30", "nombre": "Comida 2: almuerzo", "items": [["Peceto cocido", "150 g"], ["Lentejas cocidas", "150 g"], ["Ensalada mixta (lechuga, rúcula, tomate, pepino)", "200 g"], ["Aceite de oliva", "10 ml"]], "kcal": 544, "prot": 61, "nota": "Bici Z2 a las 14:00: 45-60 min, FC 105-118, piernas cargadas: ritmo muy suave. Agua con 1 pizca de sal 500-750 ml" },
         { "hora": "15:15", "nombre": "Comida 3: merienda post-bici", "items": [["Yogur griego natural descremado sin azúcar", "300 g"], ["Pasta de maní 100 % maní, sin azúcar", "20 g"], ["Banana pelada", "80 g"], ["Galletas de arroz", "2 unidades (18 g)"]], "kcal": 438, "prot": 37 },
-        { "hora": "19:30", "nombre": "Comida 4: cena", "items": [["Salmón cocido", "150 g"], ["Brócoli cocido", "150 g"], ["Boniato hervido y enfriado", "100 g"], ["Claras cocidas", "2 unidades (66 g)"], ["Yogur griego natural descremado sin azúcar (postre)", "150 g"], ["Chía", "5 g"], ["Magnesio glicinato", "300 mg"]], "kcal": 596, "prot": 61, "nota": "El yogur con chía y el magnesio reemplazan al snack de las 21:30" }
+        { "hora": "19:30", "nombre": "Comida 4: cena", "items": [["Salmón cocido", "120 g"], ["Brócoli cocido", "150 g"], ["Boniato hervido y enfriado", "160 g"], ["Claras cocidas", "3 unidades (99 g)"], ["Yogur griego natural descremado sin azúcar (postre)", "150 g"], ["Chía", "5 g"], ["Magnesio glicinato", "300 mg"]], "kcal": 605, "prot": 59, "nota": "Menos salmón (antes 150 g) y más boniato y claras para compensar la grasa de los huevos del post-entreno. El yogur con chía y el magnesio reemplazan al snack de las 21:30" }
       ]
     },
     {
       "dia": "Miércoles",
       "tipo": "Gym 07:00 brazos, hombro y core + Z2 + bici corta 14:00",
-      "kcal": 2166,
-      "prot": 203,
-      "carb": 210,
-      "grasa": 63,
+      "kcal": 2167,
+      "prot": 205,
+      "carb": 207,
+      "grasa": 64,
       "comidas": [
-        { "hora": "06:30", "nombre": "Mini: pre-entreno", "items": [["Banana pelada", "80 g"], ["Galletas de arroz", "2 unidades (18 g)"], ["Café negro sin azúcar", "150 ml"]], "kcal": 140, "prot": 2, "nota": "Agarrar y listo. Al despertar, 300 ml de agua con 1 pizca de sal. Gym más Z2 de 30-35 min, 07:00 a 08:30" },
-        { "hora": "08:30", "nombre": "Comida 1: post-entreno", "items": [["Whey protein", "35 g"], ["Avena arrollada cruda (cocida en agua)", "50 g"], ["Pasta de maní 100 % maní, sin azúcar", "20 g"], ["Frutillas", "100 g"], ["Creatina monohidrato", "5 g"]], "kcal": 480, "prot": 40, "nota": "Cocinar la avena en agua, dejar entibiar y recién ahí mezclar el whey y la creatina" },
+        { "hora": "06:30", "nombre": "Mini: pre-entreno", "items": [["Banana pelada", "80 g"], ["Galletas de arroz", "2 unidades (18 g)"], ["Pasta de maní 100 % maní, sin azúcar (untada en las galletas)", "10 g"], ["Café negro sin azúcar", "150 ml"]], "kcal": 199, "prot": 5, "nota": "Agarrar y listo. Al despertar, 300 ml de agua con 1 pizca de sal. Gym más Z2 de 30-35 min, 07:00 a 08:30" },
+        { "hora": "08:30", "nombre": "Comida 1: post-entreno (huevos duros con boniato y tomate)", "items": [["Huevos duros enteros", "2 unidades (100 g)"], ["Claras duras", "3 unidades (99 g)"], ["Boniato hervido y enfriado", "160 g"], ["Tomate en cubos", "150 g"], ["Limón y orégano (sin aceite)", "al gusto"], ["Whey protein (shake con 250 ml de agua)", "15 g"], ["Creatina monohidrato (en el shake)", "5 g"]], "kcal": 422, "prot": 39, "nota": "Hervir 5 huevos 10 min la noche anterior: 2 se comen enteros y de los otros 3 solo se usa la clara (las yemas se descartan). Pelar y guardar en tupper con el boniato hervido; el tomate se corta al comer y se aliña con limón y orégano. Va frío. Hoy el almuerzo trae 1 huevo duro más: son 3 yemas en el día, que es el tope" },
         { "hora": "12:30", "nombre": "Comida 2: almuerzo", "items": [["Atún al natural escurrido", "150 g"], ["Lentejas cocidas", "150 g"], ["Huevo duro", "1 unidad (50 g)"], ["Ensalada mixta (lechuga, rúcula, tomate, pepino)", "200 g"], ["Palta", "50 g"], ["Aceite de oliva", "5 ml"]], "kcal": 575, "prot": 62, "nota": "Bici Z2 corta a las 14:00: 30-40 min, FC 105-118, agua con 1 pizca de sal 400-500 ml. Ya hiciste Z2 en el gym: si dormiste menos de 5 h, saltala" },
         { "hora": "15:15", "nombre": "Comida 3: merienda post-bici", "items": [["Yogur griego natural descremado sin azúcar", "300 g"], ["Pasta de maní 100 % maní, sin azúcar", "20 g"], ["Banana pelada", "80 g"], ["Galletas de arroz", "2 unidades (18 g)"]], "kcal": 438, "prot": 37 },
         { "hora": "19:30", "nombre": "Comida 4: cena", "items": [["Pechuga de pollo cocida", "130 g"], ["Zapallitos verdes cocidos", "150 g"], ["Morrón rojo", "100 g"], ["Zapallo anco pelado, crudo, en cubos de 2 cm (unos 225 g cocido en freidora de aire)", "300 g"], ["Aceite de oliva en spray (para el zapallo)", "3 ml"], ["Aceite de oliva", "5 ml"], ["Yogur griego natural descremado sin azúcar (postre)", "150 g"], ["Chía", "5 g"], ["Magnesio glicinato", "300 mg"]], "kcal": 533, "prot": 62, "nota": "Zapallo en lugar del arroz: 200 °C, 15-20 min. El yogur con chía y el magnesio reemplazan al snack de las 21:30" }
@@ -90,13 +96,13 @@
     {
       "dia": "Jueves",
       "tipo": "Gym 07:00 torso B (militar y dominadas) + bici Z2 14:00",
-      "kcal": 2197,
-      "prot": 201,
-      "carb": 215,
-      "grasa": 63,
+      "kcal": 2176,
+      "prot": 206,
+      "carb": 199,
+      "grasa": 67,
       "comidas": [
-        { "hora": "06:30", "nombre": "Mini: pre-entreno", "items": [["Banana pelada", "80 g"], ["Galletas de arroz", "2 unidades (18 g)"], ["Café negro sin azúcar", "150 ml"]], "kcal": 140, "prot": 2, "nota": "Agarrar y listo. Al despertar, 300 ml de agua con 1 pizca de sal. Gym 07:00 a 08:25" },
-        { "hora": "08:30", "nombre": "Comida 1: post-entreno", "items": [["Whey protein", "35 g"], ["Avena arrollada cruda (cocida en agua)", "50 g"], ["Pasta de maní 100 % maní, sin azúcar", "20 g"], ["Frutillas", "100 g"], ["Creatina monohidrato", "5 g"]], "kcal": 480, "prot": 40, "nota": "Cocinar la avena en agua, dejar entibiar y recién ahí mezclar el whey y la creatina" },
+        { "hora": "06:30", "nombre": "Mini: pre-entreno", "items": [["Banana pelada", "80 g"], ["Galletas de arroz", "2 unidades (18 g)"], ["Pasta de maní 100 % maní, sin azúcar (untada en las galletas)", "10 g"], ["Café negro sin azúcar", "150 ml"]], "kcal": 199, "prot": 5, "nota": "Agarrar y listo. Al despertar, 300 ml de agua con 1 pizca de sal. Gym 07:00 a 08:25" },
+        { "hora": "08:30", "nombre": "Comida 1: post-entreno (omelette de champiñones, morrón y papa)", "items": [["Huevos enteros", "2 unidades (100 g)"], ["Claras", "3 unidades (99 g)"], ["Champiñones laminados", "100 g"], ["Morrón rojo en tiras", "100 g"], ["Papa hervida y enfriada, en cubitos", "100 g"], ["Aceite de oliva en spray (para la sartén)", "3 ml"], ["Whey protein (shake con 250 ml de agua)", "15 g"], ["Creatina monohidrato (en el shake)", "5 g"]], "kcal": 400, "prot": 42, "nota": "Cocinar la noche anterior: saltear los champiñones y el morrón 5 min con el spray, sumar la papa, volcar los huevos y las claras batidos, cocinar tapado 5 min a fuego bajo y doblar. Enfriar y guardar en tupper en la heladera. Al volver comerlo frío o 30 segundos en microondas, con el shake" },
         { "hora": "12:30", "nombre": "Comida 2: almuerzo", "items": [["Pechuga de pollo cocida", "160 g"], ["Boniato hervido y enfriado", "150 g"], ["Brócoli cocido", "150 g"], ["Aceite de oliva", "10 ml"]], "kcal": 525, "prot": 56, "nota": "Bici Z2 a las 14:00: 45-60 min, FC 105-118, agua con 1 pizca de sal 500-750 ml" },
         { "hora": "15:15", "nombre": "Comida 3: merienda post-bici", "items": [["Yogur griego natural descremado sin azúcar", "300 g"], ["Pasta de maní 100 % maní, sin azúcar", "20 g"], ["Banana pelada", "80 g"], ["Galletas de arroz", "2 unidades (18 g)"]], "kcal": 438, "prot": 37 },
         { "hora": "19:30", "nombre": "Comida 4: cena", "items": [["Peceto cocido", "150 g"], ["Papa hervida y enfriada", "150 g"], ["Ensalada mixta (lechuga, rúcula, tomate, pepino)", "200 g"], ["Aceite de oliva", "10 ml"], ["Yogur griego natural descremado sin azúcar (postre)", "150 g"], ["Chía", "5 g"], ["Magnesio glicinato", "300 mg"]], "kcal": 614, "prot": 66, "nota": "El yogur con chía y el magnesio reemplazan al snack de las 21:30" }
@@ -105,28 +111,28 @@
     {
       "dia": "Viernes",
       "tipo": "Gym 14:00 pierna B (peso muerto), sin bici",
-      "kcal": 2159,
-      "prot": 207,
-      "carb": 200,
-      "grasa": 63,
+      "kcal": 2174,
+      "prot": 204,
+      "carb": 203,
+      "grasa": 64,
       "comidas": [
-        { "hora": "07:00", "nombre": "Comida 1: desayuno", "items": [["Avena arrollada cruda (cocida en agua)", "50 g"], ["Yogur griego natural descremado sin azúcar", "250 g"], ["Pasta de maní 100 % maní, sin azúcar", "20 g"], ["Frutillas", "100 g"], ["Huevo duro", "1 unidad (50 g)"]], "kcal": 562, "prot": 43, "nota": "Al despertar, 300 ml de agua con 1 pizca de sal. Hoy no hay gym a la mañana" },
-        { "hora": "12:00", "nombre": "Comida 2: almuerzo", "items": [["Pechuga de pollo cocida", "130 g"], ["Boniato hervido y enfriado", "150 g"], ["Brócoli cocido", "150 g"], ["Aceite de oliva", "10 ml"]], "kcal": 476, "prot": 46, "nota": "Dos horas antes del gym" },
-        { "hora": "13:20", "nombre": "Mini: pre-entreno", "items": [["Banana pelada", "80 g"], ["Galletas de arroz", "2 unidades (18 g)"], ["Café negro sin azúcar", "150 ml"]], "kcal": 140, "prot": 2, "nota": "Agarrar y listo, con 400 ml de agua con 1 pizca de sal. Último café del día. Gym pierna B más remo Z2 de 14:00 a 15:25; hoy no hay bici" },
-        { "hora": "15:35", "nombre": "Comida 3: post-entreno", "items": [["Whey protein", "35 g"], ["Yogur griego natural descremado sin azúcar", "200 g"], ["Pasta de maní 100 % maní, sin azúcar", "20 g"], ["Banana pelada", "80 g"], ["Creatina monohidrato", "5 g"]], "kcal": 448, "prot": 54, "nota": "Licuado todo junto, listo para tomar en el vestuario" },
+        { "hora": "07:00", "nombre": "Comida 1: desayuno", "items": [["Avena arrollada cruda (cocida en agua)", "50 g"], ["Yogur griego natural descremado sin azúcar", "250 g"], ["Pasta de maní 100 % maní, sin azúcar", "20 g"], ["Frutillas", "100 g"], ["Claras cocidas", "2 unidades (66 g)"]], "kcal": 524, "prot": 44, "nota": "Al despertar, 300 ml de agua con 1 pizca de sal. Hoy no hay gym a la mañana. Se cambia el huevo duro por 2 claras para que el día quede en 2 yemas, porque el post-entreno lleva 2 huevos enteros" },
+        { "hora": "12:00", "nombre": "Comida 2: almuerzo", "items": [["Pechuga de pollo cocida", "130 g"], ["Boniato hervido y enfriado", "150 g"], ["Brócoli cocido", "150 g"], ["Aceite de oliva", "10 ml"]], "kcal": 476, "prot": 46, "nota": "Dos horas antes del gym. A la mañana o a la noche anterior, cocinar la tortilla del post-entreno" },
+        { "hora": "13:20", "nombre": "Mini: pre-entreno", "items": [["Banana pelada", "80 g"], ["Galletas de arroz", "2 unidades (18 g)"], ["Pasta de maní 100 % maní, sin azúcar (untada en las galletas)", "10 g"], ["Café negro sin azúcar", "150 ml"]], "kcal": 199, "prot": 5, "nota": "Agarrar y listo, con 400 ml de agua con 1 pizca de sal. Igual que el resto de la semana. Último café del día. Gym pierna B más remo Z2 de 14:00 a 15:25; hoy no hay bici" },
+        { "hora": "15:35", "nombre": "Comida 3: post-entreno (tortilla de espinaca y boniato en tupper)", "items": [["Huevos enteros", "2 unidades (100 g)"], ["Claras", "4 unidades (132 g)"], ["Espinaca cruda picada", "60 g"], ["Boniato hervido y enfriado, en cubitos", "130 g"], ["Aceite de oliva en spray (para la sartén)", "3 ml"], ["Whey protein (shake con 300 ml de agua)", "20 g"], ["Creatina monohidrato (en el shake)", "5 g"]], "kcal": 442, "prot": 47, "nota": "Cocinar a la mañana (o la noche anterior) como la tortilla del lunes: sartén antiadherente tapada, 4 min por lado. Llevarla en tupper al gym y comerla fría al terminar; el shake de whey con creatina se toma en el vestuario. Reemplaza el licuado con yogur y maní" },
         { "hora": "19:30", "nombre": "Comida 4: cena", "items": [["Pechuga de pollo cocida", "130 g"], ["Zapallitos verdes cocidos", "150 g"], ["Morrón rojo", "100 g"], ["Zapallo anco pelado, crudo, en cubos de 2 cm (unos 225 g cocido en freidora de aire)", "300 g"], ["Aceite de oliva en spray (para el zapallo)", "3 ml"], ["Aceite de oliva", "5 ml"], ["Yogur griego natural descremado sin azúcar (postre)", "150 g"], ["Chía", "5 g"], ["Magnesio glicinato", "300 mg"]], "kcal": 533, "prot": 62, "nota": "Cena del plan, sin comida libre. Zapallo en lugar del arroz" }
       ]
     },
     {
       "dia": "Sábado",
       "tipo": "Hyrox base 08:30 + bici Z2 14:00",
-      "kcal": 2195,
-      "prot": 205,
-      "carb": 228,
-      "grasa": 57,
+      "kcal": 2196,
+      "prot": 207,
+      "carb": 225,
+      "grasa": 58,
       "comidas": [
-        { "hora": "07:30", "nombre": "Mini: pre-entreno", "items": [["Banana pelada", "80 g"], ["Galletas de arroz", "2 unidades (18 g)"], ["Café negro sin azúcar", "150 ml"]], "kcal": 140, "prot": 2, "nota": "Agarrar y listo. Al despertar, 300 ml de agua con 1 pizca de sal. Hyrox base 08:30 a 09:55" },
-        { "hora": "10:15", "nombre": "Comida 1: post-entreno", "items": [["Whey protein", "35 g"], ["Avena arrollada cruda (cocida en agua)", "50 g"], ["Pasta de maní 100 % maní, sin azúcar", "20 g"], ["Frutillas", "100 g"], ["Creatina monohidrato", "5 g"]], "kcal": 480, "prot": 40, "nota": "Cocinar la avena en agua, dejar entibiar y recién ahí mezclar el whey y la creatina" },
+        { "hora": "07:30", "nombre": "Mini: pre-entreno", "items": [["Banana pelada", "80 g"], ["Galletas de arroz", "2 unidades (18 g)"], ["Pasta de maní 100 % maní, sin azúcar (untada en las galletas)", "10 g"], ["Café negro sin azúcar", "150 ml"]], "kcal": 199, "prot": 5, "nota": "Agarrar y listo. Al despertar, 300 ml de agua con 1 pizca de sal. Hyrox base 08:30 a 09:55" },
+        { "hora": "10:15", "nombre": "Comida 1: post-entreno (huevos duros con boniato y tomate)", "items": [["Huevos duros enteros", "2 unidades (100 g)"], ["Claras duras", "3 unidades (99 g)"], ["Boniato hervido y enfriado", "160 g"], ["Tomate en cubos", "150 g"], ["Limón y orégano (sin aceite)", "al gusto"], ["Whey protein (shake con 250 ml de agua)", "15 g"], ["Creatina monohidrato (en el shake)", "5 g"]], "kcal": 422, "prot": 39, "nota": "Hervir 5 huevos 10 min el viernes a la noche: 2 se comen enteros y de los otros 3 solo se usa la clara (las yemas se descartan). Pelar y guardar en tupper con el boniato hervido; el tomate se corta al comer y se aliña con limón y orégano. Va frío" },
         { "hora": "13:00", "nombre": "Comida 2: almuerzo", "items": [["Pechuga de pollo cocida", "160 g"], ["Zapallo anco pelado, crudo, en cubos de 2 cm (unos 300 g cocido en freidora de aire)", "400 g"], ["Aceite de oliva en spray (para el zapallo)", "3 ml"], ["Boniato hervido y enfriado", "100 g"], ["Ensalada mixta (lechuga, rúcula, tomate, pepino)", "200 g"], ["Aceite de oliva (para la ensalada)", "5 ml"]], "kcal": 569, "prot": 57, "nota": "Hoy el almuerzo es a las 13:00 por el horario del Hyrox. Bici Z2 a las 14:00: arrancá muy suave los primeros 15 min; 45-60 min, FC 105-118, agua con 1 pizca de sal" },
         { "hora": "15:15", "nombre": "Comida 3: merienda post-bici", "items": [["Yogur griego natural descremado sin azúcar", "300 g"], ["Pasta de maní 100 % maní, sin azúcar", "20 g"], ["Banana pelada", "80 g"], ["Galletas de arroz", "2 unidades (18 g)"]], "kcal": 438, "prot": 37 },
         { "hora": "19:30", "nombre": "Comida 4: cena", "items": [["Merluza o brotola cocida al horno", "220 g"], ["Zapallitos verdes cocidos", "150 g"], ["Boniato hervido y enfriado", "150 g"], ["Aceite de oliva", "10 ml"], ["Yogur griego natural descremado sin azúcar (postre)", "150 g"], ["Chía", "5 g"], ["Magnesio glicinato", "300 mg"]], "kcal": 568, "prot": 69, "nota": "Desde la semana 5 puede ser la comida de referencia (máx 700 kcal)" }
@@ -148,11 +154,11 @@
     }
   ],
   "lista_compras": [
-    { "categoria": "Carnes y pescados", "items": [["Pechuga de pollo (cruda)", "1,2 kg"], ["Peceto (crudo)", "600 g"], ["Merluza o brotola (filetes)", "600 g"], ["Salmón (filete)", "400 g"], ["Atún al natural", "2 latas de 170 g"]] },
-    { "categoria": "Lácteos y huevos", "items": [["Huevos", "10 unidades (4 duros y 4 para las claras; quedan 2 de reserva)"], ["Queso cottage descremado", "500 g"], ["Yogur griego natural descremado sin azúcar", "3 kg"]] },
-    { "categoria": "Almacén", "items": [["Pasta de maní 100 % maní, sin azúcar ni aceite de palma", "1 pote de 350 g (se usan 260 g por semana)"], ["Avena arrollada", "300 g"], ["Lentejas secas", "200 g"], ["Galletas de arroz", "24 unidades (unos 220 g)"], ["Whey protein", "210 g"], ["Creatina monohidrato", "35 g"], ["Chía", "50 g"], ["Aceite de oliva extra virgen con pulverizador (para el spray)", "250 ml"], ["Café y yerba mate", "para la semana"]] },
-    { "categoria": "Verduras", "items": [["Zapallo anco (pelado y sin semillas pesa unos 1,4 kg)", "1,8 kg con cáscara"], ["Lechuga y rúcula", "600 g"], ["Tomate", "500 g"], ["Pepino", "2 chicos (250 g)"], ["Zanahoria", "150 g"], ["Zapallitos verdes", "700 g"], ["Morrón rojo", "2 chicos (200 g)"], ["Brócoli", "700 g"], ["Boniato", "800 g"], ["Papa", "300 g"], ["Limones", "4 unidades"], ["Ajo", "1 cabeza"]] },
-    { "categoria": "Frutas y palta", "items": [["Banana chica", "12 unidades (unos 1,3 kg con cáscara)"], ["Frutillas (sirven congeladas)", "700 g"], ["Palta", "1 grande (100 g de pulpa)"]] },
+    { "categoria": "Carnes y pescados", "items": [["Pechuga de pollo (cruda)", "1,2 kg"], ["Peceto (crudo)", "600 g"], ["Merluza o brotola (filetes)", "600 g"], ["Salmón (filete)", "350 g"], ["Atún al natural", "2 latas de 170 g"]] },
+    { "categoria": "Lácteos y huevos", "items": [["Huevos (15 se comen enteros y 26 se usan solo por la clara)", "41 unidades: 1 maple de 30 y 1 docena"], ["Alternativa a separar claras: claras líquidas pasteurizadas si las conseguís (26 claras son unos 860 g)", "15 huevos + 860 g de claras"], ["Queso cottage descremado", "500 g"], ["Yogur griego natural descremado sin azúcar", "2,8 kg"]] },
+    { "categoria": "Almacén", "items": [["Pasta de maní 100 % maní, sin azúcar ni aceite de palma", "1 pote de 350 g (se usan 200 g por semana)"], ["Avena arrollada (solo el desayuno del viernes)", "100 g"], ["Lentejas secas", "200 g"], ["Galletas de arroz", "24 unidades (unos 220 g)"], ["Whey protein", "120 g"], ["Creatina monohidrato", "35 g"], ["Chía", "50 g"], ["Aceite de oliva extra virgen con pulverizador (para el spray)", "250 ml"], ["Café y yerba mate", "para la semana"]] },
+    { "categoria": "Verduras", "items": [["Zapallo anco (pelado y sin semillas pesa unos 1,4 kg)", "1,8 kg con cáscara"], ["Lechuga y rúcula", "600 g"], ["Tomate", "800 g"], ["Pepino", "2 chicos (250 g)"], ["Zanahoria", "150 g"], ["Zapallitos verdes", "700 g"], ["Morrón rojo", "4 chicos (400 g)"], ["Brócoli", "700 g"], ["Espinaca", "200 g (1 atado chico)"], ["Champiñones", "250 g (1 bandeja)"], ["Boniato", "1,5 kg"], ["Papa", "500 g"], ["Limones", "5 unidades"], ["Ajo", "1 cabeza"]] },
+    { "categoria": "Frutas y palta", "items": [["Banana chica", "12 unidades (unos 1,3 kg con cáscara; 11 se usan)"], ["Frutillas (sirven congeladas)", "300 g"], ["Palta", "1 grande (100 g de pulpa)"]] },
     { "categoria": "Condimentos", "items": [["Orégano, pimentón, pimienta", "lo que tengas"], ["Sal fina", "poca"]] }
   ],
   "intercambios": [
@@ -164,19 +170,25 @@
     ["Zapallo anco", "Cabutiá o calabaza en el mismo peso crudo (el cabutiá tiene un poco más de carbohidratos: bajar a 350 g)"],
     ["Boniato", "Papa en el mismo peso hervida (mejor si la enfriás en la heladera)"],
     ["20 g de pasta de maní (118 kcal)", "20 g de almendras, o 18 g de nueces peladas"],
+    ["10 g de pasta de maní en la mini (59 kcal)", "10 g de almendras, o 9 g de nueces peladas"],
     ["50 g de palta", "9 ml de aceite de oliva, o 14 g de pasta de maní"],
     ["Banana pelada de 80 g", "2,5 galletas de arroz (22 g), o 130 g de manzana"],
     ["2 galletas de arroz (18 g)", "70 g de banana pelada"],
     ["200 g de yogur griego", "180 g de queso cottage"],
     ["35 g de whey", "280 g de yogur griego, o 90 g de pechuga de pollo cocida"],
+    ["15 g de whey (shake de la comida 1)", "120 g de yogur griego, o 3 claras más (99 g); sin el whey la comida baja unos 56 kcal y 12 g de proteína"],
+    ["1 huevo entero (50 g)", "2 claras (66 g): baja 38 kcal y 5 g de grasa, sube 1 g de proteína; sirve para tener menos yemas en el día"],
+    ["3 claras (99 g)", "100 g de claras líquidas pasteurizadas"],
     ["2 huevos duros", "110 g de queso cottage, o 4 claras cocidas (130 g)"],
+    ["60 g de espinaca cruda", "60 g de acelga o de hojas de rúcula cocidas, mismo peso"],
+    ["100 g de champiñones", "100 g de berenjena o zucchini, mismo peso"],
     ["100 g de frutillas", "70 g de manzana, o 50 g de arándanos"],
     ["Zapallitos, brócoli o morrón", "Coliflor, berenjena, zucchini o espinaca en el mismo peso"],
     ["Lentejas", "Garbanzos cocidos en el mismo peso"]
   ],
   "suplementos": [
-    "Whey protein 35 g: en el bowl post-entreno de lunes a jueves y sábado, y en el licuado del viernes. Sin restricción médica; elegir uno sin azúcar agregada.",
-    "Creatina monohidrato 5 g por día (en el bowl o licuado post-entreno; el domingo con el desayuno): según suplementacion.md falta validar con el médico después de la función renal.",
+    "Whey protein: 15 g en el shake con agua de la comida 1 post-entreno (lunes a jueves y sábado), 20 g en el post-entreno del viernes. Sin restricción médica; elegir uno sin azúcar agregada.",
+    "Creatina monohidrato 5 g por día (en el shake de la comida 1 o el post-entreno del viernes; el domingo con el desayuno): según suplementacion.md falta validar con el médico después de la función renal.",
     "Omega-3 (EPA+DHA) 2-3 g con almuerzo o cena y vitamina D3 2.000-4.000 UI con el almuerzo: ambos pendientes de validar con el médico (lipidograma y 25-OH vitamina D).",
     "Magnesio glicinato 300 mg junto con el postre de la cena: figura como a considerar en suplementacion.md; el bot ya lo manda. Validar con el médico.",
     "Sin quemadores de grasa, termogénicos, cafeína en cápsulas ni pre-entrenos comerciales: contraindicados con el perfil cardiovascular y el tope de FC."
@@ -189,8 +201,8 @@
   ],
   "coordinacion": [
     "Médico: pedir ya ECG, tensión arterial (3 mediciones), glucemia e insulina en ayunas, HbA1c, perfil lipídico, función renal y hepática, 25-OH vitamina D y TSH. Hasta tenerlos, el déficit es de unas 800-900 kcal por día: confirmar que está de acuerdo con este ritmo y con 6 días de gym más bici diaria.",
-    "Médico: validar creatina, omega-3, vitamina D3 y magnesio, y avisar que la tensión arterial sigue sin medirse (por eso la sal está limitada). La grasa del plan ahora viene sobre todo de pasta de maní, pescado y aceite de oliva: mirar el perfil lipídico cuando haya análisis.",
-    "Entrenador: confirmar que la bici Z2 diaria a las 14:00 (40-60 min) se suma a las 6 sesiones. El viernes no hay bici por el gym de las 14:00 y el miércoles la bici es corta porque el gym ya incluye Z2. Si el Z2 del miércoles se pasa a las 14:00, esa bici reemplaza al Z2 y no se suma otra. El sábado el almuerzo es a las 13:00, una hora antes de la bici.",
+    "Médico: validar creatina, omega-3, vitamina D3 y magnesio, y avisar que la tensión arterial sigue sin medirse (por eso la sal está limitada). Ahora hay 2 huevos enteros por día (15 yemas por semana, tope provisorio de 3 por día) y la grasa viene de huevos, pasta de maní, pescado y aceite de oliva: mirar el perfil lipídico cuando haya análisis y confirmar si el tope de yemas está bien o hay que bajarlo.",
+    "Entrenador: confirmar que la bici Z2 diaria a las 14:00 (40-60 min) se suma a las 6 sesiones. El viernes no hay bici por el gym de las 14:00 y el miércoles la bici es corta porque el gym ya incluye Z2. Si el Z2 del miércoles se pasa a las 14:00, esa bici reemplaza al Z2 y no se suma otra. El sábado el almuerzo es a las 13:00, una hora antes de la bici. La mini pre-entreno lleva 10 g de pasta de maní: si cae pesada con las sesiones de pierna, avisar.",
     "Psicólogo: déficit estricto con 5-6 h de sueño y el alcohol como tentación pasada; con 4 comidas grandes hay que vigilar hambre emocional nocturna, conteo obsesivo o culpa al comer. Se pide seguimiento durante las 8 semanas.",
     "Sueño: si el promedio semanal queda bajo 6 h, el médico y el entrenador deciden si se baja el volumen antes de bajar más las calorías."
   ]
