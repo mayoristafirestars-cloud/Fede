@@ -41,4 +41,29 @@
 **Impacto:** `salud/dieta-actual.md`, `dieta.json` del scratchpad, `salud/bitacora.md`.
 
 ---
+
+## Segundo ajuste del día: despertar 06:00, desayuno liviano + segundo desayuno, suplementos
+
+**Pedido de Fede:** "me levanto a las 6 y desayuno; un desayuno más liviano y después, en el negocio, otro desayuno; después el almuerzo y la merienda-cena así como está; meteme los suplementos".
+
+**Horarios nuevos (kcal y proteína de cada día sin cambios):**
+- Lun-jue (gym 07:00): 06:00 mini liviano (199 kcal, sin cambios de contenido, ahora 1 h antes del gym), **09:00 segundo desayuno en el negocio** (la comida de huevos de siempre, en tupper, con el shake), 12:30 almuerzo, 17:30 merienda-cena. 4 tomas.
+- Viernes (gym 14:00): 06:00 desayuno liviano (yogur 150 g + frutillas, 122 kcal / 16 g), 09:30 segundo desayuno (avena 50 g remojada en yogur 100 g + maní 20 g + 2 claras, 402 / 28), **12:15 almuerzo + pre-entreno** (almuerzo 476/46 + mini 199/5 fusionados = 675 / 51), 15:35 post-entreno (442/47), 18:30 merienda-cena (533/62). Total 2.174 / 204. Se fusionó la mini con el almuerzo para no pasar de 5 tomas; el café de las 13:20 queda sin comida. No se fusionó post-entreno con merienda-cena (15 h de ayuno antes del Hyrox).
+- Sábado (Hyrox 08:30): mini 07:00 (antes 07:30), 10:15 post-entreno y segundo desayuno, 13:00 almuerzo, 17:30 merienda-cena. 4 tomas.
+- Domingo: 07:00 desayuno liviano (cottage 200 g + tomate 100 g + creatina, 152 / 24), 10:00 segundo desayuno (2 huevos duros + palta 50 g, 234 / 12), 12:30 almuerzo, 17:30 merienda-cena. 4 tomas, 1.892 / 197 igual.
+
+**Suplementos dentro de la comida (para que el bot los recuerde):** whey 15 g (vie 20 g) y creatina 5 g en el shake de la comida de huevos; omega-3 1 g de EPA+DHA y vitamina D3 2.000 UI en el almuerzo (todos los días; el viernes en el almuerzo de las 12:15); magnesio glicinato 300 mg en la merienda-cena (ya estaba). Solo el whey tiene kcal y ya estaba contado. Domingo: creatina a las 07:00.
+
+**Cambio de dosis (para el médico):** el omega-3 baja de 2-3 g a **1 g de EPA+DHA** y la D3 pasa de 2.000-4.000 UI a **2.000 UI fija**, porque hay antecedente paterno de arritmia, ECG sin hacer y 25-OH D sin medir; se sube solo si el médico lo indica con el lipidograma. Creatina, omega-3, D3 y magnesio quedan "validar con el médico antes"; whey "OK". Evaluados y no agregados: psyllium (la fibra ya es alta), electrolitos para la bici (Z2 de 45-60 min, sodio prudente), cafeína en cápsulas, multivitamínico (esperar análisis), melatonina y ashwagandha (apnea posible, sospecha de hígado graso).
+
+**Por qué:** pedido de Fede; la mini a las 06:00 da 1 h de digestión antes del gym y la comida de huevos a las 09:00 llega ~35 min después de terminar (si sale flojo, el shake va en el vestuario a las 08:25); el reparto del viernes y el domingo mantiene los mismos alimentos.
+
+**Qué se le consulta al médico:** visto bueno de los 4 suplementos en una consulta; 25-OH D, perfil lipídico, función renal (creatina), ECG y tensión; despertares a las 3-4 am (apnea).
+**Al entrenador:** la mini de las 06:00 queda 1 h antes del gym; avisar si cae pesada con pierna A.
+
+**Cambios que necesita el bot (`dieta_actual.json` y `recordatorios_plan_fede.py`):** nuevos horarios (lun-jue mini 06:00 y comida 1 09:00; viernes 06:00, 09:30, 12:15, 15:35, 18:30 sin mini; sábado mini 07:00; domingo 07:00, 10:00, 12:30, 17:30); el viernes y el domingo pasan de 5 y 3 a 5 y 4 tomas; los items de omega-3 y vitamina D3 aparecen dentro del almuerzo.
+
+**Impacto:** `salud/dieta-actual.md`, `salud/suplementacion.md`, `dieta.json` del scratchpad, `salud/bitacora.md`.
+
+---
 *Entrada manual del nutricionista. El bot genera el resumen automático del día en `salud/bitacora/2026-11-19.md` (no tocar).*

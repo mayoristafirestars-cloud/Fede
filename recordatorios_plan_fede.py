@@ -94,7 +94,7 @@ RECORDATORIOS = [
     # ===== BICI 14:00 (el viernes no: gym a las 14:00) =====
     *[(d, "13:30", _BICI.format(min="45-60 min"), 0, 0, 350) for d in [0, 1, 3, 5]],
     (2, "13:30", _BICI.format(min="30-40 min (corta: ya hiciste Z2 en el gym)"), 0, 0, 250),
-    (6, "09:30", "🍳 Batch cooking en 30 min (90 min): cociná la semana — proteínas al horno, zapallo en la freidora, boniato, huevos duros. Cantidades en la lista de compras del PDF de la dieta.", 0, 0, 0),
+    (6, "10:15", "🍳 Batch cooking ahora (90 min, antes del almuerzo): cociná la semana — proteínas al horno, zapallo en la freidora, boniato, huevos duros. Cantidades en la lista de compras del PDF de la dieta.", 0, 0, 0),
     (6, "13:30", "🚶 Caminata larga en 30 min: 60 min suaves al sol, ritmo de charla (FC por debajo de 110). ☕ Último mate ahora.", 0, 0, 250),
 
     # ===== SUEÑO =====
@@ -106,17 +106,25 @@ RECORDATORIOS = [
 
     # ===== WELLNESS: mindfulness, hidratación, movimiento =====
     # Diarios (todos los días): respiración, agua, journal, meditación
-    *[(d, "05:35", "🌬️ Respiración 2 min + estiramiento 3 min al despertar (después del agua).", 0, 0, 0) for d in range(7)],
+    *[(d, "06:05", "🌬️ Respiración 2 min + estiramiento 3 min al despertar (después del agua con sal).", 0, 0, 0) for d in range(7)],
     *[(d, "10:30", "💧 Hidratación: 500 ml de agua entre desayuno y almuerzo.", 0, 0, 0) for d in range(7)],
     *[(d, "13:05", "🌬️ Respiración box breathing 3 min post-almuerzo (4 inhalo · 4 retengo · 4 exhalo · 4 pausa).", 0, 0, 0) for d in range(7)],
     *[(d, "15:00", "💧 Hidratación: 500 ml de agua entre almuerzo y merienda.", 0, 0, 0) for d in range(7)],
     *[(d, "21:00", "📔 Journal + gratitud 2 min. Escribí 3 cosas del día + 1 gratitud.", 0, 0, 0) for d in range(7)],
     *[(d, "21:45", "🧘 Meditación 10 min pre-sueño. App: Insight Timer / Calm / YouTube (10 min sleep).", 0, 0, 0) for d in range(7)],
     # Días laborales (Lun-Vie): micro-pausa de tarde
-    *[(d, "17:00", "🧠 Micro-pausa 3 min. Lejos del celular. Cuello, hombros, mirada lejos.", 0, 0, 0) for d in range(5)],
+    *[(d, "16:30", "🧠 Micro-pausa 3 min. Lejos del celular. Cuello, hombros, mirada lejos.", 0, 0, 0) for d in range(5)],
     # Domingo (descanso): sol matinal para ritmo circadiano
     *[(d, "07:00", "☀️ 10 min al sol / aire libre. Vit D natural y ritmo circadiano.", 0, 0, 0) for d in [6]],
 ]
+
+# Dos avisos con el mismo día y hora se pisan (se manda uno solo y "Hecho" suma el otro): avisar
+_claves = {}
+for _d, _h, _m, *_ in RECORDATORIOS:
+    _k = f"{DIAS[_d]}-{_h}"
+    if _k in _claves:
+        log.error("HORARIO REPETIDO %s: '%s' y '%s' — mové uno", _k, _claves[_k][:40], _m[:40])
+    _claves[_k] = _m
 
 # Index por key = "Dia-HH:MM" para lookup rápido
 RECORDATORIOS_BY_KEY = {

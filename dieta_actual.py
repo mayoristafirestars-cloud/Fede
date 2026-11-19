@@ -38,10 +38,18 @@ def _icono(nombre: str) -> str:
     return "🍽️"
 
 
+DESPIERTA = "06:00"   # ningún aviso antes de esta hora: la comida al levantarse se avisa en el momento
+
+
+def hora_aviso(hora: str) -> str:
+    return max(_menos(hora, AVISO_MIN), DESPIERTA)
+
+
 def mensaje_comida(c: dict) -> str:
     items = "\n".join(f"• {a} {b}".rstrip() for a, b in c.get("items", []))
     nota = f"\n{c['nota']}" if c.get("nota") else ""
-    return f"{_icono(c['nombre'])} {c['nombre']} en {AVISO_MIN} min ({c['hora']}):\n{items}{nota}\n≈ {round(c.get('kcal', 0))} kcal · {round(c.get('prot', 0))} g proteína"
+    cuando = "ahora" if hora_aviso(c["hora"]) >= c["hora"][:5] else f"en {AVISO_MIN} min"
+    return f"{_icono(c['nombre'])} {c['nombre']} {cuando} ({c['hora']}):\n{items}{nota}\n≈ {round(c.get('kcal', 0))} kcal · {round(c.get('prot', 0))} g proteína"
 
 
 def es_comida(c: dict) -> bool:
@@ -56,7 +64,7 @@ def recordatorios():
         idx = NOMBRES_DIA.index(d["dia"])
         for c in d["comidas"]:
             if es_comida(c):
-                out.append((idx, _menos(c["hora"], AVISO_MIN), mensaje_comida(c),
+                out.append((idx, hora_aviso(c["hora"]), mensaje_comida(c),
                             round(c.get("kcal", 0)), round(c.get("prot", 0)), 0))
     return out
 
