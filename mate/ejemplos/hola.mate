@@ -1,0 +1,38 @@
+# Lo básico de Mate: valores fijos, funciones, textos con {interpolación} y pruebas.
+
+sea iva = 0.21
+
+funcion con_iva(precio) {
+    devolver redondear(precio * (1 + iva), 2)
+}
+
+funcion total(carrito) {
+    var suma = 0
+    para item en carrito {
+        suma = suma + item.precio * item.cantidad
+    }
+    devolver suma
+}
+
+sea carrito = [
+    { nombre: "yerba", precio: 3500, cantidad: 2 },
+    { nombre: "azúcar", precio: 1200, cantidad: 1 },
+]
+
+mostrar("Hola desde Mate {1 + 1}.0")
+mostrar("Subtotal: {total(carrito)} | con IVA: {con_iva(total(carrito))}")
+
+prueba "el total suma precio por cantidad" {
+    asegurar total(carrito) == 8200
+    asegurar total([]) == 0
+}
+
+prueba "no se mezclan textos con números sin querer" {
+    var motivo = ""
+    intentar {
+        mostrar("precio: " + 100)
+    } si falla e {
+        motivo = e
+    }
+    asegurar tiene(motivo, "texto + numero"), "debería haber fallado"
+}

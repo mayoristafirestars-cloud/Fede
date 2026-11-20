@@ -1,0 +1,70 @@
+# Dos agentes que negocian. Cada mensaje tiene un contrato: si falta un campo,
+# sobra uno, o el destinatario no sabe recibirlo, Mate lo avisa ANTES de correr.
+
+mensaje Iniciar { producto: texto, cantidad: numero, presupuesto: numero }
+mensaje Pedido { producto: texto, cantidad: numero }
+mensaje Cotizacion { producto: texto, total: numero }
+mensaje Contraoferta { producto: texto, total: numero }
+mensaje Trato { aceptado: logico, total: numero }
+
+agente Vendedor {
+    estado precios = { yerba: 3500, azucar: 1200 }
+    estado ventas = 0
+
+    al recibir Pedido como p {
+        si no tiene(precios, p.producto) {
+            fallar "no vendo {p.producto}"
+        }
+        responder Cotizacion { producto: p.producto, total: precios[p.producto] * p.cantidad }
+    }
+
+    # Acepta rebajas de hasta 10% sobre el precio de lista.
+    al recibir Contraoferta como c {
+        sea piso = precios[c.producto] * 0.9
+        sea unidades = redondear(c.total / piso)
+        si c.total >= piso * unidades {
+            ventas = ventas + 1
+            responder Trato { aceptado: verdadero, total: c.total }
+        }
+        responder Trato { aceptado: falso, total: 0 }
+    }
+}
+
+agente Comprador {
+    al recibir Iniciar como i {
+        sea cot = preguntar Pedido { producto: i.producto, cantidad: i.cantidad } a Vendedor
+        mostrar("Me cotizaron {cot.total} por {i.cantidad} de {cot.producto}")
+        si cot.total <= i.presupuesto {
+            mostrar("Entra en el presupuesto, compro.")
+            devolver
+        }
+        sea trato = preguntar Contraoferta { producto: i.producto, total: i.presupuesto } a Vendedor
+        si trato.aceptado {
+            mostrar("Cerramos en {trato.total}.")
+        } sino {
+            mostrar("No hubo acuerdo.")
+        }
+    }
+}
+
+enviar Iniciar { producto: "yerba", cantidad: 3, presupuesto: 9600 } a Comprador
+
+prueba "el vendedor cotiza precio por cantidad" {
+    sea c = preguntar Pedido { producto: "azucar", cantidad: 2 } a Vendedor
+    asegurar c.total == 2400
+}
+
+prueba "el vendedor rechaza rebajas de más del 10%" {
+    sea t = preguntar Contraoferta { producto: "yerba", total: 3000 } a Vendedor
+    asegurar no t.aceptado
+}
+
+prueba "pedir algo que no vende es un error que se puede atajar" {
+    var motivo = ""
+    intentar {
+        preguntar Pedido { producto: "café", cantidad: 1 } a Vendedor
+    } si falla e {
+        motivo = e
+    }
+    asegurar motivo == "no vendo café"
+}

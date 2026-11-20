@@ -1,0 +1,64 @@
+# Un equipo de agentes que trabaja en cadena con mensajes asíncronos ('enviar').
+# Corré con --traza para ver la conversación completa.
+
+mensaje Encargo { tema: texto }
+mensaje Investigar { tema: texto }
+mensaje Hallazgos { tema: texto, datos: lista }
+mensaje Redactar { tema: texto, datos: lista }
+mensaje Borrador { texto: texto }
+mensaje Pendientes
+mensaje Cuenta { total: numero }
+
+agente Coordinador {
+    estado en_curso = 0
+
+    al recibir Encargo como e {
+        en_curso = en_curso + 1
+        enviar Investigar { tema: e.tema } a Investigador
+    }
+    al recibir Hallazgos como h {
+        enviar Redactar { tema: h.tema, datos: h.datos } a Redactor
+    }
+    al recibir Borrador como b {
+        en_curso = en_curso - 1
+        mostrar("Listo: {b.texto}")
+    }
+    al recibir Pendientes {
+        responder Cuenta { total: en_curso }
+    }
+}
+
+agente Investigador {
+    estado fuentes = {
+        ventas: ["subieron 12%", "yerba es lo más vendido"],
+        stock: ["quedan 40 cajas"],
+    }
+    al recibir Investigar como i {
+        sea datos = fuentes[i.tema]
+        responder Hallazgos { tema: i.tema, datos: datos }
+    }
+}
+
+agente Redactor {
+    al recibir Redactar como r {
+        sea detalle = unir(r.datos, "; ")
+        responder Borrador { texto: "{mayusculas(r.tema)}: {detalle}" }
+    }
+}
+
+enviar Encargo { tema: "ventas" } a Coordinador
+enviar Encargo { tema: "stock" } a Coordinador
+
+prueba "sin encargos no queda nada pendiente" {
+    sea c = preguntar Pendientes {} a Coordinador
+    asegurar c.total == 0
+}
+
+prueba "un tema desconocido hace fallar la prueba del equipo" {
+    intentar {
+        preguntar Investigar { tema: "clima" } a Investigador
+        fallar "debería haber fallado"
+    } si falla e {
+        asegurar tiene(e, "clave"), e
+    }
+}
