@@ -714,3 +714,294 @@ def test_cada_prueba_arranca_con_la_cuenta_de_pasos_en_cero():
     resultados = interprete.correr(programa, pruebas=True)
     assert [error is None for _, error in resultados] == [True, True, False]
     assert "más de 1.000 pasos" in resultados[2][1]
+
+
+# ── Tanda 2: números que se ven bien y errores que ayudan ──
+
+def mostrado(expresion):
+    return correr(f"mostrar({expresion})")[0][0]
+
+
+# Mejora 13: los decimales se muestran limpios
+
+def test_los_decimales_se_muestran_limpios():
+    casos = {
+        "0.1 + 0.2": "0.3", "1.1 * 3": "3.3", "10 / 3": "3.33333333333",
+        "0.00001": "0.00001", "1234567.891": "1234567.891", "2.5": "2.5", "6 / 2": "3",
+        "1234567890123.45": "1234567890123.45", "12345678901.1 + 0.2": "12345678901.3",
+        "[0.1 + 0.2]": "[0.3]", '"{0.1 + 0.2}"': "0.3",
+    }
+    for expresion, esperado in casos.items():
+        assert mostrado(expresion) == esperado, expresion
+    assert mate.formato(float("inf")) == "infinito"
+    assert mate.formato(float("nan")) == "no es un número"
+
+
+def test_mostrar_limpio_no_cambia_el_valor():
+    assert mostrado("0.1 + 0.2 == 0.3") == "falso"
+    assert mostrado("redondear(0.1 + 0.2, 2) == redondear(0.3, 2)") == "verdadero"
+    assert mostrado("a_json(0.1 + 0.2)") == "0.30000000000000004"
+
+
+# Mejora 14: redondear con el medio hacia arriba
+
+def test_redondear_lleva_el_medio_hacia_arriba():
+    casos = {
+        "redondear(2.5)": "3", "redondear(0.5)": "1", "redondear(1.5)": "2",
+        "redondear(2.675, 2)": "2.68", "redondear(12.5, 2)": "12.5", "redondear(7)": "7",
+        "redondear(-2.5)": "-3", "redondear(3.14159, 2)": "3.14", "redondear(-0.4)": "0",
+        "redondear(123456789012345678901234567890, 2)": "123456789012345678901234567890",
+        "redondear(1.5, 1000000000)": "1.5",
+    }
+    for expresion, esperado in casos.items():
+        assert mostrado(expresion) == esperado, expresion
+    assert "cantidad entera de decimales" in falla("redondear(1.5, -1)").mensaje
+
+
+# Mejora 15: numero() entiende el formato argentino
+
+def test_numero_entiende_el_formato_argentino():
+    casos = {
+        'numero("1.234,50")': "1234.5", 'numero("1.234.567")': "1234567",
+        'numero("12")': "12", 'numero(" 7,25 ")': "7.25", 'numero("3.500")': "3.5",
+        'numero("$ 1.234,5")': "1234.5", 'numero("-$ 1.500,00")': "-1500",
+        'numero("-12")': "-12", "numero(5)": "5", 'tipo(numero("3,5"))': "numero",
+    }
+    for expresion, esperado in casos.items():
+        assert mostrado(expresion) == esperado, expresion
+
+
+def test_numero_rechaza_lo_que_no_es_un_numero():
+    assert falla('numero("")').mensaje == "un texto vacío no es un número"
+    assert falla('numero("   ")').mensaje == "un texto vacío no es un número"
+    for texto in ["1e5", "1_000", "inf", "nan", "hola", "1,2,3", "12.34,5", "$", ".5", "$ 1.234.5"]:
+        assert falla(f'numero("{texto}")').mensaje == f"'{texto}' no es un número"
+    assert "espera texto" in falla("numero([1])").mensaje
+
+
+# Mejora 16: pesos()
+
+def test_pesos_muestra_plata():
+    casos = {
+        "pesos(1234567.891)": "$ 1.234.567,89", "pesos(12.5)": "$ 12,50",
+        "pesos(3500)": "$ 3.500,00", "pesos(3500, 0)": "$ 3.500",
+        "pesos(-1500)": "-$ 1.500,00", "pesos(2.675)": "$ 2,68", "pesos(-0.001)": "$ 0,00",
+        "pesos(999999.999)": "$ 1.000.000,00", "numero(pesos(-1234.5))": "-1234.5",
+        "pesos(123456789012345678901234567890, 0)": "$ 123.456.789.012.345.678.901.234.567.890",
+    }
+    for expresion, esperado in casos.items():
+        assert mostrado(expresion) == esperado, expresion
+    assert falla('pesos("hola")').mensaje == "pesos() espera numero y recibió texto"
+    assert "entre 0 y 6" in falla("pesos(1, 7)").mensaje
+
+
+# Mejora 17: "¿Quisiste decir...?"
+
+def test_sugiere_el_nombre_parecido():
+    assert falla("sea total = 5\nmostrar(totl)").mensaje == \
+        "no existe 'totl'. ¿Quisiste decir 'total'?"
+    assert falla('mostar("hola")').mensaje.endswith("¿Quisiste decir 'mostrar'?")
+    assert falla('Mostrar("x")').mensaje.endswith("¿Quisiste decir 'mostrar'?")
+    assert falla("mostrar(zzz)").mensaje == "no existe 'zzz'"
+    assert falla("x = 5").mensaje == "no existe 'x'. Para crear la variable escribí: var x = ..."
+    assert falla("var total = 1\ntotl = 5").mensaje == "no existe 'totl'. ¿Quisiste decir 'total'?"
+    assert mate.sugerir("año", ["ano", "otro"]) == " ¿Quisiste decir 'ano'?"
+    assert mate.sugerir("x", ["y", "total"]) == ""
+
+
+def test_sugiere_campos_claves_y_mensajes():
+    mapa = 'sea m = { nombre: "a", precio: 2 }\n'
+    assert falla(mapa + "mostrar(m.nombr)").mensaje == \
+        "mapa no tiene un campo 'nombr'. ¿Quisiste decir 'nombre'?"
+    clave = falla(mapa + 'mostrar(m["Precio"])').mensaje
+    assert "clave" in clave and clave.endswith("¿Quisiste decir 'precio'?")
+    assert falla(mapa + 'mostrar(m["zzz"])').mensaje == 'el mapa no tiene la clave "zzz"'
+    pedido = 'mensaje Pedido { producto: texto }\nsea p = Pedido { producto: "x" }\n'
+    assert falla(pedido + "mostrar(p.produto)").mensaje.endswith("¿Quisiste decir 'producto'?")
+    interprete = mate.Interprete()
+    interprete.cargar(mate.analizar("mensaje Pedido { producto: texto }"))
+    with pytest.raises(mate.ErrorMate) as info:
+        interprete.construir("Pedidoo", {})
+    assert info.value.mensaje == "no existe el mensaje 'Pedidoo'. ¿Quisiste decir 'Pedido'?"
+    with pytest.raises(mate.ErrorMate) as info:
+        interprete.construir("Pedido", {"producto": "x", "produto": "y"})
+    assert info.value.mensaje.endswith("¿Quisiste decir 'producto'?")
+    errores = mate.verificar(mate.analizar("mensaje Pedido { producto: texo, otro: Pedid }"))
+    assert [t for _, t in errores] == [
+        "Pedido.otro: no existe el tipo 'Pedid'. ¿Quisiste decir 'Pedido'?",
+        "Pedido.producto: no existe el tipo 'texo'. ¿Quisiste decir 'texto'?"]
+
+
+# Mejora 18: palabras propias de Mate como nombre de campo
+
+def test_palabras_propias_como_nombre_de_campo():
+    salida, _ = correr("""
+        mensaje Envio { estado: texto, para: texto, tipo: texto, en: numero, y: numero? }
+        sea e = Envio { estado: "listo", para: "Ana", tipo: "x", en: 3 }
+        mostrar(e.estado, e.para, e.en, e.y)
+        sea p = { x: 1, y: 2 }
+        mostrar(p.y)
+        sea m = { si: 1 }
+        mostrar(m.si, m["si"])
+        sea ida = a_json(e)
+        mostrar(de_json(ida) == e, de_json(ida).para)
+        var copia = e
+        copia.estado = "otro"
+        mostrar(copia.estado, e.estado)
+    """)
+    assert salida == ["listo Ana 3 nada", "2", "1 1", "verdadero Ana", "otro listo"]
+    assert "nombre de campo" in falla("sea m = { si }").mensaje
+
+
+# Mejora 19: palabras reservadas y funciones incluidas como nombre
+
+def test_no_se_usa_una_palabra_propia_como_nombre():
+    error = falla("sea y = 1")
+    assert error.mensaje == ("'y' es una palabra propia de Mate y no se puede usar como "
+                             "nombre; elegí otro (por ejemplo 'y2')")
+    assert error.linea == 1
+    assert "palabra propia de Mate" in falla("funcion f(si) { }").mensaje
+    assert "palabra propia de Mate" in falla("para en en [1] { }").mensaje
+
+
+def test_no_se_tapa_una_funcion_incluida():
+    incluida = "'texto' es una función incluida de Mate; elegí otro nombre (por ejemplo 'mi_texto')"
+    assert falla('sea texto = "hola"').mensaje == incluida
+    assert falla("si verdadero { var texto = 1 }").mensaje == incluida
+    assert falla("funcion f(texto) { }").mensaje == incluida
+    assert falla("\nfuncion mostrar(x) { }").linea == 2
+    assert "función incluida" in falla("funcion mostrar(x) { }").mensaje
+    assert "función incluida" in falla("para largo en [1] { }").mensaje
+    assert "función incluida" in falla("funcion pesos() { }").mensaje
+    entorno = mate.Entorno(mate.Interprete().glob)
+    with pytest.raises(mate.ErrorMate) as info:
+        entorno.definir("tipo", 1)
+    assert "función incluida" in info.value.mensaje
+    assert falla("sea a = 1\nsea a = 2").mensaje == (
+        "'a' ya está definido en este bloque; para cambiarle el valor se escribe a = ... "
+        "(y tiene que ser 'var')")
+
+
+# Mejora 20: pistas para palabras de otros lenguajes
+
+def test_pistas_para_palabras_de_otros_lenguajes():
+    assert "en Mate 'print' se escribe 'mostrar'" in falla('print("hola")').mensaje
+    assert falla("sea x = true").mensaje == "en Mate 'true' se escribe 'verdadero'"
+    assert falla("si verdadero { } else { }").mensaje == "en Mate 'else' se escribe 'sino'"
+    assert falla("\nfunción doble(n) { devolver n * 2 }").linea == 2
+    assert falla("función doble(n) { devolver n * 2 }").mensaje == \
+        "en Mate se escribe 'funcion', sin tilde"
+    errores = mate.verificar(mate.analizar("mensaje M { a: número }"))
+    assert "en Mate se escribe 'numero', sin tilde" in errores[0][1]
+    assert "sin tilde" in falla('mostrar(mayúsculas("a"))').mensaje
+    assert "'romper'" in falla("mientras verdadero { break }").mensaje
+
+
+def test_las_pistas_no_rompen_campos_ni_nombres_con_tilde():
+    assert correr("sea m = { for: 1, if: 2 }\nmostrar(m.for, m.if)")[0] == ["1 2"]
+    assert correr("sea número = 5\nmostrar(número)")[0] == ["5"]
+
+
+def test_palabras_propias_con_mayuscula():
+    assert falla("Si verdadero { }").mensaje == "'Si' va en minúscula: 'si'"
+    assert falla("si verdadero { } Sino { }").mensaje == "'Sino' va en minúscula: 'sino'"
+    assert "va en minúscula" in falla("sea x = Verdadero").mensaje
+    assert correr("var Estado = 1\nEstado = 2\nmostrar(Estado)")[0] == ["2"]
+
+
+# Mejora 21: pistas en condiciones mal escritas
+
+def test_pistas_en_condiciones_mal_escritas():
+    assert falla("sea x = 5\nsi x = 5 { }").mensaje == \
+        "para comparar se usa '==' (un solo '=' es para asignar)"
+    assert falla("sea x = 5\nmientras x = 5 { }").linea == 2
+    assert falla("sea x = 5\nsi x > 3 y < 10 { }").mensaje == \
+        "después de 'y' hay que repetir la variable: x > 3 y x < 10"
+    assert "después de 'o'" in falla("sea x = 5\nsi x == 1 o == 2 { }").mensaje
+    encadenadas = "las comparaciones no se encadenan: escribí 1 < x y x < 10"
+    assert falla("mostrar(1 < 2 < 3)").mensaje == encadenadas
+    assert falla("sea x = 5\nsi 1 < x < 10 { }").mensaje == encadenadas
+    assert "no va 'entonces'" in falla("sea x = 5\nsi x > 3 entonces { }").mensaje
+    salida, _ = correr('sea x = 5\nsi x > 3 y x < 10 { mostrar("ok") }\nmostrar((1 < 2) == verdadero)')
+    assert salida == ["ok", "verdadero"]
+
+
+# Mejora 22: asegurar muestra los valores
+
+def test_asegurar_muestra_los_valores():
+    programa = mate.analizar("""sea a = 2
+        prueba "igual" { asegurar a + 1 == 4 }
+        prueba "menor" { asegurar a > 5 }
+        prueba "propio" { asegurar a < 1, "a tiene que ser chico" }
+        prueba "textos" { asegurar "hola" == "chau" }
+        prueba "suelto" { asegurar falso }
+        prueba "bien" { asegurar a == 2 }
+    """)
+    resultados = dict(mate.Interprete().correr(programa, pruebas=True))
+    assert resultados == {
+        "igual": "línea 2: no se cumplió lo asegurado: dio 3 y se esperaba 4",
+        "menor": "línea 3: no se cumplió lo asegurado: 2 > 5 es falso",
+        "propio": "línea 4: a tiene que ser chico (2 < 1 es falso)",
+        "textos": 'línea 5: no se cumplió lo asegurado: dio "hola" y se esperaba "chau"',
+        "suelto": "línea 6: no se cumplió lo asegurado",
+        "bien": None,
+    }
+
+
+def test_asegurar_evalua_cada_lado_una_sola_vez():
+    error = falla("""
+        var n = 0
+        funcion siguiente() {
+            n = n + 1
+            devolver n
+        }
+        asegurar siguiente() == 5
+    """)
+    assert error.mensaje == "no se cumplió lo asegurado: dio 1 y se esperaba 5"
+    assert error.clase == "asegurar"
+    assert "condición" in falla("asegurar 1").mensaje
+
+
+# Mejora 23: por qué no se puede cambiar
+
+def test_no_se_puede_cambiar_dice_de_que_se_trata():
+    error = falla("funcion f(a) { a = a + 1 }\nf(1)")
+    assert error.mensaje == ("'a' es un parámetro y no se cambia; guardalo en otra variable: "
+                             "var a2 = a")
+    assert error.linea == 1
+    assert "variable del 'para'" in falla("para i en [1] { i = 2 }").mensaje
+    assert "error atajado" in falla('intentar { fallar "x" } si falla e { e = 1 }').mensaje
+    assert falla("funcion f() { }\nf = 1").mensaje == \
+        "'f' es una función y no se le puede asignar un valor"
+    agente = "mensaje M\nagente Vendedor { al recibir M como p { p = 1 } }\n"
+    assert falla(agente + "Vendedor = 2").mensaje == \
+        "'Vendedor' es un agente y no se le puede asignar un valor"
+    _, interprete = correr(agente + "enviar M {} a Vendedor")
+    assert "'p' es el mensaje recibido y no se cambia" in interprete.errores_agentes[0]
+    assert "función incluida" in falla("mostrar = 1").mensaje
+    assert falla("sea x = 1\nx = 2").mensaje == \
+        "'x' es fijo (sea); declaralo con 'var' para cambiarlo"
+
+
+# Mejora 24: el error muestra el renglón
+
+def test_el_error_muestra_el_renglon(tmp_path, capsys):
+    codigo, _, err = por_main(tmp_path, capsys, "sea total = 5\n    mostrar(totl)   \n")
+    renglones = err.splitlines()
+    assert codigo == 1 and len(renglones) == 2
+    assert renglones[0].endswith("programa.mate:2: error: no existe 'totl'. ¿Quisiste decir 'total'?")
+    assert renglones[1] == "    2 |     mostrar(totl)"
+
+
+def test_el_renglon_de_un_error_al_final_del_archivo(tmp_path, capsys):
+    _, _, err = por_main(tmp_path, capsys, "sea x = 1\nsi x == 1 {\n  mostrar(x)\n\n\n")
+    assert err.splitlines()[1] == "    3 |   mostrar(x)"
+    _, _, err = por_main(tmp_path, capsys, "mensaje M { a: texo, b: nro }\n", orden="verificar")
+    assert len(err.splitlines()) == 3  # dos errores del mismo renglón: se muestra una vez
+    assert mate.renglon_de(str(tmp_path / "no_esta.mate"), 1) is None
+
+
+def test_sugiere_el_agente_parecido():
+    programa = mate.analizar("mensaje M\nagente Vendedor { al recibir M { } }\ncrear Vendedr")
+    assert [t for _, t in mate.verificar(programa)] == [
+        "no existe el agente 'Vendedr'. ¿Quisiste decir 'Vendedor'?"]

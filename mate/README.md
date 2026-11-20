@@ -63,6 +63,25 @@ Mate nunca debería mostrarte un error de Python en inglés:
   renglón, y `numero("inf")` o `numero("nan")` no se aceptan.
 - **Consolas viejas de Windows**: si no pueden mostrar `✓`, `✗` o `→`, Mate escribe `OK`,
   `FALLA` y `->`.
+- **El renglón del error**: debajo del mensaje Mate muestra el renglón señalado, por ejemplo
+  `    2 | mostrar(totl)`. Para ir a ese renglón en el Bloc de notas: `Ctrl+G` y el número.
+- **Nombres mal tipeados**: si escribís `totl` y existe `total`, o `mostar` en vez de
+  `mostrar`, el error termina con `¿Quisiste decir 'total'?`. Vale también para campos,
+  claves de mapas, mensajes y agentes.
+- **Palabras de otros lenguajes, con tilde o con mayúscula**: `print`, `if`, `else`, `true`,
+  `función`, `número` o `Si` no se aceptan, pero el error dice cómo se escribe en Mate
+  (`mostrar`, `si`, `sino`, `verdadero`, `funcion`, `numero`, `si`).
+- **Condiciones mal escritas**: `si x = 5`, `si 1 < x < 10`, `si x > 3 y < 10` y
+  `si x > 3 entonces` explican cómo va cada una (`==`, `1 < x y x < 10`, repetir la variable,
+  y la llave `{` directamente).
+- **Nombres que no se pueden usar**: `sea y = 1` avisa que `y` es una palabra propia de Mate, y
+  `sea texto = "hola"` que `texto` es una función incluida; en los dos casos hay que elegir otro
+  nombre. Como nombre de *campo* sí valen las palabras propias de Mate:
+  `mensaje Envio { estado: texto, para: texto }` y después `e.estado`.
+- **"No se puede cambiar"**: el error dice por qué: es un `sea`, un parámetro, la variable del
+  `para`, el mensaje recibido, una función o un agente.
+- **Un `asegurar` que falla muestra los valores**: `asegurar a + 1 == 4` dice
+  `no se cumplió lo asegurado: dio 3 y se esperaba 4`.
 - Si igual aparece "error interno de Mate", no es culpa tuya: corré de nuevo con `--depurar`
   y guardá lo que muestra.
 
@@ -161,7 +180,22 @@ y  o  no   ==  !=  <  <=  >  >=   +  -  *  /  %
 
 Funciones incluidas: `mostrar`, `largo`, `texto`, `numero`, `tipo`, `tiene`, `claves`, `valores`,
 `agregar`, `quitar`, `rango`, `sumar`, `ordenar`, `redondear`, `unir`, `partir`, `mayusculas`,
-`minusculas`, `a_json`, `de_json`.
+`minusculas`, `a_json`, `de_json`, `pesos`.
+
+### Números y plata
+
+- Los decimales se muestran limpios: `mostrar(0.1 + 0.2)` muestra `0.3` y `mostrar(10 / 3)`
+  muestra `3.33333333333`. Es solo cómo se ven: por dentro la cuenta sigue teniendo su resto
+  minúsculo, así que `0.1 + 0.2 == 0.3` da `falso`. Para comparar plata, redondeá antes:
+  `redondear(a, 2) == redondear(b, 2)`.
+- `redondear(2.5)` da `3` y `redondear(2.675, 2)` da `2.68`: el medio va siempre hacia arriba,
+  como en la escuela. En los negativos se aleja del cero: `redondear(-2.5)` da `-3`.
+- `pesos(1234567.891)` devuelve el texto `$ 1.234.567,89`; `pesos(3500, 0)` devuelve `$ 3.500`
+  (el segundo valor es la cantidad de decimales, de 0 a 6). Los negativos salen `-$ 1.500,00`.
+- `numero("1.234,50")` da `1234.5` y `numero("$ 7,25")` da `7.25`: entiende la coma decimal, el
+  punto de miles y el signo `$`. Ojo: con un solo punto y sin coma, el punto es decimal
+  (`numero("3.500")` da `3.5`); con dos o más puntos son miles (`numero("1.234.567")`). Un texto
+  vacío o que no es un número (`"1e5"`, `"hola"`) es un error.
 
 Los nombres de mensajes y agentes empiezan con mayúscula; el resto, con minúscula.
 

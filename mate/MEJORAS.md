@@ -227,51 +227,51 @@ Un `mientras` que no avanza hoy cuelga la consola para siempre. Mate va a cortar
 
 **13. Los decimales se muestran limpios**
 `0.1 + 0.2` va a mostrar `0.3` y no `0.30000000000000004`; `10 / 3` muestra `3.33333333333`.
-*Mirada: lenguaje, robustez, principiante · Esfuerzo: chico · Estado: pendiente*
+*Mirada: lenguaje, robustez, principiante · Esfuerzo: chico · Estado: hecha*
 
 **14. `redondear` redondea como en la escuela**
 Hoy `redondear(2.5)` da 2 y `redondear(2.675, 2)` da 2.67. Van a dar 3 y 2.68.
-*Mirada: robustez · Esfuerzo: chico · Estado: pendiente*
+*Mirada: robustez · Esfuerzo: chico · Estado: hecha*
 
 **15. `numero()` entiende los números como se escriben en Argentina**
 `numero("1.234,50")` va a dar 1234.5. Un texto vacío o raro da un error claro.
-*Mirada: lenguaje, principiante, robustez · Esfuerzo: chico · Estado: pendiente*
+*Mirada: lenguaje, principiante, robustez · Esfuerzo: chico · Estado: hecha*
 
 **16. `pesos(n)` para mostrar plata**
 Una función nueva: `pesos(1234567.891)` devuelve `$ 1.234.567,89`.
-*Mirada: lenguaje, principiante · Esfuerzo: chico · Estado: pendiente*
+*Mirada: lenguaje, principiante · Esfuerzo: chico · Estado: hecha*
 
 **17. "¿Quisiste decir...?" cuando un nombre no existe**
 Si escribís `totl` y existe `total`, o `mostar` en vez de `mostrar`, Mate sugiere el nombre parecido. También para campos, claves, mensajes y agentes.
-*Mirada: lenguaje, robustez, principiante · Esfuerzo: chico · Estado: pendiente*
+*Mirada: lenguaje, robustez, principiante · Esfuerzo: chico · Estado: hecha*
 
 **18. Palabras como `estado`, `tipo` o `para` sirven como nombre de campo**
 Hoy `mensaje Envio { estado: texto }` falla. Se van a poder usar las palabras propias de Mate como nombre de campo en mensajes y mapas.
-*Mirada: las cuatro · Esfuerzo: chico · Estado: pendiente*
+*Mirada: las cuatro · Esfuerzo: chico · Estado: hecha*
 
 **19. Error claro al usar una palabra reservada o una función incluida como nombre**
 `sea y = 1` va a decir "'y' es una palabra propia de Mate, elegí otro nombre"; `sea texto = "hola"` va a decir que `texto` es una función incluida.
-*Mirada: lenguaje, robustez, principiante · Esfuerzo: chico · Estado: pendiente*
+*Mirada: lenguaje, robustez, principiante · Esfuerzo: chico · Estado: hecha*
 
 **20. Pistas para palabras de otros lenguajes, con tilde o con mayúscula**
 `print`, `if`, `else`, `true`, `función`, `Si`, `Mostrar`: en cada caso Mate dice cómo se escribe en Mate.
-*Mirada: principiante, robustez · Esfuerzo: chico · Estado: pendiente*
+*Mirada: principiante, robustez · Esfuerzo: chico · Estado: hecha*
 
 **21. Pistas en las condiciones mal escritas**
 `si x = 5`, `si 1 < x < 10`, `si x > 3 y < 10` y `si x > 3 entonces` van a explicar cómo se escribe cada una.
-*Mirada: lenguaje, robustez, principiante · Esfuerzo: chico · Estado: pendiente*
+*Mirada: lenguaje, robustez, principiante · Esfuerzo: chico · Estado: hecha*
 
 **22. `asegurar` muestra los valores cuando falla**
 En vez de "no se cumplió lo asegurado", va a decir por ejemplo "dio 3 y se esperaba 4".
-*Mirada: principiante, robustez · Esfuerzo: chico · Estado: pendiente*
+*Mirada: principiante, robustez · Esfuerzo: chico · Estado: hecha*
 
 **23. El error de "no se puede cambiar" dice de qué se trata**
 Hoy, al querer cambiar un parámetro, Mate habla de un `sea` que nadie escribió. Va a decir "'a' es un parámetro...", "es la variable del 'para'...", etc.
-*Mirada: lenguaje, robustez · Esfuerzo: chico · Estado: pendiente*
+*Mirada: lenguaje, robustez · Esfuerzo: chico · Estado: hecha*
 
 **24. El error muestra el renglón del archivo**
 Debajo del mensaje se va a ver el renglón señalado, para no tener que contar líneas a mano en el Bloc de notas.
-*Mirada: principiante, crítico · Esfuerzo: chico · Estado: pendiente*
+*Mirada: principiante, crítico · Esfuerzo: chico · Estado: hecha*
 
 ### Tanda 3: garantías entre agentes y en las pruebas
 
