@@ -127,10 +127,21 @@ prueba "cotiza precio por cantidad" {
 - `mensaje Nombre { campo: tipo }` declara el **contrato** de un mensaje. Tipos: `numero`,
   `texto`, `logico`, `lista`, `mapa`, `agente`, `cualquiera` u otro mensaje. `tipo?` lo hace opcional.
 - `agente Nombre { ... }` tiene su `estado` privado y un `al recibir Tipo como x { }` por cada
-  mensaje que entiende. Ningún agente puede tocar el estado de otro ni las variables de afuera.
-- `enviar Mensaje { ... } a Agente` lo deja en la cola y sigue (asíncrono).
+  mensaje que entiende. Ningún agente puede tocar el estado de otro ni las variables de afuera
+  (tampoco llamando a una función de afuera que las cambie).
+- Los mensajes y las respuestas llevan **datos**: números, textos, listas, mapas, otros mensajes
+  o agentes. Una función no puede viajar adentro de un mensaje.
+- `enviar Mensaje { ... } a Agente` lo deja en la cola y sigue (asíncrono). Si ese agente no
+  tiene un `al recibir` para ese mensaje, el error sale ahí mismo, en el renglón del `enviar`.
 - `preguntar Mensaje { ... } a Agente` espera y devuelve la respuesta. Si el otro agente falla,
   el error le llega al que preguntó.
+- Lo que el programa ya envió se entrega antes de su siguiente `preguntar` (y, en una prueba,
+  antes de cada `asegurar`): así la respuesta ya cuenta lo enviado.
+- Si un agente falla mientras atiende un mensaje, vuelve a como estaba antes de recibirlo: su
+  estado no cambia y lo que había dejado para `enviar` no sale. Lo que ya mostró en pantalla y
+  lo que otros agentes hicieron al contestarle no se deshace.
+- Si el programa se corta por un error y quedaban mensajes en la cola, Mate dice cuáles no
+  llegaron (`quedaron 2 mensaje(s) sin entregar:`).
 - `responder valor` contesta al `remitente` y termina de atender ese mensaje. Solo va dentro de
   `al recibir` (o de una función del agente); `devolver` va dentro de una función, o dentro de
   `al recibir` para terminar sin contestar. Fuera de lugar, Mate lo avisa antes de correr.
@@ -149,6 +160,8 @@ sea otro = crear Vendedor
 ```
 
 Entre llaves va el estado inicial que querés distinto; el resto arranca como en la declaración.
+Tiene que ser del mismo tipo que el declarado: si `precios` arranca como mapa y le das un número,
+Mate avisa (`Vendedor.precios arranca como mapa y le diste numero`).
 `llamado` le pone nombre para la traza (`Vendedor Norte`); sin eso se llama `Vendedor#2`.
 Las copias se guardan en variables y se pueden mandar dentro de un mensaje (tipo `agente` o `lista`).
 
@@ -163,8 +176,20 @@ lo usa). Lo que ese archivo ejecuta y sus pruebas no se traen, así que un mismo
 programa y como biblioteca. Usarlo dos veces no molesta. Ver `ejemplos/mercado.mate`.
 
 **Antes de correr**, Mate revisa los contratos: avisa si a un mensaje le falta o le sobra un
-campo, si un valor literal es del tipo equivocado, o si le mandás a un agente algo que no sabe
-recibir. Lo que no se puede saber de antemano se valida al construir el mensaje.
+campo, si un valor literal es del tipo equivocado, si le mandás a un agente (o a una copia
+guardada con `sea`) algo que no sabe recibir, o si le preguntás a un agente que para ese mensaje
+nunca llega a un `responder`. Lo que no se puede saber de antemano se valida al construir el mensaje.
+
+### Las pruebas
+
+Cada `prueba` empieza limpia: los agentes declarados arrancan con su estado inicial, y las
+variables de afuera y las copias hechas con `crear` vuelven a como las dejó el programa. Lo que
+una prueba cambia no le llega a la siguiente. Además:
+
+- `intentar` no ataja un `asegurar` que no se cumple (ni los topes de seguridad): la prueba falla.
+- Si varios agentes fallan durante una prueba, se muestran todos los errores, no solo el primero.
+- Si un agente falló al correr el programa, antes de las pruebas, `probar` lo muestra arriba de
+  los resultados y termina con error aunque las pruebas pasen.
 
 ## Referencia rápida
 

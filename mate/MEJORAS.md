@@ -277,51 +277,51 @@ Debajo del mensaje se va a ver el renglón señalado, para no tener que contar l
 
 **25. Las funciones no pueden viajar dentro de un mensaje**
 Hoy un agente puede mandarle a otro una función que le cambia el estado por atrás. Los mensajes y respuestas van a llevar solo datos.
-*Mirada: agentes, robustez · Esfuerzo: chico · Estado: pendiente*
+*Mirada: agentes, robustez · Esfuerzo: chico · Estado: hecha*
 
 **26. Un agente no puede cambiar variables de afuera a través de una función**
 Se cierra un agujero: hoy un agente puede modificar una variable del programa llamando a una función de afuera.
-*Mirada: robustez · Esfuerzo: chico · Estado: pendiente*
+*Mirada: robustez · Esfuerzo: chico · Estado: hecha*
 
 **27. Los `enviar` del programa se entregan antes del siguiente `preguntar`**
 Hoy un `enviar` seguido de un `preguntar` ve el estado viejo. Se va a respetar el orden en que está escrito; en las pruebas, también antes de cada `asegurar`.
-*Mirada: agentes, robustez · Esfuerzo: chico · Estado: pendiente*
+*Mirada: agentes, robustez · Esfuerzo: chico · Estado: hecha*
 
 **28. El tope de mensajes se reinicia en cada prueba**
 Hoy una tanda larga de pruebas puede fallar con "se superaron 100000 mensajes" sin que haya ningún bucle.
-*Mirada: agentes, robustez · Esfuerzo: chico · Estado: pendiente*
+*Mirada: agentes, robustez · Esfuerzo: chico · Estado: hecha*
 
 **29. Cada prueba empieza limpia**
 Hoy las copias de agentes y las variables del programa arrastran cambios de una prueba a la otra. Cada prueba va a arrancar igual, sin importar el orden.
-*Mirada: agentes, robustez · Esfuerzo: mediano · Estado: pendiente*
+*Mirada: agentes, robustez · Esfuerzo: mediano · Estado: hecha*
 
 **30. `intentar` ya no esconde los `asegurar` que fallan**
 Hoy una prueba con un `asegurar` falso dentro de un `intentar` pasa en verde. Tampoco va a atajar los topes de seguridad.
-*Mirada: agentes, robustez · Esfuerzo: chico · Estado: pendiente*
+*Mirada: agentes, robustez · Esfuerzo: chico · Estado: hecha*
 
 **31. Si un agente falla, vuelve a como estaba**
 Hoy una venta que falló a mitad de camino queda contada. El agente que falla va a recuperar su estado anterior y no manda lo que había encolado.
-*Mirada: agentes · Esfuerzo: chico · Estado: pendiente*
+*Mirada: agentes · Esfuerzo: chico · Estado: hecha*
 
 **32. Aviso de los mensajes que quedaron sin entregar**
 Si el programa se corta por un error, Mate va a decir cuántos mensajes quedaron en espera y cuáles.
-*Mirada: agentes, robustez · Esfuerzo: chico · Estado: pendiente*
+*Mirada: agentes, robustez · Esfuerzo: chico · Estado: hecha*
 
 **33. Los errores de agentes nombran el archivo correcto, y se muestran todos**
 Hoy un error en un agente traído con `usar` nombra otro archivo, y en `probar` algunos errores se pierden.
-*Mirada: agentes, robustez · Esfuerzo: chico · Estado: pendiente*
+*Mirada: agentes, robustez · Esfuerzo: chico · Estado: hecha*
 
 **34. La revisión previa sigue a las copias y detecta al agente que nunca responde**
 `sea v = crear Vendedor` seguido de un mensaje que `v` no entiende se va a avisar antes de correr; también preguntarle a un agente que nunca usa `responder`.
-*Mirada: agentes, robustez · Esfuerzo: chico · Estado: pendiente*
+*Mirada: agentes, robustez · Esfuerzo: chico · Estado: hecha*
 
 **35. `crear` revisa el estado inicial que le dan**
 `crear V { precios: 5 }` cuando `precios` es un mapa va a fallar ahí mismo, y no más tarde adentro del agente.
-*Mirada: agentes · Esfuerzo: chico · Estado: pendiente*
+*Mirada: agentes · Esfuerzo: chico · Estado: hecha*
 
 **36. Un `enviar` de algo que el destino no entiende falla en quien lo envía**
 El error aparece en el renglón del `enviar`, se puede atajar con `intentar`, y no llega suelto al final.
-*Mirada: agentes · Esfuerzo: chico · Estado: pendiente*
+*Mirada: agentes · Esfuerzo: chico · Estado: hecha*
 
 ### Lo que sigue
 

@@ -1005,3 +1005,316 @@ def test_sugiere_el_agente_parecido():
     programa = mate.analizar("mensaje M\nagente Vendedor { al recibir M { } }\ncrear Vendedr")
     assert [t for _, t in mate.verificar(programa)] == [
         "no existe el agente 'Vendedr'. ¿Quisiste decir 'Vendedor'?"]
+
+
+# ── Tanda 3: garantías entre agentes y en las pruebas ──
+
+def probar(fuente):
+    """Corre las pruebas de un programa y devuelve {nombre: error o None}."""
+    interprete = mate.Interprete(salida=lambda _: None)
+    programa = mate.analizar(fuente)
+    assert mate.verificar(programa) == []
+    return dict(interprete.correr(programa, pruebas=True))
+
+
+def revisar(fuente):
+    return [(int(linea), texto) for linea, texto in mate.verificar(mate.analizar(fuente))]
+
+
+# Mejora 25: las funciones no viajan en los mensajes
+
+def test_las_funciones_no_viajan_en_un_mensaje():
+    error = falla("mensaje P { datos: mapa }\nsea p = P { datos: {x: mostrar} }")
+    assert error.linea == 2
+    assert error.mensaje == "los mensajes llevan datos, no funciones (campo 'datos' de P)"
+    error = falla("mensaje P { datos: cualquiera }\nfuncion f() { }\nsea g = f\n"
+                  "sea p = P { datos: [1, [g]] }")
+    assert error.linea == 4 and "no funciones" in error.mensaje
+    assert revisar("mensaje P { datos: cualquiera }\nfuncion f() { }\nsea p = P { datos: f }") == [
+        (3, "los mensajes llevan datos, no funciones (campo 'datos' de P)")]
+    # Un parámetro que se llama igual que una función no confunde a la revisión previa.
+    assert revisar("mensaje P { datos: cualquiera }\nfuncion f() { }\n"
+                   "funcion g(f) { devolver P { datos: f } }") == []
+
+
+def test_no_se_responde_con_una_funcion():
+    error = falla("""mensaje Dame
+        agente A {
+            estado secreto = 1
+            funcion cambiar(n) { secreto = n }
+            al recibir Dame {
+                responder cambiar
+            }
+        }
+        sea f = preguntar Dame {} a A""")
+    assert error.linea == 6
+    assert error.mensaje == "no se puede responder con una función: las respuestas llevan datos"
+
+
+# Mejora 26: un agente no cambia lo de afuera a través de una función
+
+CONTADOR = """
+    var cont = 0
+    funcion inc() { cont = cont + 1 }
+    mensaje Ping
+    agente A { al recibir Ping { inc()  responder 1 } }
+"""
+
+
+def test_un_agente_no_cambia_lo_de_afuera_con_una_funcion():
+    salida, _ = correr(CONTADOR + """
+        intentar { preguntar Ping {} a A } si falla e { mostrar(e) }
+        mostrar(cont)
+        inc()
+        mostrar(cont)
+    """)
+    assert salida[0].startswith(
+        "A no puede modificar 'cont' (ni siquiera a través de la función inc())")
+    assert salida[1:] == ["0", "1"]
+    assert probar(CONTADOR + 'prueba "afuera sí" { inc()\n asegurar cont == 1 }') == {
+        "afuera sí": None}
+
+
+def test_una_funcion_llamada_por_un_agente_usa_sus_propias_variables():
+    salida, _ = correr("""
+        funcion doble(n) { var r = n  r = r * 2  devolver r }
+        mensaje Ping
+        agente A { estado veces = 0
+            al recibir Ping { veces = veces + 1  responder doble(veces) } }
+        mostrar(preguntar Ping {} a A)
+    """)
+    assert salida == ["2"]
+
+
+# Mejora 27: lo enviado llega antes de la próxima pregunta
+
+SUMADOR = """
+    mensaje Sumar { n: numero }
+    mensaje Ver
+    agente C {
+        estado total = 0
+        al recibir Sumar como s { total = total + s.n }
+        al recibir Ver { responder total }
+    }
+"""
+
+
+def test_lo_enviado_llega_antes_de_preguntar():
+    salida, _ = correr(SUMADOR + "enviar Sumar { n: 5 } a C\nmostrar(preguntar Ver {} a C)")
+    assert salida == ["5"]
+    assert probar(SUMADOR + """
+        prueba "con preguntar" { enviar Sumar { n: 5 } a C
+            asegurar (preguntar Ver {} a C) == 5 }
+        prueba "con asegurar solo" { enviar Sumar { n: 5 } a C
+            sea antes = 1
+            asegurar antes == 1
+            asegurar (preguntar Ver {} a C) == 5 }
+    """) == {"con preguntar": None, "con asegurar solo": None}
+
+
+# Mejora 28: el tope de mensajes es por prueba
+
+def test_el_tope_de_mensajes_se_reinicia_en_cada_prueba(monkeypatch):
+    monkeypatch.setattr(mate, "MAX_MENSAJES", 100)
+    cuerpo = "para i en rango(60) { asegurar (preguntar Ver {} a C) == 0 }"
+    assert probar(SUMADOR + f'prueba "uno" {{ {cuerpo} }}\nprueba "dos" {{ {cuerpo} }}') == {
+        "uno": None, "dos": None}
+
+
+# Mejora 29: cada prueba empieza limpia
+
+def test_cada_prueba_empieza_limpia():
+    resultados = probar("""
+        mensaje Sumar { n: numero }
+        agente C { estado total = 0
+            al recibir Sumar como s { total = total + s.n  responder total } }
+        sea copia = crear C { total: 100 }
+        var g = 0
+        g = 7
+        prueba "uno" { g = g + 1
+            asegurar (preguntar Sumar { n: 5 } a copia) == 105 }
+        prueba "dos" { asegurar g == 7
+            asegurar (preguntar Sumar { n: 1 } a copia) == 101
+            asegurar (preguntar Sumar { n: 1 } a C) == 1 }
+        prueba "tres" { asegurar (preguntar Sumar { n: 1 } a C) == 1 }
+    """)
+    assert resultados == {"uno": None, "dos": None, "tres": None}
+
+
+# Mejora 30: 'intentar' no ataja los 'asegurar' ni los topes
+
+def test_intentar_no_ataja_un_asegurar():
+    resultados = probar('prueba "x" { intentar { asegurar 1 == 2 } si falla e { } }\n'
+                        'prueba "y" { intentar { fallar "ups" } si falla e { asegurar e == "ups" } }')
+    assert resultados["x"].endswith("no se cumplió lo asegurado: dio 1 y se esperaba 2")
+    assert resultados["y"] is None
+
+
+def test_intentar_no_ataja_los_topes(monkeypatch):
+    error = falla("funcion f(n) { devolver f(n + 1) }\n"
+                  "intentar { f(0) } si falla e { mostrar(e) }")
+    assert error.mensaje == "demasiada recursión" and error.clase == "limite"
+    monkeypatch.setattr(mate, "MAX_MENSAJES", 10)
+    error = falla(SUMADOR + "intentar { para i en rango(20) { preguntar Ver {} a C } } "
+                            "si falla e { mostrar(e) }")
+    assert "se superaron 10 mensajes" in error.mensaje
+
+
+# Mejora 31: si un agente falla, vuelve a como estaba
+
+def test_si_un_agente_falla_vuelve_a_como_estaba():
+    salida, interprete = correr("""
+        mensaje Pedido { producto: texto }
+        mensaje Cuantas
+        mensaje Aviso
+        agente Otro { al recibir Aviso { mostrar("aviso") } }
+        agente V {
+            estado ventas = 0
+            al recibir Pedido como p {
+                ventas = ventas + 1
+                enviar Aviso {} a Otro
+                si p.producto == "cafe" { fallar "no vendo cafe" }
+                responder ventas
+            }
+            al recibir Cuantas { responder ventas }
+        }
+        intentar { preguntar Pedido { producto: "cafe" } a V } si falla e { mostrar(e) }
+        mostrar(preguntar Cuantas {} a V)
+        mostrar(preguntar Pedido { producto: "yerba" } a V)
+    """)
+    # El aviso del pedido que falló no sale; el del pedido que anduvo, sí.
+    assert salida == ["no vendo cafe", "0", "1", "aviso"]
+    assert interprete.errores_agentes == []
+
+
+# Mejora 32: aviso de lo que quedó sin entregar
+
+def test_avisa_los_mensajes_que_quedaron_sin_entregar(tmp_path, capsys):
+    programa = ('mensaje Pedido { producto: texto }\nagente V { al recibir Pedido { } }\n'
+                + 'enviar Pedido { producto: "cafe" } a V\n' * 7
+                + 'fallar "algo se rompió arriba"\n')
+    codigo, _, err = por_main(tmp_path, capsys, programa)
+    renglones = err.splitlines()
+    assert codigo == 1
+    assert renglones[0].endswith("programa.mate:10: error: algo se rompió arriba")
+    assert renglones[2] == "quedaron 7 mensaje(s) sin entregar:"
+    assert renglones[3] == '  (programa) -> V: Pedido { producto: "cafe" }'
+    assert len(renglones) == 9 and renglones[8] == "  ... y 2 más"
+    _, _, err = por_main(tmp_path, capsys, 'fallar "nada en la cola"\n')
+    assert "sin entregar" not in err
+
+
+# Mejora 33: errores de agentes con el archivo correcto, y todos a la vista
+
+def test_el_error_de_un_agente_dice_su_archivo(tmp_path, capsys):
+    (tmp_path / "lib.mate").write_text(
+        'mensaje Ping\nagente Roto { al recibir Ping { fallar "me rompí" } }\n', encoding="utf-8")
+    codigo, _, err = por_main(tmp_path, capsys, 'usar "lib.mate"\nenviar Ping {} a Roto\n')
+    renglones = err.splitlines()
+    assert codigo == 1
+    assert renglones[0].endswith("lib.mate:2: error: Roto al recibir Ping: me rompí")
+    assert renglones[1].startswith("    2 | agente Roto")
+
+
+def test_probar_muestra_los_errores_del_programa_principal(tmp_path, capsys):
+    codigo, out, err = por_main(tmp_path, capsys, """mensaje Ping
+agente Roto { al recibir Ping { fallar "me rompí" } }
+enviar Ping {} a Roto
+prueba "anda" { asegurar 1 == 1 }
+""", orden="probar")
+    assert codigo == 1
+    assert "1 de 1 pruebas pasaron" in out
+    assert err.splitlines()[0] == "errores al correr el programa (antes de las pruebas):"
+    assert "programa.mate:2: error: Roto al recibir Ping: me rompí" in err
+
+
+def test_una_prueba_muestra_todos_los_errores_de_agentes():
+    resultados = probar("""mensaje Ping { n: numero }
+        agente Roto { al recibir Ping como p { fallar "me rompí {p.n}" } }
+        prueba "dos errores" { enviar Ping { n: 1 } a Roto
+            enviar Ping { n: 2 } a Roto }""")
+    assert resultados["dos errores"] == ("Roto al recibir Ping (línea 2): me rompí 1\n"
+                                         "Roto al recibir Ping (línea 2): me rompí 2")
+
+
+# Mejora 34: la revisión previa sigue a las copias y detecta al que nunca responde
+
+def test_la_revision_sigue_a_las_copias():
+    assert revisar("agente V { al recibir Ping { responder 1 } }\nmensaje Ping {}\n"
+                   "mensaje Pong {}\nsea v = crear V\nenviar Pong {} a v") == [
+        (5, "V no sabe recibir 'Pong'")]
+    assert revisar("mensaje Ping\nmensaje Pong\n"
+                   "agente V { al recibir Ping {\n enviar Pong {} a yo } }") == [
+        (4, "V no sabe recibir 'Pong'")]
+    # Si el nombre se usa para más de una cosa, la revisión no opina.
+    assert revisar("agente V { al recibir Ping { responder 1 } }\nmensaje Ping {}\n"
+                   "mensaje Pong {}\nsea v = crear V\nfuncion f(v) { enviar Pong {} a v }") == []
+
+
+def test_la_revision_detecta_al_agente_que_nunca_responde():
+    assert revisar('mensaje Ping\nagente Mudo { al recibir Ping { mostrar("hola") } }\n'
+                   "sea r = preguntar Ping {} a Mudo") == [
+        (3, "Mudo recibe 'Ping' pero nunca responde: no se le puede preguntar "
+            "(le falta un 'responder')")]
+    # Si responde una función suya, o siempre falla a propósito, no opina.
+    assert revisar("mensaje Ping\nagente A { funcion r() { responder 1 }\n"
+                   "al recibir Ping { r() } }\nsea x = preguntar Ping {} a A") == []
+    assert revisar('mensaje Ping\nagente A { al recibir Ping { fallar "no" } }\n'
+                   "sea x = preguntar Ping {} a A") == []
+    error = falla("mensaje Ping\nagente A { al recibir Ping como p { si p == 1 { responder 1 } } }\n"
+                  "sea x = preguntar Ping {} a A")
+    assert error.mensaje == ("A no respondió a 'Ping': el 'al recibir' terminó sin llegar "
+                             "a un 'responder'")
+
+
+@pytest.mark.parametrize("nombre", ["catalogo", "equipo", "hola", "mercado", "negociacion"])
+def test_verificar_los_ejemplos_no_da_errores(nombre, capsys):
+    assert mate.main(["verificar", str(RAIZ / "ejemplos" / f"{nombre}.mate")]) == 0
+    assert capsys.readouterr().out.strip().endswith("sin errores")
+
+
+# Mejora 35: 'crear' revisa el estado inicial
+
+AGENTE_V = ("agente V { estado precios = {}  estado ventas = 0  estado nota = nada\n"
+            " al recibir Ping { responder ventas } }\nmensaje Ping\n")
+
+
+def test_crear_revisa_el_estado_inicial():
+    assert revisar(AGENTE_V + 'sea v = crear V { precios: 5, ventas: "muchas" }') == [
+        (4, "V.precios arranca como mapa y le diste numero"),
+        (4, "V.ventas arranca como numero y le diste texto")]
+    error = falla(AGENTE_V + "sea p = 5\nsea v = crear V { precios: p }")
+    assert error.linea == 5
+    assert error.mensaje == "V.precios arranca como mapa y le diste numero"
+    salida, _ = correr(AGENTE_V + 'sea v = crear V { ventas: 10, nota: "lo que sea" }\n'
+                                  "mostrar(preguntar Ping {} a v)")
+    assert salida == ["10"]
+
+
+# Mejora 36: un 'enviar' que el destino no entiende falla en quien lo envía
+
+def test_enviar_algo_que_no_entiende_falla_en_el_que_envia(tmp_path, capsys):
+    programa = ("mensaje Ping {}\nmensaje Pong {}\nagente V { al recibir Ping { } }\n"
+                "var v = crear V\n")
+    salida, interprete = correr(
+        programa + "intentar { enviar Pong {} a v } si falla e { mostrar(e) }")
+    assert salida == ["V#2 no sabe recibir 'Pong'"]
+    assert interprete.errores_agentes == []
+    error = falla(programa + "var x = 1\nenviar Pong {} a v")
+    assert error.linea == 6 and error.mensaje == "V#2 no sabe recibir 'Pong'"
+    codigo, out, err = por_main(
+        tmp_path, capsys, programa + "intentar { enviar Pong {} a v } si falla e { mostrar(e) }")
+    assert (codigo, out, err) == (0, "V#2 no sabe recibir 'Pong'\n", "")
+
+
+def test_la_respuesta_a_un_enviar_tiene_que_poder_recibirse():
+    _, interprete = correr("""
+        mensaje Ping
+        mensaje Pong
+        mensaje Arrancar
+        agente Eco { al recibir Ping { responder Pong {} } }
+        agente Sordo { al recibir Arrancar { enviar Ping {} a Eco } }
+        enviar Arrancar {} a Sordo
+    """)
+    assert interprete.errores_agentes == [
+        "Eco al recibir Ping: Eco respondió Pong a Sordo, pero Sordo no tiene 'al recibir Pong'"]
