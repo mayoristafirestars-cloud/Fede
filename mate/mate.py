@@ -9,17 +9,18 @@ Uso:
 """
 
 import json
+import os
 import re
 import sys
 from collections import deque
 
-VERSION = "0.1"
+VERSION = "0.2"
 
 PALABRAS = {
     "sea", "var", "funcion", "devolver", "si", "sino", "mientras", "para", "en",
     "y", "o", "no", "verdadero", "falso", "nada", "mensaje", "agente", "estado",
     "al", "recibir", "como", "enviar", "preguntar", "responder", "fallar",
-    "intentar", "falla", "asegurar", "prueba", "remitente",
+    "intentar", "falla", "asegurar", "prueba", "remitente", "yo", "crear", "usar",
 }
 
 TIPOS_BASE = {"numero", "texto", "logico", "lista", "mapa", "agente", "cualquiera"}
@@ -32,6 +33,15 @@ class ErrorMate(Exception):
         super().__init__(mensaje)
         self.mensaje = mensaje
         self.linea = linea
+
+
+class Linea(int):
+    """Un número de línea que además recuerda de qué archivo salió."""
+
+    def __new__(cls, numero, archivo=None):
+        obj = super().__new__(cls, numero)
+        obj.archivo = archivo
+        return obj
 
 
 # ───────────────────────────── Lexer ─────────────────────────────
@@ -49,16 +59,16 @@ _TOKEN = re.compile(
 )
 
 
-def tokenizar(fuente):
-    tokens, pos, linea = [], 0, 1
+def tokenizar(fuente, archivo=None):
+    tokens, pos, linea = [], 0, Linea(1, archivo)
     while pos < len(fuente):
         m = _TOKEN.match(fuente, pos)
         if not m:
-            raise ErrorMate(f"carácter inesperado: {fuente[pos]!r}", linea)
+            raise ErrorMate(f"carácter inesperado: '{fuente[pos]}'", linea)
         pos = m.end()
         clase, txt = m.lastgroup, m.group()
         if clase == "nl":
-            linea += 1
+            linea = Linea(linea + 1, archivo)
         elif clase == "num":
             tokens.append(("num", float(txt) if "." in txt else int(txt), linea))
         elif clase == "str":
@@ -158,8 +168,11 @@ class Parser:
                 nombre = self.espera("id", que="un nombre")[1]
                 self.espera("kw", "en")
                 return ("para", ln, nombre, self.expr(), self.bloque())
-            if val in ("mensaje", "agente", "prueba") and not nivel_superior:
+            if val in ("mensaje", "agente", "prueba", "usar") and not nivel_superior:
                 raise ErrorMate(f"'{val}' solo puede declararse en el nivel superior", ln)
+            if val == "usar":
+                self.tomar()
+                return ("usar", ln, self.espera("str", que="el nombre de un archivo")[1])
             if val == "mensaje":
                 return self.mensaje()
             if val == "agente":
@@ -219,7 +232,7 @@ class Parser:
             while not self.es("op", "}"):
                 campo = self.espera("id", que="un nombre de campo")[1]
                 self.espera("op", ":")
-                tipo = self.espera("id", que="un tipo")[1]
+                tipo = (self.acepta("kw", "agente") or self.espera("id", que="un tipo"))[1]
                 opcional = bool(self.acepta("op", "?"))
                 campos.append((campo, tipo, opcional))
                 if not self.acepta("op", ","):
@@ -358,8 +371,18 @@ class Parser:
                 return ("bool", ln, val == "verdadero")
             if val == "nada":
                 return ("nada", ln)
-            if val == "remitente":
-                return ("remitente", ln)
+            if val in ("remitente", "yo"):
+                return (val, ln)
+            if val == "crear":
+                agente = self.espera("id", que="el nombre de un agente")[1]
+                apodo, pares = None, []
+                if self.es("id", "llamado"):
+                    self.tomar()
+                    apodo = self.primario()
+                if self.es("op", "{") and self.ver()[2] == self.linea_previa():
+                    self.tomar()
+                    pares = self.pares(False)
+                return ("crear", ln, agente, apodo, pares)
             if val == "preguntar":
                 msg = self.expr()
                 self.espera("id", "a", que="'a' (preguntar Mensaje a Agente)")
@@ -417,8 +440,33 @@ class Parser:
         return ("interp", ln, partes)
 
 
-def analizar(fuente):
-    return Parser(tokenizar(fuente)).programa()
+def analizar(fuente, ruta=None, _vistos=None):
+    """Convierte el texto en un programa, incluyendo lo que traiga con 'usar'."""
+    vistos = _vistos if _vistos is not None else set()
+    if ruta:
+        vistos.add(os.path.realpath(ruta))
+    carpeta = os.path.dirname(os.path.abspath(ruta)) if ruta else os.getcwd()
+    programa = []
+    for s in Parser(tokenizar(fuente, ruta)).programa():
+        if s[0] != "usar":
+            programa.append(s)
+            continue
+        otra = os.path.join(carpeta, s[2])
+        try:
+            otra = os.path.relpath(otra)
+        except ValueError:  # en Windows, si está en otro disco
+            pass
+        if os.path.realpath(otra) in vistos:
+            continue
+        try:
+            with open(otra, encoding="utf-8-sig") as f:
+                texto = f.read()
+        except OSError:
+            raise ErrorMate(f"no pude abrir '{s[2]}' (lo busqué en {carpeta})", s[1])
+        # De un archivo usado se toman las declaraciones, no lo que ejecuta ni sus pruebas.
+        programa.extend(x for x in analizar(texto, otra, vistos)
+                        if x[0] in ("mensaje", "agente", "funcion", "sea"))
+    return programa
 
 
 # ─────────────────────── Verificación estática ───────────────────────
@@ -430,7 +478,7 @@ _LITERALES = {"num": "numero", "str": "texto", "interp": "texto", "bool": "logic
 def verificar(programa):
     """Revisa los contratos de mensajes antes de correr. Devuelve [(linea, texto)]."""
     errores = []
-    mensajes, agentes = {}, {}
+    mensajes, agentes, estados = {}, {}, {}
     for s in programa:
         if s[0] == "mensaje":
             if s[2] in mensajes or s[2] in agentes:
@@ -440,6 +488,7 @@ def verificar(programa):
             if s[2] in mensajes or s[2] in agentes:
                 errores.append((s[1], f"'{s[2]}' ya está declarado"))
             agentes[s[2]] = [m[1] for m in s[4]]
+            estados[s[2]] = {e[1] for e in s[3]}
 
     for s in mensajes.values():
         vistos = set()
@@ -488,6 +537,14 @@ def verificar(programa):
                 for c, (_, opcional) in decl.items():
                     if c not in dados and not opcional:
                         errores.append((ln, f"a {nombre} le falta el campo '{c}'"))
+        elif len(n) == 5 and n[0] == "crear" and isinstance(n[4], list):
+            _, ln, nombre, _, pares = n
+            if nombre not in agentes:
+                errores.append((ln, f"no existe el agente '{nombre}'"))
+            else:
+                for k, _ in pares:
+                    if k not in estados[nombre]:
+                        errores.append((ln, f"{nombre} no tiene un estado '{k}'"))
         elif len(n) == 4 and n[0] in ("enviar", "preguntar"):
             _, ln, msg, dest = n
             if (isinstance(msg, tuple) and msg[0] == "ctor" and isinstance(dest, tuple)
@@ -520,6 +577,7 @@ class Registro:
 class Agente:
     def __init__(self, nombre):
         self.nombre = nombre
+        self.decl = None
         self.env = None
         self.manejadores = {}
         self.ocupado = False
@@ -594,7 +652,7 @@ def formato(v, raiz=True):
         return v.tipo + " { " + ", ".join(
             f"{k}: {formato(x, False)}" for k, x in v.campos.items()) + " }"
     if isinstance(v, Agente):
-        return f"<agente {v.nombre}>"
+        return v.nombre if raiz else f"<agente {v.nombre}>"
     if isinstance(v, (Funcion, Nativa)):
         return f"<funcion {v.nombre}>"
     return str(v)
@@ -647,6 +705,7 @@ class Interprete:
         self.mensajes = {}
         self.agentes = {}
         self.decl_agentes = []
+        self.copias = {}
         self.cola = deque()
         self.contexto = None  # (agente, remitente) mientras se atiende un mensaje
         self.entregados = 0
@@ -820,37 +879,66 @@ class Interprete:
                     self.glob.definir(s[2], Funcion(s[2], s[3], s[4], self.glob))
                 elif s[0] == "agente":
                     ag = Agente(s[2])
+                    ag.decl = s
                     self.agentes[s[2]] = ag
                     self.decl_agentes.append(s)
                     self.glob.definir(s[2], ag)
             except ErrorMate as e:
                 e.linea = e.linea or s[1]
                 raise
-        self.reiniciar_agentes()
+
+    def instanciar(self, ag, dados=None):
+        """Deja al agente recién nacido: estado inicial (o el que le den) y sin pendientes."""
+        s, dados = ag.decl, dados or {}
+        ag.env = Entorno(self.glob, frontera=True)
+        ag.ocupado = False
+        ag.manejadores = {tipo: (var, cuerpo) for _, tipo, var, cuerpo in s[4]}
+        for f in s[5]:
+            ag.env.definir(f[2], Funcion(f[2], f[3], f[4], ag.env))
+        for ln, nombre, e in s[3]:
+            try:
+                valor = dados[nombre] if nombre in dados else self.ev(e, ag.env)
+                ag.env.definir(nombre, valor, mutable=True)
+            except ErrorMate as err:
+                err.linea = err.linea or ln
+                raise
 
     def reiniciar_agentes(self):
+        self.copias = {}
         for s in self.decl_agentes:
-            ag = self.agentes[s[2]]
-            ag.env = Entorno(self.glob, frontera=True)
-            ag.ocupado = False
-            ag.manejadores = {tipo: (var, cuerpo) for _, tipo, var, cuerpo in s[4]}
-            for f in s[5]:
-                ag.env.definir(f[2], Funcion(f[2], f[3], f[4], ag.env))
-        for s in self.decl_agentes:
-            ag = self.agentes[s[2]]
-            for ln, nombre, e in s[3]:
-                try:
-                    ag.env.definir(nombre, self.ev(e, ag.env), mutable=True)
-                except ErrorMate as err:
-                    err.linea = err.linea or ln
-                    raise
+            self.instanciar(self.agentes[s[2]])
         self.cola.clear()
+
+    def crear(self, n, env):
+        if n[2] not in self.agentes:
+            raise ErrorMate(f"no existe el agente '{n[2]}'")
+        molde = self.agentes[n[2]]
+        declarados = {nombre for _, nombre, _ in molde.decl[3]}
+        dados = {}
+        for k, e in n[4]:
+            if k not in declarados:
+                raise ErrorMate(f"{n[2]} no tiene un estado '{k}'")
+            dados[k] = self.ev(e, env)
+        self.copias[n[2]] = self.copias.get(n[2], 1) + 1
+        if n[3] is not None:
+            nombre = f"{n[2]} {formato(self.ev(n[3], env))}"
+        else:
+            nombre = f"{n[2]}#{self.copias[n[2]]}"
+        ag = Agente(nombre)
+        ag.decl = molde.decl
+        self.instanciar(ag, dados)
+        return ag
 
     def correr(self, programa, pruebas=False):
         """Ejecuta el programa. Con pruebas=True devuelve [(nombre, error|None)]."""
         self.cargar(programa)
         for s in programa:
-            if s[0] not in ("mensaje", "agente", "funcion", "prueba"):
+            if s[0] == "agente":
+                # El estado inicial se calcula donde está declarado el agente,
+                # salvo que alguien le haya hablado antes.
+                if self.agentes[s[2]].env is None:
+                    self.instanciar(self.agentes[s[2]])
+            elif s[0] not in ("mensaje", "funcion", "prueba"):
                 self.ejecutar(s, self.glob)
         self.vaciar_cola()
         if not pruebas:
@@ -891,6 +979,8 @@ class Interprete:
             flecha = "pregunta a" if pregunta else "→"
             self.salida(f"  · {rem.nombre if rem else '(programa)'} {flecha} "
                         f"{dest.nombre}: {formato(msg)}")
+        if dest.env is None:
+            self.instanciar(dest)
         if msg.tipo not in dest.manejadores:
             raise ErrorMate(f"{dest.nombre} no sabe recibir '{msg.tipo}'")
         if dest.ocupado:
@@ -917,9 +1007,7 @@ class Interprete:
                 self.salida(f"  · {dest.nombre} responde a "
                             f"{rem.nombre if rem else '(programa)'}: {formato(valor, False)}")
             return valor
-        if respondio:
-            if rem is None:
-                raise ErrorMate(f"{dest.nombre} quiso responder, pero el mensaje no vino de un agente")
+        if respondio and rem is not None:  # si lo mandó el programa, no hay a quién contestar
             if not isinstance(valor, Registro):
                 raise ErrorMate("a un 'enviar' solo se le responde con un mensaje")
             self.cola.append((dest, rem, valor))
@@ -1075,6 +1163,10 @@ class Interprete:
             return self.construir(n[2], {k: self.ev(e, env) for k, e in n[3]})
         if clase == "remitente":
             return self.contexto[1] if self.contexto else None
+        if clase == "yo":
+            return self.contexto[0] if self.contexto else None
+        if clase == "crear":
+            return self.crear(n, env)
         if clase == "y":
             return self.condicion(n[2], env) and self.condicion(n[3], env)
         if clase == "o":
@@ -1171,7 +1263,8 @@ def main(argv=None):
     orden, ruta = args
 
     def reportar(linea, texto):
-        print(f"{ruta}:{linea}: error: {texto}" if linea else f"{ruta}: error: {texto}",
+        archivo = getattr(linea, "archivo", None) or ruta
+        print(f"{archivo}:{linea}: error: {texto}" if linea else f"{archivo}: error: {texto}",
               file=sys.stderr)
 
     try:
@@ -1182,7 +1275,7 @@ def main(argv=None):
         return 2
 
     try:
-        programa = analizar(fuente)
+        programa = analizar(fuente, ruta)
         errores = verificar(programa)
         if errores:
             for linea, texto in errores:

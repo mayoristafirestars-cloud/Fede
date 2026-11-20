@@ -1,0 +1,26 @@
+# Una "biblioteca": mensajes y un agente que otros programas traen con `usar`.
+# De un archivo usado se toman las declaraciones; lo que ejecuta y sus pruebas no.
+
+mensaje Pedido { producto: texto, cantidad: numero }
+mensaje Cotizacion { vendedor: agente, producto: texto, total: numero }
+
+sea precios_de_lista = { yerba: 3500, azucar: 1200 }
+
+agente Vendedor {
+    estado precios = precios_de_lista
+    estado descuento = 0
+
+    al recibir Pedido como p {
+        si no tiene(precios, p.producto) {
+            fallar "no vendo {p.producto}"
+        }
+        sea bruto = precios[p.producto] * p.cantidad
+        responder Cotizacion {
+            vendedor: yo,
+            producto: p.producto,
+            total: redondear(bruto * (1 - descuento)),
+        }
+    }
+}
+
+mostrar("Esto solo se ve si corrés catalogo.mate directamente.")

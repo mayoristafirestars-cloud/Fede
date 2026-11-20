@@ -1,0 +1,61 @@
+# Varios archivos y varias copias del mismo agente.
+#   usar "archivo.mate"                 trae mensajes, agentes, funciones y valores fijos
+#   crear Vendedor llamado "X" { ... }  nace una copia con su propio estado
+
+usar "catalogo.mate"
+
+mensaje Comprar { producto: texto, cantidad: numero, vendedores: lista }
+
+sea norte = crear Vendedor llamado "Norte" { descuento: 0.05 }
+sea sur = crear Vendedor llamado "Sur" { precios: { yerba: 3300 } }
+sea centro = crear Vendedor llamado "Centro"
+
+agente Comprador {
+    al recibir Comprar como c {
+        var mejor = nada
+        para v en c.vendedores {
+            intentar {
+                sea cot = preguntar Pedido { producto: c.producto, cantidad: c.cantidad } a v
+                mostrar("{v} cotiza {cot.total}")
+                si mejor == nada {
+                    mejor = cot
+                } sino si cot.total < mejor.total {
+                    mejor = cot
+                }
+            } si falla motivo {
+                mostrar("{v} no puede: {motivo}")
+            }
+        }
+        si mejor == nada {
+            fallar "nadie vende {c.producto}"
+        }
+        mostrar("Compro {c.cantidad} de {c.producto} a {mejor.vendedor} por {mejor.total}")
+        responder mejor
+    }
+}
+
+enviar Comprar { producto: "yerba", cantidad: 10, vendedores: [norte, sur, centro] } a Comprador
+enviar Comprar { producto: "azucar", cantidad: 4, vendedores: [norte, sur, centro] } a Comprador
+
+prueba "cada copia tiene su propio estado" {
+    sea caro = crear Vendedor { precios: { yerba: 9000 } }
+    sea a = preguntar Pedido { producto: "yerba", cantidad: 1 } a caro
+    sea b = preguntar Pedido { producto: "yerba", cantidad: 1 } a Vendedor
+    asegurar a.total == 9000
+    asegurar b.total == 3500, "el original no cambia"
+}
+
+prueba "el comprador elige al más barato" {
+    sea elegido = preguntar Comprar { producto: "yerba", cantidad: 10, vendedores: [norte, sur, centro] } a Comprador
+    asegurar elegido.vendedor == sur
+    asegurar elegido.total == 33000
+}
+
+prueba "si nadie lo vende, falla con un motivo claro" {
+    intentar {
+        preguntar Comprar { producto: "café", cantidad: 1, vendedores: [norte] } a Comprador
+        fallar "debería haber fallado"
+    } si falla motivo {
+        asegurar motivo == "nadie vende café", motivo
+    }
+}

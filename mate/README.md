@@ -5,7 +5,7 @@ Un lenguaje chico, con palabras en español, pensado para dos cosas:
 1. **Escribir código más práctico y con menos sorpresas.**
 2. **Que los agentes se hablen entre ellos** con mensajes que tienen contrato.
 
-Versión 0.1. El intérprete es un solo archivo (`mate.py`), sin dependencias: alcanza con Python 3.
+Versión 0.2. El intérprete es un solo archivo (`mate.py`), sin dependencias: alcanza con Python 3.
 
 ```bash
 python3 mate/mate.py correr mate/ejemplos/negociacion.mate
@@ -70,8 +70,33 @@ prueba "cotiza precio por cantidad" {
 - `preguntar Mensaje { ... } a Agente` espera y devuelve la respuesta. Si el otro agente falla,
   el error le llega al que preguntó.
 - `responder valor` contesta al `remitente` y termina de atender ese mensaje.
+- `yo` es el agente que está atendiendo; sirve para mandarse a sí mismo dentro de un mensaje.
 - `--traza` muestra la conversación entera, mensaje por mensaje.
 - `a_json(mensaje)` y `de_json(texto)` pasan los mensajes a JSON y de vuelta, validando el contrato.
+
+### Varias copias de un agente
+
+Declarar un `agente` ya crea uno con ese nombre. Con `crear` nacen más, cada uno con su estado:
+
+```
+sea norte = crear Vendedor llamado "Norte" { descuento: 0.05 }
+sea sur = crear Vendedor llamado "Sur" { precios: { yerba: 3300 } }
+sea otro = crear Vendedor
+```
+
+Entre llaves va el estado inicial que querés distinto; el resto arranca como en la declaración.
+`llamado` le pone nombre para la traza (`Vendedor Norte`); sin eso se llama `Vendedor#2`.
+Las copias se guardan en variables y se pueden mandar dentro de un mensaje (tipo `agente` o `lista`).
+
+### Varios archivos
+
+```
+usar "catalogo.mate"
+```
+
+Trae los mensajes, agentes, funciones y valores `sea` del otro archivo (se busca al lado del que
+lo usa). Lo que ese archivo ejecuta y sus pruebas no se traen, así que un mismo archivo sirve como
+programa y como biblioteca. Usarlo dos veces no molesta. Ver `ejemplos/mercado.mate`.
 
 **Antes de correr**, Mate revisa los contratos: avisa si a un mensaje le falta o le sobra un
 campo, si un valor literal es del tipo equivocado, o si le mandás a un agente algo que no sabe
@@ -95,13 +120,13 @@ Funciones incluidas: `mostrar`, `largo`, `texto`, `numero`, `tipo`, `tiene`, `cl
 
 Los nombres de mensajes y agentes empiezan con mayúscula; el resto, con minúscula.
 
-## Límites de la versión 0.1
+## Límites de la versión 0.2
 
 - Los agentes corren todos dentro del mismo programa, de a uno y en orden (por eso el resultado
   es siempre el mismo). Todavía no se conectan con agentes de IA reales ni entre máquinas.
-- Cada `agente` es único: no se pueden crear varias copias del mismo.
 - Dentro de `"{...}"` no se puede escribir otro texto entre comillas; se guarda antes en un `sea`.
-- No hay módulos ni forma de importar otros archivos.
+- Todo lo que trae `usar` queda en un único espacio de nombres: dos archivos no pueden declarar
+  algo con el mismo nombre.
 
 ## Pruebas del intérprete
 

@@ -167,7 +167,81 @@ def test_json_ida_y_vuelta():
     assert salida == ['{"tipo": "Sumar", "campos": {"a": 1, "b": 2}}', "verdadero"]
 
 
-@pytest.mark.parametrize("nombre", ["hola", "negociacion", "equipo"])
+@pytest.mark.parametrize("nombre", ["hola", "negociacion", "equipo", "mercado"])
 def test_los_ejemplos_pasan_sus_pruebas(nombre, capsys):
     assert mate.main(["probar", str(RAIZ / "ejemplos" / f"{nombre}.mate")]) == 0
     assert "✗" not in capsys.readouterr().out
+
+
+def test_crear_copias_con_estado_propio_y_nombre():
+    salida, _ = correr(AGENTES + """
+        sea otra = crear Calculadora llamado "B" { usos: 10 }
+        sea tercera = crear Calculadora
+        preguntar Sumar { a: 1, b: 1 } a otra
+        mostrar(preguntar Contar {} a otra, preguntar Contar {} a Calculadora)
+        mostrar(otra, tercera, otra == otra, otra == tercera)
+    """)
+    assert salida == ["11 0", "Calculadora B Calculadora#3 verdadero falso"]
+
+
+def test_yo_es_la_copia_que_atiende():
+    salida, _ = correr("""
+        mensaje Quien
+        agente Eco { al recibir Quien { responder yo } }
+        sea copia = crear Eco llamado "dos"
+        mostrar(preguntar Quien {} a copia, preguntar Quien {} a Eco)
+    """)
+    assert salida == ["Eco dos Eco"]
+
+
+def test_crear_se_verifica_antes_de_correr():
+    programa = mate.analizar(AGENTES + "crear Calculadora { uso: 1 }\ncrear Nadie")
+    textos = [t for _, t in mate.verificar(programa)]
+    assert textos == ["Calculadora no tiene un estado 'uso'", "no existe el agente 'Nadie'"]
+
+
+def test_el_estado_inicial_puede_usar_valores_declarados_antes():
+    salida, _ = correr("""
+        mensaje Ver
+        sea base = 7
+        agente A {
+            estado n = base * 2
+            al recibir Ver { responder n }
+        }
+        mostrar(preguntar Ver {} a A)
+    """)
+    assert salida == ["14"]
+
+
+def test_usar_trae_declaraciones_pero_no_ejecuta(tmp_path):
+    (tmp_path / "lib.mate").write_text(
+        'usar "principal.mate"\n'  # los ciclos no rompen
+        "mensaje Hola { quien: texto }\n"
+        "sea saludo = \"buenas\"\n"
+        "funcion doble(n) { devolver n * 2 }\n"
+        'mostrar("no debería verse")\n'
+        'prueba "no debería correr" { fallar "ups" }\n',
+        encoding="utf-8",
+    )
+    principal = tmp_path / "principal.mate"
+    principal.write_text(
+        'usar "lib.mate"\nusar "lib.mate"\n'
+        'mostrar(saludo, doble(4), Hola { quien: "vos" }.quien)\n',
+        encoding="utf-8",
+    )
+    salida = []
+    interprete = mate.Interprete(salida=salida.append)
+    programa = mate.analizar(principal.read_text(encoding="utf-8"), str(principal))
+    assert interprete.correr(programa, pruebas=True) == []
+    assert salida == ["buenas 8 vos"]
+
+
+def test_errores_en_archivos_usados_dicen_el_archivo(tmp_path, capsys):
+    (tmp_path / "lib.mate").write_text("sea x = 1\nsea z = x + \"a\"\n", encoding="utf-8")
+    principal = tmp_path / "principal.mate"
+    principal.write_text('usar "lib.mate"\nusar "falta.mate"\n', encoding="utf-8")
+    assert mate.main(["correr", str(principal)]) == 1
+    assert "principal.mate:2: error: no pude abrir 'falta.mate'" in capsys.readouterr().err
+    principal.write_text('usar "lib.mate"\n', encoding="utf-8")
+    assert mate.main(["correr", str(principal)]) == 1
+    assert "lib.mate:2: error: no se puede hacer numero + texto" in capsys.readouterr().err
