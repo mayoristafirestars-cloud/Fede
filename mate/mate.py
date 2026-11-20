@@ -3,12 +3,15 @@
 los agentes se hablen entre ellos con mensajes que tienen contrato.
 
 Uso:
-    python3 mate.py correr    archivo.mate [--traza]
+    python3 mate.py correr    archivo.mate [--traza] [--sin-limite] [--depurar]
     python3 mate.py probar    archivo.mate
     python3 mate.py verificar archivo.mate
+    python3 mate.py ayuda
 """
 
+import difflib
 import json
+import math
 import os
 import re
 import sys
@@ -26,13 +29,27 @@ PALABRAS = {
 TIPOS_BASE = {"numero", "texto", "logico", "lista", "mapa", "agente", "cualquiera"}
 
 MAX_MENSAJES = 100_000
+MAX_PASOS = 10_000_000  # freno para los programas que nunca terminan
+
+ORDENES = ("correr", "probar", "verificar")
+OPCIONES = ("--traza", "--depurar", "--sin-limite", "--version", "--ayuda")
+
+DEMASIADO_GRANDE = "el resultado es demasiado grande para calcularlo"
+NO_ASIGNABLE = ("solo se puede asignar a una variable o a una parte de una variable "
+                "(x, x.campo, x[0])")
+DEVOLVER_SUELTO = "'devolver' solo va dentro de una función"
+RESPONDER_SUELTO = "'responder' solo va dentro de 'al recibir' (o de una función del agente)"
 
 
 class ErrorMate(Exception):
-    def __init__(self, mensaje, linea=None):
+    """Un error del programa escrito en Mate. 'clase' dice de qué tipo es:
+    'falla' (lo común, se puede atajar con 'intentar') o 'limite' (no se ataja)."""
+
+    def __init__(self, mensaje, linea=None, clase="falla"):
         super().__init__(mensaje)
         self.mensaje = mensaje
         self.linea = linea
+        self.clase = clase
 
 
 class Linea(int):
@@ -48,10 +65,11 @@ class Linea(int):
 
 _TOKEN = re.compile(
     r"""
-    (?P<ws>[ \t\r]+|\#[^\n]*)
+    (?P<ws>[ \t\r\u00a0\u2009\u202f\u200b\ufeff]+|\#[^\n]*)
   | (?P<nl>\n)
   | (?P<num>\d+(?:\.\d+)?)
   | (?P<str>"(?:\\.|[^"\\\n])*")
+  | (?P<curva>[“”„](?:\\.|[^"“”„\\\n])*[“”„"])
   | (?P<id>[^\W\d]\w*)
   | (?P<op>==|!=|<=|>=|[-+*/%<>=(){}\[\],.:?])
     """,
@@ -59,23 +77,46 @@ _TOKEN = re.compile(
 )
 
 
+_PISTAS_DE_CARACTER = {
+    '"': "a este texto le falta la comilla de cierre (los textos van en un solo renglón)",
+    "'": 'los textos van entre comillas dobles: "así"',
+    ";": "en Mate no hace falta el punto y coma: borralo",
+    "&": "en Mate 'y' se escribe con la palabra: a y b",
+    "|": "en Mate 'o' se escribe con la palabra: a o b",
+    "!": "en Mate 'no' se escribe con la palabra: no a",
+}
+for _c in "“”„":  # comillas dobles curvas (Word, WhatsApp) sin su pareja
+    _PISTAS_DE_CARACTER[_c] = _PISTAS_DE_CARACTER['"']
+for _c in "‘’":
+    _PISTAS_DE_CARACTER[_c] = _PISTAS_DE_CARACTER["'"]
+
+
 def tokenizar(fuente, archivo=None):
     tokens, pos, linea = [], 0, Linea(1, archivo)
     while pos < len(fuente):
         m = _TOKEN.match(fuente, pos)
         if not m:
-            raise ErrorMate(f"carácter inesperado: '{fuente[pos]}'", linea)
+            c = fuente[pos]
+            raise ErrorMate(_PISTAS_DE_CARACTER.get(c, f"carácter inesperado: '{c}'"), linea)
         pos = m.end()
         clase, txt = m.lastgroup, m.group()
         if clase == "nl":
             linea = Linea(linea + 1, archivo)
         elif clase == "num":
-            tokens.append(("num", float(txt) if "." in txt else int(txt), linea))
-        elif clase == "str":
+            try:
+                valor = float(txt) if "." in txt else int(txt)
+            except ValueError:  # Python no convierte enteros de miles de cifras
+                valor = math.inf
+            if type(valor) is float and not math.isfinite(valor):
+                raise ErrorMate("ese número es demasiado grande", linea)
+            tokens.append(("num", valor, linea))
+        elif clase in ("str", "curva"):  # "curva": texto entre comillas “de Word”
             tokens.append(("str", txt[1:-1], linea))
         elif clase == "id":
             tokens.append(("kw" if txt in PALABRAS else "id", txt, linea))
         elif clase == "op":
+            if txt == "/" and fuente.startswith("/", pos):
+                raise ErrorMate("los comentarios empiezan con #", linea)
             tokens.append(("op", txt, linea))
     tokens.append(("eof", None, linea))
     return tokens
@@ -88,6 +129,8 @@ class Parser:
     def __init__(self, tokens):
         self.t = tokens
         self.i = 0
+        # Para avisar de 'devolver' y 'responder' fuera de lugar antes de correr.
+        self.en_funcion = self.en_recibir = self.en_agente = 0
 
     # utilidades
     def ver(self, d=0):
@@ -145,6 +188,9 @@ class Parser:
             if val == "funcion":
                 return self.funcion()
             if val == "devolver":
+                # Dentro de 'al recibir' también vale: termina de atender sin responder.
+                if not (self.en_funcion or self.en_recibir):
+                    raise ErrorMate(DEVOLVER_SUELTO, ln)
                 self.tomar()
                 e = None
                 if self.ver()[2] == ln and not self.es("op", "}") and not self.es("eof"):
@@ -187,6 +233,8 @@ class Parser:
                 self.espera("id", "a", que="'a' (enviar Mensaje a Agente)")
                 return ("enviar", ln, msg, self.expr())
             if val == "responder":
+                if not (self.en_recibir or (self.en_funcion and self.en_agente)):
+                    raise ErrorMate(RESPONDER_SUELTO, ln)
                 self.tomar()
                 return ("responder", ln, self.expr())
             if val == "fallar":
@@ -206,10 +254,14 @@ class Parser:
                 return ("asegurar", ln, cond, msg)
         e = self.expr()
         if self.acepta("op", "="):
-            if e[0] not in ("nombre", "indice", "campo"):
-                raise ErrorMate("no se puede asignar a esa expresión", ln)
+            if not self.asignable(e):
+                raise ErrorMate(NO_ASIGNABLE, ln)
             return ("asignar", ln, e, self.expr())
         return ("expr", ln, e)
+
+    def asignable(self, e):
+        """Se asigna a una variable o a una parte de una variable: x, x.campo, x[0]."""
+        return e[0] == "nombre" or (e[0] in ("indice", "campo") and self.asignable(e[2]))
 
     def funcion(self):
         ln = self.tomar()[2]
@@ -221,7 +273,12 @@ class Parser:
             if not self.acepta("op", ","):
                 break
         self.espera("op", ")")
-        return ("funcion", ln, nombre, params, self.bloque())
+        self.en_funcion += 1
+        try:
+            cuerpo = self.bloque()
+        finally:
+            self.en_funcion -= 1
+        return ("funcion", ln, nombre, params, cuerpo)
 
     def mensaje(self):
         ln = self.tomar()[2]
@@ -251,6 +308,14 @@ class Parser:
         nombre = self.nombre_propio("agente")
         self.espera("op", "{")
         estados, manejadores, funciones = [], [], []
+        self.en_agente += 1
+        try:
+            self.miembros_de_agente(estados, manejadores, funciones)
+        finally:
+            self.en_agente -= 1
+        return ("agente", ln, nombre, estados, manejadores, funciones)
+
+    def miembros_de_agente(self, estados, manejadores, funciones):
         while not self.acepta("op", "}"):
             tk = self.ver()
             if self.acepta("kw", "estado"):
@@ -261,14 +326,18 @@ class Parser:
                 self.espera("kw", "recibir")
                 tipo = self.espera("id", que="un tipo de mensaje")[1]
                 var = self.espera("id", que="un nombre")[1] if self.acepta("kw", "como") else None
-                manejadores.append((tk[2], tipo, var, self.bloque()))
+                self.en_recibir += 1
+                try:
+                    cuerpo = self.bloque()
+                finally:
+                    self.en_recibir -= 1
+                manejadores.append((tk[2], tipo, var, cuerpo))
             elif self.es("kw", "funcion"):
                 funciones.append(self.funcion())
             else:
                 raise ErrorMate(
                     "dentro de un agente solo van 'estado', 'al recibir' y 'funcion'", tk[2]
                 )
-        return ("agente", ln, nombre, estados, manejadores, funciones)
 
     # expresiones
     def expr(self):
@@ -440,6 +509,25 @@ class Parser:
         return ("interp", ln, partes)
 
 
+def leer_fuente(ruta):
+    """Lee un archivo .mate en cualquiera de las codificaciones que usa el Bloc de notas:
+    UTF-8 (con o sin marca), "Unicode" (UTF-16) o ANSI (Windows-1252)."""
+    with open(ruta, "rb") as f:
+        datos = f.read()
+    if datos[:2] in (b"\xff\xfe", b"\xfe\xff"):
+        codificaciones = ("utf-16",)
+    else:
+        codificaciones = ("utf-8-sig", "cp1252")
+    for codificacion in codificaciones:
+        try:
+            texto = datos.decode(codificacion)
+        except UnicodeError:
+            continue
+        return texto.replace("\r\n", "\n").replace("\r", "\n")
+    raise ErrorMate(f"no pude leer las letras de {ruta}. En el Bloc de notas: "
+                    "Archivo > Guardar como > Codificación: UTF-8")
+
+
 def analizar(fuente, ruta=None, _vistos=None):
     """Convierte el texto en un programa, incluyendo lo que traiga con 'usar'."""
     vistos = _vistos if _vistos is not None else set()
@@ -459,10 +547,12 @@ def analizar(fuente, ruta=None, _vistos=None):
         if os.path.realpath(otra) in vistos:
             continue
         try:
-            with open(otra, encoding="utf-8-sig") as f:
-                texto = f.read()
+            texto = leer_fuente(otra)
         except OSError:
             raise ErrorMate(f"no pude abrir '{s[2]}' (lo busqué en {carpeta})", s[1])
+        except ErrorMate as e:
+            e.linea = e.linea or s[1]
+            raise
         # De un archivo usado se toman las declaraciones, no lo que ejecuta ni sus pruebas.
         programa.extend(x for x in analizar(texto, otra, vistos)
                         if x[0] in ("mensaje", "agente", "funcion", "sea"))
@@ -655,7 +745,10 @@ def formato(v, raiz=True):
         return v.nombre if raiz else f"<agente {v.nombre}>"
     if isinstance(v, (Funcion, Nativa)):
         return f"<funcion {v.nombre}>"
-    return str(v)
+    try:
+        return str(v)
+    except ValueError:  # Python no escribe enteros de miles de cifras
+        raise ErrorMate("ese número es demasiado grande para mostrarlo")
 
 
 class Entorno:
@@ -707,8 +800,11 @@ class Interprete:
         self.decl_agentes = []
         self.copias = {}
         self.cola = deque()
-        self.contexto = None  # (agente, remitente) mientras se atiende un mensaje
+        self.contexto = None  # (agente, remitente, tipo de mensaje) mientras se atiende uno
         self.entregados = 0
+        self.pasos = 0
+        self.max_pasos = MAX_PASOS  # None = sin tope
+        self.linea_actual = None  # la última sentencia que se empezó a ejecutar
         self.errores_agentes = []
         self._nativas()
 
@@ -720,19 +816,37 @@ class Interprete:
             def deco(fn):
                 def envuelta(args):
                     if not minimo <= len(args) <= maximo:
-                        raise ErrorMate(f"{nombre}() recibió {len(args)} argumento(s)")
-                    return fn(*args)
+                        if minimo == maximo:
+                            lleva = f"{minimo} valor" + ("" if minimo == 1 else "es")
+                        elif maximo == minimo + 1:
+                            lleva = f"{minimo} o {maximo} valores"
+                        else:
+                            lleva = f"entre {minimo} y {maximo} valores"
+                        raise ErrorMate(f"{nombre}() lleva {lleva} y recibió {len(args)}")
+                    return protegida(nombre, fn, args)
                 self.glob.definir(nombre, Nativa(nombre, envuelta))
                 return fn
             return deco
+
+        def protegida(nombre, fn, args):
+            """Ninguna función incluida falla con un error de Python."""
+            try:
+                r = fn(*args)
+            except ErrorMate:
+                raise
+            except (TypeError, ValueError, OverflowError, KeyError, IndexError, AttributeError):
+                raise ErrorMate(f"{nombre}(): no pude hacer eso con esos valores")
+            if type(r) is float and not math.isfinite(r):
+                raise ErrorMate(f"{nombre}(): {DEMASIADO_GRANDE}")
+            return r
 
         def pedir(v, tipo, donde):
             if nombre_tipo(v) != tipo:
                 raise ErrorMate(f"{donde} espera {tipo} y recibió {nombre_tipo(v)}")
             return v
 
-        self.glob.definir("mostrar", Nativa(
-            "mostrar", lambda args: self.salida(" ".join(formato(a) for a in args))))
+        self.glob.definir("mostrar", Nativa("mostrar", lambda args: protegida(
+            "mostrar", lambda *xs: self.salida(" ".join(formato(a) for a in xs)), args)))
 
         @nativa("largo", 1)
         def _(x):
@@ -750,14 +864,16 @@ class Interprete:
             try:
                 t = pedir(x, "texto", "numero()").strip().replace(",", ".")
                 f = float(t)
+                if not math.isfinite(f):  # "inf", "nan" o un número imposible de grande
+                    raise ValueError(t)
                 return int(f) if f.is_integer() and "." not in t else f
             except ValueError:
                 raise ErrorMate(f"'{x}' no es un número")
 
         @nativa("tiene", 2)
         def _(col, x):
-            if isinstance(col, dict):
-                return x in col
+            if isinstance(col, dict):  # las claves son textos: otra cosa no puede estar
+                return isinstance(x, str) and x in col
             if isinstance(col, list):
                 return any(igual(x, y) for y in col)
             if isinstance(col, str) and isinstance(x, str):
@@ -798,23 +914,52 @@ class Interprete:
 
         @nativa("redondear", 1, 2)
         def _(x, n=0):
-            r = round(pedir(x, "numero", "redondear()"), n)
+            pedir(x, "numero", "redondear()")
+            if type(n) is not int or n < 0:
+                raise ErrorMate("redondear() espera una cantidad entera de decimales, "
+                                "por ejemplo redondear(3.14159, 2)")
+            if not math.isfinite(x):
+                raise ErrorMate("redondear() no puede con un número infinito")
+            r = round(x, n)
             return int(r) if n == 0 else r
 
         nativa("unir", 2)(lambda l, sep: pedir(sep, "texto", "unir()").join(
             formato(x) for x in pedir(l, "lista", "unir()")))
-        nativa("partir", 2)(lambda t, sep: pedir(t, "texto", "partir()").split(
-            pedir(sep, "texto", "partir()")))
+
+        @nativa("partir", 2)
+        def _(t, sep):
+            pedir(t, "texto", "partir()")
+            if pedir(sep, "texto", "partir()") == "":
+                return list(t)  # sin separador: letra por letra
+            return t.split(sep)
+
         nativa("mayusculas", 1)(lambda t: pedir(t, "texto", "mayusculas()").upper())
         nativa("minusculas", 1)(lambda t: pedir(t, "texto", "minusculas()").lower())
-        nativa("a_json", 1)(lambda v: json.dumps(self._a_json(v), ensure_ascii=False))
+
+        @nativa("a_json", 1)
+        def _(v):
+            try:
+                return json.dumps(self._a_json(v), ensure_ascii=False, allow_nan=False)
+            except ValueError:  # inf, nan o un entero de miles de cifras
+                raise ErrorMate("ese número no se puede pasar a JSON")
+
+        def numero_invalido(_):
+            raise ErrorMate("el JSON trae un número que no es válido")
+
+        def decimal_de_json(t):
+            f = float(t)
+            return f if math.isfinite(f) else numero_invalido(t)
 
         @nativa("de_json", 1)
         def _(t):
             try:
-                return self._de_json(json.loads(pedir(t, "texto", "de_json()")))
+                return self._de_json(json.loads(
+                    pedir(t, "texto", "de_json()"),
+                    parse_constant=numero_invalido, parse_float=decimal_de_json))
             except json.JSONDecodeError as e:
                 raise ErrorMate(f"JSON inválido: {e.msg}")
+            except ValueError:  # un entero de miles de cifras
+                numero_invalido(t)
 
     def _a_json(self, v):
         if isinstance(v, Registro):
@@ -833,11 +978,12 @@ class Interprete:
         if isinstance(v, list):
             return [self._de_json(x) for x in v]
         if isinstance(v, dict):
-            if set(v) == {"tipo", "campos"} and v["tipo"] in self.mensajes \
-                    and isinstance(v["campos"], dict):
+            if set(v) == {"tipo", "campos"} and isinstance(v["tipo"], str) \
+                    and v["tipo"] in self.mensajes and isinstance(v["campos"], dict):
                 return self.construir(
                     v["tipo"], {k: self._de_json(x) for k, x in v["campos"].items()})
-            if set(v) == {"agente"} and v["agente"] in self.agentes:
+            if set(v) == {"agente"} and isinstance(v["agente"], str) \
+                    and v["agente"] in self.agentes:
                 return self.agentes[v["agente"]]
             return {k: self._de_json(x) for k, x in v.items()}
         return v
@@ -931,6 +1077,15 @@ class Interprete:
 
     def correr(self, programa, pruebas=False):
         """Ejecuta el programa. Con pruebas=True devuelve [(nombre, error|None)]."""
+        # El análisis ya rechaza 'devolver' y 'responder' fuera de lugar; esto es la red.
+        try:
+            return self._correr(programa, pruebas)
+        except _Retorno:
+            raise ErrorMate(DEVOLVER_SUELTO, self.linea_actual)
+        except _Respuesta:
+            raise ErrorMate(RESPONDER_SUELTO, self.linea_actual)
+
+    def _correr(self, programa, pruebas):
         self.cargar(programa)
         for s in programa:
             if s[0] == "agente":
@@ -949,6 +1104,7 @@ class Interprete:
                 continue
             self.reiniciar_agentes()
             self.errores_agentes = []
+            self.pasos = 0
             error = None
             try:
                 self.bloque(s[3], Entorno(self.glob))
@@ -967,6 +1123,8 @@ class Interprete:
             try:
                 self.entregar(rem, dest, msg, pregunta=False)
             except ErrorMate as e:
+                if e.clase == "limite":  # el freno corta todo el programa, no un solo mensaje
+                    raise
                 donde = f" (línea {e.linea})" if e.linea else ""
                 self.errores_agentes.append(
                     f"{dest.nombre} al recibir {msg.tipo}{donde}: {e.mensaje}")
@@ -990,7 +1148,7 @@ class Interprete:
         env = Entorno(dest.env)
         if var:
             env.definir(var, msg)
-        previo, self.contexto, dest.ocupado = self.contexto, (dest, rem), True
+        previo, self.contexto, dest.ocupado = self.contexto, (dest, rem, msg.tipo), True
         respondio, valor = False, None
         try:
             self.bloque(cuerpo, env, nuevo=False)
@@ -1038,7 +1196,22 @@ class Interprete:
             raise ErrorMate(f"la condición tiene que ser verdadero o falso, no {nombre_tipo(v)}")
         return v
 
+    def contar_paso(self, linea):
+        """El freno para los programas que nunca terminan."""
+        self.pasos += 1
+        if self.max_pasos is not None and self.pasos > self.max_pasos:
+            tope = f"{self.max_pasos:,}".replace(",", ".")
+            tope += " de pasos" if self.max_pasos % 1_000_000 == 0 else " pasos"
+            quien = (f"{self.contexto[0].nombre} atendiendo {self.contexto[2]}: "
+                     if self.contexto else "")
+            raise ErrorMate(
+                f"{quien}el programa lleva más de {tope}: ¿quedó en un bucle que nunca "
+                "termina? Revisá que la condición del 'mientras' cambie adentro",
+                linea, clase="limite")
+
     def ejecutar(self, s, env):
+        self.linea_actual = s[1]
+        self.contar_paso(s[1])
         try:
             self._ejecutar(s, env)
         except ErrorMate as e:
@@ -1064,12 +1237,14 @@ class Interprete:
                 self.bloque(s[3], env)
         elif clase == "mientras":
             while self.condicion(s[2], env):
+                self.contar_paso(s[1])  # una vuelta cuenta aunque el cuerpo esté vacío
                 self.bloque(s[3], env)
         elif clase == "para":
             col = self.ev(s[3], env)
             if not isinstance(col, (list, dict, str)):
                 raise ErrorMate(f"no se puede recorrer {nombre_tipo(col)}")
             for x in list(col):
+                self.contar_paso(s[1])
                 paso = Entorno(env)
                 paso.definir(s[2], x)
                 self.bloque(s[4], paso, nuevo=False)
@@ -1091,6 +1266,8 @@ class Interprete:
             try:
                 self.bloque(s[2], env)
             except ErrorMate as e:
+                if e.clase == "limite":  # el freno no se puede atajar
+                    raise
                 manejo = Entorno(env)
                 if s[3]:
                     manejo.definir(s[3], e.mensaje)
@@ -1108,6 +1285,8 @@ class Interprete:
         if clase == "nombre":
             env.asignar(destino[2], valor)
             return
+        if clase not in ("indice", "campo"):
+            raise ErrorMate(NO_ASIGNABLE)
         base = self.ev(destino[2], env)
         if clase == "indice":
             clave = self.ev(destino[3], env)
@@ -1116,12 +1295,11 @@ class Interprete:
                 nueva = list(base)
                 nueva[clave] = valor
             elif isinstance(base, dict):
-                if not isinstance(clave, str):
-                    raise ErrorMate("las claves de un mapa son textos")
+                self.clave_de_mapa(clave)
                 nueva = {**base, clave: valor}
             else:
                 raise ErrorMate(f"no se puede asignar por índice en {nombre_tipo(base)}")
-        else:
+        elif clase == "campo":
             campo = destino[3]
             if isinstance(base, dict):
                 nueva = {**base, campo: valor}
@@ -1129,7 +1307,13 @@ class Interprete:
                 nueva = self.construir(base.tipo, {**base.campos, campo: valor})
             else:
                 raise ErrorMate(f"{nombre_tipo(base)} no tiene campos")
+        else:
+            raise ErrorMate(NO_ASIGNABLE)
         self.asignar(destino[2], nueva, env)
+
+    def clave_de_mapa(self, clave):
+        if not isinstance(clave, str):
+            raise ErrorMate(f"las claves de un mapa son textos, no {nombre_tipo(clave)}")
 
     def posicion(self, sec, i):
         if type(i) is not int:
@@ -1188,6 +1372,7 @@ class Interprete:
                 self.posicion(base, i)
                 return base[i]
             if isinstance(base, dict):
+                self.clave_de_mapa(i)
                 if i not in base:
                     raise ErrorMate(f"el mapa no tiene la clave {formato(i, False)}")
                 return base[i]
@@ -1207,6 +1392,15 @@ class Interprete:
         raise ErrorMate(f"expresión desconocida: {clase}")
 
     def binaria(self, op, a, b):
+        try:
+            r = self._binaria(op, a, b)
+        except OverflowError:
+            raise ErrorMate(DEMASIADO_GRANDE)
+        if type(r) is float and not math.isfinite(r):
+            raise ErrorMate(DEMASIADO_GRANDE)
+        return r
+
+    def _binaria(self, op, a, b):
         if op == "==":
             return igual(a, b)
         if op == "!=":
@@ -1253,28 +1447,190 @@ class Interprete:
 # ───────────────────────────── CLI ─────────────────────────────
 
 
+def simbolo(s, reemplazo):
+    """Devuelve s si la consola lo puede mostrar; si no, el reemplazo en letras comunes."""
+    try:
+        s.encode(getattr(sys.stdout, "encoding", None) or "utf-8")
+        return s
+    except (UnicodeError, LookupError):
+        return reemplazo
+
+
+def texto_de_ayuda():
+    if os.name == "nt":
+        ejemplo = "python mate\\mate.py correr mate\\ejemplos\\hola.mate"
+    else:
+        ejemplo = "python3 mate/mate.py correr mate/ejemplos/hola.mate"
+    return "\n".join([
+        f"Mate {VERSION}: un lenguaje chico, con palabras en español.",
+        "",
+        "Órdenes:",
+        "  correr    archivo.mate   corre el programa",
+        "  probar    archivo.mate   corre las pruebas que el programa trae adentro",
+        "  verificar archivo.mate   revisa el programa sin correrlo",
+        "  ayuda                    muestra esta ayuda",
+        "",
+        "Opciones:",
+        "  --traza       muestra la conversación entre agentes, mensaje por mensaje",
+        "  --sin-limite  no corta los programas que dan muchísimos pasos",
+        "  --depurar     si Mate falla por dentro, muestra el detalle técnico",
+        "  --version     dice qué versión de Mate es",
+        "",
+        "Un ejemplo listo para copiar:",
+        f"  {ejemplo}",
+    ])
+
+
+def _ubicar(ruta):
+    """Busca el archivo a correr. Devuelve (ruta, None) o (None, explicación)."""
+    if os.path.isfile(ruta):
+        return ruta, None
+    if os.path.isfile(ruta + ".mate"):
+        return ruta + ".mate", None
+    if os.path.isdir(ruta):
+        return None, f"'{ruta}' es una carpeta, no un archivo .mate"
+    nombre = os.path.basename(ruta)
+    if os.path.isfile(ruta + ".txt"):
+        return None, (f"encontré {nombre}.txt: el Bloc de notas le agregó .txt. "
+                      "Renombralo, o al guardar elegí Tipo: Todos los archivos")
+    if os.path.exists(ruta):
+        return ruta, None  # algo raro (ni archivo ni carpeta): que lo diga al abrirlo
+    carpeta = os.path.dirname(os.path.abspath(ruta))
+    texto = f"no encuentro '{nombre}' en {carpeta}"
+    try:
+        otros = sorted(a for a in os.listdir(carpeta) if a.lower().endswith(".mate"))
+    except OSError:
+        return None, texto + " (esa carpeta no existe)"
+    if otros:
+        texto += "\narchivos .mate que sí hay ahí: " + ", ".join(otros[:10])
+        texto += ", ..." if len(otros) > 10 else ""
+    return None, texto
+
+
 def main(argv=None):
-    argv = sys.argv[1:] if argv is None else argv
-    opciones = [a for a in argv if a.startswith("--")]
-    args = [a for a in argv if not a.startswith("--")]
-    if len(args) != 2 or args[0] not in ("correr", "probar", "verificar"):
-        print(__doc__.strip())
+    argv = list(sys.argv[1:] if argv is None else argv)
+    for flujo in (sys.stdout, sys.stderr):
+        try:  # que una consola vieja de Windows no rompa por un símbolo que no conoce
+            flujo.reconfigure(errors="replace")
+        except Exception:
+            pass
+    depurar = any(a.lower() == "--depurar" for a in argv)
+    donde = {"ruta": None, "interprete": None}
+
+    def lugar():
+        linea = getattr(donde["interprete"], "linea_actual", None)
+        if not linea:
+            return None
+        return f"{getattr(linea, 'archivo', None) or donde['ruta']}:{linea}"
+
+    def avisar(texto):
+        print(texto, file=sys.stderr)
+
+    # Red de seguridad: pase lo que pase, nunca un error interno de Python en inglés.
+    try:
+        return _main(argv, donde)
+    except BrokenPipeError:  # la salida iba a otro programa que dejó de leer (| more)
+        try:
+            os.dup2(os.open(os.devnull, os.O_WRONLY), sys.stdout.fileno())
+        except Exception:
+            pass
+        return 1
+    except KeyboardInterrupt:
+        if lugar():
+            avisar(f"{lugar()}: cortado con Ctrl+C mientras corría esta línea")
+        else:
+            avisar("cortaste el programa con Ctrl+C")
+        return 130
+    except RecursionError:
+        if depurar:
+            raise
+        antes = f"{donde['ruta']}: " if donde["ruta"] else ""
+        avisar(f"{antes}error: el programa tiene demasiados niveles anidados "
+               "(paréntesis, bloques o llamadas)")
+        return 1
+    except Exception as e:
+        if depurar:
+            raise
+        avisar(f"error interno de Mate (no es culpa tuya): {type(e).__name__}: {e}")
+        if lugar():
+            avisar(f"pasó cerca de {lugar()}")
+        avisar("corré de nuevo con --depurar para ver el detalle")
+        return 1
+
+
+def _main(argv, donde):
+    def avisar(texto):
+        print(texto, file=sys.stderr)
+
+    alias = {"-h": "--ayuda", "--help": "--ayuda", "-?": "--ayuda", "/?": "--ayuda"}
+    opciones, args = set(), []
+    for a in argv:
+        if a.lower() in alias:
+            opciones.add(alias[a.lower()])
+        elif a.startswith("-") and a != "-":
+            if a.lower() not in OPCIONES:
+                parecidas = difflib.get_close_matches(a.lower(), OPCIONES, 1)
+                avisar(f"no conozco la opción {a}" + (
+                    f", ¿quisiste decir {parecidas[0]}?" if parecidas
+                    else ". Las opciones son: " + ", ".join(OPCIONES)))
+                return 2
+            opciones.add(a.lower())
+        else:
+            args.append(a)
+
+    if "--version" in opciones:
+        print(f"Mate {VERSION} (Python {sys.version_info[0]}.{sys.version_info[1]})")
+        return 0
+    if "--ayuda" in opciones or [a.lower() for a in args] == ["ayuda"]:
+        print(texto_de_ayuda())
+        return 0
+    if not args:
+        print(texto_de_ayuda())
         return 2
-    orden, ruta = args
+
+    if len(args) == 1 and args[0].lower().endswith(".mate"):
+        args = ["correr"] + args  # 'mate.py hola.mate' es 'mate.py correr hola.mate'
+    orden, archivos = args[0].lower(), args[1:]
+    if orden not in ORDENES:
+        parecidas = difflib.get_close_matches(orden, ORDENES + ("ayuda",), 1)
+        avisar(f"no conozco la orden '{args[0]}'" + (
+            f", ¿quisiste decir '{parecidas[0]}'?" if parecidas
+            else ". Las órdenes son: correr, probar, verificar y ayuda"))
+        return 2
+    if not archivos:
+        avisar(f"a '{orden}' le falta el archivo, por ejemplo: {orden} hola.mate")
+        return 2
+    if len(archivos) > 1:
+        avisar(f"'{orden}' lleva un solo archivo y recibió {len(archivos)}: "
+               + ", ".join(archivos)
+               + " (si el nombre tiene espacios, ponelo entre comillas)")
+        return 2
+
+    ruta, problema = _ubicar(archivos[0])
+    if problema:
+        avisar(problema)
+        return 2
+    donde["ruta"] = ruta
 
     def reportar(linea, texto):
         archivo = getattr(linea, "archivo", None) or ruta
-        print(f"{archivo}:{linea}: error: {texto}" if linea else f"{archivo}: error: {texto}",
-              file=sys.stderr)
+        avisar(f"{archivo}:{linea}: error: {texto}" if linea else f"{archivo}: error: {texto}")
+
+    if simbolo("·→", ""):
+        salida = print
+    else:  # consola que no conoce esos símbolos: la traza se escribe con letras comunes
+        def salida(texto):
+            print(texto.replace("→", "->").replace("·", "-"))
 
     try:
-        with open(ruta, encoding="utf-8-sig") as f:
-            fuente = f.read()
-    except OSError as e:
-        print(f"no pude abrir {ruta}: {e.strerror}", file=sys.stderr)
-        return 2
-
-    try:
+        try:
+            fuente = leer_fuente(ruta)
+        except PermissionError:
+            avisar(f"no pude abrir {ruta}: no tengo permiso para leerlo")
+            return 2
+        except OSError:
+            avisar(f"no pude abrir {ruta}")
+            return 2
         programa = analizar(fuente, ruta)
         errores = verificar(programa)
         if errores:
@@ -1284,18 +1640,21 @@ def main(argv=None):
         if orden == "verificar":
             print(f"{ruta}: sin errores")
             return 0
-        interprete = Interprete(traza="--traza" in opciones)
+        interprete = donde["interprete"] = Interprete(salida=salida, traza="--traza" in opciones)
+        if "--sin-limite" in opciones:
+            interprete.max_pasos = None
         resultados = interprete.correr(programa, pruebas=orden == "probar")
     except ErrorMate as e:
         reportar(e.linea, e.mensaje)
         return 1
 
     for texto in interprete.errores_agentes if orden == "correr" else []:
-        print(f"{ruta}: error en agente: {texto}", file=sys.stderr)
+        avisar(f"{ruta}: error en agente: {texto}")
     if orden == "probar":
         fallidas = 0
+        bien, mal = simbolo("✓", "OK"), simbolo("✗", "FALLA")
         for nombre, error in resultados:
-            print(f"  {'✗' if error else '✓'} {nombre}" + (f"\n      {error}" if error else ""))
+            print(f"  {mal if error else bien} {nombre}" + (f"\n      {error}" if error else ""))
             fallidas += bool(error)
         print(f"{len(resultados) - fallidas} de {len(resultados)} pruebas pasaron")
         return 1 if fallidas else 0

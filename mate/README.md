@@ -23,6 +23,49 @@ python3 mate/mate.py probar mate/ejemplos/negociacion.mate
 python3 mate/mate.py verificar mate/ejemplos/negociacion.mate
 ```
 
+En Windows (PowerShell) es lo mismo con `python` y barras al revés:
+
+```
+python mate\mate.py correr mate\ejemplos\hola.mate
+```
+
+## La línea de comandos
+
+| Qué escribís | Qué hace |
+|---|---|
+| `correr archivo.mate` | corre el programa (también alcanza con poner solo `archivo.mate`) |
+| `probar archivo.mate` | corre las pruebas que el programa trae adentro |
+| `verificar archivo.mate` | revisa el programa sin correrlo |
+| `ayuda` | muestra las órdenes y un ejemplo listo para copiar |
+| `--traza` | muestra la conversación entre agentes, mensaje por mensaje |
+| `--sin-limite` | no corta los programas que dan muchísimos pasos |
+| `--depurar` | si Mate falla por dentro, muestra el detalle técnico |
+| `--version` | dice qué versión de Mate es |
+
+Si te equivocás al tipear, Mate te lo dice en vez de seguir de largo: `corer` sugiere `correr`,
+`--trasa` sugiere `--traza`, y si el archivo no está te muestra los `.mate` que sí hay en esa
+carpeta. Si el Bloc de notas lo guardó como `hola.mate.txt`, también te avisa.
+
+## Cuando algo sale mal
+
+Mate nunca debería mostrarte un error de Python en inglés:
+
+- **Archivos del Bloc de notas**: se leen guardados como UTF-8, "Unicode" o ANSI, con o sin `ñ`.
+- **Cosas pegadas desde Word o WhatsApp**: las comillas curvas `“así”` y los espacios raros se
+  aceptan como los comunes.
+- **Costumbres de otros lenguajes**: para `;`, `&&`, `||`, `!`, `//`, comillas simples o un texto
+  sin cerrar, el error explica cómo se escribe en Mate.
+- **Programas que nunca terminan**: después de 10.000.000 de pasos Mate corta y dice en qué
+  renglón estaba (un `mientras` cuya condición nunca cambia, casi siempre). Ese corte no se
+  puede atajar con `intentar`. Con `--sin-limite` se desactiva.
+- **Ctrl+C** corta el programa y dice en qué renglón iba.
+- **Números imposibles**: una cuenta que da un número demasiado grande es un error con su
+  renglón, y `numero("inf")` o `numero("nan")` no se aceptan.
+- **Consolas viejas de Windows**: si no pueden mostrar `✓`, `✗` o `→`, Mate escribe `OK`,
+  `FALLA` y `->`.
+- Si igual aparece "error interno de Mate", no es culpa tuya: corré de nuevo con `--depurar`
+  y guardá lo que muestra.
+
 ## Un ejemplo
 
 ```
@@ -69,7 +112,9 @@ prueba "cotiza precio por cantidad" {
 - `enviar Mensaje { ... } a Agente` lo deja en la cola y sigue (asíncrono).
 - `preguntar Mensaje { ... } a Agente` espera y devuelve la respuesta. Si el otro agente falla,
   el error le llega al que preguntó.
-- `responder valor` contesta al `remitente` y termina de atender ese mensaje.
+- `responder valor` contesta al `remitente` y termina de atender ese mensaje. Solo va dentro de
+  `al recibir` (o de una función del agente); `devolver` va dentro de una función, o dentro de
+  `al recibir` para terminar sin contestar. Fuera de lugar, Mate lo avisa antes de correr.
 - `yo` es el agente que está atendiendo; sirve para mandarse a sí mismo dentro de un mensaje.
 - `--traza` muestra la conversación entera, mensaje por mensaje.
 - `a_json(mensaje)` y `de_json(texto)` pasan los mensajes a JSON y de vuelta, validando el contrato.
@@ -120,6 +165,10 @@ Funciones incluidas: `mostrar`, `largo`, `texto`, `numero`, `tipo`, `tiene`, `cl
 
 Los nombres de mensajes y agentes empiezan con mayúscula; el resto, con minúscula.
 
+Detalles: `partir("abc", "")` separa letra por letra; `redondear(3.14159, 2)` lleva una cantidad
+entera de decimales; las claves de un mapa son siempre textos (`tiene(mapa, [1])` da `falso`);
+solo se puede asignar a una variable o a una parte de ella (`x`, `x.campo`, `x[0]`).
+
 ## Límites de la versión 0.2
 
 - Los agentes corren todos dentro del mismo programa, de a uno y en orden (por eso el resultado
@@ -131,5 +180,5 @@ Los nombres de mensajes y agentes empiezan con mayúscula; el resto, con minúsc
 ## Pruebas del intérprete
 
 ```bash
-python3 -m pytest mate/pruebas -q
+python3 -m pytest mate/pruebas -q -p no:cacheprovider
 ```
