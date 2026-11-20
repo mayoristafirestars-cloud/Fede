@@ -1175,7 +1175,7 @@ def main(argv=None):
               file=sys.stderr)
 
     try:
-        with open(ruta, encoding="utf-8") as f:
+        with open(ruta, encoding="utf-8-sig") as f:
             fuente = f.read()
     except OSError as e:
         print(f"no pude abrir {ruta}: {e.strerror}", file=sys.stderr)
