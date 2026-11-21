@@ -53,6 +53,15 @@ con el número de renglón:
 Se arregla poniendo las comillas: `mostrar("Hola")`. En el Bloc de notas, `Ctrl+G` te
 lleva al renglón que dice el error.
 
+El otro tropiezo del primer día no es de Mate. Si al correr sale esto, en inglés:
+
+    python: can't open file 'C:\...\mate\mate\mate.py': [Errno 2] No such file or directory
+
+es Python avisando que no encuentra `mate.py`, porque PowerShell está parado en otra
+carpeta: casi siempre, adentro de la carpeta `mate` en vez de al lado. Escribí `cd ..`
+para salir un nivel y corré de nuevo. (Con `dir` tenés que ver `mate` en la lista, como
+una carpeta más.)
+
 ## Ejercicio
 
 Hacé un programa tuyo que muestre tu nombre y cuántos minutos tiene un día.

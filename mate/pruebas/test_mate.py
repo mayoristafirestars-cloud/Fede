@@ -827,7 +827,8 @@ def test_pesos_muestra_plata():
     }
     for expresion, esperado in casos.items():
         assert mostrado(expresion) == esperado, expresion
-    assert falla('pesos("hola")').mensaje == "pesos() espera numero y recibió texto"
+    assert falla('pesos("hola")').mensaje.startswith(
+        'pesos() espera numero y recibió texto ("hola"). Si viene de una planilla')
     assert "entre 0 y 6" in falla("pesos(1, 7)").mensaje
 
 
@@ -5817,8 +5818,8 @@ def test_la_memoria_se_guarda_aunque_el_programa_termine_con_error(tmp_path, cap
     cortado = CUENTA_CLIENTES + 'enviar Llego { quien: "a" } a Mostrador\n' \
                          'mostrar(preguntar Cuantos {} a Mostrador)\nsea x = leer("¿Seguimos?")'
     codigo, salida, err = por_main(tmp_path, capsys, cortado)
-    # (desde la 0.5, Ctrl+C en un leer() es un final prolijo: sin error y con la memoria guardada)
-    assert (codigo, salida, err) == (0, f"3\n\n{mate.CORTE_EN_EL_TECLADO}\n", "")
+    # (desde la 0.5, Ctrl+C en un leer() se avisa sin cartel de error; el código sigue en 130)
+    assert (codigo, salida, err) == (130, "3\n", f"\n{mate.CORTE_EN_EL_TECLADO}\n")
     assert memoria_de(tmp_path)["agentes"]["Mostrador"]["estado"] == {"atendidos": 3}
 
 
@@ -7283,7 +7284,7 @@ def test_una_opcion_parecida_a_borrar_se_sugiere(tmp_path, capsys):
     codigo, _, err = orden_mate(capsys, "correr", programa, "--olvidr")
     assert err == "no conozco la opción --olvidr, ¿quisiste decir --olvidar?\n"
     codigo, _, err = orden_mate(capsys, "correr", programa, "--xyz")
-    assert codigo == 2 and err.rstrip().endswith("--sin-registro, --borrar")
+    assert codigo == 2 and err.rstrip().endswith("--sin-registro, --borrar, --guardar")
 
 
 def test_un_renglon_danado_no_rompe_las_tildes_de_los_demas(tmp_path, con_registro):
@@ -8297,8 +8298,7 @@ def test_ctrl_c_en_la_charla_termina_prolijo_y_guarda_la_memoria(tmp_path, capsy
     """
     con_teclado(monkeypatch, ["yerba", "pan", KeyboardInterrupt()])
     codigo, salida, err = por_main(tmp_path, capsys, programa)
-    assert (codigo, err) == (0, "")
-    assert salida == f"1\n2\n\n{mate.CORTE_EN_EL_TECLADO}\n"
+    assert (codigo, salida, err) == (130, "1\n2\n", f"\n{mate.CORTE_EN_EL_TECLADO}\n")
     assert memoria_de(tmp_path)["agentes"]["Mostrador"]["estado"] == {"atendidos": 2}
     # la próxima corrida sigue la cuenta
     con_teclado(monkeypatch, ["azúcar", "chau"])
@@ -8347,9 +8347,8 @@ def test_el_ejemplo_del_mostrador_mayorista(tmp_path, capsys, monkeypatch, ia):
     # otra corrida, cortada con Ctrl+C: recuerda las de antes y guarda la nueva
     con_teclado(monkeypatch, ["arroz", KeyboardInterrupt()])
     codigo, salida, err = orden_mate(capsys, "correr", ruta, "--ia-simulada")
-    assert (codigo, err) == (0, "")
+    assert (codigo, err) == (130, f"\n{mate.CORTE_EN_EL_TECLADO}\n")
     assert "   (consulta número 4 desde que abrió el mostrador)" in salida
-    assert salida.endswith(f"\n{mate.CORTE_EN_EL_TECLADO}\n")
     assert memoria_de(tmp_path, "10_mostrador_mayorista")["agentes"]["Mostrador"]["estado"] == {
         "atendidos": 4}
     assert len((tmp_path / "consultas_atendidas.txt").read_bytes().splitlines()) == 4
@@ -8583,8 +8582,8 @@ def test_los_frenos_mal_escritos_se_avisan_antes_de_correr(frenos, esperado):
 
 @pytest.mark.parametrize("regla,esperado", [
     ("largo: cuanto", "en los frenos de A, 'largo' recibió un texto y lleva otra cosa"),
-    ("largo: 0", "'largo' lleva un número entero mayor que cero y recibió 0"),
-    ("consultas_por_dia: 2.5", "'consultas_por_dia' lleva un número entero y recibió 2.5"),
+    ("largo: cero", "'largo' lleva un número entero mayor que cero y recibió 0"),
+    ("consultas_por_dia: dos_y_medio", "'consultas_por_dia' lleva un número entero y recibió 2.5"),
     ("prohibido: [1, 2]", "'prohibido' lleva una lista de textos"),
     ("prohibido: [\"\"]", "'prohibido' lleva una lista de textos"),
     ("reserva: vacio", "'reserva' está vacía"),
@@ -8597,6 +8596,7 @@ def test_un_freno_con_un_valor_que_no_va_falla_al_consultar_y_dice_el_renglon(re
         agente A {
             estado cuanto = "mucho"
             estado vacio = "  "
+            estado numeros = [0, 2.5]
             frenos {
                 reserva: "x"
                 %s
@@ -8604,13 +8604,13 @@ def test_un_freno_con_un_valor_que_no_va_falla_al_consultar_y_dice_el_renglon(re
             al recibir Ver { responder consultar_ia("", "hola", "Hola.") }
         }
         prueba "p" { mostrar(preguntar Ver {} a A) }
-    """ % regla
+    """ % regla.replace("cero", "numeros[0]").replace("dos_y_medio", "numeros[1]")
     if regla.startswith("reserva"):
         fuente = fuente.replace('reserva: "x"\n', "")
     programa = mate.analizar(fuente)
     assert mate.verificar(programa) == []
     (_, error), = mate.Interprete().correr(programa, pruebas=True)
-    assert esperado in error and ("línea 7" in error or "línea 8" in error), error
+    assert esperado in error and ("línea 8" in error or "línea 9" in error), error
 
 
 def test_la_reserva_que_queda_en_nada_es_un_error_claro():
@@ -9465,3 +9465,577 @@ def test_el_readme_arranca_por_que_es_como_se_instala_y_por_donde_empezar(tmp_pa
     assert "  curso  " in ayuda and "  curso 1  " in ayuda
     assert max(len(r) for r in ayuda.splitlines()) <= 100
     assert "mate.py curso" in mate.__doc__ and mate.VERSION == "0.5"
+
+
+# ───────────────────── Correcciones de la revisión de la 0.5 (mejora 120) ─────────────────────
+
+def test_la_consulta_cobrada_que_termina_en_error_cuenta_para_el_tope(tmp_path, capsys, ia):
+    # Una respuesta cortada, sin texto o frenada por un filtro llegó con código 200: Anthropic
+    # la cobra. Tiene que sumar a la cuenta del día, y el tope tiene que frenar las siguientes.
+    ia.respuestas = [dice("cortada a la mit", motivo="max_tokens"), dice(""),
+                     dice("x", motivo="refusal"), dice("Hola.")]
+    fuente = CON_FRENOS % "consultas_por_dia: 2\n        tokens_por_dia: 1000" + """
+        para i en rango(6) {
+            intentar { mostrar(consultar("pregunta {i}")) } si falla e { mostrar("falló") }
+        }
+    """
+    codigo, salida, err = por_main(tmp_path, capsys, fuente)
+    assert codigo == 0 and len(ia.pedidos) == 2  # ni una más que el tope
+    assert salida.splitlines() == ["falló", "falló"] + [RESERVA] * 4
+    assert memoria_de(tmp_path)["agentes"]["Mostrador"]["gasto"] == {
+        hoy_iso(): {"consultas": 2, "simuladas": 0, "tokens": 24}}
+    assert "llegó a su tope (ya hizo 2 consulta(s) a la IA hoy y su tope es 2 por día)" in err
+    # lo que no llegó a cobrarse (un error del servicio, o sin red) no se cuenta
+    (tmp_path / "programa.memoria.json").unlink()
+    ia.respuestas = [error_http(400, mensaje="no"), dice("Hola.")]
+    codigo, salida, err = por_main(tmp_path, capsys, fuente)
+    assert salida.splitlines() == ["falló", "Hola.", "Hola."] + [RESERVA] * 3
+    assert memoria_de(tmp_path)["agentes"]["Mostrador"]["gasto"][hoy_iso()]["consultas"] == 2
+
+
+def test_al_llegar_al_tope_avisa_en_pantalla_una_vez(tmp_path, capsys, ia):
+    fuente = CON_FRENOS % "consultas_por_dia: 1" + """
+        mostrar(consultar("uno"))
+        mostrar(consultar("dos"))
+        mostrar(consultar("tres"))
+    """
+    codigo, salida, err = por_main(tmp_path, capsys, fuente)
+    assert (codigo, salida) == (0, f"Sí, hay yerba.\n{RESERVA}\n{RESERVA}\n")
+    assert err.count("aviso:") == 1 and err.startswith(
+        "aviso: Mostrador llegó a su tope (ya hizo 1 consulta(s) a la IA hoy y su tope es 1 "
+        "por día). Desde ahora contesta con el texto de reserva, sin consultar. Mañana vuelve "
+        "a consultar sola. El tope se cambia en los 'frenos' del agente, y la cuenta se ve con:")
+    assert f"bitacora {tmp_path / 'programa.mate'}" in err
+    # --olvidar no borra la cuenta de las consultas de verdad (es plata): sigue frenado
+    codigo, salida, err = por_main(tmp_path, capsys, fuente, "--olvidar")
+    assert salida == f"{RESERVA}\n" * 3 and len(ia.pedidos) == 1
+    # borrar el archivo de memoria sí la reinicia
+    (tmp_path / "programa.memoria.json").unlink()
+    codigo, salida, err = por_main(tmp_path, capsys, fuente)
+    assert salida.startswith("Sí, hay yerba.\n") and len(ia.pedidos) == 2
+
+
+def test_en_un_ensayo_el_tope_cuenta_solo_esa_corrida(tmp_path, capsys):
+    # El mismo ensayo (--ia-simulada) da lo mismo todas las veces que se corra en el día:
+    # así el curso no "se rompe" a la corrida número once.
+    fuente = CON_FRENOS % "consultas_por_dia: 2" + """
+        mostrar(consultar("uno"))
+        mostrar(consultar("dos"))
+        mostrar(consultar("tres"))
+    """
+    for vuelta in range(3):
+        codigo, salida, err = por_main(tmp_path, capsys, fuente, "--ia-simulada")
+        assert (codigo, salida) == (0, f"Hola.\nHola.\n{RESERVA}\n"), vuelta
+        assert err.startswith(
+            "aviso: Mostrador llegó a su tope (ya hizo 2 consulta(s) simuladas a la IA en esta "
+            "corrida y su tope es 2 por día). Desde ahora contesta con el texto de reserva, sin "
+            "consultar. Es un ensayo: en la próxima corrida con --ia-simulada la cuenta "
+            "arranca de cero.") and err.count("aviso:") == 1
+    assert memoria_de(tmp_path)["agentes"]["Mostrador"]["gasto"][hoy_iso()]["simuladas"] == 6
+
+
+def test_el_curso_da_lo_mismo_aunque_se_corra_muchas_veces_en_el_dia(tmp_path, capsys):
+    import shutil
+    shutil.copytree(RAIZ / "curso", tmp_path / "curso")
+    clase = str(tmp_path / "curso" / "clase_10_frenos.mate")
+    salidas = set()
+    for _ in range(12):  # (cada corrida hace 5 consultas simuladas y el tope es 50)
+        capsys.readouterr()
+        assert mate.main(["correr", clase, "--ia-simulada"]) == 0
+        salidas.add(capsys.readouterr().out)
+    assert len(salidas) == 1 and "Mostrador: La yerba sale $ 3.500." in salidas.pop()
+
+
+def test_guardar_la_memoria_no_pisa_lo_que_anoto_otra_ventana(tmp_path, capsys, monkeypatch):
+    # Con la charla abierta, desde otra ventana se corrige al agente y corre otra charla.
+    fuente = CON_FRENOS % "consultas_por_dia: 40" + """
+        var seguir = verdadero
+        mientras seguir {
+            sea t = leer("Cliente:", "chau")
+            si t == "chau" { seguir = falso } sino { mostrar(consultar(t)) }
+        }
+    """
+    archivo = tmp_path / "programa.mate"
+    archivo.write_text(fuente, encoding="utf-8")
+    tecleado = iter(["a", "b", "OTRA VENTANA", "c", "chau"])
+
+    def teclear(_pregunta):
+        dicho = next(tecleado)
+        if dicho != "OTRA VENTANA":
+            return dicho
+        assert mate.main(["corregir", str(archivo), "Mostrador", "No hay envíos los domingos"]) == 0
+        otra = iter(["x", "y", "z", "chau"])
+        monkeypatch.setattr(mate, "por_teclado", lambda _p: next(otra))
+        assert mate.main(["correr", str(archivo), "--ia-simulada"]) == 0
+        monkeypatch.setattr(mate, "por_teclado", teclear)
+        return next(tecleado)
+
+    monkeypatch.setattr(mate, "por_teclado", teclear)
+    assert mate.main(["correr", str(archivo), "--ia-simulada"]) == 0
+    ficha = memoria_de(tmp_path)["agentes"]["Mostrador"]
+    assert [leccion["texto"] for leccion in ficha["lecciones"]] == ["No hay envíos los domingos"]
+    assert ficha["gasto"][hoy_iso()]["simuladas"] == 6
+
+
+def test_el_tope_de_verdad_es_uno_solo_aunque_haya_dos_ventanas(tmp_path, capsys, ia,
+                                                               monkeypatch):
+    import json
+    fuente = CON_FRENOS % "consultas_por_dia: 3" + """
+        mostrar(consultar("uno"))
+        sea t = leer("Cliente:", "x")
+        mostrar(consultar("dos"))
+        mostrar(consultar("tres"))
+    """
+
+    def otra_ventana(_pregunta):  # mientras espera, otra corrida gasta 2 y se anota una lección
+        memoria = memoria_de(tmp_path)
+        ficha = memoria["agentes"]["Mostrador"]
+        ficha["gasto"][hoy_iso()]["consultas"] += 2
+        ficha["gasto"][hoy_iso()]["tokens"] += 100
+        ficha["lecciones"].append({"fecha": "", "texto": "Los lunes no hay pan"})
+        (tmp_path / "programa.memoria.json").write_text(json.dumps(memoria), encoding="utf-8")
+        return "sigo"
+
+    monkeypatch.setattr(mate, "por_teclado", otra_ventana)
+    codigo, salida, err = por_main(tmp_path, capsys, fuente)
+    assert (codigo, salida) == (0, f"Sí, hay yerba.\n{RESERVA}\n{RESERVA}\n")
+    assert len(ia.pedidos) == 1 and "llegó a su tope (ya hizo 3 consulta(s)" in err
+    ficha = memoria_de(tmp_path)["agentes"]["Mostrador"]
+    assert ficha["gasto"][hoy_iso()] == {"consultas": 3, "simuladas": 0, "tokens": 112}
+    assert [leccion["texto"] for leccion in ficha["lecciones"]] == ["Los lunes no hay pan"]
+
+
+def test_fundir_memoria_suma_lo_de_esta_corrida_a_lo_que_dice_el_archivo():
+    dia = "2026-11-21"
+    leida = {"A": {"estado": {"n": 1}, "lecciones": [{"fecha": "", "texto": "vieja"}],
+                   "gasto": {dia: {"consultas": 1, "simuladas": 0, "tokens": 10}}}}
+    nueva = {"A": {"estado": {"n": 2},
+                   "lecciones": [{"fecha": "", "texto": "vieja"}, {"fecha": "", "texto": "mía"}],
+                   "propuestas": [{"fecha": "", "texto": "aprobada afuera", "motivo": ""},
+                                  {"fecha": "", "texto": "propuesta mía", "motivo": ""}],
+                   "gasto": {dia: {"consultas": 3, "simuladas": 1, "tokens": 30}}}}
+    en_disco = {"A": {"estado": {"n": 1},
+                      "lecciones": [{"fecha": "", "texto": "aprobada afuera"}],  # borró 'vieja'
+                      "gasto": {dia: {"consultas": 5, "simuladas": 0, "tokens": 50}}},
+                "B": {"estado": {}, "lecciones": [{"fecha": "", "texto": "de otro"}]}}
+    junta = mate.fundir_memoria(leida, nueva, en_disco)
+    assert junta["B"] == en_disco["B"] and junta["A"]["estado"] == {"n": 2}
+    assert [x["texto"] for x in junta["A"]["lecciones"]] == ["aprobada afuera", "mía"]
+    assert [x["texto"] for x in junta["A"]["propuestas"]] == ["propuesta mía"]
+    assert junta["A"]["gasto"] == {dia: {"consultas": 7, "simuladas": 1, "tokens": 70}}
+    # si esta corrida no cambió nada, queda lo del archivo tal cual
+    assert mate.fundir_memoria(leida, leida, en_disco) == en_disco
+
+
+@pytest.mark.parametrize("respuesta", [
+    "La yerba sale 4000 hoy.", "Sale 4000 x kilo.", "Precio: 4000 x kg",
+    "El kilo sale $ **4.000**.", "Sale $ 3.500, pero te lo dejo a 2.000.", "Total: 9.999",
+    "sale 4000 ahora", "sale 4000 nomás", "sale aprox. 4000", "$ -4000", "USD 40",
+    "40 dólares", "4000.-", "precio de lista 4000", "El precio es **$4000**", "4000 mangos"])
+def test_el_freno_de_precios_ve_las_formas_comunes_de_decir_un_importe(respuesta):
+    frenos = {"precios": {3500.0, 1200.0}}
+    assert [regla for regla, _, _ in mate.reglas_rotas(respuesta, frenos)] == ["precios"]
+
+
+@pytest.mark.parametrize("respuesta", [
+    "La yerba sale 3500 hoy.", "Sale $ **3.500** el kilo", "sale 500 gramos", "vale 300 puntos",
+    "Tenemos 4000 unidades en stock", "sale 1200 el de 500", "cuesta 1200 x kg",
+    "Llamanos al 4555-3500", "sale 2 por 1", "En total son 150 productos", "3500.-",
+    "Abrimos el 21/11/2026 a las 9:30", "sale a las 1500 hs", "Vale 1.200 pesos, 500 g."])
+def test_el_freno_de_precios_no_salta_con_cantidades_ni_con_precios_de_la_lista(respuesta):
+    assert mate.reglas_rotas(respuesta, {"precios": {3500.0, 1200.0}}) == []
+
+
+def test_un_precio_que_quedo_como_texto_se_avisa_y_la_tabla_entiende_mas_formas(
+        tmp_path, capsys):
+    assert [mate.valor_de_celda(c) for c in ["3500.-", "1.200 $", "$ 3.500,-", "1,234.50",
+                                             "consultar", "00123"]] == [
+        3500, 1200, 3500, "1,234.50", "consultar", "00123"]
+    fuente = """
+        mensaje Consulta { pregunta: texto }
+        agente Mostrador {
+            estado filas = [{ producto: "yerba 500", precio: "1,234.50", codigo: "00123" },
+                            { producto: "azucar", precio: 1200 }]
+            frenos { precios: filas  reserva: "FRENADO" }
+            al recibir Consulta como c {
+                responder consultar_ia("", c.pregunta, "La yerba sale $ 1,234.50.")
+            }
+        }
+        mostrar(preguntar Consulta { pregunta: "yerba" } a Mostrador)
+        mostrar(preguntar Consulta { pregunta: "yerba" } a Mostrador)
+    """
+    codigo, salida, err = por_main(tmp_path, capsys, fuente, "--ia-simulada")
+    assert (codigo, salida) == (0, "FRENADO\nFRENADO\n")
+    assert err.count("'precios' trae 1 dato(s) que parecen importes pero no son números") == 1
+    assert '(por ejemplo "1,234.50")' in err and "escribilos como número" in err
+
+
+def test_probar_no_pisa_archivos_de_datos_con_escribir_archivo(tmp_path, capsys):
+    (tmp_path / "pedidos.txt").write_text("pedido real de ayer\n", encoding="utf-8")
+    codigo, salida, err = por_main(tmp_path, capsys, """
+        agregar_a_archivo("pedidos.txt", "principal")
+        prueba "mezcla" {
+            agregar_a_archivo("pedidos.txt", "uno")
+            escribir_archivo("pedidos.txt", "PISADO")
+            asegurar leer_archivo("pedidos.txt") == "PISADO"
+            agregar_a_archivo("pedidos.txt", "dos")
+            asegurar leer_archivo("pedidos.txt") == "PISADO\\ndos\\n"
+            escribir_archivo("nuevo.txt", "hola")
+            asegurar leer_archivo("nuevo.txt") == "hola"
+            asegurar falla { escribir_archivo("nohay/x.txt", "x") }
+        }
+        prueba "cada prueba arranca de lo que dejó el programa" {
+            asegurar leer_archivo("pedidos.txt") == "pedido real de ayer\\nprincipal\\n"
+            asegurar falla { leer_archivo("nuevo.txt") }
+        }
+    """, orden="probar")
+    assert (codigo, err) == (0, "") and "2 de 2 pruebas pasaron" in salida
+    assert (tmp_path / "pedidos.txt").read_text(encoding="utf-8") == "pedido real de ayer\n"
+    assert archivos_de(tmp_path) == ["pedidos.txt", "programa.mate"]
+
+
+def test_usar_python_no_sale_de_la_carpeta_del_programa_por_un_archivo_traido(
+        tmp_path, capsys):
+    afuera, adentro = tmp_path / "afuera", tmp_path / "prog"
+    (adentro / "sub").mkdir(parents=True)
+    afuera.mkdir()
+    (afuera / "mal.py").write_text("def f():\n    return 'AFUERA'\n", encoding="utf-8")
+    (afuera / "lib.mate").write_text(
+        'usar python "mal.py"\nfuncion de_afuera() { devolver mal.f() }\n', encoding="utf-8")
+    codigo, salida, err = por_main(adentro, capsys, 'usar "../afuera/lib.mate"\n'
+                                                    "mostrar(de_afuera())")
+    assert codigo == 1 and "AFUERA" not in salida
+    assert "'usar python' solo trae archivos de la carpeta del programa que se corre" in err
+    assert "(lib.mate) está en otra carpeta" in err and "lib.mate:1: error:" in err
+    # desde una carpeta de adentro sí vale
+    (adentro / "sub" / "bien.py").write_text("def f():\n    return 'adentro'\n", encoding="utf-8")
+    (adentro / "sub" / "lib.mate").write_text(
+        'usar python "bien.py"\nfuncion de_adentro() { devolver bien.f() }\n', encoding="utf-8")
+    codigo, salida, err = por_main(adentro, capsys, 'usar "sub/lib.mate"\nmostrar(de_adentro())')
+    assert (codigo, salida, err) == (0, "adentro\n", "")
+
+
+@pytest.mark.parametrize("nombre,motivo", [
+    ("programa.memoria.json", "ese archivo lo lleva Mate"),
+    ("programa.bitacora.txt", "ese archivo lo lleva Mate"),
+    ("Programa.Memoria.JSON. ", "ese archivo lo lleva Mate"),
+    ("x.pyw", "para no pisar un programa"), ("X.PYW.", "para no pisar un programa")])
+def test_las_funciones_de_archivos_no_escriben_en_lo_que_lleva_mate_ni_en_pyw(
+        tmp_path, capsys, nombre, motivo):
+    for funcion in ("agregar_a_archivo", "escribir_archivo"):
+        codigo, salida, err = por_main(tmp_path, capsys,
+                                       f'{funcion}("{nombre}", "ZZZ")\nmostrar("escribió")')
+        assert codigo == 1 and salida == "" and motivo in err, (funcion, err)
+        assert archivos_de(tmp_path) == ["programa.mate"]
+    # la memoria de OTRO programa es un archivo cualquiera
+    codigo, salida, err = por_main(tmp_path, capsys,
+                                   'escribir_archivo("otro.memoria.json", "x")\nmostrar("sí")')
+    assert (codigo, salida) == (0, "sí\n")
+
+
+@pytest.mark.parametrize("regla,esperado", [
+    ("consultas_por_dia: -5", "'consultas_por_dia' lleva un número entero y dice -5"),
+    ("consultas_por_dia: 2.5", "'consultas_por_dia' lleva un número entero y dice 2.5"),
+    ("tokens_por_dia: -1", "'tokens_por_dia' lleva un número entero y dice -1"),
+    ("largo: 0", "'largo' lleva un número entero mayor que cero y dice 0"),
+    ('reserva: "  "', "'reserva' está vacía"),
+])
+def test_un_valor_fijo_que_no_sirve_en_los_frenos_se_avisa_antes_de_correr(
+        tmp_path, capsys, regla, esperado):
+    fuente = CON_FRENOS.replace('reserva: "Eso te lo confirma una persona, ya te paso."',
+                                "" if regla.startswith("reserva") else 'reserva: "x"')
+    fuente = fuente.replace("largo: 120", "") % regla
+    codigo, salida, err = por_main(tmp_path, capsys, fuente + 'mostrar("no llega a correr")')
+    assert (codigo, salida) == (1, "") and esperado in err
+    assert re.match(r".*programa\.mate:\d+: error: en los frenos de Mostrador", err)
+    assert mate.verificar(mate.analizar(CON_FRENOS % "consultas_por_dia: 0")) == []
+
+
+def test_un_error_al_calcular_los_frenos_no_se_ataja_ni_se_confunde_con_la_ia(tmp_path, capsys):
+    # Como en el mostrador del curso: la consulta va dentro de 'intentar', para cuando no hay
+    # internet. Unos frenos mal escritos no pueden pasar por "la IA no contestó".
+    fuente = """
+        mensaje Consulta { pregunta: texto }
+        funcion solo_precios(filas) {
+            var precios = []
+            para fila en filas { precios = precios + [fila.precios] }
+            devolver precios
+        }
+        agente Mostrador {
+            estado lista = [{ producto: "Yerba", precio: 3500 }]
+            frenos {
+                precios: solo_precios(lista)
+                reserva: "Eso lo ve una persona."
+                %s
+            }
+            al recibir Consulta como c {
+                intentar {
+                    responder consultar_ia("", c.pregunta, "Hola.")
+                } si falla motivo {
+                    responder "(la IA no contestó. Motivo: {motivo})"
+                }
+            }
+        }
+        mostrar(preguntar Consulta { pregunta: "¿Hay yerba?" } a Mostrador)
+        mostrar("sigue atendiendo")
+    """
+    codigo, salida, err = por_main(tmp_path, capsys, fuente % "", "--ia-simulada")
+    assert (codigo, salida) == (1, "")
+    assert "programa.mate:11: error: los frenos de Mostrador están mal escritos: " in err
+    assert "no tiene un campo 'precios'. ¿Quisiste decir 'precio'?" in err
+    assert "unos frenos que fallan no frenan nada" in err and "en solo_precios()" in err
+    bien = fuente.replace("fila.precios", "fila.precio")
+    codigo, salida, err = por_main(tmp_path, capsys, bien % "largo: lista", "--ia-simulada")
+    assert (codigo, salida) == (1, "")
+    assert "programa.mate:13: error: en los frenos de Mostrador, 'largo' recibió una lista" in err
+    codigo, salida, err = por_main(tmp_path, capsys, bien % "", "--ia-simulada")
+    assert (codigo, salida, err) == (0, "Hola.\nsigue atendiendo\n", "")
+
+
+def test_proponer_respeta_el_tope_del_dia_y_cuenta_lo_cobrado_que_fallo(tmp_path, capsys, ia):
+    archivo = tmp_path / "programa.mate"
+    archivo.write_text(CON_FRENOS % "consultas_por_dia: 2", encoding="utf-8")
+    # una respuesta cortada se cobró: entra en la cuenta aunque vaya la redacción fija
+    ia.respuestas = [dice("No ofr", motivo="max_tokens"), dice("No ofrezcas envíos.")]
+    codigo, salida, err = orden_mate(capsys, "proponer", archivo, "Mostrador", "Ofreció envíos")
+    assert codigo == 0 and "porque la IA no contestó: consultar_ia(): la respuesta llegó cortada" \
+        in salida
+    assert memoria_de(tmp_path)["agentes"]["Mostrador"]["gasto"][hoy_iso()] == {
+        "consultas": 1, "simuladas": 0, "tokens": 12}
+    codigo, salida, err = orden_mate(capsys, "proponer", archivo, "Mostrador", "Dijo otra cosa")
+    assert codigo == 0 and "La redactó la IA" in salida and len(ia.pedidos) == 2
+    # ya llegó al tope de hoy: no consulta más, y lo dice
+    codigo, salida, err = orden_mate(capsys, "proponer", archivo, "Mostrador", "Fue seco")
+    assert (codigo, err) == (0, "") and len(ia.pedidos) == 2
+    assert "  3. Una respuesta tuya estuvo mal: Fue seco. No lo repitas." in salida
+    assert ("Es una redacción fija: no consulté a la IA porque Mostrador ya hizo 2 consulta(s) a "
+            "la IA hoy y su tope es 2 por día") in salida
+    assert memoria_de(tmp_path)["agentes"]["Mostrador"]["gasto"][hoy_iso()]["consultas"] == 2
+
+
+def test_cortar_con_ctrl_c_en_leer_termina_con_130_como_en_la_0_4(tmp_path, capsys, monkeypatch):
+    def cortar(_pregunta):
+        raise KeyboardInterrupt
+
+    monkeypatch.setattr(mate, "por_teclado", cortar)
+    codigo, salida, err = por_main(tmp_path, capsys,
+                                   'mostrar("antes")\nsea n = leer("Nombre:")\nmostrar(n)')
+    assert (codigo, salida) == (130, "antes\n")
+    assert err == f"\n{mate.CORTE_EN_EL_TECLADO}\n" and "error" not in err
+
+
+def test_un_titulo_arriba_de_los_encabezados_de_la_planilla_se_explica():
+    with pytest.raises(mate.ErrorMate) as info:
+        mate.tabla_de_texto("Lista de precios Noviembre;;\nproducto;precio;stock\nYerba;3500;4\n",
+                            "precios.csv")
+    mensaje = info.value.mensaje
+    assert mensaje.startswith("leer_tabla(): la primera fila de 'precios.csv' tiene que ser la "
+                              "de los títulos de las columnas")
+    assert '("Lista de precios Noviembre")' in mensaje and "comillas:" not in mensaje
+    assert 'en el renglón 2 ("producto;precio;stock")' in mensaje and "borrá las filas" in mensaje
+    assert "tiene 1 dato y el renglón 2 tiene 3" in mensaje
+    # un renglón con un dato de más sigue teniendo su explicación de siempre
+    with pytest.raises(mate.ErrorMate) as info:
+        mate.tabla_de_texto("producto;precio\nYerba;3500;4\n", "precios.csv")
+    assert "le sobra algo" in info.value.mensaje
+    with pytest.raises(mate.ErrorMate) as info:
+        mate.tabla_de_texto("producto;precio\nYerba;3500\nPan;100;x\n", "precios.csv")
+    assert "le sobra algo" in info.value.mensaje
+
+
+@pytest.mark.parametrize("fuente,esperado", [
+    ('sea dicho = "3"\nmostrar(dicho * 3500)',
+     "no se puede hacer texto * numero. Lo que se lee con leer() o viene de un archivo es un "
+     "texto, aunque tenga cifras: para hacer cuentas pasalo antes a número con numero(...)"),
+    ("sea precio = $ 3500", "los importes se escriben sin el signo $, solo el número: 3500"),
+    ('sea precios = [{ producto: "a" }]\nmostrar(precios.producto)',
+     "lista no tiene campos: es una lista. Para ver 'producto' de uno de sus elementos, pedilo "
+     "primero (por ejemplo lista[0].producto)"),
+    ('sea t = leer_tabla(precios.csv)',
+     "no existe 'precios'. Si precios.csv es el nombre de un archivo, va entre comillas: "
+     '"precios.csv"'),
+    ('sea fila = { Producto: "Yerba" }\nmostrar(fila.producto)',
+     "mapa no tiene un campo 'producto'. ¿Quisiste decir 'Producto'? (las mayúsculas y las "
+     "tildes cuentan. Si este dato viene de una planilla, el título de la columna está escrito "
+     "'Producto'"),
+    ('sea stock = ""\nsi stock == 0 { mostrar(1) }',
+     'Ese texto está vacío: si viene de una planilla, es una celda vacía'),
+    ('sea precio = "consultar"\nsi precio == 0 { mostrar(1) }',
+     'Ese texto no es un número: si viene de una planilla, es una celda que no tiene un número'),
+    ('sea precio = "12"\nsi precio == 12 { mostrar(1) }', 'numero("12") o texto(...)'),
+    ('mensaje C {}\nagente A {\n frenos {\n  reserva: ""texto""\n  largo: 10\n }\n'
+     ' al recibir C { responder 1 }\n}',
+     "en la regla 'reserva' sobra algo después del valor ('texto'). Va una regla por renglón. "
+     "Si es un texto, lleva UNA comilla de cada lado"),
+])
+def test_los_errores_comunes_de_principiante_dicen_como_arreglarlos(fuente, esperado):
+    assert esperado in falla(fuente).mensaje
+    # y lo que estaba bien sigue andando
+    assert correr('sea m = { txt: 1 }\nmostrar(m.txt, "sale $ 3")')[0] == ["1 sale $ 3"]
+    assert mate.verificar(mate.analizar(
+        'mensaje C {}\nagente A {\n frenos { reserva: "x"  largo: 10 }\n'
+        ' al recibir C { responder 1 }\n}')) == []
+
+
+@pytest.mark.parametrize("planilla,esperado", [
+    ("Producto;Precio;Stock\nYerba;3500;4\n",
+     "A precios.csv le falta la columna 'producto'. La primera fila tiene que decir "
+     "producto;precio;stock, en minúscula, y dice: Producto;Precio;Stock."),
+    ("producto;precio;stock\nYerba;3500;4\nAzúcar 1 kg;1200;\n",
+     "En precios.csv, el producto 2 (Azúcar 1 kg) no tiene el stock en números (si no hay, va 0)"),
+    ("producto;precio;stock\nYerba;3500;4\nPan;consultar;2\n",
+     'En precios.csv, el producto 2 (Pan) no tiene el precio en números: dice "consultar".'),
+    ("producto;precio;stock\n", "precios.csv no tiene productos debajo de los títulos."),
+])
+def test_el_mostrador_del_curso_revisa_la_planilla_antes_de_atender(
+        tmp_path, capsys, monkeypatch, planilla, esperado):
+    import shutil
+    for nombre in ("clase_12_mostrador.mate", "clase_12_solucion.mate"):
+        shutil.copy(CURSO / nombre, tmp_path / "programa.mate")
+        (tmp_path / "precios.csv").write_bytes(planilla.replace("\n", "\r\n").encode("cp1252"))
+        monkeypatch.setattr(mate, "por_teclado", lambda _p: "yerba")
+        capsys.readouterr()
+        codigo = mate.main(["correr", str(tmp_path / "programa.mate"), "--ia-simulada"])
+        capturado = capsys.readouterr()
+        assert (codigo, capturado.out) == (1, ""), nombre  # no llegó a decir "cargué N productos"
+        assert esperado in capturado.err and "Corregilo en Excel" in capturado.err, nombre
+
+
+def test_el_mostrador_del_curso_busca_sin_tildes(tmp_path, capsys, monkeypatch):
+    curso = copia_del_curso(tmp_path)
+    tecleado = iter(["azucar", "AZÚCAR", "chau"])
+    monkeypatch.setattr(mate, "por_teclado", lambda _p: next(tecleado))
+    capsys.readouterr()
+    assert mate.main(["correr", str(curso / "clase_12_mostrador.mate"), "--ia-simulada"]) == 0
+    assert capsys.readouterr().out.count("Mostrador: Azúcar 1 kg: $ 1.250,50\n") == 2
+
+
+def test_curso_n_reescribe_los_comandos_para_la_carpeta_donde_esta_la_persona(
+        tmp_path, capsys, monkeypatch):
+    monkeypatch.delenv("MATE_ORDEN", raising=False)
+    # parado al lado de la carpeta mate, sin la orden corta: tal cual (lo prueba otra prueba)
+    # desde otra carpeta: la orden larga con la ruta completa de mate.py, y las rutas enteras
+    monkeypatch.chdir(tmp_path)
+    assert mate.main(["curso", "1"]) == 0
+    salida = capsys.readouterr().out
+    assert salida.startswith("(Los comandos de esta clase están escritos para la carpeta donde "
+                             "estás parado ahora:\nse pueden copiar tal cual.)\n\n# Clase 1: ")
+    assert f"    python {RAIZ / 'mate.py'} correr {CURSO / 'clase_01_hola.mate'}\n" in salida
+    assert "mate\\curso" not in salida and "python mate\\mate.py" not in salida
+    assert f"notepad {CURSO / 'practica.mate'}" in salida
+    # con la orden instalada: 'mate', desde cualquier carpeta
+    monkeypatch.setenv("MATE_ORDEN", "mate")
+    assert mate.main(["curso", "12"]) == 0
+    salida = capsys.readouterr().out
+    assert f"    mate correr {CURSO / 'clase_12_mostrador.mate'} --ia-simulada\n" in salida
+    assert f"    mate probar {CURSO / 'clase_12_mostrador.mate'}\n" in salida
+    assert "python" not in salida.replace("Python", "") and "mate\\" not in salida
+    assert f"`{RAIZ / 'README.md'}`" in salida and f"`{RAIZ / 'ejemplos'}`" in salida
+    # una carpeta con espacios va entre comillas
+    import shutil
+    con_espacio = tmp_path / "mis cosas" / "mate" / "curso"
+    shutil.copytree(CURSO, con_espacio)
+    assert mate.orden_curso(["1"], print, carpeta=con_espacio) == 0
+    import os
+    corta = os.path.join("mis cosas", "mate", "curso", "clase_01_hola.mate")
+    assert f'mate correr "{corta}"' in capsys.readouterr().out
+
+
+def test_guia_e_informe_se_guardan_en_un_archivo_que_el_bloc_de_notas_lee_bien(
+        tmp_path, capsys, monkeypatch):
+    monkeypatch.chdir(tmp_path)
+    codigo, salida, err = orden_mate(capsys, "guia", "--guardar=guia.txt")
+    assert (codigo, err) == (0, "")
+    assert salida == "Quedó guardado en guia.txt. Para abrirlo:  notepad guia.txt\n"
+    crudo = (tmp_path / "guia.txt").read_bytes()
+    assert crudo.startswith(b"\xef\xbb\xbf")  # con la marca: el Bloc de notas muestra las tildes
+    assert crudo.decode("utf-8-sig") == mate.texto_de_guia() + "\n"
+    codigo, salida, err = orden_mate(capsys, "informe", "--para-mejorar",
+                                     '--guardar="para mejorar.txt"')
+    assert (codigo, err) == (0, "") and 'notepad "para mejorar.txt"' in salida
+    assert (tmp_path / "para mejorar.txt").read_text(encoding="utf-8-sig").strip()
+    for argumentos, esperado in [
+            (["guia", "--guardar"], "a --guardar le falta el nombre del archivo"),
+            (["guia", "--guardar="], "a --guardar le falta el nombre del archivo"),
+            (["guia", "--guardar=mate.py"], "para no pisar un programa"),
+            (["guia", "--guardar=x.mate"], "para no pisar un programa"),
+            (["correr", "x.mate", "--guardar=x.txt"], "--guardar va con 'guia' o con 'informe'"),
+            (["guia", "--guardar=no/existe/guia.txt"], "no pude guardar en")]:
+        codigo, salida, err = orden_mate(capsys, *argumentos)
+        assert codigo in (1, 2) and esperado in err and salida == "", argumentos
+    assert sorted(p.name for p in tmp_path.iterdir()) == ["guia.txt", "para mejorar.txt"]
+    codigo, salida, err = orden_mate(capsys, "guia", "--guardr=guia.txt")
+    assert "¿quisiste decir --guardar=guia.txt?" in err
+
+
+def test_con_un_python_viejo_mate_lo_dice_en_castellano_y_mate_bat_elige_el_nuevo():
+    import ast
+    import types
+    fuente = (RAIZ / "mate.py").read_text(encoding="utf-8")
+    for version in [(3, 7), (3, 8), (3, 9)]:  # el archivo se puede leer con un Python viejo...
+        ast.parse(fuente, feature_version=version)
+    principio = fuente[:fuente.index("import ast\n")]  # ...y lo primero que hace es mirar cuál es
+    assert "import sys" in principio and "import " not in principio.split("import sys")[1]
+    viejo = types.SimpleNamespace(version_info=(3, 8, 10, "final", 0))
+    with pytest.raises(SystemExit) as info:
+        exec(principio.replace("import sys\n", ""), {"sys": viejo})
+    assert str(info.value).startswith(
+        "Mate necesita Python 3.10 o mas nuevo, y este es Python 3.8.\nInstala uno nuevo desde "
+        "https://www.python.org/downloads/")
+    exec(principio.replace("import sys\n", ""),
+         {"sys": types.SimpleNamespace(version_info=(3, 10, 0, "final", 0))})
+    lanzador = (RAIZ / "mate.bat").read_bytes().decode("ascii").split("\r\n")
+    prueba_de_version = '-c "import sys; sys.exit(0 if sys.version_info[:2] >= (3, 10) else 3)"'
+    instalador = (RAIZ / "instalar.bat").read_bytes().decode("ascii")
+    assert f"python {prueba_de_version} >nul 2>nul" in instalador  # la misma prueba en los dos
+    con_version = [i for i, r in enumerate(lanzador) if prueba_de_version in r]
+    sin_version = [i for i, r in enumerate(lanzador) if r.endswith('-c "import sys" >nul 2>nul')]
+    assert len(con_version) == 2 and len(sin_version) == 2
+    assert max(con_version) < min(sin_version)  # primero se busca uno que sirva
+    assert lanzador[con_version[0]].startswith("python ")
+    assert lanzador[con_version[1]].startswith("py -3 ")
+
+
+def test_las_correcciones_de_la_revision_de_la_0_5_estan_documentadas():
+    leeme = (RAIZ / "README.md").read_text(encoding="utf-8")
+    for frase in ["python mate\\mate.py guia --guardar=guia.txt", "| `--guardar=guia.txt` |",
+                  "can't open file", "**dentro de la carpeta `mate`**",
+                  "Para pasárselo a otra persona", "Mate lo avisa en pantalla, una vez",
+                  "Cuenta toda consulta que se cobra", "`--olvidar` no borra la cuenta",
+                  "cuenta solo esa corrida", "En la consola", "La orden `proponer` entra en la misma",
+                  "Con `probar` no se toca el disco", "`.pyw`", "¿Desea terminar el trabajo por lotes",
+                  "`propuestas`, `proponer` y `curso` son órdenes", "U+FEFF",
+                  "no se ataja con `intentar`", "Los totales.", "`sale 3500 hoy`", "`USD 40`",
+                  "le **suma** lo de esa corrida", "en la carpeta del programa que se corre",
+                  "la primera\n    fila tiene que ser la de los títulos", "mejora 120"]:
+        assert frase in leeme, frase
+    assert "guia > guia.txt" not in leeme and "--para-mejorar >\n" not in leeme
+    mejoras = (RAIZ / "MEJORAS.md").read_text(encoding="utf-8")
+    ficha = mejoras.split("\n**120. Correcciones de la revisión de la 0.5**")[1].split(
+        "\n## Lo que se descartó")[0]
+    assert "Estado: hecha" in ficha and "Nota de lo decidido" in ficha
+    assert "Quedó afuera" in ficha and "Sigue sin probarse en una Windows de verdad" in ficha
+    for clase, frases in {
+            "clase_01_hola": ["can't open file", "cd .."],
+            "clase_06_teclado": ["¿Desea terminar el trabajo por lotes (S/N)?"],
+            "clase_08_agente": ["sale al final del mismo renglón"],
+            "clase_09_agente_con_ia": ["ese pedazo de texto"],
+            "clase_10_frenos": ["Ese aviso sale solo la primera vez", "llegó a su tope",
+                                "`--olvidar` no borra esa cuenta"],
+            "clase_11_aprende": ["sale solo esa primera vez"],
+            "clase_12_mostrador": ["Tampoco dice totales", "revisar_lista(precios)",
+                                   "5 de 5 pruebas pasaron", "llegó a su tope",
+                                   "los frenos de Mostrador están mal escritos"]}.items():
+        texto = (CURSO / f"{clase}.md").read_text(encoding="utf-8")
+        for frase in frases:
+            assert frase in texto, (clase, frase)
+    pagina = (RAIZ.parent / "docs" / "index.html").read_text(encoding="utf-8")
+    for frase in ["todavía no tiene una dirección de internet para bajarlo", "ahí adentro",
+                  "ese no es: es de otro programa", "La IA no puede decir totales ni sumas",
+                  "ese ZIP trae el proyecto entero"]:
+        assert frase in pagina, frase
+    ayuda, guia = mate.texto_de_ayuda(), mate.texto_de_guia()
+    assert "--guardar=guia.txt" in ayuda and max(len(r) for r in ayuda.splitlines()) <= 100
+    assert "Con 'probar' ninguna de las dos toca el disco" in guia
+    assert "no se ataja con 'intentar'" in guia and "--guardar=guia.txt" in mate.__doc__
+    assert mate.TOPE_DE_FUNCIONES == 48 == len(mate.FUNCIONES) and len(mate.PALABRAS) == 36

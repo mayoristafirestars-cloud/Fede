@@ -88,6 +88,9 @@ Con `--traza`, además, se ve cada mensaje que va y viene:
       ·  2. Vendedor falló: no vendo clavos
     El vendedor no pudo: no vendo clavos
 
+(En la pantalla, `(conversación 1)` sale al final del mismo renglón de la pregunta. Acá
+está en el renglón de abajo solo para que entre en el ancho de la hoja.)
+
 ## El error más común
 
 Armar un mensaje que no cumple su contrato: un dato de otro tipo, un nombre mal escrito

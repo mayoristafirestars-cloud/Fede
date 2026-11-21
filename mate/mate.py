@@ -7,13 +7,22 @@ Uso:
                                            [--sin-limite] [--depurar]
     python3 mate.py probar    archivo.mate   (o varios archivos, o una carpeta)
     python3 mate.py verificar archivo.mate
-    python3 mate.py guia
+    python3 mate.py guia      (con --guardar=guia.txt la deja en ese archivo)
     python3 mate.py ayuda     (o: ayuda si, ayuda largo... para una palabra o función)
     python3 mate.py consola   (para probar renglones sueltos)
     python3 mate.py corregir  archivo.mate Agente "la lección"   (y: lecciones, bitacora)
     python3 mate.py informe   (los errores de uso anotados; --para-mejorar, --borrar)
     python3 mate.py curso     (las clases para aprender Mate; curso 1 muestra la primera)
 """
+
+import sys
+
+if sys.version_info < (3, 10):  # antes que nada: con un Python viejo Mate falla de formas raras
+    raise SystemExit(
+        "Mate necesita Python 3.10 o mas nuevo, y este es Python %d.%d.\n"
+        "Instala uno nuevo desde https://www.python.org/downloads/ (en la primera pantalla "
+        "del instalador, marca la casilla \"Add python.exe to PATH\"), cerra esta ventana "
+        "y proba de nuevo en una ventana nueva." % sys.version_info[:2])
 
 import ast
 import csv
@@ -26,7 +35,6 @@ import math
 import operator
 import os
 import re
-import sys
 import types
 import unicodedata
 from collections import deque
@@ -252,7 +260,7 @@ AL_FALLAR = "al fallar"
 SIN_A_QUIEN = ("en 'al fallar' no hay a quién responder: es un aviso, no una pregunta. "
                "Para mandar algo usá 'enviar'")
 # Lo que escribir_archivo() no pisa nunca: programas (de Mate, de Python o de Windows).
-NO_SE_PISAN = (".mate", ".mate.txt", ".py", ".bat", ".cmd", ".ps1")
+NO_SE_PISAN = (".mate", ".mate.txt", ".py", ".pyw", ".bat", ".cmd", ".ps1")
 # En las pruebas hoy() y ahora() dan siempre esto, para que el resultado no dependa del día.
 FECHA_DE_PRUEBA = datetime.datetime(2025, 1, 1, 12, 0)
 SIN_MEMORIA = ("el programa se quedó sin memoria: está armando un texto, una lista o un "
@@ -398,6 +406,9 @@ _PISTAS_DE_CARACTER = {
     "&": "en Mate 'y' se escribe con la palabra: a y b",
     "|": "en Mate 'o' se escribe con la palabra: a o b",
     "!": "en Mate 'no' se escribe con la palabra: no a",
+    "$": "los importes se escriben sin el signo $, solo el número: 3500. El $ lo pone "
+         "pesos() al mostrarlo: pesos(3500) da \"$ 3.500,00\" (y dentro de un texto, entre "
+         "comillas, el $ sí se puede escribir)",
 }
 for _c in "“”„":  # comillas dobles curvas (Word, WhatsApp) sin su pareja
     _PISTAS_DE_CARACTER[_c] = _PISTAS_DE_CARACTER['"']
@@ -1243,6 +1254,16 @@ class Parser:
                 raise ErrorMate(f"a la regla '{tk[1]}' le falta el valor, en el mismo "
                                 f"renglón: {REGLAS_DE_FRENO[tk[1]][1]}", tk[2])
             frenos.append((tk[2], tk[1], self.expr()))
+            sobra = self.ver()
+            if sobra[2] == tk[2] and not self.es("op", ",") and not self.es("op", "}") \
+                    and not (sobra[0] == "id" and self.es("op", ":", d=1)):
+                # reserva: ""texto""  (comillas de más: el texto se terminó enseguida)
+                raise ErrorMate(
+                    f"en la regla '{tk[1]}' sobra algo después del valor ('{sobra[1]}'). Va "
+                    "una regla por renglón" + (
+                        ". Si es un texto, lleva UNA comilla de cada lado: "
+                        f"{REGLAS_DE_FRENO['reserva'][1]}"
+                        if frenos[-1][2][0] in ("str", "interp") else ""), tk[2])
             self.acepta("op", ",")
         if not frenos:
             raise ErrorMate("estos 'frenos' están vacíos: poneles al menos una regla, por "
@@ -1615,12 +1636,14 @@ def revisar_pegado(fuente, archivo=None):
                         Linea(1 + fuente.count("\n", 0, primero.start(1)), archivo))
 
 
-def analizar(fuente, ruta=None, _vistos=None, en_consola=False):
-    """Convierte el texto en un programa, incluyendo lo que traiga con 'usar'."""
+def analizar(fuente, ruta=None, _vistos=None, en_consola=False, _raiz=None):
+    """Convierte el texto en un programa, incluyendo lo que traiga con 'usar'.
+    _raiz: la carpeta del programa que se corre, cuando esto es un archivo traído."""
     vistos = _vistos if _vistos is not None else set()
     if ruta:
         vistos.add(os.path.realpath(ruta))
     carpeta = os.path.dirname(os.path.abspath(ruta)) if ruta else os.getcwd()
+    raiz = _raiz or carpeta
     programa = []
     if not en_consola:
         revisar_pegado(fuente, ruta)
@@ -1630,6 +1653,22 @@ def analizar(fuente, ruta=None, _vistos=None, en_consola=False):
         if s[0] == "usar_python":
             try:
                 nombre, archivo = archivo_de_python(carpeta, s[2])
+                # Un .mate traído con 'usar' desde otra carpeta no puede meter Python de
+                # allá: el puente solo carga archivos de la carpeta del programa que se corre.
+                try:
+                    adentro = os.path.normcase(os.path.commonpath(
+                        [os.path.realpath(raiz), os.path.realpath(archivo)])) \
+                        == os.path.normcase(os.path.realpath(raiz))
+                except ValueError:  # en Windows, si está en otro disco
+                    adentro = False
+                if not adentro:
+                    raise ErrorMate(
+                        f"'usar python' solo trae archivos de la carpeta del programa que "
+                        f"se corre ({raiz}), y este archivo ({os.path.basename(ruta or '')}"
+                        f") está en otra carpeta y pide \"{s[2]}\" de allá. Copiá "
+                        f"{os.path.basename(archivo)} a la carpeta del programa y escribí el "
+                        f"'usar python \"{os.path.basename(archivo)}\"' en el programa",
+                        familia="archivo")
             except ErrorMate as e:
                 e.linea = e.linea or s[1]
                 raise
@@ -1658,7 +1697,7 @@ def analizar(fuente, ruta=None, _vistos=None, en_consola=False):
             e.linea = e.linea or s[1]
             raise
         try:
-            traido = analizar(texto, otra, vistos)
+            traido = analizar(texto, otra, vistos, _raiz=raiz)
         except ErrorMate as e:
             if not getattr(e, "traido", False):  # se dice una vez: quién lo trajo
                 desde = f"desde {os.path.basename(ruta)}, línea {s[1]}" if ruta \
@@ -1978,12 +2017,17 @@ def revisar_nombres(programa, mensajes, veces, en_consola=False):
     if not en_consola:
         juntar_funciones(programa)
 
-    def falta(nombre, linea, alcance, al_asignar=False):
+    def falta(nombre, linea, alcance, al_asignar=False, archivo=None):
         if en_consola:
             return
         if nombre in mensajes or nombre in avisados or any(nombre in a for a in alcance):
             return  # (un mensaje sin llaves ya tiene su propio aviso)
         avisados.add(nombre)  # una vez por nombre: lo demás sería repetir el mismo error
+        if archivo:  # leer_tabla(precios.csv): el nombre de un archivo, sin las comillas
+            errores.append((linea, (
+                f"no existe '{nombre}'. Si {archivo} es el nombre de un archivo, va entre "
+                f'comillas: "{archivo}"')))
+            return
         visibles = [n for a in reversed(alcance) for n in sorted(a)]
         errores.append((linea, nombre_que_no_existe(nombre, visibles, al_asignar).mensaje))
 
@@ -2086,6 +2130,9 @@ def revisar_nombres(programa, mensajes, veces, en_consola=False):
         elif clase in ("y", "o", "indice", "preguntar"):
             valor(e[2], alcance)
             valor(e[3], alcance)
+        elif clase == "campo" and e[2][0] == "nombre" and str(e[3]).lower() in (
+                "csv", "txt", "json", "mate", "py", "xlsx", "xls", "md"):
+            falta(e[2][2], e[2][1], alcance, archivo=f"{e[2][2]}.{e[3]}")
         elif clase in ("no", "neg", "campo"):
             valor(e[2], alcance)
         elif clase == "bin":
@@ -2277,6 +2324,22 @@ def verificar(programa, en_consola=False):
                         f"{_CON_ARTICULO[escrito]}: son "
                         f"{REGLAS_DE_FRENO[regla][2]}. Por ejemplo:  "
                         f"{REGLAS_DE_FRENO[regla][1]}")))
+                    continue
+                # Un número fijo que no sirve (negativo, con decimales) o una reserva vacía
+                # se avisan acá, antes de correr, y no recién en la primera consulta.
+                hay, valor = valor_escrito(e)
+                if hay and regla in ("largo", "consultas_por_dia", "tokens_por_dia") and (
+                        type(valor) is not int or valor < (1 if regla == "largo" else 0)):
+                    errores.append((ln, (
+                        f"en los frenos de {s[2]}, '{regla}' lleva un número entero"
+                        f"{' mayor que cero' if regla == 'largo' else ''} y dice "
+                        f"{formato(valor)}. Por ejemplo:  {REGLAS_DE_FRENO[regla][1]}")))
+                elif hay and regla == "reserva" and isinstance(valor, str) \
+                        and not valor.strip():
+                    errores.append((ln, (
+                        f"en los frenos de {s[2]}, 'reserva' está vacía: es lo que va a leer "
+                        "el cliente cuando salte un freno. Por ejemplo:  "
+                        f"{REGLAS_DE_FRENO['reserva'][1]}")))
             reglas = [regla for _, regla, _ in s[6]]
             if "reserva" not in reglas and any(r in REGLAS_DE_CONTENIDO for r in reglas):
                 errores.append((s[6][0][0], (
@@ -2514,6 +2577,7 @@ class Agente:
         # Lo de la 0.5, solo en los agentes declarados (sus copias usan lo del original):
         self.propuestas = []  # lecciones propuestas, sin aprobar: [{"fecha", "texto", "motivo"}]
         self.gasto = {}  # la cuenta de consultas: {"2026-11-21": {"consultas", "simuladas", "tokens"}}
+        self.ensayo_desde = {}  # día -> las simuladas que ya traía la memoria al empezar
 
 
 class Funcion:
@@ -2926,7 +2990,8 @@ def por_teclado(pregunta):
 
 class CorteEnElTeclado(KeyboardInterrupt):
     """Ctrl+C mientras leer() esperaba que la persona escribiera (0.5): es la manera normal
-    de cortar una charla, así que el programa termina ahí, prolijo y sin cartel de error.
+    de cortar una charla, así que el programa termina ahí, prolijo y sin cartel de error
+    (el código de salida sigue siendo 130, el de cualquier corte con Ctrl+C).
     (Lo que recuerdan los agentes se guarda igual, como con cualquier otro final.)"""
 
 
@@ -2948,10 +3013,11 @@ COMO_GUARDAR_CSV = ("En Excel: Archivo > Guardar como > en 'Tipo' elegí "
 
 def valor_de_celda(celda):
     """Lo que vale una celda de la planilla: un número si está escrita como número (también
-    a la argentina: 3.500, 3.500,50, $ 3.500), y si no, el texto tal cual, sin los espacios
-    de las puntas. Una celda vacía es el texto vacío."""
+    a la argentina: 3.500, 3.500,50, $ 3.500, 3500.-, 1.200 $), y si no, el texto tal cual,
+    sin los espacios de las puntas. Una celda vacía es el texto vacío."""
     t = celda.strip()
     sin_pesos = re.sub(r"^([+-]?)\$\s*", r"\1", t)
+    sin_pesos = re.sub(r"(?<=\d)(?:\s*\$|[.,]-)$", "", sin_pesos)  # 1.200 $   3500.-
     if not t or _EMPIEZA_CON_CERO.fullmatch(sin_pesos):
         return t
     if _SOLO_MILES.fullmatch(sin_pesos):  # en una planilla argentina el punto es de los miles
@@ -3011,6 +3077,7 @@ def tabla_de_texto(texto, nombre):
         if not any(celdas):
             continue  # un renglón en blanco (o los ;;; que deja Excel al final)
         if titulos is None:
+            ancho = len(celdas)
             while celdas and not celdas[-1]:
                 celdas.pop()  # columnas vacías que Excel deja a la derecha
             sin_titulo = [i + 1 for i, t in enumerate(celdas) if not t]
@@ -3027,6 +3094,17 @@ def tabla_de_texto(texto, nombre):
         while len(celdas) > len(titulos) and not celdas[-1]:
             celdas.pop()
         if len(celdas) != len(titulos):
+            if not filas and len(celdas) > len(titulos) and (
+                    len(titulos) == 1 or ancho > len(titulos)):
+                # Arriba de los títulos hay otra cosa: el nombre de la lista, una fecha...
+                raise mal(
+                    f"la primera fila de '{nombre}' tiene que ser la de los títulos de las "
+                    f"columnas (por ejemplo producto;precio;stock) y parece ser otra cosa "
+                    f"({recortado(', '.join(titulos), 60)}): tiene {len(titulos)} "
+                    f"{'dato' if len(titulos) == 1 else 'datos'} y el renglón {renglon} tiene "
+                    f"{len(celdas)}. Si los títulos están más abajo, en el renglón {renglon} "
+                    f"({recortado(separador.join(celdas), 60)}), en Excel borrá las filas "
+                    "que están arriba de los títulos y guardá de nuevo")
             if len(celdas) > len(titulos):
                 pista = ("le sobra algo. Si un dato lleva coma o punto y coma adentro (un "
                          "precio como 3.500,50 en un archivo separado por comas), tiene que "
@@ -3241,9 +3319,11 @@ def pedir_a_la_ia(instrucciones, pregunta):
         except (ValueError, UnicodeError):
             datos = None
         if problema is None and codigo == 200:
-            texto = texto_de_la_ia(datos)
+            # Llegó con código 200: Anthropic ya la cobró, aunque después no sirva (una
+            # respuesta cortada se cobra entera). Se anota antes de revisarla.
+            _USO_DE_LA_IA["cobrada"] = True
             _USO_DE_LA_IA["tokens"] = tokens_de(datos)
-            return texto
+            return texto_de_la_ia(datos)
         detalle = datos.get("error") if isinstance(datos, dict) else None
         detalle = detalle if isinstance(detalle, dict) else {}
         dicho = detalle.get("message") if isinstance(detalle.get("message"), str) else ""
@@ -3459,6 +3539,41 @@ def guardar_memoria(ruta, programa, agentes):
     return None
 
 
+def fundir_memoria(leida, nueva, en_disco):
+    """Lo que hay que guardar cuando el archivo de memoria cambió mientras el programa
+    corría (desde otra ventana se anotó una lección con 'corregir', se aprobó una propuesta
+    o corrió el mismo programa): lo que dice el archivo AHORA, más lo que sumó esta corrida
+    respecto de lo que había leído al empezar. Así ninguna ventana pisa lo de la otra.
+    - estado: el de esta corrida, si lo cambió; si no, el del archivo.
+    - lecciones y propuestas: las del archivo, más las que esta corrida agregó.
+    - cuenta de consultas: la del archivo, más las consultas que hizo esta corrida."""
+    junta = json.loads(json.dumps(en_disco))
+    for agente, ficha in nueva.items():
+        antes = leida.get(agente, {})
+        suya = junta.setdefault(agente, {"estado": {}, "lecciones": []})
+        if ficha.get("estado", {}) != antes.get("estado", {}):
+            suya["estado"] = ficha.get("estado", {})
+        for que, tope in (("lecciones", MAX_LECCIONES), ("propuestas", MAX_PROPUESTAS)):
+            ya = {x["texto"] for x in antes.get(que) or []} \
+                | {x["texto"] for x in suya.get(que) or []} \
+                | {x["texto"] for x in suya["lecciones"]}
+            agregadas = [x for x in ficha.get(que) or [] if x["texto"] not in ya]
+            if agregadas:
+                suya[que] = (list(suya.get(que) or []) + agregadas)[-tope:]
+        gasto = {dia: dict(cuenta) for dia, cuenta in (suya.get("gasto") or {}).items()}
+        for dia, cuenta in (ficha.get("gasto") or {}).items():
+            previa = (antes.get("gasto") or {}).get(dia, {})
+            suma = gasto.setdefault(dia, {"consultas": 0, "simuladas": 0, "tokens": 0})
+            for clave in ("consultas", "simuladas", "tokens"):
+                suma[clave] = suma.get(clave, 0) + max(
+                    0, cuenta.get(clave, 0) - previa.get(clave, 0))
+        gasto = gasto_limpio(gasto)
+        suya.pop("gasto", None)
+        if gasto:
+            suya["gasto"] = gasto
+    return {a: f for a, f in junta.items() if any(f.values())}
+
+
 def leccion_limpia(texto):
     """La lección en un solo renglón (o el error, si está vacía o es demasiado larga)."""
     texto = " ".join(texto.split())
@@ -3530,20 +3645,31 @@ IMPORTE_SUELTO_DESDE = 100
 _NUM_DE_IMPORTE = (r"(?:\d{1,3}(?:\.\d{3})+(?:,\d+)?|\d{1,3}(?:,\d{3})+(?:\.\d+)?"
                    r"|\d+(?:[.,]\d+)?)(?!\d)")
 _MIL_O_MILLON = r"(?:\s*(mil|millones|mill[oó]n)\b)?"
-# $ 3.500   $3500   $ 3.500,00   AR$ 1.234,50   $ 3 mil
-_IMPORTE_CON_SIGNO = re.compile(r"\$\s*(" + _NUM_DE_IMPORTE + ")" + _MIL_O_MILLON, re.I)
-# 3500 pesos   3.500 pesos   3 mil pesos   2 millones de pesos   3500$
+# $ 3.500   $3500   $ 3.500,00   AR$ 1.234,50   $ 3 mil   $ **4.000** (la negrita que a
+# veces pone la IA)   $ -4000   USD 40   U$S 40
+_IMPORTE_CON_SIGNO = re.compile(
+    r"(?:[$＄]|\busd\b|\bu\$s|\bars\b|€)[\s*_]*[-–]?\s*(" + _NUM_DE_IMPORTE + ")" + _MIL_O_MILLON, re.I)
+# 3500 pesos   3.500 pesos   3 mil pesos   2 millones de pesos   3500$   40 dólares   4000.-
 _IMPORTE_CON_PESOS = re.compile(
     r"(?<![\w.,$])(" + _NUM_DE_IMPORTE + ")" + _MIL_O_MILLON
-    + r"(?:\s+de)?\s*(?:pesos?\b|\$)", re.I)
-# sale 3500   cuesta 3.500   el precio es de 3500   (sin $ ni "pesos")
+    + r"(?:(?:\s+de)?[\s*_]*(?:pesos?\b|pesitos\b|mangos\b|\$|d[oó]lar(?:es)?\b|usd\b|u\$s|ars\b|"
+    r"euros?\b|€)"
+    r"|[.,]\s?[-–—](?![\w-]))", re.I)
+# sale 3500   cuesta 3.500   el precio es de 3500   total: 9.999   te lo dejo a 2.000   (sin
+# $ ni "pesos"). Vale aunque después venga una palabra cualquiera ("sale 4000 hoy", "sale
+# 4000 x kilo"), salvo que esa palabra diga que el número es una cantidad y no plata.
+_NO_ES_PLATA = (r"gramos?|grs?|g|kg|kgs|kilos?|litros?|lts?|l|ml|cc|cm|mm|m|mts?|metros?|km|"
+                r"unidades|unidad|u|horas?|hs|h|minutos?|min|d[ií]as?|semanas?|mes|meses|"
+                r"años?|puntos?|personas?|cuotas?|veces|calor[ií]as|kcal|mg|watts?|w|"
+                r"pulgadas?|productos?|art[ií]culos?|clientes?|pedidos?|cajas?|paquetes?|"
+                r"bolsas?|botellas?|latas?|docenas?|locales|sucursales")
 _IMPORTE_SUELTO = re.compile(
-    r"\b(?:sale|salen|cuesta|cuestan|vale|valen|precio|cobramos)\b"
-    r"(?:\s+(?:es|son|de|a|en|final|total|solo|sólo))*\s*:?\s*(" + _NUM_DE_IMPORTE + ")"
+    r"\b(?:sale|salen|cuesta|cuestan|vale|valen|precios?|cobramos|total|dejo|dejamos)\b"
+    r"(?:\s+(?:es|son|de|a|en|final|total|solo|sólo|del|el|la|por|kilo|kg|litro|unidad|lista|"
+    r"unitario|unos|aprox\.?|aproximadamente|como|casi))*[\s*_~]*:?[\s*_~]*(" + _NUM_DE_IMPORTE + ")"
     + _MIL_O_MILLON
-    + r"(?!\s*[/%:°x-]\s*\d)(?!\s*%)"
-    r"(?!\s+(?!(?:por|cada|el|la|los|las|y|o|e|más|mas|con|c|final|en|al|si|pero|sin)\b)"
-    r"[a-záéíóúñü])", re.I)
+    + r"(?!\s*[/%:°x-]\s*\d)(?!\s*[%°])"
+    r"(?!\s*(?:" + _NO_ES_PLATA + r")(?![\wáéíóúñü]))", re.I)
 
 
 def valores_de_importe(escrito, cuanto=None):
@@ -3565,11 +3691,15 @@ def valores_de_importe(escrito, cuanto=None):
 
 
 def importes_de(texto):
-    """Los importes en pesos que nombra un texto: [(como está escrito, lo que puede valer)].
-    Cuenta como importe un número con el signo $ adelante o atrás, con la palabra "pesos",
-    o suelto justo después de "sale", "cuesta", "vale", "precio" o "cobramos" (y de 100 o
-    más). Lo demás (cantidades, teléfonos, fechas, porcentajes) no se mira: ante la duda,
-    este freno prefiere no saltar. Tampoco ve los importes escritos con letras."""
+    """Los importes que nombra un texto: [(como está escrito, lo que puede valer)].
+    Cuenta como importe un número con el signo $ adelante o atrás (aunque en el medio haya
+    asteriscos de negrita o un signo menos), con "pesos", "dólares", "USD" o "euros", el
+    que termina en ".-" (4000.-), o el suelto justo después de "sale", "cuesta", "vale",
+    "precio", "cobramos", "total" o "te lo dejo a" (y de 100 o más), venga lo que venga
+    después, salvo una unidad que diga que es una cantidad ("sale 500 gramos"). Lo demás
+    (cantidades, teléfonos, fechas, porcentajes, un segundo número lejos de esas palabras)
+    no se mira: ante la duda, este freno prefiere no saltar. Tampoco ve los importes
+    escritos con letras ("cuatro mil") ni mira la moneda: compara números."""
     vistos = {}
     for patron, suelto in ((_IMPORTE_CON_SIGNO, False), (_IMPORTE_CON_PESOS, False),
                            (_IMPORTE_SUELTO, True)):
@@ -3582,6 +3712,25 @@ def importes_de(texto):
             escrito = m.group(1) + (f" {m.group(2)}" if m.group(2) else "")
             vistos[m.start(1)] = (escrito if suelto else "$ " + escrito, valores)
     return [vistos[i] for i in sorted(vistos)]
+
+
+_PARECE_IMPORTE = re.compile(r"[+-]?\$?\s*(?!0\d)\d[\d.,]*\s*(?:[.,]-|\$|pesos)?")
+
+
+def importes_como_texto(valor, hondo=0):
+    """Los textos de un valor (una lista, una tabla) que parecen importes pero no quedaron
+    como número ("1,234.50", "3500 pesos"): el freno de precios no los puede contar."""
+    if isinstance(valor, str):
+        return [valor] if _PARECE_IMPORTE.fullmatch(valor.strip()) else []
+    if hondo > 20:
+        return []
+    if isinstance(valor, Registro):
+        valor = valor.campos
+    if isinstance(valor, dict):
+        valor = list(valor.values())
+    if isinstance(valor, list):
+        return [t for x in valor for t in importes_como_texto(x, hondo + 1)]
+    return []
 
 
 def numeros_permitidos(valor, hondo=0):
@@ -3680,7 +3829,9 @@ def tokens_de(datos):
     return sum(partes)
 
 
-# Lo que gastó la última consulta de verdad (lo deja pedir_a_la_ia): {"tokens": 1234}.
+# Lo que gastó la última consulta de verdad (lo deja pedir_a_la_ia): {"cobrada": True,
+# "tokens": 1234}. 'cobrada' está también cuando la respuesta llegó y no sirvió (cortada, sin
+# texto, frenada por un filtro): esa consulta se paga igual, y entra en el tope por día.
 _USO_DE_LA_IA = {}
 
 
@@ -4125,8 +4276,9 @@ class Interprete:
         self.sin_teclado = False  # en las pruebas leer() usa la respuesta preparada
         self.tecleado = None  # en una prueba: lo que dijo simular_teclado() (una lista)
         self.tecleados = 0  # cuántos de esa lista ya se dieron
-        # Con 'probar', agregar_a_archivo() no toca el disco (0.5): lo agregado queda acá
-        # (ruta -> texto entero) y leer_archivo() y leer_tabla() lo ven. None = se escribe.
+        # Con 'probar', agregar_a_archivo() y escribir_archivo() no tocan el disco (0.5): lo
+        # guardado queda acá (ruta -> texto entero) y leer_archivo() y leer_tabla() lo ven.
+        # None = se escribe de verdad.
         self.archivos_de_prueba = None
         self.fecha_fija = False  # en las pruebas hoy() y ahora() dan siempre lo mismo
         # La IA (mejora 100). Simulada no sale a la red: en las pruebas siempre es así.
@@ -4360,6 +4512,12 @@ class Interprete:
 
         @nativa("pesos")
         def _(n, decimales=2):
+            if isinstance(n, str):
+                raise ErrorMate(
+                    f"pesos() espera numero y recibió texto ({recortado(n, 30)}). Si viene "
+                    "de una planilla, esa celda no tiene un número (está vacía o dice otra "
+                    "cosa): corregila en la planilla, o preguntá antes:  "
+                    'si tipo(dato) == "numero" { ... }')
             pedir(n, "numero", "pesos()")
             if type(decimales) is not int or not 0 <= decimales <= 6:
                 raise ErrorMate("pesos() espera una cantidad de decimales entre 0 y 6, "
@@ -4527,10 +4685,22 @@ class Interprete:
                     f"{donde} guarda un texto y recibió {tipo_claro(contenido)}. "
                     'Pasalo a texto antes: texto(valor), unir(lista, "\\n") o a_json(valor)')
             # (Windows ignora los puntos y espacios del final, y lo que sigue a un ':')
-            if os.path.basename(ruta).split(":")[0].rstrip(". ").lower().endswith(NO_SE_PISAN):
+            limpio = os.path.basename(ruta).split(":")[0].rstrip(". ").lower()
+            if limpio.endswith(NO_SE_PISAN):
                 raise ErrorMate(
                     f"{donde} no escribe en '{nombre}' para no pisar un programa: "
                     'elegí otro nombre, por ejemplo "notas.txt"', familia="archivo")
+            # Tampoco en los archivos que Mate lleva de este programa: ahí están las
+            # lecciones de los agentes y la cuenta de consultas (el tope de gasto).
+            if self.archivo and os.path.dirname(ruta) == carpeta and limpio in {
+                    os.path.basename(archivo_de(self.archivo, que)).lower()
+                    for que in ("memoria.json", "bitacora.txt", "memoria.json.tmp",
+                                "bitacora.txt.tmp", "memoria.rota.json")}:
+                raise ErrorMate(
+                    f"{donde} no escribe en '{nombre}': ese archivo lo lleva Mate (ahí "
+                    "guarda lo que recuerdan los agentes, sus lecciones y la cuenta de "
+                    'consultas). Elegí otro nombre, por ejemplo "notas.txt"',
+                    familia="archivo")
             if os.path.isdir(ruta):
                 raise ErrorMate(f"{donde}: '{nombre}' es una carpeta, no un archivo",
                                 familia="archivo")
@@ -4558,6 +4728,19 @@ class Interprete:
         @nativa("escribir_archivo")
         def _(nombre, contenido):
             ruta = donde_guardar(nombre, contenido, "escribir_archivo()")
+            if self.archivos_de_prueba is not None:
+                # 'probar' no toca el disco (como agregar_a_archivo): lo escrito queda acá,
+                # y leer_archivo() y leer_tabla() lo ven. Así una prueba nunca pisa un
+                # archivo de datos de verdad (los pedidos de ayer).
+                if len(contenido) > MAX_LARGO:
+                    raise ErrorMate(f"escribir_archivo(): el texto es demasiado grande para "
+                                    f"guardarlo en '{nombre}'", familia="archivo")
+                if not os.path.isdir(os.path.dirname(ruta)):
+                    raise ErrorMate(f"escribir_archivo(): no existe la carpeta donde iría "
+                                    f"'{nombre}'. Creala antes, o guardá el archivo al lado del "
+                                    "programa", familia="archivo")
+                self.archivos_de_prueba[ruta] = contenido
+                return
 
             def escribir():
                 # con la marca del principio, para que el Bloc de notas muestre bien las tildes
@@ -4695,7 +4878,21 @@ class Interprete:
             hondo = len(self.atendiendo)
             # Los frenos del agente (0.5). Sin frenos, todo sigue como siempre.
             agente = self.contexto[0] if self.contexto else None
-            frenos = self.frenos_de(agente) if agente is not None and agente.decl[6] else None
+            try:
+                frenos = self.frenos_de(agente) if agente is not None and agente.decl[6] \
+                    else None
+            except ErrorMate as error:
+                # Unos frenos mal escritos no son "la IA no contestó": no se atajan con
+                # 'intentar' (si no, el programa seguiría atendiendo sin frenos ni aviso).
+                # El programa corta ahí, con el archivo y el renglón de la regla.
+                if error.clase == "falla":
+                    error.clase = "escritura"
+                    if "los frenos de" not in error.mensaje:
+                        error.mensaje = (f"los frenos de {agente.decl[2]} están mal escritos: "
+                                         f"{error.mensaje}")
+                    error.mensaje += (". (Hasta que se arregle, el programa no sigue: unos "
+                                      "frenos que fallan no frenan nada)")
+                raise
             if frenos is None:
                 return una_consulta(instrucciones, pregunta, preparada, quien, hondo)[0]
             return self.con_frenos(
@@ -4888,6 +5085,15 @@ class Interprete:
                         raise ErrorMate(f"{que} recibió {un(valor)} y lleva otra cosa: son "
                                         f"{REGLAS_DE_FRENO[regla][2]}{ejemplo}")
                     if regla == "precios":
+                        raros = importes_como_texto(valor)
+                        if raros and not self.en_prueba:
+                            self.avisar_una_vez(("precios como texto", agente.decl[2]), (
+                                f"en los frenos de {agente.decl[2]}, 'precios' trae "
+                                f"{len(raros)} dato(s) que parecen importes pero no son "
+                                f"números (por ejemplo \"{en_un_renglon(raros[0], 30)}\"): no "
+                                "cuentan como precios permitidos, así que si la IA nombra "
+                                "ese precio va a saltar el freno. En la planilla, escribilos "
+                                "como número: 3500 o 3.500,50"))
                         valor = numeros_permitidos(valor)
                     elif regla == "prohibido":
                         if len(valor) > MAX_PROHIBIDOS or not all(
@@ -4935,13 +5141,20 @@ class Interprete:
 
         def en_el_tope():
             hoy = molde.gasto.get(dia, {})
-            hechas = hoy.get("simuladas" if simulada else "consultas", 0)
             tope = frenos["consultas_por_dia"]
+            if simulada:
+                # En un ensayo se cuentan solo las consultas simuladas de ESTA corrida: así
+                # el mismo ensayo da lo mismo todas las veces que se lo corra en el día.
+                hechas = hoy.get("simuladas", 0) - molde.ensayo_desde.get(dia, 0)
+                if tope is not None and hechas >= tope:
+                    return (f"ya hizo {hechas} consulta(s) simuladas a la IA en esta "
+                            f"corrida y su tope es {tope} por día")
+                return None
+            hechas = hoy.get("consultas", 0)
             if tope is not None and hechas >= tope:
-                return (f"ya hizo {hechas} consulta(s) {'simuladas ' if simulada else ''}a "
-                        f"la IA hoy y su tope es {tope} por día")
+                return f"ya hizo {hechas} consulta(s) a la IA hoy y su tope es {tope} por día"
             tope = frenos["tokens_por_dia"]
-            if tope is not None and not simulada and hoy.get("tokens", 0) >= tope:
+            if tope is not None and hoy.get("tokens", 0) >= tope:
                 return f"ya gastó {hoy['tokens']} tokens hoy y su tope es {tope} por día"
             return None
 
@@ -4972,6 +5185,17 @@ class Interprete:
             if (quien, "tope") not in self.avisados:  # una vez por corrida en la bitácora
                 self.avisados.add((quien, "tope"))
                 self.anotar_freno(agente, "llegó al tope de gasto", pregunta, tope)
+            if not self.en_prueba:  # y una vez en pantalla: que no parezca que anda mal
+                sigue = ("contesta con el texto de reserva, sin consultar"
+                         if frenos["reserva"] is not None else
+                         "no consulta más (y como no tiene 'reserva', cada consulta da error)")
+                self.avisar_una_vez(("tope en pantalla", molde.nombre), (
+                    f"{molde.nombre} llegó a su tope ({tope}). Desde ahora {sigue}. "
+                    + ("Es un ensayo: en la próxima corrida con --ia-simulada la cuenta "
+                       "arranca de cero." if simulada else
+                       "Mañana vuelve a consultar sola.")
+                    + " El tope se cambia en los 'frenos' del agente, y la cuenta se ve con:  "
+                    f"{como_se_llama()} bitacora {para_pegar(self.archivo or 'programa.mate')}"))
             if self.en_prueba and not anotadas:
                 anotadas.append({"agente": quien, "instrucciones": instrucciones,
                                  "pregunta": pregunta, "respuesta": None, "freno": que})
@@ -4984,11 +5208,25 @@ class Interprete:
                     "tope se cambia ahí mismo)", familia="tope")
             return devolver(frenos["reserva"])
 
+        def consultar_y_contar(de_nuevo=None):
+            """La consulta, sumada a la cuenta del día. También cuenta la que llegó a la IA
+            y después no sirvió (cortada, sin texto, demasiado larga): se cobra igual."""
+            _USO_DE_LA_IA.clear()
+            try:
+                resultado = consultar(de_nuevo) if de_nuevo else consultar()
+            except ErrorMate:
+                if not simulada and _USO_DE_LA_IA.get("cobrada"):
+                    contar()
+                raise
+            contar()
+            return resultado
+
+        if not simulada and self.guardar_cuenta is not None and not self.en_prueba:
+            self.guardar_cuenta()  # (por si otra ventana ya gastó parte del tope de hoy)
         tope = en_el_tope()
         if tope:
             return sin_consultar(tope, "tope de gasto: " + tope)
-        respuesta, consulta = consultar()
-        contar()
+        respuesta, consulta = consultar_y_contar()
         anotadas.append(consulta)
         rotas = reglas_rotas(respuesta, frenos)
         if not rotas:
@@ -5016,13 +5254,12 @@ class Interprete:
             self.avisados.add((quien, "tope"))  # (ya quedó dicho en ese renglón)
             return sin_consultar(tope, que)
         try:
-            respuesta, consulta = consultar(aviso_de_freno(pregunta, rotas))
+            respuesta, consulta = consultar_y_contar(aviso_de_freno(pregunta, rotas))
         except ErrorMate as error:
             if error.clase != "falla":
                 raise
             segundo = "el segundo intento falló (" + error.mensaje.split("\n")[0] + ")"
         else:
-            contar()
             anotadas.append(consulta)
             rotas = reglas_rotas(respuesta, frenos)
             if not rotas:
@@ -5302,6 +5539,8 @@ class Interprete:
                     ag.propuestas = list(self.memoria.get(s[2], {}).get("propuestas", []))
                     ag.gasto = {dia: dict(cuenta) for dia, cuenta in
                                 self.memoria.get(s[2], {}).get("gasto", {}).items()}
+                    ag.ensayo_desde = {dia: cuenta.get("simuladas", 0)
+                                       for dia, cuenta in ag.gasto.items()}
                     ag.manejadores = self.manejadores_de(s)
                     self.agentes[s[2]] = ag
                     self.decl_agentes.append(s)
@@ -6744,12 +6983,23 @@ class Interprete:
                     except ErrorMate as e:
                         e.linea = e.linea or linea
                         raise
-                raise ErrorMate(f"{tipo_claro(base)} no tiene campos"
-                                + (f". {CAUSA_DE_NADA}" if base is None else ""), linea)
+                pista = f". {CAUSA_DE_NADA}" if base is None else ""
+                if isinstance(base, list):
+                    pista = (f": es una lista. Para ver '{campo}' de uno de sus elementos, "
+                             f"pedilo primero (por ejemplo lista[0].{campo}) o recorré la "
+                             f"lista:  para fila en lista {{ mostrar(fila.{campo}) }}")
+                raise ErrorMate(f"{tipo_claro(base)} no tiene campos{pista}", linea)
             if campo not in campos:
-                raise ErrorMate(no_esta(
-                    f"{nombre_tipo(base)} no tiene un campo '{campo}'", campo, campos),
-                    linea, familia="clave")
+                mensaje = no_esta(
+                    f"{nombre_tipo(base)} no tiene un campo '{campo}'", campo, campos)
+                casi = [c for c in campos if isinstance(c, str) and c != campo
+                        and sin_tildes(c).lower().strip() == sin_tildes(campo).lower()]
+                if casi and isinstance(base, dict):
+                    mensaje += (f" (las mayúsculas y las tildes cuentan. Si este dato viene "
+                                f"de una planilla, el título de la columna está escrito "
+                                f"'{casi[0]}': cambialo ahí por '{campo}', o usá '{casi[0]}' "
+                                "en el programa)")
+                raise ErrorMate(mensaje, linea, familia="clave")
             return campos[campo]
         return valor
 
@@ -6791,10 +7041,19 @@ class Interprete:
         if op in ("==", "!="):
             if (isinstance(a, str) and es_num(b)) or (es_num(a) and isinstance(b, str)):
                 t = a if isinstance(a, str) else b
+                try:
+                    numero_de_texto(t)
+                    arreglo = f"Convertí uno de los dos: numero({formato(t, False)}) o texto(...)"
+                except ErrorMate:
+                    arreglo = ("Ese texto " + ("está vacío" if not t.strip() else
+                                               "no es un número")
+                               + ": si viene de una planilla, es una celda "
+                               + ("vacía" if not t.strip() else "que no tiene un número")
+                               + ". Completala en la planilla, o preguntá antes qué es:  "
+                               'si tipo(dato) == "numero" { ... }')
                 raise ErrorMate(
                     f"no se puede comparar un texto con un número ({formato(a, False)} "
-                    f"{op} {formato(b, False)}): nunca son iguales. Convertí uno de los "
-                    f"dos: numero({formato(t, False)}) o texto(...)")
+                    f"{op} {formato(b, False)}): nunca son iguales. {arreglo}")
             return igual(a, b) if op == "==" else not igual(a, b)
         ambos_num = es_num(a) and es_num(b)
         if op in ("<", "<=", ">", ">="):
@@ -6830,6 +7089,9 @@ class Interprete:
             pista = " (para sumarle un valor a una lista usá agregar(lista, valor))"
         elif op == "+" and (isinstance(a, str) or isinstance(b, str)):
             pista = " (usá texto() o \"{...}\" para armar textos)"
+        elif (isinstance(a, str) and es_num(b)) or (es_num(a) and isinstance(b, str)):
+            pista = (". Lo que se lee con leer() o viene de un archivo es un texto, aunque "
+                     "tenga cifras: para hacer cuentas pasalo antes a número con numero(...)")
         raise ErrorMate(f"no se puede hacer {nombre_tipo(a)} {op} {nombre_tipo(b)}{pista}")
 
     def llamar(self, f, args, linea=None):
@@ -6985,7 +7247,9 @@ FUNCIONES INCLUIDAS (no hay otras)
 - hoy() y ahora() dan textos: no se restan ni se comparan con < o > (sí con == y !=).
 - leer_archivo, leer_tabla, escribir_archivo y agregar_a_archivo solo andan desde el programa
   principal (no desde un agente: se le pasan los datos en un mensaje), con archivos de la
-  carpeta del programa, y no pisan archivos .mate ni .py.
+  carpeta del programa, y no pisan archivos .mate ni .py (ni la memoria y la bitácora
+  que Mate lleva del propio programa). Con 'probar' ninguna de las dos toca el disco: lo
+  guardado se ve con leer_archivo() dentro de esa prueba y nada más.
 - leer_tabla("precios.csv") lee una planilla guardada desde Excel como CSV (separada por
   punto y coma o por coma) y da una lista con un mapa por fila; las claves son los títulos
   de la primera fila, tal cual están escritos:
@@ -7071,8 +7335,9 @@ AGENTES Y MENSAJES
   del agente, y se calcula en cada consulta. 'frenos' no es una palabra reservada.
   - precios: una lista de números (o una tabla o un mapa: valen todos sus números). Cuenta
     como importe un número con $ ($ 3.500, $3500, $ 3.500,00), con "pesos" (3500 pesos, 3 mil
-    pesos) o suelto después de sale/cuesta/vale/precio si es de 100 o más. Cantidades,
-    teléfonos, fechas, porcentajes e importes escritos con letras no se miran.
+    pesos), con USD o "dólares", o suelto después de sale/cuesta/vale/precio/total si es de
+    100 o más. Cantidades, teléfonos, fechas, porcentajes e importes escritos con letras no
+    se miran. Compara números: un total que no está en la lista (3 yerbas = $ 10.500) salta.
   - prohibido: sin distinguir mayúsculas ni tildes; "descuento" también frena "descuentos".
   - Si la respuesta rompe una regla, Mate consulta UNA vez más avisándole a la IA cuál; si
     la vuelve a romper, consultar_ia() devuelve el texto de reserva. Queda en --traza, en la
@@ -7080,8 +7345,12 @@ AGENTES Y MENSAJES
     mate.py propuestas programa.mate aprobar 1).
   - Al llegar a un tope, consultar_ia() no consulta: devuelve la reserva o, si no hay
     reserva, falla con un error que se ataja (clase "tope"). La cuenta es por día, se guarda
-    en programa.memoria.json y se ve con mate.py bitacora programa.mate. Las consultas
-    simuladas se cuentan aparte de las de verdad. El segundo intento también cuenta.
+    en programa.memoria.json y se ve con mate.py bitacora programa.mate. Mate lo avisa en
+    pantalla la primera vez. Con --ia-simulada el tope cuenta solo las consultas de esa
+    corrida. El segundo intento también cuenta, y la consulta que se cobró aunque haya
+    vuelto cortada o sin texto.
+  - Un error al calcular los frenos (o un valor fijo que no sirve) corta el programa con el
+    renglón de la regla: no se ataja con 'intentar'.
 - usar "otro.mate" trae los mensajes, agentes, funciones y variables ('sea' y 'var') de
   otro archivo. Un nombre que ya vino de ahí no se puede declarar de nuevo.
 - usar python "ayudas.py" trae las funciones escritas con 'def' en ese archivo de Python,
@@ -7701,6 +7970,35 @@ def ruta_para_escribir(ruta):
     return para_pegar(completa if corta.startswith("..") else corta)
 
 
+def clase_para_esta_carpeta(texto, carpeta):
+    """El texto de una clase con sus comandos escritos para la carpeta donde está parada
+    la persona. Las clases dicen 'python mate\\mate.py correr mate\\curso\\clase_01_hola.mate',
+    que solo sirve parado al lado de la carpeta mate (y sin la orden corta). Desde otro
+    lado, o con la orden 'mate' instalada, se reescriben la orden y las rutas para que se
+    puedan copiar tal cual. Parado donde las clases suponen, el texto queda como está."""
+    de_mate = os.path.dirname(os.path.abspath(carpeta))
+    orden = como_se_llama()
+    al_lado = os.path.normcase(os.path.abspath(os.getcwd())) == os.path.normcase(
+        os.path.dirname(de_mate))
+    if al_lado and orden != "mate" and os.path.basename(de_mate) == "mate" \
+            and os.path.basename(os.path.abspath(carpeta)) == CARPETA_DEL_CURSO:
+        return texto
+    if orden != "mate":
+        orden = "python " + ruta_para_escribir(os.path.join(de_mate, "mate.py"))
+
+    def ruta(m):
+        partes = [p for p in m.group(1).split("\\") if p]
+        donde = os.path.join(carpeta, *partes[1:]) if partes[0] == CARPETA_DEL_CURSO \
+            else os.path.join(de_mate, *partes)
+        return ruta_para_escribir(donde)
+
+    texto = texto.replace("python mate\\mate.py", orden)
+    texto = re.sub(r"(?<![\w\\.])mate\\((?:curso|ejemplos|README\.md|MEJORAS\.md)"
+                   r"(?:\\[\w.\-]+)*)", ruta, texto)
+    return ("(Los comandos de esta clase están escritos para la carpeta donde estás parado "
+            "ahora:\nse pueden copiar tal cual.)\n\n" + texto)
+
+
 def orden_curso(args, avisar, carpeta=None, mostrar=print):
     """La orden 'curso': sin nada más, lista las clases y dice cómo abrir cada una; con un
     número, muestra esa clase. Devuelve el código de salida."""
@@ -7730,7 +8028,8 @@ def orden_curso(args, avisar, carpeta=None, mostrar=print):
                    f"Para ver la lista:  {como_se_llama()} curso",
                    "al escribir la orden: 'curso' con un número de clase que no existe")
             return 2
-        mostrar(leer_fuente(elegida[0]["texto"]).rstrip("\n"))
+        mostrar(clase_para_esta_carpeta(leer_fuente(elegida[0]["texto"]).rstrip("\n"),
+                                        carpeta))
         return 0
     primera = clases[0]
     mostrar(f"El curso de Mate: {len(clases)} clases cortas, para hacer en orden. No hace falta "
@@ -7816,6 +8115,8 @@ def texto_de_ayuda():
         "Opciones:",
         "  --traza       muestra la conversación entre agentes, numerada y con lo que falló",
         "  --traza=conversacion.txt   la guarda en ese archivo, con un resumen al final",
+        "  --guardar=guia.txt   con 'guia' o 'informe': deja el texto en ese archivo, con las",
+        "                tildes bien para el Bloc de notas (en PowerShell, '>' las rompe)",
         "  --sin-limite  no corta los programas que dan muchísimos pasos",
         "  --ia-simulada consultar_ia() no sale a la red ni gasta: da su respuesta preparada",
         "  --ia-simulada=respuestas.txt   ...o las que están escritas en ese archivo",
@@ -7972,7 +8273,7 @@ INSTRUCCIONES_PARA_REDACTAR = (
     "explicaciones: solo la lección.")
 
 
-def redactar_leccion(queja, respuesta, opciones, respuestas):
+def redactar_leccion(queja, respuesta, opciones, respuestas, en_el_tope=None):
     """La lección que se propone a partir de lo que cuenta el dueño: (texto, quién la
     redactó, los tokens que costó). Con clave la redacta la IA; con --ia-simulada=archivo,
     el archivo; y si no hay IA (o falla, o se pasa de largo), va una redacción fija."""
@@ -7990,13 +8291,18 @@ def redactar_leccion(queja, respuesta, opciones, respuestas):
     elif not os.environ.get("ANTHROPIC_API_KEY", "").strip():
         return fija, ("Es una redacción fija: no hay clave para la IA (con la clave puesta "
                       "en ANTHROPIC_API_KEY la redacta la IA, y esa consulta se paga)."), None
+    elif en_el_tope:
+        return fija, (f"Es una redacción fija: no consulté a la IA porque {en_el_tope} (la "
+                      "consulta de 'proponer' entra en esa misma cuenta)."), None
     else:
         _USO_DE_LA_IA.clear()
         try:
             dicho = pedir_a_la_ia(INSTRUCCIONES_PARA_REDACTAR, pregunta)
         except ErrorMate as e:
+            # (si llegó a Anthropic y volvió sin servir, se cobra igual: entra en la cuenta)
             return fija, ("Es una redacción fija, porque la IA no contestó: "
-                          + e.mensaje.split("\n")[0]), None
+                          + e.mensaje.split("\n")[0]), (
+                (_USO_DE_LA_IA.get("tokens") or 0) if _USO_DE_LA_IA.get("cobrada") else None)
         except Exception as e:  # nunca un error de Python (ni la clave) a la vista
             return fija, ("Es una redacción fija, porque algo salió mal al hablar con la IA "
                           f"({type(e).__name__})."), None
@@ -8096,7 +8402,8 @@ def orden_de_memoria(orden, args, borrar, avisar, opciones=(), respuestas=None):
         return mostrar_bitacora(ruta, avisar)
     try:
         fuente = leer_fuente(ruta)
-        declarados = [s[2] for s in analizar(fuente, ruta) if s[0] == "agente"]
+        arbol = analizar(fuente, ruta)
+        declarados = [s[2] for s in arbol if s[0] == "agente"]
     except OSError:
         avisar(f"no pude abrir {ruta}")
         return 2
@@ -8174,16 +8481,36 @@ def orden_de_memoria(orden, args, borrar, avisar, opciones=(), respuestas=None):
             avisar(f"lo que estuvo mal tiene {len(queja)} letras y el tope es 220: contalo "
                    "más corto (de ahí sale una lección, y las lecciones son cortas)")
             return 2
+        # El tope por día del agente también vale acá, cuando está escrito como un número
+        # fijo en sus frenos: si ya llegó, no se consulta (va la redacción fija).
+        molde = agente.split(" ")[0] if agente not in declarados \
+            and agente.split(" ")[0] in declarados else agente
+        topes = {regla: valor_escrito(e)[1] for s in arbol
+                 if s[0] == "agente" and s[2] == molde for _, regla, e in s[6]
+                 if regla in ("consultas_por_dia", "tokens_por_dia")
+                 and type(valor_escrito(e)[1]) is int}
+        gastado = memoria.get(molde, {}).get("gasto", {}).get(
+            datetime.date.today().isoformat(), {})
+        en_el_tope = None
+        if "consultas_por_dia" in topes and gastado.get("consultas", 0) >= topes[
+                "consultas_por_dia"]:
+            en_el_tope = (f"{molde} ya hizo {gastado.get('consultas', 0)} consulta(s) a la IA "
+                          f"hoy y su tope es {topes['consultas_por_dia']} por día")
+        elif "tokens_por_dia" in topes and gastado.get("tokens", 0) >= topes["tokens_por_dia"]:
+            en_el_tope = (f"{molde} ya gastó {gastado.get('tokens', 0)} tokens hoy y su tope "
+                          f"es {topes['tokens_por_dia']} por día")
         try:
             texto, como, tokens = redactar_leccion(
                 queja, en_un_renglon(args[3], 600) if len(args) > 3 else "", opciones,
-                respuestas)
+                respuestas, en_el_tope)
         except ErrorMate as e:
             avisar(e.mensaje)
             return 2
         ficha = memoria.setdefault(agente, {"estado": {}, "lecciones": []})
         if tokens is not None:  # fue una consulta de verdad: entra en la cuenta de hoy
-            hoy = ficha.setdefault("gasto", {}).setdefault(
+            # (la cuenta es del agente declarado: sus copias cuentan con él)
+            hoy = memoria.setdefault(molde, {"estado": {}, "lecciones": []}).setdefault(
+                "gasto", {}).setdefault(
                 datetime.date.today().isoformat(), {"consultas": 0, "simuladas": 0, "tokens": 0})
             hoy["consultas"], hoy["tokens"] = hoy["consultas"] + 1, hoy["tokens"] + tokens
         antes = ficha.get("propuestas", [])
@@ -8924,10 +9251,13 @@ def _con_red(argv, donde):
             pass
         return 1
     except CorteEnElTeclado:
-        # Ctrl+C en un leer(): la charla se cortó a propósito. No es un error.
-        print()
-        print(CORTE_EN_EL_TECLADO)
-        return 0
+        # Ctrl+C en un leer(): la charla se cortó a propósito. No es un error, y se dice
+        # sin cartel de error; pero el código de salida es el de siempre para un corte
+        # (130), así un .bat que lo mira sigue distinguiendo "cortado" de "terminó bien".
+        sys.stdout.flush()
+        avisar("")
+        avisar(CORTE_EN_EL_TECLADO)
+        return 130
     except KeyboardInterrupt:
         if lugar():
             avisar(f"{lugar()}: cortado con Ctrl+C mientras corría esta línea")
@@ -8976,6 +9306,7 @@ def _main(argv, donde):
         return 2
     alias = {"-h": "--ayuda", "--help": "--ayuda", "-?": "--ayuda", "/?": "--ayuda"}
     opciones, args, conversacion, respuestas, borrar = set(), [], None, None, None
+    guardar_en = None  # guia --guardar=guia.txt: la salida va a ese archivo, no a la pantalla
     for a in argv:
         corrige = bool(args) and sin_tildes(args[0].lower()) == "corregir"
         if a.lower() in alias:
@@ -8995,13 +9326,23 @@ def _main(argv, donde):
                 avisar("a --ia-simulada= le falta el nombre del archivo de respuestas, por "
                        "ejemplo: --ia-simulada=respuestas.txt (o --ia-simulada sola)")
                 return 2
+        elif a.lower().startswith("--guardar"):
+            guardar_en = a[len("--guardar="):].strip('"')
+            if not a.lower().startswith("--guardar=") or not guardar_en:
+                avisar("a --guardar le falta el nombre del archivo, por ejemplo: guia "
+                       "--guardar=guia.txt")
+                return 2
+            if guardar_en.lower().rstrip(". ").endswith(NO_SE_PISAN):
+                avisar(f"no guardo en '{guardar_en}' para no pisar un programa: elegí otro "
+                       "nombre, por ejemplo --guardar=guia.txt")
+                return 2
         elif a.lower().startswith("--traza="):
             conversacion = a[len("--traza="):].strip('"')
             if not conversacion:
                 avisar("a --traza= le falta el nombre del archivo, por ejemplo: "
                        "--traza=conversacion.txt")
                 return 2
-            if conversacion.lower().endswith((".mate", ".py")):
+            if conversacion.lower().endswith((".mate", ".py", ".pyw")):
                 avisar(f"no guardo la conversación en '{conversacion}' para no pisar un "
                        "programa: elegí otro nombre, por ejemplo --traza=conversacion.txt")
                 return 2
@@ -9010,10 +9351,11 @@ def _main(argv, donde):
             args.append(a)  # con 'corregir', la lección puede empezar con un guion: "-10% a..."
         elif a.startswith("-") and a != "-":
             if a.lower() not in OPCIONES:
-                todas = OPCIONES + ("--borrar",)
+                todas = OPCIONES + ("--borrar", "--guardar")
                 nombre, igual, valor = a.partition("=")
                 parecidas = difflib.get_close_matches(nombre.lower(), todas, 1)
-                con_valor = parecidas and parecidas[0] in ("--borrar", "--traza", "--ia-simulada")
+                con_valor = parecidas and parecidas[0] in ("--borrar", "--traza", "--ia-simulada",
+                                                          "--guardar")
                 avisar(f"no conozco la opción {a}" + (
                     f", ¿quisiste decir {parecidas[0]}{igual + valor if con_valor else ''}?"
                     if parecidas else ". Las opciones son: " + ", ".join(todas))
@@ -9043,6 +9385,34 @@ def _main(argv, donde):
     if not args:
         print(texto_de_ayuda())
         return 2
+    if guardar_en is not None and not (args and sin_tildes(args[0].lower()) in (
+            "guia", "informe")):
+        avisar("--guardar va con 'guia' o con 'informe', por ejemplo: guia --guardar=guia.txt "
+               "(deja el texto en ese archivo, listo para abrir con el Bloc de notas)")
+        return 2
+    if guardar_en is not None:
+        # Con > de PowerShell el archivo queda con las tildes rotas: lo escribe Mate.
+        import contextlib
+        texto = io.StringIO()
+        with contextlib.redirect_stdout(texto):
+            if sin_tildes(args[0].lower()) == "guia":
+                print(texto_de_guia())
+                codigo = 0
+            else:
+                codigo = orden_informe(args[1:], opciones, borrar,
+                                       donde.get("informe") or ruta_del_registro(), avisar)
+        if codigo:
+            print(texto.getvalue(), end="")
+            return codigo
+        try:
+            escribir_entero(guardar_en, texto.getvalue())
+        except (OSError, ValueError):
+            avisar(f"no pude guardar en '{guardar_en}': fijate que el archivo no esté abierto "
+                   "en otro programa y que se pueda escribir en esa carpeta")
+            return 1
+        print(f"Quedó guardado en {guardar_en}. Para abrirlo:  notepad "
+              f"{para_pegar(guardar_en)}")
+        return 0
     if args[0].lower() in ("guia", "guía"):
         print(texto_de_guia())
         return 0
@@ -9186,7 +9556,26 @@ def _main(argv, donde):
             return
         aprendido["abierta"] = False
         nueva = interprete.memoria_actual()
-        if nueva != aprendido["leida"] and (nueva or os.path.lexists(archivo_memoria)):
+        if nueva != aprendido["leida"]:
+            # Antes de guardar se mira el archivo de nuevo: si cambió mientras el programa
+            # corría (otra ventana anotó una lección o sumó consultas), se suma lo de esta
+            # corrida a lo que dice ahora, en vez de pisarlo.
+            try:
+                en_disco = leer_memoria(archivo_memoria)[0]
+            except ErrorMate:
+                en_disco = None
+            if en_disco is None and aprendido["leida"] is not None:
+                avisar(f"aviso: no guardé la memoria: {os.path.basename(archivo_memoria)} "
+                       "cambió mientras el programa corría y ahora no se entiende. Lo que "
+                       "pasó en esta corrida no va a estar en la próxima; abrilo con el Bloc "
+                       "de notas y arreglalo")
+                nueva = None
+            elif en_disco is not None and en_disco != (aprendido["leida"] or {}):
+                nueva = fundir_memoria(aprendido["leida"] or {}, nueva, en_disco)
+                if nueva == en_disco:
+                    nueva = None
+        if nueva is not None and nueva != aprendido["leida"] and (
+                nueva or os.path.lexists(archivo_memoria)):
             problema = guardar_memoria(archivo_memoria, os.path.basename(ruta), nueva)
             if problema:
                 avisar(f"aviso: {problema}")
@@ -9279,18 +9668,46 @@ def _main(argv, donde):
             interprete.memoria, interprete.recordando = memoria, True
 
             def guardar_cuenta():
-                """Después de cada consulta de verdad de un agente con frenos: la cuenta de
-                hoy queda en el disco ya, por si cierran la ventana sin dejar terminar. Lo
-                demás de la memoria queda como estaba al empezar; se guarda al final."""
-                en_disco = json.loads(json.dumps(aprendido["leida"] or {}))
+                """Antes y después de cada consulta de verdad de un agente con frenos: la
+                cuenta de hoy queda en el disco ya, por si cierran la ventana sin dejar
+                terminar, y se suma lo que haya anotado otra ventana (el mismo programa
+                abierto dos veces, o la orden 'proponer'): el tope es uno solo. Lo demás
+                de la memoria queda como estaba; se guarda al final."""
+                leida = aprendido["leida"] or {}
+                nueva = json.loads(json.dumps(leida))
                 for nombre, agente in interprete.agentes.items():
                     gasto = gasto_limpio(agente.gasto)
                     if gasto:
-                        en_disco.setdefault(
-                            nombre, {"estado": {}, "lecciones": []})["gasto"] = gasto
-                if en_disco != aprendido["leida"] and not guardar_memoria(
-                        archivo_memoria, os.path.basename(ruta), en_disco):
-                    aprendido["leida"] = en_disco
+                        nueva.setdefault(nombre, {"estado": {}, "lecciones": []})["gasto"] = gasto
+                try:
+                    en_disco = leer_memoria(archivo_memoria)[0]
+                except ErrorMate:
+                    return  # (cambió y no se entiende: no se pisa; se avisa al terminar)
+                if en_disco == leida:
+                    if nueva != leida and not guardar_memoria(
+                            archivo_memoria, os.path.basename(ruta), nueva):
+                        aprendido["leida"] = nueva
+                    return
+                junta = fundir_memoria(leida, nueva, en_disco)
+                if junta != en_disco and guardar_memoria(
+                        archivo_memoria, os.path.basename(ruta), junta):
+                    return
+                # La cuenta de los agentes pasa a ser la del archivo (con lo de la otra
+                # ventana adentro). Lecciones y estado siguen como al empezar la corrida.
+                for nombre, agente in interprete.agentes.items():
+                    gasto = junta.get(nombre, {}).get("gasto", {})
+                    for dia, cuenta in gasto.items():
+                        agente.ensayo_desde[dia] = (
+                            agente.ensayo_desde.get(dia, 0) + cuenta["simuladas"]
+                            - agente.gasto.get(dia, {}).get("simuladas", 0))
+                    agente.gasto = {dia: dict(cuenta) for dia, cuenta in gasto.items()}
+                    ficha = nueva.get(nombre)
+                    if ficha is not None:
+                        ficha.pop("gasto", None)
+                    if gasto:
+                        nueva.setdefault(nombre, {"estado": {}, "lecciones": []})[
+                            "gasto"] = json.loads(json.dumps(gasto))
+                aprendido["leida"] = {a: f for a, f in nueva.items() if any(f.values())}
 
             interprete.guardar_cuenta = guardar_cuenta
             interprete.avisar = lambda texto: avisar(f"aviso: {texto}")

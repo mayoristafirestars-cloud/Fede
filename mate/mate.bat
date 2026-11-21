@@ -19,6 +19,15 @@ if defined MATE_ORDEN set "ESPERAR="
 
 rem Se prueba que Python ande de verdad: en Windows puede haber un "python" de
 rem mentira, que no es Python sino un atajo a la tienda de Microsoft.
+rem Primero se busca uno que sirva para Mate (3.10 o mas nuevo), igual que hace
+rem instalar.bat: si "python" es uno viejo y "py -3" es nuevo, se usa "py -3".
+set "PY=python"
+python -c "import sys; sys.exit(0 if sys.version_info[:2] >= (3, 10) else 3)" >nul 2>nul
+if not errorlevel 1 goto correr
+set "PY=py -3"
+py -3 -c "import sys; sys.exit(0 if sys.version_info[:2] >= (3, 10) else 3)" >nul 2>nul
+if not errorlevel 1 goto correr
+rem Si solo hay un Python viejo, se corre igual: mate.py explica que hace falta otro.
 set "PY=python"
 python -c "import sys" >nul 2>nul
 if not errorlevel 1 goto correr

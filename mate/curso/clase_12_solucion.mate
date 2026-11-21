@@ -64,14 +64,51 @@ funcion lista_en_texto(tabla) {
     devolver unir(renglones, "\n")
 }
 
+# En minúscula y sin tildes, para que "AZUCAR" y "azúcar" sean lo mismo al buscar.
+funcion llano(t) {
+    var r = minusculas(t)
+    para con, sin en { "á": "a", "é": "e", "í": "i", "ó": "o", "ú": "u" } {
+        r = reemplazar(r, con, sin)
+    }
+    devolver r
+}
+
 funcion buscar_en_lista(tabla, pregunta) {
     para fila en tabla {
-        sea palabra = minusculas(partir(fila.producto, " ")[0])
-        si tiene(minusculas(pregunta), palabra) {
+        sea palabra = llano(partir(fila.producto, " ")[0])
+        si tiene(llano(pregunta), palabra) {
             devolver renglon_de(fila)
         }
     }
     devolver "Eso no lo encuentro en la lista. Probá con el nombre del producto."
+}
+
+# Antes de atender, mira que la planilla tenga lo que el programa necesita. Si algo
+# está mal, lo dice con el nombre del producto y el programa no sigue.
+funcion revisar_lista(tabla) {
+    sea arreglo = "Corregilo en Excel, guardá de nuevo como CSV y volvé a correr."
+    si largo(tabla) == 0 {
+        fallar "precios.csv no tiene productos debajo de los títulos. {arreglo}"
+    }
+    var cuenta = 0
+    para fila en tabla {
+        cuenta += 1
+        para titulo en ["producto", "precio", "stock"] {
+            si no tiene(fila, titulo) {
+                sea hay = unir(claves(fila), ";")
+                sea va = "La primera fila tiene que decir producto;precio;stock, en minúscula"
+                sea falta = "A precios.csv le falta la columna '{titulo}'"
+                fallar "{falta}. {va}, y dice: {hay}. {arreglo}"
+            }
+        }
+        sea cual = "En precios.csv, el producto {cuenta} ({fila.producto})"
+        si tipo(fila.precio) != "numero" {
+            fallar "{cual} no tiene el precio en números: dice \"{fila.precio}\". {arreglo}"
+        }
+        si tipo(fila.stock) != "numero" {
+            fallar "{cual} no tiene el stock en números (si no hay, va 0). {arreglo}"
+        }
+    }
 }
 
 # LO NUEVO: un renglón por consulta, con la fecha y la hora, al final del archivo.
@@ -104,6 +141,7 @@ funcion charlar(tabla) {
 }
 
 sea precios = leer_tabla("precios.csv")
+revisar_lista(precios)
 enviar CargarLista { filas: precios } a Mostrador
 mostrar("Mostrador: cargué {largo(precios)} productos de precios.csv.")
 mostrar("Escribí tu consulta y apretá Enter. Para terminar, escribí chau.")

@@ -96,6 +96,9 @@ La primera vez:
     Mostrador: Eso te lo confirma una persona. Ya te paso con alguien.
        (consulta número 2 desde que abrió el mostrador)
 
+(El renglón de `aviso:` sale solo esa primera vez, mientras la propuesta siga sin aprobar
+ni descartar.)
+
 Corrélo de nuevo, con el mismo comando. Ahora la cuenta sigue desde donde quedó:
 
        (consulta número 3 desde que abrió el mostrador)

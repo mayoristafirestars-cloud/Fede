@@ -109,7 +109,18 @@ Para ver cada freno saltando, paso por paso, agregale `--traza`.
     Mostrador: Eso te lo confirma una persona. Ya te paso con alguien.
 
 El renglón que empieza con `aviso:` lo escribe Mate: cuenta que saltó un freno y que dejó
-una lección propuesta. Eso es la clase 11.
+una lección propuesta. Eso es la clase 11. **Ese aviso sale solo la primera vez**: si
+corrés de nuevo (por ejemplo con `--traza`), ya no aparece, porque la propuesta sigue
+ahí, esperando que la apruebes o la descartes.
+
+**Si de golpe contesta siempre la reserva**, mirá si arriba salió un renglón como este:
+
+    aviso: Mostrador llegó a su tope (ya hizo 50 consulta(s) a la IA hoy y su tope es 50
+    por día). Desde ahora contesta con el texto de reserva, sin consultar. ...
+
+Es el tope de gasto haciendo su trabajo. En un ensayo (`--ia-simulada`) la cuenta arranca
+de cero en cada corrida. Con la IA de verdad vale para todo el día: mañana vuelve a
+consultar sola, o subí `consultas_por_dia`. Ojo: `--olvidar` no borra esa cuenta.
 
 Al correrlo aparecen dos archivos nuevos al lado del programa:
 `clase_10_frenos.memoria.json` (la cuenta de consultas del día) y

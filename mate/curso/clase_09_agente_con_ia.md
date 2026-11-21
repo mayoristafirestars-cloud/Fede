@@ -92,6 +92,11 @@ texto. En la carpeta del curso hay uno, `respuestas.txt` (abrilo con el Bloc de 
     Cliente:   ¿A qué hora cierran?
     Mostrador: Abrimos de 8 a 20, de lunes a sábado.
 
+Ojo con las palabras cortas: el archivo busca **ese pedazo de texto** en la pregunta, no
+la palabra entera. `hora` también aparece adentro de "ahora", y un renglón `te => ...`
+contestaría a una pregunta por el "mate". Si un ensayo contesta algo que no esperabas,
+alargá el pedazo de la izquierda (`a qué hora => ...`).
+
 **Con la IA de verdad** es el mismo comando sin `--ia-simulada`. Es **pago**: Anthropic
 cobra cada consulta. Los pasos:
 

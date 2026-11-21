@@ -215,10 +215,10 @@ mate probar mostrador.mate</code></pre>
 <ol>
   <li><strong>Instalá Python</strong> desde <code>python.org/downloads</code>. En la primera pantalla del instalador, abajo, marcá la casilla <strong>Add python.exe to PATH</strong> antes de tocar "Install Now".</li>
   <li><strong>Bajá Mate</strong> como archivo ZIP, hacé clic derecho sobre el archivo y elegí "Extraer todo".
-    <span class="con-repo oculto"><br><a class="boton" data-ruta="archive/HEAD.zip" href="#instalar">Bajar el ZIP</a></span>
-    <span class="sin-repo chico"><br>El enlace para bajarlo aparece cuando esta página se abre desde su dirección de internet. Si te la pasaron como archivo, pedile a esa persona el enlace o la carpeta.</span>
+    <span class="con-repo oculto"><br><a class="boton" data-ruta="archive/HEAD.zip" href="#instalar">Bajar el ZIP</a><br><span class="chico">Ojo: ese ZIP trae el proyecto entero, con otras carpetas que no son de Mate. La única que hace falta es la carpeta <code>mate</code>.</span></span>
+    <span class="sin-repo chico"><br>Mate todavía no tiene una dirección de internet para bajarlo: pedile a quien te pasó esta página el archivo ZIP con la carpeta <code>mate</code>.</span>
   </li>
-  <li><strong>Instalá la orden <code>mate</code>:</strong> en la carpeta que quedó, entrá a la carpeta <code>mate</code> y hacé doble clic en <code>instalar.bat</code>. Dice qué hizo y cómo deshacerlo. Si Windows muestra un cartel azul, elegí "Más información" y después "Ejecutar de todas formas".</li>
+  <li><strong>Instalá la orden <code>mate</code>:</strong> entrá a la carpeta <code>mate</code> y hacé doble clic en el <code>instalar.bat</code> que está <strong>ahí adentro</strong>. (Si afuera de la carpeta <code>mate</code> ves otro <code>instalar.bat</code>, ese no es: es de otro programa.) Dice qué hizo y cómo deshacerlo. Si Windows muestra un cartel azul, elegí "Más información" y después "Ejecutar de todas formas".</li>
   <li><strong>Probalo:</strong> abrí PowerShell y escribí:</li>
 </ol>
 <pre><code>mate --version
@@ -237,6 +237,7 @@ mate curso</code></pre>
     <li><strong>Es un proyecto nuevo, hecho por una sola persona.</strong> No hay comunidad ni soporte. Lo que hay para aprender es el curso, los ejemplos y la ayuda que trae adentro.</li>
     <li><strong>Es lento y chico al lado de Python o JavaScript.</strong> Está pensado para programas cortos y claros, no para sistemas grandes.</li>
     <li><strong>Los frenos no entienden lo que leen.</strong> Buscan importes, palabras y cuentan letras. Atajan lo más común; no son una garantía absoluta.</li>
+    <li><strong>La IA no puede decir totales ni sumas.</strong> El freno de precios deja pasar solo los importes de tu lista: si un cliente pregunta cuánto salen 3, la respuesta con el total se reemplaza por "eso te lo confirma una persona", salvo que el programa calcule esos totales y los sume a los precios permitidos.</li>
     <li><strong>La IA de verdad es paga</strong> (se le paga a Anthropic, por consulta) y cada consulta es suelta: la IA no recuerda la pregunta anterior.</li>
     <li><strong>Dos partes todavía no se probaron en condiciones reales:</strong> la conexión con la IA de verdad y el instalador de Windows. Todo lo demás tiene pruebas automáticas, y todo se puede ensayar sin gastar.</li>
   </ul>

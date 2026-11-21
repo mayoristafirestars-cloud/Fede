@@ -81,16 +81,53 @@ visto: cada parte es de una clase anterior.
         devolver unir(renglones, "\n")
     }
 
+    # En minúscula y sin tildes, para que "AZUCAR" y "azúcar" sean lo mismo al buscar.
+    funcion llano(t) {
+        var r = minusculas(t)
+        para con, sin en { "á": "a", "é": "e", "í": "i", "ó": "o", "ú": "u" } {
+            r = reemplazar(r, con, sin)
+        }
+        devolver r
+    }
+
     # Lo que se contesta cuando no hay IA: el producto de la lista que nombró el cliente.
-    # (Busca la primera palabra del producto, en minúscula: "yerba", "arroz", "fideos"...)
+    # (Busca la primera palabra del producto: "yerba", "azucar", "fideos"...)
     funcion buscar_en_lista(tabla, pregunta) {
         para fila en tabla {
-            sea palabra = minusculas(partir(fila.producto, " ")[0])
-            si tiene(minusculas(pregunta), palabra) {
+            sea palabra = llano(partir(fila.producto, " ")[0])
+            si tiene(llano(pregunta), palabra) {
                 devolver renglon_de(fila)
             }
         }
         devolver "Eso no lo encuentro en la lista. Probá con el nombre del producto."
+    }
+
+    # Antes de atender, mira que la planilla tenga lo que el programa necesita. Si algo
+    # está mal, lo dice con el nombre del producto y el programa no sigue.
+    funcion revisar_lista(tabla) {
+        sea arreglo = "Corregilo en Excel, guardá de nuevo como CSV y volvé a correr."
+        si largo(tabla) == 0 {
+            fallar "precios.csv no tiene productos debajo de los títulos. {arreglo}"
+        }
+        var cuenta = 0
+        para fila en tabla {
+            cuenta += 1
+            para titulo en ["producto", "precio", "stock"] {
+                si no tiene(fila, titulo) {
+                    sea hay = unir(claves(fila), ";")
+                    sea va = "La primera fila tiene que decir producto;precio;stock, en minúscula"
+                    sea falta = "A precios.csv le falta la columna '{titulo}'"
+                    fallar "{falta}. {va}, y dice: {hay}. {arreglo}"
+                }
+            }
+            sea cual = "En precios.csv, el producto {cuenta} ({fila.producto})"
+            si tipo(fila.precio) != "numero" {
+                fallar "{cual} no tiene el precio en números: dice \"{fila.precio}\". {arreglo}"
+            }
+            si tipo(fila.stock) != "numero" {
+                fallar "{cual} no tiene el stock en números (si no hay, va 0). {arreglo}"
+            }
+        }
     }
 
     # La charla: una consulta atrás de otra, hasta que escriben chau.
@@ -117,6 +154,7 @@ visto: cada parte es de una clase anterior.
     }
 
     sea precios = leer_tabla("precios.csv")
+    revisar_lista(precios)
     enviar CargarLista { filas: precios } a Mostrador
     mostrar("Mostrador: cargué {largo(precios)} productos de precios.csv.")
     mostrar("Escribí tu consulta y apretá Enter. Para terminar, escribí chau.")
@@ -150,7 +188,19 @@ visto: cada parte es de una clase anterior.
 
     prueba "sin IA busca el producto en la lista" {
         asegurar buscar_en_lista(precios, "¿Tenés ARROZ?") == "Arroz 1 kg: $ 1.800,00"
+        asegurar buscar_en_lista(precios, "y el azucar?") == "Azúcar 1 kg: $ 1.250,50"
         asegurar empieza_con(buscar_en_lista(precios, "¿y clavos?"), "Eso no lo encuentro")
+    }
+
+    prueba "una planilla con un precio mal escrito se avisa antes de atender" {
+        revisar_lista(precios)
+        sea mala = [{ producto: "Pan", precio: "consultar", stock: 3 }]
+        intentar {
+            revisar_lista(mala)
+            fallar "tendría que haber fallado"
+        } si falla motivo {
+            asegurar tiene(texto(motivo), "(Pan) no tiene el precio en números")
+        }
     }
 
 Qué parte viene de cada clase:
@@ -163,12 +213,17 @@ Qué parte viene de cada clase:
   cambiás un precio en Excel el freno lo sigue solo.
 - `estado recordado`, lecciones y propuestas: clase 11.
 
-Lo único nuevo son dos detalles:
+Lo único nuevo son cuatro detalles:
 
 - `enviar CargarLista { ... } a Mostrador` manda el mensaje **sin esperar respuesta**
   (con `preguntar` se espera). Un agente no lee archivos: el programa lee la lista y se
   la manda.
 - `aviso: texto?` en un mensaje: el signo de pregunta dice que ese dato puede faltar.
+- `revisar_lista(precios)` mira la planilla **antes de atender**: que estén las columnas
+  `producto`, `precio` y `stock`, y que cada precio y cada stock sean números. Si algo
+  está mal, lo dice con el nombre del producto y el programa no arranca.
+- `llano(texto)` pasa un texto a minúscula y sin tildes, para que al buscar en la lista
+  dé lo mismo "AZUCAR", "azucar" o "azúcar".
 
 ## Cómo se corre
 
@@ -176,7 +231,9 @@ Para ensayar, sin clave y sin gastar:
 
     python mate\mate.py correr mate\curso\clase_12_mostrador.mate --ia-simulada
 
-Escribí consultas y apretá Enter. Para terminar, `chau` (o `Ctrl+C`).
+Escribí consultas y apretá Enter. Para terminar, `chau` (o `Ctrl+C`; con la orden corta
+`mate`, después de `Ctrl+C` Windows puede preguntar "¿Desea terminar el trabajo por
+lotes (S/N)?": escribí `S` y Enter).
 
 ## Lo que tiene que salir
 
@@ -202,17 +259,23 @@ Las pruebas:
       ✓ la lista de precios le llega a la IA
       ✓ un precio que no está en la lista no le llega al cliente
       ✓ sin IA busca el producto en la lista
-    4 de 4 pruebas pasaron
+      ✓ una planilla con un precio mal escrito se avisa antes de atender
+    5 de 5 pruebas pasaron
 
 ## Para usarlo de verdad
 
 1. **Tu lista de precios.** Guardá tu planilla de Excel como CSV, con el nombre
    `precios.csv`, en la carpeta del programa (los pasos están en la clase 7). Los títulos
-   tienen que ser `producto`, `precio` y `stock`.
+   tienen que ser `producto`, `precio` y `stock`, en minúscula y en la primera fila (sin
+   el nombre de la lista arriba), y cada precio y cada stock, un número (ni vacío ni
+   "consultar"). Si algo de eso falla, el programa te lo dice al arrancar.
 2. **Tus instrucciones.** En el Bloc de notas, cambiá el texto de `instrucciones` para que
    cuente cómo es tu negocio: horarios, zona de entrega, formas de pago.
 3. **Tus frenos.** Revisá `prohibido` y `reserva`, y bajá `consultas_por_dia` a un número
-   que te deje tranquilo: es el tope de gasto.
+   que te deje tranquilo: es el tope de gasto. Cuando el Mostrador llega al tope, Mate lo
+   avisa en pantalla una vez (`aviso: Mostrador llegó a su tope...`) y desde ahí contesta
+   la reserva. En un ensayo la cuenta arranca de cero en cada corrida; con la IA de verdad
+   vale para todo el día (`--olvidar` no la borra).
 4. **Ensayá** con `--ia-simulada` y corré las pruebas con `probar`.
 5. **La clave.** Cuando ande, poné la clave en la ventana de PowerShell (clase 9) y
    corrélo sin `--ia-simulada`. Desde ahí cada consulta se paga.
@@ -222,6 +285,13 @@ Las pruebas:
 Lo que este mostrador **no** hace todavía: atiende en la ventana de PowerShell, no por
 WhatsApp ni por una página web. Y cada consulta a la IA es suelta: la IA no se acuerda de
 la pregunta anterior del mismo cliente.
+
+**Tampoco dice totales.** El freno deja pasar solo los precios de la lista: si un cliente
+pregunta cuánto salen 3 yerbas y la IA contesta "$ 10.500", ese importe no está en la
+lista y al cliente le llega la reserva. Si en tu negocio eso se pregunta mucho, hay que
+calcular esos totales en el programa y sumarlos a los `precios` de los frenos (en
+`solo_precios`, agregando también el precio por 2, por 3...). Está explicado en
+`mate\README.md`, en "El freno de precios, con detalle".
 
 ## El error más común
 
@@ -243,7 +313,16 @@ Se arregla igual que en la clase 9: `--ia-simulada` para ensayar, o la clave par
 de verdad.
 
 El otro tropiezo, cuando ponés tu propia planilla: que los títulos no sean `producto`,
-`precio` y `stock`. El error dice qué dato falta y cuál es el parecido.
+`precio` y `stock` (Excel los suele dejar con mayúscula), o que un precio esté vacío. El
+programa lo revisa al arrancar y dice qué corregir en la planilla:
+
+    A precios.csv le falta la columna 'producto'. La primera fila tiene que decir
+    producto;precio;stock, en minúscula, y dice: Producto;Precio;Stock. Corregilo en
+    Excel, guardá de nuevo como CSV y volvé a correr.
+
+Y si al cambiar los `frenos` te equivocás (un nombre de columna mal escrito en
+`solo_precios`, un `consultas_por_dia` negativo), el programa no sigue atendiendo sin
+frenos: corta y dice `los frenos de Mostrador están mal escritos`, con el renglón.
 
 ## Ejercicio
 
@@ -324,14 +403,51 @@ También está en `mate\curso\clase_12_solucion.mate`. Son dos cambios, marcados
         devolver unir(renglones, "\n")
     }
 
+    # En minúscula y sin tildes, para que "AZUCAR" y "azúcar" sean lo mismo al buscar.
+    funcion llano(t) {
+        var r = minusculas(t)
+        para con, sin en { "á": "a", "é": "e", "í": "i", "ó": "o", "ú": "u" } {
+            r = reemplazar(r, con, sin)
+        }
+        devolver r
+    }
+
     funcion buscar_en_lista(tabla, pregunta) {
         para fila en tabla {
-            sea palabra = minusculas(partir(fila.producto, " ")[0])
-            si tiene(minusculas(pregunta), palabra) {
+            sea palabra = llano(partir(fila.producto, " ")[0])
+            si tiene(llano(pregunta), palabra) {
                 devolver renglon_de(fila)
             }
         }
         devolver "Eso no lo encuentro en la lista. Probá con el nombre del producto."
+    }
+
+    # Antes de atender, mira que la planilla tenga lo que el programa necesita. Si algo
+    # está mal, lo dice con el nombre del producto y el programa no sigue.
+    funcion revisar_lista(tabla) {
+        sea arreglo = "Corregilo en Excel, guardá de nuevo como CSV y volvé a correr."
+        si largo(tabla) == 0 {
+            fallar "precios.csv no tiene productos debajo de los títulos. {arreglo}"
+        }
+        var cuenta = 0
+        para fila en tabla {
+            cuenta += 1
+            para titulo en ["producto", "precio", "stock"] {
+                si no tiene(fila, titulo) {
+                    sea hay = unir(claves(fila), ";")
+                    sea va = "La primera fila tiene que decir producto;precio;stock, en minúscula"
+                    sea falta = "A precios.csv le falta la columna '{titulo}'"
+                    fallar "{falta}. {va}, y dice: {hay}. {arreglo}"
+                }
+            }
+            sea cual = "En precios.csv, el producto {cuenta} ({fila.producto})"
+            si tipo(fila.precio) != "numero" {
+                fallar "{cual} no tiene el precio en números: dice \"{fila.precio}\". {arreglo}"
+            }
+            si tipo(fila.stock) != "numero" {
+                fallar "{cual} no tiene el stock en números (si no hay, va 0). {arreglo}"
+            }
+        }
     }
 
     # LO NUEVO: un renglón por consulta, con la fecha y la hora, al final del archivo.
@@ -364,6 +480,7 @@ También está en `mate\curso\clase_12_solucion.mate`. Son dos cambios, marcados
     }
 
     sea precios = leer_tabla("precios.csv")
+    revisar_lista(precios)
     enviar CargarLista { filas: precios } a Mostrador
     mostrar("Mostrador: cargué {largo(precios)} productos de precios.csv.")
     mostrar("Escribí tu consulta y apretá Enter. Para terminar, escribí chau.")

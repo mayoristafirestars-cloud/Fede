@@ -75,7 +75,10 @@ Depende de lo que escribas. Si contestás `2`, después `muchos` y después `cha
     Atendí 1 pedido(s). ¡Hasta luego!
 
 También podés terminar con `Ctrl+C` mientras el programa espera: Mate avisa que cortaste
-y no muestra ningún error.
+y no muestra ningún error. Si usás la orden corta `mate` (la que deja `instalar.bat`),
+después de `Ctrl+C` Windows puede preguntar "¿Desea terminar el trabajo por lotes (S/N)?":
+es una pregunta de Windows, no de Mate, y no se perdió nada. Escribí `S` y Enter. Para que
+no aparezca, terminá con `chau`.
 
 Con `probar` nadie tiene que escribir nada: lo "tecleado" sale de `simular_teclado`.
 
