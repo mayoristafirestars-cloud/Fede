@@ -1,0 +1,83 @@
+# Paso 7: un agente que le consulta a una IA de verdad (Claude, de la empresa Anthropic).
+#
+# El agente sigue siendo un agente común: recibe un mensaje con contrato y responde otro
+# mensaje con contrato. Lo único nuevo es consultar_ia(instrucciones, pregunta), que le
+# manda la pregunta a la IA por internet y devuelve lo que contesta, como texto.
+#
+# PARA PROBARLO SIN GASTAR NADA (no hace falta clave ni internet):
+#     python mate\mate.py probar mate\ejemplos\07_agente_con_ia.mate
+#     python mate\mate.py correr mate\ejemplos\07_agente_con_ia.mate --ia-simulada
+#
+# PARA CORRERLO DE VERDAD (es pago: cada consulta se cobra):
+#   1. Sacá una clave en platform.claude.com y cargale crédito.
+#   2. En PowerShell, en la misma ventana donde vas a correr, escribí (con tu clave):
+#          $env:ANTHROPIC_API_KEY = "tu-clave"
+#   3. Corré:
+#          python mate\mate.py correr mate\ejemplos\07_agente_con_ia.mate
+# La clave nunca se escribe en un programa .mate ni se guarda en la carpeta: vive solo en
+# esa ventana de PowerShell, y al cerrarla se va.
+
+mensaje Consulta { cliente: texto, pregunta: texto }
+# (aviso lleva ? porque es opcional: solo viene cuando la IA no pudo contestar)
+mensaje Atencion { cliente: texto, respuesta: texto, aviso: texto? }
+
+agente Mostrador {
+    # Las instrucciones le dicen a la IA quién es y cómo tiene que contestar.
+    estado instrucciones = """
+        Atendés el mostrador de un almacén de barrio. Contestá en castellano rioplatense,
+        con amabilidad y en una sola oración corta. Si no sabés algo, decí que vas a
+        averiguarlo.
+    """
+    estado atendidos = 0
+
+    al recibir Consulta como c {
+        atendidos += 1
+        # Si la IA no contesta (no hay internet, falta la clave, no hay crédito...) el
+        # agente no se cae: lo ataja y da una respuesta propia.
+        intentar {
+            # El tercer valor es lo que contesta cuando NO se habla con la IA de verdad:
+            # en las pruebas y con --ia-simulada. Con la IA de verdad no se usa.
+            sea dicho = consultar_ia(instrucciones, c.pregunta,
+                                     "¡Hola! Ya te lo averiguo.")
+            responder Atencion { cliente: c.cliente, respuesta: dicho }
+        } si falla motivo {
+            responder Atencion {
+                cliente: c.cliente,
+                respuesta: "Ahora no te puedo atender, volvé en un rato.",
+                aviso: motivo,
+            }
+        }
+    }
+}
+
+sea atencion = preguntar Consulta { cliente: "Marta", pregunta: "¿Tienen yerba sin palo?" } a Mostrador
+mostrar("Pregunta de {atencion.cliente}: ¿Tienen yerba sin palo?")
+mostrar("Mostrador: {atencion.respuesta}")
+si atencion.aviso != nada {
+    mostrar("")
+    mostrar("La IA no contestó. El motivo:")
+    mostrar(atencion.aviso)
+}
+
+# En las pruebas Mate nunca habla con la IA de verdad: simular_ia() fija qué va a contestar.
+prueba "el mostrador contesta lo que dice la IA" {
+    simular_ia("Sí, tenemos de medio kilo y de un kilo.")
+    sea a = preguntar Consulta { cliente: "Juan", pregunta: "¿Hay yerba?" } a Mostrador
+    asegurar a.respuesta == "Sí, tenemos de medio kilo y de un kilo."
+    asegurar a.cliente == "Juan" y a.aviso == nada
+}
+
+# Con una lista, la IA simulada da una respuesta por consulta, en ese orden.
+prueba "dos clientes, dos respuestas" {
+    simular_ia(["Sale $ 3.500.", "Abrimos a las 8."])
+    sea uno = preguntar Consulta { cliente: "Ana", pregunta: "¿Cuánto sale la yerba?" } a Mostrador
+    sea dos = preguntar Consulta { cliente: "Luis", pregunta: "¿A qué hora abren?" } a Mostrador
+    asegurar uno.respuesta == "Sale $ 3.500."
+    asegurar dos.respuesta == "Abrimos a las 8."
+}
+
+# Sin simular_ia(), contesta el tercer valor de consultar_ia().
+prueba "sin simular, da la respuesta preparada" {
+    sea a = preguntar Consulta { cliente: "Eva", pregunta: "¿Hay pan?" } a Mostrador
+    asegurar a.respuesta == "¡Hola! Ya te lo averiguo."
+}

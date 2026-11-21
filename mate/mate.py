@@ -29,7 +29,7 @@ VERSION = "0.3"
 # ni más funciones incluidas que estas. Para agregar una hay que sacar otra, o discutir el
 # tope. Y cada agregado lleva su renglón en el README y su prueba (las pruebas lo controlan).
 TOPE_DE_PALABRAS = 40
-TOPE_DE_FUNCIONES = 40
+TOPE_DE_FUNCIONES = 42
 
 PALABRAS = {
     "sea", "var", "funcion", "devolver", "si", "sino", "mientras", "para", "en",
@@ -53,7 +53,8 @@ MAX_LLAMADAS = 3_000  # funciones abiertas a la vez (una que se llama a sí mism
 NIVELES_DE_PYTHON = 30 * MAX_LLAMADAS if sys.version_info >= (3, 12) else 0
 
 ORDENES = ("correr", "probar", "verificar")
-OPCIONES = ("--traza", "--depurar", "--sin-limite", "--version", "--ayuda")
+OPCIONES = ("--traza", "--depurar", "--sin-limite", "--version", "--ayuda",
+            "--ia-simulada")
 
 COMPARADORES = ("==", "!=", "<", "<=", ">", ">=")
 
@@ -115,6 +116,10 @@ FUNCIONES = {
     "mensajes_enviados": (0, 1, 'mensajes_enviados("Pedido")',
                           "solo en una prueba: los mensajes que se mandaron (o los de ese "
                           "tipo)"),
+    "consultar_ia": (2, 3, "consultar_ia(reglas, duda)",
+                     "lo que contesta una IA de verdad (Claude), como texto; es pago"),
+    "simular_ia": (1, 1, 'simular_ia("Sale $ 100")',
+                   "solo en una prueba: lo que contesta la IA desde ahí (o una lista)"),
 }
 
 
@@ -126,7 +131,7 @@ def lista_de_funciones(formato_de_renglon="- {ejemplo:<27} {que}"):
 
 # Las funciones incluidas que hacen algo además de devolver un valor: pueden ir solas
 # en un renglón. Las demás, sueltas, no sirven de nada y Mate lo avisa.
-HACEN_ALGO = ("mostrar", "leer", "escribir_archivo")
+HACEN_ALGO = ("mostrar", "leer", "escribir_archivo", "simular_ia")
 
 # Palabras de otros lenguajes, o con tilde, y cómo se escriben en Mate. No se aceptan
 # como sinónimos: solo sirven para explicar el error.
@@ -176,6 +181,11 @@ def espera_otra_cantidad(nombre, minimo, maximo, recibe):
 DEVOLVER_SUELTO = "'devolver' solo va dentro de una función"
 SOLO_EN_PRUEBA = ("mensajes_enviados() solo va dentro de una prueba: es para comprobar "
                   "qué mensajes se mandaron")
+SIMULAR_IA_SUELTO = ("simular_ia() solo va dentro de una prueba: fija lo que contesta la IA "
+                     "mientras dura esa prueba. Para correr el programa sin la IA de verdad "
+                     "está la opción --ia-simulada")
+# Las funciones incluidas que solo sirven adentro de una prueba, y lo que se avisa si no.
+SOLO_EN_PRUEBAS = {"mensajes_enviados": SOLO_EN_PRUEBA, "simular_ia": SIMULAR_IA_SUELTO}
 RESPONDER_SUELTO = "'responder' solo va dentro de 'al recibir' (o de una función del agente)"
 # El 'al fallar' de un agente se guarda junto a sus 'al recibir', con este nombre (que
 # no puede ser el de un mensaje: tiene un espacio y empieza con minúscula).
@@ -2070,11 +2080,11 @@ def verificar(programa, en_consola=False):
             visitar(x, ag)
 
     def fuera_de_prueba(n):
-        """mensajes_enviados() escrito en el programa o en un agente (mejora 98)."""
+        """mensajes_enviados() o simular_ia() escritos en el programa o en un agente."""
         if isinstance(n, (list, tuple)):
             if (_es_nodo(n, "llamar", 4) and _es_nodo(n[2], "nombre", 3)
-                    and n[2][2] == "mensajes_enviados"):
-                errores.append((n[1], SOLO_EN_PRUEBA))
+                    and n[2][2] in SOLO_EN_PRUEBAS):
+                errores.append((n[1], SOLO_EN_PRUEBAS[n[2][2]]))
             for x in n:
                 fuera_de_prueba(x)
 
@@ -2467,6 +2477,238 @@ def por_teclado(pregunta):
                  else pregunta + " ")
 
 
+# ───────────────────────────── La IA (mejora 100) ─────────────────────────────
+# consultar_ia() le habla a Claude, de Anthropic, por la red. Todo con la biblioteca
+# estándar. La clave nunca está en el programa: se lee de la variable ANTHROPIC_API_KEY.
+
+IA_DIRECCION = "https://api.anthropic.com/v1/messages"
+IA_VERSION = "2026-10-21"  # el encabezado anthropic-version
+IA_MODELO = "claude-opus-5-5"  # se cambia con la variable MATE_MODELO
+IA_MAX_TOKENS = 16000  # el largo máximo de una respuesta (pensar también gasta de acá)
+IA_ESPERA = 180  # segundos que se espera una respuesta antes de darla por perdida
+IA_REINTENTOS = 2  # si la IA está saturada o se corta la red, se prueba de nuevo
+IA_ESPERA_MAXIMA = 30  # nunca se queda esperando más que esto entre dos intentos
+MAX_CONSULTAS_IA = 50  # consultas de verdad (pagas) por corrida; --sin-limite lo saca
+# Si un filtro de seguridad no deja contestar al modelo, Anthropic prueba con otro en el
+# mismo pedido. Solo estos modelos lo aceptan.
+IA_CON_RESPALDO = ("claude-fable-5-2", "claude-fable-5-1", "claude-opus-5-5",
+                   "claude-opus-5", "claude-sonnet-5-5")
+IA_RESPALDO = "server-side-fallback-2026-07-01"  # el encabezado anthropic-beta que lo pide
+_IA_SIN_RESPALDO = set()  # modelos a los que Anthropic les rechazó ese pedido de respaldo
+DONDE_SE_SACA = "platform.claude.com"
+FALTA_LA_CLAVE = (
+    "consultar_ia(): falta la clave para hablar con la IA. En PowerShell, antes de correr, "
+    'escribí:  $env:ANTHROPIC_API_KEY = "tu-clave"\n'
+    f"La clave se saca en {DONDE_SE_SACA} y el servicio es pago (se cobra cada consulta). "
+    "Para probar sin clave y sin gastar: --ia-simulada")
+SIN_RESPUESTA_SIMULADA = (
+    "consultar_ia(): acá Mate no sale a la red y no hay una respuesta simulada para esta "
+    'consulta. En una prueba, fijala antes con simular_ia("lo que contesta"); o dale un '
+    "tercer valor a consultar_ia(), que es lo que contesta cuando no habla con la IA de "
+    "verdad")
+
+
+def error_de_ia(texto):
+    return ErrorMate(f"consultar_ia(): {texto}", familia="ia")
+
+
+def clave_de_ia():
+    """La clave, de la variable de entorno. Nunca se muestra ni se guarda en otro lado."""
+    clave = os.environ.get("ANTHROPIC_API_KEY", "").strip().strip("\"'").strip()
+    if not clave:
+        raise ErrorMate(FALTA_LA_CLAVE, familia="ia")
+    if not (clave.isascii() and clave.isprintable()) or " " in clave:
+        raise error_de_ia(
+            "la clave guardada en ANTHROPIC_API_KEY tiene espacios o letras raras (no la "
+            "muestro por seguridad). Copiala de nuevo, entera y sin nada de más")
+    return clave
+
+
+def modelo_de_ia():
+    modelo = os.environ.get("MATE_MODELO", "").strip().strip("\"'").strip() or IA_MODELO
+    if not re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9._:@\[\]-]{0,99}", modelo):
+        raise error_de_ia(
+            "la variable MATE_MODELO no tiene el nombre de un modelo. Poné uno como "
+            f'"{IA_MODELO}", o borrala para usar ese:  Remove-Item Env:MATE_MODELO')
+    return modelo
+
+
+def texto_de_la_ia(datos):
+    """El texto de una respuesta de la IA que llegó bien (o el error que lo explica)."""
+    bloques = datos.get("content") if isinstance(datos, dict) else None
+    if not isinstance(bloques, list):
+        raise error_de_ia("llegó una respuesta que no pude entender. Probá de nuevo")
+    if datos.get("stop_reason") == "refusal":
+        raise error_de_ia("la IA no quiso contestar esa consulta (la frenó un filtro de "
+                          "seguridad de Anthropic). Probá preguntándolo de otra manera")
+    texto = "".join(b["text"] for b in bloques if isinstance(b, dict)
+                    and b.get("type") == "text" and isinstance(b.get("text"), str)).strip()
+    if datos.get("stop_reason") == "max_tokens":
+        raise error_de_ia("la respuesta llegó cortada: era más larga de lo que entra en una "
+                          "consulta. Pedile en las instrucciones que conteste más corto")
+    if not texto:
+        raise error_de_ia("la IA contestó sin texto. Probá de nuevo o cambiá la pregunta")
+    return texto
+
+
+def explicar_error_de_ia(codigo, dicho, detalles, modelo):
+    """Qué significa, en castellano, el error con el que contestó Anthropic."""
+    dicho = " ".join(str(dicho or "").split())[:300]
+    original = f" (Anthropic dijo: {dicho})" if dicho else ""
+    poner = '$env:ANTHROPIC_API_KEY = "tu-clave"'
+    if codigo == 401:
+        return ("la clave no sirve: Anthropic no la reconoce (está mal copiada, vencida o "
+                f"la borraron). Sacá una nueva en {DONDE_SE_SACA} y ponela otra vez:  {poner}")
+    if codigo == 402 or "credit balance" in dicho.lower():
+        return ("la cuenta de Anthropic no tiene crédito (o hay un problema con el pago). "
+                f"Se carga en {DONDE_SE_SACA}, en la parte de facturación")
+    if codigo == 403:
+        return f"esa clave no tiene permiso para hacer esta consulta{original}"
+    if codigo == 404:
+        return (f"Anthropic no conoce el modelo '{modelo}', o tu cuenta no puede usarlo. "
+                + ("Revisá la variable MATE_MODELO, o borrala para usar el de siempre:  "
+                   "Remove-Item Env:MATE_MODELO" if os.environ.get("MATE_MODELO", "").strip()
+                   else f"Fijate en {DONDE_SE_SACA} qué modelos tiene tu cuenta y elegí uno "
+                   "con la variable MATE_MODELO"))
+    if codigo == 413 or "prompt is too long" in dicho.lower():
+        return "la consulta es demasiado larga para mandársela a la IA: achicá el texto"
+    if codigo == 429 and detalles.get("error_code") == "enforced_spend_limit_reached":
+        return ("la cuenta de Anthropic llegó a su tope de gasto del mes. Se cambia en "
+                f"{DONDE_SE_SACA}, o hay que esperar al mes que viene")
+    if codigo == 429:
+        return ("demasiadas consultas en poco tiempo: se llegó al límite de uso de la "
+                "cuenta. Esperá un minuto y probá de nuevo")
+    if codigo == 529:
+        return "la IA está saturada en este momento. Probá de nuevo en unos minutos"
+    if codigo >= 500:
+        return ("el servicio de la IA tuvo un problema (no es tu programa). Probá de nuevo "
+                "en unos minutos")
+    if codigo == 400:
+        return f"Anthropic no aceptó la consulta{original or ' y no dijo por qué'}"
+    return f"Anthropic contestó con un error que no conozco (código {codigo}){original}"
+
+
+def pedir_a_la_ia(instrucciones, pregunta):
+    """Le manda la consulta a Claude y devuelve el texto que contesta. Todo lo que puede
+    salir mal es un ErrorMate en castellano, y la clave nunca aparece en ninguno."""
+    import http.client
+    import socket
+    import ssl
+    import time
+    import urllib.error
+    import urllib.request  # (usa el proxy del sistema: el de Windows o HTTPS_PROXY)
+
+    clave, modelo = clave_de_ia(), modelo_de_ia()
+
+    def error(texto):
+        return error_de_ia(str(texto).replace(clave, "(la clave)"))
+
+    tardo = error(f"la IA tardó más de {IA_ESPERA // 60} minutos en contestar y dejé de "
+                  "esperar. Probá de nuevo, o con una pregunta más corta")
+    reintentos = 0
+    while True:
+        respaldo = modelo in IA_CON_RESPALDO and modelo not in _IA_SIN_RESPALDO
+        cuerpo = {"model": modelo, "max_tokens": IA_MAX_TOKENS,
+                  "messages": [{"role": "user", "content": pregunta}]}
+        encabezados = {"content-type": "application/json", "x-api-key": clave,
+                       "anthropic-version": IA_VERSION, "user-agent": f"mate/{VERSION}"}
+        if instrucciones.strip():
+            cuerpo["system"] = instrucciones
+        if respaldo:
+            cuerpo["fallbacks"] = "default"
+            encabezados["anthropic-beta"] = IA_RESPALDO
+        codigo, cabeza, crudo, problema = 200, {}, b"", None
+        try:
+            pedido = urllib.request.Request(
+                IA_DIRECCION, data=json.dumps(cuerpo).encode("utf-8"),
+                headers=encabezados, method="POST")
+            with urllib.request.urlopen(pedido, timeout=IA_ESPERA) as respuesta:
+                crudo = respuesta.read()
+        except urllib.error.HTTPError as e:  # Anthropic contestó, pero con un error
+            codigo, cabeza = e.code, e.headers or {}
+            try:
+                crudo = e.read()
+            except Exception:
+                crudo = b""
+        except (TimeoutError, socket.timeout):
+            raise tardo
+        except urllib.error.URLError as e:
+            if isinstance(e.reason, (TimeoutError, socket.timeout)):
+                raise tardo
+            if isinstance(e.reason, ssl.SSLError):
+                raise error(
+                    "no pude armar una conexión segura con la IA (falló el certificado). "
+                    "Suele ser un antivirus o la red de una oficina que revisa las "
+                    "conexiones: probá desde otra red")
+            problema = ("no pude conectarme con la IA: revisá que haya internet (y, si "
+                        "estás en una oficina, que la red deje salir a api.anthropic.com)")
+        except (OSError, http.client.HTTPException):
+            problema = "se cortó la conexión con la IA antes de que llegara la respuesta"
+        except (ValueError, TypeError):
+            raise error("no pude armar la consulta para la IA con esos textos")
+        try:
+            datos = json.loads(crudo.decode("utf-8")) if not problema else None
+        except (ValueError, UnicodeError):
+            datos = None
+        if problema is None and codigo == 200:
+            return texto_de_la_ia(datos)
+        detalle = datos.get("error") if isinstance(datos, dict) else None
+        detalle = detalle if isinstance(detalle, dict) else {}
+        dicho = detalle.get("message") if isinstance(detalle.get("message"), str) else ""
+        detalles = detalle.get("details") if isinstance(detalle.get("details"), dict) else {}
+        if codigo == 400 and respaldo and re.search("anthropic-beta|fallback", dicho, re.I):
+            _IA_SIN_RESPALDO.add(modelo)  # esta cuenta no tiene el respaldo: va sin él
+            continue
+        de_nuevo = problema is not None or codigo in (408, 409, 429) or codigo >= 500
+        if (detalles.get("error_code") == "enforced_spend_limit_reached"
+                or str(cabeza.get("x-should-retry", "")).lower() == "false"):
+            de_nuevo = False
+        if de_nuevo and reintentos < IA_REINTENTOS:
+            try:
+                pausa = float(cabeza.get("retry-after") or 2 + 3 * reintentos)
+            except (TypeError, ValueError):
+                pausa = 2 + 3 * reintentos
+            if 0 <= pausa <= IA_ESPERA_MAXIMA:
+                reintentos += 1
+                time.sleep(pausa)
+                continue
+        raise error(problema or explicar_error_de_ia(codigo, dicho, detalles, modelo))
+
+
+def respuestas_de_archivo(ruta):
+    """Lee el archivo de --ia-simulada=archivo. Cada renglón es
+    'lo que trae la pregunta => lo que contesta la IA'; con * adelante, contesta eso a
+    cualquier pregunta. Devuelve la lista de pares, o falla con un ErrorMate que explica."""
+    try:
+        contenido = leer_fuente(ruta)
+    except FileNotFoundError:
+        raise ErrorMate(f"no encuentro el archivo de respuestas '{ruta}'")
+    except (OSError, ErrorMate):
+        raise ErrorMate(f"no pude leer el archivo de respuestas '{ruta}'")
+    pares = []
+    for numero, renglon in enumerate(contenido.splitlines(), 1):
+        if not renglon.strip() or renglon.strip().startswith("#"):
+            continue
+        si_trae, flecha, contesta = renglon.partition("=>")
+        if not flecha or not si_trae.strip() or not contesta.strip():
+            raise ErrorMate(
+                f"{ruta}:{numero}: no entiendo este renglón del archivo de respuestas. Cada "
+                "uno va así:  lo que trae la pregunta => lo que contesta la IA   (o  "
+                "* => lo que contesta a todo lo demás)")
+        pares.append((" ".join(sin_tildes(si_trae).lower().split()),
+                      contesta.strip().replace("\\n", "\n")))
+    if not pares:
+        raise ErrorMate(f"el archivo de respuestas '{ruta}' está vacío. Cada renglón va así:  "
+                        "lo que trae la pregunta => lo que contesta la IA")
+    return pares
+
+
+def recortado(texto, largo=70):
+    """Un texto en un solo renglón y no muy largo, para la traza."""
+    texto = " ".join(texto.split())
+    return '"' + (texto if len(texto) <= largo else texto[:largo].rstrip() + "...") + '"'
+
+
 def incluidas():
     """Los nombres de las funciones incluidas (mostrar, texto, pesos...)."""
     return frozenset(FUNCIONES)
@@ -2625,6 +2867,13 @@ class Interprete:
         self.entrada = por_teclado  # de dónde saca leer() lo que contesta la persona
         self.sin_teclado = False  # en las pruebas leer() usa la respuesta preparada
         self.fecha_fija = False  # en las pruebas hoy() y ahora() dan siempre lo mismo
+        # La IA (mejora 100). Simulada no sale a la red: en las pruebas siempre es así.
+        self.ia_simulada = False
+        self.ia_respuestas = []  # del archivo de --ia-simulada=archivo: (si trae, contesta)
+        self.ia_fijada = None  # en una prueba: lo que dijo simular_ia() (una lista)
+        self.ia_en_orden = False  # si simular_ia() recibió una lista: se dan una por vez
+        self.ia_usadas = 0  # cuántas de esa lista ya se dieron
+        self.ia_consultas = 0  # consultas de verdad en esta corrida
         self._nativas()
 
     # ── funciones incorporadas ──
@@ -3077,6 +3326,62 @@ class Interprete:
                     f"(sin cambiarle nada), y recibió {un(e)}")
             return dict(e.detalle)
 
+        @nativa("consultar_ia")
+        def _(instrucciones, pregunta, preparada=None):
+            pedir(instrucciones, "texto", "consultar_ia()")
+            pedir(pregunta, "texto", "consultar_ia()")
+            if preparada is not None:
+                pedir(preparada, "texto", "el tercer valor de consultar_ia()")
+            if not pregunta.strip():
+                raise error_de_ia("la pregunta está vacía: no hay nada para consultarle")
+            quien = self.contexto[0].nombre if self.contexto else "(programa)"
+            hondo = len(self.atendiendo)
+            if self.traza:
+                self.trazar(f"{quien} consulta a la IA"
+                            f"{' (simulada)' if self.ia_simulada else ''}: "
+                            f"{recortado(pregunta)}", None, hondo)
+            try:
+                if self.ia_simulada:
+                    respuesta = self.respuesta_simulada(pregunta, preparada)
+                else:
+                    if self.max_pasos is not None and self.ia_consultas >= MAX_CONSULTAS_IA:
+                        raise ErrorMate(
+                            f"el programa ya le hizo {MAX_CONSULTAS_IA} consultas a la IA y "
+                            "cada una se paga: lo freno por si los agentes entraron en "
+                            "bucle. Si de verdad hacen falta más, corré con --sin-limite",
+                            clase="limite")
+                    self.ia_consultas += 1
+                    try:
+                        respuesta = pedir_a_la_ia(instrucciones, pregunta)
+                    except (ErrorMate, KeyboardInterrupt, MemoryError):
+                        raise
+                    except Exception as e:  # nunca un error de Python (ni la clave) a la vista
+                        raise error_de_ia("algo salió mal al hablar con la IA y no sé "
+                                          f"explicarlo mejor ({type(e).__name__})")
+            except ErrorMate as e:
+                if self.traza:
+                    self.trazar("la IA no contestó: " + e.mensaje.split("\n")[0], None, hondo)
+                raise
+            if len(respuesta) > MAX_LARGO:
+                raise error_de_ia("la respuesta es demasiado larga para guardarla")
+            if self.traza:
+                self.trazar(f"la IA contesta: {recortado(respuesta)}", None, hondo)
+            return respuesta
+
+        @nativa("simular_ia")
+        def _(respuesta):
+            if not self.en_prueba:
+                raise ErrorMate(SIMULAR_IA_SUELTO)
+            en_orden = isinstance(respuesta, list)
+            lista = respuesta if en_orden else [respuesta]
+            if not lista or not all(isinstance(r, str) and r.strip() for r in lista):
+                raise ErrorMate(
+                    "simular_ia() espera el texto que va a contestar la IA, o una lista de "
+                    f"textos para que los dé en orden, y recibió {tipo_claro(respuesta)}"
+                    + (" (vacía, o con algo que no es un texto con letras)" if en_orden
+                       else " (vacío)" if isinstance(respuesta, str) else ""))
+            self.ia_fijada, self.ia_en_orden, self.ia_usadas = list(lista), en_orden, 0
+
         @nativa("mensajes_enviados")
         def _(tipo=None):
             if not self.en_prueba:
@@ -3094,6 +3399,35 @@ class Interprete:
                      "respuesta_a": respuesta_a - numero0 if respuesta_a else None}
                     for numero, de, a, msg, pregunta, conversacion, respuesta_a
                     in self.historial if tipo is None or msg.tipo == tipo]
+
+    def respuesta_simulada(self, pregunta, preparada):
+        """Lo que contesta la IA cuando no se sale a la red. Manda lo que fijó la prueba con
+        simular_ia(); si no, el archivo de respuestas; si no, el tercer valor de la llamada."""
+        if self.ia_fijada is not None:
+            if not self.ia_en_orden:
+                return self.ia_fijada[0]
+            if self.ia_usadas >= len(self.ia_fijada):
+                raise error_de_ia(
+                    f"la prueba le hizo {self.ia_usadas + 1} consultas a la IA y simular_ia() "
+                    f"tenía {len(self.ia_fijada)} respuesta(s): agregá las que faltan a la "
+                    "lista")
+            self.ia_usadas += 1
+            return self.ia_fijada[self.ia_usadas - 1]
+        buscada = " ".join(sin_tildes(pregunta).lower().split())
+        for si_trae, contesta in self.ia_respuestas:
+            if si_trae != "*" and si_trae in buscada:
+                return contesta
+        for si_trae, contesta in self.ia_respuestas:
+            if si_trae == "*":
+                return contesta
+        if preparada is not None:
+            return preparada
+        if self.ia_respuestas:
+            raise error_de_ia(
+                "el archivo de respuestas simuladas no tiene ninguna para esta consulta: "
+                f"{recortado(pregunta)}. Agregale un renglón, o uno que conteste a todo:  "
+                "* => lo que contesta")
+        raise ErrorMate(SIN_RESPUESTA_SIMULADA, familia="ia")
 
     def _a_json(self, v):
         if isinstance(v, Registro):
@@ -3400,6 +3734,7 @@ class Interprete:
     def _correr(self, programa, pruebas):
         self.sin_teclado = self.sin_teclado or pruebas
         self.fecha_fija = self.fecha_fija or pruebas
+        self.ia_simulada = self.ia_simulada or pruebas  # 'probar' nunca sale a la red
         self.cargar(programa)
         for s in programa:
             if s[0] == "agente":
@@ -3426,6 +3761,7 @@ class Interprete:
                 self.entregados = 0
                 # El historial de cada prueba arranca vacío, y cuenta desde 1.
                 self.historial = []
+                self.ia_fijada, self.ia_en_orden, self.ia_usadas = None, False, 0
                 self.desde = (self.cuenta["enviar"] + self.cuenta["preguntar"],
                               self.conversaciones)
                 fallas, mostrado, salida = [], [], self.salida
@@ -3906,11 +4242,13 @@ class Interprete:
                                 f"{valor.nombre}(...)", e[1], clase="escritura")
             raise renglon_sin_uso(e)
         f = self.ev(e[2], env)
-        try:
-            self.llamar(f, [self.ev(a, env) for a in e[3]], e[1])
-        except ErrorMate as error:
-            error.linea = error.linea or e[1]
-            raise
+        # (una consulta a la IA suelta no se llega a hacer: sería pagarla para tirarla)
+        if not (isinstance(f, Nativa) and f.nombre == "consultar_ia"):
+            try:
+                self.llamar(f, [self.ev(a, env) for a in e[3]], e[1])
+            except ErrorMate as error:
+                error.linea = error.linea or e[1]
+                raise
         if isinstance(f, Nativa) and f.nombre not in HACEN_ALGO:
             if f.nombre in ("agregar", "quitar"):
                 raise ErrorMate(
@@ -4290,7 +4628,7 @@ CONTROL
 - intentar {{ ... }} si falla e {{ ... }}             e es el texto del error (el 'e' es opcional)
   detalle_de(e).clase dice qué pasó sin depender de la redacción: "fallar", "asegurar",
   "contrato", "clave", "posicion", "division", "nombre", "numero", "json", "agente",
-  "ciclo", "archivo" u "otro". detalle_de(e).dato es el valor que se le dio a 'fallar'.
+  "ciclo", "archivo", "ia" u "otro". detalle_de(e).dato es el valor que se le dio a 'fallar'.
 
 FUNCIONES INCLUIDAS (no hay otras)
 {funciones}
@@ -4303,6 +4641,13 @@ FUNCIONES INCLUIDAS (no hay otras)
 - hoy() y ahora() dan textos: no se restan ni se comparan con < o > (sí con == y !=).
 - leer_archivo y escribir_archivo solo andan desde el programa principal (no desde un agente),
   con archivos de la carpeta del programa, y no pisan archivos .mate ni .py.
+- consultar_ia(instrucciones, pregunta) le pregunta a una IA de verdad (Claude) y devuelve su
+  respuesta como texto. Sirve adentro de un agente: el agente arma la pregunta, consulta y
+  responde con su mensaje de siempre. Es paga y necesita la clave en la variable de entorno
+  ANTHROPIC_API_KEY (nunca escrita en el programa). Si algo sale mal (sin clave, sin red,
+  sin crédito) es un error que se ataja con 'intentar'; su clase es "ia".
+  Con 'probar' y con la opción --ia-simulada no sale a la red: contesta lo que fijó la prueba
+  con simular_ia("...") o, si no, el tercer valor:  consultar_ia(inst, pregunta, "Hola").
 
 AGENTES Y MENSAJES
 - mensaje Pedido {{ producto: texto, cantidad: numero, nota: texto? }}     (? = opcional)
@@ -4347,6 +4692,9 @@ PRUEBAS
   respuesta_a (el numero del mensaje que contesta, o nada). Con un tipo, solo esos:
       asegurar largo(mensajes_enviados("Pedido")) == 1
       asegurar mensajes_enviados()[0].a == "Vendedor"
+- simular_ia("Sale $ 100") solo dentro de una prueba: desde ahí, consultar_ia() contesta eso.
+  Con una lista las da en orden, una por consulta: simular_ia(["Hola", "Chau"]). En las
+  pruebas nunca se habla con la IA de verdad.
 - Van en el nivel superior y corren con la orden 'probar'. Cada una empieza limpia.
 
 ANTES DE CORRER
@@ -4768,6 +5116,8 @@ def texto_de_ayuda():
         "  --traza       muestra la conversación entre agentes, numerada y con lo que falló",
         "  --traza=conversacion.txt   la guarda en ese archivo, con un resumen al final",
         "  --sin-limite  no corta los programas que dan muchísimos pasos",
+        "  --ia-simulada consultar_ia() no sale a la red ni gasta: da su respuesta preparada",
+        "  --ia-simulada=respuestas.txt   ...o las que están escritas en ese archivo",
         "  --depurar     si Mate falla por dentro, muestra el detalle técnico",
         "  --version     dice qué versión de Mate es",
         "",
@@ -4965,10 +5315,17 @@ def _main(argv, donde):
         print(texto, file=sys.stderr)
 
     alias = {"-h": "--ayuda", "--help": "--ayuda", "-?": "--ayuda", "/?": "--ayuda"}
-    opciones, args, conversacion = set(), [], None
+    opciones, args, conversacion, respuestas = set(), [], None, None
     for a in argv:
         if a.lower() in alias:
             opciones.add(alias[a.lower()])
+        elif a.lower().startswith("--ia-simulada="):
+            opciones.add("--ia-simulada")
+            respuestas = a[len("--ia-simulada="):].strip('"')
+            if not respuestas:
+                avisar("a --ia-simulada= le falta el nombre del archivo de respuestas, por "
+                       "ejemplo: --ia-simulada=respuestas.txt (o --ia-simulada sola)")
+                return 2
         elif a.lower().startswith("--traza="):
             conversacion = a[len("--traza="):].strip('"')
             if not conversacion:
@@ -5111,6 +5468,13 @@ def _main(argv, donde):
         interprete.separar_salida = orden == "probar"
         if "--sin-limite" in opciones:
             interprete.max_pasos = None
+        interprete.ia_simulada = "--ia-simulada" in opciones
+        if respuestas:
+            try:
+                interprete.ia_respuestas = respuestas_de_archivo(respuestas)
+            except ErrorMate as e:
+                avisar(e.mensaje)
+                return 2
         resultados = interprete.correr(programa, pruebas=orden == "probar")
     except ErrorMate as e:
         # Primero lo que ya había fallado en los agentes: suele ser la causa del corte.

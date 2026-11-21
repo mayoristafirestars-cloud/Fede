@@ -12,6 +12,20 @@ sys.path.insert(0, str(RAIZ))
 import mate  # noqa: E402
 
 
+@pytest.fixture(autouse=True)
+def sin_red_ni_clave(monkeypatch):
+    """Ninguna prueba sale a la red ni usa una clave de verdad (mejora 100)."""
+    import urllib.request
+
+    def nadie_sale(*_a, **_k):
+        raise AssertionError("una prueba quiso salir a la red")
+
+    monkeypatch.setattr(urllib.request, "urlopen", nadie_sale)
+    monkeypatch.delenv("ANTHROPIC_API_KEY", raising=False)
+    monkeypatch.delenv("MATE_MODELO", raising=False)
+    monkeypatch.setattr(mate, "_IA_SIN_RESPALDO", set())
+
+
 def correr(fuente, traza=False):
     salida = []
     interprete = mate.Interprete(salida=salida.append, traza=traza)
@@ -1998,9 +2012,9 @@ def test_mate_bat_esta_listo_para_windows():
 GRADUALES = sorted(p.name for p in (RAIZ / "ejemplos").glob("0*.mate"))
 
 
-def test_estan_los_seis_ejemplos_graduales():
-    assert [n[:2] for n in GRADUALES] == ["01", "02", "03", "04", "05", "06"]
-    assert GRADUALES[0] == "01_hola.mate" and GRADUALES[-1] == "06_primer_agente.mate"
+def test_estan_los_seis_ejemplos_graduales():  # (y el séptimo, el de la IA: mejora 100)
+    assert [n[:2] for n in GRADUALES] == ["01", "02", "03", "04", "05", "06", "07"]
+    assert GRADUALES[0] == "01_hola.mate" and GRADUALES[-1] == "07_agente_con_ia.mate"
     for nombre in GRADUALES:  # están comentados: al menos un comentario cada cuatro renglones
         renglones = [r.strip() for r in (RAIZ / "ejemplos" / nombre).read_text(
             encoding="utf-8").splitlines() if r.strip()]
@@ -3398,7 +3412,7 @@ def test_el_readme_cuenta_lo_de_la_tanda_7(tmp_path, capsys):
     for frase in ["a [norte, sur]", "al fallar como f", "3.000 llamadas", "`sea Listo = verdadero`",
                   "Escribí Ping {}", "en el renglón siguiente", "`verdadero y 1`",
                   "para i, item en lista", 'usar "catalogo"', "a_mapa(pedido)",
-                  "probar mate\\ejemplos", "En total: 14 de 14 pruebas pasaron"]:
+                  "probar mate\\ejemplos", "En total: 17 de 17 pruebas pasaron"]:
         assert frase in leeme, frase
     # el ejemplo de 'al fallar' del README anda tal cual está escrito
     ejemplo = re.search(r"(?m)^  ```\n(  agente Comprador .*?)^  ```", leeme, re.S).group(1)
@@ -4853,3 +4867,450 @@ def test_el_readme_cuenta_lo_de_la_tanda_10():
     for numero in (95, 96, 97, 98, 99):
         ficha = mejoras.split(f"\n**{numero}. ")[1].split("\n\n")[0]
         assert "Estado: hecha" in ficha and "Nota al hacerla" in ficha, numero
+
+
+# ── Mejora 100: los agentes consultan a una IA de verdad (Claude) ──
+
+CLAVE_DE_MENTIRA = "sk-ant-clave-de-mentira-123"
+
+MOSTRADOR = """
+mensaje Consulta { pregunta: texto }
+mensaje Atencion { respuesta: texto }
+agente Mostrador {
+    estado reglas = "Atendés un almacén."
+    al recibir Consulta como c {
+        responder Atencion { respuesta: consultar_ia(reglas, c.pregunta) }
+    }
+}
+"""
+
+
+class RespuestaDeMentira:
+    def __init__(self, cuerpo):
+        self.cuerpo = cuerpo
+
+    def __enter__(self):
+        return self
+
+    def __exit__(self, *_):
+        return False
+
+    def read(self):
+        import json
+        return self.cuerpo if isinstance(self.cuerpo, bytes) else json.dumps(self.cuerpo).encode()
+
+
+def dice(texto, motivo="end_turn"):
+    """Una respuesta de la IA como la manda Anthropic: con un bloque de pensar adelante."""
+    return {"id": "msg_1", "type": "message", "role": "assistant", "model": "claude-opus-5-5",
+            "content": [{"type": "thinking", "thinking": "", "signature": "x"},
+                        {"type": "text", "text": texto}],
+            "stop_reason": motivo, "usage": {"input_tokens": 5, "output_tokens": 7}}
+
+
+def error_http(codigo, tipo="api_error", mensaje="algo", encabezados=None, detalles=None):
+    import io
+    import json
+    import urllib.error
+    from email.message import Message
+    cabeza = Message()
+    for clave, valor in (encabezados or {}).items():
+        cabeza[clave] = valor
+    error = {"type": tipo, "message": mensaje}
+    if detalles:
+        error["details"] = detalles
+    cuerpo = json.dumps({"type": "error", "error": error, "request_id": "req_1"}).encode()
+    return urllib.error.HTTPError(mate.IA_DIRECCION, codigo, "error", cabeza, io.BytesIO(cuerpo))
+
+
+@pytest.fixture
+def ia(monkeypatch):
+    """Una IA de mentira en lugar de la red: anota cada pedido y contesta lo que se le
+    prepare (una respuesta, o una excepción para que falle)."""
+    import json
+    import urllib.request
+
+    class IA:
+        pedidos, esperas = [], []
+        respuestas = []  # lo que va a contestar, en orden; la última se repite
+
+        def abrir(self, pedido, timeout=None):
+            self.pedidos.append({
+                "url": pedido.full_url, "metodo": pedido.get_method(), "espera": timeout,
+                "encabezados": {k.lower(): v for k, v in pedido.header_items()},
+                "cuerpo": json.loads(pedido.data.decode("utf-8"))})
+            r = self.respuestas.pop(0) if len(self.respuestas) > 1 else self.respuestas[0]
+            if isinstance(r, BaseException):
+                raise r
+            return RespuestaDeMentira(r)
+
+    falsa = IA()
+    falsa.pedidos, falsa.esperas, falsa.respuestas = [], [], [dice("Sí, hay yerba.")]
+    monkeypatch.setattr(urllib.request, "urlopen", falsa.abrir)
+    monkeypatch.setattr("time.sleep", falsa.esperas.append)
+    monkeypatch.setenv("ANTHROPIC_API_KEY", CLAVE_DE_MENTIRA)
+    return falsa
+
+
+def test_consultar_ia_arma_el_pedido_como_lo_espera_anthropic(ia):
+    salida, _ = correr(MOSTRADOR + """
+        sea a = preguntar Consulta { pregunta: "¿Hay yerba?" } a Mostrador
+        mostrar(a.respuesta)
+    """)
+    assert salida == ["Sí, hay yerba."]  # solo el texto: lo que la IA pensó no se mezcla
+    (pedido,) = ia.pedidos
+    assert pedido["url"] == "https://api.anthropic.com/v1/messages"
+    assert pedido["metodo"] == "POST" and pedido["espera"] == mate.IA_ESPERA
+    assert pedido["encabezados"]["x-api-key"] == CLAVE_DE_MENTIRA
+    assert pedido["encabezados"]["anthropic-version"] == "2026-10-21"
+    assert pedido["encabezados"]["content-type"] == "application/json"
+    assert pedido["encabezados"]["anthropic-beta"] == "server-side-fallback-2026-07-01"
+    assert pedido["cuerpo"] == {
+        "model": "claude-opus-5-5", "max_tokens": 16000, "system": "Atendés un almacén.",
+        "messages": [{"role": "user", "content": "¿Hay yerba?"}], "fallbacks": "default"}
+
+
+def test_el_modelo_se_cambia_con_mate_modelo(ia, monkeypatch):
+    monkeypatch.setenv("MATE_MODELO", " claude-haiku-5-5 ")
+    assert correr('mostrar(consultar_ia("", "Hola"))')[0] == ["Sí, hay yerba."]
+    cuerpo = ia.pedidos[0]["cuerpo"]
+    assert cuerpo["model"] == "claude-haiku-5-5"
+    # sin instrucciones no se manda 'system', y ese modelo no acepta el respaldo
+    assert "system" not in cuerpo and "fallbacks" not in cuerpo
+    assert "anthropic-beta" not in ia.pedidos[0]["encabezados"]
+    monkeypatch.setenv("MATE_MODELO", "un modelo\ncon salto")
+    error = falla('mostrar(consultar_ia("", "Hola"))')
+    assert "MATE_MODELO" in error.mensaje and len(ia.pedidos) == 1
+
+
+def test_sin_clave_explica_como_ponerla_en_powershell():
+    error = falla('mostrar(consultar_ia("Sos amable", "Hola"))')
+    renglones = error.mensaje.split("\n")
+    assert len(renglones) == 2 and error.familia == "ia"
+    assert '$env:ANTHROPIC_API_KEY = "tu-clave"' in renglones[0]
+    assert "pago" in renglones[1] and "--ia-simulada" in renglones[1]
+
+
+def test_una_clave_con_letras_raras_se_avisa_sin_mostrarla(ia, monkeypatch):
+    monkeypatch.setenv("ANTHROPIC_API_KEY", "sk-ant secreto\ncon salto")
+    error = falla('mostrar(consultar_ia("", "Hola"))')
+    assert "letras raras" in error.mensaje and "secreto" not in error.mensaje
+    assert ia.pedidos == []
+    monkeypatch.setenv("ANTHROPIC_API_KEY", f'  "{CLAVE_DE_MENTIRA}"  ')  # con comillas de más
+    assert correr('mostrar(consultar_ia("", "Hola"))')[0] == ["Sí, hay yerba."]
+    assert ia.pedidos[0]["encabezados"]["x-api-key"] == CLAVE_DE_MENTIRA
+
+
+@pytest.mark.parametrize("respuesta, frase", [
+    (error_http(401, "authentication_error", "invalid x-api-key"), "la clave no sirve"),
+    (error_http(402, "billing_error", "billing"), "no tiene crédito"),
+    (error_http(400, "invalid_request_error", "Your credit balance is too low"),
+     "no tiene crédito"),
+    (error_http(403, "permission_error", "no"), "no tiene permiso"),
+    (error_http(404, "not_found_error", "model: claude-opus-5-5"), "no conoce el modelo"),
+    (error_http(413, "request_too_large", "big"), "demasiado larga"),
+    (error_http(400, "invalid_request_error", "max_tokens: too big"),
+     "no aceptó la consulta (Anthropic dijo: max_tokens: too big)"),
+    (error_http(429, "rate_limit_error", "spend", detalles={
+        "error_code": "enforced_spend_limit_reached"}), "tope de gasto del mes"),
+    (error_http(418, "raro", "tetera"), "código 418"),
+    (dice("", "refusal"), "no quiso contestar"),
+    (dice("Había una vez", "max_tokens"), "llegó cortada"),
+    (dice("   "), "contestó sin texto"),
+    (b"<html>esto no es JSON</html>", "no pude entender"),
+    ({"type": "message"}, "no pude entender"),
+    (TimeoutError("timed out"), "tardó más de 3 minutos"),
+])
+def test_los_errores_de_la_ia_salen_en_castellano_y_sin_reintentar(ia, respuesta, frase):
+    ia.respuestas = [respuesta]
+    error = falla('mostrar(consultar_ia("", "Hola"))')
+    assert error.mensaje.startswith("consultar_ia(): ") and frase in error.mensaje
+    assert error.familia == "ia" and error.clase == "falla"
+    assert CLAVE_DE_MENTIRA not in error.mensaje
+    assert len(ia.pedidos) == 1 and ia.esperas == []
+
+
+def test_si_la_ia_esta_saturada_se_prueba_de_nuevo(ia):
+    import urllib.error
+    ia.respuestas = [error_http(529, "overloaded_error", "Overloaded"),
+                     urllib.error.URLError(OSError("se cortó")), dice("Ahora sí.")]
+    assert correr('mostrar(consultar_ia("", "Hola"))')[0] == ["Ahora sí."]
+    assert len(ia.pedidos) == 3 and ia.esperas == [2, 5]
+    # el límite de uso dice cuánto esperar; si es mucho, no se queda colgado
+    ia.pedidos.clear(), ia.esperas.clear()
+    ia.respuestas = [error_http(429, "rate_limit_error", "x", {"retry-after": "7"}),
+                     error_http(429, "rate_limit_error", "x", {"retry-after": "600"})]
+    error = falla('mostrar(consultar_ia("", "Hola"))')
+    assert "límite de uso" in error.mensaje and ia.esperas == [7] and len(ia.pedidos) == 2
+
+
+@pytest.mark.parametrize("respuesta, frase", [
+    (error_http(529, "overloaded_error", "Overloaded"), "saturada"),
+    (error_http(500, "api_error", "Internal"), "tuvo un problema"),
+    (ConnectionResetError("reset"), "se cortó la conexión"),
+])
+def test_despues_de_dos_reintentos_avisa(ia, respuesta, frase):
+    ia.respuestas = [respuesta]
+    assert frase in falla('mostrar(consultar_ia("", "Hola"))').mensaje
+    assert len(ia.pedidos) == 3 and ia.esperas == [2, 5]
+
+
+def test_sin_internet_y_con_el_certificado_roto(ia):
+    import ssl
+    import urllib.error
+    ia.respuestas = [urllib.error.URLError(OSError("getaddrinfo failed"))]
+    assert "revisá que haya internet" in falla('mostrar(consultar_ia("", "Hola"))').mensaje
+    ia.pedidos.clear()
+    ia.respuestas = [urllib.error.URLError(ssl.SSLCertVerificationError("self-signed"))]
+    assert "certificado" in falla('mostrar(consultar_ia("", "Hola"))').mensaje
+    assert len(ia.pedidos) == 1
+    ia.respuestas = [urllib.error.URLError(TimeoutError("timed out"))]
+    assert "tardó más de 3 minutos" in falla('mostrar(consultar_ia("", "Hola"))').mensaje
+
+
+def test_la_clave_nunca_aparece_ni_en_errores_ni_en_la_traza(ia, tmp_path, capsys, monkeypatch):
+    # aunque Anthropic la repita en su error, o falle algo que Mate no esperaba
+    ia.respuestas = [error_http(400, "invalid_request_error", f"bad key {CLAVE_DE_MENTIRA}")]
+    assert CLAVE_DE_MENTIRA not in falla('mostrar(consultar_ia("", "Hola"))').mensaje
+    programa = tmp_path / "ia.mate"
+    programa.write_text('mostrar(consultar_ia("Sos amable", "Hola"))\n', encoding="utf-8")
+    for respuesta in (error_http(401, "authentication_error", f"key {CLAVE_DE_MENTIRA}"),
+                      RuntimeError(f"algo rarísimo con {CLAVE_DE_MENTIRA}")):
+        ia.respuestas = [respuesta]
+        assert mate.main(["correr", str(programa), "--traza"]) == 1
+        capturado = capsys.readouterr()
+        todo = capturado.out + capturado.err
+        assert CLAVE_DE_MENTIRA not in todo and "Traceback" not in todo
+        assert "error interno" not in todo and "ia.mate:1: error: consultar_ia():" in todo
+    assert "la IA no contestó: consultar_ia(): la clave no sirve" in mate_traza(
+        'intentar { mostrar(consultar_ia("", "Hola")) } si falla { mostrar("sin IA") }', ia,
+        error_http(401))
+    assert CLAVE_DE_MENTIRA not in mate.texto_de_guia() + mate.texto_de_ayuda()
+
+
+def mate_traza(fuente, ia, respuesta):
+    ia.respuestas = [respuesta]
+    return "\n".join(correr(fuente, traza=True)[0])
+
+
+def test_los_errores_de_la_ia_se_atajan_con_intentar(ia):
+    ia.respuestas = [error_http(401, "authentication_error", "invalid x-api-key")]
+    salida, _ = correr("""
+        intentar {
+            mostrar(consultar_ia("", "Hola"))
+        } si falla e {
+            mostrar(detalle_de(e).clase, tiene(e, "la clave no sirve"))
+        }
+    """)
+    assert salida == ["ia verdadero"]
+
+
+def test_si_la_cuenta_no_acepta_el_respaldo_se_sigue_sin_el(ia):
+    ia.respuestas = [error_http(400, "invalid_request_error",
+                                "Unexpected value(s) `server-side-fallback-2026-07-01` for "
+                                "the `anthropic-beta` header."), dice("Hola.")]
+    salida, _ = correr('mostrar(consultar_ia("", "Uno"))\nmostrar(consultar_ia("", "Dos"))')
+    assert salida == ["Hola.", "Hola."] and ia.esperas == []
+    assert ["fallbacks" in p["cuerpo"] for p in ia.pedidos] == [True, False, False]
+    assert ["anthropic-beta" in p["encabezados"] for p in ia.pedidos] == [True, False, False]
+
+
+def test_los_valores_de_consultar_ia_se_controlan(ia):
+    assert "espera texto y recibió" in falla('mostrar(consultar_ia("", 5))').mensaje
+    assert "espera texto y recibió" in falla('mostrar(consultar_ia(5, "Hola"))').mensaje
+    assert "tercer valor" in falla('mostrar(consultar_ia("", "Hola", 3))').mensaje
+    assert "está vacía" in falla('mostrar(consultar_ia("", "  "))').mensaje
+    assert "devuelve un valor" in falla('consultar_ia("", "Hola")').mensaje
+    assert falla('mostrar(consultar_ia("Hola"))').antes_de_correr
+    assert "función incluida" in falla("sea consultar_ia = 1").mensaje
+    assert ia.pedidos == []
+
+
+def test_un_freno_para_que_la_cuenta_no_crezca_sola(ia, monkeypatch):
+    monkeypatch.setattr(mate, "MAX_CONSULTAS_IA", 3)
+    fuente = 'para i en rango(5) { intentar { sea r = consultar_ia("", "Hola") } si falla { } }'
+    error = falla(fuente)
+    assert "ya le hizo 3 consultas a la IA" in error.mensaje and error.clase == "limite"
+    assert "--sin-limite" in error.mensaje and len(ia.pedidos) == 3
+    interprete = mate.Interprete(salida=lambda _: None)
+    interprete.max_pasos = None  # --sin-limite
+    interprete.correr(mate.analizar(fuente))
+    assert len(ia.pedidos) == 8
+
+
+def probar_mate(fuente, **cambios):
+    """Corre las pruebas de ese programa como 'probar'. Devuelve {nombre: error o None}."""
+    salida = []
+    interprete = mate.Interprete(salida=salida.append)
+    for nombre, valor in cambios.items():
+        setattr(interprete, nombre, valor)
+    programa = mate.analizar(fuente)
+    assert mate.verificar(programa) == []
+    return dict(interprete.correr(programa, pruebas=True)), salida
+
+
+def test_en_las_pruebas_nunca_se_sale_a_la_red(ia):
+    resultados, salida = probar_mate(MOSTRADOR + """
+        mostrar(consultar_ia("", "¿Hola?", "preparada"))
+        prueba "fijada por la prueba" {
+            simular_ia("Sale $ 100")
+            sea a = preguntar Consulta { pregunta: "¿Cuánto sale?" } a Mostrador
+            asegurar a.respuesta == "Sale $ 100"
+            asegurar consultar_ia("", "otra", "preparada") == "Sale $ 100"
+            simular_ia("Ahora otra cosa")
+            asegurar consultar_ia("", "otra") == "Ahora otra cosa"
+        }
+        prueba "en orden" {
+            simular_ia(["Uno", "Dos"])
+            asegurar consultar_ia("", "a") == "Uno"
+            asegurar consultar_ia("", "b") == "Dos"
+            asegurar falla { mostrar(consultar_ia("", "c")) }
+        }
+        prueba "cada prueba arranca sin nada fijado" {
+            asegurar consultar_ia("", "a", "la preparada") == "la preparada"
+            sea a = preguntar Consulta { pregunta: "¿Hola?" } a Mostrador
+        }
+    """)
+    assert salida == ["preparada"] and ia.pedidos == []  # ni con la clave puesta
+    assert resultados["fijada por la prueba"] is None and resultados["en orden"] is None
+    sin_simular = resultados["cada prueba arranca sin nada fijado"]
+    assert "no sale a la red y no hay una respuesta simulada" in sin_simular
+    assert 'simular_ia("lo que contesta")' in sin_simular and "tercer valor" in sin_simular
+    resultados, _ = probar_mate("""
+        prueba "se acaban" {
+            simular_ia(["Uno"])
+            sea a = consultar_ia("", "a")
+            sea b = consultar_ia("", "b")
+        }
+    """)
+    assert "le hizo 2 consultas a la IA y simular_ia() tenía 1" in resultados["se acaban"]
+
+
+def test_simular_ia_solo_va_en_una_prueba():
+    assert mate.verificar(mate.analizar('simular_ia("Hola")')) == [(1, mate.SIMULAR_IA_SUELTO)]
+    assert mate.verificar(mate.analizar(
+        'mensaje M {}\nagente A {\n al recibir M {\n  simular_ia("x")\n }\n}')) == [
+            (4, mate.SIMULAR_IA_SUELTO)]
+    assert "--ia-simulada" in mate.SIMULAR_IA_SUELTO
+    # una función suelta la puede usar si la llama una prueba; si no, falla al correr
+    fuente = 'funcion preparar() { simular_ia("Hola") }\n'
+    resultados, _ = probar_mate(
+        fuente + 'prueba "p" { preparar()\n asegurar consultar_ia("", "a") == "Hola" }')
+    assert resultados == {"p": None}
+    assert falla(fuente + "preparar()").mensaje == mate.SIMULAR_IA_SUELTO
+    for mal in ('""', "[]", '["a", 3]', "5"):
+        resultados, _ = probar_mate(f'prueba "p" {{ simular_ia({mal}) }}')
+        assert "simular_ia() espera el texto" in resultados["p"], mal
+
+
+def test_ia_simulada_al_correr_y_con_un_archivo_de_respuestas(ia, tmp_path, capsys):
+    programa = tmp_path / "tienda.mate"
+    programa.write_text(MOSTRADOR + """
+        funcion atender(duda) {
+            sea a = preguntar Consulta { pregunta: duda } a Mostrador
+            mostrar(a.respuesta)
+        }
+        mostrar(consultar_ia("", "¿Están?", "Sí, estamos."))
+        atender("¿Tienen YERBA sin palo?")
+        atender("¿Cuál es el horário?")
+        atender("¿Hay pan?")
+    """, encoding="utf-8")
+    respuestas = tmp_path / "respuestas.txt"
+    respuestas.write_bytes("﻿# respuestas de mentira\r\n\r\nyerba => Sí, de medio kilo.\r\n"
+                           "Horario  =>  De 8 a 20.\\nLos domingos no.\r\n"
+                           "* => Eso te lo averiguo.\r\n".encode("utf-8"))
+    assert mate.main(["correr", str(programa), f"--ia-simulada={respuestas}", "--traza"]) == 0
+    capturado = capsys.readouterr()
+    assert [r for r in capturado.out.splitlines() if not r.startswith("  ·")] == [
+        "Eso te lo averiguo.", "Sí, de medio kilo.", "De 8 a 20.", "Los domingos no.",
+        "Eso te lo averiguo."]
+    assert '       Mostrador consulta a la IA (simulada): "¿Tienen YERBA sin palo?"' \
+        in capturado.out
+    assert '       la IA contesta: "De 8 a 20. Los domingos no."' in capturado.out
+    assert '(programa) consulta a la IA (simulada): "¿Están?"' in capturado.out
+    assert capturado.err == "" and ia.pedidos == []
+    # sin el renglón del *, lo que no está en el archivo usa la respuesta preparada o avisa
+    respuestas.write_text("yerba => Sí.\n", encoding="utf-8")
+    assert mate.main(["correr", str(programa), f"--ia-simulada={respuestas}"]) == 1
+    capturado = capsys.readouterr()
+    assert capturado.out.splitlines()[:2] == ["Sí, estamos.", "Sí."]
+    assert "no tiene ninguna para esta consulta" in capturado.err
+    assert '"¿Cuál es el horário?"' in capturado.err and "* => lo que contesta" in capturado.err
+    # --ia-simulada sola: cada consulta da su respuesta preparada
+    assert mate.main(["correr", str(programa), "--ia-simulada"]) == 1
+    capturado = capsys.readouterr()
+    assert capturado.out == "Sí, estamos.\n" and "tercer valor" in capturado.err
+    assert ia.pedidos == []
+    # y sin la opción, con la clave puesta, va a la IA
+    assert mate.main(["correr", str(programa)]) == 0
+    assert capsys.readouterr().out == "Sí, hay yerba.\n" * 4 and len(ia.pedidos) == 4
+
+
+def test_un_archivo_de_respuestas_mal_escrito_se_avisa(tmp_path, capsys):
+    programa = tmp_path / "p.mate"
+    programa.write_text('mostrar("no llega a correr")\n', encoding="utf-8")
+    respuestas = tmp_path / "respuestas.txt"
+    for contenido, frase in [("yerba => Sí.\nesto no tiene flecha\n", "respuestas.txt:2: no entiendo"),
+                             ("=> Sí.\n", "respuestas.txt:1: no entiendo"),
+                             ("# nada\n", "está vacío")]:
+        respuestas.write_text(contenido, encoding="utf-8")
+        assert mate.main(["correr", str(programa), f"--ia-simulada={respuestas}"]) == 2
+        capturado = capsys.readouterr()
+        assert frase in capturado.err and capturado.out == "", contenido
+    assert mate.main(["correr", str(programa), f"--ia-simulada={tmp_path / 'no_esta.txt'}"]) == 2
+    assert "no encuentro el archivo de respuestas" in capsys.readouterr().err
+    assert mate.main(["correr", str(programa), f"--ia-simulada={tmp_path}"]) == 2
+    assert "no pude leer el archivo de respuestas" in capsys.readouterr().err
+    assert mate.main(["correr", str(programa), "--ia-simulada="]) == 2
+    assert "le falta el nombre del archivo" in capsys.readouterr().err
+    assert mate.main(["correr", str(programa), "--ia-simulado"]) == 2
+    assert "¿quisiste decir --ia-simulada?" in capsys.readouterr().err
+
+
+def test_el_ejemplo_del_agente_con_ia(ia, capsys, monkeypatch):
+    ruta = str(RAIZ / "ejemplos" / "07_agente_con_ia.mate")
+    assert mate.main(["probar", ruta]) == 0
+    assert "3 de 3 pruebas pasaron" in capsys.readouterr().out and ia.pedidos == []
+    assert mate.main(["correr", ruta, "--ia-simulada"]) == 0
+    assert capsys.readouterr().out == ("Pregunta de Marta: ¿Tienen yerba sin palo?\n"
+                                       "Mostrador: ¡Hola! Ya te lo averiguo.\n")
+    assert ia.pedidos == []
+    # de verdad (acá, contra la IA de mentira): la respuesta preparada no se usa
+    ia.respuestas = [dice("Sí, tenemos de medio kilo.")]
+    assert mate.main(["correr", ruta]) == 0
+    assert capsys.readouterr().out.splitlines()[1] == "Mostrador: Sí, tenemos de medio kilo."
+    assert "almacén de barrio" in ia.pedidos[0]["cuerpo"]["system"]
+    assert ia.pedidos[0]["cuerpo"]["messages"] == [
+        {"role": "user", "content": "¿Tienen yerba sin palo?"}]
+    # sin clave el agente no se cae, y el programa muestra cómo ponerla
+    monkeypatch.delenv("ANTHROPIC_API_KEY")
+    assert mate.main(["correr", ruta]) == 0
+    capturado = capsys.readouterr()
+    assert "Ahora no te puedo atender" in capturado.out and capturado.err == ""
+    assert '$env:ANTHROPIC_API_KEY = "tu-clave"' in capturado.out
+    # la clave no está escrita en ningún archivo de Mate
+    for archivo in RAIZ.rglob("*"):
+        if archivo.is_file() and archivo.suffix in (".mate", ".md", ".bat", ".txt"):
+            assert "sk-ant" not in archivo.read_text(encoding="utf-8"), archivo
+
+
+def test_el_readme_y_la_ayuda_cuentan_lo_de_la_tanda_11():
+    leeme = (RAIZ / "README.md").read_text(encoding="utf-8")
+    for frase in ["### Un agente que consulta a una IA de verdad",
+                  '$env:ANTHROPIC_API_KEY = "tu-clave"', "es **pago**", "platform.claude.com",
+                  "| `--ia-simulada` |", "--ia-simulada=respuestas.txt", "`07_agente_con_ia.mate`",
+                  '$env:MATE_MODELO = "claude-haiku-5-5"', f"`{mate.IA_MODELO}`",
+                  "**La clave nunca va en el programa**", "no contra el servicio real",
+                  '`"ia"`', "`consultar_ia` y `simular_ia` son funciones incluidas"]:
+        assert frase in leeme, frase
+    guia = mate.texto_de_guia()
+    for frase in ["consultar_ia(instrucciones, pregunta)", "ANTHROPIC_API_KEY", '"ia"',
+                  'simular_ia("Sale $ 100") solo dentro de una prueba', "--ia-simulada"]:
+        assert frase in guia, frase
+    assert "--ia-simulada" in mate.texto_de_ayuda()
+    assert "función incluida" in mate.ayuda_de("consultar_ia")
+    mejoras = (RAIZ / "MEJORAS.md").read_text(encoding="utf-8")
+    ficha = mejoras.split("\n**100. ")[1].split("\n\n")[0]
+    assert "Estado: hecha" in ficha and "Nota al hacerla (tanda 11)" in ficha
+    assert "no se probó contra el servicio real" in ficha
+    assert "Estado: pendiente*" not in mejoras

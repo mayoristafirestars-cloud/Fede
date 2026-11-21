@@ -93,7 +93,7 @@ castellano. En el Bloc de notas, `Ctrl+G` te lleva a ese renglón. Y si no te ac
 usa una palabra, preguntale a Mate: `python mate\mate.py ayuda si` (o `ayuda para`,
 `ayuda largo`...) muestra una explicación corta con un ejemplo para copiar.
 
-**7. Seguir aprendiendo.** En `mate\ejemplos` hay seis programas cortos, explicados renglón por
+**7. Seguir aprendiendo.** En `mate\ejemplos` hay siete programas cortos, explicados renglón por
 renglón, para leer y correr en orden:
 
 | Archivo | Qué enseña |
@@ -104,6 +104,7 @@ renglón, para leer y correr en orden:
 | `04_listas_y_bucles.mate` | listas, mapas, `para`, `mientras`, `romper` y `continuar` |
 | `05_funciones_y_pruebas.mate` | funciones, errores atajados y pruebas |
 | `06_primer_agente.mate` | el primer agente con sus mensajes |
+| `07_agente_con_ia.mate` | un agente que le consulta a una IA de verdad (se prueba sin clave) |
 
 ```
 python mate\mate.py correr mate\ejemplos\01_hola.mate
@@ -134,6 +135,8 @@ archivo y abrirla con el Bloc de notas: `python mate\mate.py guia > guia.txt`.
 | `--traza` | muestra la conversación entre agentes, mensaje por mensaje, numerada y con lo que falló |
 | `--traza=conversacion.txt` | guarda esa conversación en un archivo, con un resumen al final |
 | `--sin-limite` | no corta los programas que dan muchísimos pasos |
+| `--ia-simulada` | `consultar_ia` no sale a la red ni gasta: da su respuesta preparada |
+| `--ia-simulada=respuestas.txt` | lo mismo, con las respuestas escritas en ese archivo |
 | `--depurar` | si Mate falla por dentro, muestra el detalle técnico |
 | `--version` | dice qué versión de Mate es |
 
@@ -544,6 +547,88 @@ nunca llega a un `responder` (un `fallar` adentro de un `si` no cuenta como resp
 `al recibir` que termina en `fallar` sí vale: falla siempre, a propósito). Lo que no se puede
 saber de antemano se valida al construir el mensaje.
 
+### Un agente que consulta a una IA de verdad
+
+`consultar_ia(instrucciones, pregunta)` le manda la pregunta a una IA de verdad (Claude, de la
+empresa Anthropic) y devuelve lo que contesta, como texto. Las instrucciones le dicen quién es
+y cómo tiene que contestar. El agente sigue siendo un agente común: recibe su mensaje con
+contrato, consulta, y responde con su mensaje de siempre.
+
+```
+mensaje Consulta { pregunta: texto }
+mensaje Atencion { respuesta: texto }
+
+agente Mostrador {
+    al recibir Consulta como c {
+        sea dicho = consultar_ia("Atendés un almacén. Contestá corto y amable.", c.pregunta,
+                                 "¡Hola! Ya te lo averiguo.")
+        responder Atencion { respuesta: dicho }
+    }
+}
+```
+
+El tercer valor es opcional: es lo que contesta cuando **no** se habla con la IA de verdad (en
+las pruebas y con `--ia-simulada`), igual que el segundo valor de `leer`. El ejemplo completo,
+con sus pruebas, es `ejemplos/07_agente_con_ia.mate`.
+
+**Para probar sin clave, sin internet y sin gastar:**
+
+```
+python mate\mate.py probar mate\ejemplos\07_agente_con_ia.mate
+python mate\mate.py correr mate\ejemplos\07_agente_con_ia.mate --ia-simulada
+```
+
+- Con `probar` Mate **nunca** sale a la red. Dentro de una prueba, `simular_ia("Sale $ 100")`
+  fija qué contesta la IA de ahí en más; con una lista da una respuesta por consulta, en orden:
+  `simular_ia(["Hola", "Chau"])`. Si una prueba llega a la IA y no hay ni `simular_ia` ni
+  tercer valor, es un error que lo dice.
+- `--ia-simulada` hace lo mismo al correr: cada `consultar_ia` da su tercer valor. Con
+  `--ia-simulada=respuestas.txt` las respuestas salen de un archivo escrito con el Bloc de
+  notas, un renglón por respuesta: a la izquierda lo que tiene que traer la pregunta (sin
+  importar mayúsculas ni tildes) y a la derecha lo que se contesta. El `*` contesta a todo lo
+  demás, y los renglones que empiezan con `#` no cuentan:
+
+  ```
+  # respuestas.txt
+  yerba => Sí, tenemos de medio kilo y de un kilo.
+  horario => Abrimos de 8 a 20.
+  * => Eso te lo averiguo y te aviso.
+  ```
+
+**Para correrlo de verdad en Windows** (es **pago**: Anthropic cobra cada consulta):
+
+1. Entrá a `platform.claude.com`, creá una cuenta, cargá crédito y sacá una clave (*API key*).
+2. En PowerShell, en la misma ventana donde vas a correr, guardá la clave (con la tuya):
+
+   ```
+   $env:ANTHROPIC_API_KEY = "tu-clave"
+   ```
+
+3. Corré el programa como siempre:
+
+   ```
+   python mate\mate.py correr mate\ejemplos\07_agente_con_ia.mate
+   ```
+
+- **La clave nunca va en el programa** `.mate` ni en ningún archivo de la carpeta: vive en esa
+  ventana de PowerShell y se va al cerrarla (hay que ponerla de nuevo cada vez). Mate no la
+  muestra nunca, ni en los errores ni en la traza. No se la pases a nadie.
+- El modelo es `claude-opus-5-5`. Para usar otro (por ejemplo uno más barato):
+  `$env:MATE_MODELO = "claude-haiku-5-5"`. Para volver al de siempre: `Remove-Item Env:MATE_MODELO`.
+- Si falta la clave, no hay internet, la clave no sirve, no hay crédito, se pasó el límite de
+  uso o la respuesta llegó cortada, es un error en castellano que dice qué hacer, y se ataja
+  con `intentar` (su clase en `detalle_de` es `"ia"`). Si la IA está saturada o se corta la
+  red, Mate prueba hasta dos veces más antes de avisar; y espera como mucho 3 minutos.
+- Mate corta el programa a las 50 consultas de verdad, por si dos agentes se quedan hablando en
+  bucle y la cuenta crece sola. `--sin-limite` saca ese freno.
+- Con `--traza` se ve cada consulta y lo que contestó la IA (recortado a un renglón).
+- Un detalle para quien sepa del tema: si un filtro de seguridad de Anthropic no deja contestar
+  al modelo, se le pide a Anthropic que pruebe con otro modelo en el mismo pedido (su opción
+  `fallbacks`). Mate usa el proxy que tenga configurado Windows.
+- Esta conexión se probó con respuestas armadas, no contra el servicio real: no había una
+  clave a mano al programarla. Si la primera consulta de verdad da un error raro, es el primer
+  lugar donde mirar.
+
 ### Las pruebas
 
 Cada `prueba` empieza limpia: los agentes declarados arrancan con el mismo estado inicial que
@@ -568,7 +653,7 @@ Lo que una prueba cambia no le llega a la siguiente. Además:
   pruebas no pueden tener el mismo nombre: se avisa antes de correr.
 - `probar` también acepta una carpeta o varios archivos: `python mate\mate.py probar mate\ejemplos`
   corre las pruebas de cada `.mate` de esa carpeta, uno por uno, y termina con el total
-  (`En total: 14 de 14 pruebas pasaron, en 11 archivos`) y la lista de los que tuvieron problemas.
+  (`En total: 17 de 17 pruebas pasaron, en 12 archivos`) y la lista de los que tuvieron problemas.
 - `asegurar falla { ... }` es la forma corta de comprobar que algo **tiene que fallar**:
 
   ```
@@ -647,8 +732,8 @@ Las clases son: `"fallar"` (un `fallar` del programa), `"asegurar"`, `"contrato"
 o una respuesta que no cumple su contrato), `"clave"` (una clave o un campo que no está),
 `"posicion"`, `"division"` (por cero), `"nombre"` (un nombre que no existe), `"numero"` (un
 texto que no es un número), `"json"`, `"agente"` (no sabe recibir ese mensaje o no respondió),
-`"ciclo"` (de preguntas), `"archivo"` (un archivo que no está o que no se puede tocar) y
-`"otro"` para el resto. Hay que pasarle `e` tal cual llegó: si lo
+`"ciclo"` (de preguntas), `"archivo"` (un archivo que no está o que no se puede tocar),
+`"ia"` (la IA no contestó: sin clave, sin red, sin crédito...) y `"otro"` para el resto. Hay que pasarle `e` tal cual llegó: si lo
 cambiás (`e + "!"`) es un texto común y `detalle_de` avisa que no es un error atajado.
 
 ## Referencia rápida
@@ -716,6 +801,8 @@ Son estas y no hay otras. Cada renglón es un ejemplo que se puede copiar:
 | `leer_archivo("notas.txt")` | el texto de ese archivo (de la carpeta del programa) |
 | `escribir_archivo("notas.txt", t)` | guarda el texto t en ese archivo (si ya existía, lo pisa) |
 | `mensajes_enviados("Pedido")` | solo en una prueba: los mensajes que se mandaron (o los de ese tipo) |
+| `consultar_ia(reglas, duda)` | lo que contesta una IA de verdad (Claude), como texto; es pago |
+| `simular_ia("Sale $ 100")` | solo en una prueba: lo que contesta la IA desde ahí (o una lista) |
 
 - Si a una función le das valores de más o de menos, el error trae el ejemplo:
   `obtener() lleva 3 valores y recibió 2. Por ejemplo: obtener(mapa, "clave", 0)`.
@@ -949,6 +1036,7 @@ archivo viejo deja de andar, casi seguro es por una de estas:
 | `hoy`, `ahora`, `leer_archivo` y `escribir_archivo` son funciones incluidas: no sirven como nombre de variable (`sea hoy = ...`) | Elegir otro nombre: `sea fecha = hoy()` |
 | `ayuda` seguida de una palabra (`ayuda si`) ya no muestra la ayuda general sino la de esa palabra; y `consola` es una orden | Nada: `ayuda` sola sigue igual |
 | Un nombre que no existe (`totl`), o una llamada con valores de más o de menos (`largo(x, 2)`), es un error antes de correr aunque esté en una parte que no se ejecuta (un `si`, una función, un agente o una prueba que no se usan): el programa ya no arranca. Si faltan varios nombres, se avisan todos juntos | Corregir el nombre o la llamada. Adentro de `intentar` y de `asegurar falla` sigue como antes |
+| `consultar_ia` y `simular_ia` son funciones incluidas: no sirven como nombre de variable, de función ni de parámetro | Elegir otro nombre |
 | `--traza` cambió de formato: cada mensaje lleva su número, lo que un agente pregunta mientras atiende va con sangría, y hay renglones nuevos (`falló`, `sin respuesta`, `la respuesta ... se descartó`). El archivo de `--traza=archivo` trae lo mismo | Nada, salvo que compares la traza letra por letra con una guardada |
 | `--traza` agrega al final de los renglones sin sangría de qué conversación es cada mensaje y a cuál contesta: `(conversación 2, en respuesta al 4)`. El archivo de `--traza=archivo` trae lo mismo | Nada: es más información. Si algo leía la traza renglón por renglón, tiene que contar con ese agregado |
 | `mensajes_enviados` es una función incluida (solo para las pruebas): no sirve como nombre de variable, de parámetro ni de estado | Elegir otro nombre: `sea enviados = ...` |
@@ -962,9 +1050,11 @@ Mate sirve porque entra en la cabeza. Para que siga así hay un presupuesto escr
 pruebas del intérprete no dejan pasarse:
 
 - **Palabras propias: 40 como mucho.** Hoy son 36 (`sea`, `si`, `agente`...).
-- **Funciones incluidas: 40 como mucho.** Hoy son 40. Empezó con 20 y el plan era sumar unas
-  12; con las de archivos y fechas y la de las pruebas (`mensajes_enviados`) el cupo quedó
-  completo. Para agregar otra hay que sacar una, o discutir el tope.
+- **Funciones incluidas: 42 como mucho.** Hoy son 42. Empezó con 20 y el plan era sumar unas
+  12; con las de archivos y fechas y la de las pruebas (`mensajes_enviados`) el cupo de 40
+  quedó completo. Para conectar los agentes con una IA el tope se subió a 42, justo lo que
+  hacía falta (`consultar_ia` y `simular_ia`), y volvió a quedar completo. Para agregar otra
+  hay que sacar una, o discutir el tope.
 - **Cada agregado trae lo suyo**: su renglón en este README (en la tabla de funciones o en la
   referencia), su explicación en `ayuda <palabra>` y al menos una prueba que lo use.
 - **Una sola forma de escribir cada cosa.** Nada de sinónimos (`función` con tilde, comillas
@@ -976,7 +1066,9 @@ Los números están en `mate.py` (`TOPE_DE_PALABRAS` y `TOPE_DE_FUNCIONES`), bie
 ## Límites de la versión 0.3
 
 - Los agentes corren todos dentro del mismo programa, de a uno y en orden (por eso el resultado
-  es siempre el mismo). Todavía no se conectan con agentes de IA reales ni entre máquinas.
+  es siempre el mismo). Un agente puede consultarle a una IA de verdad con `consultar_ia`,
+  pero cada consulta es suelta (la IA no recuerda la anterior: lo que tenga que saber va en
+  la pregunta) y los programas todavía no se conectan entre máquinas.
 - Todo lo que trae `usar` queda en un único espacio de nombres: dos archivos no pueden declarar
   algo con el mismo nombre.
 
