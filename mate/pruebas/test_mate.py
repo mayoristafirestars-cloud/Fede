@@ -24,6 +24,9 @@ def sin_red_ni_clave(monkeypatch):
     monkeypatch.delenv("ANTHROPIC_API_KEY", raising=False)
     monkeypatch.delenv("MATE_MODELO", raising=False)
     monkeypatch.setattr(mate, "_IA_SIN_RESPALDO", set())
+    # ...ni anota en el registro de errores de uso de verdad (tampoco las que corren mate.py
+    # como programa aparte: heredan esta variable)
+    monkeypatch.setenv("MATE_SIN_REGISTRO", "1")
 
 
 def correr(fuente, traza=False):
@@ -6278,4 +6281,658 @@ def test_el_readme_la_guia_y_la_ayuda_cuentan_lo_de_la_0_4(capsys):
     for frase in ["**101. Memoria de agente", "**102. Bitácora de errores", "**103. Lecciones",
                   "Nota de lo decidido"]:
         assert frase in seccion, frase
-    assert seccion.count("Estado: hecha") == 3
+    assert seccion.count("Estado: hecha") == 8  # (101 a 103, y 104 a 108: el registro de uso)
+
+
+# ── 0.4, segunda parte: el lenguaje anota sus errores de uso para seguir mejorando ──
+
+def renglones_anotados(registro):
+    """Los renglones del registro de errores de uso, cada uno partido en sus siete partes."""
+    if not registro.exists():
+        return []
+    texto = registro.read_text(encoding="utf-8-sig")
+    return [r.split(" | ") for r in texto.splitlines() if r and not r.startswith("#")]
+
+
+@pytest.fixture
+def con_registro(tmp_path, monkeypatch, capsys):
+    """Corre Mate como desde la línea de comandos, anotando en un registro de mentira.
+    Devuelve (función que corre y da (código, salida, errores), ruta del registro)."""
+    monkeypatch.delenv("MATE_SIN_REGISTRO", raising=False)
+    registro = tmp_path / "registro" / "errores_de_uso.txt"
+    registro.parent.mkdir()
+
+    def correr_mate(*args, **mas):
+        capsys.readouterr()
+        codigo = mate.main([str(a) for a in args], registro=mas.get("registro", registro))
+        capturado = capsys.readouterr()
+        return codigo, capturado.out, capturado.err
+
+    return correr_mate, registro
+
+
+def test_cada_error_mostrado_deja_un_renglon_en_el_registro(tmp_path, con_registro):
+    correr_mate, registro = con_registro
+    bien = tmp_path / "bien.mate"
+    bien.write_text('mostrar("hola")\n', encoding="utf-8")
+    assert correr_mate("correr", bien) == (0, "hola\n", "")
+    assert not registro.exists()  # lo que sale bien no anota nada, ni crea el archivo
+    mal = tmp_path / "mi_secreto.mate"
+    mal.write_text('sea total = 5\nmostrar(totl)\nmostrar(otro)\n', encoding="utf-8")
+    codigo, out, err = correr_mate("correr", mal, "--traza")
+    assert codigo == 1 and "no existe 'totl'. ¿Quisiste decir 'total'?" in err
+    [(fecha, version, orden, categoria, sugerencia, seguidas, mensaje)] = \
+        renglones_anotados(registro)
+    assert re.fullmatch(r"\d\d/\d\d/\d{4} \d\d:\d\d", fecha)
+    assert version == f"Mate {mate.VERSION}" and orden == "correr --traza"
+    assert categoria == "antes de correr: no existe '<nombre>'"
+    assert (sugerencia, seguidas) == ("con sugerencia", "1 vez")
+    assert mensaje == ("no existe '<nombre>'. ¿Quisiste decir '<nombre>'? "
+                       "(y 1 error(es) más en la misma corrida)")
+    # ni el nombre del archivo, ni la carpeta, ni el contenido del programa
+    todo = registro.read_text(encoding="utf-8-sig")
+    for dato in ["mi_secreto", str(tmp_path), "totl", "total = 5", "mostrar(otro)"]:
+        assert dato not in todo, dato
+    # arriba dice qué es, que no sale de la computadora y cómo se apaga
+    assert todo.startswith("# Registro de errores de uso de Mate")
+    for frase in ["Mate no lo manda a ningún lado", "No guarda tus programas",
+                  "informe --borrar", "MATE_SIN_REGISTRO", "--sin-registro"]:
+        assert frase in todo, frase
+    # al lado del registro no queda nada más, y en la carpeta del programa nada nuevo
+    assert [a.name for a in registro.parent.iterdir()] == ["errores_de_uso.txt"]
+    assert sorted(a.name for a in tmp_path.iterdir()) == [
+        "bien.mate", "mi_secreto.mate", "registro"]
+
+
+def test_el_registro_dice_en_que_etapa_fue_cada_error(tmp_path, con_registro):
+    correr_mate, registro = con_registro
+
+    def anotado(fuente, orden="correr", *opciones):
+        archivo = tmp_path / "programa.mate"
+        archivo.write_text(fuente, encoding="utf-8")
+        correr_mate(orden, archivo, *opciones)
+        return renglones_anotados(registro)[-1]
+
+    assert anotado('sea x = (1 + \n')[3].startswith("al leer el programa: ")
+    assert anotado('mostrar(nada_de_esto)', "verificar")[2:4] == [
+        "verificar", "antes de correr: no existe '<nombre>'"]
+    renglon = anotado('mostrar("Marta Gómez" + 1)')
+    assert renglon[3] == "al correr: no se puede hacer texto + numero"
+    assert "Marta" not in " ".join(renglon)
+    # lo que el programa dice con 'fallar' o con 'asegurar' es de la persona: no se guarda
+    renglon = anotado('fallar "No hay yerba para Marta Gómez"')
+    assert renglon[3:] == ["al correr: el programa cortó con 'fallar'", "sin sugerencia",
+                           "1 vez", "<lo que el programa dijo con 'fallar'>"]
+    renglon = anotado('asegurar 1 == 2, "la cuenta de Marta"')
+    assert renglon[3] == "al correr: no se cumplió un 'asegurar'" and "Marta" not in renglon[6]
+    renglon = anotado("""
+        mensaje Consulta { cliente: texto }
+        agente Mostrador {
+            al recibir Consulta como c { fallar "Sin stock para {c.cliente}" }
+        }
+        enviar Consulta { cliente: "Marta Gómez" } a Mostrador
+    """)
+    assert renglon[3] == "al correr, en un agente: el programa cortó con 'fallar'"
+    assert "Marta" not in " ".join(renglon) and "Mostrador" not in " ".join(renglon)
+    renglon = anotado("""
+        mensaje Consulta { cliente: texto }
+        agente Mostrador {
+            al recibir Consulta como c { mostrar(c.cliente + 1) }
+        }
+        enviar Consulta { cliente: "Marta Gómez" } a Mostrador
+    """)
+    assert renglon[3] == "al correr, en un agente: no se puede hacer texto + numero"
+    assert "Mostrador" not in renglon[6] and "Consulta" not in renglon[6]
+
+
+def test_los_errores_de_la_linea_de_comandos_tambien_se_anotan(tmp_path, con_registro):
+    correr_mate, registro = con_registro
+    ok = tmp_path / "lista de marta.mate"
+    ok.write_text('mostrar("ok")', encoding="utf-8")
+    assert correr_mate("corer", ok)[0] == 2
+    assert correr_mate("correr", ok, "--trasa")[0] == 2
+    assert correr_mate("correr", ok, "--inventada")[0] == 2
+    assert correr_mate("correr")[0] == 2
+    assert correr_mate("correr", tmp_path / "no_esta.mate")[0] == 2
+    assert correr_mate("correr", ok, ok)[0] == 2
+    assert correr_mate(ok, "probar")[0] == 2
+    assert correr_mate("lecciones", ok, "Fulano")[0] == 2
+    renglones = renglones_anotados(registro)
+    assert [(r[2], r[3], r[4]) for r in renglones] == [
+        ("(orden desconocida)", "al escribir la orden: orden que no existe", "con sugerencia"),
+        ("correr", "al escribir la orden: opción que no existe", "con sugerencia"),
+        ("correr", "al escribir la orden: opción que no existe", "sin sugerencia"),
+        ("correr", "al escribir la orden: falta el archivo", "sin sugerencia"),
+        ("correr", "al escribir la orden: no está el archivo", "sin sugerencia"),
+        ("correr", "al escribir la orden: más de un archivo", "sin sugerencia"),
+        ("correr", "al escribir la orden: el archivo antes que la orden", "con sugerencia"),
+        ("lecciones", "al escribir la orden: <dato> no tiene un agente '<nombre>'",
+         "sin sugerencia"),
+    ]
+    assert renglones[0][6] == "no conozco la orden '<nombre>', ¿quisiste decir 'correr'?"
+    assert renglones[1][6] == "no conozco la opción --<opción>, ¿quisiste decir --traza?"
+    todo = registro.read_text(encoding="utf-8-sig")
+    for dato in ["marta", "corer", "trasa", "inventada", "no_esta", "Fulano", str(tmp_path)]:
+        assert dato not in todo, dato
+    # la ayuda sola, una versión, un programa sin errores: nada
+    antes = len(renglones)
+    assert correr_mate()[0] == 2 and correr_mate("ayuda")[0] == 0
+    assert correr_mate("correr", ok)[0] == 0
+    assert len(renglones_anotados(registro)) == antes
+
+
+def test_tapar_datos_no_deja_pasar_nada_de_la_persona(monkeypatch):
+    monkeypatch.setenv("USERNAME", "Federico")
+    monkeypatch.setenv("ANTHROPIC_API_KEY", CLAVE_DE_MENTIRA)
+    casos = {
+        'no pude abrir C:\\Users\\Federico\\Mis Cosas\\lista de precios.mate: no tengo permiso':
+            "no pude abrir <ruta>: no tengo permiso",
+        "no encuentro 'x.mate' en /home/federico/mis cosas\narchivos .mate que sí hay ahí: "
+        "a.mate, precios 2026.mate":
+            "no encuentro '<nombre>' en <ruta> archivos .mate que sí hay ahí: <archivo>, "
+            "precios <archivo>",
+        'Pedido.cliente espera texto y recibió numero (44445555), venía "Marta"':
+            'Pedido.cliente espera texto y recibió numero (<número>), venía "<texto>"',
+        f"la IA dijo que la clave {CLAVE_DE_MENTIRA} no sirve": None,
+        "la clave sk-ant-api03-OtraClaveDistinta123 y el token a1B2c3D4e5F6g7H8i9J0k1L2m3N4":
+            "la clave <clave> y el token <clave>",
+        "escribile a marta.gomez@ejemplo.com.ar o mirá https://ejemplo.com/a?b=1 ya":
+            "escribile a <correo> o mirá <dirección> ya",
+        "a 'si' le falta la condición, y 'Mostrador' no existe; el usuario federico":
+            "a 'si' le falta la condición, y '<nombre>' no existe; el usuario <usuario>",
+        'el texto """varios\nrenglones de Marta""" y «otro» más':
+            'el texto "<texto>" y "<texto>" más',
+        "mapa no tiene un campo 'dni' (tiene: nombre, telefono)":
+            "mapa no tiene un campo '<nombre>' (tiene: <nombres>)",
+        "no conozco la opción --secreta=clave.txt ni -x, sí --traza=charla.txt":
+            "no conozco la opción --<opción>=<valor> ni --<opción>, sí --traza=<valor>",
+        "un | suelto": "un / suelto",
+    }
+    for mensaje, esperado in casos.items():
+        tapado = mate.tapar_datos(mensaje)
+        assert "\n" not in tapado and CLAVE_DE_MENTIRA not in tapado
+        if esperado is not None:
+            assert tapado == esperado
+    # lo que la persona escribió en la orden se tapa donde aparezca
+    assert mate.tapar_datos("Fulano no tiene lecciones en ventas",
+                            ["corregir", "C:\\datos\\ventas.mate", "Fulano"]) == \
+        "<dato> no tiene lecciones en <dato>"
+    assert len(mate.tapar_datos("palabra " * 200)) <= 303
+    # la categoría no lleva números ni lo que sigue al primer punto
+    assert mate.categoria_de("al correr", "la posición 5 está fuera de rango: la lista "
+                             "tiene 2") == "al correr: la posición N está fuera de rango"
+
+
+def test_el_mismo_error_seguido_queda_marcado(tmp_path, con_registro, monkeypatch):
+    correr_mate, registro = con_registro
+    mal = tmp_path / "mal.mate"
+    mal.write_text("mostrar(totl)\n", encoding="utf-8")
+    otro = tmp_path / "otro.mate"
+    otro.write_text('mostrar("a" + 1)\n', encoding="utf-8")
+    for _ in range(3):
+        correr_mate("correr", mal)
+    correr_mate("correr", otro)
+    correr_mate("correr", mal)
+    correr_mate("verificar", mal)  # el mismo error, con otra orden: empieza de nuevo
+    assert [r[5] for r in renglones_anotados(registro)] == [
+        "1 vez", "2 veces seguidas", "3 veces seguidas", "1 vez", "1 vez", "1 vez"]
+    # "seguido" es dentro de un rato: al otro día ya no cuenta
+    ahora = mate.datetime.datetime.now()
+    for minutos, esperado in [(0, "2 veces seguidas"), (mate.MINUTOS_SEGUIDO - 1,
+                                                        "3 veces seguidas"),
+                              (mate.MINUTOS_SEGUIDO * 3, "1 vez")]:
+        ahora += mate.datetime.timedelta(minutes=minutos)
+        mate.anotar_error_de_uso(str(registro), "verificar", "antes de correr",
+                                 "no existe 'x'", ahora=ahora)
+        assert renglones_anotados(registro)[-1][5] == esperado
+
+
+def test_el_registro_tiene_tope_y_no_se_rompe_con_un_archivo_editado(tmp_path, monkeypatch):
+    registro = tmp_path / "errores_de_uso.txt"
+    monkeypatch.setattr(mate, "MAX_REGISTRO", 5)
+    for i in range(8):
+        mate.anotar_error_de_uso(str(registro), "correr", "al correr", f"error número {i}0")
+    renglones = renglones_anotados(registro)
+    assert len(renglones) == 5 and renglones[-1][6] == "error número 70"
+    # alguien lo edita a mano y deja renglones que no se entienden: no se pierden ni rompen
+    with registro.open("a", encoding="utf-8") as f:
+        f.write("esto lo escribí yo\n99/99/2026 | Mate | x | y | z | w | q\n")
+    mate.anotar_error_de_uso(str(registro), "correr", "al correr", "uno más")
+    entradas, crudos, raros = mate.entradas_del_registro(str(registro))
+    assert (len(entradas), len(crudos), raros) == (3, 5, 2)
+    assert entradas[-1]["mensaje"] == "uno más" and entradas[-1]["seguidas"] == 1
+    assert not (tmp_path / "errores_de_uso.txt.tmp").exists()
+    # guardado como lo guarda el Bloc de notas en "Unicode", se sigue leyendo
+    registro.write_bytes(registro.read_text(encoding="utf-8-sig").encode("utf-16"))
+    assert len(mate.entradas_del_registro(str(registro))[0]) == 3
+    # si no se puede escribir (la carpeta no existe, o es un archivo), no molesta
+    mate.anotar_error_de_uso(str(tmp_path / "no" / "hay" / "errores.txt"), "correr",
+                             "al correr", "nada")
+    (tmp_path / "soy_carpeta.txt").mkdir()
+    mate.anotar_error_de_uso(str(tmp_path / "soy_carpeta.txt"), "correr", "al correr", "nada")
+    assert sorted(a.name for a in tmp_path.iterdir()) == ["errores_de_uso.txt",
+                                                         "soy_carpeta.txt"]
+
+
+def test_un_registro_que_no_se_puede_escribir_no_cambia_nada(tmp_path, con_registro,
+                                                             monkeypatch):
+    correr_mate, registro = con_registro
+    mal = tmp_path / "mal.mate"
+    mal.write_text("mostrar(totl)\n", encoding="utf-8")
+    con = correr_mate("correr", mal)
+
+    def no_se_puede(*_a, **_k):
+        raise PermissionError("carpeta de solo lectura")
+
+    monkeypatch.setattr(mate, "escribir_entero", no_se_puede)
+    assert correr_mate("correr", mal) == con  # mismo código, misma salida, ni un aviso
+    assert len(renglones_anotados(registro)) == 1
+
+
+def test_el_registro_se_apaga_y_no_anota_con_probar_ni_como_modulo(tmp_path, con_registro,
+                                                                  monkeypatch, capsys):
+    correr_mate, registro = con_registro
+    mal = tmp_path / "mal.mate"
+    mal.write_text("mostrar(totl)\n", encoding="utf-8")
+    con_fallas = tmp_path / "fallas.mate"
+    con_fallas.write_text('prueba "no da" { asegurar 1 == 2 }\n', encoding="utf-8")
+    # la orden 'probar' no toca el registro: ni con un programa mal escrito ni con pruebas
+    # que fallan ni con una carpeta
+    assert correr_mate("probar", mal)[0] == 1
+    assert correr_mate("probar", con_fallas)[0] == 1
+    assert correr_mate("probar", tmp_path)[0] == 1
+    assert correr_mate("probar")[0] == 2
+    # usado como módulo (sin decirle dónde anotar) tampoco
+    assert mate.main(["correr", str(mal)]) == 1
+    assert mate.main(["correr", str(mal)], registro=None) == 1
+    # con la opción y con la variable, apagado
+    assert correr_mate("correr", mal, "--sin-registro")[0] == 1
+    assert correr_mate("correr", mal, "--SIN-REGISTRO")[0] == 1
+    for valor in ["1", "si", "cualquier cosa"]:
+        monkeypatch.setenv("MATE_SIN_REGISTRO", valor)
+        assert mate.registro_apagado() and correr_mate("correr", mal)[0] == 1
+    assert not registro.exists()
+    for valor in ["", "0", "no"]:
+        monkeypatch.setenv("MATE_SIN_REGISTRO", valor)
+        assert not mate.registro_apagado()
+    # dentro de una corrida de pytest, la línea de comandos de verdad (registro=True) no anota
+    monkeypatch.delenv("MATE_SIN_REGISTRO")
+    assert "PYTEST_CURRENT_TEST" in os.environ
+    assert mate.donde_se_registra(True, []) is None
+    monkeypatch.delenv("PYTEST_CURRENT_TEST")
+    assert mate.donde_se_registra(True, []) == str(RAIZ / "errores_de_uso.txt")
+    assert mate.donde_se_registra(True, ["correr", "--sin-registro"]) is None
+    assert mate.ruta_del_registro() == str(RAIZ / "errores_de_uso.txt")
+    capsys.readouterr()
+
+
+def test_mate_corrido_como_programa_anota_al_lado_de_mate_py(tmp_path):
+    """La línea de comandos de verdad, con una copia de mate.py en una carpeta temporal."""
+    (tmp_path / "mate").mkdir()
+    (tmp_path / "mate" / "mate.py").write_bytes((RAIZ / "mate.py").read_bytes())
+    (tmp_path / "programas").mkdir()
+    mal = tmp_path / "programas" / "mal.mate"
+    mal.write_text("mostrar(totl)\n", encoding="utf-8")
+    registro = tmp_path / "mate" / "errores_de_uso.txt"
+    entorno = {k: v for k, v in os.environ.items()
+               if k not in ("PYTEST_CURRENT_TEST", "MATE_SIN_REGISTRO")}
+    entorno["PYTHONIOENCODING"] = "utf-8"
+    entorno["PYTHONDONTWRITEBYTECODE"] = "1"
+
+    def correr_mate(*args, **mas):
+        return subprocess.run([sys.executable, str(tmp_path / "mate" / "mate.py"), *args],
+                              capture_output=True, encoding="utf-8", cwd=tmp_path / "programas",
+                              env=dict(entorno, **mas))
+
+    # dentro de pytest, o con la variable, nada
+    assert correr_mate("correr", "mal.mate", PYTEST_CURRENT_TEST="x").returncode == 1
+    assert correr_mate("correr", "mal.mate", MATE_SIN_REGISTRO="1").returncode == 1
+    assert correr_mate("probar", "mal.mate").returncode == 1
+    assert correr_mate("correr", "mal.mate", "--sin-registro").returncode == 1
+    assert not registro.exists()
+    r = correr_mate("correr", "mal.mate")
+    assert r.returncode == 1 and r.stdout == ""
+    assert r.stderr == "mal.mate:1: error: no existe 'totl'\n    1 | mostrar(totl)\n"
+    r = correr_mate("correr", "mal.matepython", "mate.py", "correr", "mal.mate")
+    assert r.returncode == 2 and "se pegó dos veces" in r.stderr
+    assert [renglon[3] for renglon in renglones_anotados(registro)] == [
+        "antes de correr: no existe '<nombre>'",
+        "al escribir la orden: comando pegado dos veces"]
+    # la carpeta del programa queda como estaba, y al lado de mate.py solo el registro
+    assert [a.name for a in (tmp_path / "programas").iterdir()] == ["mal.mate"]
+    assert sorted(a.name for a in (tmp_path / "mate").iterdir()) == [
+        "errores_de_uso.txt", "mate.py"]
+    r = correr_mate("informe")
+    assert r.returncode == 0 and "Hay 2 error(es) de uso anotado(s)" in r.stdout
+    assert str(registro) in r.stdout
+    assert correr_mate("informe", "--borrar").returncode == 0 and not registro.exists()
+
+
+def test_el_registro_no_se_sube_y_las_pruebas_no_lo_tocan():
+    ignorados = (RAIZ / ".gitignore").read_text(encoding="utf-8").split()
+    assert "errores_de_uso.txt" in ignorados and "errores_de_uso.txt.tmp" in ignorados
+    assert mate.NOMBRE_DEL_REGISTRO == "errores_de_uso.txt"
+    assert os.environ.get("MATE_SIN_REGISTRO") == "1"  # (lo pone sin_red_ni_clave)
+
+
+def test_un_error_interno_de_mate_tambien_se_anota(tmp_path, con_registro, monkeypatch):
+    correr_mate, registro = con_registro
+    archivo = tmp_path / "x.mate"
+    archivo.write_text('mostrar("dato de Marta")\n', encoding="utf-8")
+
+    def rota(*_a, **_k):
+        raise ZeroDivisionError("dato de Marta")
+
+    monkeypatch.setattr(mate, "verificar", rota)
+    codigo, _, err = correr_mate("correr", archivo)
+    assert codigo == 1 and "error interno de Mate" in err
+    [renglon] = renglones_anotados(registro)
+    assert renglon[3] == "por dentro de Mate: error interno (ZeroDivisionError)"
+    assert renglon[6] == "error interno de Mate"  # (sin el detalle: puede traer datos)
+
+
+def test_la_consola_anota_sus_errores(tmp_path, con_registro, monkeypatch, capsys):
+    correr_mate, registro = con_registro
+    renglones = iter(["mostrar(zzz)", 'fallar "secreto de Marta"', "sea x = 1sea x = 1",
+                      "sea x = 1", "mostrar(x)", "salir"])
+    monkeypatch.setattr("builtins.input", lambda _="": next(renglones))
+    codigo, out, _ = correr_mate("consola")
+    assert codigo == 0 and out.splitlines()[-1] == "1"
+    assert [(r[2], r[3], r[6]) for r in renglones_anotados(registro)] == [
+        ("consola", "en la consola: no existe '<nombre>'", "no existe '<nombre>'"),
+        ("consola", "en la consola: el programa cortó con 'fallar'",
+         "<lo que el programa dijo con 'fallar'>"),
+        ("consola", "en la consola: renglón pegado dos veces",
+         "parece que el renglón se pegó dos veces (y Mate mostró el renglón bien escrito)"),
+    ]
+
+
+# La orden 'informe'
+
+def test_informe_resume_el_registro(tmp_path, con_registro):
+    correr_mate, registro = con_registro
+    codigo, out, err = correr_mate("informe")
+    assert codigo == 0 and err == "" and "Todavía no hay errores de uso anotados." in out
+    assert "Nada de eso sale por internet" in out and str(registro) in out
+    assert not registro.exists()  # mirar el informe no crea el archivo
+    mal = tmp_path / "mal.mate"
+    mal.write_text("mostrar(totl)\n", encoding="utf-8")
+    otro = tmp_path / "otro.mate"
+    otro.write_text('sea total = 1\nmostrar(totl)\n', encoding="utf-8")
+    for _ in range(3):
+        correr_mate("correr", mal)
+    correr_mate("corer", mal)
+    correr_mate("verificar", otro)
+    correr_mate("correr", tmp_path / "nohay.mate")
+    antes = registro.read_bytes()
+    codigo, out, err = correr_mate("informe")
+    assert codigo == 0 and err == ""
+    assert registro.read_bytes() == antes  # el informe solo lee
+    renglones = out.splitlines()
+    assert renglones[0] == "Informe de errores de uso de Mate"
+    assert re.fullmatch(r"Hay 6 error\(es\) de uso anotado\(s\), del \d\d/\d\d/\d{4} \d\d:\d\d "
+                        r"al \d\d/\d\d/\d{4} \d\d:\d\d \(Mate 0\.4\)\.", renglones[1])
+    assert renglones[3:6] == [
+        "Los más frecuentes:",
+        "    4 veces  antes de correr: no existe '<nombre>'",
+        "             el mensaje: no existe '<nombre>'. ¿Quisiste decir '<nombre>'?"]
+    assert "    1 vez   al escribir la orden: orden que no existe" in renglones
+    seguidos = renglones.index("Los que se repitieron seguido (la persona volvió a intentar "
+                               "y le salió el mismo error: el mensaje no alcanzó):")
+    assert renglones[seguidos + 1:seguidos + 3] == [
+        "  hasta 3 veces seguidas (2 repetición(es) en total)  antes de correr: no existe "
+        "'<nombre>'", ""]
+    assert 'Con sugerencia de Mate (un "¿quisiste decir...?" o el comando bien escrito): ' \
+           "2 de 6." in renglones
+    sin = renglones.index("Los más frecuentes que no traían ninguna sugerencia:")
+    assert renglones[sin + 1] == "    1 vez   al escribir la orden: no está el archivo"
+    assert "Con qué orden pasaron: correr 4, (orden desconocida) 1, verificar 1" in renglones
+    assert f"Está todo en {registro} (se abre con el Bloc de notas; no sale de esta " \
+           "computadora)." in renglones
+    assert any("informe --para-mejorar" in r for r in renglones[-3:])
+    assert any("informe --borrar" in r for r in renglones[-3:])
+    # un renglón roto a mano se cuenta aparte
+    with registro.open("a", encoding="utf-8") as f:
+        f.write("esto no es un renglón del registro\n")
+    out = correr_mate("informe")[1]
+    assert "(1 renglón(es) del archivo no tienen la forma de siempre y no los conté)" in out
+    # y un archivo que solo tiene renglones rotos no rompe nada
+    registro.write_text("cualquier | cosa\n\n", encoding="utf-8")
+    codigo, out, err = correr_mate("informe")
+    assert codigo == 0 and "tiene 1 renglón(es) que no entiendo" in out
+    # con el registro apagado se puede mirar igual, y lo dice
+    registro.write_bytes(antes)
+    correr_mate("informe")
+    assert correr_mate("informe", "--sin-registro")[0] == 0
+    assert registro.read_bytes() == antes
+
+
+def test_informe_para_mejorar_arma_el_pedido(tmp_path, con_registro):
+    correr_mate, registro = con_registro
+    mal = tmp_path / "ventas de marta.mate"
+    mal.write_text('mostrar("Marta" + 1)\n', encoding="utf-8")
+    correr_mate("correr", mal)
+    correr_mate("correr", mal)
+    codigo, out, err = correr_mate("informe", "--para-mejorar")
+    assert codigo == 0 and err == ""
+    assert out.startswith("(Copiá desde el renglón de abajo hasta el final")
+    for frase in [f"Uso Mate (versión {mate.VERSION})", "un solo archivo de Python",
+                  "Hay 2 error(es) de uso anotado(s)",
+                  "    2 veces  al correr: no se puede hacer texto + numero",
+                  "hasta 2 veces seguidas",
+                  "Con estos datos te pido propuestas concretas para mejorar Mate:",
+                  "escribí el mensaje nuevo completo", "¿Cuál conviene arreglar primero",
+                  "Mate tiene que seguir siendo chico"]:
+        assert frase in out, frase
+    # es para pegarle a otro: ni la carpeta, ni el archivo, ni los datos
+    for dato in [str(tmp_path), "marta", "Marta", "Está todo en"]:
+        assert dato not in out, dato
+    # sin datos no hay pedido que armar
+    correr_mate("informe", "--borrar")
+    assert "Todavía no hay errores de uso anotados." in correr_mate(
+        "informe", "--para-mejorar")[1]
+
+
+def test_informe_borrar_y_sus_errores(tmp_path, con_registro):
+    correr_mate, registro = con_registro
+    ok = tmp_path / "ok.mate"
+    ok.write_text('mostrar("ok")', encoding="utf-8")
+    assert correr_mate("informe", "--borrar") == (
+        0, "No hay registro de errores de uso para borrar.\n", "")
+    correr_mate("corer", ok)
+    assert registro.exists()
+    codigo, out, err = correr_mate("informe", "--borrar")
+    assert codigo == 0 and err == "" and out.startswith("Borrado el registro de errores de uso")
+    assert not registro.exists()
+    correr_mate("corer", ok)
+    assert correr_mate("INFORME", "--borrar=todo")[0] == 0 and not registro.exists()
+    # lo que no va
+    codigo, _, err = correr_mate("informe", ok)
+    assert codigo == 2 and "'informe' va sola" in err
+    codigo, _, err = correr_mate("informe", "--borrar=2")
+    assert codigo == 2 and "con 'informe', --borrar va sola" in err
+    codigo, _, err = correr_mate("correr", ok, "--para-mejorar")
+    assert codigo == 2 and "--para-mejorar va con 'informe'" in err
+    # --borrar sola sigue sin ir con las otras órdenes, y con las lecciones lleva el número
+    for orden in (["correr", ok], ["lecciones", ok, "Mostrador"]):
+        codigo, _, err = correr_mate(*orden, "--borrar")
+        assert codigo == 2 and "a --borrar le falta el número de la lección" in err
+    assert correr_mate("informes")[2] == "no conozco la orden 'informes', ¿quisiste decir " \
+                                         "'informe'?\n"
+    assert correr_mate("ayuda", "informe")[1].startswith(f"Mate {mate.VERSION}")
+
+
+# Las mejoras que salieron del uso real
+
+PEGADOS = [
+    (["correr", "mio.matepython", "mate\\mate.py", "correr", "mio.mate"],
+     "python mate\\mate.py correr mio.mate"),
+    (["--trazapython", "mate\\mate.py", "correr", "mio.mate", "--traza"],
+     "python mate\\mate.py correr mio.mate --traza"),
+    (["probar", "mate\\ejemplospy", "-3", "mate\\mate.py", "probar", "mate\\ejemplos"],
+     "py -3 mate\\mate.py probar mate\\ejemplos"),
+    (["correr", "mio.matemate", "correr", "mio.mate"], "mate correr mio.mate"),
+    (["correr", "mi lista.mate.\\mate.bat", "correr", "mi lista.mate"],
+     '.\\mate.bat correr "mi lista.mate"'),
+    (["guiapython3", "mate/mate.py", "guia"], "python3 mate/mate.py guia"),
+    # tres veces
+    (["correr", "a.matepython", "mate.py", "correr", "a.matepython", "mate.py", "correr",
+      "a.mate"], "python mate.py correr a.mate"),
+    # dos comandos distintos pegados: el último
+    (["correr", "a.matepython", "mate\\mate.py", "verificar", "b.mate"],
+     "python mate\\mate.py verificar b.mate"),
+]
+
+
+@pytest.mark.parametrize("argv,una_vez", PEGADOS)
+def test_el_comando_pegado_dos_veces_lo_dice_y_muestra_el_bueno(argv, una_vez, capsys):
+    assert mate.comando_pegado(argv) == una_vez
+    assert mate.main(argv) == 2
+    capturado = capsys.readouterr()
+    assert capturado.out == "" and capturado.err == (
+        "parece que el comando se pegó dos veces en el mismo renglón. Escribilo una sola "
+        f"vez:\n  {una_vez}\n")
+
+
+def test_lo_que_no_es_un_comando_pegado_sigue_como_antes(tmp_path, capsys):
+    ok = tmp_path / "ok.mate"
+    ok.write_text('mostrar("corrió")', encoding="utf-8")
+    for argv in [["correr", str(ok)], ["correr", str(ok), str(ok)], ["ayuda", "ayuda"],
+                 ["probar", str(ok), str(ok)], ["correr", "happy.mate", "mate.py"],
+                 ["correr", str(ok), "--traza", "--traza"], ["lecciones", "a.mate", "a.mate"],
+                 ["corregir", "a.mate", "Mostrador", "usá python y mate"], []]:
+        assert mate.comando_pegado(argv) is None, argv
+    assert mate.main(["correr", str(ok), str(ok)]) == 2
+    assert "lleva un solo archivo y recibió 2" in capsys.readouterr().err
+    assert mate.main(["correr", str(ok), "--trazapython"]) == 2
+    assert capsys.readouterr().err == ("no conozco la opción --trazapython, ¿quisiste decir "
+                                       "--traza?\n")
+
+
+def test_en_la_consola_un_renglon_pegado_dos_veces_avisa(monkeypatch, capsys):
+    assert mate.renglon_duplicado("sea x = 1sea x = 1") == "sea x = 1"
+    assert mate.renglon_duplicado("  ayuda agenteayuda agente ") == "ayuda agente"
+    assert mate.renglon_duplicado("mostrar(1)mostrar(1)mostrar(1)") == "mostrar(1)"
+    for renglon in ["sea x = 1", "sea jaja = 1", "mostrar(1) mostrar(1)", "1111", "[1][1]",
+                    "xx", "", "sea x = 1sea x = 2"]:
+        assert mate.renglon_duplicado(renglon) is None, renglon
+    renglones = iter(["sea x = 1sea x = 1", "ayuda agenteayuda agente", "sea x = 7",
+                      "mostrar(x)", "python mate\\mate.py correr hola.mate",
+                      "PS C:\\Users\\fede> python mate\\mate.py consola", "salir"])
+    monkeypatch.setattr("builtins.input", lambda _="": next(renglones))
+    assert mate.main(["consola"]) == 0
+    assert capsys.readouterr().out.splitlines()[2:] == [
+        "error: parece que el renglón se pegó dos veces. Escribilo una sola vez:  sea x = 1",
+        "error: parece que el renglón se pegó dos veces. Escribilo una sola vez:  "
+        "ayuda agente",
+        "7",  # (el renglón pegado no corrió: x se declara recién acá)
+        "error: eso es de PowerShell, y acá adentro (en la consola de Mate) van renglones "
+        "de Mate. Para volver a PowerShell escribí salir, y pegá el comando allá",
+        "error: eso es de PowerShell, y acá adentro (en la consola de Mate) van renglones "
+        "de Mate. Para volver a PowerShell escribí salir, y pegá el comando allá",
+    ]
+
+
+def test_tres_comillas_de_mas_dice_cuantas_hay_y_donde(tmp_path, capsys):
+    # se pegó un bloque dentro de otro: quedan cinco juegos de tres comillas
+    fuente = (f'mostrar("hola")\nsea a = {TRES}\n  uno\n{TRES}\nsea b = {TRES}\n'
+              f'  dos\nsea c = {TRES}\n  tres\n{TRES}\nmostrar(a)\n')
+    error = falla(fuente)
+    assert error.linea == 9
+    assert error.mensaje == (
+        mate.SIN_CERRAR_TEXTO + '. En este archivo hay 5 juegos de tres comillas ("""), en '
+        "los renglones 2, 4, 5, 7 y 9: es una cantidad impar, y como van de a pares (uno "
+        "abre y otro cierra) sobra o falta uno. Suele pasar al pegar un bloque dentro de "
+        "otro. Leyendo de arriba para abajo, el que queda sin pareja es el del renglón 9, "
+        "pero el que sobra o el que falta puede estar más arriba")
+    codigo, out, err = por_main(tmp_path, capsys, fuente)
+    assert codigo == 1 and out == "" and ":9: error: a este texto de varios renglones" in err
+    assert "hay 5 juegos de tres comillas" in err and f"    9 | {TRES}" in err
+    # dos en el mismo renglón se cuentan las dos, y una tira de seis son dos juegos
+    assert "en los renglones 1, 1 y 2:" in falla(
+        f'sea a = {TRES}uno{TRES}\nsea b = {TRES}\n dos').mensaje
+    assert "hay 3 juegos de tres comillas" in falla(f'sea a = {TRES}{TRES}\nsea b = {TRES}x').mensaje
+    # con un solo juego (falta el cierre y nada más) el mensaje es el de siempre
+    assert falla(f"sea t = {TRES}hola\nchau\n").mensaje == mate.SIN_CERRAR_TEXTO
+    assert mate.comillas_de_mas(f"sea t = {TRES}hola", 1) == ""
+    # con muchísimos, la lista se corta
+    muchos = "".join(f"sea t{i} = {TRES}a{TRES}\n" for i in range(10)) + f"sea u = {TRES}\n"
+    assert "en los renglones 1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6, 7, 7, 8...:" in falla(
+        muchos).mensaje
+    # los textos bien cerrados siguen andando, sean pares o impares los que hay adentro
+    assert mostrados(f'sea a = {TRES}\n  uno\n  {TRES}\nmostrar(a)') == ["uno"]
+    assert mostrados(f'mostrar({TRES}Ella dijo "hola"{TRES})') == ['Ella dijo "hola"']
+    # en la consola un texto abierto sigue en el renglón de abajo, como siempre
+    assert mate.falta_cerrar(f"sea t = {TRES}a{TRES}\nsea u = {TRES}") == "texto"
+
+
+@pytest.mark.parametrize("primero,que", [
+    ("PS C:\\Users\\fede> python mate\\mate.py correr mio.mate", "pantalla"),
+    ("PS C:\\Users\\Juan Perez\\Desktop>", "pantalla"),
+    ("  PS D:\\> notepad mio.mate", "pantalla"),
+    ("python mate\\mate.py correr mio.mate", "comando"),
+    ("python3 mate/mate.py probar mate/ejemplos", "comando"),
+    ("py -3 mate\\mate.py correr mio.mate --traza", "comando"),
+    ("Python.exe C:\\cosas\\mate\\mate.py verificar mio.mate", "comando"),
+    ("notepad mio.mate", "comando"),
+    (".\\mate correr mio.mate", "comando"),
+    ("mate.bat probar mio.mate", "comando"),
+    ("cd C:\\Users\\fede\\Desktop", "comando"),
+])
+def test_un_archivo_que_empieza_con_powershell_lo_dice(primero, que, tmp_path, capsys):
+    assert mate.pegado_de_powershell(primero) == que
+    fuente = f'\n\n{primero}\nmostrar("hola")\n'
+    error = falla(fuente)
+    assert error.linea == 3 and error.mensaje == mate.PEGADO_EN_EL_ARCHIVO[que]
+    assert "este renglón no es de Mate" in error.mensaje
+    assert "se pegó" in error.mensaje and "Bloc de notas" in error.mensaje
+    codigo, out, err = por_main(tmp_path, capsys, fuente, orden="verificar")
+    assert codigo == 1 and out == ""
+    assert err.splitlines()[0].endswith(f"programa.mate:3: error: {error.mensaje}")
+    assert err.splitlines()[1] == f"    3 | {primero.rstrip()}"
+
+
+def test_lo_que_no_es_powershell_no_se_confunde(tmp_path, capsys):
+    for renglon in ['mostrar("hola")', "sea cd = 5", "cd = 5", "sea python = 1",
+                    "# python mate\\mate.py correr hola.mate", "sea ps = 3", "PS > 2",
+                    'mostrar("PS C:\\\\Users> hola")', "mate", "py + 1", "notepad",
+                    'sea mate = "correr"', "mostrar(python)", ""]:
+        assert mate.pegado_de_powershell(renglon) is None, renglon
+    # solo importa el primer renglón escrito: más abajo puede ser un texto que lo nombra
+    fuente = f'sea ayuda = {TRES}\npython mate\\\\mate.py correr hola.mate\n{TRES}\nmostrar(ayuda)'
+    assert mostrados(fuente) == ["python mate\\mate.py correr hola.mate"]
+    # y también avisa en un archivo traído con 'usar'
+    (tmp_path / "lib.mate").write_text("PS C:\\Users\\fede> dir\n", encoding="utf-8")
+    codigo, _, err = por_main(tmp_path, capsys, 'usar "lib"\nmostrar(1)\n')
+    assert codigo == 1 and "lib.mate:1: error: este renglón no es de Mate" in err
+
+
+def test_el_readme_la_guia_y_la_ayuda_cuentan_el_registro_de_errores_de_uso(capsys):
+    leeme = (RAIZ / "README.md").read_text(encoding="utf-8")
+    for frase in ["### El lenguaje también aprende: el registro de errores de uso",
+                  "`errores_de_uso.txt`", "**al lado de `mate.py`**",
+                  "**No guarda tus programas**", "**Nunca sale de tu computadora.**",
+                  "**Con `probar` no se anota nada**", '$env:MATE_SIN_REGISTRO = "1"',
+                  "| `informe` |", "| `informe --para-mejorar` |", "| `informe --borrar` |",
+                  "| `--sin-registro` |", f"últimos {mate.MAX_REGISTRO} renglones",
+                  "parece que el comando se pegó dos veces en el mismo renglón",
+                  "`sea x = 1sea x = 1`", "cantidad impar de `\"\"\"`", "`PS C:\\...>`"]:
+        assert frase in leeme, frase
+    ayuda = mate.texto_de_ayuda()
+    for frase in ["  informe  ", "informe --para-mejorar", "informe --borrar",
+                  "--sin-registro", "errores_de_uso.txt", "MATE_SIN_REGISTRO",
+                  "no sale de esta computadora"]:
+        assert frase in ayuda, frase
+    for opcion in ["--para-mejorar", "--sin-registro"]:
+        assert opcion in mate.OPCIONES
+    guia = mate.texto_de_guia()
+    assert "python mate\\mate.py informe" in guia and "--para-mejorar" in guia
+    assert "una sola vez por renglón" in guia
+    mejoras = (RAIZ / "MEJORAS.md").read_text(encoding="utf-8")
+    seccion = mejoras.split("\n## Lo que vino después de las 100\n")[1].split("\n## ")[0]
+    for frase in ["**104. Registro de errores de uso**", "**105. La orden `informe`**",
+                  "**106. El comando pegado dos veces**", "**107. Tres comillas de más**",
+                  "**108. La pantalla de PowerShell adentro del archivo**",
+                  "**Nada sale de la computadora.**"]:
+        assert frase in seccion, frase
+    assert seccion.count("Nota de lo decidido") == 8

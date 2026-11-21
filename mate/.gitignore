@@ -4,3 +4,7 @@ ejemplos/*.memoria.json
 ejemplos/*.memoria.json.tmp
 ejemplos/*.bitacora.txt
 ejemplos/*.bitacora.txt.tmp
+# El registro de errores de uso (lo arma Mate solo, al lado de mate.py): es de cada
+# computadora y no se sube nunca.
+errores_de_uso.txt
+errores_de_uso.txt.tmp

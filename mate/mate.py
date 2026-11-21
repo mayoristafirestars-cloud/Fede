@@ -11,6 +11,7 @@ Uso:
     python3 mate.py ayuda     (o: ayuda si, ayuda largo... para una palabra o función)
     python3 mate.py consola   (para probar renglones sueltos)
     python3 mate.py corregir  archivo.mate Agente "la lección"   (y: lecciones, bitacora)
+    python3 mate.py informe   (los errores de uso anotados; --para-mejorar, --borrar)
 """
 
 import datetime
@@ -60,7 +61,12 @@ ORDENES = ("correr", "probar", "verificar")
 # de memoria y de bitácora, sin correrlo.
 ORDENES_DE_MEMORIA = ("bitacora", "corregir", "lecciones")
 OPCIONES = ("--traza", "--depurar", "--sin-limite", "--version", "--ayuda",
-            "--ia-simulada", "--olvidar")
+            "--ia-simulada", "--olvidar", "--para-mejorar", "--sin-registro")
+# El registro de errores de uso (0.4): lo que Mate anota de los errores que le muestra a
+# la persona, para poder mejorar el lenguaje. Queda al lado de mate.py y no sale de ahí.
+NOMBRE_DEL_REGISTRO = "errores_de_uso.txt"
+MAX_REGISTRO = 500  # renglones que guarda (los últimos)
+MINUTOS_SEGUIDO = 30  # el mismo error otra vez dentro de este rato cuenta como "seguido"
 # Lo que un agente aprende (0.4). Las lecciones viajan en cada consulta a la IA, y eso se
 # paga: por eso tienen tope de cantidad y de largo.
 MAX_LECCIONES = 20  # por agente; si se pasa, se olvida la más vieja
@@ -429,6 +435,26 @@ SIN_CERRAR_TEXTO = ("a este texto de varios renglones le falta el cierre: termin
 _BARRA_Y_CIERRE = re.compile(r'(?<!\\)(?:\\\\)*\\"""[ \t\r]*$', re.M)
 
 
+def comillas_de_mas(fuente, abierto):
+    """Para el error de un texto de tres comillas sin cerrar: si en el archivo hay una
+    cantidad impar de juegos de tres comillas (tres o más: se pegó un bloque dentro de
+    otro), dice cuántos hay y en qué renglones. Con uno solo, o con cantidad par, nada."""
+    renglones = []
+    for tira in re.finditer(r'(?<!\\)"{3,}', fuente):
+        renglones += [1 + fuente.count("\n", 0, tira.start())] * (len(tira.group()) // 3)
+    if len(renglones) < 3 or len(renglones) % 2 == 0:
+        return ""
+    if len(renglones) <= 15:
+        lista = ", ".join(str(r) for r in renglones[:-1]) + f" y {renglones[-1]}"
+    else:
+        lista = ", ".join(str(r) for r in renglones[:15]) + "..."
+    return (f'. En este archivo hay {len(renglones)} juegos de tres comillas ("""), en los '
+            f"renglones {lista}: es una cantidad impar, y como van de a pares (uno abre y "
+            "otro cierra) sobra o falta uno. Suele pasar al pegar un bloque dentro de otro. "
+            f"Leyendo de arriba para abajo, el que queda sin pareja es el del renglón "
+            f"{int(abierto)}, pero el que sobra o el que falta puede estar más arriba")
+
+
 class VariosRenglones(str):
     """El contenido de un texto de tres comillas, ya sin la sangría común. 'salto' dice
     cuántos renglones de arriba se le quitaron (para saber en qué renglón cae cada parte)."""
@@ -522,7 +548,7 @@ def tokenizar(fuente, archivo=None):
                         "sea parte del texto, y para el cierre quedan dos en vez de tres. "
                         "Poné las tres comillas del cierre solas, en el renglón de abajo",
                         Linea(1 + fuente.count("\n", 0, barra.start()), archivo))
-                error = ErrorMate(SIN_CERRAR_TEXTO, linea)
+                error = ErrorMate(SIN_CERRAR_TEXTO + comillas_de_mas(fuente, linea), linea)
                 error.texto_abierto = True  # (en la consola: se sigue en el renglón de abajo)
                 raise error
             saltos = fuente.count("\n", pos, fin)
@@ -1469,6 +1495,43 @@ def leer_fuente(ruta):
                     "Archivo > Guardar como > Codificación: UTF-8")
 
 
+# Lo que a veces queda pegado adentro de un archivo .mate: la pantalla de PowerShell
+# ("PS C:\Users\...> ") o el comando con el que se corre Mate.
+_PANTALLA_PEGADA = re.compile(r"\s*PS\s+[A-Za-z]:[\\/][^>\n]*>")
+_COMANDO_PEGADO = re.compile(
+    r"\s*(?:(?:python3?|py)(?:\.exe)?\s+(?:-\S+\s+)*\S*mate\.py\b"
+    r"|notepad(?:\.exe)?\s+\S"
+    r"|(?:\.[\\/])?mate(?:\.bat)?\s+(?:correr|probar|verificar|consola|guia|ayuda|informe"
+    r"|corregir|lecciones|bitacora)\b"
+    r"|cd\s+[\w.\\/:~-]+\s*$)", re.I)
+PEGADO_EN_EL_ARCHIVO = {
+    "pantalla": ('este renglón no es de Mate: es la pantalla de PowerShell (empieza con '
+                 '"PS C:\\..."). Parece que se pegó la pantalla adentro del archivo. Abrilo '
+                 "con el Bloc de notas, borrá todo lo que no sea del programa y guardá"),
+    "comando": ("este renglón no es de Mate: es un comando de PowerShell. Parece que el "
+                "comando se pegó adentro del archivo. Abrilo con el Bloc de notas, borrá ese "
+                "renglón y guardá: los comandos se escriben en la ventana de PowerShell, no "
+                "en el programa"),
+}
+
+
+def pegado_de_powershell(renglon):
+    """¿Ese renglón es la pantalla de PowerShell ("pantalla"), un comando ("comando") o
+    ninguna de las dos (None)?"""
+    if _PANTALLA_PEGADA.match(renglon):
+        return "pantalla"
+    return "comando" if _COMANDO_PEGADO.match(renglon) else None
+
+
+def revisar_pegado(fuente, archivo=None):
+    """Si el primer renglón escrito del archivo es de PowerShell, lo dice claro."""
+    primero = re.match(r"\s*([^\n]*)", fuente)
+    que = pegado_de_powershell(primero.group(1))
+    if que:
+        raise ErrorMate(PEGADO_EN_EL_ARCHIVO[que],
+                        Linea(1 + fuente.count("\n", 0, primero.start(1)), archivo))
+
+
 def analizar(fuente, ruta=None, _vistos=None, en_consola=False):
     """Convierte el texto en un programa, incluyendo lo que traiga con 'usar'."""
     vistos = _vistos if _vistos is not None else set()
@@ -1476,6 +1539,8 @@ def analizar(fuente, ruta=None, _vistos=None, en_consola=False):
         vistos.add(os.path.realpath(ruta))
     carpeta = os.path.dirname(os.path.abspath(ruta)) if ruta else os.getcwd()
     programa = []
+    if not en_consola:
+        revisar_pegado(fuente, ruta)
     tokens = tokenizar(fuente, ruta)
     revisar_cierres(tokens, fuente)
     for s in Parser(tokens, en_consola).programa():
@@ -2180,6 +2245,12 @@ class Registro:
         return igual(self, otro)
 
     __hash__ = None
+
+
+class TextoDeError(str):
+    """El texto del error de un agente, que además recuerda de qué familia era (para el
+    registro de errores de uso: lo que el programa dijo con 'fallar' no se anota)."""
+    familia = "otro"
 
 
 class ErrorAtajado(str):
@@ -4326,7 +4397,8 @@ class Interprete:
                     continue
                 que = "en 'al fallar'" if msg.tipo == AL_FALLAR else f"al recibir {msg.tipo}"
                 linea = e.linea or getattr(e, "renglon", None)
-                texto = self.con_camino(f"{dest.nombre} {que}: {e.mensaje}", e)
+                texto = TextoDeError(self.con_camino(f"{dest.nombre} {que}: {e.mensaje}", e))
+                texto.familia = e.familia
                 self.errores_agentes.append(self.con_lugar(linea, texto))
                 self.errores_agentes_det.append((linea, texto))
 
@@ -5294,6 +5366,10 @@ CÓMO SE CORRE (Windows)
   python mate\mate.py verificar archivo.mate     (revisa sin correr)
   python mate\mate.py corregir archivo.mate Agente "la lección"    (le anota una lección)
   python mate\mate.py lecciones archivo.mate     python mate\mate.py bitacora archivo.mate
+  python mate\mate.py informe      (los errores de uso que Mate fue anotando en esa
+  computadora, sin datos de la persona; con --para-mejorar arma un texto para pedir mejoras)
+  En PowerShell el comando se escribe una sola vez por renglón, y los comandos no van
+  adentro del archivo .mate: si se pegan ahí, Mate lo avisa.
 """
 
 
@@ -5537,10 +5613,24 @@ def falta_cerrar(texto):
 _SIGUEN = COMPARADORES + ("+", "-", "*", "/", "%", "=", "+=", "-=", ",")
 
 
-def consola(entrada=None, mostrar=print, ia_simulada=False, ia_respuestas=()):
+def renglon_duplicado(renglon):
+    """En la consola: si el renglón es el mismo texto pegado dos (o tres) veces seguidas,
+    sin nada en el medio, devuelve ese texto una sola vez. Si no, None."""
+    texto = renglon.strip()
+    for veces in (3, 2):
+        largo, resto = divmod(len(texto), veces)
+        if not resto and largo >= 4 and texto == texto[:largo] * veces \
+                and any(c.isalpha() for c in texto[:largo]):
+            return renglon_duplicado(texto[:largo]) or texto[:largo]
+    return None
+
+
+def consola(entrada=None, mostrar=print, ia_simulada=False, ia_respuestas=(), anotar=None):
     """La orden 'consola': para probar renglones sueltos sin crear un archivo. Lo que se
     declara queda para los renglones siguientes, y un valor suelto se muestra solo.
-    ia_simulada: con --ia-simulada, consultar_ia() tampoco sale a la red desde acá."""
+    ia_simulada: con --ia-simulada, consultar_ia() tampoco sale a la red desde acá.
+    anotar: a quién avisarle de cada error mostrado (el registro de errores de uso)."""
+    anotar = anotar or (lambda *_a, **_k: None)
     interprete = Interprete(salida=mostrar)
     interprete.ia_simulada = bool(ia_simulada)
     interprete.ia_respuestas = list(ia_respuestas)
@@ -5553,7 +5643,8 @@ def consola(entrada=None, mostrar=print, ia_simulada=False, ia_respuestas=()):
     declarado = []  # lo ya declarado, para revisar los contratos de lo que se escriba
     renglon, pendiente = 1, []  # los renglones se numeran de corrido, como en un archivo
 
-    def decir(linea, texto, ultimo):
+    def decir(linea, texto, ultimo, familia=None):
+        anotar(texto, familia=familia or getattr(texto, "familia", None))
         texto, _, camino = texto.partition("\ncómo se llegó: ")
         antes = f"línea {linea}: " if linea and int(linea) != ultimo else ""
         mostrar(f"{antes}error: {texto}")
@@ -5598,7 +5689,7 @@ def consola(entrada=None, mostrar=print, ia_simulada=False, ia_respuestas=()):
                 "no esperaba el final del archivo acá",
                 "lo que escribiste quedó a medio terminar: falta algo al final").replace(
                 "el final del archivo", "el final de lo que escribiste")
-            decir(e.linea, interprete.con_camino(e.mensaje, e), ultimo)
+            decir(e.linea, interprete.con_camino(e.mensaje, e), ultimo, e.familia)
             avisar_pendientes(interprete, mostrar)
             interprete.cola.clear()
         except KeyboardInterrupt:
@@ -5623,6 +5714,21 @@ def consola(entrada=None, mostrar=print, ia_simulada=False, ia_respuestas=()):
             if orden in ("salir", "chau", "exit", "quit"):
                 break
             if not orden:
+                continue
+            una_vez = renglon_duplicado(linea)
+            if una_vez:
+                texto = ("parece que el renglón se pegó dos veces. Escribilo una sola vez:  "
+                         + una_vez)
+                anotar("parece que el renglón se pegó dos veces (y Mate mostró el renglón "
+                       "bien escrito)", categoria="renglón pegado dos veces", sugerencia=True)
+                mostrar(f"error: {texto}")
+                continue
+            if pegado_de_powershell(linea):
+                texto = ("eso es de PowerShell, y acá adentro (en la consola de Mate) van "
+                         "renglones de Mate. Para volver a PowerShell escribí salir, y pegá "
+                         "el comando allá")
+                anotar(texto, categoria="un comando de PowerShell en la consola de Mate")
+                mostrar(f"error: {texto}")
                 continue
             if orden == "ayuda":
                 mostrar("Escribí un renglón de Mate y apretá Enter. Si queda una llave "
@@ -5671,6 +5777,12 @@ def texto_de_ayuda():
         "  lecciones archivo.mate Mostrador --borrar=2   le borra la lección 2",
         "  bitacora  archivo.mate   resume las fallas que anotaron sus agentes",
         "",
+        "Para que Mate mejore (anota en esta computadora los errores que te muestra):",
+        "  informe                  resume los errores de uso: los más frecuentes y los que",
+        "                           se repitieron seguido (el mensaje no alcanzó)",
+        "  informe --para-mejorar   arma un texto para pegarle a un asistente y pedirle mejoras",
+        "  informe --borrar         borra el registro de errores de uso",
+        "",
         "Opciones:",
         "  --traza       muestra la conversación entre agentes, numerada y con lo que falló",
         "  --traza=conversacion.txt   la guarda en ese archivo, con un resumen al final",
@@ -5678,8 +5790,13 @@ def texto_de_ayuda():
         "  --ia-simulada consultar_ia() no sale a la red ni gasta: da su respuesta preparada",
         "  --ia-simulada=respuestas.txt   ...o las que están escritas en ese archivo",
         "  --olvidar     con 'correr': los agentes arrancan de cero, sin lo que recordaban",
+        "  --sin-registro  esta vez no anota nada en el registro de errores de uso",
         "  --depurar     si Mate falla por dentro, muestra el detalle técnico",
         "  --version     dice qué versión de Mate es",
+        "",
+        f"El registro de errores de uso es el archivo {NOMBRE_DEL_REGISTRO}, al lado de mate.py:",
+        "no guarda tus programas, tapa tus datos y no sale de esta computadora. Para apagarlo",
+        "del todo, en PowerShell:  $env:MATE_SIN_REGISTRO = \"1\"",
         "",
         "Un ejemplo listo para copiar:",
         f"  {ejemplo}",
@@ -6002,15 +6119,432 @@ def probar_varios(pedidos, opciones, avisar):
     return 1 if con_problemas else 0
 
 
-def main(argv=None):
+# ─────────────── Lo que el lenguaje aprende de quien lo usa (0.4) ───────────────
+# Cada error que Mate le muestra a la persona deja un renglón en errores_de_uso.txt, al
+# lado de mate.py, para que después se pueda ver qué mensajes no alcanzan y mejorar Mate.
+# No guarda programas, tapa los datos de la persona y no sale nunca de la computadora.
+# Solo anota cuando Mate se usa desde la línea de comandos (como módulo, o en las pruebas,
+# no), nunca con la orden 'probar', y se apaga con MATE_SIN_REGISTRO=1 o --sin-registro.
+
+ORDENES_SABIDAS = ORDENES + ORDENES_DE_MEMORIA + ("ayuda", "guia", "consola", "informe")
+_FECHA_DE_REGISTRO = "%d/%m/%Y %H:%M"
+_TEXTO_ENTRE_COMILLAS = re.compile(
+    r'"""[\s\S]*?"""|"(?:\\.|[^"\\\n])*"|«[^»\n]*»|“[^”\n]*”')
+# Una ruta puede traer espacios ("C:\Users\Juan Perez\Desktop"): se tapa hasta donde
+# termina la frase (mejor tapar de más que dejar medio apellido a la vista).
+_FIN_DE_RUTA = r"""[^\n"'|*?()]*?(?=$|\n|["'|*?()]|[,;:] |\.\s|\.$)"""
+_RUTA_WIN_A_TAPAR = re.compile(r"(?:(?<![A-Za-z])[A-Za-z]:|\\)[\\/]" + _FIN_DE_RUTA, re.M)
+_RUTA_LINUX_A_TAPAR = re.compile(r"(?<![\w<./])~?/[\w.\-<>]+/" + _FIN_DE_RUTA, re.M)
+_NOMBRE_DE_ARCHIVO = re.compile(
+    r"(?:[\w.\-<>]+[\\/])*[\w\-<>][\w.\-<>]*\.(?:mate|txt|json|py|bat|csv|md|tmp|log|ps1)\b",
+    re.I)
+
+
+def ruta_del_registro():
+    """El archivo del registro de errores de uso: siempre al lado de mate.py."""
+    return os.path.join(os.path.dirname(os.path.abspath(__file__)), NOMBRE_DEL_REGISTRO)
+
+
+def registro_apagado():
+    """¿La persona pidió que no se anote nada? (la variable MATE_SIN_REGISTRO)"""
+    return os.environ.get("MATE_SIN_REGISTRO", "").strip().lower() not in ("", "0", "no")
+
+
+def donde_se_registra(registro, argv):
+    """En qué archivo se anotan los errores de esta corrida, o None si no se anotan.
+    registro: None (Mate usado como módulo: en ningún lado), True (la línea de comandos:
+    al lado de mate.py, salvo dentro de una corrida de pytest) o la ruta de un archivo."""
+    if registro is None or registro is False or registro_apagado():
+        return None
+    if any(a.lower() == "--sin-registro" for a in argv):
+        return None
+    if registro is True:
+        return None if "PYTEST_CURRENT_TEST" in os.environ else ruta_del_registro()
+    return os.fspath(registro)
+
+
+def tapar_datos(texto, propios=()):
+    """El mensaje de un error sin los datos de la persona: la clave de la IA y cualquier
+    cosa con forma de clave, su nombre de usuario, los textos entre comillas, los nombres
+    que eligió, las rutas, los nombres de archivos, los correos y los números largos
+    quedan reemplazados por marcas como <texto> o <archivo>. Todo en un renglón.
+    propios: lo que la persona escribió en la orden (archivos, nombres): se tapa
+    dondequiera que aparezca."""
+    texto = tapar_clave(texto, os.environ.get("ANTHROPIC_API_KEY", "").strip().strip("\"'"))
+    texto = re.sub(r"\bsk-[\w\-]{6,}|(?<![\w\-])(?=[\w\-]*\d)(?=[\w\-]*[A-Za-z])[\w\-]{24,}",
+                   "<clave>", texto)
+    texto = re.sub(r"https?://\S+", "<dirección>", texto)
+    texto = re.sub(r"[\w.+\-]+@[\w\-]+(?:\.[\w\-]+)+", "<correo>", texto)
+    usuarios = {os.environ.get(v, "") for v in ("USERNAME", "USER", "LOGNAME")}
+    usuarios.add(os.path.basename(os.path.expanduser("~").rstrip("\\/")))
+    for usuario in sorted(usuarios, key=len, reverse=True):
+        if len(usuario) >= 3 and usuario.lower() not in ("mate", "user", "users", "home"):
+            texto = re.sub(re.escape(usuario), "<usuario>", texto, flags=re.I)
+    sabidas = PALABRAS | set(FUNCIONES) | TIPOS_BASE | set(ORDENES_SABIDAS) | {
+        "recordado", "salir", "llamado", "mate", "mate.py", "mate.bat", "python", "todas"}
+    suyos = set()
+    for propio in propios:
+        nombre = re.split(r"[\\/]", propio.rstrip("\\/"))[-1]
+        suyos |= {propio, nombre, re.sub(r"(?i)\.mate(\.txt)?$", "", nombre)}
+    for suyo in sorted(suyos, key=len, reverse=True):
+        if len(suyo) >= 3 and sin_tildes(suyo) not in sabidas:
+            texto = re.sub(re.escape(suyo), "<dato>", texto, flags=re.I)
+    texto = _TEXTO_ENTRE_COMILLAS.sub('"<texto>"', texto)
+
+    def nombre(m):
+        partes = m.group(1).lower().replace("(", " ").replace(")", " ").split()
+        return m.group(0) if partes and all(p in sabidas for p in partes) else "'<nombre>'"
+
+    def archivo(m):
+        propio = re.split(r"[\\/]", m.group(0))[-1].lower() in ("mate.py", "mate.bat")
+        return m.group(0) if propio and "<" not in m.group(0) else "<archivo>"
+
+    def opcion(m):
+        sabida = m.group(1).lower() in OPCIONES + ("--borrar", "-h")
+        return (m.group(1) if sabida else "--<opción>") + ("=<valor>" if m.group(2) else "")
+
+    texto = re.sub(r"'([^'\n]*)'", nombre, texto)
+    # (las listas de nombres del programa: campos de un mapa, agentes)
+    texto = re.sub(r"\((tiene|son|hay): [^)]*\)", r"(\1: <nombres>)", texto)
+    texto = re.sub(r"(Sus agentes son|Los agentes de ese programa son): .*", r"\1: <nombres>",
+                   texto)
+    texto = _NOMBRE_DE_ARCHIVO.sub(archivo, texto)
+    texto = _RUTA_WIN_A_TAPAR.sub("<ruta>", texto)
+    texto = _RUTA_LINUX_A_TAPAR.sub("<ruta>", texto)
+    texto = re.sub(r"(?<![\w\-<])(--?[A-Za-zÀ-ÿ][\w\-]*)(=\S*)?", opcion, texto)
+    texto = re.sub(r"\d{3,}(?:[.,]\d+)*", "<número>", texto)
+    return en_un_renglon(texto, 300).replace("|", "/")
+
+
+def categoria_de(etapa, tapado):
+    """El nombre estable de un error: la etapa y el arranque de su mensaje ya tapado,
+    hasta el primer punto o los dos puntos, sin números. No lleva datos de la persona."""
+    molde = re.sub(r"<número>|\d+", "N", tapado)
+    corte = re.compile(r"\. |: | \(|,? ¿|; ").search(molde, 12)
+    if corte:
+        molde = molde[:corte.start()]
+    return f"{etapa}: {en_un_renglon(molde, 80)}"
+
+
+def entradas_del_registro(ruta):
+    """Lo que dice el registro: (entradas, renglones tal cual están, cuántos no se
+    entienden). Cada entrada es un mapa con fecha, version, orden, categoria, sugerencia,
+    seguidas y mensaje. Si el archivo no existe, nada; si no se puede leer, un ErrorMate."""
+    try:
+        texto = leer_fuente(ruta)
+    except FileNotFoundError:
+        return [], [], 0
+    except (OSError, ErrorMate):
+        raise ErrorMate(f"no pude leer el registro de errores de uso '{ruta}': fijate que "
+                        "no esté abierto en otro programa")
+    renglones = [r.rstrip() for r in texto.split("\n")
+                 if r.strip() and not r.lstrip().startswith("#")]
+    entradas, raros = [], 0
+    for renglon in renglones:
+        partes = [parte.strip() for parte in renglon.split(" | ", 6)]
+        seguidas = re.fullmatch(r"(\d{1,6}) (?:vez|veces seguidas)", partes[5]) \
+            if len(partes) == 7 else None
+        try:
+            fecha = datetime.datetime.strptime(partes[0], _FECHA_DE_REGISTRO)
+        except ValueError:
+            fecha = None
+        if not seguidas or fecha is None or partes[4] not in ("con sugerencia",
+                                                              "sin sugerencia"):
+            raros += 1
+            continue
+        entradas.append({
+            "fecha": fecha, "version": partes[1], "orden": partes[2], "categoria": partes[3],
+            "sugerencia": partes[4] == "con sugerencia", "seguidas": int(seguidas.group(1)),
+            "mensaje": partes[6]})
+    return entradas, renglones, raros
+
+
+def anotar_error_de_uso(ruta, orden, etapa, mensaje, categoria=None, sugerencia=None,
+                        familia=None, otros=0, ahora=None, propios=()):
+    """Suma un renglón al registro de errores de uso y deja los últimos MAX_REGISTRO.
+    Si el mismo error ya era el último anotado, hace poco y con la misma orden, cuenta
+    cuántas veces seguidas va (la señal de que el mensaje no alcanzó). Nunca molesta: si
+    no se puede escribir, o el archivo no se entiende, no se anota y listo."""
+    if not ruta:
+        return
+    try:
+        mensaje = str(mensaje).partition("\ncómo se llegó: ")[0]
+        en_agente = re.match(r"(?s).+? (?:al recibir \S+|en 'al fallar'): ", mensaje)
+        if en_agente and etapa == "al correr":
+            etapa, mensaje = "al correr, en un agente", mensaje[en_agente.end():]
+        if sugerencia is None:
+            sugerencia = "¿quisiste decir" in mensaje.lower()
+        if familia == "fallar":  # eso lo escribió la persona en su programa: no se guarda
+            categoria = categoria or f"{etapa}: el programa cortó con 'fallar'"
+            mensaje = "<lo que el programa dijo con 'fallar'>"
+        elif familia == "asegurar":
+            categoria = categoria or f"{etapa}: no se cumplió un 'asegurar'"
+            mensaje = "<un 'asegurar' del programa que no se cumplió>"
+        else:
+            mensaje = tapar_datos(mensaje, propios)
+        categoria = en_un_renglon(categoria or categoria_de(etapa, mensaje), 110)
+        if otros:
+            mensaje += f" (y {otros} error(es) más en la misma corrida)"
+        ahora = ahora or datetime.datetime.now()
+        entradas, renglones, _ = entradas_del_registro(ruta)
+        seguidas = 1
+        if entradas and renglones[-1].startswith(
+                entradas[-1]["fecha"].strftime(_FECHA_DE_REGISTRO)):
+            ultima = entradas[-1]  # (solo si el último renglón del archivo se entiende)
+            minutos = (ahora - ultima["fecha"]).total_seconds() / 60
+            if (ultima["categoria"], ultima["orden"].split()[:1]) == (
+                    categoria, orden.split()[:1]) and 0 <= minutos <= MINUTOS_SEGUIDO:
+                seguidas = ultima["seguidas"] + 1
+        renglones.append(" | ".join([
+            ahora.strftime(_FECHA_DE_REGISTRO), f"Mate {VERSION}",
+            en_un_renglon(orden, 80).replace("|", "/"), categoria.replace("|", "/"),
+            "con sugerencia" if sugerencia else "sin sugerencia",
+            "1 vez" if seguidas == 1 else f"{seguidas} veces seguidas", mensaje]))
+        escribir_entero(ruta, "\n".join([
+            "# Registro de errores de uso de Mate: cada error que Mate te mostró, el más "
+            "nuevo abajo.",
+            "# Sirve para mejorar Mate. Queda solo en esta computadora: Mate no lo manda a "
+            "ningún lado.",
+            "# No guarda tus programas, y tapa tus datos con marcas como <texto>, <nombre>, "
+            "<archivo> o <ruta>.",
+            "# Cada renglón:  fecha | versión | orden | qué error fue | si traía sugerencia "
+            "| cuántas veces seguidas | el mensaje, tapado",
+            f"# Guarda los últimos {MAX_REGISTRO}. Para verlo resumido:  {como_se_llama()} "
+            "informe",
+            f"# Para borrarlo:  {como_se_llama()} informe --borrar   (o borrá este archivo: "
+            "no pasa nada)",
+            "# Para que Mate no anote más: la opción --sin-registro, o la variable "
+            "MATE_SIN_REGISTRO con un 1.", ""] + renglones[-MAX_REGISTRO:]) + "\n")
+    except Exception:  # (carpeta de solo lectura, archivo abierto en otro programa...)
+        pass
+
+
+def orden_usada(argv):
+    """La orden y las opciones de esta corrida, sin archivos ni nada que haya escrito la
+    persona: 'correr --traza'."""
+    orden = "(sin orden)"
+    for a in argv:
+        if not a.startswith("-"):
+            bajo = sin_tildes(a.lower())
+            orden = bajo if bajo in ORDENES_SABIDAS else (
+                "correr" if bajo.endswith((".mate", ".mate.txt")) else "(orden desconocida)")
+            break
+    nombres = {a.lower().split("=")[0] for a in argv if a.startswith("-")}
+    return " ".join([orden] + sorted(nombres & set(OPCIONES + ("--borrar",))))
+
+
+def anotar_corrida(argv, donde, codigo):
+    """Al terminar una corrida que mostró un error: lo anota en el registro (el primero
+    que vio la persona, y cuántos más hubo). Con 'probar' y sin errores, nada."""
+    orden = orden_usada(argv)
+    if not donde.get("registro") or not codigo or orden.split()[0] in ("probar", "consola"):
+        return
+    errores = donde.get("errores") or [
+        {"etapa": "al escribir la orden", "mensaje": texto, "categoria": categoria,
+         "sugerencia": sugerencia} for texto, categoria, sugerencia in donde.get("avisado", [])]
+    if not errores:
+        return
+    primero = errores[0]
+    if primero["etapa"] == "al escribir la orden":
+        errores = errores[:1]  # (los renglones que siguen son parte del mismo aviso)
+    propios = [a for a in argv if not a.startswith("-")]
+    propios += [a.partition("=")[2].strip('"') for a in argv if a.startswith("-")]
+    anotar_error_de_uso(
+        donde["registro"], orden, primero["etapa"], primero["mensaje"],
+        categoria=primero.get("categoria"), sugerencia=primero.get("sugerencia"),
+        familia=primero.get("familia"), otros=len(errores) - 1, propios=propios)
+
+
+def comando_pegado(argv):
+    """Si en PowerShell el comando se pegó dos (o más) veces seguidas en el mismo renglón
+    ('correr mio.matepython mate\\mate.py correr mio.mate'), devuelve el comando escrito
+    una sola vez. Si se pegaron dos comandos distintos, el último. Si no, None."""
+    def entero(partes):
+        return " ".join(f'"{a}"' if " " in a or not a else a for a in partes)
+
+    junto = " ".join(argv)
+    for k in range(1, len(argv)):
+        cola = " ".join(argv[k:])
+        if not junto.startswith(cola):
+            continue
+        resto = junto[len(cola):]
+        for veces in (4, 3, 2, 1):  # el comando completo, repetido después del primero
+            largo, sobra = divmod(len(resto), veces)
+            comando = resto[:largo]
+            lanzador = comando[:-len(cola) - 1]
+            if (not sobra and resto == comando * veces and comando.endswith(" " + cola)
+                    and lanzador.strip() == lanzador != ""
+                    and re.search(r"mate|py", lanzador, re.I)):
+                return f"{lanzador} {entero(argv[k:])}"
+    for i, a in enumerate(argv[:-1]):
+        lanzador = re.search(r"(?i)(?<=.)(python3?|py)(\.exe)?$", a)
+        if lanzador and re.split(r"[\\/]", argv[i + 1])[-1].lower() == "mate.py":
+            return f"{lanzador.group(0)} {entero(argv[i + 1:])}"
+    return None
+
+
+def lineas_de_informe(entradas, raros):
+    """El informe de errores de uso, renglón por renglón."""
+    def veces(n):
+        return f"{n:>5} {'vez ' if n == 1 else 'veces'}"
+
+    por_categoria = {}
+    for e in entradas:
+        ficha = por_categoria.setdefault(e["categoria"], {
+            "veces": 0, "sugerencia": 0, "repetidas": 0, "racha": 1, "mensaje": ""})
+        ficha["veces"] += 1
+        ficha["sugerencia"] += e["sugerencia"]
+        ficha["repetidas"] += e["seguidas"] > 1
+        ficha["racha"] = max(ficha["racha"], e["seguidas"])
+        ficha["mensaje"] = e["mensaje"]
+    orden = sorted(por_categoria.items(), key=lambda par: -par[1]["veces"])
+    versiones = sorted({e["version"] for e in entradas})
+    total = len(entradas)
+    lineas = [
+        f"Hay {total} error(es) de uso anotado(s), del "
+        f"{entradas[0]['fecha'].strftime(_FECHA_DE_REGISTRO)} al "
+        f"{entradas[-1]['fecha'].strftime(_FECHA_DE_REGISTRO)} ({', '.join(versiones)}).",
+        "",
+        "Los más frecuentes:"]
+    for categoria, ficha in orden[:10]:
+        lineas.append(f"{veces(ficha['veces'])}  {categoria}")
+        lineas.append(f"             el mensaje: {en_un_renglon(ficha['mensaje'], 200)}")
+    if len(orden) > 10:
+        lineas.append(f"             ... y {len(orden) - 10} error(es) distinto(s) más")
+    lineas += ["", "Los que se repitieron seguido (la persona volvió a intentar y le salió "
+                   "el mismo error: el mensaje no alcanzó):"]
+    repetidos = sorted(((c, f) for c, f in orden if f["repetidas"]),
+                       key=lambda par: (-par[1]["racha"], -par[1]["repetidas"]))
+    for categoria, ficha in repetidos[:10]:
+        lineas.append(f"  hasta {ficha['racha']} veces seguidas ({ficha['repetidas']} "
+                      f"repetición(es) en total)  {categoria}")
+    if not repetidos:
+        lineas.append("  ninguno")
+    con = sum(e["sugerencia"] for e in entradas)
+    lineas += ["", f"Con sugerencia de Mate (un \"¿quisiste decir...?\" o el comando bien "
+                   f"escrito): {con} de {total}."]
+    sin = [(c, f) for c, f in orden if not f["sugerencia"]][:5]
+    if sin:
+        lineas.append("Los más frecuentes que no traían ninguna sugerencia:")
+        lineas += [f"{veces(f['veces'])}  {c}" for c, f in sin]
+    por_orden = {}
+    for e in entradas:
+        palabra = e["orden"].split(" --")[0] or "?"
+        por_orden[palabra] = por_orden.get(palabra, 0) + 1
+    lineas += ["", "Con qué orden pasaron: " + ", ".join(
+        f"{o} {n}" for o, n in sorted(por_orden.items(), key=lambda par: -par[1]))]
+    if raros:
+        lineas += ["", f"({raros} renglón(es) del archivo no tienen la forma de siempre y "
+                       "no los conté)"]
+    return lineas
+
+
+def orden_informe(args, opciones, borrar, ruta, avisar):
+    """La orden 'informe': resume el registro de errores de uso, arma el texto para pedir
+    mejoras (--para-mejorar) o borra el registro (--borrar)."""
+    if args:
+        avisar("'informe' va sola, o con --para-mejorar o --borrar, por ejemplo: informe "
+               "--para-mejorar")
+        return 2
+    if borrar is not None:
+        if borrar.lower() not in ("", "todo", "todos"):
+            avisar("con 'informe', --borrar va sola (borra todo el registro): informe "
+                   "--borrar")
+            return 2
+        if not os.path.lexists(ruta):
+            print("No hay registro de errores de uso para borrar.")
+            return 0
+        try:
+            os.remove(ruta)
+        except OSError:
+            avisar(f"no pude borrar '{ruta}': fijate que no esté abierto en otro programa")
+            return 1
+        print(f"Borrado el registro de errores de uso ({ruta}). Empieza de nuevo solo.")
+        return 0
+    try:
+        entradas, _, raros = entradas_del_registro(ruta)
+    except ErrorMate as e:
+        avisar(e.mensaje)
+        return 2
+    apagado = ("Ahora el registro está apagado (la variable MATE_SIN_REGISTRO): Mate no "
+               "anota nada." if registro_apagado() else None)
+    if not entradas:
+        print("Todavía no hay errores de uso anotados"
+              + (f" ({ruta} tiene {raros} renglón(es) que no entiendo: abrilo con el Bloc "
+                 f"de notas, o borralo con:  {como_se_llama()} informe --borrar)." if raros
+                 else "."))
+        print("Mate anota solo, en esta computadora, cada error que te muestra (sin tus "
+              "programas y con tus datos tapados), para que después se pueda ver qué "
+              "mensajes no alcanzan. Nada de eso sale por internet.")
+        print(apagado or f"El archivo va a ser {ruta}")
+        return 0
+    lineas = lineas_de_informe(entradas, raros)
+    if "--para-mejorar" in opciones:
+        print("\n".join([
+            "(Copiá desde el renglón de abajo hasta el final y pegáselo a un asistente o a "
+            "tu equipo de agentes.)",
+            "",
+            f"Uso Mate (versión {VERSION}): un lenguaje de programación chico, con palabras "
+            "en español, cuyo intérprete es un solo archivo de Python sin dependencias "
+            "(mate.py). Está pensado para gente que no programa, que usa Windows con "
+            "PowerShell y el Bloc de notas, y para armar agentes que se mandan mensajes con "
+            "contrato. Mate anota en mi computadora cada error que me muestra: qué error "
+            "fue, con qué orden, si traía una sugerencia y si me volvió a salir enseguida. "
+            "No guarda mis programas, y mis datos están tapados con marcas como <texto>, "
+            "<nombre>, <archivo> o <ruta>. Este es el resumen:",
+            ""] + lineas + [
+            "",
+            "Con estos datos te pido propuestas concretas para mejorar Mate:",
+            "1. Para cada uno de los tres errores más frecuentes, y para cada uno de los "
+            "que se repitieron seguido: ¿qué cambiarías para que la persona lo resuelva al "
+            "primer intento, o para que ese error directamente no pueda pasar? Si es el "
+            "mensaje, escribí el mensaje nuevo completo, en castellano rioplatense claro y "
+            "sin palabras técnicas. Si es el lenguaje o la línea de comandos, decí "
+            "exactamente qué cambia y mostrá un ejemplo de antes y después.",
+            "2. ¿Cuál conviene arreglar primero y por qué?",
+            "3. ¿Hay algún error de esta lista que en realidad sea un problema de la "
+            "documentación o de los ejemplos y no del lenguaje?",
+            "Reglas que no se negocian: Mate tiene que seguir siendo chico (un solo "
+            "archivo, solo la biblioteca estándar de Python, palabras clave en español), "
+            "los programas que hoy andan tienen que seguir dando el mismo resultado, y "
+            "cada cambio lleva su prueba."]))
+        return 0
+    print("Informe de errores de uso de Mate")
+    print("\n".join(lineas))
+    print("")
+    print(f"Está todo en {ruta} (se abre con el Bloc de notas; no sale de esta "
+          "computadora).")
+    print(f"Para pedirle mejoras a un asistente:  {como_se_llama()} informe --para-mejorar")
+    print(f"Para borrarlo:  {como_se_llama()} informe --borrar")
+    if apagado:
+        print(apagado)
+    return 0
+
+
+def main(argv=None, registro=None):
+    """registro: dónde se anotan los errores de uso. None (Mate usado como módulo, y en
+    las pruebas): en ningún lado. True (la línea de comandos): en errores_de_uso.txt, al
+    lado de mate.py. O la ruta de un archivo."""
     argv = list(sys.argv[1:] if argv is None else argv)
+    donde = {"ruta": None, "interprete": None, "errores": [], "avisado": [],
+             "registro": donde_se_registra(registro, argv),
+             "informe": (ruta_del_registro() if registro is None or isinstance(registro, bool)
+                         else os.fspath(registro))}
+    codigo = _con_red(argv, donde)
+    try:
+        anotar_corrida(argv, donde, codigo)
+    except Exception:  # el registro nunca le cambia el resultado a nadie
+        pass
+    return codigo
+
+
+def _con_red(argv, donde):
     for flujo in (sys.stdout, sys.stderr, sys.stdin):
         try:  # que una consola vieja de Windows no rompa por un símbolo que no conoce
             flujo.reconfigure(errors="replace")
         except Exception:
             pass
     depurar = any(a.lower() == "--depurar" for a in argv)
-    donde = {"ruta": None, "interprete": None}
 
     def lugar():
         linea = getattr(donde["interprete"], "linea_actual", None)
@@ -6053,6 +6587,9 @@ def main(argv=None):
         if depurar:
             raise
         avisar(f"error interno de Mate (no es culpa tuya): {type(e).__name__}: {e}")
+        donde["errores"].insert(0, {
+            "etapa": "por dentro de Mate", "mensaje": "error interno de Mate",
+            "categoria": f"por dentro de Mate: error interno ({type(e).__name__})"})
         if lugar():
             avisar(f"pasó cerca de {lugar()}")
         avisar("corré de nuevo con --depurar para ver el detalle")
@@ -6061,9 +6598,18 @@ def main(argv=None):
 
 
 def _main(argv, donde):
-    def avisar(texto):
+    def avisar(texto, categoria=None, sugerencia=None, anotado=None):
         print(texto, file=sys.stderr)
+        if not texto.startswith("aviso:"):  # (para el registro de errores de uso)
+            donde.setdefault("avisado", []).append((anotado or texto, categoria, sugerencia))
 
+    una_vez = comando_pegado(argv)
+    if una_vez:
+        avisar("parece que el comando se pegó dos veces en el mismo renglón. Escribilo una "
+               f"sola vez:\n  {una_vez}", "al escribir la orden: comando pegado dos veces",
+               True, "parece que el comando se pegó dos veces en el mismo renglón (y Mate "
+               "mostró el comando bien escrito)")
+        return 2
     alias = {"-h": "--ayuda", "--help": "--ayuda", "-?": "--ayuda", "/?": "--ayuda"}
     opciones, args, conversacion, respuestas, borrar = set(), [], None, None, None
     for a in argv:
@@ -6071,7 +6617,9 @@ def _main(argv, donde):
             opciones.add(alias[a.lower()])
         elif a.lower().startswith("--borrar"):
             borrar = a[len("--borrar="):].strip('"')
-            if not a.lower().startswith("--borrar=") or not borrar:
+            if a.lower() == "--borrar":
+                borrar = ""  # sola va con 'informe': se revisa más abajo
+            elif not a.lower().startswith("--borrar=") or not borrar:
                 avisar("a --borrar le falta el número de la lección, por ejemplo: lecciones "
                        "mi_mostrador.mate Mostrador --borrar=2")
                 return 2
@@ -6097,18 +6645,23 @@ def _main(argv, donde):
                 parecidas = difflib.get_close_matches(a.lower(), OPCIONES, 1)
                 avisar(f"no conozco la opción {a}" + (
                     f", ¿quisiste decir {parecidas[0]}?" if parecidas
-                    else ". Las opciones son: " + ", ".join(OPCIONES)))
+                    else ". Las opciones son: " + ", ".join(OPCIONES)),
+                    "al escribir la orden: opción que no existe")
                 return 2
             opciones.add(a.lower())
         else:
             args.append(a)
 
+    if borrar == "" and not (args and args[0].lower() == "informe"):
+        avisar("a --borrar le falta el número de la lección, por ejemplo: lecciones "
+               "mi_mostrador.mate Mostrador --borrar=2 (sola, --borrar va con 'informe')")
+        return 2
     if "--version" in opciones:
         print(f"Mate {VERSION} (Python {sys.version_info[0]}.{sys.version_info[1]})")
         return 0
     if args and args[0].lower() == "ayuda" and len(args) >= 2 and not (
             len(args) == 2 and sin_tildes(args[1].lower()) in ORDENES + (
-                "ayuda", "guia", "consola") + ORDENES_DE_MEMORIA[:2]):
+                "ayuda", "guia", "consola", "informe") + ORDENES_DE_MEMORIA[:2]):
         # 'ayuda si', 'ayuda largo', 'ayuda al fallar'
         return ayuda_de_palabra(" ".join(args[1:]), print, avisar)
     if "--ayuda" in opciones or (args and args[0].lower() == "ayuda"):
@@ -6131,7 +6684,19 @@ def _main(argv, donde):
             except ErrorMate as e:
                 avisar(e.mensaje)
                 return 2
-        return consola(ia_simulada="--ia-simulada" in opciones, ia_respuestas=preparadas)
+        def anotar(texto, categoria=None, sugerencia=None, familia=None):
+            anotar_error_de_uso(donde.get("registro"), orden_usada(argv), "en la consola",
+                                texto, categoria and f"en la consola: {categoria}",
+                                sugerencia, familia)
+
+        return consola(ia_simulada="--ia-simulada" in opciones, ia_respuestas=preparadas,
+                       anotar=anotar)
+    if args[0].lower() == "informe":
+        return orden_informe(args[1:], opciones, borrar,
+                             donde.get("informe") or ruta_del_registro(), avisar)
+    if "--para-mejorar" in opciones:
+        avisar("--para-mejorar va con 'informe', sin archivo: informe --para-mejorar")
+        return 2
     if sin_tildes(args[0].lower()) in ORDENES_DE_MEMORIA:
         return orden_de_memoria(sin_tildes(args[0].lower()), args[1:], borrar, avisar)
     if borrar is not None:
@@ -6147,19 +6712,21 @@ def _main(argv, donde):
         if len(args) == 1:
             args = ["correr"] + args  # 'mate.py hola.mate' es 'mate.py correr hola.mate'
         elif len(args) == 2 and args[1].lower() in ORDENES:
-            avisar(f"la orden va primero y el archivo después: {args[1].lower()} {args[0]}")
+            avisar(f"la orden va primero y el archivo después: {args[1].lower()} {args[0]}",
+                   "al escribir la orden: el archivo antes que la orden", True)
             return 2
     orden, archivos = args[0].lower(), args[1:]
     if orden not in ORDENES:
-        parecidas = difflib.get_close_matches(
-            orden, ORDENES + ("ayuda", "guia", "consola") + ORDENES_DE_MEMORIA, 1)
+        parecidas = difflib.get_close_matches(orden, ORDENES_SABIDAS, 1)
         avisar(f"no conozco la orden '{args[0]}'" + (
             f", ¿quisiste decir '{parecidas[0]}'?" if parecidas
             else ". Las órdenes son: correr, probar, verificar, consola, guia, ayuda, "
-                 "corregir, lecciones y bitacora"))
+                 "corregir, lecciones, bitacora e informe"),
+            "al escribir la orden: orden que no existe")
         return 2
     if not archivos:
-        avisar(f"a '{orden}' le falta el archivo, por ejemplo: {orden} hola.mate")
+        avisar(f"a '{orden}' le falta el archivo, por ejemplo: {orden} hola.mate",
+               "al escribir la orden: falta el archivo")
         return 2
     if orden == "probar" and (len(archivos) > 1 or os.path.isdir(archivos[0])):
         return probar_varios(archivos, [a for a in argv if a.startswith("-")], avisar)
@@ -6170,12 +6737,14 @@ def _main(argv, donde):
     if len(archivos) > 1:
         avisar(f"'{orden}' lleva un solo archivo y recibió {len(archivos)}: "
                + ", ".join(archivos)
-               + " (si el nombre tiene espacios, ponelo entre comillas)")
+               + " (si el nombre tiene espacios, ponelo entre comillas)",
+               "al escribir la orden: más de un archivo")
         return 2
 
     ruta, problema = _ubicar(archivos[0])
     if problema:
-        avisar(problema)
+        avisar(problema, "al escribir la orden: no está el archivo"
+               if problema.startswith("no encuentro") else None)
         return 2
     donde["ruta"] = ruta
     if ruta.lower().endswith(".mate.txt"):
@@ -6184,8 +6753,12 @@ def _main(argv, donde):
                "Tipo: Todos los archivos")
 
     mostrado = {}
+    etapa = ["al leer el programa"]  # en qué andaba Mate cuando mostró cada error
 
-    def reportar(linea, texto):
+    def reportar(linea, texto, familia=None):
+        donde.setdefault("errores", []).append({
+            "etapa": etapa[0] if donde["interprete"] is None else "al correr",
+            "mensaje": texto, "familia": familia or getattr(texto, "familia", None)})
         cabecera, renglon, camino = error_escrito(ruta, linea, texto)
         archivo = getattr(linea, "archivo", None) or ruta
         avisar(cabecera)
@@ -6248,6 +6821,7 @@ def _main(argv, donde):
             avisar(f"no pude abrir {ruta}")
             return 2
         programa = analizar(fuente, ruta)
+        etapa[0] = "antes de correr"
         errores = verificar(programa)
         if errores:
             for linea, texto in errores:
@@ -6303,9 +6877,9 @@ def _main(argv, donde):
         for linea, texto in getattr(donde["interprete"], "errores_agentes_det", ()):
             reportar(linea, texto)
         if donde["interprete"] is not None:
-            reportar(e.linea, donde["interprete"].con_camino(e.mensaje, e))
+            reportar(e.linea, donde["interprete"].con_camino(e.mensaje, e), e.familia)
         else:
-            reportar(e.linea, e.mensaje)
+            reportar(e.linea, e.mensaje, e.familia)
         avisar_pendientes(donde["interprete"], avisar)
         cerrar_conversacion()
         return 1
@@ -6345,4 +6919,4 @@ def _main(argv, donde):
 
 
 if __name__ == "__main__":
-    sys.exit(main())
+    sys.exit(main(registro=True))

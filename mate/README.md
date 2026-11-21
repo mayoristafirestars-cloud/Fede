@@ -138,12 +138,16 @@ archivo y abrirla con el Bloc de notas: `python mate\mate.py guia > guia.txt`.
 | `corregir archivo.mate Mostrador "..."` | le anota una lección a ese agente, sin tocar el programa (ver [Mate aprende](#mate-aprende)) |
 | `lecciones archivo.mate` | muestra las lecciones de cada agente; con `Mostrador --borrar=2` le borra la 2 |
 | `bitacora archivo.mate` | resume las fallas que fueron anotando los agentes de ese programa |
+| `informe` | resume los errores de uso que Mate fue anotando en esta computadora (ver [El lenguaje también aprende](#el-lenguaje-también-aprende-el-registro-de-errores-de-uso)) |
+| `informe --para-mejorar` | arma un texto listo para pegarle a un asistente o a un equipo de agentes y pedirle mejoras para Mate |
+| `informe --borrar` | borra el registro de errores de uso |
 | `--traza` | muestra la conversación entre agentes, mensaje por mensaje, numerada y con lo que falló |
 | `--traza=conversacion.txt` | guarda esa conversación en un archivo, con un resumen al final |
 | `--sin-limite` | no corta los programas que dan muchísimos pasos |
 | `--ia-simulada` | `consultar_ia` no sale a la red ni gasta: da su respuesta preparada |
 | `--ia-simulada=respuestas.txt` | lo mismo, con las respuestas escritas en ese archivo |
 | `--olvidar` | con `correr`: los agentes arrancan de cero, sin lo que recordaban de otras corridas |
+| `--sin-registro` | esta vez Mate no anota nada en el registro de errores de uso |
 | `--depurar` | si Mate falla por dentro, muestra el detalle técnico |
 | `--version` | dice qué versión de Mate es |
 
@@ -152,6 +156,19 @@ Si te equivocás al tipear, Mate te lo dice en vez de seguir de largo: `corer` s
 carpeta. Si el Bloc de notas lo guardó como `hola.mate.txt`, también te avisa (y si le pasás
 ese nombre completo, lo corre igual con un aviso). La orden va siempre primero: si escribís
 `hola.mate probar`, Mate te dice que es `probar hola.mate`.
+
+**Si el comando se pega dos veces.** En PowerShell es fácil pegar el mismo comando dos veces
+en un renglón, y queda algo como `python mate\mate.py correr mio.matepython mate\mate.py
+correr mio.mate`. Mate se da cuenta y te muestra el comando bien escrito:
+
+```
+parece que el comando se pegó dos veces en el mismo renglón. Escribilo una sola vez:
+  python mate\mate.py correr mio.mate
+```
+
+Lo mismo en la consola de Mate con un renglón pegado dos veces (`sea x = 1sea x = 1`). Y si
+lo que se pegó fue el comando (o la pantalla de PowerShell, `PS C:\...>`) **adentro del
+archivo** `.mate`, el error dice eso mismo y qué renglón borrar.
 
 ### Ayuda de una palabra
 
@@ -782,6 +799,11 @@ lecciones. Solo `correr` toca esos archivos.
 El ejemplo completo es `ejemplos/08_agente_que_aprende.mate`; arriba, en sus comentarios,
 están los pasos para probarlo en PowerShell.
 
+Hay una cuarta pieza, que no es de los agentes sino del lenguaje: **Mate anota los errores
+que te muestra**, en `errores_de_uso.txt` (al lado de `mate.py`), para poder mejorar sus
+mensajes. Está más abajo, en
+[El lenguaje también aprende](#el-lenguaje-también-aprende-el-registro-de-errores-de-uso).
+
 ### Memoria: `estado recordado`
 
 Es un `estado` como cualquiera, con una palabra más:
@@ -954,6 +976,72 @@ repiten y las últimas cinco. Es el lugar donde mirar antes de escribir una lecc
 2. Corré el programa como siempre. Cuando conteste algo que no te gusta, anotale la lección
    con `corregir`.
 3. Cada tanto mirá `bitacora` para ver qué le viene fallando.
+
+### El lenguaje también aprende: el registro de errores de uso
+
+Lo de arriba es para que aprendan **tus agentes**. Esto otro es para que mejore **Mate**: cada
+vez que Mate te muestra un error, anota un renglón en un archivo de tu computadora. Con el
+tiempo ese archivo dice qué errores son los más comunes y, sobre todo, cuáles mensajes no
+alcanzaron (corriste, falló, corriste de nuevo y falló igual).
+
+**Qué se guarda y dónde.** Un solo archivo, `errores_de_uso.txt`, **al lado de `mate.py`** (en
+la carpeta `mate`, no en la de tus programas). Se abre con el Bloc de notas. Cada renglón:
+
+```
+21/11/2026 14:30 | Mate 0.4 | correr | antes de correr: no existe '<nombre>' | con sugerencia | 2 veces seguidas | no existe '<nombre>'. ¿Quisiste decir '<nombre>'?
+```
+
+Es decir: la fecha, la versión de Mate, la orden que usaste (sin el archivo), qué error fue,
+si Mate te dio una sugerencia, cuántas veces seguidas te salió, y el mensaje **con tus datos
+tapados**.
+
+- **No guarda tus programas** ni el renglón donde cayó el error.
+- **Tapa tus datos con marcas**: los textos entre comillas quedan como `"<texto>"`, los nombres
+  que elegiste como `'<nombre>'`, los archivos como `<archivo>`, las carpetas como `<ruta>` (ahí
+  suele estar tu nombre de usuario de Windows), lo que escribiste en la orden como `<dato>`, y
+  cualquier cosa con forma de clave como `<clave>`. La clave de la IA no queda escrita nunca.
+- Lo que tu programa dice con `fallar` o con `asegurar` es texto tuyo: no se guarda, solo
+  queda anotado que el programa cortó con `fallar`.
+- **Nunca sale de tu computadora.** Mate no lo manda a ningún lado: lo único que sale por
+  internet sigue siendo lo que ya salía con `consultar_ia`. Si querés compartirlo, lo copiás
+  vos.
+- Guarda los últimos 500 renglones. Si lo borrás, empieza de nuevo. Si lo editás a mano y un
+  renglón queda mal, Mate lo saltea y te avisa cuántos no entendió.
+- **Con `probar` no se anota nada**, y tampoco cuando otro programa de Python usa a Mate por
+  dentro. Si la carpeta no deja escribir, Mate sigue como si nada.
+- Tus programas dan el mismo resultado que antes: el registro no cambia nada de lo que ves.
+
+**Para apagarlo.** Una vez: agregá `--sin-registro` al comando. Para toda la ventana de
+PowerShell:
+
+```
+$env:MATE_SIN_REGISTRO = "1"
+```
+
+Para siempre (cerrá y volvé a abrir PowerShell después): `setx MATE_SIN_REGISTRO 1`.
+
+**Para verlo resumido:**
+
+```
+python mate\mate.py informe
+```
+
+Muestra desde cuándo hay datos, los errores más frecuentes (con su mensaje), los que se
+repitieron seguido, cuántos traían una sugerencia y cuáles no, y con qué orden pasaron.
+
+**Para pedir mejoras:**
+
+```
+python mate\mate.py informe --para-mejorar
+```
+
+Arma un texto listo para copiar y pegarle a un asistente o a tu equipo de agentes: cuenta
+qué es Mate, pone el resumen y termina con preguntas concretas (qué mensaje cambiar, cómo
+quedaría escrito, qué arreglar primero). Mate no lo manda: lo copiás vos, y antes lo podés
+leer entero. Para guardarlo en un archivo: `python mate\mate.py informe --para-mejorar >
+pedido.txt`.
+
+**Para borrarlo:** `python mate\mate.py informe --borrar` (o borrá el archivo).
 
 ## Referencia rápida
 
@@ -1301,6 +1389,17 @@ pruebas del intérprete no dejan pasarse:
 
 Los números están en `mate.py` (`TOPE_DE_PALABRAS` y `TOPE_DE_FUNCIONES`), bien arriba.
 
+**Además, en la 0.4, tres errores dicen mejor qué pasó** (antes también frenaban, con un
+mensaje menos claro):
+
+| Qué pasa ahora | Cómo se arregla |
+|---|---|
+| El comando pegado dos veces en un renglón (`correr mio.matepython mate\mate.py correr mio.mate`) dice "parece que el comando se pegó dos veces" y muestra el comando bien escrito | Escribir el comando una sola vez |
+| En la consola, un renglón que es el mismo texto pegado dos veces (`sea x = 1sea x = 1`, `mostrar(1)mostrar(1)`) ya no corre: avisa y muestra el renglón una sola vez | Escribirlo una vez; si de verdad querías dos cosas iguales, van en dos renglones |
+| Un texto de tres comillas sin cerrar, cuando en el archivo hay una cantidad impar de `"""`, dice cuántas hay, en qué renglones, y que sobra o falta una | Revisar esos renglones: cada texto abre y cierra con `"""` |
+| Un archivo `.mate` cuyo primer renglón es un comando de PowerShell o la pantalla (`PS C:\...>`) dice que se pegó adentro del archivo | Borrar ese renglón en el Bloc de notas |
+| `--borrar` sola (sin `=número`) ahora existe, y va con `informe` | Para una lección sigue siendo `lecciones archivo.mate Mostrador --borrar=2` |
+
 ## Límites de la versión 0.4
 
 - Los agentes corren todos dentro del mismo programa, de a uno y en orden (por eso el resultado
@@ -1313,6 +1412,10 @@ Los números están en `mate.py` (`TOPE_DE_PALABRAS` y `TOPE_DE_FUNCIONES`), bie
   computadora: si el mismo programa corre dos veces a la vez, se guarda lo de la corrida que
   termina última. Las lecciones solo le llegan a la IA por `consultar_ia`: no cambian lo que
   hace el resto del programa (para eso está `lecciones()`).
+- El registro de errores de uso anota un renglón por corrida que falla (el primer error, y
+  cuántos más hubo) y no anota nada con `probar`. Tapa lo que tiene forma de dato tuyo, pero
+  los nombres que no van entre comillas en un mensaje (el de un mensaje o un campo) pueden
+  quedar: leelo antes de compartirlo.
 
 ## Pruebas del intérprete
 
