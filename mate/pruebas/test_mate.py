@@ -1318,3 +1318,471 @@ def test_la_respuesta_a_un_enviar_tiene_que_poder_recibirse():
     """)
     assert interprete.errores_agentes == [
         "Eco al recibir Ping: Eco respondió Pong a Sordo, pero Sordo no tiene 'al recibir Pong'"]
+
+
+# ───────────── Correcciones de la revisión de las tandas 1 a 3 ─────────────
+
+DEPOSITO = """
+mensaje Pedido { cantidad: numero }
+agente Deposito {
+    estado stock = 10
+    al recibir Pedido como p {
+        asegurar p.cantidad > 0, "cantidad invalida"
+        stock = stock - p.cantidad
+        responder stock
+    }
+}
+"""
+
+
+def test_un_asegurar_se_ataja_al_correr_y_entre_agentes():
+    salida, _ = correr(DEPOSITO + """
+        intentar { mostrar(preguntar Pedido { cantidad: -1 } a Deposito) }
+        si falla e { mostrar("rechazado: " + e) }
+        funcion validar(x) {
+            asegurar x > 0, "tiene que ser positivo"
+            devolver x
+        }
+        para i en [1, -1] { intentar { mostrar(validar(i)) } si falla e { mostrar(e) } }
+        mostrar("sigo")
+    """)
+    assert salida == ["rechazado: cantidad invalida (-1 > 0 es falso)", "1",
+                      "tiene que ser positivo (-1 > 0 es falso)", "sigo"]
+    # En una prueba: el 'asegurar' de otro agente se ataja; el de la prueba, no.
+    resultados = probar(DEPOSITO + """
+        prueba "el del agente llega como error" {
+            var visto = ""
+            intentar { preguntar Pedido { cantidad: -1 } a Deposito } si falla e { visto = e }
+            asegurar tiene(visto, "cantidad invalida")
+        }
+        prueba "el propio no se esconde" { intentar { asegurar 1 == 2 } si falla { } }
+    """)
+    assert resultados["el del agente llega como error"] is None
+    assert "dio 1 y se esperaba 2" in resultados["el propio no se esconde"]
+
+
+def test_crear_no_calcula_el_estado_que_le_dan():
+    salida, _ = correr("""
+        mensaje Ver { }
+        agente Caja { estado n = 0
+            al recibir Ver { responder n } }
+        funcion avisar() {
+            mostrar("calculando")
+            devolver 10
+        }
+        agente Local {
+            estado caja = crear Caja
+            estado tope = avisar()
+            al recibir Ver { responder tope }
+        }
+        sea mia = crear Caja { n: 7 }
+        sea l = crear Local { caja: mia, tope: 5 }
+        mostrar(preguntar Ver {} a l)
+        mostrar(crear Caja)
+        intentar { crear Local { tope: "alto" } } si falla e { mostrar(e) }
+        intentar { crear Local { caja: 3 } } si falla e { mostrar(e) }
+    """)
+    assert salida == ["calculando", "5", "Caja#4", "Local.tope arranca como numero y le diste texto",
+                      "Local.caja arranca como agente y le diste numero"]
+
+
+def test_crear_acepta_nada_como_estado_inicial():
+    salida, _ = correr(AGENTE_V + "sea v = crear V { ventas: nada }\nmostrar(preguntar Ping {} a v)")
+    assert salida == ["nada"]
+
+
+def test_un_crear_rechazado_no_gasta_numero_de_copia():
+    salida, _ = correr(AGENTE_V + "sea cinco = 5\n"
+                       "intentar { crear V { precios: cinco } } si falla e { }\nmostrar(crear V)")
+    assert salida == ["V#2"]
+
+
+def test_los_nombres_propios_que_parecen_de_otro_lenguaje_se_respetan():
+    assert correr("sea def = 5\nsea or = 2\nmostrar(def + or)")[0] == ["7"]
+    assert correr("mensaje Return { x: numero }\nsea r = Return { x: 1 }\nmostrar(r)")[0] == [
+        "Return { x: 1 }"]
+    assert correr("funcion Crear(x) { devolver x }\nCrear(3)\nmostrar(Crear(4))")[0] == ["4"]
+    assert correr("funcion f(let) { devolver let + 1 }\nmostrar(f(1))")[0] == ["2"]
+    # ...pero usados como palabras de otro lenguaje se siguen explicando antes de correr
+    for fuente, pista in [("sea x = 1\nif x == 1 {\n}", "en Mate 'if' se escribe 'si'"),
+                          ("sea x = true", "en Mate 'true' se escribe 'verdadero'"),
+                          ("si verdadero { } else { }", "en Mate 'else' se escribe 'sino'"),
+                          ("si verdadero and verdadero { }", "en Mate 'and' se escribe 'y'"),
+                          ('print("hola")', "en Mate 'print' se escribe 'mostrar'"),
+                          ("función f() { }", "en Mate se escribe 'funcion', sin tilde")]:
+        with pytest.raises(mate.ErrorMate) as info:
+            mate.analizar(fuente)
+        assert info.value.mensaje == pista, fuente
+
+
+def test_palabras_con_mayuscula_en_el_medio_del_renglon():
+    assert falla("sea x = 5\nsi x > 3 Y x < 10 { }").mensaje == "'Y' va en minúscula: 'y'"
+    assert falla("para i En [1] { }").mensaje == "'En' va en minúscula: 'en'"
+    assert falla("sea x = 4\nSi (x > 3) { }").mensaje == "'Si' va en minúscula: 'si'"
+
+
+def test_pistas_para_los_comparadores_mal_escritos():
+    casos = {"si x => 5 { }": "'mayor o igual' se escribe '>='",
+             "si x =< 5 { }": "'menor o igual' se escribe '<='",
+             "si x === 5 { }": "para comparar se usa '=='",
+             "si x <> 5 { }": "'distinto' se escribe '!='",
+             "si (x = 5) { }": "para comparar se usa '=='",
+             "asegurar x = 5": "para comparar se usa '=='"}
+    for fuente, pista in casos.items():
+        error = falla("sea x = 5\n" + fuente)
+        assert error.linea == 2 and pista in error.mensaje, fuente
+
+
+def test_llaves_vacias_o_a_medias_dentro_de_un_texto():
+    for fuente in ['mostrar("{}")', 'mostrar("{1 +}")']:
+        error = falla(fuente)
+        assert "entre { y }" in error.mensaje and "final del archivo" not in error.mensaje
+
+
+def test_la_pista_de_sumar_depende_de_lo_que_se_suma():
+    assert "agregar(lista, valor)" in falla("mostrar([1] + 2)").mensaje
+    assert "texto()" not in falla("mostrar([1] + 2)").mensaje
+    assert "texto()" in falla('mostrar("a" + 2)').mensaje
+    assert falla("mostrar(1 + verdadero)").mensaje == "no se puede hacer numero + logico"
+
+
+def test_redondear_y_pesos_redondean_lo_que_se_muestra():
+    casos = {
+        "0.57 * 50": "28.5", "redondear(0.57 * 50)": "29", "pesos(0.57 * 50, 0)": "$ 29",
+        "redondear(1.15 * 0.1, 2)": "0.12", "pesos(1.15 * 0.1)": "$ 0,12",
+        "redondear(1.005 * 100)": "101", "redondear(2 / 3, 14)": "0.66666666666667",
+        "redondear(2.4999)": "2", "redondear(-0.57 * 50)": "-29",
+    }
+    for expresion, esperado in casos.items():
+        assert mostrado(expresion) == esperado, expresion
+    assert "no puede ser negativa" in falla("redondear(1234, -2)").mensaje
+
+
+def test_asegurar_con_decimales_que_se_ven_iguales():
+    error = falla("asegurar 0.1 + 0.2 == 0.3")
+    assert "dio 0.30000000000000004 y se esperaba 0.3" in error.mensaje
+    assert "redondear(a, 2) == redondear(b, 2)" in error.mensaje
+    assert "Redondeá antes de comparar" in falla("asegurar [0.1 + 0.2] == [0.3]").mensaje
+    assert falla("asegurar 1 == 2").mensaje == "no se cumplió lo asegurado: dio 1 y se esperaba 2"
+
+
+def test_numero_lee_lo_que_escribe_pesos():
+    casos = {
+        'numero(pesos(3500, 0))': "3500", 'numero(pesos(1234567, 0))': "1234567",
+        'numero("-$ 3.500")': "-3500", 'numero(pesos(999.5))': "999.5",
+        'numero(pesos(3.5, 3))': "3.5", 'numero("3.500")': "3.5", 'numero("$ 3.50")': "3.5",
+    }
+    for expresion, esperado in casos.items():
+        assert mostrado(expresion) == esperado, expresion
+
+
+def test_de_json_explica_en_espanol():
+    casos = {'""': "JSON inválido: el texto está vacío",
+             '"[1,2"': "JSON inválido: falta una coma o el cierre (']' o '}') (al final del texto)",
+             '"[1] 2"': "JSON inválido: sobra texto después del final (en la letra 5 del texto)",
+             '"hola"': "JSON inválido: falta un valor (en la letra 1 del texto)"}
+    for texto, esperado in casos.items():
+        assert falla(f"de_json({texto})").mensaje == esperado
+    for texto in ['"\\{a: 1}"', '"[1,]"', '"\\{\\"a\\" 1}"', '"[\\"a"']:
+        mensaje = falla(f"de_json({texto})").mensaje
+        assert mensaje.startswith("JSON inválido: ")
+        assert not any(palabra in mensaje for palabra in ("Expecting", "Invalid", "Extra", "Illegal"))
+
+
+def test_cosas_demasiado_grandes_son_un_error_comun():
+    error = falla("sea a = 1\nmostrar(rango(100000000000))")
+    assert error.linea == 2 and error.mensaje.startswith("rango(): son demasiados números")
+    error = falla('var t = "aaaaaaaaaa"\nmientras verdadero { t = t + t }')
+    assert error.linea == 2 and "el texto quedaría demasiado largo" in error.mensaje
+    assert "la lista quedaría demasiado larga" in falla(
+        "var l = [1, 2]\nmientras verdadero { l = l + l }").mensaje
+    error = falla("var x = 2\nmientras verdadero { x = x * x }")
+    assert error.linea == 2 and error.mensaje == mate.DEMASIADO_GRANDE
+    assert falla("var x = 1\nmientras verdadero { x = x + x }").mensaje == mate.DEMASIADO_GRANDE
+
+
+def test_quedarse_sin_memoria_no_es_un_error_interno(monkeypatch):
+    def sin_lugar(*_):
+        raise MemoryError()
+    monkeypatch.setattr(mate, "formato", sin_lugar)
+    error = falla("sea a = 1\nmostrar(texto(a))")
+    assert error.clase == "limite" and "se quedó sin memoria" in error.mensaje
+
+
+def test_la_division_exacta_entre_enteros_no_pierde_cifras():
+    casos = {"12345678901234567890 / 2": "6172839450617283945",
+             "90071992547409931 / 1": "90071992547409931",
+             "7 / 2": "3.5", "6 / 3": "2", "-7 / 7": "-1", "0 / 5": "0"}
+    for expresion, esperado in casos.items():
+        assert mostrado(expresion) == esperado, expresion
+
+
+def test_el_freno_nombra_sin_limite():
+    interprete = mate.Interprete(salida=lambda _: None)
+    interprete.max_pasos = 100
+    with pytest.raises(mate.ErrorMate) as info:
+        interprete.correr(mate.analizar("para i en rango(1000) { }"))
+    assert "--sin-limite" in info.value.mensaje and "Si es un 'mientras'" in info.value.mensaje
+
+
+def test_ayuda_con_algo_al_lado_muestra_la_ayuda(capsys):
+    assert mate.main(["ayuda", "correr"]) == 0
+    capturado = capsys.readouterr()
+    assert "Órdenes:" in capturado.out and capturado.err == ""
+
+
+def test_el_archivo_antes_de_la_orden_o_sin_orden(tmp_path, capsys, monkeypatch):
+    monkeypatch.chdir(tmp_path)
+    (tmp_path / "hola.mate").write_text('mostrar("hola")', encoding="utf-8")
+    (tmp_path / "nota.mate.txt").write_text('mostrar("nota")', encoding="utf-8")
+    assert mate.main(["hola.mate", "probar"]) == 2
+    assert capsys.readouterr().err == "la orden va primero y el archivo después: probar hola.mate\n"
+    assert mate.main(["hola"]) == 0
+    assert capsys.readouterr().out == "hola\n"
+    assert mate.main(["nota.mate.txt"]) == 0
+    capturado = capsys.readouterr()
+    assert capturado.out == "nota\n" and "termina en .txt" in capturado.err
+    assert mate.main(["corer", "hola.mate"]) == 2
+    assert "¿quisiste decir 'correr'?" in capsys.readouterr().err
+
+
+def test_mas_espacios_invisibles_y_el_que_no_se_acepta_se_nombra(tmp_path, capsys):
+    raros = "".join(chr(c) for c in (0x200E, 0x2003, 0x3000, 0x200D, 0x2060, 0x2028, 0x0C))
+    assert correr("mostrar(1)" + raros + "\nmostrar(2)")[0] == ["1", "2"]
+    error = falla("sea a = 1\nmostrar(a)" + chr(7))
+    assert error.linea == 2
+    assert error.mensaje.startswith("hay un carácter invisible después de 'mostrar(a)'")
+    # un archivo "Unicode" guardado sin la marca del principio
+    archivo = tmp_path / "programa.mate"
+    archivo.write_bytes('mostrar("ñandú")\n'.encode("utf-16-le"))
+    assert mate.main(["correr", str(archivo)]) == 0
+    assert capsys.readouterr().out == "ñandú\n"
+
+
+def test_probar_muestra_el_renglon_y_todos_los_errores(tmp_path, capsys):
+    codigo, out, _ = por_main(tmp_path, capsys, """mensaje Sumar { n: numero }
+mensaje Total
+agente C {
+    estado t = 0
+    al recibir Sumar como s {
+        si s.n > 3 { fallar "no acepto más de 3" }
+        t = t + s.n
+    }
+    al recibir Total { responder t }
+}
+prueba "con causa" {
+    enviar Sumar { n: 5 } a C
+    sea r = preguntar Total {} a C
+    asegurar r == 5
+}
+""", orden="probar")
+    assert codigo == 1
+    renglones = [r.strip() for r in out.split("\n")]
+    assert renglones[1:5] == [
+        "línea 14: no se cumplió lo asegurado: dio 0 y se esperaba 5",
+        "14 |     asegurar r == 5",
+        "C al recibir Sumar (línea 6): no acepto más de 3",
+        '6 |         si s.n > 3 { fallar "no acepto más de 3" }']
+
+
+def test_probar_nombra_el_archivo_traido_con_usar(tmp_path, capsys):
+    (tmp_path / "lib.mate").write_text(
+        "mensaje Pedir { que: texto }\n\nagente Deposito {\n    estado stock = { yerba: 1 }\n"
+        "    al recibir Pedir como p {\n        responder stock[p.que]\n    }\n}\n",
+        encoding="utf-8")
+    codigo, out, _ = por_main(tmp_path, capsys, """usar "lib.mate"
+prueba "pide" { sea r = preguntar Pedir { que: "cafe" } a Deposito }
+prueba "envia" { enviar Pedir { que: "cafe" } a Deposito }
+""", orden="probar")
+    assert codigo == 1
+    assert 'lib.mate, línea 6: el mapa no tiene la clave "cafe"' in out
+    assert 'Deposito al recibir Pedir (lib.mate, línea 6): el mapa no tiene la clave "cafe"' in out
+    assert "6 |         responder stock[p.que]" in out
+
+
+CAJA = """
+mensaje Venta { n: numero }
+mensaje Cuantas
+mensaje Arrancar
+agente Caja {
+    estado ventas = 0
+    al recibir Venta como v {
+        ventas = ventas + 1
+        enviar Cuantas {} a yo
+        si v.n > 1 { responder 5 }
+    }
+    al recibir Cuantas { responder ventas }
+}
+agente Cliente { al recibir Arrancar { enviar Venta { n: 2 } a Caja } }
+"""
+
+
+def test_responder_mal_o_no_responder_tambien_deja_al_agente_como_estaba():
+    salida, interprete = correr(CAJA + """
+        enviar Arrancar {} a Cliente
+        mostrar(preguntar Cuantas {} a Caja)
+        intentar { preguntar Venta { n: 1 } a Caja } si falla e { mostrar("atajado") }
+        mostrar(preguntar Cuantas {} a Caja)
+    """)
+    assert salida == ["0", "atajado", "0"]
+    assert interprete.errores_agentes == [
+        "Caja al recibir Venta: a un 'enviar' solo se le responde con un mensaje"]
+    # el error señala al menos el 'al recibir' que estaba atendiendo
+    assert [int(linea) for linea, _ in interprete.errores_agentes_det] == [7]
+    assert len(interprete.cola) == 0
+
+
+def test_el_error_de_un_agente_se_muestra_aunque_despues_corte_otro(tmp_path, capsys):
+    codigo, _, err = por_main(tmp_path, capsys, """mensaje Cargar { producto: texto, precio: numero }
+mensaje Precio { producto: texto }
+agente Lista {
+    estado precios = {}
+    al recibir Cargar como c {
+        si c.precio <= 0 { fallar "el precio tiene que ser mayor que cero" }
+        precios[c.producto] = c.precio
+    }
+    al recibir Precio como p { responder precios[p.producto] }
+}
+enviar Cargar { producto: "yerba", precio: 0 } a Lista
+mostrar(preguntar Precio { producto: "yerba" } a Lista)
+""")
+    assert codigo == 1
+    causa = err.index("programa.mate:6: error: Lista al recibir Cargar: el precio tiene que ser")
+    assert causa < err.index('programa.mate:9: error: el mapa no tiene la clave "yerba"')
+
+
+def test_un_agente_no_cambia_lo_que_guarda_una_funcion_de_afuera():
+    programa = """
+        mensaje Tocar
+        agente V { estado cb = nada
+            al recibir Tocar { cb()
+                responder 1 } }
+        funcion hacer() {
+            var n = 0
+            funcion inc() { n = n + 1
+                devolver n }
+            devolver inc
+        }
+    """
+    resultados = probar(programa + """
+        prueba "variable de la prueba" {
+            var cuenta = 0
+            var visto = ""
+            funcion sube() { cuenta = cuenta + 1 }
+            sea w = crear V { cb: sube }
+            intentar { preguntar Tocar {} a w } si falla e { visto = e }
+            asegurar cuenta == 0
+            asegurar tiene(visto, "no puede modificar 'cuenta'")
+        }
+    """)
+    assert resultados == {"variable de la prueba": None}
+    error = falla(programa + "sea contador = hacer()\n"
+                  "agente W { al recibir Tocar { responder contador() } }\n"
+                  "preguntar Tocar {} a W")
+    assert error.mensaje.startswith("W no puede modificar 'n' (ni siquiera a través de la función inc())")
+    # Las variables que nacen mientras el agente atiende sí son suyas.
+    salida, _ = correr("""
+        mensaje Tocar
+        funcion contar_hasta(tope) {
+            var k = 0
+            funcion mas() { k = k + 1 }
+            mientras k < tope { mas() }
+            devolver k
+        }
+        agente X { estado z = 0
+            al recibir Tocar { z = contar_hasta(3)
+                responder z } }
+        mostrar(preguntar Tocar {} a X)
+    """)
+    assert salida == ["3"]
+
+
+def test_las_pruebas_empiezan_limpias_tambien_con_funciones_que_guardan_algo():
+    resultados = probar("""
+        funcion hacer() {
+            var n = 0
+            funcion inc() { n = n + 1
+                devolver n }
+            devolver inc
+        }
+        sea contador = hacer()
+        contador()
+        prueba "uno" { asegurar contador() == 2 }
+        prueba "dos" { asegurar contador() == 2 }
+    """)
+    assert resultados == {"uno": None, "dos": None}
+
+
+def test_en_las_pruebas_el_agente_arranca_como_arranco_en_el_programa():
+    salida = []
+    interprete = mate.Interprete(salida=salida.append)
+    resultados = interprete.correr(mate.analizar("""
+        var x = 1
+        mensaje Ver
+        mensaje Subir
+        mensaje Hola
+        agente Otro { al recibir Hola { fallar "soy yo" } }
+        agente A {
+            estado n = x
+            estado ayudante = crear Otro
+            al recibir Ver { responder n }
+            al recibir Subir { n = n + 10
+                enviar Hola {} a ayudante }
+        }
+        enviar Subir {} a A
+        mostrar(preguntar Ver {} a A)
+        x = 5
+        prueba "estado inicial" { asegurar (preguntar Ver {} a A) == 1 }
+        prueba "mismo nombre de copia" { enviar Subir {} a A }
+    """), pruebas=True)
+    assert salida == ["11"]
+    assert interprete.errores_principal[0][1] == "Otro#2 al recibir Hola: soy yo"
+    assert dict(resultados) == {"estado inicial": None,
+                                "mismo nombre de copia": "Otro#2 al recibir Hola (línea 6): soy yo"}
+
+
+def test_no_se_entregan_mensajes_a_un_agente_que_esta_naciendo():
+    salida, interprete = correr("""
+        mensaje Hola { n: numero }
+        mensaje Dame
+        enviar Hola { n: 1 } a A
+        enviar Hola { n: 2 } a B
+        enviar Hola { n: 3 } a A
+        agente B {
+            al recibir Hola como h { mostrar("B recibe {h.n}") }
+            al recibir Dame { responder 7 }
+        }
+        agente A {
+            estado base = preguntar Dame {} a B
+            al recibir Hola como h { mostrar("A recibe {h.n} base {base}") }
+        }
+    """)
+    assert salida == ["A recibe 1 base 7", "B recibe 2", "A recibe 3 base 7"]
+    assert interprete.errores_agentes == []
+
+
+def test_el_readme_avisa_los_cambios_que_frenan_programas_viejos():
+    leeme = (RAIZ / "README.md").read_text(encoding="utf-8")
+    assert "## Qué cambió y puede frenar un programa viejo" in leeme
+    for frase in ["función incluida", "nunca responde", "Demasiada recursión", '`numero(".5")`',
+                  "`redondear(x, -2)`", "12 cifras", "redacción de varios errores"]:
+        assert frase in leeme, frase
+    # y lo que el README promete sobre esos casos sigue siendo cierto
+    assert "función incluida" in falla('funcion saludar(texto) { devolver texto }').mensaje
+    assert falla('numero(".5")').mensaje == "'.5' no es un número"
+    assert mostrado("3.141592653589793") == "3.14159265359"
+    assert mostrado("a_json(3.141592653589793)") == "3.141592653589793"
+    assert mostrado("redondear(1234 / 100) * 100") == "1200"
+    assert mostrado("12345678.12345678 == numero(a_json(12345678.12345678))") == "verdadero"
+
+
+def test_hablarle_a_un_agente_que_esta_naciendo_es_un_error_claro():
+    error = falla("""
+        mensaje Dame
+        agente B { al recibir Dame { responder preguntar Dame {} a A } }
+        agente A {
+            estado base = preguntar Dame {} a B
+            al recibir Dame { responder base }
+        }
+    """)
+    assert "A todavía está armando su estado inicial" in error.mensaje

@@ -227,6 +227,7 @@ Un `mientras` que no avanza hoy cuelga la consola para siempre. Mate va a cortar
 
 **13. Los decimales se muestran limpios**
 `0.1 + 0.2` va a mostrar `0.3` y no `0.30000000000000004`; `10 / 3` muestra `3.33333333333`.
+Nota de la revisión: el costo es que un decimal de 16 cifras o más se muestra con 12 aunque esté escrito a mano; quedó avisado en el README. `redondear` y `pesos` ahora redondean el número que se muestra.
 *Mirada: lenguaje, robustez, principiante · Esfuerzo: chico · Estado: hecha*
 
 **14. `redondear` redondea como en la escuela**
@@ -255,6 +256,7 @@ Hoy `mensaje Envio { estado: texto }` falla. Se van a poder usar las palabras pr
 
 **20. Pistas para palabras de otros lenguajes, con tilde o con mayúscula**
 `print`, `if`, `else`, `true`, `función`, `Si`, `Mostrar`: en cada caso Mate dice cómo se escribe en Mate.
+Nota de la revisión: la pista sale solo si el programa no le puso ese nombre a algo suyo (`sea def = 5` y `mensaje Return` vuelven a andar).
 *Mirada: principiante, robustez · Esfuerzo: chico · Estado: hecha*
 
 **21. Pistas en las condiciones mal escritas**
@@ -297,6 +299,7 @@ Hoy las copias de agentes y las variables del programa arrastran cambios de una 
 
 **30. `intentar` ya no esconde los `asegurar` que fallan**
 Hoy una prueba con un `asegurar` falso dentro de un `intentar` pasa en verde. Tampoco va a atajar los topes de seguridad.
+Nota de la revisión: vale dentro de las pruebas. Al correr el programa, un `asegurar` que no se cumple se ataja como cualquier error, y el de otro agente le llega como error al que le preguntó.
 *Mirada: agentes, robustez · Esfuerzo: chico · Estado: hecha*
 
 **31. Si un agente falla, vuelve a como estaba**
@@ -535,6 +538,7 @@ Orden `consola` para probar renglones sueltos sin crear un archivo.
 
 **89. Versión 0.3 y sección "Qué cambió"**
 Varias mejoras vuelven error cosas que hoy corren. El README va a listar cada regla nueva y cómo corregir un archivo viejo.
+Nota: después de la revisión de las tandas 1 a 3 el README ya tiene la sección "Qué cambió y puede frenar un programa viejo". Queda pendiente el cambio de número de versión y mantenerla al día.
 *Mirada: crítico · Esfuerzo: chico · Estado: pendiente*
 
 **90. Un tope para que Mate siga siendo chico**
