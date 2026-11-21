@@ -532,55 +532,69 @@ El que recibe datos de afuera puede pedir "esto tiene que ser un Pedido" y recib
 Nota al hacerla: el segundo valor puede ser un mensaje, un tipo común o una `lista de ...`. Si se pide un mensaje y el texto trae un mapa suelto con esos campos, Mate arma el mensaje con ellos (así llegan los datos de programas que no conocen Mate).
 *Mirada: agentes · Esfuerzo: chico · Estado: hecha*
 
-### Lo que sigue
+### Tanda 7: agentes que se enteran, nombres y condiciones sin trampas, y probar una carpeta
 
 **76. `enviar` a una lista de agentes**
 `enviar Aviso { ... } a [norte, sur]` le manda el mismo mensaje a cada uno.
-*Mirada: agentes · Esfuerzo: chico · Estado: pendiente*
+Nota al hacerla: vale una lista escrita ahí mismo o una variable que guarda una lista de agentes. Primero se revisan todos: si alguno no es un agente o no sabe recibir el mensaje, no sale para ninguno. Una lista vacía no manda nada y no es un error. `preguntar` sigue siendo de a uno, y si se le da una lista el error sugiere recorrerla con `para`.
+*Mirada: agentes · Esfuerzo: chico · Estado: hecha*
 
 **77. `al fallar`: que el agente se entere si su `enviar` falló**
 Un manejador opcional que recibe el aviso cuando un mensaje enviado no pudo atenderse, para no quedarse esperando para siempre.
-*Mirada: agentes · Esfuerzo: mediano · Estado: pendiente*
+Nota al hacerla: se escribe `al fallar como f { ... }` dentro del agente, una sola vez. `f` es un mapa con `motivo` (el texto del error), `mensaje` (lo que había mandado) y `destino` (el agente que falló). Con `al fallar`, la falla queda en manos del que envió y ya no se anota como error del programa; si el propio `al fallar` falla, eso sí se anota. Adentro no va `responder`. No suma palabras al lenguaje (`al` y `fallar` ya existían) y no cambia nada para los agentes que no lo declaran. En `--traza` aparece un renglón nuevo, "X se entera de que Y no pudo atender Z", solo en ese caso.
+*Mirada: agentes · Esfuerzo: mediano · Estado: hecha*
 
 **78. Más lugar para las funciones que se llaman a sí mismas**
 Hoy se cortan cerca de 120 llamadas. Se sube a unas miles, con un error que nombra la función.
-*Mirada: robustez, crítico · Esfuerzo: chico · Estado: pendiente*
+Nota al hacerla: hay lugar para 3.000 llamadas una adentro de la otra, y el error dice cuál fue la última función. Se hizo sin hilos: Mate le pide más lugar a Python solo mientras corre el programa y después lo deja como estaba. Vale con Python 3.12 o más nuevo; con uno más viejo queda el tope de antes (unas 120), porque ahí pedir más lugar puede hacer que Python se caiga. La prueba vieja que comparaba el texto entero del error (`demasiada recursión`) ahora mira cómo empieza.
+*Mirada: robustez, crítico · Esfuerzo: chico · Estado: hecha*
 
 **79. Los nombres con mayúscula quedan solo para mensajes y agentes**
 `sea Listo = verdadero` va a dar un error que lo explica; y `preguntar Ping a A` va a decir "escribí Ping {}".
-*Mirada: robustez · Esfuerzo: chico · Estado: pendiente*
+Nota al hacerla: vale para variables, funciones, parámetros, estados y las variables de `para`, `como` y `si falla`. El error propone el nombre en minúscula (o `mi_estado` si en minúscula es una palabra de Mate). Un mensaje nombrado sin llaves se avisa antes de correr en cualquier lugar, no solo en `preguntar`. Dos pruebas viejas decían que `var Estado` y `funcion Crear` se aceptaban: se actualizaron esos dos renglones.
+*Mirada: robustez · Esfuerzo: chico · Estado: hecha*
 
 **80. `mensaje`, `agente` y `crear` aceptan la llave en el renglón de abajo**
 Hoy eso declara un mensaje vacío sin avisar.
-*Mirada: robustez, crítico · Esfuerzo: chico · Estado: pendiente*
+Nota al hacerla: `agente` ya lo aceptaba; se sumaron `mensaje` y `crear`. No hay confusión posible, porque un renglón nunca empieza con `{` por otro motivo.
+*Mirada: robustez, crítico · Esfuerzo: chico · Estado: hecha*
 
 **81. Aviso de condiciones que no son verdadero o falso**
 `si 1 { }` o `verdadero y 1` se avisan antes de correr, y no según los datos del momento.
-*Mirada: lenguaje · Esfuerzo: chico · Estado: pendiente*
+Nota al hacerla: se avisa lo que está escrito a mano y nunca puede dar verdadero o falso: un número, un texto, una lista, un mapa, `nada`, un mensaje o una cuenta (`x + 1`), en `si`, `mientras`, `asegurar` y a los lados de `y`, `o`, `no`. Una variable que resulta no ser lógica se sigue avisando al correr, con el mismo texto. Tres pruebas viejas usaban `si 1` o `asegurar 1` para mirar el control que se hace al correr: ahora guardan el valor en una variable.
+*Mirada: lenguaje · Esfuerzo: chico · Estado: hecha*
 
 **82. Mensaje correcto de `tiene()` con textos**
 `tiene("hola", 1)` va a decir que en un texto se busca otro texto, en vez de "no aplica a texto".
-*Mirada: lenguaje · Esfuerzo: chico · Estado: pendiente*
+Nota al hacerla: si lo buscado es un número, el error además muestra cómo pasarlo a texto. Con algo que no es lista, mapa ni texto dice qué espera y qué recibió.
+*Mirada: lenguaje · Esfuerzo: chico · Estado: hecha*
 
 **83. `quitar` bien explicado y la pista de textos solo cuando corresponde**
 Documentar que `quitar` saca por valor, y no sugerir "usá texto()" cuando la cuenta no tiene ningún texto.
-*Mirada: lenguaje · Esfuerzo: chico · Estado: pendiente*
+Nota al hacerla: el README y la guía dicen que `quitar` saca por valor y no por posición; `quitar` sobre un texto sugiere `reemplazar`, y `quitar(mapa, 1)` avisa que las claves son textos. La pista "usá texto()" ya salía solo cuando hay un texto en la cuenta: se agregó la prueba que lo cuida.
+*Mirada: lenguaje · Esfuerzo: chico · Estado: hecha*
 
 **84. `para posicion, item en lista`**
 Recorrer una lista sabiendo la posición, o un mapa con clave y valor a la vez.
-*Mirada: lenguaje · Esfuerzo: chico · Estado: pendiente*
+Nota al hacerla: en una lista da la posición (desde 0) y el elemento; en un mapa, la clave y el valor; en un texto, la posición y la letra. Los dos nombres son fijos adentro del bucle, igual que en el `para` común.
+*Mirada: lenguaje · Esfuerzo: chico · Estado: hecha*
 
 **85. Errores de `usar` con más pistas**
 Prueba agregando `.mate` al nombre y dice desde qué archivo y renglón se trajo el archivo con el error.
-*Mirada: principiante, robustez · Esfuerzo: chico · Estado: pendiente*
+Nota al hacerla: si el archivo no aparece, el error sugiere el nombre parecido, avisa si el Bloc de notas lo guardó como `.txt`, o muestra los `.mate` que hay en esa carpeta. El "se trajo con 'usar' desde..." se agrega a los errores de escritura del archivo traído; los que pasan al correr ya nombraban el archivo.
+*Mirada: principiante, robustez · Esfuerzo: chico · Estado: hecha*
 
 **86. `a_mapa(mensaje)`**
 Convierte un mensaje en un mapa común cuando hace falta recorrerlo.
-*Mirada: lenguaje, crítico · Esfuerzo: chico · Estado: pendiente*
+Nota al hacerla: devuelve una copia: cambiar el mapa no toca el mensaje. Si ya es un mapa lo devuelve igual. Suma una función incluida más, y el tope de unas 12 funciones nuevas de la discusión 3 ya estaba pasado: conviene tratar la mejora 90 antes de agregar otra.
+*Mirada: lenguaje, crítico · Esfuerzo: chico · Estado: hecha*
 
 **87. `probar` con varios archivos o una carpeta**
 `mate probar mate\ejemplos` corre todas las pruebas y da un total general.
-*Mirada: principiante · Esfuerzo: chico · Estado: pendiente*
+Nota al hacerla: de una carpeta toma los `.mate` que tiene directamente adentro (no entra en subcarpetas). Cada archivo corre aparte, con su nombre arriba; al final va el total y la lista de los que tuvieron problemas. Un archivo sin pruebas dice `(sin pruebas)` y no cuenta como problema. `correr` y `verificar` siguen llevando un solo archivo.
+*Mirada: principiante · Esfuerzo: chico · Estado: hecha*
+
+### Lo que sigue
 
 **88. Consola interactiva**
 Orden `consola` para probar renglones sueltos sin crear un archivo.

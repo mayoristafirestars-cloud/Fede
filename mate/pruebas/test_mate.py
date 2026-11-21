@@ -39,7 +39,7 @@ def test_sea_es_fijo_y_var_cambia():
 
 def test_sin_conversiones_implicitas():
     assert "texto + numero" in falla('mostrar("a" + 1)').mensaje
-    assert "condición" in falla("si 1 { mostrar(1) }").mensaje
+    assert "condición" in falla("sea uno = 1\nsi uno { mostrar(1) }").mensaje
     assert correr("mostrar(1 == verdadero)")[0] == ["falso"]
 
 
@@ -911,7 +911,7 @@ def test_palabras_propias_con_mayuscula():
     assert falla("Si verdadero { }").mensaje == "'Si' va en minúscula: 'si'"
     assert falla("si verdadero { } Sino { }").mensaje == "'Sino' va en minúscula: 'sino'"
     assert "va en minúscula" in falla("sea x = Verdadero").mensaje
-    assert correr("var Estado = 1\nEstado = 2\nmostrar(Estado)")[0] == ["2"]
+    assert "'mi_estado'" in falla("var Estado = 1\nEstado = 2\nmostrar(Estado)").mensaje
 
 
 # Mejora 21: pistas en condiciones mal escritas
@@ -964,7 +964,7 @@ def test_asegurar_evalua_cada_lado_una_sola_vez():
     """)
     assert error.mensaje == "no se cumplió lo asegurado: dio 1 y se esperaba 5"
     assert error.clase == "asegurar"
-    assert "condición" in falla("asegurar 1").mensaje
+    assert "condición" in falla("sea uno = 1\nasegurar uno").mensaje
 
 
 # Mejora 23: por qué no se puede cambiar
@@ -1158,7 +1158,7 @@ def test_intentar_no_ataja_un_asegurar():
 def test_intentar_no_ataja_los_topes(monkeypatch):
     error = falla("funcion f(n) { devolver f(n + 1) }\n"
                   "intentar { f(0) } si falla e { mostrar(e) }")
-    assert error.mensaje == "demasiada recursión" and error.clase == "limite"
+    assert error.mensaje.startswith("demasiada recursión") and error.clase == "limite"
     monkeypatch.setattr(mate, "MAX_MENSAJES", 10)
     error = falla(SUMADOR + "intentar { para i en rango(20) { preguntar Ver {} a C } } "
                             "si falla e { mostrar(e) }")
@@ -1407,7 +1407,7 @@ def test_los_nombres_propios_que_parecen_de_otro_lenguaje_se_respetan():
     assert correr("sea def = 5\nsea or = 2\nmostrar(def + or)")[0] == ["7"]
     assert correr("mensaje Return { x: numero }\nsea r = Return { x: 1 }\nmostrar(r)")[0] == [
         "Return { x: 1 }"]
-    assert correr("funcion Crear(x) { devolver x }\nCrear(3)\nmostrar(Crear(4))")[0] == ["4"]
+    assert correr("funcion crea(x) { devolver x }\ncrea(3)\nmostrar(crea(4))")[0] == ["4"]
     assert correr("funcion f(let) { devolver let + 1 }\nmostrar(f(1))")[0] == ["2"]
     # ...pero usados como palabras de otro lenguaje se siguen explicando antes de correr
     for fuente, pista in [("sea x = 1\nif x == 1 {\n}", "en Mate 'if' se escribe 'si'"),
@@ -2260,7 +2260,7 @@ def test_los_errores_con_nada_no_se_leen_como_otra_frase():
             ("mostrar(nada.campo)", "el valor nada no tiene campos"),
             ("mostrar(nada[0])", "el valor nada no tiene posiciones ni claves"),
             ("mostrar(1 < nada)", "no se puede comparar un número con el valor nada"),
-            ("si nada { mostrar(1) }", "verdadero o falso, no el valor nada"),
+            ("sea v = nada\nsi v { mostrar(1) }", "verdadero o falso, no el valor nada"),
             ("mostrar(largo(nada))", "largo() no aplica al valor nada"),
             ("mostrar(numero(nada))", "numero() espera texto y recibió el valor nada"),
             ("para x en nada { mostrar(x) }", "no se puede recorrer el valor nada"),
@@ -3049,3 +3049,338 @@ agente Comprador {
 """ + "\n".join(re.sub(r"(?m)^  ", "", b) for b in bloques)
     codigo, out, err = por_main(tmp_path, capsys, programa, orden="probar")
     assert (codigo, err) == (0, "") and out.endswith("2 de 2 pruebas pasaron\n")
+
+
+# ───────── Tanda 7 ─────────
+
+DIFUSION = """
+mensaje Aviso { texto: texto }
+mensaje Otro
+agente Sucursal {
+    estado vistos = []
+    al recibir Aviso como a {
+        vistos = agregar(vistos, a.texto)
+        mostrar("{yo} vio {a.texto}")
+    }
+}
+agente Sordo { al recibir Otro { } }
+sea norte = crear Sucursal llamado "Norte"
+sea sur = crear Sucursal llamado "Sur"
+"""
+
+
+# Mejora 76: enviar a una lista de agentes
+
+def test_enviar_a_una_lista_de_agentes():
+    salida, _ = correr(DIFUSION + 'enviar Aviso { texto: "cierra" } a [norte, sur, Sucursal]\n'
+                       'sea nadie = []\nenviar Aviso { texto: "x" } a nadie')
+    assert salida == ["Sucursal Norte vio cierra", "Sucursal Sur vio cierra",
+                      "Sucursal vio cierra"]
+    # si uno de la lista no sirve, no sale para ninguno
+    salida, _ = correr(DIFUSION + """
+        sea mezcla = [norte, Sordo]
+        sea con_numero = [norte, 3]
+        intentar { enviar Aviso { texto: "a" } a mezcla } si falla e { mostrar(e) }
+        intentar { enviar Aviso { texto: "b" } a con_numero } si falla e { mostrar(e) }
+        intentar { enviar Aviso { texto: "c" } a 5 } si falla e { mostrar(e) }
+        intentar { preguntar Aviso { texto: "d" } a mezcla } si falla e { mostrar(e) }
+    """)
+    assert salida == [
+        "Sordo no sabe recibir 'Aviso'",
+        "en una lista de destinos tienen que ser todos agentes, y en la posición 1 hay un número",
+        "el destino tiene que ser un agente o una lista de agentes, no numero",
+        "el destino tiene que ser un agente, no lista. Se le pregunta a un agente por vez: "
+        "recorré la lista con 'para agente en lista { ... }'"]
+    # escrito a mano, se avisa antes de correr
+    assert revisar(DIFUSION + 'enviar Aviso { texto: "a" } a [norte, Sordo]') == [
+        (14, "Sordo no sabe recibir 'Aviso'")]
+
+
+# Mejora 77: 'al fallar'
+
+CON_AL_FALLAR = """
+mensaje Pedido { producto: texto }
+mensaje Encargar { producto: texto }
+mensaje Cuantas
+agente Vendedor {
+    al recibir Pedido como p {
+        si p.producto != "yerba" { fallar "no vendo {p.producto}" }
+    }
+}
+agente Comprador {
+    estado fallas = []
+    al recibir Encargar como e { enviar Pedido { producto: e.producto } a Vendedor }
+    al recibir Cuantas { responder fallas }
+    al fallar como f {
+        fallas = agregar(fallas, "{f.destino}: {f.motivo} ({f.mensaje.producto})")
+        si f.mensaje.producto == "bomba" { fallar "el aviso también falló" }
+    }
+}
+"""
+
+
+def test_al_fallar_le_avisa_al_que_envio():
+    salida, interprete = correr(CON_AL_FALLAR + """
+        enviar Encargar { producto: "café" } a Comprador
+        enviar Encargar { producto: "yerba" } a Comprador
+        mostrar(preguntar Cuantas {} a Comprador)
+    """, traza=True)
+    assert "  · Comprador se entera de que Vendedor no pudo atender Pedido: no vendo café" in salida
+    assert salida[-1] == '["Vendedor: no vendo café (café)"]'
+    assert interprete.errores_agentes == []  # la falla quedó en manos del Comprador
+    assert interprete.cuenta == {"enviar": 4, "preguntar": 1, "fallaron": 1}
+    # sin 'al fallar', la falla se anota como siempre
+    sin = CON_AL_FALLAR.replace("al fallar como f {", "funcion nunca(f) {")
+    _, interprete = correr(sin + 'enviar Encargar { producto: "café" } a Comprador')
+    assert interprete.errores_agentes == ["Vendedor al recibir Pedido (línea 7): no vendo café"]
+    # si el propio 'al fallar' falla, eso sí es un error (y su estado vuelve atrás)
+    salida, interprete = correr(CON_AL_FALLAR + """
+        enviar Encargar { producto: "bomba" } a Comprador
+        mostrar(preguntar Cuantas {} a Comprador)
+    """)
+    assert interprete.errores_agentes == [
+        "Comprador en 'al fallar' (línea 16): el aviso también falló"]
+    assert salida == ["[]"]
+
+
+def test_al_fallar_tiene_sus_reglas():
+    base = "mensaje P\nagente A { al recibir P { }\n"
+    assert "no hay a quién responder" in falla(base + "al fallar { responder 1 } }").mensaje
+    assert revisar(base + "al fallar { }\nal fallar como f { } }") == [
+        (4, "A ya tiene un 'al fallar': va uno solo")]
+    assert "'recibir' o 'fallar'" in falla("agente A { al romper { } }").mensaje
+    # dentro de una prueba, una falla avisada no hace fallar la prueba
+    resultados = probar(CON_AL_FALLAR + """
+        prueba "se entera" {
+            enviar Encargar { producto: "café" } a Comprador
+            asegurar largo(preguntar Cuantas {} a Comprador) == 1
+        }
+        prueba "empieza limpia" { asegurar preguntar Cuantas {} a Comprador == [] }
+    """)
+    assert resultados == {"se entera": None, "empieza limpia": None}
+
+
+# Mejora 78: más lugar para la recursión
+
+@pytest.mark.skipif(sys.version_info < (3, 12), reason="en un Python viejo queda el tope de antes")
+def test_la_recursion_llega_a_miles_de_llamadas():
+    salida, _ = correr("""
+        funcion suma(n) {
+            si n == 0 { devolver 0 }
+            devolver n + suma(n - 1)
+        }
+        funcion texto_hondo(n) {
+            si n == 0 { devolver "" }
+            devolver "{texto_hondo(n - 1)}"
+        }
+        mostrar(suma(2500), largo(texto_hondo(2500)))
+    """)
+    assert salida == ["3126250 0"]
+
+
+def test_el_error_de_recursion_nombra_la_funcion():
+    tope = sys.getrecursionlimit()
+    error = falla("funcion cuenta(n) { devolver cuenta(n + 1) }\nmostrar(cuenta(0))")
+    assert error.clase == "limite" and error.linea == 1
+    assert "la última, a cuenta()" in error.mensaje and "un 'si' que la frene" in error.mensaje
+    assert sys.getrecursionlimit() == tope  # Mate deja a Python como lo encontró
+
+
+# Mejora 79: los nombres con mayúscula quedan para mensajes y agentes
+
+def test_los_nombres_con_mayuscula_son_de_mensajes_y_agentes():
+    for fuente, sugerido in [("sea Listo = verdadero", "'listo'"), ("var Total = 0", "'total'"),
+                             ("funcion Doble(n) { devolver n * 2 }", "'doble'"),
+                             ("funcion f(Precio) { devolver 1 }", "'precio'"),
+                             ("para Item en [1] { }", "'item'"),
+                             ("sea Texto = 1", "'mi_texto'"), ("sea Para = 1", "'mi_para'")]:
+        mensaje = falla(fuente).mensaje
+        assert "empieza con mayúscula" in mensaje and mensaje.endswith(sugerido), mensaje
+    ping = "mensaje Ping\nagente A { al recibir Ping { responder 1 } }\n"
+    assert revisar(ping + "mostrar(preguntar Ping a A)") == [
+        (3, "'Ping' es un mensaje: para armar uno van las llaves, aunque no tenga campos. "
+            "Escribí Ping {}")]
+    assert correr(ping + "mostrar(preguntar Ping {} a A)")[0] == ["1"]
+
+
+# Mejora 80: la llave en el renglón de abajo
+
+def test_la_llave_puede_ir_en_el_renglon_de_abajo():
+    salida, _ = correr("""
+        mensaje Pedido
+        {
+            producto: texto
+        } responde numero
+        agente Vendedor
+        {
+            estado precio = 10
+            al recibir Pedido como p { responder precio }
+        }
+        sea caro = crear Vendedor llamado "Caro"
+        {
+            precio: 99
+        }
+        mostrar(preguntar Pedido { producto: "yerba" } a caro, caro)
+    """)
+    assert salida == ["99 Vendedor Caro"]
+    assert "le falta el campo 'producto'" in revisar(
+        "mensaje Pedido\n{ producto: texto }\nsea p = Pedido {}")[0][1]
+
+
+# Mejora 81: condiciones que no son verdadero o falso, antes de correr
+
+def test_las_condiciones_imposibles_se_avisan_antes_de_correr():
+    no_es = "la condición tiene que ser verdadero o falso, "
+    for fuente, que in [("si 1 { }", "no numero"), ('mientras "a" { }', "no texto"),
+                        ("mostrar(verdadero y 1)", "no numero"),
+                        ("mostrar([] o falso)", "no lista"), ("mostrar(no nada)", "no el valor nada"),
+                        ("asegurar { a: 1 }", "no mapa"),
+                        ("si falso { } sino si 2 { }", "no numero"),
+                        ("mensaje M\nsi M {} { }", "no un mensaje M")]:
+        errores = revisar("sea x = 1\n" + fuente)
+        assert len(errores) == 1 and errores[0][1] == no_es + que, errores
+    errores = revisar("sea x = 1\nfuncion nunca() {\n    si x + 1 { mostrar(x) }\n}")
+    assert errores[0][0] == 3 and "esto es una cuenta" in errores[0][1]
+    assert "x + 1 > 0" in errores[0][1]
+    # lo que puede dar verdadero o falso no se toca
+    assert revisar("sea x = 1\nsea ok = x > 0\nsi ok y no (x == 2) { mostrar(x) }") == []
+
+
+# Mejoras 82 y 83: tiene() con textos, quitar() y la pista de los textos
+
+def test_tiene_y_quitar_explican_que_esperan():
+    assert falla('mostrar(tiene("hola", 1))').mensaje == (
+        "tiene(): dentro de un texto se busca otro texto, y recibió un número. "
+        "Pasalo a texto: tiene(t, texto(1))")
+    assert falla('mostrar(tiene("hola", nada))').mensaje == (
+        "tiene(): dentro de un texto se busca otro texto, y recibió el valor nada")
+    assert "busca en una lista, un mapa o un texto, y recibió un número" in falla(
+        "mostrar(tiene(5, 1))").mensaje
+    assert correr('mostrar(tiene("hola", "ol"), tiene([1], "1"), tiene({ a: 1 }, 1))')[0] == [
+        "verdadero falso falso"]
+    mensaje = falla('mostrar(quitar("hola", "h"))').mensaje
+    assert "recibió un texto" in mensaje and 'reemplazar(t, parte, "")' in mensaje
+    assert "las claves de un mapa son textos" in falla("mostrar(quitar({ a: 1 }, 1))").mensaje
+    # quitar saca por valor, no por posición
+    assert correr("mostrar(quitar([10, 20, 10], 10), quitar([10, 20], 0))")[0] == ["[20] [10, 20]"]
+    # la pista de texto() aparece solo si en la cuenta hay un texto
+    assert "usá texto()" in falla('mostrar("a" + 1)').mensaje
+    for cuenta in ["1 + verdadero", "nada + 1", "[1] + 2", "{ a: 1 } + 1", '"a" - 1']:
+        assert "texto()" not in falla(f"mostrar({cuenta})").mensaje, cuenta
+    assert "saca **por valor**" in (RAIZ / "README.md").read_text(encoding="utf-8")
+    assert "por valor, no por posición" in mate.texto_de_guia()
+
+
+# Mejora 84: para posicion, item en lista
+
+def test_para_con_posicion_o_con_clave_y_valor():
+    salida, _ = correr("""
+        para i, cosa en ["yerba", "azúcar"] { mostrar(i, cosa) }
+        para producto, precio en { yerba: 3500, azucar: 1200 } { mostrar(producto, precio) }
+        para i, letra en "ab" { mostrar(i, letra) }
+        para i, x en [5, 6, 7, 8] {
+            si i == 0 { continuar }
+            si i == 2 { romper }
+            mostrar(i, x)
+        }
+    """)
+    assert salida == ["0 yerba", "1 azúcar", "yerba 3500", "azucar 1200", "0 a", "1 b", "1 6"]
+    assert "es la variable del 'para'" in falla("para i, x en [1] { i = 2 }").mensaje
+    assert "no pueden ser iguales" in falla("para x, x en [1] { }").mensaje
+    assert "'x' ya está definido" in falla("para i, x en [1] { sea x = 2 }").mensaje
+    assert "no se puede recorrer numero" in falla("para i, x en 5 { }").mensaje
+
+
+# Mejora 85: errores de 'usar' con más pistas
+
+def test_usar_prueba_con_mate_y_dice_quien_trajo_el_archivo(tmp_path, capsys):
+    (tmp_path / "catalogo.mate").write_text("sea iva = 0.21\n", encoding="utf-8")
+    (tmp_path / "roto.mate").write_text("sea a = 1\nsea b = = 2\n", encoding="utf-8")
+    (tmp_path / "medio.mate").write_text('usar "roto"\n', encoding="utf-8")
+    (tmp_path / "notas.mate.txt").write_text("sea n = 1\n", encoding="utf-8")
+    codigo, out, _ = por_main(tmp_path, capsys, 'usar "catalogo"\nusar "catalogo.mate"\nmostrar(iva)')
+    assert (codigo, out) == (0, "0.21\n")
+    codigo, _, err = por_main(tmp_path, capsys, '# programa\nusar "medio.mate"')
+    assert codigo == 1 and "roto.mate:2: error: no esperaba '=' acá" in err
+    assert "(este archivo, roto.mate, se trajo con 'usar' desde medio.mate, línea 1)" in err
+    assert err.count("se trajo con") == 1 and "    2 | sea b = = 2" in err
+    codigo, _, err = por_main(tmp_path, capsys, 'usar "catalgo.mate"')
+    assert codigo == 1 and "no pude abrir 'catalgo.mate'" in err
+    assert "¿Quisiste decir 'catalogo.mate'?" in err
+    _, _, err = por_main(tmp_path, capsys, 'usar "notas.mate"')
+    assert "Encontré notas.mate.txt: el Bloc de notas le agregó .txt" in err
+    _, _, err = por_main(tmp_path, capsys, 'usar "zzz"')
+    assert "Los archivos .mate que hay ahí: catalogo.mate, medio.mate, programa.mate" in err
+
+
+# Mejora 86: a_mapa(mensaje)
+
+def test_a_mapa_convierte_un_mensaje_en_un_mapa():
+    salida, _ = correr("""
+        mensaje Pedido { producto: texto, cantidad: numero, nota: texto? }
+        sea p = Pedido { producto: "yerba", cantidad: 2 }
+        var m = a_mapa(p)
+        para campo, valor en m { mostrar("{campo}: {valor}") }
+        m.cantidad = "muchas"
+        mostrar(tipo(m), p.cantidad, claves(a_mapa(p)), a_mapa({ a: 1 }))
+    """)
+    assert salida == ["producto: yerba", "cantidad: 2", "nota: nada",
+                      'mapa 2 ["producto", "cantidad", "nota"] {a: 1}']
+    assert falla("mostrar(a_mapa(5))").mensaje == "a_mapa() espera un mensaje y recibió un número"
+    assert "función incluida" in falla("sea a_mapa = 1").mensaje
+
+
+# Mejora 87: 'probar' con varios archivos o una carpeta
+
+def test_probar_con_una_carpeta_o_varios_archivos(tmp_path, capsys):
+    (tmp_path / "a.mate").write_text(
+        'mostrar("corre a")\nprueba "uno" { asegurar 1 == 1 }\nprueba "dos" { asegurar 2 == 2 }\n',
+        encoding="utf-8")
+    (tmp_path / "b.mate").write_text('prueba "tres" { asegurar 1 == 2 }\n', encoding="utf-8")
+    (tmp_path / "c.mate").write_text('mostrar("sin pruebas")\n', encoding="utf-8")
+    (tmp_path / "notas.txt").write_text("no es un programa", encoding="utf-8")
+    capsys.readouterr()
+    assert mate.main(["probar", str(tmp_path)]) == 1
+    out = capsys.readouterr().out
+    assert out.index("a.mate:") < out.index("b.mate:") < out.index("c.mate:")
+    assert "2 de 2 pruebas pasaron" in out and "0 de 1 pruebas pasaron" in out
+    assert "  (sin pruebas)" in out and "notas.txt" not in out
+    assert "En total: 2 de 3 pruebas pasaron, en 3 archivos" in out
+    assert out.rstrip().endswith("Con problemas: " + str(tmp_path / "b.mate"))
+    assert mate.main(["probar", str(tmp_path / "a.mate"), str(tmp_path / "c.mate")]) == 0
+    out = capsys.readouterr().out
+    assert out.endswith("En total: 2 de 2 pruebas pasaron, en 2 archivos\n")
+    # un archivo que no está no corta a los demás, pero se nota
+    assert mate.main(["probar", str(tmp_path / "a.mate"), str(tmp_path / "nohay.mate")]) == 1
+    capturado = capsys.readouterr()
+    assert "no encuentro 'nohay.mate'" in capturado.err and "En total: 2 de 2" in capturado.out
+    vacia = tmp_path / "vacia"
+    vacia.mkdir()
+    assert mate.main(["probar", str(vacia)]) == 2
+    assert "no hay ningún archivo .mate" in capsys.readouterr().err
+    # 'correr' sigue llevando un solo archivo
+    assert mate.main(["correr", str(tmp_path / "a.mate"), str(tmp_path / "c.mate")]) == 2
+    assert "lleva un solo archivo" in capsys.readouterr().err
+
+
+def test_probar_la_carpeta_de_ejemplos(capsys):
+    assert mate.main(["probar", str(RAIZ / "ejemplos")]) == 0
+    out = capsys.readouterr().out
+    assert re.search(r"En total: (\d+) de \1 pruebas pasaron, en \d+ archivos\n$", out)
+
+
+def test_el_readme_cuenta_lo_de_la_tanda_7(tmp_path, capsys):
+    leeme = (RAIZ / "README.md").read_text(encoding="utf-8")
+    for frase in ["a [norte, sur]", "al fallar como f", "3.000 llamadas", "`sea Listo = verdadero`",
+                  "Escribí Ping {}", "en el renglón siguiente", "`verdadero y 1`",
+                  "para i, item en lista", 'usar "catalogo"', "a_mapa(pedido)",
+                  "probar mate\\ejemplos", "En total: 14 de 14 pruebas pasaron"]:
+        assert frase in leeme, frase
+    # el ejemplo de 'al fallar' del README anda tal cual está escrito
+    ejemplo = re.search(r"(?m)^  ```\n(  agente Comprador .*?)^  ```", leeme, re.S).group(1)
+    programa = """mensaje Pedido { producto: texto }
+mensaje Encargar { producto: texto }
+agente Vendedor { al recibir Pedido como p { fallar "no hay {p.producto}" } }
+""" + re.sub(r"(?m)^  ", "", ejemplo) + 'enviar Encargar { producto: "café" } a Comprador\n'
+    codigo, out, err = por_main(tmp_path, capsys, programa)
+    assert (codigo, out, err) == (0, "Vendedor no pudo con café: no hay café\n", "")

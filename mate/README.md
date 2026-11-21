@@ -123,6 +123,7 @@ archivo y abrirla con el Bloc de notas: `python mate\mate.py guia > guia.txt`.
 |---|---|
 | `correr archivo.mate` | corre el programa (también alcanza con poner solo `archivo.mate`) |
 | `probar archivo.mate` | corre las pruebas que el programa trae adentro |
+| `probar mate\ejemplos` | corre las pruebas de todos los `.mate` de esa carpeta (o de varios archivos) y da un total |
 | `verificar archivo.mate` | revisa el programa sin correrlo |
 | `guia` | imprime una página con todo Mate, para pegarle a una IA (`python mate\mate.py guia`) |
 | `ayuda` | muestra las órdenes y un ejemplo listo para copiar |
@@ -152,8 +153,10 @@ Mate nunca debería mostrarte un error de Python en inglés:
   renglón estaba (un `mientras` cuya condición nunca cambia, casi siempre). Con `--sin-limite`
   se desactiva, para los programas que son largos de verdad.
 - **Topes de seguridad**: además de ese freno, Mate corta una función que se llama a sí misma
-  demasiadas veces (`demasiada recursión`, hoy cerca de 120 llamadas) y los programas que se
-  quedan sin memoria. Ninguno de esos cortes se puede atajar con `intentar`.
+  sin parar (`demasiada recursión`: hay lugar para 3.000 llamadas una adentro de la otra, y el
+  error nombra la función) y los programas que se quedan sin memoria. Ninguno de esos cortes
+  se puede atajar con `intentar`. (Con un Python anterior al 3.12 el lugar es menor: unas 120
+  llamadas.)
 - **Cosas demasiado grandes**: un texto o una lista de más de 10.000.000 de elementos
   (`rango(100000000000)`, un texto que se duplica sin parar) o un número entero de más de unas
   4.000 cifras son un error común, con su renglón, en vez de colgar la consola.
@@ -221,6 +224,17 @@ Mate nunca debería mostrarte un error de Python en inglés:
   que otro le preguntó, debajo del renglón señalado aparece el recorrido:
   `cómo se llegó: en dividir(), llamada desde precio() (línea 5), llamada desde la línea 9`,
   o `... se lo preguntó Comprador a Vendedor (línea 16)`. El texto del error no cambia.
+- **Condiciones que nunca pueden ser verdadero o falso**: `si 1 { }`, `mientras "a" { }`,
+  `verdadero y 1` o `si x + 1 { }` se avisan antes de correr, estén donde estén en el
+  programa (antes saltaban recién cuando el programa pasaba por ahí).
+- **Nombres con mayúscula**: quedan para los mensajes y los agentes. `sea Listo = verdadero`
+  dice que va `listo`. Y si te olvidás las llaves de un mensaje sin campos
+  (`preguntar Ping a Agente`), el error dice `Escribí Ping {}`.
+- **La llave en el renglón de abajo**: `mensaje Pedido`, `agente Vendedor` y `crear Vendedor`
+  aceptan que la `{` venga en el renglón siguiente. (Antes, en un mensaje, eso declaraba un
+  mensaje vacío sin avisar.)
+- **`tiene` y `quitar`**: `tiene("hola", 1)` dice que dentro de un texto se busca otro texto, y
+  `quitar("hola", "h")` que `quitar` es para listas y mapas (para un texto va `reemplazar`).
 - Si igual aparece "error interno de Mate", no es culpa tuya: corré de nuevo con `--depurar`
   y guardá lo que muestra.
 
@@ -281,6 +295,10 @@ prueba "cotiza precio por cantidad" {
   o agentes. Una función no puede viajar adentro de un mensaje.
 - `enviar Mensaje { ... } a Agente` lo deja en la cola y sigue (asíncrono). Si ese agente no
   tiene un `al recibir` para ese mensaje, el error sale ahí mismo, en el renglón del `enviar`.
+- `enviar Aviso { ... } a [norte, sur]` le manda el mismo mensaje a cada agente de la lista
+  (también vale una variable que guarda una lista de agentes). Si alguno de la lista no sabe
+  recibirlo, el error sale ahí mismo y no se le manda a ninguno. `preguntar` sigue siendo de a
+  uno: para preguntarle a varios se recorre la lista con `para`.
 - `preguntar Mensaje { ... } a Agente` espera y devuelve la respuesta. Si el otro agente falla
   (con `fallar`, con un `asegurar` que no se cumple o con cualquier otro error), el error le
   llega al que preguntó, que lo puede atajar con `intentar`.
@@ -291,6 +309,25 @@ prueba "cotiza precio por cantidad" {
   lo que otros agentes hicieron al contestarle no se deshace. También cuenta como falla suya no
   responder a un `preguntar`, o responderle a un `enviar` con algo que no es un mensaje o que
   el otro no sabe recibir.
+- **`al fallar`**: un `enviar` no espera, así que el que envía no se entera si el otro falló.
+  Si quiere enterarse, el agente declara (una sola vez) un `al fallar`:
+
+  ```
+  agente Comprador {
+      estado sin_atender = 0
+      al recibir Encargar como e { enviar Pedido { producto: e.producto } a Vendedor }
+      al fallar como f {
+          sin_atender += 1
+          mostrar("{f.destino} no pudo con {f.mensaje.producto}: {f.motivo}")
+      }
+  }
+  ```
+
+  `f.motivo` es el texto del error, `f.mensaje` el mensaje que había mandado y `f.destino` el
+  agente que falló. Con `al fallar`, esa falla queda en manos del agente y ya no se anota como
+  error del programa; sin `al fallar`, todo sigue como antes. Adentro no va `responder` (es un
+  aviso, no una pregunta), pero sí `enviar`. Vale para lo que el agente mandó con `enviar`: lo
+  que manda con `preguntar` ya le llega como error y se ataja con `intentar`.
 - Si el programa se corta por un error y antes había fallado algún agente, Mate muestra primero
   el error del agente (suele ser la causa) y después el que cortó.
 - Si el programa se corta por un error y quedaban mensajes en la cola, Mate dice cuáles no
@@ -342,6 +379,10 @@ usar "catalogo.mate"
 Trae los mensajes, agentes, funciones y valores `sea` del otro archivo (se busca al lado del que
 lo usa). Lo que ese archivo ejecuta y sus pruebas no se traen, así que un mismo archivo sirve como
 programa y como biblioteca. Usarlo dos veces no molesta. Ver `ejemplos/mercado.mate`.
+Si el nombre va sin `.mate` (`usar "catalogo"`), Mate lo prueba también con `.mate`. Si el
+archivo no aparece, el error sugiere el nombre parecido o muestra los `.mate` que hay en esa
+carpeta; y si el error está adentro del archivo traído, dice quién lo trajo:
+`(este archivo, catalogo.mate, se trajo con 'usar' desde mercado.mate, línea 5)`.
 
 **Antes de correr**, Mate revisa los contratos: avisa si a un mensaje le falta o le sobra un
 campo, si un valor literal es del tipo equivocado, si le mandás a un agente (o a una copia
@@ -369,6 +410,9 @@ Lo que una prueba cambia no le llega a la siguiente. Además:
   (`      | Compro 10 de yerba`), y no mezclado con los resultados.
 - Si el archivo no tiene ninguna prueba, `probar` lo dice (y muestra cómo se escribe una). Dos
   pruebas no pueden tener el mismo nombre: se avisa antes de correr.
+- `probar` también acepta una carpeta o varios archivos: `python mate\mate.py probar mate\ejemplos`
+  corre las pruebas de cada `.mate` de esa carpeta, uno por uno, y termina con el total
+  (`En total: 14 de 14 pruebas pasaron, en 11 archivos`) y la lista de los que tuvieron problemas.
 - `asegurar falla { ... }` es la forma corta de comprobar que algo **tiene que fallar**:
 
   ```
@@ -423,6 +467,7 @@ sea x = 1                  var y = [1, 2]             y[0] = 5
 funcion doble(n) { devolver n * 2 }
 si a > b { } sino si a == b { } sino { }
 mientras cond { }          para item en lista { }
+para i, item en lista { }  para clave, valor en mapa { }   (i es la posición, desde 0)
 romper                     continuar                  (solo dentro de mientras o para)
 y += 1                     y -= 1                     (lo mismo que y = y + 1)
 y  o  no   ==  !=  <  <=  >  >=   +  -  *  /  %
@@ -470,12 +515,16 @@ Son estas y no hay otras. Cada renglón es un ejemplo que se puede copiar:
 | `termina_con(t, ".txt")` | verdadero si el texto termina así |
 | `a_json(valor)` | el valor escrito como texto JSON |
 | `de_json(texto, "Pedido")` | el valor que describe ese JSON; el 2.º valor (opcional) exige ese tipo |
+| `a_mapa(pedido)` | un mapa común con los campos de ese mensaje, para recorrerlos |
 | `detalle_de(e)` | los datos de un error atajado: un mapa con texto, linea, clase y dato |
 
 - Si a una función le das valores de más o de menos, el error trae el ejemplo:
   `obtener() lleva 3 valores y recibió 2. Por ejemplo: obtener(mapa, "clave", 0)`.
 - `agregar`, `quitar`, `ordenar` y `porcion` no cambian la lista original: devuelven una nueva.
   `quitar(lista, x)` saca **por valor** (todos los que valen `x`), no por posición.
+- `a_mapa(pedido)` sirve para recorrer los campos de un mensaje:
+  `para campo, valor en a_mapa(pedido) { mostrar("{campo}: {valor}") }`. El mapa es una copia:
+  cambiarlo no toca el mensaje.
 - `ordenar` ordena los textos como el diccionario: sin importar mayúsculas ni tildes, y con la
   `ñ` después de la `n`. Con un segundo valor ordena una lista de mapas o de mensajes por ese
   campo: `ordenar(productos, "precio")`.
@@ -557,7 +606,8 @@ Mate lo avisa antes de correr.
 - La igualdad no convierte nada, tampoco adentro de una lista o un mapa: `1 == verdadero` da
   `falso` y `[1] == [verdadero]` también.
 
-Los nombres de mensajes y agentes empiezan con mayúscula; el resto, con minúscula.
+Los nombres de mensajes y agentes empiezan con mayúscula; el resto (variables, funciones,
+parámetros), con minúscula: Mate no acepta `sea Total = 0`.
 
 Detalles: `partir("abc", "")` separa letra por letra; `redondear(3.14159, 2)` lleva una cantidad
 entera de decimales; `rango(10, 0, -1)` cuenta para atrás; las claves de un mapa son siempre textos (`tiene(mapa, [1])` da `falso`);
@@ -600,6 +650,13 @@ seguro es por una de estas:
 | `probar` muestra lo que cada prueba escribe debajo de su nombre (con `|` adelante), y si no hay pruebas ya no dice `0 de 0 pruebas pasaron` | Nada |
 | El error de un ciclo de preguntas ahora trae la cadena (`A → B → A`), y el de responderle mal a un `enviar` trae el renglón del `responder` | No comparar el texto entero del error |
 | Cambió la redacción de más errores: `la posición 3 está fuera de rango...` (antes "índice"), `el valor nada` en vez de `nada`, la lista `(tiene: ...)` en el error de clave, y `Por ejemplo: ...` al final del error de cantidad de valores | No comparar el texto entero del error; el de clave sigue trayendo la palabra "clave" |
+| Un nombre de variable, función o parámetro no puede empezar con mayúscula (`sea Total = 0`, `funcion Doble(n)`) | Pasarlo a minúscula: `sea total = 0` |
+| Una condición escrita a mano que nunca es verdadero o falso (`si 1 { }`, `verdadero y 1`, `si x + 1 { }`) es un error antes de correr, aunque esté en una parte que no se ejecuta | Escribir la comparación: `si x + 1 > 0 { }` |
+| `mensaje Pedido` con la `{` en el renglón de abajo ahora declara el mensaje con esos campos (antes quedaba vacío); lo mismo `crear Vendedor` | Nada: es lo que se quería escribir |
+| `a_mapa` es una función incluida: no sirve como nombre de variable | Elegir otro nombre |
+| El error de "demasiada recursión" es más largo y nombra la función; y hay lugar para 3.000 llamadas en vez de 120 | No comparar el texto entero del error |
+| Cambió la redacción de los errores de `tiene()` y `quitar()` con un valor que no corresponde, y `quitar(mapa, 1)` es un error (las claves son textos) | No comparar el texto entero del error |
+| Un agente con `al fallar` se hace cargo de las fallas de lo que envió: ya no aparecen como error del programa | Nada si no usás `al fallar` |
 
 ## Límites de la versión 0.2
 
