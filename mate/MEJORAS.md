@@ -632,6 +632,40 @@ Nota (tanda 8): salteada. Con `correr` ya se ven igual (`archivo:renglón: error
 Nota al hacerla: las funciones salen de la tabla única; las palabras tienen su propia tabla, y cada ejemplo es un programa entero que las pruebas corren. `ayuda print` dice que en Mate es `mostrar`, y `ayuda mostar` sugiere la parecida. También anda adentro de la consola. `ayuda correr` (una orden) sigue mostrando la ayuda general.
 *Mirada: principiante · Esfuerzo: mediano · Estado: hecha*
 
+### Revisión final (después de la tanda 8)
+
+Revisores independientes probaron las 94 mejoras hechas y encontraron fallas. Lo que se corrigió:
+
+- **Mejora 50**: un texto común con dos puntos y salto de renglón (`"Descripción:\n- yerba"`) ya no se confunde con una ruta de Windows.
+- **Mejoras 38 y 72**: una cuenta suelta (`i + 1`) se avisa antes de correr. El error de "renglón que no usa el valor" no se ataja con `intentar` ni cuenta en `asegurar falla`; adentro de `asegurar falla { ... }` una cuenta o una función suelta vale (es lo que se prueba), y un nombre mal escrito no cuenta como la falla esperada.
+- **Mejora 67**: "cómo se llegó" termina siempre en el origen real, aunque haya muchas llamadas de por medio.
+- **Mejoras 64 y 87**: `probar` con varios archivos y `--traza=archivo` guarda todas las conversaciones, una sección por archivo.
+- **Mejoras 48 y 88**: una letra que no se puede leer de una entrada redirigida ya no da un error interno; en la consola un renglón que termina en operador sigue abajo, y sus errores no hablan de "el archivo".
+- **Mejora 80**: `si x != crear V` con la llave del bloque en el renglón de abajo volvió a andar.
+- **Mejoras 45 y 49**: la guía decía al revés lo de los textos adentro de las llaves.
+- **Mejora 94**: `ayuda al fallar` existe; el README aclara que el ejemplo de una función es la forma de llamarla.
+- **Mejora 85**: `usar "catalgo"` (sin `.mate`) también sugiere el parecido y avisa del `.mate.txt`; repetir un nombre que vino con `usar` dice de qué archivo viene.
+- **Mejora 58**: el error de posición ya no dice "dio 2" cuando el 2 salió de una cuenta con decimales. (No se aceptan decimales como posición: esa idea está descartada.)
+- **Mejora 74**: `crear ... llamado` exige un texto; `llamado Sur` sin comillas lo explica; una copia creada por un agente que después falla se deshace con su estado.
+- **Mejora 91**: si `escribir_archivo` no puede guardar, el archivo queda como estaba.
+- **Mejora 40**: un `sea` en un bloque de adentro de una función, prueba o `al recibir` no tapa una variable `var` del programa.
+- **Mejora 75**: `de_json(texto, "lista de Pedido")` y los mensajes anidados se arman desde mapas sueltos.
+- **Mejora 71**: `numero("")` es de la clase `"numero"`.
+- **Mejoras 24 y 37**: el error del final del archivo señala el último renglón escrito.
+- **Mejora 10**: un carácter invisible en el medio de una palabra se avisa como tal.
+- **Mejora 21**: `21%`, `si no` separado, `al recibir Pedidos` y `precio = 5` sin declarar dan una pista útil.
+- **Antes de correr**: un `al recibir` con un `fallar` condicional y sin `responder` cuenta como "nunca responde"; un tipo que no existe ya no arrastra un segundo error falso.
+- **Tope de tamaño**: también vale para `unir`, `texto`, `a_json`, `agregar` y `"{...}"`.
+- **Fechas**: comparar dos fechas con `<` es un error en vez de un resultado equivocado.
+
+Lo que se dejó como está, y por qué:
+
+- **Decimales de 10.000 millones para arriba**: no se recortan a 12 cifras para no comerse los centavos de un monto grande. El README ahora lo dice.
+- **Un mapa con la clave `agente` (o `tipo` y `campos`)** vuelve de `de_json` como agente o mensaje: son las formas reservadas con las que viajan. El README ahora lo avisa.
+- **`usar` trae también los `var`**: una función traída puede necesitarlos. Se corrigió la documentación.
+- **El freno de 10.000.000 de pasos** tarda unos 20 segundos en saltar. Bajarlo cortaría programas largos de verdad; queda para discutir.
+- **Varios errores juntos de la revisión previa**: se siguen mostrando cuando son independientes (tres mensajes sin declarar son tres errores de verdad). Solo se quitó el que salía en cascada.
+
 ### Lo que sigue
 
 **95. Valores por defecto en los parámetros (para más adelante)**

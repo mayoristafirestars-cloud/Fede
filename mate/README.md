@@ -150,8 +150,10 @@ python mate\mate.py ayuda mientras
 ```
 
 contesta qué hace `mientras` y muestra un ejemplo corto que se puede copiar tal cual. Vale para
-todas las palabras de Mate (`si`, `para`, `agente`, `enviar`, `prueba`...) y para todas las
-funciones incluidas (`ayuda largo`, `ayuda pesos`). Si escribís una palabra de otro lenguaje
+todas las palabras de Mate (`si`, `para`, `agente`, `enviar`, `prueba`, y también
+`ayuda al fallar`) y para todas las funciones incluidas (`ayuda largo`, `ayuda pesos`). En las
+funciones el ejemplo es la forma de llamarla (`pesos(1234.5)`): así suelto anda en la consola;
+en un programa va adentro de otra cosa, `mostrar(pesos(1234.5))` o `sea t = pesos(1234.5)`. Si escribís una palabra de otro lenguaje
 (`ayuda print`) te dice cuál es la de Mate, y si le errás por una letra (`ayuda mostar`)
 sugiere la parecida.
 
@@ -179,8 +181,11 @@ Aparece `  1>` y Mate espera un renglón. Lo que escribís corre al apretar Ente
 
 - Un valor suelto (`precio * 2`) se muestra solo, sin escribir `mostrar`. Los textos salen
   entre comillas, para distinguir `"5"` de `5`.
-- Si queda una llave, un paréntesis o un corchete sin cerrar, la consola sigue en el renglón de
-  abajo (el número termina en `.` en vez de `>`). Un renglón vacío corta ahí.
+- Si queda una llave, un paréntesis o un corchete sin cerrar, o el renglón termina en un
+  operador o una coma (`1 +`), la consola sigue en el renglón de abajo (el número termina en
+  `.` en vez de `>`). Un renglón vacío corta ahí.
+- Si la entrada llega redirigida desde un archivo y trae una letra que no se puede leer, la
+  consola pone un signo en su lugar y sigue: nunca se cierra por eso.
 - Lo que declarás (variables, funciones, mensajes, agentes) queda para los renglones
   siguientes. Solo acá se puede volver a escribir `sea precio = 4000` o la misma `funcion`
   para corregirla: reemplaza a la anterior. En un archivo eso sigue siendo un error.
@@ -209,8 +214,9 @@ Mate nunca debería mostrarte un error de Python en inglés:
   se puede atajar con `intentar`. (Con un Python anterior al 3.12 el lugar es menor: unas 120
   llamadas.)
 - **Cosas demasiado grandes**: un texto o una lista de más de 10.000.000 de elementos
-  (`rango(100000000000)`, un texto que se duplica sin parar) o un número entero de más de unas
-  4.000 cifras son un error común, con su renglón, en vez de colgar la consola.
+  (`rango(100000000000)`, un texto que se duplica sin parar, `unir`, `texto`, `a_json` o
+  `"{...}"` con una lista enorme) o un número entero de más de unas 4.000 cifras son un error
+  común, con su renglón, en vez de colgar la consola.
 - **Ctrl+C** corta el programa y dice en qué renglón iba.
 - **Números imposibles**: una cuenta que da un número demasiado grande es un error con su
   renglón, y `numero("inf")` o `numero("nan")` no se aceptan.
@@ -222,7 +228,13 @@ Mate nunca debería mostrarte un error de Python en inglés:
 - **Un renglón que no hace nada**: `i + 1` suelto, `mostrar "hola"` sin paréntesis o
   `agregar(lista, 4)` sin guardar el resultado antes pasaban en silencio. Ahora son un error
   que dice qué faltó (`este renglón calcula un valor y no hace nada con él`, `a 'mostrar' le
-  faltan los paréntesis`, `agregar() no cambia la lista: devuelve una nueva`).
+  faltan los paréntesis`, `agregar() no cambia la lista: devuelve una nueva`). Una cuenta
+  suelta se avisa antes de correr, esté donde esté. Y estos errores no se atajan con
+  `intentar`: para validar un dato se guarda el resultado,
+  `intentar { sea n = numero(dato) ... } si falla e { ... }`.
+- **Porcentajes**: `sea iva = 21%` no existe en Mate (`%` es el resto de una división). El
+  error lo dice en ese renglón: se escribe `21 / 100` o `0.21`.
+- **`si no` separado**: se escribe `sino`, todo junto, y el error lo explica.
 - **Dónde termina un renglón**: una sentencia termina donde termina su renglón. Sigue en el
   de abajo solo si quedó abierto un `(`, un `[` o una `{`, o si el renglón termina en un
   operador (`+`, `-`, `y`, `==`, `=`...) o en una coma. Un renglón no puede empezar con `+`,
@@ -231,8 +243,11 @@ Mate nunca debería mostrarte un error de Python en inglés:
 - **Un `sea` de más**: dentro de un `si`, `para`, `mientras` o `intentar`, escribir
   `sea cuenta = i` cuando ya hay una `cuenta` afuera no cambiaba nada y no avisaba. Ahora el
   error dice `'cuenta' ya existe afuera de este bloque` y que hay que sacar el `sea`. Lo
-  mismo con un `estado` del agente. (Una función o una prueba sí pueden usar adentro un
-  nombre que también existe en el programa.)
+  mismo con un `estado` del agente. Una función o una prueba sí pueden usar adentro un
+  nombre que también existe en el programa, con una excepción: desde un `si`, `para`,
+  `mientras` o `intentar` de adentro de la función (o de la prueba, o de un `al recibir`) no
+  se puede repetir el nombre de una variable `var` del programa, que es el caso en el que
+  casi seguro se la quiso cambiar.
 - **Comparar un texto con un número**: `"18" == 18` daba `falso` sin avisar. Ahora es un
   error que sugiere `numero("18")`. Comparar con `nada` sigue valiendo.
 - **El renglón del error**: debajo del mensaje Mate muestra el renglón señalado, por ejemplo
@@ -393,13 +408,19 @@ prueba "cotiza precio por cantidad" {
   `--traza=conversacion.txt` no la muestra: la guarda en ese archivo (se abre con el Bloc de
   notas) y al final anota cuántos mensajes hubo y cuántos fallaron. El archivo queda en la
   carpeta donde estás parado; Mate no acepta un nombre terminado en `.mate` o `.py`, para no
-  pisar un programa.
+  pisar un programa. Con `probar` sobre varios archivos o una carpeta, el archivo junta la
+  conversación de todos, una sección por archivo.
 - `a_json(mensaje)` y `de_json(texto)` pasan los mensajes a JSON y de vuelta, validando el contrato.
-  También viajan los agentes, incluidas las copias hechas con `crear`.
+  También viajan los agentes, incluidas las copias hechas con `crear`. Para eso Mate usa dos
+  formas reservadas: `{"tipo": "Pedido", "campos": {...}}` es un mensaje y
+  `{"agente": "Vendedor"}` es un agente. Ojo: un mapa tuyo que tenga justo esas claves (y
+  nombre un mensaje o un agente que existe) vuelve de `de_json` convertido en eso; si no
+  querés eso, usá otras claves.
 - `de_json(texto, "Pedido")` además exige que lo que llegó sea un `Pedido` (o un `"numero"`,
   una `"lista de Pedido"`...): sirve para los datos que vienen de afuera. Si el texto trae un
   mapa suelto con los campos (`{"producto": "yerba", "cantidad": 2}`), arma el `Pedido` con
-  ellos; si no cumple el contrato, el error lo dice.
+  ellos, también cuando está adentro de una lista (`"lista de Pedido"`) o de otro mensaje
+  (un `Pedido` con `items: lista de Item`); si no cumple el contrato, el error lo dice.
 
 ### Varias copias de un agente
 
@@ -417,8 +438,12 @@ Mate avisa (`Vendedor.precios arranca como mapa y le diste numero`). `nada` vale
 ("sin tope", "sin cliente todavía"). Lo que le das reemplaza a lo declarado: esa parte de la
 declaración ni se calcula.
 `llamado` le pone nombre para la traza (`Vendedor Norte`); sin eso se llama `Vendedor#2`.
-El nombre puede ser cualquier texto (`llamado "Sucursal " + ciudad`), pero no se repite: crear
-dos `Vendedor` llamados `"Norte"` es un error, porque no se los podría distinguir.
+El nombre puede ser cualquier texto (`llamado "Sucursal " + ciudad`), pero tiene que ser un
+texto (con un número o con `nada` es un error, y `llamado Sur` sin comillas también) y
+no se repite: crear dos `Vendedor` llamados `"Norte"` es un error, porque no se los podría
+distinguir.
+Si un agente crea una copia mientras atiende un mensaje y después falla, esa copia se deshace
+junto con su estado, y el nombre queda libre.
 Las copias se guardan en variables y se pueden mandar dentro de un mensaje (tipo `agente` o `lista`).
 
 ### Varios archivos
@@ -427,18 +452,21 @@ Las copias se guardan en variables y se pueden mandar dentro de un mensaje (tipo
 usar "catalogo.mate"
 ```
 
-Trae los mensajes, agentes, funciones y valores `sea` del otro archivo (se busca al lado del que
-lo usa). Lo que ese archivo ejecuta y sus pruebas no se traen, así que un mismo archivo sirve como
+Trae los mensajes, agentes, funciones y variables (`sea` y `var`) del otro archivo (se busca al
+lado del que lo usa). Un nombre que ya vino de ahí no se puede declarar de nuevo: el error dice
+de qué archivo viene. Lo que ese archivo ejecuta y sus pruebas no se traen, así que un mismo archivo sirve como
 programa y como biblioteca. Usarlo dos veces no molesta. Ver `ejemplos/mercado.mate`.
 Si el nombre va sin `.mate` (`usar "catalogo"`), Mate lo prueba también con `.mate`. Si el
-archivo no aparece, el error sugiere el nombre parecido o muestra los `.mate` que hay en esa
-carpeta; y si el error está adentro del archivo traído, dice quién lo trajo:
+archivo no aparece, el error sugiere el nombre parecido, avisa si el Bloc de notas lo guardó
+como `.mate.txt` o muestra los `.mate` que hay en esa carpeta (con o sin `.mate` en el nombre); y si el error está adentro del archivo traído, dice quién lo trajo:
 `(este archivo, catalogo.mate, se trajo con 'usar' desde mercado.mate, línea 5)`.
 
 **Antes de correr**, Mate revisa los contratos: avisa si a un mensaje le falta o le sobra un
 campo, si un valor literal es del tipo equivocado, si le mandás a un agente (o a una copia
 guardada con `sea`) algo que no sabe recibir, o si le preguntás a un agente que para ese mensaje
-nunca llega a un `responder`. Lo que no se puede saber de antemano se valida al construir el mensaje.
+nunca llega a un `responder` (un `fallar` adentro de un `si` no cuenta como respuesta; un
+`al recibir` que termina en `fallar` sí vale: falla siempre, a propósito). Lo que no se puede
+saber de antemano se valida al construir el mensaje.
 
 ### Las pruebas
 
@@ -474,7 +502,9 @@ Lo que una prueba cambia no le llega a la siguiente. Además:
 
   Se cumple si lo de adentro falla; si no falla, la prueba dice `se esperaba que esto fallara,
   y no falló` (o el texto que le pongas después de una coma). Sirve para lo que falla en el
-  momento: una cuenta, una función, un `preguntar`.
+  momento: una cuenta (`asegurar falla { 10 / 0 }`), una función, un `preguntar`. Un nombre
+  mal escrito ahí adentro (`dividr(1, 0)`) no cuenta como la falla esperada: la prueba falla y
+  dice cuál es el nombre que no existe.
 - `simular` reemplaza, **solo dentro de esa prueba**, lo que un agente contesta a un mensaje:
 
   ```
@@ -654,8 +684,9 @@ sea renglones = partir(leer_archivo("compras.txt"), "\n")
   la hora, `"21/11/2026 14:30"`. Sirven para mostrar o guardar: `"Presupuesto del {hoy()}"`.
 - Con `probar` devuelven siempre `"01/01/2025"` y `"01/01/2025 12:00"`: así una prueba da lo
   mismo cualquier día que se corra.
-- Son textos, no se pueden restar ni comparar con `<`. El día, el mes y el año salen con
-  `partir(hoy(), "/")`.
+- Son textos: no se pueden restar, y compararlos con `<` o `>` es un error (como textos,
+  `"21/11/2026" < "01/12/2026"` daría cualquier cosa). Con `==` y `!=` sí se puede ver si son
+  la misma fecha. El día, el mes y el año salen con `partir(hoy(), "/")`.
 
 ### Salir de un bucle: `romper` y `continuar`
 
@@ -680,6 +711,9 @@ Mate lo avisa antes de correr.
   mucho, aunque lo hayas escrito vos (`mostrar(3.141592653589793)` muestra `3.14159265359`).
   Lo mismo hacen `texto()`, `unir()` y `"{...}"`, así que `numero(texto(x))` puede no dar
   exactamente `x`. El valor guardado no cambia; para pasarlo entero a texto usá `a_json(x)`.
+  Esto vale para los números de menos de 10.000 millones. En los más grandes Mate solo quita
+  el ruido del final cuando puede hacerlo sin perder cifras de verdad (los centavos de un
+  monto enorme), así que `mostrar(100000000000 / 3)` muestra `33333333333.333332`.
 - Entre enteros la suma, la resta, la multiplicación y la división que da justo son exactas,
   por grandes que sean.
 - `redondear(2.5)` da `3` y `redondear(2.675, 2)` da `2.68`: el medio va siempre hacia arriba,
@@ -748,6 +782,15 @@ archivo viejo deja de andar, casi seguro es por una de estas:
 | Una condición escrita a mano que nunca es verdadero o falso (`si 1 { }`, `verdadero y 1`, `si x + 1 { }`) es un error antes de correr, aunque esté en una parte que no se ejecuta | Escribir la comparación: `si x + 1 > 0 { }` |
 | `mensaje Pedido` con la `{` en el renglón de abajo ahora declara el mensaje con esos campos (antes quedaba vacío); lo mismo `crear Vendedor` | Nada: es lo que se quería escribir |
 | `a_mapa` es una función incluida: no sirve como nombre de variable | Elegir otro nombre |
+| Un renglón que solo calcula (`i + 1`) se avisa antes de correr, aunque esté en una parte que no se ejecuta; y ese error (también el de `numero(x)` suelto) ya no se ataja con `intentar` ni cuenta en `asegurar falla` | Guardar el resultado: `intentar { sea n = numero(dato) ... } si falla e { ... }` |
+| `asegurar falla { ... }` ya no se cumple por un nombre que no existe ahí adentro | Corregir el nombre |
+| `preguntar` a un agente cuyo `al recibir` solo tiene un `fallar` adentro de un `si` (y ningún `responder`) es un error antes de correr | Agregar el `responder`, o usar `enviar` |
+| `sea iva = 21%` y `} si no {` son un error que explica cómo se escribe | `21 / 100` o `0.21`; `sino` todo junto |
+| Comparar con `<`, `<=`, `>` o `>=` dos textos con forma de fecha (`"21/11/2026"`) es un error | Antes daba un resultado equivocado sin avisar; separar con `partir(fecha, "/")` y comparar los números |
+| `crear ... llamado` con algo que no es un texto (un número, `nada`, `llamado Sur` sin comillas) es un error | Pasarlo a texto: `llamado "Sucursal {n}"` |
+| Dentro de un `si`, `para`, `mientras` o `intentar` de una función, una prueba o un `al recibir`, `sea x = ...` es un error si `x` es una variable `var` del programa | Sacar el `sea` si querías cambiarla, o elegir otro nombre |
+| `unir`, `texto`, `a_json`, `agregar` y `"{...}"` tampoco pueden armar un texto o una lista de más de 10.000.000 de elementos | Trabajar con menos datos por vez |
+| Volver a declarar un nombre que vino con `usar` dice de qué archivo viene (cambió la redacción); el final de un archivo a medio escribir se señala en el último renglón escrito | Elegir otro nombre; no comparar el texto entero del error |
 | El error de "demasiada recursión" es más largo y nombra la función; y hay lugar para 3.000 llamadas en vez de 120 | No comparar el texto entero del error |
 | Cambió la redacción de los errores de `tiene()` y `quitar()` con un valor que no corresponde, y `quitar(mapa, 1)` es un error (las claves son textos) | No comparar el texto entero del error |
 | Un agente con `al fallar` se hace cargo de las fallas de lo que envió: ya no aparecen como error del programa | Nada si no usás `al fallar` |
