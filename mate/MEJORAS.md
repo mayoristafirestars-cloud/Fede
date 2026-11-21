@@ -594,36 +594,45 @@ Nota al hacerla: devuelve una copia: cambiar el mapa no toca el mensaje. Si ya e
 Nota al hacerla: de una carpeta toma los `.mate` que tiene directamente adentro (no entra en subcarpetas). Cada archivo corre aparte, con su nombre arriba; al final va el total y la lista de los que tuvieron problemas. Un archivo sin pruebas dice `(sin pruebas)` y no cuenta como problema. `correr` y `verificar` siguen llevando un solo archivo.
 *Mirada: principiante · Esfuerzo: chico · Estado: hecha*
 
-### Lo que sigue
+### Tanda 8: consola, ayuda por palabra, archivos, fechas y el tope escrito
 
 **88. Consola interactiva**
 Orden `consola` para probar renglones sueltos sin crear un archivo.
-*Mirada: principiante · Esfuerzo: mediano · Estado: pendiente*
+Nota al hacerla: los renglones se numeran de corrido (`  1>`), así un error que dice "línea 4" se entiende. Un valor suelto (`2 + 3`) se muestra solo; si queda una llave abierta sigue en el renglón de abajo, y un renglón vacío corta. Solo en la consola se puede volver a declarar un `sea`, un `var`, una función o un agente para corregirlo. Un error no la cierra. Las pruebas no corren ahí (lo dice). Se sale con `salir`.
+*Mirada: principiante · Esfuerzo: mediano · Estado: hecha*
 
 **89. Versión 0.3 y sección "Qué cambió"**
 Varias mejoras vuelven error cosas que hoy corren. El README va a listar cada regla nueva y cómo corregir un archivo viejo.
 Nota: después de la revisión de las tandas 1 a 3 el README ya tiene la sección "Qué cambió y puede frenar un programa viejo". Queda pendiente el cambio de número de versión y mantenerla al día.
-*Mirada: crítico · Esfuerzo: chico · Estado: pendiente*
+Nota al hacerla (tanda 8): Mate pasó a decir 0.3 (`--version`, la ayuda, la guía y el README). La sección "Qué cambió" aclara que junta todo lo que va de la 0.2 a la 0.3 y sumó los renglones de esta tanda. Cada mejora que frene un programa viejo tiene que seguir agregando su renglón ahí.
+*Mirada: crítico · Esfuerzo: chico · Estado: hecha*
 
 **90. Un tope para que Mate siga siendo chico**
 Dejar escrito el presupuesto: pocas palabras nuevas, unas 12 funciones nuevas, y cada agregado con su renglón en el README y su prueba.
-*Mirada: crítico · Esfuerzo: chico · Estado: pendiente*
+Nota al hacerla: el tope quedó en 40 palabras propias y 40 funciones incluidas, escrito arriba de todo en `mate.py` y en la sección "El tope" del README. Hoy hay 36 palabras y 39 funciones: queda lugar para una sola función más. Las pruebas frenan a quien se pase, y controlan que cada función y cada palabra tenga su renglón en el README, su `ayuda` y una prueba que la use (ese control encontró que `valores`, `mayusculas` y `minusculas` no tenían prueba; ya la tienen).
+*Mirada: crítico · Esfuerzo: chico · Estado: hecha*
 
 **91. Leer y escribir archivos de texto**
 `leer_archivo` y `escribir_archivo`, solo desde el programa principal, solo dentro de la carpeta del programa y sin poder pisar archivos `.mate` ni `.py`.
-*Mirada: lenguaje, crítico · Esfuerzo: mediano · Estado: pendiente*
+Nota al hacerla: `escribir_archivo` reemplaza el archivo entero (no hay "agregar al final": se lee, se junta y se guarda). Además de `.mate` y `.py` tampoco pisa `.bat`, `.cmd` ni `.ps1`. Vale una subcarpeta que ya exista, pero nada de afuera de la carpeta del programa. Los errores son de una clase nueva para `detalle_de`: `"archivo"`. Ojo: `probar` corre el programa antes de las pruebas, así que lo que el programa escribe se escribe igual. No se pudo probar en una Windows de verdad.
+*Mirada: lenguaje, crítico · Esfuerzo: mediano · Estado: hecha*
 
 **92. `hoy()` y `ahora()`**
 La fecha y la hora. En las pruebas devuelven una fecha fija, para que el resultado sea siempre el mismo.
-*Mirada: lenguaje, crítico · Esfuerzo: chico · Estado: pendiente*
+Nota al hacerla: devuelven textos como se escriben acá, `"21/11/2026"` y `"21/11/2026 14:30"`. Con `probar` son siempre `"01/01/2025"` y `"01/01/2025 12:00"`. No hay cuentas con fechas (restar días, comparar): sería otra mejora. `hoy` y `ahora` dejan de servir como nombre de variable; está anotado en "Qué cambió".
+*Mirada: lenguaje, crítico · Esfuerzo: chico · Estado: hecha*
 
 **93. Un solo formato para todos los errores**
 Los errores de agentes y los comunes se ven igual, con el archivo y el renglón adelante.
+Nota (tanda 8): salteada. Con `correr` ya se ven igual (`archivo:renglón: error: ...`, también los de agentes). Lo que queda distinto es `probar`, que debajo de cada prueba escribe `línea 5: ...` para los comunes y `Roto al recibir Ping (línea 2): ...` para los de agentes. Unificarlo cambia renglones que varias pruebas existentes comparan letra por letra (es el mismo problema de la mejora 63). Hay que decidir primero si esa salida de `probar` se puede cambiar.
 *Mirada: principiante · Esfuerzo: chico · Estado: pendiente*
 
 **94. `ayuda <palabra>`**
 `mate ayuda si` o `mate ayuda largo` muestra una explicación corta con un ejemplo, tomada de la tabla única de funciones.
-*Mirada: principiante · Esfuerzo: mediano · Estado: pendiente*
+Nota al hacerla: las funciones salen de la tabla única; las palabras tienen su propia tabla, y cada ejemplo es un programa entero que las pruebas corren. `ayuda print` dice que en Mate es `mostrar`, y `ayuda mostar` sugiere la parecida. También anda adentro de la consola. `ayuda correr` (una orden) sigue mostrando la ayuda general.
+*Mirada: principiante · Esfuerzo: mediano · Estado: hecha*
+
+### Lo que sigue
 
 **95. Valores por defecto en los parámetros (para más adelante)**
 `funcion con_iva(precio, tasa = 0.21)`. Postergada para no agrandar el lenguaje todavía.

@@ -5,7 +5,7 @@ Un lenguaje chico, con palabras en español, pensado para dos cosas:
 1. **Escribir código más práctico y con menos sorpresas.**
 2. **Que los agentes se hablen entre ellos** con mensajes que tienen contrato.
 
-Versión 0.2. El intérprete es un solo archivo (`mate.py`), sin dependencias: alcanza con Python 3.
+Versión 0.3. El intérprete es un solo archivo (`mate.py`), sin dependencias: alcanza con Python 3.
 
 ```bash
 python3 mate/mate.py correr mate/ejemplos/negociacion.mate
@@ -89,7 +89,9 @@ cuidado pero todavía no se probó en una Windows de verdad: si hace algo raro, 
 del paso 4 anda siempre.)
 
 **6. Si algo sale mal.** Mate te dice el archivo, el número de renglón y qué pasó, en
-castellano. En el Bloc de notas, `Ctrl+G` te lleva a ese renglón.
+castellano. En el Bloc de notas, `Ctrl+G` te lleva a ese renglón. Y si no te acordás cómo se
+usa una palabra, preguntale a Mate: `python mate\mate.py ayuda si` (o `ayuda para`,
+`ayuda largo`...) muestra una explicación corta con un ejemplo para copiar.
 
 **7. Seguir aprendiendo.** En `mate\ejemplos` hay seis programas cortos, explicados renglón por
 renglón, para leer y correr en orden:
@@ -127,6 +129,8 @@ archivo y abrirla con el Bloc de notas: `python mate\mate.py guia > guia.txt`.
 | `verificar archivo.mate` | revisa el programa sin correrlo |
 | `guia` | imprime una página con todo Mate, para pegarle a una IA (`python mate\mate.py guia`) |
 | `ayuda` | muestra las órdenes y un ejemplo listo para copiar |
+| `ayuda si` | explica una palabra de Mate o una función incluida (`ayuda largo`), con un ejemplo |
+| `consola` | abre la consola, para probar renglones sueltos sin crear un archivo |
 | `--traza` | muestra la conversación entre agentes, mensaje por mensaje |
 | `--traza=conversacion.txt` | guarda esa conversación en un archivo, con un resumen al final |
 | `--sin-limite` | no corta los programas que dan muchísimos pasos |
@@ -138,6 +142,53 @@ Si te equivocás al tipear, Mate te lo dice en vez de seguir de largo: `corer` s
 carpeta. Si el Bloc de notas lo guardó como `hola.mate.txt`, también te avisa (y si le pasás
 ese nombre completo, lo corre igual con un aviso). La orden va siempre primero: si escribís
 `hola.mate probar`, Mate te dice que es `probar hola.mate`.
+
+### Ayuda de una palabra
+
+```
+python mate\mate.py ayuda mientras
+```
+
+contesta qué hace `mientras` y muestra un ejemplo corto que se puede copiar tal cual. Vale para
+todas las palabras de Mate (`si`, `para`, `agente`, `enviar`, `prueba`...) y para todas las
+funciones incluidas (`ayuda largo`, `ayuda pesos`). Si escribís una palabra de otro lenguaje
+(`ayuda print`) te dice cuál es la de Mate, y si le errás por una letra (`ayuda mostar`)
+sugiere la parecida.
+
+### La consola
+
+Para probar algo cortito sin crear un archivo:
+
+```
+python mate\mate.py consola
+```
+
+Aparece `  1>` y Mate espera un renglón. Lo que escribís corre al apretar Enter:
+
+```
+  1> sea precio = 3500
+  2> precio * 2
+7000
+  3> funcion con_iva(p) {
+  4.     devolver p * 1.21
+  5. }
+  6> pesos(con_iva(precio))
+"$ 4.235,00"
+  7> salir
+```
+
+- Un valor suelto (`precio * 2`) se muestra solo, sin escribir `mostrar`. Los textos salen
+  entre comillas, para distinguir `"5"` de `5`.
+- Si queda una llave, un paréntesis o un corchete sin cerrar, la consola sigue en el renglón de
+  abajo (el número termina en `.` en vez de `>`). Un renglón vacío corta ahí.
+- Lo que declarás (variables, funciones, mensajes, agentes) queda para los renglones
+  siguientes. Solo acá se puede volver a escribir `sea precio = 4000` o la misma `funcion`
+  para corregirla: reemplaza a la anterior. En un archivo eso sigue siendo un error.
+- Los renglones se numeran de corrido, así que si un error dice `línea 4` es el renglón 4 de
+  lo que escribiste. Un error no cierra la consola.
+- `ayuda si` explica una palabra ahí mismo. Las pruebas no corren en la consola: van en un
+  archivo, con `probar`.
+- Para terminar: `salir` (o `Ctrl+Z` y Enter en Windows).
 
 ## Cuando algo sale mal
 
@@ -456,7 +507,8 @@ Las clases son: `"fallar"` (un `fallar` del programa), `"asegurar"`, `"contrato"
 o una respuesta que no cumple su contrato), `"clave"` (una clave o un campo que no está),
 `"posicion"`, `"division"` (por cero), `"nombre"` (un nombre que no existe), `"numero"` (un
 texto que no es un número), `"json"`, `"agente"` (no sabe recibir ese mensaje o no respondió),
-`"ciclo"` (de preguntas) y `"otro"` para el resto. Hay que pasarle `e` tal cual llegó: si lo
+`"ciclo"` (de preguntas), `"archivo"` (un archivo que no está o que no se puede tocar) y
+`"otro"` para el resto. Hay que pasarle `e` tal cual llegó: si lo
 cambiás (`e + "!"`) es un texto común y `detalle_de` avisa que no es un error atajado.
 
 ## Referencia rápida
@@ -517,6 +569,10 @@ Son estas y no hay otras. Cada renglón es un ejemplo que se puede copiar:
 | `de_json(texto, "Pedido")` | el valor que describe ese JSON; el 2.º valor (opcional) exige ese tipo |
 | `a_mapa(pedido)` | un mapa común con los campos de ese mensaje, para recorrerlos |
 | `detalle_de(e)` | los datos de un error atajado: un mapa con texto, linea, clase y dato |
+| `hoy()` | la fecha, "21/11/2026" (en las pruebas, siempre "01/01/2025") |
+| `ahora()` | fecha y hora, "21/11/2026 14:30" (en las pruebas, "01/01/2025 12:00") |
+| `leer_archivo("notas.txt")` | el texto de ese archivo (de la carpeta del programa) |
+| `escribir_archivo("notas.txt", t)` | guarda el texto t en ese archivo (si ya existía, lo pisa) |
 
 - Si a una función le das valores de más o de menos, el error trae el ejemplo:
   `obtener() lleva 3 valores y recibió 2. Por ejemplo: obtener(mapa, "clave", 0)`.
@@ -563,6 +619,43 @@ sea cantidad = numero(leer("¿Cuántos paquetes?", "3"))
   llega a un `leer` sin respuesta preparada, es un error que lo explica.
 - Solo se usa desde el programa principal (o desde una función llamada por él). Un agente no
   puede frenar a todos esperando el teclado: se lee el dato afuera y se le manda en un mensaje.
+
+### Archivos de texto: `leer_archivo` y `escribir_archivo`
+
+```
+escribir_archivo("compras.txt", unir(["yerba", "pan"], "\n"))
+sea renglones = partir(leer_archivo("compras.txt"), "\n")
+```
+
+- `leer_archivo("compras.txt")` devuelve todo el archivo como un texto; con
+  `partir(texto, "\n")` queda una lista con un renglón por elemento. Lee lo que guarda el Bloc
+  de notas en cualquiera de sus codificaciones.
+- `escribir_archivo("compras.txt", texto)` guarda ese texto. Si el archivo ya existía, **lo
+  reemplaza entero** (para agregar, leelo antes y guardá lo viejo más lo nuevo). Lo que se
+  guarda tiene que ser un texto: un número va con `texto(n)`, una lista con `unir(lista, "\n")`
+  y un mensaje con `a_json(mensaje)`.
+- Los archivos son **los de la carpeta del programa** (o de una subcarpeta que ya exista:
+  `"datos/compras.txt"`). Con `"C:/Windows/algo.txt"` o `"../afuera.txt"` Mate frena y lo
+  explica. En la consola, la carpeta es en la que estás parado.
+- `escribir_archivo` nunca pisa un programa: no escribe en archivos `.mate`, `.py`, `.bat`,
+  `.cmd` ni `.ps1`.
+- Solo andan desde el programa principal (o desde una función llamada por él). Un agente no
+  toca archivos: se lee afuera y se le manda el dato en un mensaje.
+- Si el archivo no está, el error lo dice y sugiere el nombre parecido (o el `notas.txt.txt`
+  que deja el Bloc de notas). Para seguir igual:
+  `intentar { sea t = leer_archivo("notas.txt") } si falla e { ... }`, y
+  `detalle_de(e).clase` vale `"archivo"`.
+- Ojo: `probar` también corre el programa antes de las pruebas, así que lo que el programa
+  escribe se escribe igual.
+
+### La fecha y la hora: `hoy` y `ahora`
+
+- `hoy()` devuelve la fecha como texto, `"21/11/2026"` (día/mes/año), y `ahora()` le agrega
+  la hora, `"21/11/2026 14:30"`. Sirven para mostrar o guardar: `"Presupuesto del {hoy()}"`.
+- Con `probar` devuelven siempre `"01/01/2025"` y `"01/01/2025 12:00"`: así una prueba da lo
+  mismo cualquier día que se corra.
+- Son textos, no se pueden restar ni comparar con `<`. El día, el mes y el año salen con
+  `partir(hoy(), "/")`.
 
 ### Salir de un bucle: `romper` y `continuar`
 
@@ -615,8 +708,9 @@ solo se puede asignar a una variable o a una parte de ella (`x`, `x.campo`, `x[0
 
 ## Qué cambió y puede frenar un programa viejo
 
-Varias mejoras vuelven error cosas que antes corrían. Si un archivo viejo deja de andar, casi
-seguro es por una de estas:
+Varias mejoras vuelven error cosas que antes corrían. Esta tabla junta todo lo que cambió
+desde la versión 0.2 hasta la 0.3 (`python mate\mate.py --version` dice cuál tenés). Si un
+archivo viejo deja de andar, casi seguro es por una de estas:
 
 | Qué pasa ahora | Cómo se arregla |
 |---|---|
@@ -657,8 +751,27 @@ seguro es por una de estas:
 | El error de "demasiada recursión" es más largo y nombra la función; y hay lugar para 3.000 llamadas en vez de 120 | No comparar el texto entero del error |
 | Cambió la redacción de los errores de `tiene()` y `quitar()` con un valor que no corresponde, y `quitar(mapa, 1)` es un error (las claves son textos) | No comparar el texto entero del error |
 | Un agente con `al fallar` se hace cargo de las fallas de lo que envió: ya no aparecen como error del programa | Nada si no usás `al fallar` |
+| `hoy`, `ahora`, `leer_archivo` y `escribir_archivo` son funciones incluidas: no sirven como nombre de variable (`sea hoy = ...`) | Elegir otro nombre: `sea fecha = hoy()` |
+| `ayuda` seguida de una palabra (`ayuda si`) ya no muestra la ayuda general sino la de esa palabra; y `consola` es una orden | Nada: `ayuda` sola sigue igual |
 
-## Límites de la versión 0.2
+## El tope: Mate tiene que seguir siendo chico
+
+Mate sirve porque entra en la cabeza. Para que siga así hay un presupuesto escrito, y las
+pruebas del intérprete no dejan pasarse:
+
+- **Palabras propias: 40 como mucho.** Hoy son 36 (`sea`, `si`, `agente`...).
+- **Funciones incluidas: 40 como mucho.** Hoy son 39. Empezó con 20 y el plan era sumar unas
+  12; con las de archivos y fechas queda lugar para una sola más. Para agregar otra hay que
+  sacar una, o discutir el tope.
+- **Cada agregado trae lo suyo**: su renglón en este README (en la tabla de funciones o en la
+  referencia), su explicación en `ayuda <palabra>` y al menos una prueba que lo use.
+- **Una sola forma de escribir cada cosa.** Nada de sinónimos (`función` con tilde, comillas
+  simples, `*=`): Mate explica cómo va, pero no acepta dos maneras.
+- **Un solo archivo, sin instalar nada**, y todo en castellano: palabras y errores.
+
+Los números están en `mate.py` (`TOPE_DE_PALABRAS` y `TOPE_DE_FUNCIONES`), bien arriba.
+
+## Límites de la versión 0.3
 
 - Los agentes corren todos dentro del mismo programa, de a uno y en orden (por eso el resultado
   es siempre el mismo). Todavía no se conectan con agentes de IA reales ni entre máquinas.

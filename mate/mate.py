@@ -8,9 +8,11 @@ Uso:
     python3 mate.py probar    archivo.mate   (o varios archivos, o una carpeta)
     python3 mate.py verificar archivo.mate
     python3 mate.py guia
-    python3 mate.py ayuda
+    python3 mate.py ayuda     (o: ayuda si, ayuda largo... para una palabra o función)
+    python3 mate.py consola   (para probar renglones sueltos)
 """
 
+import datetime
 import decimal
 import difflib
 import json
@@ -21,7 +23,13 @@ import sys
 import unicodedata
 from collections import deque
 
-VERSION = "0.2"
+VERSION = "0.3"
+
+# El tope para que Mate siga siendo chico (mejora 90): no puede haber más palabras propias
+# ni más funciones incluidas que estas. Para agregar una hay que sacar otra, o discutir el
+# tope. Y cada agregado lleva su renglón en el README y su prueba (las pruebas lo controlan).
+TOPE_DE_PALABRAS = 40
+TOPE_DE_FUNCIONES = 40
 
 PALABRAS = {
     "sea", "var", "funcion", "devolver", "si", "sino", "mientras", "para", "en",
@@ -97,6 +105,13 @@ FUNCIONES = {
                "un mapa común con los campos de ese mensaje, para recorrerlos"),
     "detalle_de": (1, 1, "detalle_de(e)",
                    "los datos de un error atajado: un mapa con texto, linea, clase y dato"),
+    "hoy": (0, 0, "hoy()", 'la fecha, "21/11/2026" (en las pruebas, siempre "01/01/2025")'),
+    "ahora": (0, 0, "ahora()",
+              'fecha y hora, "21/11/2026 14:30" (en las pruebas, "01/01/2025 12:00")'),
+    "leer_archivo": (1, 1, 'leer_archivo("notas.txt")',
+                     "el texto de ese archivo (de la carpeta del programa)"),
+    "escribir_archivo": (2, 2, 'escribir_archivo("notas.txt", t)',
+                         "guarda el texto t en ese archivo (si ya existía, lo pisa)"),
 }
 
 
@@ -108,7 +123,7 @@ def lista_de_funciones(formato_de_renglon="- {ejemplo:<27} {que}"):
 
 # Las funciones incluidas que hacen algo además de devolver un valor: pueden ir solas
 # en un renglón. Las demás, sueltas, no sirven de nada y Mate lo avisa.
-HACEN_ALGO = ("mostrar", "leer")
+HACEN_ALGO = ("mostrar", "leer", "escribir_archivo")
 
 # Palabras de otros lenguajes, o con tilde, y cómo se escriben en Mate. No se aceptan
 # como sinónimos: solo sirven para explicar el error.
@@ -138,6 +153,10 @@ RESPONDER_SUELTO = "'responder' solo va dentro de 'al recibir' (o de una funció
 AL_FALLAR = "al fallar"
 SIN_A_QUIEN = ("en 'al fallar' no hay a quién responder: es un aviso, no una pregunta. "
                "Para mandar algo usá 'enviar'")
+# Lo que escribir_archivo() no pisa nunca: programas (de Mate, de Python o de Windows).
+NO_SE_PISAN = (".mate", ".mate.txt", ".py", ".bat", ".cmd", ".ps1")
+# En las pruebas hoy() y ahora() dan siempre esto, para que el resultado no dependa del día.
+FECHA_DE_PRUEBA = datetime.datetime(2025, 1, 1, 12, 0)
 SIN_MEMORIA = ("el programa se quedó sin memoria: está armando un texto, una lista o un "
                "número demasiado grande")
 
@@ -1835,6 +1854,7 @@ def incluidas():
 
 class Entorno:
     nacidos = 0  # cuántos entornos se crearon: sirve para saber cuál es anterior a cuál
+    se_pisa = False  # solo en la consola: declarar de nuevo un nombre reemplaza al anterior
 
     def __init__(self, padre=None, frontera=False, borde=False):
         Entorno.nacidos += 1
@@ -1846,7 +1866,8 @@ class Entorno:
         self.borde = borde  # donde empieza una función, un 'al recibir' o una prueba
 
     def definir(self, nombre, valor, mutable=False, origen=None):
-        if nombre in self.vars:
+        if nombre in self.vars and not (
+                self.se_pisa and self.origen.get(nombre) in ("sea", "var", "funcion", "agente")):
             previo = self.origen.get(nombre)
             if previo == "nativa":
                 raise ErrorMate(INCLUIDA.format(n=nombre))
@@ -1965,6 +1986,7 @@ class Interprete:
         self.atendiendo = []  # (agente, renglón de la pregunta) de los que están atendiendo
         self.entrada = por_teclado  # de dónde saca leer() lo que contesta la persona
         self.sin_teclado = False  # en las pruebas leer() usa la respuesta preparada
+        self.fecha_fija = False  # en las pruebas hoy() y ahora() dan siempre lo mismo
         self._nativas()
 
     # ── funciones incorporadas ──
@@ -2228,6 +2250,98 @@ class Interprete:
                     return preparada
                 raise ErrorMate("leer(): no hay nadie para contestar (el programa no "
                                 "está corriendo en una consola con teclado)")
+
+        def momento():
+            return FECHA_DE_PRUEBA if self.fecha_fija else datetime.datetime.now()
+
+        nativa("hoy")(lambda: momento().strftime("%d/%m/%Y"))
+        nativa("ahora")(lambda: momento().strftime("%d/%m/%Y %H:%M"))
+
+        def archivo_de_datos(nombre, donde):
+            """La ruta completa de un archivo de la carpeta del programa (y solo de ahí)."""
+            pedir(nombre, "texto", donde)
+            if self.contexto is not None or self.naciendo:
+                raise ErrorMate(
+                    f"{donde} solo se usa desde el programa principal: un agente no toca "
+                    "archivos. Leé o guardá el archivo afuera y pasale los datos en un "
+                    "mensaje", familia="archivo")
+            carpeta = os.path.realpath(
+                os.path.dirname(os.path.abspath(self.archivo)) if self.archivo else os.getcwd())
+            ruta = os.path.realpath(os.path.join(carpeta, nombre)) if nombre.strip() else carpeta
+            try:
+                adentro = os.path.normcase(os.path.commonpath([carpeta, ruta])) \
+                    == os.path.normcase(carpeta)
+            except ValueError:  # en Windows, si está en otro disco
+                adentro = False
+            if not nombre.strip():
+                raise ErrorMate(f'{donde}: falta el nombre del archivo, por ejemplo "notas.txt"',
+                                familia="archivo")
+            if not adentro:
+                suelto = os.path.basename(nombre.replace("\\", "/").rstrip("/")) or "notas.txt"
+                raise ErrorMate(
+                    f"{donde} solo trabaja con archivos de la carpeta del programa "
+                    f"({carpeta}), y '{nombre}' queda afuera. Copiá el archivo a esa carpeta "
+                    f'y nombralo sin la ruta: "{suelto}"', familia="archivo")
+            return carpeta, ruta
+
+        @nativa("leer_archivo")
+        def _(nombre):
+            carpeta, ruta = archivo_de_datos(nombre, "leer_archivo()")
+            if os.path.isdir(ruta):
+                raise ErrorMate(f"leer_archivo(): '{nombre}' es una carpeta, no un archivo",
+                                familia="archivo")
+            try:
+                contenido = leer_fuente(ruta)
+            except FileNotFoundError:
+                try:
+                    otros = sorted(a for a in os.listdir(os.path.dirname(ruta))
+                                   if os.path.isfile(os.path.join(os.path.dirname(ruta), a)))
+                except OSError:
+                    otros = []
+                suelto = os.path.basename(ruta)
+                if suelto + ".txt" in otros:  # el Bloc de notas le agregó .txt
+                    pista = f" ¿Quisiste decir '{suelto}.txt'?"
+                else:
+                    pista = sugerir(suelto, otros)
+                raise ErrorMate(f"leer_archivo(): no encuentro el archivo '{nombre}' en "
+                                f"{os.path.dirname(ruta)}.{pista}".rstrip("."), familia="archivo")
+            except OSError:
+                raise ErrorMate(f"leer_archivo(): no pude abrir '{nombre}'", familia="archivo")
+            except ErrorMate:
+                raise ErrorMate(f"leer_archivo(): no pude leer las letras de '{nombre}': "
+                                "¿seguro que es un archivo de texto?", familia="archivo")
+            if len(contenido) > MAX_LARGO:
+                raise ErrorMate(f"leer_archivo(): '{nombre}' es demasiado grande para leerlo "
+                                "entero", familia="archivo")
+            return contenido
+
+        @nativa("escribir_archivo")
+        def _(nombre, contenido):
+            carpeta, ruta = archivo_de_datos(nombre, "escribir_archivo()")
+            if nombre_tipo(contenido) != "texto":
+                raise ErrorMate(
+                    f"escribir_archivo() guarda un texto y recibió {tipo_claro(contenido)}. "
+                    'Pasalo a texto antes: texto(valor), unir(lista, "\\n") o a_json(valor)')
+            # (Windows ignora los puntos y espacios del final, y lo que sigue a un ':')
+            if os.path.basename(ruta).split(":")[0].rstrip(". ").lower().endswith(NO_SE_PISAN):
+                raise ErrorMate(
+                    f"escribir_archivo() no escribe en '{nombre}' para no pisar un programa: "
+                    'elegí otro nombre, por ejemplo "notas.txt"', familia="archivo")
+            if os.path.isdir(ruta):
+                raise ErrorMate(f"escribir_archivo(): '{nombre}' es una carpeta, no un archivo",
+                                familia="archivo")
+            try:
+                # con la marca del principio, para que el Bloc de notas muestre bien las tildes
+                with open(ruta, "w", encoding="utf-8-sig") as f:
+                    f.write(contenido)
+            except FileNotFoundError:
+                raise ErrorMate(f"escribir_archivo(): no existe la carpeta donde iría "
+                                f"'{nombre}'. Creala antes, o guardá el archivo al lado del "
+                                "programa", familia="archivo")
+            except (OSError, UnicodeError):
+                raise ErrorMate(f"escribir_archivo(): no pude guardar '{nombre}' (¿está "
+                                "abierto en otro programa, o no hay permiso?)",
+                                familia="archivo")
 
         @nativa("recortar")
         def _(t):
@@ -2583,6 +2697,7 @@ class Interprete:
 
     def _correr(self, programa, pruebas):
         self.sin_teclado = self.sin_teclado or pruebas
+        self.fecha_fija = self.fecha_fija or pruebas
         self.cargar(programa)
         for s in programa:
             if s[0] == "agente":
@@ -3374,15 +3489,17 @@ CONTROL
 - intentar {{ ... }} si falla e {{ ... }}             e es el texto del error (el 'e' es opcional)
   detalle_de(e).clase dice qué pasó sin depender de la redacción: "fallar", "asegurar",
   "contrato", "clave", "posicion", "division", "nombre", "numero", "json", "agente",
-  "ciclo" u "otro". detalle_de(e).dato es el valor que se le dio a 'fallar'.
+  "ciclo", "archivo" u "otro". detalle_de(e).dato es el valor que se le dio a 'fallar'.
 
 FUNCIONES INCLUIDAS (no hay otras)
 {funciones}
 - agregar, quitar, ordenar y porcion devuelven una copia NUEVA, no cambian la original:
   lista = agregar(lista, x)
 - quitar(lista, x) saca por valor, no por posición: se van todos los que valen x.
-- Una función incluida suelta en un renglón (salvo mostrar y leer) es un error: hay que usar
-  lo que devuelve.
+- Una función incluida suelta en un renglón (salvo mostrar, leer y escribir_archivo) es un
+  error: hay que usar lo que devuelve.
+- leer_archivo y escribir_archivo solo andan desde el programa principal (no desde un agente),
+  con archivos de la carpeta del programa, y no pisan archivos .mate ni .py.
 
 AGENTES Y MENSAJES
 - mensaje Pedido {{ producto: texto, cantidad: numero, nota: texto? }}     (? = opcional)
@@ -3470,6 +3587,280 @@ def texto_de_guia():
     return GUIA.format(version=VERSION, funciones=lista_de_funciones())
 
 
+_EJ_AGENTE = """mensaje Sumar { a: numero, b: numero }
+agente Calculadora {
+    estado cuentas = 0
+    al recibir Sumar como s {
+        cuentas += 1
+        responder s.a + s.b
+    }
+}
+sea r = preguntar Sumar { a: 2, b: 3 } a Calculadora
+mostrar(r)"""
+_EJ_FALLAR = """funcion dividir(a, b) {
+    si b == 0 { fallar "no se puede dividir por cero" }
+    devolver a / b
+}
+intentar {
+    mostrar(dividir(1, 0))
+} si falla e {
+    mostrar("No anduvo: {e}")
+}"""
+_EJ_PRUEBA = """funcion doble(n) { devolver n * 2 }
+prueba "el doble de 4 es 8" {
+    asegurar doble(4) == 8
+    asegurar doble(0) == 0, "el doble de cero es cero"
+}"""
+
+# La ayuda de cada palabra de Mate: qué hace y un ejemplo que se puede copiar y correr.
+# (La de las funciones incluidas sale de la tabla FUNCIONES.)
+AYUDA = {
+    "sea": ("guarda un valor con un nombre. Es fijo: no cambia más (para que pueda "
+            "cambiar va 'var')", 'sea iva = 0.21\nmostrar("El IVA es {iva}")'),
+    "var": ("guarda un valor que después se puede cambiar",
+            "var total = 0\ntotal = total + 10\ntotal += 5\nmostrar(total)"),
+    "funcion": ("le pone nombre a unos pasos para usarlos muchas veces. 'devolver' entrega "
+                "el resultado y termina la función",
+                "funcion doble(n) {\n    devolver n * 2\n}\nmostrar(doble(4))"),
+    "si": ("hace una cosa u otra según una condición, que tiene que dar verdadero o falso. "
+           "'sino si' y 'sino' son opcionales y van en el renglón de la llave que cierra",
+           'sea edad = 20\nsi edad >= 18 {\n    mostrar("mayor")\n} sino si edad >= 13 {\n'
+           '    mostrar("adolescente")\n} sino {\n    mostrar("chico")\n}'),
+    "mientras": ("repite el bloque mientras la condición sea verdadera",
+                 "var n = 3\nmientras n > 0 {\n    mostrar(n)\n    n -= 1\n}"),
+    "para": ("recorre una lista de a un elemento (también las claves de un mapa o las "
+             "letras de un texto). Con dos nombres, el primero es la posición",
+             'sea frutas = ["pera", "uva"]\npara fruta en frutas {\n    mostrar(fruta)\n}\n'
+             'para i, fruta en frutas {\n    mostrar("{i}: {fruta}")\n}'),
+    "romper": ("'romper' corta el bucle ('para' o 'mientras') en el que está; 'continuar' "
+               "salta a la vuelta siguiente",
+               'para cosa en ["pan", "", "fin", "leche"] {\n    si cosa == "" { continuar }\n'
+               '    si cosa == "fin" { romper }\n    mostrar(cosa)\n}'),
+    "y": ("'y', 'o' y 'no' combinan condiciones: las dos, alguna de las dos, o lo contrario",
+          'sea edad = 20\nsea socio = falso\nsi edad >= 18 y no socio {\n'
+          '    mostrar("puede asociarse")\n}\nsi edad < 13 o edad > 65 {\n'
+          '    mostrar("entra gratis")\n}'),
+    "verdadero": ("'verdadero' y 'falso' son los dos valores lógicos: lo que da una "
+                  "comparación y lo que espera un 'si'",
+                  'sea abierto = verdadero\nsi abierto {\n    mostrar("pasá")\n}\n'
+                  "mostrar(3 > 5)"),
+    "nada": ("es la falta de valor: lo que devuelve una función sin 'devolver', o un campo "
+             "opcional que no vino",
+             'sea precios = { yerba: 3500 }\nsea p = obtener(precios, "cafe", nada)\n'
+             'si p == nada {\n    mostrar("no vendo café")\n}'),
+    "lista": ("varios valores en orden, entre corchetes. Las posiciones arrancan en 0",
+              'var compras = ["yerba", "pan"]\ncompras = agregar(compras, "leche")\n'
+              "mostrar(compras[0], largo(compras), ultimo(compras))"),
+    "mapa": ("valores con nombre, entre llaves. Las claves son siempre textos",
+             'var producto = { nombre: "yerba", precio: 3500 }\nproducto.precio = 3800\n'
+             'mostrar(producto.nombre, producto["precio"], claves(producto))'),
+    "mensaje": ("declara el contrato de un mensaje: qué campos lleva y de qué tipo (numero, "
+                "texto, logico, lista, mapa, agente, cualquiera u otro mensaje; con ? es "
+                "opcional). Con 'responde' dice además qué se le contesta",
+                "mensaje Pedido { producto: texto, cantidad: numero, nota: texto? }\n"
+                'sea p = Pedido { producto: "yerba", cantidad: 2 }\nmostrar(p.producto)'),
+    "agente": ("alguien que recibe mensajes. Tiene su 'estado' privado, que solo él cambia, "
+               "y un 'al recibir' por cada mensaje que entiende", _EJ_AGENTE),
+    "responder": ("contesta al que mandó el mensaje y termina de atenderlo. Solo va dentro "
+                  "de 'al recibir'", _EJ_AGENTE),
+    "preguntar": ("le manda un mensaje a un agente y espera lo que responde. Si el agente "
+                  "falla, el error llega acá y se puede atajar con 'intentar'", _EJ_AGENTE),
+    "enviar": ("le manda un mensaje a un agente (o a una lista de agentes) y sigue de "
+               "largo, sin esperar respuesta",
+               'mensaje Aviso { nota: texto }\nagente Cartelera {\n    al recibir Aviso como a {'
+               '\n        mostrar("Aviso: {a.nota}")\n    }\n}\n'
+               'enviar Aviso { nota: "llegó la yerba" } a Cartelera'),
+    "remitente": ("dentro de un agente, 'remitente' es quien le mandó el mensaje que está "
+                  "atendiendo, y 'yo' es el propio agente",
+                  "mensaje Arrancar {}\nmensaje Hola { quien: agente }\nmensaje Gracias {}\n"
+                  "agente Ana {\n    al recibir Hola como h { enviar Gracias {} a remitente }\n"
+                  "}\nagente Beto {\n    al recibir Arrancar { enviar Hola { quien: yo } a Ana }"
+                  '\n    al recibir Gracias { mostrar("Ana me contestó") }\n}\n'
+                  "enviar Arrancar {} a Beto"),
+    "crear": ("hace otra copia de un agente ya declarado, con su propio estado. 'llamado' "
+              "le pone nombre",
+              "mensaje Cuanto {}\nagente Caja {\n    estado plata = 0\n"
+              "    al recibir Cuanto { responder plata }\n}\n"
+              'sea norte = crear Caja llamado "Norte" { plata: 500 }\n'
+              "mostrar(preguntar Cuanto {} a norte)"),
+    "fallar": ("corta lo que se está haciendo con un error que lleva ese motivo", _EJ_FALLAR),
+    "intentar": ("prueba hacer algo y, si falla, sigue por el bloque de 'si falla' en vez "
+                 "de cortar el programa. El nombre de después de 'falla' guarda el texto "
+                 "del error", _EJ_FALLAR),
+    "prueba": ("una comprobación que vive al lado del código. No corre con 'correr': corre "
+               "con la orden 'probar archivo.mate'", _EJ_PRUEBA),
+    "asegurar": ("comprueba que algo sea verdadero; si no lo es, falla (después de una coma "
+                 "se le puede poner un texto que lo explique). 'asegurar falla { ... }' "
+                 "comprueba que algo falle", _EJ_PRUEBA),
+    "simular": ("solo dentro de una prueba: hasta que termina, ese agente contesta lo que "
+                "diga este bloque en vez de lo suyo",
+                "mensaje Precio { producto: texto }\nagente Vendedor {\n"
+                "    al recibir Precio como p { responder 3500 }\n}\n"
+                'prueba "con otro precio" {\n'
+                "    simular Vendedor al recibir Precio como p { responder 10 }\n"
+                '    asegurar preguntar Precio { producto: "yerba" } a Vendedor == 10\n}'),
+    "usar": ("trae los mensajes, agentes, funciones y valores 'sea' de otro archivo, que "
+             "se busca al lado de este", 'usar "catalogo.mate"\nmostrar(iva)'),
+}
+# Las palabras que se explican junto con otra.
+VER_AYUDA_DE = {
+    "devolver": "funcion", "sino": "si", "en": "para", "continuar": "romper",
+    "o": "y", "no": "y", "falso": "verdadero", "logico": "verdadero",
+    "estado": "agente", "al": "agente", "recibir": "agente", "como": "agente",
+    "yo": "remitente", "falla": "intentar", "llamado": "crear", "responde": "mensaje",
+    "cualquiera": "mensaje", "a": "enviar",
+}
+
+
+def ayuda_de(palabra):
+    """La ayuda de una palabra de Mate o de una función incluida (o None si no es)."""
+    nombre = sin_tildes(palabra.strip())
+    nombre = nombre[:-2] if nombre.endswith("()") else nombre
+    if nombre in FUNCIONES:
+        _, _, ejemplo, que = FUNCIONES[nombre]
+        titulo, ejemplo = f"{nombre} (función incluida): {que}", ejemplo
+    else:
+        tema = VER_AYUDA_DE.get(nombre, nombre)
+        if tema not in AYUDA:
+            return None
+        que, ejemplo = AYUDA[tema]
+        titulo = f"{nombre}: {que}" if tema == nombre else f"{nombre} (va con '{tema}'): {que}"
+    renglones, largo = [], 0
+    for parte in titulo.split(" "):  # el título, cortado para que entre en la consola
+        if renglones and largo + len(parte) < 88:
+            renglones[-1] += " " + parte
+            largo += len(parte) + 1
+        else:
+            renglones.append(parte)
+            largo = len(parte)
+    return "\n".join(renglones + ["", "Ejemplo:"]
+                     + ["    " + r for r in ejemplo.split("\n")])
+
+
+def temas_de_ayuda():
+    return sorted(set(AYUDA) | set(VER_AYUDA_DE) | PALABRAS) + sorted(FUNCIONES)
+
+
+def ayuda_de_palabra(palabra, mostrar, avisar):
+    """'ayuda si', 'ayuda largo': muestra la explicación. Devuelve el código de salida."""
+    texto = ayuda_de(palabra)
+    if texto is None and PISTAS.get(palabra.lower()) and ayuda_de(PISTAS[palabra.lower()]):
+        mostrar(pista_de(palabra)[0].upper() + pista_de(palabra)[1:] + ".")
+        texto = ayuda_de(PISTAS[palabra.lower()])
+    if texto is None:
+        avisar(f"no tengo ayuda sobre '{palabra}'.{sugerir(palabra, temas_de_ayuda())}")
+        avisar("Hay ayuda de las palabras de Mate: " + ", ".join(sorted(PALABRAS)))
+        avisar("y de las funciones incluidas: " + ", ".join(sorted(FUNCIONES)))
+        return 2
+    mostrar(texto)
+    return 0
+
+
+def falta_cerrar(texto):
+    """En la consola: ¿quedó abierto un paréntesis, un corchete o una llave?"""
+    try:
+        tokens = tokenizar(texto)
+    except ErrorMate:
+        return False  # está mal escrito: que lo diga el error
+    return sum((t[1] in _CIERRES) - (t[1] in _CIERRES.values())
+               for t in tokens if t[0] == "op") > 0
+
+
+def consola(entrada=None, mostrar=print):
+    """La orden 'consola': para probar renglones sueltos sin crear un archivo. Lo que se
+    declara queda para los renglones siguientes, y un valor suelto se muestra solo."""
+    interprete = Interprete(salida=mostrar)
+    interprete.glob.se_pisa = True  # acá se puede volver a declarar algo para corregirlo
+    if entrada is not None:
+        interprete.entrada = entrada  # (en las pruebas: de ahí saca leer() su respuesta)
+    entrada = entrada or input
+    mostrar(f"Mate {VERSION}, consola. Escribí un renglón y apretá Enter; para terminar, salir")
+    mostrar("(un valor suelto, como 2 + 3, se muestra solo; 'ayuda si' explica una palabra)")
+    declarado = []  # lo ya declarado, para revisar los contratos de lo que se escriba
+    renglon, pendiente = 1, []  # los renglones se numeran de corrido, como en un archivo
+
+    def decir(linea, texto, ultimo):
+        texto, _, camino = texto.partition("\ncómo se llegó: ")
+        antes = f"línea {linea}: " if linea and int(linea) != ultimo else ""
+        mostrar(f"{antes}error: {texto}")
+        if camino:
+            mostrar(f"    cómo se llegó: {camino}")
+
+    def correr_pedazo(fuente, ultimo):
+        try:
+            programa = analizar(fuente)
+            se_declaran = [s for s in programa
+                           if s[0] in ("sea", "funcion", "agente", "mensaje")]
+            nuevos = {s[2] for s in se_declaran}
+            previo = [s for s in declarado if s[2] not in nuevos]
+            errores = verificar(previo + programa)
+            if errores:
+                for linea, texto in errores:
+                    decir(linea, texto, ultimo)
+                return
+            declarado[:] = previo + se_declaran
+            suelto = len(programa) == 1 and programa[0][0] == "expr"
+            if suelto:  # un valor suelto se guarda un momento para poder mostrarlo
+                programa = [("sea", programa[0][1], "_", programa[0][2], False)]
+            interprete.pasos = interprete.entregados = 0
+            interprete.glob.vars.pop("_", None)
+            interprete.correr(programa)
+            if any(s[0] == "prueba" for s in programa):
+                mostrar("(las pruebas no corren en la consola: guardalas en un archivo y "
+                        "usá la orden 'probar')")
+            if suelto:
+                valor = interprete.glob.vars.pop("_")[0]
+                if isinstance(valor, (Funcion, Nativa)):
+                    mostrar(f"error: a '{valor.nombre}' le faltan los paréntesis: "
+                            f"{valor.nombre}(...)")
+                elif valor is not None:
+                    mostrar(formato(valor, False))
+        except ErrorMate as e:
+            for linea, texto in interprete.errores_agentes_det:
+                decir(linea, texto, ultimo)
+            interprete.errores_agentes, interprete.errores_agentes_det = [], []
+            decir(e.linea, interprete.con_camino(e.mensaje, e), ultimo)
+            avisar_pendientes(interprete, mostrar)
+            interprete.cola.clear()
+        except KeyboardInterrupt:
+            mostrar("cortado con Ctrl+C (la consola sigue abierta)")
+            interprete.cola.clear()
+        for linea, texto in interprete.errores_agentes_det:
+            decir(linea, texto, ultimo)
+        interprete.errores_agentes, interprete.errores_agentes_det = [], []
+
+    while True:
+        try:
+            linea = entrada(f"{renglon + len(pendiente):>3}{'.' if pendiente else '>'} ")
+        except (EOFError, KeyboardInterrupt):
+            mostrar("")
+            break
+        orden = linea.strip().lower()
+        if not pendiente:
+            if orden in ("salir", "chau", "exit", "quit"):
+                break
+            if not orden:
+                continue
+            if orden == "ayuda":
+                mostrar("Escribí un renglón de Mate y apretá Enter. Si queda una llave "
+                        "abierta, seguís en el renglón de abajo.")
+                mostrar("'ayuda si' o 'ayuda largo' explican una palabra o una función. "
+                        "Para terminar: salir")
+                continue
+            if orden.startswith("ayuda ") and len(orden.split()) == 2:
+                ayuda_de_palabra(orden.split()[1], mostrar, mostrar)
+                continue
+        # Sigue abajo si quedó algo abierto (un renglón vacío corta y muestra el error).
+        if orden and falta_cerrar("\n".join(pendiente + [linea])):
+            pendiente.append(linea)
+            continue
+        fuente = "\n" * (renglon - 1) + "\n".join(pendiente + [linea])
+        renglon += len(pendiente) + 1
+        pendiente = []
+        correr_pedazo(fuente, renglon - 1)
+    return 0
+
+
 def texto_de_ayuda():
     if os.name == "nt":
         ejemplo = "python mate\\mate.py correr mate\\ejemplos\\hola.mate"
@@ -3485,6 +3876,8 @@ def texto_de_ayuda():
         "  verificar archivo.mate   revisa el programa sin correrlo",
         "  guia                     una página con todo Mate, para pegarle a una IA",
         "  ayuda                    muestra esta ayuda",
+        "  ayuda si                 explica una palabra o una función de Mate, con un ejemplo",
+        "  consola                  para probar renglones sueltos sin crear un archivo",
         "",
         "Opciones:",
         "  --traza       muestra la conversación entre agentes, mensaje por mensaje",
@@ -3700,6 +4093,9 @@ def _main(argv, donde):
     if "--version" in opciones:
         print(f"Mate {VERSION} (Python {sys.version_info[0]}.{sys.version_info[1]})")
         return 0
+    if args and args[0].lower() == "ayuda" and len(args) == 2 \
+            and args[1].lower() not in ORDENES + ("ayuda", "guia", "guía", "consola"):
+        return ayuda_de_palabra(args[1], print, avisar)  # 'ayuda si', 'ayuda largo'
     if "--ayuda" in opciones or (args and args[0].lower() == "ayuda"):
         print(texto_de_ayuda())
         return 0
@@ -3709,6 +4105,11 @@ def _main(argv, donde):
     if args[0].lower() in ("guia", "guía"):
         print(texto_de_guia())
         return 0
+    if args[0].lower() == "consola":
+        if len(args) > 1:
+            avisar("'consola' va sola, sin archivo: ahí adentro se escriben los renglones")
+            return 2
+        return consola()
 
     def parece_archivo(a):
         return (a.lower().endswith((".mate", ".mate.txt")) or os.path.isfile(a)
@@ -3722,10 +4123,10 @@ def _main(argv, donde):
             return 2
     orden, archivos = args[0].lower(), args[1:]
     if orden not in ORDENES:
-        parecidas = difflib.get_close_matches(orden, ORDENES + ("ayuda", "guia"), 1)
+        parecidas = difflib.get_close_matches(orden, ORDENES + ("ayuda", "guia", "consola"), 1)
         avisar(f"no conozco la orden '{args[0]}'" + (
             f", ¿quisiste decir '{parecidas[0]}'?" if parecidas
-            else ". Las órdenes son: correr, probar, verificar, guia y ayuda"))
+            else ". Las órdenes son: correr, probar, verificar, consola, guia y ayuda"))
         return 2
     if not archivos:
         avisar(f"a '{orden}' le falta el archivo, por ejemplo: {orden} hola.mate")

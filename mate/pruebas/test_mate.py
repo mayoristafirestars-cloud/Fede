@@ -3384,3 +3384,288 @@ agente Vendedor { al recibir Pedido como p { fallar "no hay {p.producto}" } }
 """ + re.sub(r"(?m)^  ", "", ejemplo) + 'enviar Encargar { producto: "café" } a Comprador\n'
     codigo, out, err = por_main(tmp_path, capsys, programa)
     assert (codigo, out, err) == (0, "Vendedor no pudo con café: no hay café\n", "")
+
+
+# ───────────── Tanda 8 ─────────────
+
+def en_consola(*renglones):
+    """Una sesión de la consola: devuelve lo que mostró, sin los dos renglones de bienvenida."""
+    pendientes, mostrado = list(renglones), []
+
+    def entrada(_pregunta):
+        if not pendientes:
+            raise EOFError
+        return pendientes.pop(0)
+
+    assert mate.consola(entrada=entrada, mostrar=mostrado.append) == 0
+    assert mostrado[0].startswith(f"Mate {mate.VERSION}, consola")
+    return mostrado[2:]
+
+
+# Mejora 88: la consola
+
+def test_la_consola_muestra_los_valores_sueltos_y_recuerda_lo_declarado():
+    assert en_consola("2 + 3", "sea x = 5", "x * 2", 'mostrar("hola")', '"5"', "salir",
+                      "mostrar(99)") == ["5", "10", "hola", '"5"']
+    # lo que queda abierto sigue en el renglón de abajo, y las funciones quedan declaradas
+    assert en_consola("funcion doble(n) {", "    devolver n * 2", "}", "doble(4)") == ["8", ""]
+    # solo acá se puede volver a declarar algo para corregirlo
+    assert en_consola("sea x = 1", "sea x = x + 1", "x", "funcion f() { devolver 1 }",
+                      "funcion f() { devolver 2 }", "f()", "salir") == ["2", "2"]
+    assert "ya está definido" in falla("sea x = 1\nsea x = 2").mensaje  # en un archivo, no
+
+
+def test_en_la_consola_un_error_no_corta_y_dice_el_renglon():
+    mostrado = en_consola(
+        "nohay",                                   # 1
+        "funcion rompe() { devolver 1 / 0 }",      # 2
+        "rompe()",                                 # 3
+        "si verdadero {", "",                      # 4 y 5: el renglón vacío corta
+        "sea texto = 1",                           # 6
+        "doble",                                   # 7
+        "mostrar(1 + 1)", "salir")
+    assert mostrado[0] == "error: no existe 'nohay'"
+    assert mostrado[1:3] == ["línea 2: error: división por cero",
+                             "    cómo se llegó: en rompe(), llamada desde la línea 3"]
+    assert mostrado[3] == "error: la llave que se abrió en la línea 4 (si verdadero) " \
+                          "nunca se cierra"
+    assert "función incluida" in mostrado[4] and "no existe 'doble'" in mostrado[5]
+    assert mostrado[6:] == ["2"]
+
+
+def test_la_consola_con_agentes_ayuda_y_pruebas():
+    mostrado = en_consola(
+        "mensaje Ping { n: numero }",
+        'agente Eco { al recibir Ping como p { si p.n < 0 { fallar "negativo" } responder p.n } }',
+        "preguntar Ping { n: 7 } a Eco",
+        "preguntar Ping { m: 7 } a Eco",          # el contrato se revisa con lo ya declarado
+        "enviar Ping { n: -1 } a Eco",
+        "ayuda sea",
+        'prueba "x" { asegurar 1 == 1 }',
+        "salir")
+    assert mostrado[0] == "7"
+    assert "Ping no tiene un campo 'm'" in mostrado[1]
+    assert "línea 2: error: Eco al recibir Ping: negativo" in mostrado
+    assert any(r.startswith("sea: guarda un valor") for r in mostrado)
+    assert "las pruebas no corren en la consola" in mostrado[-1]
+
+
+def test_la_orden_consola(capsys, monkeypatch):
+    renglones = iter(["sea precio = 3500", "precio * 2", "funcion con_iva(p) {",
+                      "    devolver p * 1.21", "}", "pesos(con_iva(precio))", "salir"])
+    preguntas = []
+
+    def entrada(pregunta=""):
+        preguntas.append(pregunta)
+        return next(renglones)
+
+    monkeypatch.setattr("builtins.input", entrada)
+    assert mate.main(["consola"]) == 0
+    out = capsys.readouterr().out.splitlines()
+    assert out[2:] == ["7000", '"$ 4.235,00"']  # la sesión de ejemplo del README
+    assert preguntas == ["  1> ", "  2> ", "  3> ", "  4. ", "  5. ", "  6> ", "  7> "]
+    assert mate.main(["consola", "hola.mate"]) == 2
+    assert "'consola' va sola" in capsys.readouterr().err
+    assert mate.main(["consol"]) == 2
+    assert "¿quisiste decir 'consola'?" in capsys.readouterr().err
+
+
+# Mejora 89: versión 0.3
+
+def test_version_0_3_y_el_readme_lo_dice(capsys):
+    assert mate.VERSION == "0.3"
+    leeme = (RAIZ / "README.md").read_text(encoding="utf-8")
+    assert "Versión 0.3." in leeme and "## Límites de la versión 0.3" in leeme
+    assert "versión 0.2" not in leeme.replace("desde la versión 0.2 hasta la 0.3", "")
+    assert "desde la versión 0.2 hasta la 0.3" in leeme
+    assert mate.main(["--version"]) == 0
+    assert capsys.readouterr().out.startswith("Mate 0.3 ")
+
+
+# Mejora 90: el tope para que Mate siga siendo chico
+
+def test_mate_no_se_pasa_del_tope():
+    assert len(mate.PALABRAS) <= mate.TOPE_DE_PALABRAS
+    assert len(mate.FUNCIONES) <= mate.TOPE_DE_FUNCIONES
+    leeme = (RAIZ / "README.md").read_text(encoding="utf-8")
+    assert "## El tope: Mate tiene que seguir siendo chico" in leeme
+    # el README dice los números de verdad
+    assert f"**Palabras propias: {mate.TOPE_DE_PALABRAS} como mucho.** Hoy son " \
+           f"{len(mate.PALABRAS)} " in leeme
+    assert f"**Funciones incluidas: {mate.TOPE_DE_FUNCIONES} como mucho.** Hoy son " \
+           f"{len(mate.FUNCIONES)}." in leeme
+    # cada agregado con su prueba: todas las funciones y las palabras se usan en este archivo
+    pruebas = pathlib.Path(__file__).read_text(encoding="utf-8")
+    for nombre in mate.FUNCIONES:
+        assert re.search(rf"\b{nombre}\(", pruebas), f"falta una prueba que use {nombre}()"
+    for palabra in mate.PALABRAS:
+        assert re.search(rf"\b{palabra}\b", pruebas), f"falta una prueba que use '{palabra}'"
+        assert mate.ayuda_de(palabra), palabra
+
+
+def test_valores_de_un_mapa():  # (no tenía prueba: lo encontró el control de arriba)
+    assert correr("mostrar(valores({ a: 1, b: [2] }), valores({}))")[0] == ["[1, [2]] []"]
+    assert "valores()" in falla("mostrar(valores([1]))").mensaje
+
+
+def test_mayusculas_y_minusculas():  # (tampoco tenían)
+    assert correr('mostrar(mayusculas("Ñandú 1"), minusculas("ÁRBOL Ñ"))')[0] == ["ÑANDÚ 1 árbol ñ"]
+    assert "mayusculas()" in falla("mostrar(mayusculas(5))").mensaje
+    assert "minusculas()" in falla("mostrar(minusculas(nada))").mensaje
+
+
+# Mejora 91: leer y escribir archivos de texto
+
+def test_leer_y_escribir_archivos(tmp_path, capsys):
+    (tmp_path / "ansi.txt").write_bytes("año\r\nñandú".encode("cp1252"))
+    (tmp_path / "datos").mkdir()
+    codigo, out, err = por_main(tmp_path, capsys, """
+        escribir_archivo("compras.txt", unir(["yerba", "azúcar"], "\\n"))
+        mostrar(partir(leer_archivo("compras.txt"), "\\n"))
+        mostrar(partir(leer_archivo("ansi.txt"), "\\n"))
+        escribir_archivo("datos/uno.txt", "1")
+        mostrar(leer_archivo("datos/uno.txt"))
+        funcion guardar(t) { escribir_archivo("compras.txt", t) }
+        guardar("pisado")
+        mostrar(leer_archivo("compras.txt"))
+    """)
+    assert (codigo, err) == (0, "")
+    assert out.splitlines() == ['["yerba", "azúcar"]', '["año", "ñandú"]', "1", "pisado"]
+    # queda con la marca que el Bloc de notas necesita para mostrar las tildes
+    assert (tmp_path / "compras.txt").read_bytes() == b"\xef\xbb\xbfpisado"
+
+
+def test_los_archivos_solo_de_la_carpeta_y_sin_pisar_programas(tmp_path, capsys):
+    carpeta = tmp_path / "programas"
+    carpeta.mkdir()
+    (tmp_path / "afuera.txt").write_text("secreto", encoding="utf-8")
+    (carpeta / "notas.txt").write_text("hola", encoding="utf-8")
+    (carpeta / "lista.txt.txt").write_text("hola", encoding="utf-8")
+    casos = {
+        'leer_archivo("../afuera.txt")': "queda afuera",
+        f'leer_archivo("{(tmp_path / "afuera.txt").as_posix()}")': 'sin la ruta: "afuera.txt"',
+        'escribir_archivo("../nuevo.txt", "x")': "queda afuera",
+        'escribir_archivo("programa.mate", "x")': "para no pisar un programa",
+        'escribir_archivo("Otro.MATE", "x")': "para no pisar un programa",
+        'escribir_archivo("mate.py", "x")': "para no pisar un programa",
+        'escribir_archivo("programa.mate. ", "x")': "para no pisar un programa",
+        'escribir_archivo("programa.mate::$DATA", "x")': "para no pisar un programa",
+        'escribir_archivo("correr.bat", "x")': "para no pisar un programa",
+        'escribir_archivo("notas.txt", 5)': "guarda un texto y recibió numero",
+        'escribir_archivo("nohay/notas.txt", "x")': "no existe la carpeta",
+        'escribir_archivo("", "x")': "falta el nombre del archivo",
+        'escribir_archivo(".", "x")': "es una carpeta",
+        'leer_archivo("nota.txt")': "no encuentro el archivo 'nota.txt'",
+        'leer_archivo("lista.txt")': "¿Quisiste decir 'lista.txt.txt'?",
+        'leer_archivo(5)': "espera texto",
+    }
+    for llamada, esperado in casos.items():
+        valor = "sea t = " if llamada.startswith("leer") else ""
+        codigo, out, err = por_main(carpeta, capsys, valor + llamada)
+        assert codigo == 1 and esperado in err, (llamada, err)
+    assert "¿Quisiste decir 'notas.txt'?" in por_main(
+        carpeta, capsys, 'sea t = leer_archivo("nota.txt")')[2]
+    assert sorted(p.name for p in tmp_path.iterdir()) == ["afuera.txt", "programas"]
+    assert (carpeta / "programa.mate").read_text(encoding="utf-8").startswith("sea t")
+    # el error se puede atajar, y dice de qué clase es
+    codigo, out, err = por_main(carpeta, capsys, """
+        intentar { sea t = leer_archivo("nohay.txt") } si falla e { mostrar(detalle_de(e).clase) }
+        leer_archivo("notas.txt")
+    """)
+    assert out == "archivo\n" and "devuelve un valor y este renglón no lo usa" in err
+
+
+def test_un_agente_no_toca_archivos(tmp_path, capsys):
+    codigo, out, err = por_main(tmp_path, capsys, """
+        mensaje Guardar { que: texto }
+        mensaje Leer {}
+        agente Archivero {
+            al recibir Guardar como g { escribir_archivo("notas.txt", g.que) }
+            al recibir Leer { responder leer_archivo("notas.txt") }
+        }
+        enviar Guardar { que: "x" } a Archivero
+        intentar { sea t = preguntar Leer {} a Archivero } si falla e { mostrar(e) }
+    """)
+    assert codigo == 1 and not (tmp_path / "notas.txt").exists()
+    assert "escribir_archivo() solo se usa desde el programa principal" in err
+    assert out.startswith("leer_archivo() solo se usa desde el programa principal: un agente")
+
+
+# Mejora 92: hoy() y ahora()
+
+def test_hoy_y_ahora(tmp_path, capsys):
+    salida, _ = correr("mostrar(hoy())\nmostrar(ahora())")
+    assert re.fullmatch(r"\d\d/\d\d/\d{4}", salida[0])
+    assert re.fullmatch(r"\d\d/\d\d/\d{4} \d\d:\d\d", salida[1]) and salida[1].startswith(salida[0])
+    import datetime
+    assert salida[0] in [(datetime.datetime.now() - datetime.timedelta(seconds=s))
+                         .strftime("%d/%m/%Y") for s in (0, 60)]
+    # en las pruebas, siempre la misma fecha
+    codigo, out, err = por_main(tmp_path, capsys, """
+        prueba "la fecha no depende del día" {
+            asegurar hoy() == "01/01/2025"
+            asegurar ahora() == "01/01/2025 12:00"
+            asegurar partir(hoy(), "/") == ["01", "01", "2025"]
+        }
+    """, orden="probar")
+    assert (codigo, err) == (0, "") and "1 de 1 pruebas pasaron" in out
+    assert "hoy() lleva 0 valores y recibió 1" in falla("mostrar(hoy(1))").mensaje
+    assert "función incluida" in falla("sea hoy = 1").mensaje
+    assert "función incluida" in falla("sea ahora = 1").mensaje
+
+
+# Mejora 94: ayuda <palabra>
+
+def test_ayuda_de_una_palabra_o_de_una_funcion(capsys):
+    assert mate.main(["ayuda", "si"]) == 0
+    out = capsys.readouterr().out
+    assert out.startswith("si: hace una cosa u otra") and "Ejemplo:\n    sea edad = 20" in out
+    assert mate.main(["ayuda", "largo"]) == 0
+    assert capsys.readouterr().out == (
+        "largo (función incluida): cuántos elementos tiene (o letras, o claves)\n\n"
+        "Ejemplo:\n    largo(lista)\n")
+    for pedido, empieza in {"sino": "sino (va con 'si'): ", "FUNCIÓN": "funcion: ",
+                            "pesos()": "pesos (función incluida): ",
+                            "print": "En Mate 'print' se escribe 'mostrar'.\nmostrar (función"}.items():
+        assert mate.main(["ayuda", pedido]) == 0
+        assert capsys.readouterr().out.startswith(empieza), pedido
+    assert mate.main(["ayuda", "mostar"]) == 2
+    capturado = capsys.readouterr()
+    assert capturado.out == "" and "no tengo ayuda sobre 'mostar'. ¿Quisiste decir 'mostrar'?" \
+        in capturado.err
+    assert "mientras" in capturado.err and "redondear" in capturado.err
+    assert mate.main(["ayuda"]) == 0
+    assert "ayuda si " in capsys.readouterr().out
+
+
+def test_hay_ayuda_de_todo_y_los_ejemplos_andan(tmp_path, monkeypatch):
+    for nombre in list(mate.PALABRAS) + list(mate.FUNCIONES) + ["lista", "mapa"]:
+        texto = mate.ayuda_de(nombre)
+        assert texto and "Ejemplo:" in texto, nombre
+        assert max(len(r) for r in texto.splitlines()) <= 100, nombre
+    assert mate.ayuda_de("cualquier_cosa") is None
+    for destino in mate.VER_AYUDA_DE.values():
+        assert destino in mate.AYUDA, destino
+    # cada ejemplo es un programa entero que corre (y sus pruebas pasan)
+    (tmp_path / "catalogo.mate").write_text("sea iva = 0.21\n", encoding="utf-8")
+    monkeypatch.chdir(tmp_path)
+    for palabra, (que, ejemplo) in mate.AYUDA.items():
+        assert palabra in ejemplo or palabra in ("lista", "mapa"), palabra
+        programa = mate.analizar(ejemplo)
+        assert mate.verificar(programa) == [], palabra
+        salida = []
+        interprete = mate.Interprete(salida=salida.append)
+        resultados = interprete.correr(programa, pruebas=True)
+        assert all(error is None for _, error in resultados), (palabra, resultados)
+        assert interprete.errores_agentes == [], palabra
+        assert salida or resultados, palabra
+
+
+def test_el_readme_cuenta_lo_de_la_tanda_8():
+    leeme = (RAIZ / "README.md").read_text(encoding="utf-8")
+    for frase in ["mate.py consola", "### La consola", "ayuda mientras", "| `ayuda si` |",
+                  "### Archivos de texto: `leer_archivo` y `escribir_archivo`",
+                  "### La fecha y la hora: `hoy` y `ahora`", '`"archivo"`',
+                  "`hoy`, `ahora`, `leer_archivo` y `escribir_archivo` son funciones incluidas"]:
+        assert frase in leeme, frase
+    assert '"archivo"' in mate.texto_de_guia() and "escribir_archivo" in mate.texto_de_guia()
