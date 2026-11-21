@@ -112,6 +112,9 @@ FUNCIONES = {
                      "el texto de ese archivo (de la carpeta del programa)"),
     "escribir_archivo": (2, 2, 'escribir_archivo("notas.txt", t)',
                          "guarda el texto t en ese archivo (si ya existía, lo pisa)"),
+    "mensajes_enviados": (0, 1, 'mensajes_enviados("Pedido")',
+                          "solo en una prueba: los mensajes que se mandaron (o los de ese "
+                          "tipo)"),
 }
 
 
@@ -163,7 +166,16 @@ def parece_ruta(crudo):
 
 
 ESPERA_OTRA_CANTIDAD = "{n}() espera {espera} argumento(s) y recibió {recibe}"
+
+
+def espera_otra_cantidad(nombre, minimo, maximo, recibe):
+    """El error de una función propia llamada con valores de más o de menos. Si tiene
+    parámetros con valor por defecto, dice entre cuántos y cuántos lleva."""
+    espera = str(maximo) if minimo == maximo else f"entre {minimo} y {maximo}"
+    return ESPERA_OTRA_CANTIDAD.format(n=nombre, espera=espera, recibe=recibe)
 DEVOLVER_SUELTO = "'devolver' solo va dentro de una función"
+SOLO_EN_PRUEBA = ("mensajes_enviados() solo va dentro de una prueba: es para comprobar "
+                  "qué mensajes se mandaron")
 RESPONDER_SUELTO = "'responder' solo va dentro de 'al recibir' (o de una función del agente)"
 # El 'al fallar' de un agente se guarda junto a sus 'al recibir', con este nombre (que
 # no puede ser el de un mensaje: tiene un espacio y empieza con minúscula).
@@ -284,11 +296,13 @@ def va_en_minuscula(nombre):
 
 
 class Linea(int):
-    """Un número de línea que además recuerda de qué archivo salió."""
+    """Un número de línea que además recuerda de qué archivo salió. 'fin' es el renglón
+    donde termina un texto de varios renglones (lo demás empieza y termina en el mismo)."""
 
-    def __new__(cls, numero, archivo=None):
+    def __new__(cls, numero, archivo=None, fin=None):
         obj = super().__new__(cls, numero)
         obj.archivo = archivo
+        obj.fin = fin
         return obj
 
 
@@ -372,6 +386,63 @@ def _fin_de_llave(s, i):
     return -1
 
 
+TRES_COMILLAS = '"""'
+SIN_CERRAR_TEXTO = ("a este texto de varios renglones le falta el cierre: termina con tres "
+                    'comillas, igual que empieza (""" ... """)')
+
+
+class VariosRenglones(str):
+    """El contenido de un texto de tres comillas, ya sin la sangría común. 'salto' dice
+    cuántos renglones de arriba se le quitaron (para saber en qué renglón cae cada parte)."""
+    salto = 0
+
+
+def _fin_de_texto_largo(s, i):
+    """s[i] abre un texto de tres comillas: devuelve dónde termina (después de las tres de
+    cierre), o -1 si no cierra. Las comillas de adentro de una cuenta { } no cuentan."""
+    i += 3
+    while i < len(s):
+        c = s[i]
+        if c == "\\":
+            i += 2
+        elif s.startswith(TRES_COMILLAS, i):
+            return i + 3
+        elif c == "{":
+            fin = _fin_de_llave(s, i)
+            i = fin if fin > 0 else i + 1
+        else:
+            i += 1
+    return -1
+
+
+def sin_sangria(crudo):
+    """Lo de adentro de un texto de tres comillas, para poder escribirlo prolijo dentro de
+    un bloque: sin el renglón de las comillas que abren ni el de las que cierran (si no
+    tienen nada más) y sin los espacios que todos los renglones tienen de más a la
+    izquierda. Esa sangría común se mide en los renglones escritos y en el del cierre."""
+    renglones = crudo.split("\n")
+    varios = len(renglones) > 1
+    salto = 0
+    if varios and not renglones[0].strip():
+        renglones.pop(0)
+        salto = 1
+    sangrias = []
+    if varios and renglones and not renglones[-1].strip():
+        sangrias.append(renglones.pop())  # el renglón del cierre no es parte del texto
+    # (el primer renglón, si está pegado a las comillas que abren, no tiene sangría)
+    desde = 0 if salto else 1
+    for r in renglones[desde:]:
+        if r.strip():
+            sangrias.append(r[:len(r) - len(r.lstrip(" \t"))])
+    comun = os.path.commonprefix(sangrias) if sangrias else ""
+    for i in range(desde, len(renglones)):
+        r = renglones[i]
+        renglones[i] = r[len(comun):] if r.strip() else ""
+    texto = VariosRenglones("\n".join(renglones))
+    texto.salto = salto
+    return texto
+
+
 _MILES = re.compile(r"[1-9]\d{0,2}\.\d\d0")  # 1.500, 12.000, 3.250
 
 
@@ -397,6 +468,18 @@ def tokenizar(fuente, archivo=None):
     tokens, pos, linea = [], 0, Linea(1, archivo)
     hondo = 0  # paréntesis y corchetes abiertos: ahí adentro una coma separa valores
     while pos < len(fuente):
+        if fuente.startswith(TRES_COMILLAS, pos):  # un texto de varios renglones
+            fin = _fin_de_texto_largo(fuente, pos)
+            if fin < 0:
+                error = ErrorMate(SIN_CERRAR_TEXTO, linea)
+                error.texto_abierto = True  # (en la consola: se sigue en el renglón de abajo)
+                raise error
+            saltos = fuente.count("\n", pos, fin)
+            tokens.append(("str", sin_sangria(fuente[pos + 3:fin - 3]),
+                           Linea(linea, archivo, fin=linea + saltos)))
+            linea = Linea(linea + saltos, archivo)
+            pos = fin
+            continue
         if fuente[pos] in _COMILLAS:
             fin = _fin_de_texto(fuente, pos)
             if fin > 0:
@@ -628,7 +711,9 @@ class Parser:
                 f"después de '{palabra}' hay que repetir la variable: {ejemplo}", self.ver()[2])
 
     def linea_previa(self):
-        return self.t[self.i - 1][2] if self.i else 0
+        """El renglón donde terminó lo último que se leyó."""
+        linea = self.t[self.i - 1][2] if self.i else 0
+        return getattr(linea, "fin", None) or linea
 
     # La regla de los renglones: una sentencia termina donde termina su renglón, salvo
     # que quede abierto un paréntesis, un corchete o una llave, o que el renglón termine
@@ -851,23 +936,36 @@ class Parser:
         ln = self.tomar()[2]
         nombre = self.nombre_nuevo("el nombre de la función")
         self.espera("op", "(")
-        params = []
+        # Los parámetros con valor por defecto (tasa = 0.21) van al final y quedan
+        # anotados aparte: [(nombre, valor)].
+        params, defectos = [], []
+        self.abiertos += 1
         while not self.es("op", ")"):
-            params.append(self.nombre_nuevo("un parámetro"))
+            parametro = self.nombre_nuevo("un parámetro")
+            if self.acepta("op", "="):
+                defectos.append((parametro, self.expr()))
+            elif defectos:
+                raise ErrorMate(
+                    f"{nombre}(): '{parametro}' no tiene valor por defecto y está después "
+                    f"de '{defectos[-1][0]}', que sí tiene. Los parámetros con valor por "
+                    f"defecto van al final: {nombre}({parametro}, {defectos[-1][0]} = ...)",
+                    self.linea_previa())
+            params.append(parametro)
             if not self.acepta("op", ","):
                 break
+        self.abiertos -= 1
         self.espera("op", ")")
         self.en_funcion += 1
         try:
             cuerpo = self.aparte()
         finally:
             self.en_funcion -= 1
-        return ("funcion", ln, nombre, params, cuerpo)
+        return ("funcion", ln, nombre, params, cuerpo, defectos)
 
     def mensaje(self):
         ln = self.tomar()[2]
         nombre = self.nombre_propio("mensaje")
-        campos = []
+        campos, reglas = [], {}  # reglas: campo -> lo que dice de sus valores
         # La llave también puede venir en el renglón de abajo: un renglón nunca empieza
         # con '{' por otro motivo.
         if self.es("op", "{"):
@@ -877,7 +975,11 @@ class Parser:
                 self.espera("op", ":")
                 tipo = self.tipo_de_campo()
                 opcional = bool(self.acepta("op", "?"))
-                campos.append((campo, tipo, opcional))
+                regla = self.regla_de_campo(f"{nombre}.{campo}", tipo, opcional)
+                if regla:
+                    reglas[campo] = regla
+                # Un campo con valor por defecto puede faltar: toma ese valor.
+                campos.append((campo, tipo, opcional or "defecto" in regla))
                 if not self.acepta("op", ","):
                     break
             self.espera("op", "}")
@@ -885,7 +987,88 @@ class Parser:
         if self.es("id", "responde") and self.ver()[2] == self.linea_previa():
             self.tomar()
             responde = self.tipo_de_campo()
-        return ("mensaje", ln, nombre, campos, responde)
+        return ("mensaje", ln, nombre, campos, responde, reglas)
+
+    def regla_de_campo(self, donde, tipo, opcional):
+        """Lo que un campo dice de sus valores, después del tipo y en el mismo renglón:
+        'desde 1 hasta 100', 'en ["baja", "alta"]' y '= valor por defecto'. Todo escrito
+        a mano, así se puede revisar antes de correr. Devuelve un mapa (vacío si no hay)."""
+        regla = {}
+
+        def sigue(tipo_de_token, palabra):
+            return self.es(tipo_de_token, palabra) and self.ver()[2] == self.linea_previa()
+
+        def escrito(que, ejemplo):
+            ln = self.ver()[2]
+            if self.es("op", "}") or self.es("op", ",") or self.es("eof"):
+                raise ErrorMate(f"{donde}: después de {que} falta el valor, por ejemplo: "
+                                f"{ejemplo}", self.linea_previa())
+            hay, valor = valor_escrito(self.suma())
+            if not hay:
+                raise ErrorMate(
+                    f"{donde}: después de {que} va un valor escrito a mano (no una cuenta "
+                    f"ni una variable), por ejemplo: {ejemplo}", ln)
+            return valor
+
+        for palabra in ("desde", "hasta"):
+            if sigue("id", palabra):
+                ln = self.tomar()[2]
+                valor = escrito(f"'{palabra}'", "cantidad: numero desde 1 hasta 100")
+                if not es_num(valor):
+                    raise ErrorMate(f"{donde}: después de '{palabra}' va un número, y hay "
+                                    f"{un(valor)}", ln)
+                regla[palabra] = valor
+        if sigue("kw", "en"):
+            ln = self.tomar()[2]
+            ejemplo = 'prioridad: texto en ["baja", "media", "alta"]'
+            opciones = escrito("'en'", ejemplo)
+            if not isinstance(opciones, list) or not opciones:
+                raise ErrorMate(f"{donde}: después de 'en' va la lista de las opciones que "
+                                f"valen, por ejemplo: {ejemplo}", ln)
+            regla["en"] = opciones
+        ln = self.ver()[2]
+        if ("desde" in regla or "hasta" in regla) and tipo != "numero":
+            raise ErrorMate(f"{donde}: 'desde' y 'hasta' solo van en un campo de tipo "
+                            f"numero, y este es de tipo {tipo}", self.linea_previa())
+        if "desde" in regla and "hasta" in regla and regla["desde"] > regla["hasta"]:
+            raise ErrorMate(
+                f"{donde}: 'desde {formato(regla['desde'])}' es más que 'hasta "
+                f"{formato(regla['hasta'])}', así que ningún valor podría cumplirlo",
+                self.linea_previa())
+        if "en" in regla:
+            if len(regla) > 1:
+                raise ErrorMate(f"{donde}: o va un rango ('desde', 'hasta') o va la lista "
+                                "de opciones ('en'), no las dos cosas", self.linea_previa())
+            if tipo not in ("numero", "texto"):
+                raise ErrorMate(f"{donde}: las opciones con 'en' solo van en un campo de "
+                                f"tipo texto o numero, y este es de tipo {tipo}",
+                                self.linea_previa())
+            for opcion in regla["en"]:
+                if nombre_tipo(opcion) != tipo:
+                    raise ErrorMate(
+                        f"{donde} es de tipo {tipo}, y entre sus opciones está "
+                        f"{formato(opcion, False)}, que es {un(opcion)}", self.linea_previa())
+        if sigue("op", "="):
+            self.tomar()
+            valor = escrito("'='", 'prioridad: texto = "media"')
+            if opcional:
+                raise ErrorMate(
+                    f"{donde}: un campo con valor por defecto ya puede faltar (toma ese "
+                    "valor): sacale el '?'", ln)
+            if not cumple_tipo(valor, tipo):
+                raise ErrorMate(f"{donde} es de tipo {tipo}, y su valor por defecto es "
+                                f"{un(valor)}: {formato(valor, False)}", ln)
+            rota = rompe_regla(donde, valor, regla)
+            if rota:
+                raise ErrorMate(f"el valor por defecto no cumple su propia regla: {rota}", ln)
+            regla["defecto"] = valor
+        if self.ver()[2] == self.linea_previa() and (
+                self.es("op", "=") or self.es("kw", "en")
+                or (self.es("id") and self.ver()[1] in ("desde", "hasta"))):
+            raise ErrorMate(f"{donde}: las reglas van en este orden: primero 'desde', "
+                            "después 'hasta' (o 'en [...]') y al final '= valor'. Por "
+                            "ejemplo: cantidad: numero desde 1 hasta 100 = 1", ln)
+        return regla
 
     def tipo_de_campo(self):
         """numero, texto, Pedido... o 'lista de' cualquiera de esos."""
@@ -1127,6 +1310,9 @@ class Parser:
     def texto(self, crudo, ln):
         """Texto con escapes e interpolación: "Total: {precio * 2}"."""
         partes, actual, i = [], [], 0
+        # Si es de varios renglones: cuántos se le sacaron arriba, para saber en qué
+        # renglón cae cada cuenta { }.
+        salto, inicio = getattr(crudo, "salto", None), ln
         escapes = {"n": "\n", "t": "\t", "\\": "\\", "{": "{", "}": "}"}
         escapes.update((c, c) for c in _COMILLAS)
         if parece_ruta(crudo):
@@ -1161,6 +1347,9 @@ class Parser:
                 if not adentro.strip():
                     raise ErrorMate("dentro del texto: entre { y } falta algo "
                                     "(usá \\{ para una llave literal)", ln)
+                if salto is not None:
+                    ln = Linea(inicio + salto + crudo.count("\n", 0, i),
+                               getattr(inicio, "archivo", None))
                 try:
                     sub = Parser([(t, v, ln) for t, v, _ in tokenizar(adentro)])
                     sub.definidos = self.definidos
@@ -1179,8 +1368,8 @@ class Parser:
         if actual:
             partes.append("".join(actual))
         if all(isinstance(p, str) for p in partes):
-            return ("str", ln, "".join(partes))
-        return ("interp", ln, partes)
+            return ("str", inicio, "".join(partes))
+        return ("interp", inicio, partes)
 
 
 def renglon_sin_uso(e):
@@ -1319,7 +1508,7 @@ def _ligaduras(programa):
         elif _es_nodo(n, "para2", 6):
             anotar(n[2])
             anotar(n[3])
-        elif _es_nodo(n, "funcion", 5):
+        elif _es_nodo(n, "funcion", 6):
             anotar(n[2])
             for parametro in n[3]:
                 anotar(parametro)
@@ -1353,6 +1542,59 @@ def _nombra(n, nombres):
         return ((_es_nodo(n, "nombre", 3) and n[2] in nombres)
                 or any(_nombra(x, nombres) for x in n))
     return False
+
+
+def valor_escrito(e):
+    """Si eso es un valor escrito a mano (un número, un texto sin cuentas adentro,
+    verdadero, falso o una lista de esos), (verdadero, el valor); si no, (falso, nada)."""
+    if e[0] in ("num", "str", "bool"):
+        return True, e[2]
+    if e[0] == "neg" and e[2][0] == "num":
+        return True, -e[2][2]
+    if e[0] == "lista":
+        valores = [valor_escrito(x) for x in e[2]]
+        if all(hay for hay, _ in valores):
+            return True, [v for _, v in valores]
+    return False, None
+
+
+def cumple_tipo(valor, tipo):
+    """¿Ese valor es del tipo que pide el contrato? (numero, texto, lista de numero...)"""
+    if tipo == "cualquiera":
+        return True
+    if tipo.startswith("lista de "):
+        return isinstance(valor, list) and all(
+            cumple_tipo(x, tipo[len("lista de "):]) for x in valor)
+    return nombre_tipo(valor) == tipo
+
+
+def rompe_regla(donde, valor, regla):
+    """Si ese valor no cumple lo que el mensaje dice de ese campo (mejora 97), el texto del
+    error, con el campo, el valor y la regla; si la cumple, None. Es el mismo texto antes
+    de correr y al armar el mensaje."""
+    if valor is None or not regla:
+        return None
+    no_puede = f"{donde} no puede valer {formato(valor, False)}"
+    if "en" in regla:
+        if any(igual(valor, opcion) for opcion in regla["en"]):
+            return None
+        opciones = ", ".join(formato(opcion, False) for opcion in regla["en"])
+        parecida = sugerir(valor, regla["en"]) if isinstance(valor, str) else ""
+        return (f"{no_puede}: el mensaje dice que tiene que ser una de estas opciones: "
+                f"{opciones}." + parecida.replace("'", '"'))
+    desde, hasta = regla.get("desde"), regla.get("hasta")
+    if not es_num(valor) or ((desde is None or valor >= desde)
+                             and (hasta is None or valor <= hasta)):
+        return None
+    if desde is not None and hasta is not None:
+        return (f"{no_puede}: el mensaje dice 'desde {formato(desde)} hasta "
+                f"{formato(hasta)}', así que tiene que estar entre {formato(desde)} y "
+                f"{formato(hasta)}")
+    if desde is not None:
+        return (f"{no_puede}: el mensaje dice 'desde {formato(desde)}', así que tiene que "
+                f"ser {formato(desde)} o más")
+    return (f"{no_puede}: el mensaje dice 'hasta {formato(hasta)}', así que tiene que ser "
+            f"{formato(hasta)} o menos")
 
 
 def literal_que_no_cumple(e, tipo):
@@ -1434,8 +1676,8 @@ def revisar_nombres(programa, mensajes, veces, en_consola=False):
             for x in n:
                 juntar_funciones(x)
         elif isinstance(n, tuple):
-            if _es_nodo(n, "funcion", 5) and isinstance(n[3], list) and veces.get(n[2]) == 1:
-                cuantos_lleva[n[2]] = len(n[3])
+            if _es_nodo(n, "funcion", 6) and isinstance(n[3], list) and veces.get(n[2]) == 1:
+                cuantos_lleva[n[2]] = (len(n[3]) - len(n[5]), len(n[3]))
             for x in n:
                 juntar_funciones(x)
 
@@ -1458,6 +1700,9 @@ def revisar_nombres(programa, mensajes, veces, en_consola=False):
             sentencia(s, alcance)
 
     def funcion(s, alcance):
+        # Un valor por defecto ve lo de afuera y los parámetros que están antes que él.
+        for parametro, e in s[5]:
+            valor(e, alcance + [set(s[3][:s[3].index(parametro)])])
         bloque(s[4], alcance + [set(s[3])])
 
     def sentencia(s, alcance):
@@ -1559,9 +1804,9 @@ def revisar_nombres(programa, mensajes, veces, en_consola=False):
             nombre, texto = e[2][2], None
             if nombre in FUNCIONES:  # (una función incluida no se puede tapar)
                 texto = cantidad_equivocada(nombre, len(e[3]))
-            elif nombre in cuantos_lleva and cuantos_lleva[nombre] != len(e[3]):
-                texto = ESPERA_OTRA_CANTIDAD.format(
-                    n=nombre, espera=cuantos_lleva[nombre], recibe=len(e[3]))
+            elif nombre in cuantos_lleva and not (
+                    cuantos_lleva[nombre][0] <= len(e[3]) <= cuantos_lleva[nombre][1]):
+                texto = espera_otra_cantidad(nombre, *cuantos_lleva[nombre], len(e[3]))
             if texto:
                 errores.append((e[1], texto))
 
@@ -1771,6 +2016,12 @@ def verificar(programa, en_consola=False):
                                             f"la lista hay un valor de tipo {malo[0]}"))
                     elif malo:
                         errores.append((ln, f"{nombre}.{k} es de tipo {tipo}, no {malo[0]}"))
+                    else:  # un valor escrito a mano que no cumple la regla del campo
+                        hay, valor = valor_escrito(e)
+                        rota = hay and rompe_regla(f"{nombre}.{k}", valor,
+                                                   mensajes[nombre][5].get(k))
+                        if rota:
+                            errores.append((ln, rota))
                 for c, (_, opcional) in decl.items():
                     if c not in dados and not opcional:
                         errores.append((ln, f"a {nombre} le falta el campo '{c}'"))
@@ -1807,7 +2058,7 @@ def verificar(programa, en_consola=False):
             for k in repetidos(k for k, _ in n[2]):
                 errores.append((n[1], f"la clave '{k}' está repetida en el mapa: la segunda "
                                       "taparía a la primera"))
-        elif _es_nodo(n, "funcion", 5) and isinstance(n[3], list):
+        elif _es_nodo(n, "funcion", 6) and isinstance(n[3], list):
             for k in repetidos(n[3]):
                 errores.append((n[1], f"{n[2]}(): el parámetro '{k}' está repetido"))
         elif (_es_nodo(n, "yo", 2) or _es_nodo(n, "remitente", 2)) and ag is None:
@@ -1818,7 +2069,18 @@ def verificar(programa, en_consola=False):
         for x in n:
             visitar(x, ag)
 
+    def fuera_de_prueba(n):
+        """mensajes_enviados() escrito en el programa o en un agente (mejora 98)."""
+        if isinstance(n, (list, tuple)):
+            if (_es_nodo(n, "llamar", 4) and _es_nodo(n[2], "nombre", 3)
+                    and n[2][2] == "mensajes_enviados"):
+                errores.append((n[1], SOLO_EN_PRUEBA))
+            for x in n:
+                fuera_de_prueba(x)
+
     visitar(programa)
+    # (una función suelta sí puede usarla: quizá es una ayuda que llaman las pruebas)
+    fuera_de_prueba([s for s in programa if s[0] not in ("prueba", "funcion")])
     errores += revisar_nombres(programa, mensajes, veces, en_consola)
     return sorted(set(errores))
 
@@ -1863,8 +2125,9 @@ class Agente:
 
 
 class Funcion:
-    def __init__(self, nombre, params, cuerpo, env):
+    def __init__(self, nombre, params, cuerpo, env, defectos=()):
         self.nombre, self.params, self.cuerpo, self.env = nombre, params, cuerpo, env
+        self.defectos = defectos  # [(parámetro, valor por defecto)]: son los últimos
 
 
 class Nativa:
@@ -2327,12 +2590,20 @@ class Interprete:
         self.glob = Entorno()
         self.mensajes = {}
         self.responde = {}  # mensaje -> qué se le contesta, si el contrato lo dice
+        self.reglas = {}  # mensaje -> {campo: lo que dice de sus valores: desde, hasta...}
         self.agentes = {}
         self.decl_agentes = []
         self.copias = {}
         self.cola = deque()
         self.contexto = None  # (agente, remitente, tipo de mensaje) mientras se atiende uno
         self.entregados = 0
+        # El "sobre" de cada entrega (mejora 99): su número, quién, a quién, en respuesta
+        # a cuál y el número de conversación. Una conversación empieza cuando el programa
+        # manda algo; lo que los agentes mandan mientras lo atienden sigue en la misma.
+        self.conversaciones = 0  # cuántas conversaciones empezaron
+        self.conversacion = None  # la del mensaje que se está atendiendo
+        self.historial = []  # en una prueba: los sobres de lo que se mandó (mejora 98)
+        self.desde = (0, 0)  # el número de mensaje y de conversación al empezar la prueba
         self.pasos = 0
         self.max_pasos = MAX_PASOS  # None = sin tope
         self.linea_actual = None  # la última sentencia que se empezó a ejecutar
@@ -2806,6 +3077,24 @@ class Interprete:
                     f"(sin cambiarle nada), y recibió {un(e)}")
             return dict(e.detalle)
 
+        @nativa("mensajes_enviados")
+        def _(tipo=None):
+            if not self.en_prueba:
+                raise ErrorMate(SOLO_EN_PRUEBA)
+            if tipo is not None and pedir(tipo, "texto", "mensajes_enviados()") \
+                    not in self.mensajes:
+                raise ErrorMate(con_sugerencia(
+                    f"mensajes_enviados(): no existe el mensaje '{tipo}'", tipo, self.mensajes))
+            if self.contexto is None:
+                self.vaciar_cola()  # lo enviado en la prueba llega antes de mirar
+            numero0, conversacion0 = self.desde
+            return [{"numero": numero - numero0, "de": de, "a": a, "tipo": msg.tipo,
+                     "mensaje": msg, "pregunta": pregunta,
+                     "conversacion": conversacion - conversacion0,
+                     "respuesta_a": respuesta_a - numero0 if respuesta_a else None}
+                    for numero, de, a, msg, pregunta, conversacion, respuesta_a
+                    in self.historial if tipo is None or msg.tipo == tipo]
+
     def _a_json(self, v):
         if isinstance(v, Registro):
             return {"tipo": v.tipo, "campos": {k: self._a_json(x) for k, x in v.campos.items()}}
@@ -2877,7 +3166,12 @@ class Interprete:
             raise ErrorMate(con_sugerencia(
                 f"no existe el mensaje '{nombre}'", nombre, self.mensajes))
         campos = {}
+        reglas = self.reglas.get(nombre) or {}
         for campo, tipo, opcional in self.mensajes[nombre]:
+            regla = reglas.get(campo)
+            if regla and "defecto" in regla and dados.get(campo) is None:
+                campos[campo] = regla["defecto"]  # no vino (o vino nada): el de siempre
+                continue
             if campo not in dados:
                 if not opcional:
                     raise ErrorMate(f"a {nombre} le falta el campo '{campo}'")
@@ -2890,6 +3184,9 @@ class Interprete:
             if not (self.cumple(v, tipo) or (opcional and v is None)):
                 raise ErrorMate(
                     f"{nombre}.{campo} es de tipo {tipo} y recibió {self.no_cumple(v, tipo)}")
+            rota = rompe_regla(f"{nombre}.{campo}", v, regla)
+            if rota:
+                raise ErrorMate(rota)
             campos[campo] = v
         for k in dados:
             if k not in campos:
@@ -2901,12 +3198,13 @@ class Interprete:
         for s in programa:
             if s[0] == "mensaje":
                 self.mensajes[s[2]] = s[3]
+                self.reglas[s[2]] = s[5]
                 if s[4]:
                     self.responde[s[2]] = s[4]
         for s in programa:
             try:
                 if s[0] == "funcion":
-                    self.glob.definir(s[2], Funcion(s[2], s[3], s[4], self.glob),
+                    self.glob.definir(s[2], Funcion(s[2], s[3], s[4], self.glob, s[5]),
                                       origen="funcion", linea=s[1])
                 elif s[0] == "agente":
                     ag = Agente(s[2])
@@ -2928,7 +3226,7 @@ class Interprete:
         s, dados = ag.decl, dados or {}
         env = Entorno(self.glob, frontera=True)
         for f in s[5]:
-            env.definir(f[2], Funcion(f[2], f[3], f[4], env), origen="funcion")
+            env.definir(f[2], Funcion(f[2], f[3], f[4], env, f[5]), origen="funcion")
         # Mientras nace no se le entregan mensajes: todavía no tiene todo su estado.
         self.naciendo += 1
         ag.ocupado = True  # si alguien le habla mientras nace, es un ciclo
@@ -3126,6 +3424,10 @@ class Interprete:
                 self.errores_agentes, self.errores_agentes_det = [], []
                 self.pasos = 0
                 self.entregados = 0
+                # El historial de cada prueba arranca vacío, y cuenta desde 1.
+                self.historial = []
+                self.desde = (self.cuenta["enviar"] + self.cuenta["preguntar"],
+                              self.conversaciones)
                 fallas, mostrado, salida = [], [], self.salida
                 if self.separar_salida:
                     self.salida = mostrado.append
@@ -3161,9 +3463,9 @@ class Interprete:
     # ── agentes ──
     def vaciar_cola(self):
         while self.cola:
-            rem, dest, msg = self.cola.popleft()
+            rem, dest, msg, sobre = self.cola.popleft()
             try:
-                self.entregar(rem, dest, msg, pregunta=False)
+                self.entregar(rem, dest, msg, pregunta=False, sobre=sobre)
             except ErrorMate as e:
                 if e.clase == "limite":  # el freno corta todo el programa, no un solo mensaje
                     raise
@@ -3171,7 +3473,8 @@ class Interprete:
                     # El que lo envió pidió enterarse: el aviso le llega como un mensaje
                     # más, y la falla queda en sus manos (no se anota como error).
                     self.cola.append((dest, rem, Registro(AL_FALLAR, {
-                        "motivo": e.mensaje, "mensaje": msg, "destino": dest})))
+                        "motivo": e.mensaje, "mensaje": msg, "destino": dest}),
+                        (sobre[0], None)))
                     continue
                 que = "en 'al fallar'" if msg.tipo == AL_FALLAR else f"al recibir {msg.tipo}"
                 linea = e.linea or getattr(e, "renglon", None)
@@ -3219,7 +3522,17 @@ class Interprete:
         camino = self.camino(e)
         return f"{texto}\n{camino}" if camino else texto
 
-    def entregar(self, rem, dest, msg, pregunta, linea=None):
+    def en_conversacion(self):
+        """El número de conversación de lo que se manda ahora: el del mensaje que se está
+        atendiendo o, si lo manda el programa, uno nuevo."""
+        if self.conversacion is None:
+            self.conversaciones += 1
+            return self.conversaciones
+        return self.conversacion
+
+    def entregar(self, rem, dest, msg, pregunta, linea=None, sobre=None):
+        """sobre: (número de conversación, número del mensaje al que responde o None). Lo
+        trae lo que viene de la cola; una pregunta lo arma acá."""
         self.entregados += 1
         if self.entregados > MAX_MENSAJES:
             raise ErrorMate(
@@ -3233,12 +3546,24 @@ class Interprete:
             self.cuenta["preguntar" if pregunta else "enviar"] += 1
             numero = self.cuenta["preguntar"] + self.cuenta["enviar"]
         de = rem.nombre if rem else "(programa)"
+        conversacion, respuesta_a = sobre or (self.en_conversacion(), None)
+        if self.en_prueba and not aviso:
+            self.historial.append(
+                (numero, de, dest.nombre, msg, pregunta, conversacion, respuesta_a))
         if self.traza and aviso:
             self.trazar(f"{dest.nombre} se entera de que {rem.nombre} no pudo atender "
                         f"{msg.campos['mensaje'].tipo}: {msg.campos['motivo']}", None, hondo)
         elif self.traza:
             flecha = "pregunta a" if pregunta else "→"
-            self.trazar(f"{de} {flecha} {dest.nombre}: {formato(msg)}", numero, hondo)
+            # El sobre se anota en los renglones sin sangría: lo de más adentro es de la
+            # misma conversación que el renglón que lo contiene.
+            anotado = ""
+            if not hondo:
+                anotado = f"   (conversación {conversacion}" + (
+                    f", en respuesta al {respuesta_a})" if respuesta_a else ")")
+            self.trazar(f"{de} {flecha} {dest.nombre}: {formato(msg)}{anotado}",
+                        numero, hondo)
+        afuera, self.conversacion = self.conversacion, conversacion
         try:
             respondio, valor = self.atender(rem, dest, msg, pregunta, linea)
         except ErrorMate as e:
@@ -3250,13 +3575,15 @@ class Interprete:
                 donde = " en su 'al fallar'" if aviso else ""
                 self.trazar(f"{dest.nombre} falló{donde}: {e.mensaje}", numero, hondo)
             raise
+        finally:
+            self.conversacion = afuera
         if pregunta:
             if self.traza:
                 self.trazar(f"{dest.nombre} responde a {de}: {formato(valor, False)}",
                             numero, hondo)
             return valor
         if respondio and rem is not None:
-            self.cola.append((dest, rem, valor))
+            self.cola.append((dest, rem, valor, (conversacion, numero)))
         elif respondio and self.traza:
             # Lo mandó el programa con 'enviar': no hay quién reciba la respuesta.
             self.trazar(f"la respuesta de {dest.nombre} se descartó (para recibirla, usá "
@@ -3472,7 +3799,7 @@ class Interprete:
         elif clase == "continuar":
             raise _Continuar()
         elif clase == "funcion":
-            env.definir(s[2], Funcion(s[2], s[3], s[4], env), origen="funcion")
+            env.definir(s[2], Funcion(s[2], s[3], s[4], env, s[5]), origen="funcion")
         elif clase == "devolver":
             raise _Retorno(None if s[2] is None else self.ev(s[2], env))
         elif clase == "enviar":
@@ -3482,8 +3809,10 @@ class Interprete:
                 if msg.tipo not in dest.manejadores:
                     raise ErrorMate(f"{dest.nombre} no sabe recibir '{msg.tipo}'", s[1],
                                     familia="agente")
+            sobre = (self.en_conversacion(), None)  # (a varios: una sola conversación)
             for dest in destinos:
-                self.cola.append((self.contexto[0] if self.contexto else None, dest, msg))
+                self.cola.append(
+                    (self.contexto[0] if self.contexto else None, dest, msg, sobre))
         elif clase == "responder":
             if not self.contexto:
                 raise ErrorMate(RESPONDER_SUELTO)
@@ -3859,9 +4188,9 @@ class Interprete:
         if not isinstance(f, Funcion):
             raise ErrorMate(f"{tipo_claro(f)} no es una función: no se le pueden poner "
                             "paréntesis")
-        if len(args) != len(f.params):
-            raise ErrorMate(ESPERA_OTRA_CANTIDAD.format(
-                n=f.nombre, espera=len(f.params), recibe=len(args)))
+        minimo = len(f.params) - len(f.defectos)
+        if not minimo <= len(args) <= len(f.params):
+            raise ErrorMate(espera_otra_cantidad(f.nombre, minimo, len(f.params), len(args)))
         if self.abiertas >= MAX_LLAMADAS:
             self.ultima_funcion = f.nombre
             raise self.demasiada_recursion(f.nombre)
@@ -3872,6 +4201,10 @@ class Interprete:
         self.abiertas += 1
         self.ultima_funcion = f.nombre
         try:
+            # Los que no vinieron toman su valor por defecto, que se calcula en cada
+            # llamada y puede usar los parámetros de antes: f(a, b = a * 2).
+            for p, e in f.defectos[len(args) - minimo:]:
+                env.definir(p, self.ev(e, env), origen="parametro")
             self.bloque(f.cuerpo, env, nuevo=False)
         except _Retorno as r:
             return r.valor
@@ -3909,7 +4242,8 @@ RENGLONES
 - Una sentencia por renglón, sin punto y coma. Los comentarios empiezan con #.
 - Un renglón sigue en el de abajo solo si queda abierto un ( [ {{ o si termina en un
   operador o una coma. Un renglón no puede empezar con + * / == y o.
-- Los bloques van entre llaves {{ }}. Los textos, entre comillas dobles y en un renglón.
+- Los bloques van entre llaves {{ }}. Los textos, entre comillas dobles y en un renglón
+  (los de varios renglones, entre tres comillas: ver VALORES).
 
 VALORES
 - numero: 3   3.5 (decimales con punto)   1500 o 1_500 (los miles nunca llevan punto)
@@ -3921,6 +4255,12 @@ VALORES
   puede haber otros textos, con sus comillas: "Sale {{precios["yerba"]}}". \n es salto de
   renglón, \{{ una llave de verdad y \\ una barra (las rutas de Windows van con / o con
   doble barra).
+- Un texto de varios renglones va entre tres comillas, con las mismas {{...}} y barras:
+      sea carta = {tres}
+          Hola {{nombre}}:
+          tu pedido sale {{pesos(total)}}.
+          {tres}
+  No cuentan el renglón de las comillas ni la sangría que comparten todos los renglones.
 
 VARIABLES
 - sea x = 1        fijo, no cambia más
@@ -3944,6 +4284,8 @@ CONTROL
 - para i, item en lista {{ ... }}   con la posición (desde 0); en un mapa: para clave, valor en mapa
 - romper sale del bucle; continuar salta a la vuelta siguiente.
 - funcion nombre(a, b) {{ devolver a + b }}        'devolver' solo, sin valor, devuelve nada
+- funcion con_iva(precio, tasa = 0.21) {{ ... }}    tasa tiene valor por defecto: con_iva(100)
+  usa 0.21 y con_iva(100, 0.5) usa 0.5. Los parámetros con valor por defecto van al final.
 - fallar "motivo"                                 corta con un error
 - intentar {{ ... }} si falla e {{ ... }}             e es el texto del error (el 'e' es opcional)
   detalle_de(e).clase dice qué pasó sin depender de la redacción: "fallar", "asegurar",
@@ -3966,6 +4308,12 @@ AGENTES Y MENSAJES
 - mensaje Pedido {{ producto: texto, cantidad: numero, nota: texto? }}     (? = opcional)
   Tipos: numero texto logico lista mapa agente cualquiera, u otro mensaje. Una lista
   puede decir de qué es: items: lista de Pedido     vendedores: lista de agente
+- Un campo puede decir qué valores acepta, después del tipo y con valores escritos a mano:
+      cantidad: numero desde 1 hasta 100         (también solo 'desde 1' o solo 'hasta 100')
+      prioridad: texto en ["baja", "media", "alta"]        una de esas opciones
+      prioridad: texto en ["baja", "alta"] = "baja"        valor por defecto: puede faltar
+  El orden es ese: desde, hasta (o en [...]) y al final = valor. Se controla al armar el
+  mensaje y, si el valor está escrito a mano, antes de correr.
 - mensaje Pedido {{ ... }} responde Cotizacion     declara qué se le contesta a un Pedido
 - Crear un mensaje: Pedido {{ producto: "yerba", cantidad: 2 }}     Sin campos: Ping {{}}
 - agente Nombre {{
@@ -3993,6 +4341,12 @@ PRUEBAS
   (un nombre mal escrito ahí adentro no cuenta como la falla esperada)
 - simular Vendedor al recibir Pedido como p {{ responder Cotizacion {{ total: 1 }} }}
   Solo dentro de una prueba: hasta que termina, ese agente contesta eso a ese mensaje.
+- mensajes_enviados() solo dentro de una prueba: la lista de lo que se mandó en esa prueba,
+  en orden. Cada elemento es un mapa: numero, de y a (nombres, como textos; el programa es
+  "(programa)"), tipo, mensaje, pregunta (verdadero si fue con 'preguntar'), conversacion y
+  respuesta_a (el numero del mensaje que contesta, o nada). Con un tipo, solo esos:
+      asegurar largo(mensajes_enviados("Pedido")) == 1
+      asegurar mensajes_enviados()[0].a == "Vendedor"
 - Van en el nivel superior y corren con la orden 'probar'. Cada una empieza limpia.
 
 ANTES DE CORRER
@@ -4000,7 +4354,9 @@ ANTES DE CORRER
   función recibe valores de más o de menos, aunque sea en una parte que no se ejecuta.
   Lo declarado afuera de todo puede estar más abajo en el archivo. No revisa adentro de
   intentar {{ }} ni de asegurar falla {{ }}. Los errores salen así: archivo:renglón: error: ...
-- --traza numera los mensajes y muestra cuál falló o quedó sin respuesta.
+- --traza numera los mensajes y muestra cuál falló o quedó sin respuesta. Al final del
+  renglón dice de qué conversación es (una por cada cosa que manda el programa) y, si es una
+  respuesta, a qué mensaje contesta: (conversación 2, en respuesta al 4).
 
 UN PROGRAMA COMPLETO
 --- ejemplo ---
@@ -4054,7 +4410,7 @@ CÓMO SE CORRE (Windows)
 
 
 def texto_de_guia():
-    return GUIA.format(version=VERSION, funciones=lista_de_funciones())
+    return GUIA.format(version=VERSION, funciones=lista_de_funciones(), tres=TRES_COMILLAS)
 
 
 _EJ_AGENTE = """mensaje Sumar { a: numero, b: numero }
@@ -4090,8 +4446,11 @@ AYUDA = {
     "var": ("guarda un valor que después se puede cambiar",
             "var total = 0\ntotal = total + 10\ntotal += 5\nmostrar(total)"),
     "funcion": ("le pone nombre a unos pasos para usarlos muchas veces. 'devolver' entrega "
-                "el resultado y termina la función",
-                "funcion doble(n) {\n    devolver n * 2\n}\nmostrar(doble(4))"),
+                "el resultado y termina la función. Un parámetro puede tener un valor por "
+                "defecto (tasa = 0.21), que se usa si no le dan otro; esos van al final",
+                "funcion doble(n) {\n    devolver n * 2\n}\nmostrar(doble(4))\n"
+                "funcion con_iva(precio, tasa = 0.21) {\n    devolver precio * (1 + tasa)\n}\n"
+                "mostrar(con_iva(100), con_iva(100, 0.5))"),
     "si": ("hace una cosa u otra según una condición, que tiene que dar verdadero o falso. "
            "'sino si' y 'sino' son opcionales y van en el renglón de la llave que cierra",
            'sea edad = 20\nsi edad >= 18 {\n    mostrar("mayor")\n} sino si edad >= 13 {\n'
@@ -4126,9 +4485,15 @@ AYUDA = {
              'mostrar(producto.nombre, producto["precio"], claves(producto))'),
     "mensaje": ("declara el contrato de un mensaje: qué campos lleva y de qué tipo (numero, "
                 "texto, logico, lista, mapa, agente, cualquiera u otro mensaje; con ? es "
-                "opcional). Con 'responde' dice además qué se le contesta",
-                "mensaje Pedido { producto: texto, cantidad: numero, nota: texto? }\n"
-                'sea p = Pedido { producto: "yerba", cantidad: 2 }\nmostrar(p.producto)'),
+                "opcional). Con 'responde' dice además qué se le contesta. Un campo puede "
+                "decir qué valores acepta: 'desde 1 hasta 100', 'en [opciones]' y, al "
+                "final, '= valor por defecto'",
+                "mensaje Pedido {\n    producto: texto,\n"
+                "    cantidad: numero desde 1 hasta 100,\n"
+                '    prioridad: texto en ["baja", "media", "alta"] = "media",\n'
+                "    nota: texto?\n}\n"
+                'sea p = Pedido { producto: "yerba", cantidad: 2 }\n'
+                "mostrar(p.producto, p.prioridad)"),
     "agente": ("alguien que recibe mensajes. Tiene su 'estado' privado, que solo él cambia, "
                "y un 'al recibir' por cada mensaje que entiende", _EJ_AGENTE),
     "responder": ("contesta al que mandó el mensaje y termina de atenderlo. Solo va dentro "
@@ -4252,8 +4617,10 @@ def falta_cerrar(texto):
     """En la consola: ¿quedó abierto un paréntesis, un corchete o una llave?"""
     try:
         tokens = tokenizar(texto)
-    except ErrorMate:
-        return False  # está mal escrito: que lo diga el error
+    except ErrorMate as e:
+        # Un texto de tres comillas sin cerrar sigue abajo (también tras un renglón vacío).
+        # Lo demás está mal escrito: que lo diga el error.
+        return "texto" if getattr(e, "texto_abierto", False) else False
     if sum((t[1] in _CIERRES) - (t[1] in _CIERRES.values())
            for t in tokens if t[0] == "op") > 0:
         return True
@@ -4367,7 +4734,8 @@ def consola(entrada=None, mostrar=print):
                 ayuda_de_palabra(" ".join(orden.split()[1:]), mostrar, mostrar)
                 continue
         # Sigue abajo si quedó algo abierto (un renglón vacío corta y muestra el error).
-        if orden and falta_cerrar("\n".join(pendiente + [linea])):
+        falta = falta_cerrar("\n".join(pendiente + [linea]))
+        if (orden and falta) or falta == "texto":
             pendiente.append(linea)
             continue
         fuente = "\n" * (renglon - 1) + "\n".join(pendiente + [linea])
@@ -4471,7 +4839,7 @@ def avisar_pendientes(interprete, avisar):
     if not cola:
         return
     avisar(f"quedaron {len(cola)} mensaje(s) sin entregar:")
-    for rem, dest, msg in cola[:5]:
+    for rem, dest, msg, _ in cola[:5]:
         avisar(f"  {rem.nombre if rem else '(programa)'} -> {dest.nombre}: {formato(msg)}")
     if len(cola) > 5:
         avisar(f"  ... y {len(cola) - 5} más")

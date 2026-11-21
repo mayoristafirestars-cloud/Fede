@@ -367,6 +367,29 @@ prueba "cotiza precio por cantidad" {
 - Una lista puede decir de qué es: `items: lista de Pedido`, `vendedores: lista de agente`,
   `precios: lista de numero`. Así no pasa una lista con cosas mezcladas: el error dice en qué
   posición está lo que sobra (`recibió una lista que en la posición 1 tiene un número`).
+- Un campo también puede decir **qué valores acepta**, después del tipo:
+
+  ```
+  mensaje Pedido {
+      producto: texto,
+      cantidad: numero desde 1 hasta 100,
+      prioridad: texto en ["baja", "media", "alta"] = "media",
+      descuento: numero hasta 0.5 = 0
+  }
+  ```
+
+  `desde` y `hasta` ponen un rango a un `numero` (vale uno solo de los dos); `en [...]` deja
+  elegir entre opciones fijas (de `texto` o de `numero`); y `= valor` es el **valor por
+  defecto**: ese campo puede faltar, y si falta (o viene `nada`) toma ese valor, así que
+  `Pedido { producto: "yerba", cantidad: 2 }` sale con `prioridad: "media"` y `descuento: 0`.
+  Van en ese orden y con valores escritos a mano (no una cuenta ni una variable). Mate lo
+  controla **siempre que se arma el mensaje** (también al cambiarle un campo o al leerlo con
+  `de_json`) y, si el valor está escrito a mano en el programa, **antes de correr**. El error
+  dice el campo, el valor y la regla:
+  `Pedido.cantidad no puede valer 500: el mensaje dice 'desde 1 hasta 100', así que tiene que estar entre 1 y 100`
+  o `Pedido.prioridad no puede valer "alto": el mensaje dice que tiene que ser una de estas opciones: "baja", "media", "alta". ¿Quisiste decir "alta"?`.
+  Una regla que no cierra (`desde 5 hasta 1`, un valor por defecto que no cumple su propia
+  regla, `desde` en un campo de texto) se avisa en la declaración del mensaje.
 - El contrato también puede decir **qué se contesta**:
   `mensaje Pedido { producto: texto } responde Cotizacion`. Si un agente le responde otra cosa
   a un `Pedido`, la falla es de ese agente (no del que preguntó) y el error señala su
@@ -424,7 +447,7 @@ prueba "cotiza precio por cantidad" {
 - `--traza` muestra la conversación entera, mensaje por mensaje:
 
   ```
-    ·  1. (programa) → Comprador: Comprar { producto: "azucar", cantidad: 4 }
+    ·  1. (programa) → Comprador: Comprar { producto: "azucar", cantidad: 4 }   (conversación 1)
     ·  2.    Comprador pregunta a Vendedor Norte: Pedido { producto: "azucar", cantidad: 4 }
     ·  2.    Vendedor Norte responde a Comprador: Cotizacion { total: 4560 }
     ·  3.    Comprador pregunta a Vendedor Sur: Pedido { producto: "azucar", cantidad: 4 }
@@ -439,6 +462,22 @@ prueba "cotiza precio por cantidad" {
   agente le responde a un `enviar` del programa, esa respuesta no le llega a nadie: la
   traza lo dice (`la respuesta ... se descartó`) y sugiere `preguntar`. Sin `--traza` no se
   muestra nada de esto.
+- Cada entrega lleva su **"sobre"**: el número del mensaje, quién lo manda, a quién, el
+  **número de conversación** y, si es la respuesta a un `enviar`, a qué mensaje contesta. Una
+  conversación empieza cada vez que el programa (o una prueba) manda algo; todo lo que los
+  agentes mandan mientras atienden eso, y sus respuestas, sigue en la misma. En la traza va al
+  final de los renglones sin sangría (los de más adentro son de la conversación del renglón
+  que los contiene), y sirve para no perderse cuando dos conversaciones se mezclan en la cola:
+
+  ```
+    ·  3. Coordinador → Investigador: Investigar { tema: "ventas" }   (conversación 1)
+    ·  4. Coordinador → Investigador: Investigar { tema: "stock" }   (conversación 2)
+    ·  5. Investigador → Coordinador: Hallazgos { tema: "ventas" }   (conversación 1, en respuesta al 3)
+  ```
+
+  No hay nada que escribir en el programa para tenerlo, y sin `--traza` no cambia nada. En
+  las pruebas el mismo sobre se puede consultar con `mensajes_enviados()` (ver "Las pruebas").
+  Es la base para, más adelante, conectar programas entre sí.
 - Con `--traza=conversacion.txt` la conversación no se muestra: se guarda en ese archivo (se
   abre con el Bloc de notas), con los mismos renglones, y al final anota cuántos mensajes
   hubo y cuántos fallaron. El archivo queda en la
@@ -559,6 +598,39 @@ Lo que una prueba cambia no le llega a la siguiente. Además:
   estado del agente, tiene que cumplir el contrato (`responde`) y se termina con la prueba: la
   siguiente ya habla con el agente real. También vale para una copia: `simular norte al recibir ...`.
 
+- `mensajes_enviados()` deja comprobar **qué mensajes se mandaron** en la prueba (quién, a
+  quién y cuál), y no solo el resultado final:
+
+  ```
+  prueba "el comprador le pide al vendedor" {
+      enviar Encargar { producto: "yerba" } a Comprador
+      sea enviados = mensajes_enviados()
+      asegurar largo(enviados) == 2
+      asegurar enviados[1].de == "Comprador"
+      asegurar enviados[1].a == "Vendedor"
+      asegurar enviados[1].mensaje.producto == "yerba"
+      asegurar largo(mensajes_enviados("Pedido")) == 1
+  }
+  ```
+
+  Devuelve una lista, en el orden en que se entregaron, con un mapa por mensaje:
+
+  | Dato | Qué trae |
+  |---|---|
+  | `numero` | el número del mensaje dentro de la prueba, desde 1 |
+  | `de` y `a` | el nombre de quien lo mandó y de quien lo recibió, como texto (`"Vendedor"`, `"Vendedor Norte"`); si lo mandó la prueba, `"(programa)"` |
+  | `tipo` | el nombre del mensaje, como texto: `"Pedido"` |
+  | `mensaje` | el mensaje entero, para mirar sus campos |
+  | `pregunta` | `verdadero` si fue con `preguntar`, `falso` si fue con `enviar` |
+  | `conversacion` | el número de conversación (ver "Cómo hablan los agentes"), desde 1 en cada prueba |
+  | `respuesta_a` | si es la respuesta a un `enviar`, el `numero` del mensaje que contesta; si no, `nada` |
+
+  Con el nombre de un mensaje (`mensajes_enviados("Pedido")`) trae solo los de ese tipo. Antes
+  de contestar entrega lo que la prueba dejó en la cola, igual que `asegurar`. Cada prueba
+  arranca con el historial vacío (lo que mandó el programa antes de las pruebas no cuenta), y
+  también figuran los mensajes que fallaron. **Solo existe dentro de una prueba**: escrita en
+  el programa o en un agente es un error antes de correr.
+
 ### Los datos de un error atajado: `detalle_de`
 
 En `intentar { ... } si falla e { ... }`, `e` es el texto del error. Para decidir qué hacer sin
@@ -585,6 +657,7 @@ cambiás (`e + "!"`) es un texto común y `detalle_de` avisa que no es un error 
 # comentario
 sea x = 1                  var y = [1, 2]             y[0] = 5
 funcion doble(n) { devolver n * 2 }
+funcion con_iva(precio, tasa = 0.21) { ... }          (tasa tiene valor por defecto)
 si a > b { } sino si a == b { } sino { }
 mientras cond { }          para item en lista { }
 para i, item en lista { }  para clave, valor en mapa { }   (i es la posición, desde 0)
@@ -593,6 +666,7 @@ y += 1                     y -= 1                     (lo mismo que y = y + 1)
 y  o  no   ==  !=  <  <=  >  >=   +  -  *  /  %
 { nombre: "yerba", precio: 3500 }       mapa.nombre      mapa["nombre"]
 "Total: {precio * 2}"      "Sale {precios["yerba"]}"  (lo que va entre llaves se calcula)
+""" ... """                (un texto de varios renglones: ver "Textos")
 3.5 (decimal con punto)    1_500 (mil quinientos; los miles nunca llevan punto)
 ```
 
@@ -641,6 +715,7 @@ Son estas y no hay otras. Cada renglón es un ejemplo que se puede copiar:
 | `ahora()` | fecha y hora, "21/11/2026 14:30" (en las pruebas, "01/01/2025 12:00") |
 | `leer_archivo("notas.txt")` | el texto de ese archivo (de la carpeta del programa) |
 | `escribir_archivo("notas.txt", t)` | guarda el texto t en ese archivo (si ya existía, lo pisa) |
+| `mensajes_enviados("Pedido")` | solo en una prueba: los mensajes que se mandaron (o los de ese tipo) |
 
 - Si a una función le das valores de más o de menos, el error trae el ejemplo:
   `obtener() lleva 3 valores y recibió 2. Por ejemplo: obtener(mapa, "clave", 0)`.
@@ -671,6 +746,45 @@ Son estas y no hay otras. Cada renglón es un ejemplo que se puede copiar:
   que lo explica, y también un texto que parece una ruta de Windows con barras simples:
   `"C:\temp\nuevo"` antes salía con un salto de renglón en el medio sin avisar. Las rutas se
   escriben `"C:/temp/nuevo"` (Windows las entiende igual) o `"C:\\temp\\nuevo"`.
+
+- Un texto de **varios renglones** va entre tres comillas, `"""`, y adentro valen las mismas
+  llaves y las mismas barras:
+
+  ```
+  funcion carta(nombre, total) {
+      devolver """
+          Hola {nombre}:
+          tu pedido sale {pesos(total)}.
+
+          ¡Gracias!
+          """
+  }
+  ```
+
+  Para poder escribirlo prolijo dentro de un bloque, Mate saca lo que sobra: el renglón de
+  las comillas que abren y el de las que cierran (si no tienen nada más) y la sangría que
+  comparten todos los renglones, así que el texto de arriba empieza en `Hola` y no tiene
+  espacios adelante. Para que un texto quede con sangría, alcanza con poner las comillas de
+  cierre más a la izquierda. Las comillas sueltas (`"gracias"`) van tal cual; una llave de
+  verdad sigue siendo `\{`. Lo que va entre llaves se escribe entero en un renglón. Si falta
+  el cierre, el error señala dónde se abrió. En la consola también se puede: sigue en los
+  renglones de abajo hasta las tres comillas.
+
+### Valores por defecto en una función
+
+```
+funcion con_iva(precio, tasa = 0.21) {
+    devolver precio * (1 + tasa)
+}
+mostrar(con_iva(100))         # 121: usa la tasa por defecto
+mostrar(con_iva(100, 0.5))    # 150
+```
+
+Un parámetro con `= valor` se puede dejar sin dar: toma ese valor. Los que tienen valor por
+defecto van **al final** (si no, Mate lo avisa antes de correr), y el valor se calcula en cada
+llamada: puede ser una cuenta y usar los parámetros de antes (`funcion f(a, b = a * 2)`). Si
+la llamada trae valores de más o de menos, el error dice cuántos lleva:
+`con_iva() espera entre 1 y 2 argumento(s) y recibió 3`.
 
 ### Pedirle un dato a la persona: `leer`
 
@@ -836,6 +950,10 @@ archivo viejo deja de andar, casi seguro es por una de estas:
 | `ayuda` seguida de una palabra (`ayuda si`) ya no muestra la ayuda general sino la de esa palabra; y `consola` es una orden | Nada: `ayuda` sola sigue igual |
 | Un nombre que no existe (`totl`), o una llamada con valores de más o de menos (`largo(x, 2)`), es un error antes de correr aunque esté en una parte que no se ejecuta (un `si`, una función, un agente o una prueba que no se usan): el programa ya no arranca. Si faltan varios nombres, se avisan todos juntos | Corregir el nombre o la llamada. Adentro de `intentar` y de `asegurar falla` sigue como antes |
 | `--traza` cambió de formato: cada mensaje lleva su número, lo que un agente pregunta mientras atiende va con sangría, y hay renglones nuevos (`falló`, `sin respuesta`, `la respuesta ... se descartó`). El archivo de `--traza=archivo` trae lo mismo | Nada, salvo que compares la traza letra por letra con una guardada |
+| `--traza` agrega al final de los renglones sin sangría de qué conversación es cada mensaje y a cuál contesta: `(conversación 2, en respuesta al 4)`. El archivo de `--traza=archivo` trae lo mismo | Nada: es más información. Si algo leía la traza renglón por renglón, tiene que contar con ese agregado |
+| `mensajes_enviados` es una función incluida (solo para las pruebas): no sirve como nombre de variable, de parámetro ni de estado | Elegir otro nombre: `sea enviados = ...` |
+| Tres comillas seguidas (`"""`) abren un texto de varios renglones (antes eran un error) | Nada: un programa que corría no las tenía |
+| En un `mensaje`, después del tipo de un campo y en el mismo renglón, `desde`, `hasta`, `en` y `=` son reglas de ese campo (antes eran un error) | Nada: un programa que corría no los tenía ahí |
 | `probar` escribe los errores de cada prueba como `correr`: `archivo:5: error: ...` (antes `línea 5: ...` y `Agente al recibir X (línea 5): ...`) | Nada |
 
 ## El tope: Mate tiene que seguir siendo chico
@@ -844,9 +962,9 @@ Mate sirve porque entra en la cabeza. Para que siga así hay un presupuesto escr
 pruebas del intérprete no dejan pasarse:
 
 - **Palabras propias: 40 como mucho.** Hoy son 36 (`sea`, `si`, `agente`...).
-- **Funciones incluidas: 40 como mucho.** Hoy son 39. Empezó con 20 y el plan era sumar unas
-  12; con las de archivos y fechas queda lugar para una sola más. Para agregar otra hay que
-  sacar una, o discutir el tope.
+- **Funciones incluidas: 40 como mucho.** Hoy son 40. Empezó con 20 y el plan era sumar unas
+  12; con las de archivos y fechas y la de las pruebas (`mensajes_enviados`) el cupo quedó
+  completo. Para agregar otra hay que sacar una, o discutir el tope.
 - **Cada agregado trae lo suyo**: su renglón en este README (en la tabla de funciones o en la
   referencia), su explicación en `ayuda <palabra>` y al menos una prueba que lo use.
 - **Una sola forma de escribir cada cosa.** Nada de sinónimos (`función` con tilde, comillas

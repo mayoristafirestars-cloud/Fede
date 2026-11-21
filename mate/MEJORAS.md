@@ -122,7 +122,7 @@ Estos fueron los desacuerdos más interesantes y cómo se resolvieron.
   mini-lenguaje. Propuso quedarse con `lista de Tipo` y con el contrato de respuesta escrito
   en el mensaje (`mensaje Pedido { ... } responde Cotizacion`).
 - **Qué se decidió**: se acepta el recorte (mejoras 69 y 70). Los rangos, opciones y valores
-  por defecto quedan anotados para más adelante (mejora 97).
+  por defecto quedan anotados para más adelante (mejora 97, que se hizo en la tanda 10).
 
 ### 9. Bucles infinitos y recursión
 
@@ -161,7 +161,7 @@ Estos fueron los desacuerdos más interesantes y cómo se resolvieron.
   adentro de otro agente; `simular` es la única que habilita algo nuevo y deja listo el
   enchufe para un futuro agente de IA.
 - **Qué se decidió**: entra `simular` (mejora 73). `estado_de()` se rechaza. El historial
-  queda para más adelante (mejora 98).
+  queda para más adelante (mejora 98, que se hizo en la tanda 10).
 
 ## Las 100 mejoras
 
@@ -183,6 +183,10 @@ arrancan en "pendiente". Las primeras 36 son las que se programan primero, en tr
 - **Tanda 9 (mejoras 59, 63, 65 y 93)**: las cuatro que habían quedado salteadas por cambiar
   salidas que las pruebas comparaban letra por letra, o por ser de esfuerzo grande. El dueño
   decidió que esas salidas se podían cambiar.
+- **Tanda 10 (mejoras 95 a 99)**: lo que estaba anotado "para más adelante" y el dueño pidió
+  terminar: valores por defecto en los parámetros, textos de varios renglones, contratos que
+  validan valores, el historial de mensajes en las pruebas y el "sobre" con el número de
+  conversación.
 
 ### Tanda 1: nunca un error interno en inglés
 
@@ -677,23 +681,28 @@ Lo que se dejó como está, y por qué:
 
 **95. Valores por defecto en los parámetros (para más adelante)**
 `funcion con_iva(precio, tasa = 0.21)`. Postergada para no agrandar el lenguaje todavía.
-*Mirada: lenguaje · Esfuerzo: chico · Estado: pendiente*
+Nota al hacerla (tanda 10): hecha. Los parámetros con valor van al final (si no, es un error al leer el programa, que muestra cómo quedaría). El valor se calcula en cada llamada, no una sola vez: puede ser una cuenta y usar los parámetros de antes (`funcion f(a, b = a * 2)`), y no hay sorpresas con listas compartidas. El error de cantidad dice el rango (`con_iva() espera entre 1 y 2 argumento(s) y recibió 3`) y para una función sin valores por defecto quedó letra por letra como estaba. La revisión previa (mejora 59) cuenta el mínimo y el máximo y mira los nombres del valor por defecto. Vale también en las funciones de un agente. No se agregó ninguna palabra.
+*Mirada: lenguaje · Esfuerzo: chico · Estado: hecha*
 
 **96. Textos de varios renglones (para más adelante)**
 Textos con triple comilla. Van a hacer falta cuando los agentes lleven instrucciones largas.
-*Mirada: lenguaje · Esfuerzo: mediano · Estado: pendiente*
+Nota al hacerla (tanda 10): hecha con tres comillas rectas (`"""`), con las mismas llaves `{...}` y las mismas barras que un texto común. Se quita el renglón de las comillas que abren y el de las que cierran (si no tienen nada más) y la sangría que comparten los renglones escritos y el del cierre: así el texto se escribe prolijo dentro de un bloque, y poniendo el cierre más a la izquierda se conserva la sangría que se quiera. El primer renglón, si va pegado a las comillas, no se mide. Lo que va entre llaves se escribe entero en un renglón, y un nombre mal escrito ahí adentro se señala en su renglón, no en el de las comillas. Sin cierre, el error señala dónde se abrió; la consola sigue leyendo renglones hasta el cierre. Las comillas curvas de Word no abren un texto de varios renglones. Antes tres comillas seguidas eran siempre un error, así que ningún programa que corría cambia.
+*Mirada: lenguaje · Esfuerzo: mediano · Estado: hecha*
 
 **97. Contratos que validan valores (para más adelante)**
 Rangos (`desde 1`), opciones fijas y valores por defecto en los campos de un mensaje.
-*Mirada: agentes · Esfuerzo: mediano · Estado: pendiente*
+Nota al hacerla (tanda 10): la sintaxis va después del tipo, en el mismo renglón y en un orden fijo: `cantidad: numero desde 1 hasta 100`, `prioridad: texto en ["baja", "media", "alta"]` y al final `= valor`. No se agregó ninguna palabra propia: `desde` y `hasta` solo significan algo ahí (siguen sirviendo de nombre) y `en` ya existía. Para las opciones se eligió `en [...]` y no `uno de [...]` porque `de` ya se usa en `lista de`. Los valores de las reglas van escritos a mano (no cuentas ni variables): así se revisan al leer el programa, y una regla que no cierra (`desde 5 hasta 1`, un valor por defecto que no cumple su regla, `desde` en un texto, rango y opciones juntos) es un error en la declaración. `desde`/`hasta` solo en `numero`; `en` solo en `numero` o `texto`. Un campo con valor por defecto puede faltar y toma ese valor también si le dan `nada` (por eso no lleva `?`). Se controla siempre que se arma el mensaje (al crearlo, al cambiarle un campo, con `de_json`) y antes de correr cuando el valor está escrito a mano; el texto es el mismo en los dos casos y dice campo, valor y regla. La clase del error para `detalle_de` es `"contrato"`. Quedó afuera a propósito: rangos de largo para textos y listas.
+*Mirada: agentes · Esfuerzo: mediano · Estado: hecha*
 
 **98. Historial de mensajes en las pruebas (para más adelante)**
 Poder preguntar dentro de una prueba qué mensajes se mandaron.
-*Mirada: agentes · Esfuerzo: mediano · Estado: pendiente*
+Nota al hacerla (tanda 10): es una función incluida, `mensajes_enviados()`, y no una palabra nueva. Devuelve una lista de mapas en el orden de entrega: `numero`, `de`, `a`, `tipo`, `mensaje`, `pregunta`, `conversacion` y `respuesta_a`; con un tipo (`mensajes_enviados("Pedido")`) trae solo esos. `de` y `a` son los nombres como texto, igual que en la traza (el programa es `"(programa)"`): así se comparan con `==` y se muestran sin vueltas. Antes de contestar entrega lo que quedó en la cola, como `asegurar`. Cada prueba arranca con el historial vacío y numera desde 1. Solo existe en las pruebas: escrita en el programa o en un agente es un error antes de correr, y al correr también (una función suelta la puede usar si la llama una prueba). Se eligió un nombre largo para no chocar con variables de programas que ya existen (`historial`, `enviados`). Ojo: con esta, las funciones incluidas son 40 de 40; la próxima obliga a sacar una o a discutir el tope. Con `correr` no se guarda nada.
+*Mirada: agentes · Esfuerzo: mediano · Estado: hecha*
 
 **99. Un "sobre" para los mensajes y número de conversación (para más adelante)**
 Guardar quién, a quién y en respuesta a qué. Es preparación para conectar programas entre sí; no se programa ahora.
-*Mirada: agentes · Esfuerzo: mediano · Estado: pendiente*
+Nota al hacerla (tanda 10): sin sintaxis nueva. Cada entrega lleva su sobre: número, quién, a quién, número de conversación y, si es la respuesta a un `enviar`, a qué mensaje contesta. Una conversación empieza cada vez que el programa (o una prueba) manda algo; lo que los agentes mandan mientras atienden, sus respuestas y los avisos de `al fallar` siguen en la misma, y un `enviar` a varios es una sola. Se ve en `--traza`, al final de los renglones sin sangría: `(conversación 2, en respuesta al 4)` (los de más adentro son de la conversación del renglón que los contiene, y no lo repiten), y en `mensajes_enviados()` (mejora 98). Cambia el formato de la traza: está en "Qué cambió", y hubo que actualizar las pruebas que la comparaban letra por letra. Sin `--traza` ningún programa muestra nada distinto. El programa no puede leer el sobre mientras corre (solo las pruebas): eso se decidirá cuando se conecten programas entre sí (mejora 100).
+*Mirada: agentes · Esfuerzo: mediano · Estado: hecha*
 
 **100. Conexión con modelos de IA y con la red (fuera de alcance por ahora)**
 No se programa: requiere claves pagas que el dueño todavía no decidió usar. Sí se va a documentar el plan y la idea de un agente "simulado" que lee sus respuestas de un archivo.
