@@ -1,0 +1,47 @@
+# Muestra de cómo se usa el adaptador de modelo propio desde Mate.
+#
+#   python mate\mate.py probar mate\modelo\probar_modelo.mate
+#   python mate\mate.py correr mate\modelo\probar_modelo.mate
+#
+# Este archivo está ADENTRO de la carpeta modelo, por eso trae "modelo.py" a secas.
+# Un programa que está al lado de la carpeta modelo escribe:  usar python "modelo/modelo.py"
+
+usar python "modelo.py"
+
+# Lo que hace un agente con el adaptador: pide, y convierte el texto JSON en un mapa.
+# Si el modelo contesta mal o no se llega hasta él, devuelve nada en vez de cortar el programa.
+funcion elegir_producto(pregunta) {
+    intentar {
+        sea contestado = modelo.pedir_al_modelo("Decí qué producto pide el cliente.", pregunta)
+        devolver de_json(contestado).producto
+    } si falla motivo {
+        devolver nada
+    }
+}
+
+# Lo que contestaría el modelo, armado como texto JSON: {"producto":"cinta_5m"}
+sea valida = a_json({producto: "cinta_5m"})
+
+modelo.simular_modelo([valida])
+mostrar("El modelo ({modelo.proveedor()}) eligió: {elegir_producto("la de 5 m")}")
+
+prueba "una respuesta válida llega como mapa" {
+    modelo.simular_modelo([valida])
+    asegurar elegir_producto("la de 5 m") == "cinta_5m"
+    asegurar ultimo(modelo.pedidos_al_modelo()).pregunta == "la de 5 m"
+}
+
+prueba "una respuesta que no es JSON es un error que se ataja" {
+    modelo.simular_modelo(["Claro, es la cinta de 5 metros"])
+    asegurar falla { modelo.pedir_al_modelo("a", "b") }
+    modelo.simular_modelo(["Claro, es la cinta de 5 metros"])
+    asegurar elegir_producto("la de 5 m") == nada
+}
+
+prueba "una falla de conexión es un error que se ataja" {
+    modelo.simular_modelo(["!conexion"])
+    asegurar falla { modelo.pedir_al_modelo("a", "b") }
+    modelo.simular_modelo(["!conexion", valida])
+    asegurar elegir_producto("la de 5 m") == nada
+    asegurar elegir_producto("la de 5 m") == "cinta_5m"
+}
