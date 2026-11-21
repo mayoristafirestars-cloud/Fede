@@ -173,6 +173,9 @@ arrancan en "pendiente". Las primeras 36 son las que se programan primero, en tr
 - **Tanda 3 (mejoras 25 a 36)**: cerrar las garantías entre agentes y en las pruebas.
 - **Tanda 4 (mejoras 37 a 48)**: renglones sin sorpresas, atajos (`+=`, `romper`, `leer`) y
   primeros pasos en Windows.
+- **Tanda 5 (mejoras 49 a 61, salvo la 59)**: comillas dentro de `"{...}"`, avisos para rutas de
+  Windows y para `1.500`, la tabla única de funciones, las funciones nuevas y más controles
+  antes de correr. La 59 se salteó por ser de esfuerzo grande.
 
 ### Tanda 1: nunca un error interno en inglés
 
@@ -386,59 +389,74 @@ Solo desde el programa principal (un agente no puede frenar todo esperando el te
 Nota al hacerla: la "respuesta preparada" es el segundo valor: `leer("¿Cuántos?", "3")`. En `probar` nunca se espera el teclado.
 *Mirada: lenguaje, principiante, crítico · Esfuerzo: chico · Estado: hecha*
 
-### Lo que sigue
+### Tanda 5: textos y números sin trampas, más funciones y más controles
 
 **49. Comillas dentro de `"{...}"`**
 Se va a poder escribir `"valor {m["a"]}"`, que hoy figura como límite en el README.
-*Mirada: lenguaje, robustez, principiante · Esfuerzo: mediano · Estado: pendiente*
+Nota al hacerla: adentro de las llaves va cualquier cuenta, también con textos que a su vez tengan llaves. Lo que antes era un error (una llave sin cerrar, una comilla de más) lo sigue siendo, con el mismo mensaje.
+*Mirada: lenguaje, robustez, principiante · Esfuerzo: mediano · Estado: hecha*
 
 **50. Las barras de las rutas de Windows no se rompen en silencio**
 `"C:\temp\nuevo"` hoy sale con un salto de línea en el medio. Mate va a avisar y sugerir `/` o doble barra.
-*Mirada: lenguaje, robustez · Esfuerzo: chico · Estado: pendiente*
+Nota al hacerla: son dos avisos. Un texto que empieza como ruta (`C:\` con una sola barra) es un error aunque sus barras formen `\t` o `\n`; y una barra seguida de una letra que no significa nada (`\a`, `\d`) también, cuando antes la barra desaparecía sin avisar. Valen `\n`, `\t`, `\\`, `\"`, `\{` y `\}`. Una ruta sin letra de disco cuyas barras den justo `\n` o `\t` (`"datos\nuevo.txt"`) no se puede distinguir de un texto con salto de renglón, así que no se avisa.
+*Mirada: lenguaje, robustez · Esfuerzo: chico · Estado: hecha*
 
 **51. Aviso para `1.500` y `3,5` escritos en el código**
 `1.500` vale uno y medio, no mil quinientos: Mate va a avisar. Para miles se va a poder escribir `1_500`. Y `3,5` va a decir "los decimales van con punto".
-*Mirada: lenguaje, robustez, principiante · Esfuerzo: chico · Estado: pendiente*
+Nota al hacerla: se resolvió como error antes de correr, no como aviso (Mate no tiene avisos que dejen seguir). Para no prohibir decimales de verdad, salta solo con una a tres cifras, punto y tres decimales terminados en cero (`1.500`, `12.250`): esos siempre tienen una forma más corta (`1.5`, `12.25`). `2.125` o `1.999` pasan como decimales. `3,5` se avisa cuando la coma no está dentro de paréntesis o corchetes; `mostrar(3,5)` sigue mostrando dos valores.
+*Mirada: lenguaje, robustez, principiante · Esfuerzo: chico · Estado: hecha*
 
 **52. Mensajes de error que no se leen como otra frase**
 "No se puede hacer nada + numero" pasa a ser "no se puede sumar el valor nada con un número", con la causa probable ("¿a la función le falta un devolver?").
-*Mirada: robustez, principiante · Esfuerzo: chico · Estado: pendiente*
+Nota al hacerla: se cambió la redacción solo cuando hay un `nada` de por medio (sumar, comparar, campos, posiciones, condiciones, recorrer, llamar y las funciones incluidas). Los demás mensajes (`no se puede hacer numero + logico`) quedaron como estaban para no mover lo que ya se conoce.
+*Mirada: robustez, principiante · Esfuerzo: chico · Estado: hecha*
 
 **53. Una tabla única de funciones incluidas**
 Un solo lugar con el nombre, cuántos valores lleva y un ejemplo de cada función. De ahí salen los errores con ejemplo, las sugerencias, la guía y la tabla del README.
-*Mirada: crítico · Esfuerzo: mediano · Estado: pendiente*
+Nota al hacerla: la tabla `FUNCIONES` de `mate.py` tiene, por función, cuántos valores lleva, un ejemplo y qué hace. De ahí salen el control de cantidad de valores, el `Por ejemplo: ...` del error, la lista de la guía y la tabla del README (una prueba controla que el README coincida renglón por renglón). Se ajustaron cuatro pruebas viejas que comparaban el texto entero de esos errores.
+*Mirada: crítico · Esfuerzo: mediano · Estado: hecha*
 
 **54. Funciones de texto que faltan**
 `recortar`, `reemplazar`, `empieza_con` y `termina_con`, para limpiar lo que escribe una persona o devuelve un agente.
-*Mirada: lenguaje · Esfuerzo: chico · Estado: pendiente*
+Nota al hacerla: con las de la mejora 55 y `obtener` quedan usadas las funciones nuevas del tope acordado en la discusión (punto 3).
+*Mirada: lenguaje · Esfuerzo: chico · Estado: hecha*
 
 **55. Funciones de listas y números que faltan**
 `minimo`, `maximo`, `promedio`, `absoluto`, `ultimo`, `porcion`, y un tercer valor en `rango` para ir de a saltos.
-*Mirada: lenguaje · Esfuerzo: chico · Estado: pendiente*
+Nota al hacerla: `minimo` y `maximo` aceptan una lista de números o una toda de textos; con la lista vacía es un error, igual que `promedio` y `ultimo`. `porcion(lista, desde, hasta)` no incluye la posición `hasta` y, si se pasa del final, llega hasta donde haya; `ultimo` y `porcion` también sirven con textos. Ojo: `minimo`, `maximo`, `promedio`, `ultimo`, `absoluto`, `porcion` y `obtener` dejan de servir como nombre de variable (está en "Qué cambió" del README).
+*Mirada: lenguaje · Esfuerzo: chico · Estado: hecha*
 
 **56. `obtener(mapa, clave, por_defecto)` y un error que lista lo que sí hay**
 Cuando falta una clave, Mate va a decir cuáles tiene el mapa y sugerir la parecida.
-*Mirada: lenguaje, robustez · Esfuerzo: chico · Estado: pendiente*
+Nota al hacerla: `obtener` lleva siempre los tres valores, para que nunca devuelva `nada` sin que se lo pidan. El error de clave muestra la sugerencia si hay una parecida y, si no, hasta ocho claves del mapa; conserva la palabra "clave". Lo mismo para un campo que no está (`mapa.campo`).
+*Mirada: lenguaje, robustez · Esfuerzo: chico · Estado: hecha*
 
 **57. `ordenar` por campo y con el abecedario español**
 `ordenar(productos, "precio")`, y los textos ordenados sin que las mayúsculas vayan primero ni la ñ al final.
-*Mirada: lenguaje, robustez · Esfuerzo: mediano · Estado: pendiente*
+Nota al hacerla: el abecedario español se usa en `ordenar`, `minimo` y `maximo`. Las comparaciones `<` y `>` entre textos no se tocaron: siguen el orden de siempre (mayúsculas primero). Con el campo, todos los valores tienen que ser números o todos textos.
+*Mirada: lenguaje, robustez · Esfuerzo: mediano · Estado: hecha*
 
 **58. Errores de posición más claros en las listas**
 "La lista tiene 3 elementos: las posiciones van de 0 a 2", y pistas para el último elemento y para posiciones que salieron de una cuenta con decimales.
-*Mirada: lenguaje, robustez · Esfuerzo: chico · Estado: pendiente*
+Nota al hacerla: el mensaje conserva las palabras "fuera de rango". Al asignar (`lista[3] = x`) la pista es `agregar(lista, valor)`.
+*Mirada: lenguaje, robustez · Esfuerzo: chico · Estado: hecha*
 
 **59. La revisión previa detecta nombres que no existen**
 Hoy un nombre mal escrito dentro de una parte poco usada del programa recién falla el día que se ejecuta. Se va a avisar antes de correr, junto con la cantidad de valores equivocada en una llamada.
+Nota (tanda 5): salteada por ser de esfuerzo grande. Necesita seguir, sin correr el programa, qué nombres se ven desde cada bloque, función, agente y archivo traído con `usar`; hecha a medias daría errores falsos, que es peor que no avisar.
 *Mirada: robustez, principiante · Esfuerzo: grande · Estado: pendiente*
 
 **60. Más controles antes de correr**
 `responder`, `remitente` y `yo` fuera de un agente; claves repetidas en un mapa; parámetros o estados repetidos; `nada` en un campo obligatorio.
-*Mirada: agentes, robustez · Esfuerzo: mediano · Estado: pendiente*
+Nota al hacerla: `responder` fuera de un agente ya se avisaba (mejora 5). `yo` y `remitente` son un error también dentro de una función de afuera de un agente, aunque la llame un agente: hay que pasarle el agente como valor. Se sumó el estado repetido dentro de `crear`.
+*Mirada: agentes, robustez · Esfuerzo: mediano · Estado: hecha*
 
 **61. Prueba de bombardeo: "nunca un error interno"**
 Una prueba automática que rompe los ejemplos de cientos de maneras y comprueba que Mate siempre contesta en español.
-*Mirada: crítico · Esfuerzo: chico · Estado: pendiente*
+Nota al hacerla: la prueba rompe cada uno de los 11 ejemplos de 60 maneras con un sorteo fijo (siempre las mismas) y los pasa por `correr` y `probar`: 1.320 corridas en un par de segundos. Antes de dejarla así se la corrió una vez con 33.000 variantes y no apareció ningún error interno.
+*Mirada: crítico · Esfuerzo: chico · Estado: hecha*
+
+### Lo que sigue
 
 **62. `probar` más prolijo**
 No mezcla la salida del programa con los resultados, avisa si el archivo no tiene pruebas y si hay dos pruebas con el mismo nombre.

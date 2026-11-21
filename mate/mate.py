@@ -42,6 +42,58 @@ OPCIONES = ("--traza", "--depurar", "--sin-limite", "--version", "--ayuda")
 
 COMPARADORES = ("==", "!=", "<", "<=", ">", ">=")
 
+# La tabla única de funciones incluidas: nombre -> (cuántos valores lleva como mínimo,
+# como máximo, un ejemplo, qué hace). De acá salen el control de la cantidad de valores,
+# el ejemplo de los errores, la lista de la guía y la tabla del README.
+FUNCIONES = {
+    "mostrar": (0, None, 'mostrar("Total:", total)', "escribe en pantalla"),
+    "leer": (1, 2, 'leer("¿Cuántos?", "3")',
+             "le pide un texto a la persona (en las pruebas da el 2.º valor)"),
+    "texto": (1, 1, "texto(3.5)", 'lo pasa a texto: "3.5"'),
+    "numero": (1, 1, 'numero("1.234,50")', "lee un número escrito como texto: 1234.5"),
+    "tipo": (1, 1, "tipo(x)", 'dice qué es: "numero", "texto", "lista", "mapa"...'),
+    "largo": (1, 1, "largo(lista)", "cuántos elementos tiene (o letras, o claves)"),
+    "redondear": (1, 2, "redondear(3.14159, 2)", "3.14 (sin el 2.º valor, sin decimales)"),
+    "pesos": (1, 2, "pesos(1234.5)", 'el texto "$ 1.234,50"'),
+    "absoluto": (1, 1, "absoluto(-5)", "5: el número sin el signo"),
+    "sumar": (1, 1, "sumar([1, 2, 3])", "6"),
+    "promedio": (1, 1, "promedio([4, 6])", "5"),
+    "minimo": (1, 1, "minimo([3, 1, 2])", "1: el más chico de la lista"),
+    "maximo": (1, 1, "maximo([3, 1, 2])", "3: el más grande de la lista"),
+    "rango": (1, 3, "rango(1, 10, 3)", "[1, 4, 7]; rango(3) es [0, 1, 2] y rango(2, 5) es [2, 3, 4]"),
+    "tiene": (2, 2, "tiene(lista, x)",
+              "verdadero si x está en la lista, es clave del mapa o parte del texto"),
+    "claves": (1, 1, "claves(mapa)", "la lista de sus claves"),
+    "valores": (1, 1, "valores(mapa)", "la lista de sus valores"),
+    "obtener": (3, 3, 'obtener(mapa, "clave", 0)',
+                "el valor de esa clave o, si el mapa no la tiene, el 3.er valor"),
+    "agregar": (2, 2, "agregar(lista, x)", "una lista NUEVA con x al final"),
+    "quitar": (2, 2, "quitar(lista, x)",
+               "una lista NUEVA sin los que valen x (en un mapa, sin esa clave)"),
+    "ordenar": (1, 2, 'ordenar(lista, "precio")',
+                "una lista NUEVA ordenada; el campo es opcional: ordenar(lista)"),
+    "ultimo": (1, 1, "ultimo(lista)", "el último elemento (o la última letra de un texto)"),
+    "porcion": (2, 3, "porcion(lista, 1, 3)",
+                "los de las posiciones 1 y 2; sin el 3.er valor, hasta el final"),
+    "unir": (2, 2, 'unir(lista, ", ")', "un texto con los elementos separados por coma"),
+    "partir": (2, 2, 'partir("a,b", ",")', 'la lista ["a", "b"]'),
+    "mayusculas": (1, 1, 'mayusculas("hola")', '"HOLA"'),
+    "minusculas": (1, 1, 'minusculas("HOLA")', '"hola"'),
+    "recortar": (1, 1, 'recortar("  hola ")', '"hola": sin los espacios de las puntas'),
+    "reemplazar": (3, 3, 'reemplazar(t, "a", "b")', "el texto con cada a cambiada por b"),
+    "empieza_con": (2, 2, 'empieza_con(t, "Sr.")', "verdadero si el texto empieza así"),
+    "termina_con": (2, 2, 'termina_con(t, ".txt")', "verdadero si el texto termina así"),
+    "a_json": (1, 1, "a_json(valor)", "el valor escrito como texto JSON"),
+    "de_json": (1, 1, "de_json(texto)", "el valor que describe ese texto JSON"),
+}
+
+
+def lista_de_funciones(formato_de_renglon="- {ejemplo:<27} {que}"):
+    """Un renglón por función incluida, para la guía y para el README."""
+    return "\n".join(formato_de_renglon.format(ejemplo=ejemplo, que=que)
+                     for _, _, ejemplo, que in FUNCIONES.values())
+
+
 # Las funciones incluidas que hacen algo además de devolver un valor: pueden ir solas
 # en un renglón. Las demás, sueltas, no sirven de nada y Mate lo avisa.
 HACEN_ALGO = ("mostrar", "leer")
@@ -64,6 +116,9 @@ INCLUIDA = ("'{n}' es una función incluida de Mate; elegí otro nombre "
 DEMASIADO_GRANDE = "el resultado es demasiado grande para calcularlo"
 NO_ASIGNABLE = ("solo se puede asignar a una variable o a una parte de una variable "
                 "(x, x.campo, x[0])")
+COMO_VAN_LAS_RUTAS = ('Si es una ruta de Windows, escribila con barras comunes '
+                      '("C:/datos/lista.txt") o con doble barra ("C:\\\\datos\\\\lista.txt")')
+_RUTA_DE_WINDOWS = re.compile(r"(?<![A-Za-z])[A-Za-z]:\\(?!\\)")  # C:\ con una sola barra
 DEVOLVER_SUELTO = "'devolver' solo va dentro de una función"
 RESPONDER_SUELTO = "'responder' solo va dentro de 'al recibir' (o de una función del agente)"
 SIN_MEMORIA = ("el programa se quedó sin memoria: está armando un texto, una lista o un "
@@ -143,7 +198,7 @@ _TOKEN = re.compile(
     r"""
     (?P<ws>[ \t\r\f\v\u00a0\u00ad\u1680\u2000-\u200f\u2028-\u202f\u205f-\u2064\u3000\ufeff]+|\#[^\n]*)
   | (?P<nl>\n)
-  | (?P<num>\d+(?:\.\d+)?)
+  | (?P<num>\d+(?:_\d+)*(?:\.\d+)?)
   | (?P<str>"(?:\\.|[^"\\\n])*")
   | (?P<curva>[“”„](?:\\.|[^"“”„\\\n])*[“”„"])
   | (?P<id>[^\W\d]\w*)
@@ -167,9 +222,84 @@ for _c in "‘’":
     _PISTAS_DE_CARACTER[_c] = _PISTAS_DE_CARACTER["'"]
 
 
+_COMILLAS = '"“”„'
+
+
+def _fin_de_texto(s, i):
+    """s[i] abre un texto: devuelve dónde termina (después de la comilla de cierre), o -1
+    si no cierra en ese renglón. Lo que va entre { y } es una cuenta, y adentro puede
+    haber otros textos con sus propias comillas: "precio: {precios["yerba"]}"."""
+    cierres = '"' if s[i] == '"' else _COMILLAS
+    i += 1
+    while i < len(s) and s[i] != "\n":
+        c = s[i]
+        if c == "\\":
+            if s[i + 1:i + 2] in ("", "\n"):
+                return -1
+            i += 2
+        elif c in cierres:
+            return i + 1
+        elif c == "{":
+            i = _fin_de_llave(s, i)
+            if i < 0:
+                return -1
+        else:
+            i += 1
+    return -1
+
+
+def _fin_de_llave(s, i):
+    """s[i] es la { de una cuenta dentro de un texto: devuelve dónde termina (después de
+    su }), o -1. Las llaves que estén dentro de otro texto no cuentan."""
+    prof = 0
+    while i < len(s) and s[i] != "\n":
+        c = s[i]
+        if c in _COMILLAS:
+            i = _fin_de_texto(s, i)
+            if i < 0:
+                return -1
+            continue
+        if c == "{":
+            prof += 1
+        elif c == "}":
+            prof -= 1
+            if prof == 0:
+                return i + 1
+        i += 1
+    return -1
+
+
+_MILES = re.compile(r"[1-9]\d{0,2}\.\d\d0")  # 1.500, 12.000, 3.250
+
+
+def revisar_numero(txt, fuente, pos, hondo, linea):
+    """Los números que casi seguro quieren decir otra cosa: 1.500, 1.500.000 y 3,5."""
+    sin_puntos = txt.replace(".", "").replace("_", "")
+    if re.match(r"\.\d", fuente[pos:pos + 2]) and "." in txt:
+        raise ErrorMate(
+            "un número lleva un solo punto, y es el de los decimales. Los miles no llevan "
+            "punto: se escriben todos juntos o con guion bajo (1500000 o 1_500_000)", linea)
+    if _MILES.fullmatch(txt):
+        corto = txt.rstrip("0").rstrip(".")
+        raise ErrorMate(
+            f"en Mate el punto es el de los decimales: {txt} vale {corto}, no {sin_puntos}. "
+            f"Si querías decir {sin_puntos}, escribilo sin punto ({sin_puntos}) o con guion "
+            f"bajo ({txt.replace('.', '_')}); si era el decimal, escribí {corto}", linea)
+    if not hondo and re.match(r",\d+(?![\w.])", fuente[pos:]) and "." not in txt:
+        decimales = re.match(r",(\d+)", fuente[pos:]).group(1)
+        raise ErrorMate(f"los decimales van con punto, no con coma: {txt}.{decimales}", linea)
+
+
 def tokenizar(fuente, archivo=None):
     tokens, pos, linea = [], 0, Linea(1, archivo)
+    hondo = 0  # paréntesis y corchetes abiertos: ahí adentro una coma separa valores
     while pos < len(fuente):
+        if fuente[pos] in _COMILLAS:
+            fin = _fin_de_texto(fuente, pos)
+            if fin > 0:
+                tokens.append(("str", fuente[pos + 1:fin - 1], linea))
+                pos = fin
+                continue
         m = _TOKEN.match(fuente, pos)
         if not m:
             c = fuente[pos]
@@ -187,6 +317,8 @@ def tokenizar(fuente, archivo=None):
         if clase == "nl":
             linea = Linea(linea + 1, archivo)
         elif clase == "num":
+            revisar_numero(txt, fuente, pos, hondo, linea)
+            txt = txt.replace("_", "")
             try:
                 valor = float(txt) if "." in txt else int(txt)
             except ValueError:  # Python no convierte enteros de miles de cifras
@@ -201,6 +333,7 @@ def tokenizar(fuente, archivo=None):
         elif clase == "op":
             if txt == "/" and fuente.startswith("/", pos):
                 raise ErrorMate("los comentarios empiezan con #", linea)
+            hondo += (txt in "([") - (txt in ")]")
             tokens.append(("op", txt, linea))
     tokens.append(("eof", None, linea))
     return tokens
@@ -774,19 +907,33 @@ class Parser:
     def texto(self, crudo, ln):
         """Texto con escapes e interpolación: "Total: {precio * 2}"."""
         partes, actual, i = [], [], 0
-        escapes = {"n": "\n", "t": "\t"}
+        escapes = {"n": "\n", "t": "\t", "\\": "\\", "{": "{", "}": "}"}
+        escapes.update((c, c) for c in _COMILLAS)
+        if _RUTA_DE_WINDOWS.search(crudo):
+            raise ErrorMate(
+                "esto parece una ruta de Windows, y dentro de un texto la barra \\ es "
+                "especial (\\n es un salto de renglón y \\t un espacio largo). "
+                + COMO_VAN_LAS_RUTAS, ln)
         while i < len(crudo):
             c = crudo[i]
             if c == "\\" and i + 1 < len(crudo):
-                actual.append(escapes.get(crudo[i + 1], crudo[i + 1]))
+                if crudo[i + 1] not in escapes:
+                    raise ErrorMate(
+                        f"dentro de un texto la barra \\ es especial, y \\{crudo[i + 1]} no "
+                        "significa nada. Para escribir una barra de verdad va doble: \\\\. "
+                        + COMO_VAN_LAS_RUTAS, ln)
+                actual.append(escapes[crudo[i + 1]])
                 i += 2
             elif c == "{":
-                fin, prof = i + 1, 1
-                while fin < len(crudo) and prof:
-                    prof += {"{": 1, "}": -1}.get(crudo[fin], 0)
-                    fin += 1
-                if prof:
-                    raise ErrorMate("falta '}' en el texto (usá \\{ para una llave literal)", ln)
+                fin = _fin_de_llave(crudo, i)
+                if fin < 0:  # no cierra bien: se cuenta a la antigua, para explicar el error
+                    fin, prof = i + 1, 1
+                    while fin < len(crudo) and prof:
+                        prof += {"{": 1, "}": -1}.get(crudo[fin], 0)
+                        fin += 1
+                    if prof:
+                        raise ErrorMate(
+                            "falta '}' en el texto (usá \\{ para una llave literal)", ln)
                 if actual:
                     partes.append("".join(actual))
                     actual = []
@@ -936,6 +1083,16 @@ def _nombra(n, nombres):
     return False
 
 
+def repetidos(nombres):
+    """Los nombres que aparecen más de una vez, en el orden en que se repiten."""
+    vistos, dobles = set(), []
+    for nombre in nombres:
+        if nombre in vistos and nombre not in dobles:
+            dobles.append(nombre)
+        vistos.add(nombre)
+    return dobles
+
+
 def verificar(programa):
     """Revisa los contratos de mensajes antes de correr. Devuelve [(linea, texto)]."""
     errores = []
@@ -985,6 +1142,9 @@ def verificar(programa):
 
     for s in programa:
         if s[0] == "agente":
+            for k in repetidos(e[1] for e in s[3]):
+                errores.append((next(e[0] for e in reversed(s[3]) if e[1] == k),
+                                f"{s[2]}: el estado '{k}' está repetido"))
             vistos = set()
             for ln, tipo, _, _ in s[4]:
                 if tipo not in mensajes:
@@ -1036,6 +1196,11 @@ def verificar(programa):
                             f"{nombre} no tiene un campo '{k}'", k, decl)))
                         continue
                     tipo = decl[k][0]
+                    if e[0] == "nada" and not decl[k][1] and tipo != "cualquiera":
+                        errores.append((ln, (
+                            f"{nombre}.{k} es obligatorio y le diste nada. Si puede faltar, "
+                            f"declaralo opcional en el mensaje: {k}: {tipo}?")))
+                        continue
                     if _es_nodo(e, "nombre", 3) and e[2] in funciones:
                         errores.append((ln, "los mensajes llevan datos, no funciones "
                                             f"(campo '{k}' de {nombre})"))
@@ -1052,6 +1217,8 @@ def verificar(programa):
                 errores.append((ln, con_sugerencia(
                     f"no existe el agente '{nombre}'", nombre, agentes)))
             else:
+                for k in repetidos(k for k, _ in pares):
+                    errores.append((ln, f"{nombre}: el estado '{k}' está repetido"))
                 for k, e in pares:
                     if k not in estados[nombre]:
                         errores.append((ln, f"{nombre} no tiene un estado '{k}'"))
@@ -1070,6 +1237,18 @@ def verificar(programa):
                 elif n[0] == "preguntar" and nunca_responde(a_quien, msg[2]):
                     errores.append((ln, f"{a_quien} recibe '{msg[2]}' pero nunca responde: no "
                                         "se le puede preguntar (le falta un 'responder')"))
+        elif _es_nodo(n, "mapa", 3) and isinstance(n[2], list):
+            for k in repetidos(k for k, _ in n[2]):
+                errores.append((n[1], f"la clave '{k}' está repetida en el mapa: la segunda "
+                                      "taparía a la primera"))
+        elif _es_nodo(n, "funcion", 5) and isinstance(n[3], list):
+            for k in repetidos(n[3]):
+                errores.append((n[1], f"{n[2]}(): el parámetro '{k}' está repetido"))
+        elif (_es_nodo(n, "yo", 2) or _es_nodo(n, "remitente", 2)) and ag is None:
+            que = ("el agente que está atendiendo" if n[0] == "yo"
+                   else "quien le mandó el mensaje que está atendiendo")
+            errores.append((n[1], f"'{n[0]}' solo existe dentro de un agente (es {que}); "
+                                  "acá afuera no hay ninguno"))
         for x in n:
             visitar(x, ag)
 
@@ -1153,6 +1332,56 @@ def nombre_tipo(v):
     if isinstance(v, Agente):
         return "agente"
     return "funcion"
+
+
+CAUSA_DE_NADA = ("'nada' es la falta de valor: ¿a la función le falta un 'devolver', o es "
+                 "un campo opcional que vino vacío?")
+_CON_ARTICULO = {"nada": "el valor nada", "numero": "un número", "texto": "un texto",
+                 "logico": "un valor lógico", "lista": "una lista", "mapa": "un mapa",
+                 "agente": "un agente", "funcion": "una función"}
+_VERBOS = {"+": "sumar", "-": "restar", "*": "multiplicar", "/": "dividir", "%": "dividir"}
+
+
+def tipo_claro(v):
+    """El tipo para un mensaje de error: 'nada' suelto se lee como otra frase ("no se
+    puede hacer nada"), así que se dice "el valor nada"."""
+    return "el valor nada" if v is None else nombre_tipo(v)
+
+
+def un(v):
+    """'un número', 'una lista', 'el valor nada', 'un mensaje Pedido'."""
+    return _CON_ARTICULO.get(nombre_tipo(v), f"un mensaje {nombre_tipo(v)}")
+
+
+def alfabetico(t):
+    """La clave para ordenar textos como en el diccionario: sin importar mayúsculas ni
+    tildes, y con la ñ después de la n."""
+    return sin_tildes(unicodedata.normalize("NFC", t).lower().replace("ñ", "n\U0010ffff"))
+
+
+def claves_de_orden(valores):
+    """Con qué comparar esos valores para ordenarlos: los números por su valor y los
+    textos por el abecedario. Si están mezclados o son otra cosa, None."""
+    if all(es_num(x) for x in valores):
+        return list(valores)
+    if all(isinstance(x, str) for x in valores):
+        return [(alfabetico(x), x) for x in valores]
+    return None
+
+
+def lo_que_tiene(nombres):
+    """' (tiene: a, b, c)' para el error de una clave o un campo que no está."""
+    nombres = [str(n) for n in nombres]
+    if not nombres:
+        return " (está vacío)"
+    return " (tiene: " + ", ".join(nombres[:8]) + (", ..." if len(nombres) > 8 else "") + ")"
+
+
+def no_esta(mensaje, nombre, disponibles):
+    """El error de una clave o un campo que no está: con el nombre parecido si lo hay
+    y, si no, con la lista de los que sí hay."""
+    return (con_sugerencia(mensaje, nombre, disponibles) if sugerir(nombre, disponibles)
+            else mensaje + lo_que_tiene(disponibles))
 
 
 def lleva_funcion(v):
@@ -1340,14 +1569,9 @@ def por_teclado(pregunta):
                  else pregunta + " ")
 
 
-_INCLUIDAS = []
-
-
 def incluidas():
     """Los nombres de las funciones incluidas (mostrar, texto, pesos...)."""
-    if not _INCLUIDAS:
-        _INCLUIDAS.append(frozenset(Interprete(salida=lambda _: None).glob.vars))
-    return _INCLUIDAS[0]
+    return frozenset(FUNCIONES)
 
 
 class Entorno:
@@ -1477,19 +1701,20 @@ class Interprete:
 
     # ── funciones incorporadas ──
     def _nativas(self):
-        def nativa(nombre, minimo, maximo=None):
-            maximo = minimo if maximo is None else maximo
+        def nativa(nombre):
+            minimo, maximo, ejemplo, _ = FUNCIONES[nombre]
 
             def deco(fn):
                 def envuelta(args):
-                    if not minimo <= len(args) <= maximo:
+                    if len(args) < minimo or (maximo is not None and len(args) > maximo):
                         if minimo == maximo:
                             lleva = f"{minimo} valor" + ("" if minimo == 1 else "es")
                         elif maximo == minimo + 1:
                             lleva = f"{minimo} o {maximo} valores"
                         else:
                             lleva = f"entre {minimo} y {maximo} valores"
-                        raise ErrorMate(f"{nombre}() lleva {lleva} y recibió {len(args)}")
+                        raise ErrorMate(f"{nombre}() lleva {lleva} y recibió {len(args)}. "
+                                        f"Por ejemplo: {ejemplo}")
                     return protegida(nombre, fn, args)
                 self.glob.definir(nombre, Nativa(nombre, envuelta), origen="nativa")
                 return fn
@@ -1512,27 +1737,41 @@ class Interprete:
 
         def pedir(v, tipo, donde):
             if nombre_tipo(v) != tipo:
-                raise ErrorMate(f"{donde} espera {tipo} y recibió {nombre_tipo(v)}")
+                raise ErrorMate(f"{donde} espera {tipo} y recibió {tipo_claro(v)}")
             return v
 
-        self.glob.definir("mostrar", Nativa("mostrar", lambda args: protegida(
-            "mostrar", lambda *xs: self.salida(" ".join(formato(a) for a in xs)), args)),
-            origen="nativa")
+        def no_vacia(l, donde):
+            if not l:
+                raise ErrorMate(f"{donde} no puede con una lista vacía: no hay de dónde "
+                                "elegir. Preguntá antes con largo(lista) > 0")
+            return l
 
-        @nativa("largo", 1)
+        def numeros(l, donde):
+            if not all(es_num(x) for x in pedir(l, "lista", donde)):
+                raise ErrorMate(f"{donde} espera una lista de números")
+            return l
+
+        def posicion_de(n, donde):
+            if type(n) is not int or n < 0:
+                raise ErrorMate(f"{donde} espera posiciones enteras, de 0 en adelante")
+            return n
+
+        nativa("mostrar")(lambda *xs: self.salida(" ".join(formato(a) for a in xs)))
+
+        @nativa("largo")
         def _(x):
             if isinstance(x, (str, list, dict)):
                 return len(x)
-            raise ErrorMate(f"largo() no aplica a {nombre_tipo(x)}")
+            raise ErrorMate(f"largo() no aplica a{'l valor nada' if x is None else ' ' + nombre_tipo(x)}")
 
-        nativa("texto", 1)(formato)
-        nativa("tipo", 1)(nombre_tipo)
+        nativa("texto")(formato)
+        nativa("tipo")(nombre_tipo)
 
-        @nativa("numero", 1)
+        @nativa("numero")
         def _(x):
             return x if es_num(x) else numero_de_texto(pedir(x, "texto", "numero()"))
 
-        @nativa("tiene", 2)
+        @nativa("tiene")
         def _(col, x):
             if isinstance(col, dict):  # las claves son textos: otra cosa no puede estar
                 return isinstance(x, str) and x in col
@@ -1540,44 +1779,116 @@ class Interprete:
                 return any(igual(x, y) for y in col)
             if isinstance(col, str) and isinstance(x, str):
                 return x in col
-            raise ErrorMate(f"tiene() no aplica a {nombre_tipo(col)}")
+            raise ErrorMate(f"tiene() no aplica a{'l valor nada' if col is None else ' ' + nombre_tipo(col)}")
 
-        nativa("claves", 1)(lambda m: list(pedir(m, "mapa", "claves()")))
-        nativa("valores", 1)(lambda m: list(pedir(m, "mapa", "valores()").values()))
-        nativa("agregar", 2)(lambda l, x: pedir(l, "lista", "agregar()") + [x])
+        nativa("claves")(lambda m: list(pedir(m, "mapa", "claves()")))
+        nativa("valores")(lambda m: list(pedir(m, "mapa", "valores()").values()))
+        nativa("agregar")(lambda l, x: pedir(l, "lista", "agregar()") + [x])
 
-        @nativa("quitar", 2)
+        @nativa("quitar")
         def _(col, x):
             if isinstance(col, dict):
                 return {k: v for k, v in col.items() if k != x}
             if isinstance(col, list):
                 return [y for y in col if not igual(x, y)]
-            raise ErrorMate(f"quitar() no aplica a {nombre_tipo(col)}")
+            raise ErrorMate(f"quitar() no aplica a{'l valor nada' if col is None else ' ' + nombre_tipo(col)}")
 
-        @nativa("rango", 1, 2)
-        def _(a, b=None):
+        @nativa("rango")
+        def _(a, b=None, salto=1):
             ini, fin = (0, a) if b is None else (a, b)
-            if type(ini) is not int or type(fin) is not int:
+            if type(ini) is not int or type(fin) is not int or type(salto) is not int:
                 raise ErrorMate("rango() espera números enteros")
-            if fin - ini > MAX_LARGO:
+            if salto == 0:
+                raise ErrorMate("rango(): el salto (el tercer valor) no puede ser 0: "
+                                "nunca llegaría")
+            numeros_del_rango = range(ini, fin, salto)
+            if len(numeros_del_rango) > MAX_LARGO:
                 raise ErrorMate("rango(): son demasiados números (el tope es "
                                 + f"{MAX_LARGO:,})".replace(",", "."))
-            return list(range(ini, fin))
+            return list(numeros_del_rango)
 
-        @nativa("sumar", 1)
+        nativa("sumar")(lambda l: sum(numeros(l, "sumar()")))
+
+        @nativa("promedio")
         def _(l):
-            if not all(es_num(x) for x in pedir(l, "lista", "sumar()")):
-                raise ErrorMate("sumar() espera una lista de números")
-            return sum(l)
+            total, cuantos = sum(no_vacia(numeros(l, "promedio()"), "promedio()")), len(l)
+            if type(total) is int and total % cuantos == 0:
+                return total // cuantos
+            return total / cuantos
 
-        @nativa("ordenar", 1)
-        def _(l):
-            try:
-                return sorted(pedir(l, "lista", "ordenar()"))
-            except TypeError:
-                raise ErrorMate("ordenar() espera elementos comparables entre sí")
+        def extremo(nombre, elegir):
+            @nativa(nombre)
+            def _(l):
+                claves = claves_de_orden(no_vacia(pedir(l, "lista", f"{nombre}()"),
+                                                  f"{nombre}()"))
+                if claves is None:
+                    raise ErrorMate(f"{nombre}() espera una lista de números (o toda de "
+                                    "textos), sin mezclar")
+                return l[elegir(range(len(l)), key=claves.__getitem__)]
 
-        @nativa("redondear", 1, 2)
+        extremo("minimo", min)
+        extremo("maximo", max)
+        nativa("absoluto")(lambda n: abs(pedir(n, "numero", "absoluto()")))
+
+        @nativa("ultimo")
+        def _(col):
+            if not isinstance(col, (list, str)):
+                raise ErrorMate(f"ultimo() espera una lista o un texto y recibió "
+                                f"{tipo_claro(col)}")
+            if not col:
+                raise ErrorMate("ultimo() no puede con "
+                                + ("un texto vacío" if isinstance(col, str) else
+                                   "una lista vacía") + ": no tiene ningún elemento")
+            return col[-1]
+
+        @nativa("porcion")
+        def _(col, desde, hasta=None):
+            if not isinstance(col, (list, str)):
+                raise ErrorMate(f"porcion() espera una lista o un texto y recibió "
+                                f"{tipo_claro(col)}")
+            posicion_de(desde, "porcion()")
+            hasta = len(col) if hasta is None else posicion_de(hasta, "porcion()")
+            if desde > hasta:
+                raise ErrorMate(f"porcion(): la posición donde empieza ({desde}) no puede "
+                                f"ser mayor que la posición donde termina ({hasta})")
+            return col[desde:hasta]  # si 'hasta' se pasa del final, llega hasta el final
+
+        @nativa("obtener")
+        def _(m, clave, por_defecto):
+            pedir(m, "mapa", "obtener()")
+            self.clave_de_mapa(clave)
+            return m.get(clave, por_defecto)
+
+        @nativa("ordenar")
+        def _(l, campo=None):
+            por = pedir(l, "lista", "ordenar()")
+            if campo is not None:
+                pedir(campo, "texto", "ordenar()")
+                por = []
+                for x in l:
+                    campos = x.campos if isinstance(x, Registro) else x
+                    if not isinstance(campos, dict):
+                        raise ErrorMate(
+                            f'ordenar(lista, "{campo}") espera una lista de mapas o de '
+                            f"mensajes, y adentro hay {un(x)}")
+                    if campo not in campos:
+                        raise ErrorMate(no_esta(
+                            f"ordenar(): un elemento de la lista no tiene '{campo}'",
+                            campo, campos))
+                    por.append(campos[campo])
+            claves = claves_de_orden(por)
+            if claves is None and campo is not None:
+                raise ErrorMate(f"ordenar(): los '{campo}' tienen que ser todos números o "
+                                "todos textos, sin mezclar")
+            if claves is None:
+                try:
+                    return sorted(l)
+                except TypeError:
+                    raise ErrorMate("ordenar() espera elementos comparables entre sí: todos "
+                                    "números o todos textos")
+            return [l[i] for i in sorted(range(len(l)), key=claves.__getitem__)]
+
+        @nativa("redondear")
         def _(x, n=0):
             pedir(x, "numero", "redondear()")
             if type(n) is not int or n < 0:
@@ -1591,7 +1902,7 @@ class Interprete:
             r = redondeo(x, n)  # el medio va hacia arriba: redondear(2.5) da 3
             return int(r) if r == r.to_integral_value() else float(r)
 
-        @nativa("pesos", 1, 2)
+        @nativa("pesos")
         def _(n, decimales=2):
             pedir(n, "numero", "pesos()")
             if type(decimales) is not int or not 0 <= decimales <= 6:
@@ -1606,17 +1917,17 @@ class Interprete:
                 texto += "," + fraccion.ljust(decimales, "0")
             return ("-" if r < 0 else "") + texto
 
-        nativa("unir", 2)(lambda l, sep: pedir(sep, "texto", "unir()").join(
+        nativa("unir")(lambda l, sep: pedir(sep, "texto", "unir()").join(
             formato(x) for x in pedir(l, "lista", "unir()")))
 
-        @nativa("partir", 2)
+        @nativa("partir")
         def _(t, sep):
             pedir(t, "texto", "partir()")
             if pedir(sep, "texto", "partir()") == "":
                 return list(t)  # sin separador: letra por letra
             return t.split(sep)
 
-        @nativa("leer", 1, 2)
+        @nativa("leer")
         def _(pregunta, preparada=None):
             pedir(pregunta, "texto", "leer()")
             if preparada is not None:
@@ -1640,10 +1951,30 @@ class Interprete:
                 raise ErrorMate("leer(): no hay nadie para contestar (el programa no "
                                 "está corriendo en una consola con teclado)")
 
-        nativa("mayusculas", 1)(lambda t: pedir(t, "texto", "mayusculas()").upper())
-        nativa("minusculas", 1)(lambda t: pedir(t, "texto", "minusculas()").lower())
+        @nativa("recortar")
+        def _(t):
+            return pedir(t, "texto", "recortar()").strip()
 
-        @nativa("a_json", 1)
+        @nativa("reemplazar")
+        def _(t, viejo, nuevo):
+            for x in (t, viejo, nuevo):
+                pedir(x, "texto", "reemplazar()")
+            if viejo == "":
+                raise ErrorMate("reemplazar(): el texto a buscar (el segundo valor) no "
+                                "puede estar vacío")
+            if len(t) + t.count(viejo) * (len(nuevo) - len(viejo)) > MAX_LARGO:
+                raise ErrorMate("reemplazar(): el texto quedaría demasiado largo")
+            return t.replace(viejo, nuevo)
+
+        nativa("empieza_con")(lambda t, p: pedir(t, "texto", "empieza_con()").startswith(
+            pedir(p, "texto", "empieza_con()")))
+        nativa("termina_con")(lambda t, p: pedir(t, "texto", "termina_con()").endswith(
+            pedir(p, "texto", "termina_con()")))
+
+        nativa("mayusculas")(lambda t: pedir(t, "texto", "mayusculas()").upper())
+        nativa("minusculas")(lambda t: pedir(t, "texto", "minusculas()").lower())
+
+        @nativa("a_json")
         def _(v):
             try:
                 return json.dumps(self._a_json(v), ensure_ascii=False, allow_nan=False)
@@ -1657,7 +1988,7 @@ class Interprete:
             f = float(t)
             return f if math.isfinite(f) else numero_invalido(t)
 
-        @nativa("de_json", 1)
+        @nativa("de_json")
         def _(t):
             try:
                 return self._de_json(json.loads(
@@ -1718,7 +2049,7 @@ class Interprete:
                                 f"(campo '{campo}' de {nombre})")
             if not (self.cumple(v, tipo) or (opcional and v is None)):
                 raise ErrorMate(
-                    f"{nombre}.{campo} es de tipo {tipo} y recibió {nombre_tipo(v)}")
+                    f"{nombre}.{campo} es de tipo {tipo} y recibió {tipo_claro(v)}")
             campos[campo] = v
         for k in dados:
             if k not in campos:
@@ -2033,13 +2364,13 @@ class Interprete:
     def destino(self, nodo, env):
         dest = self.ev(nodo, env)
         if not isinstance(dest, Agente):
-            raise ErrorMate(f"el destino tiene que ser un agente, no {nombre_tipo(dest)}")
+            raise ErrorMate(f"el destino tiene que ser un agente, no {tipo_claro(dest)}")
         return dest
 
     def un_mensaje(self, nodo, env):
         msg = self.ev(nodo, env)
         if not isinstance(msg, Registro):
-            raise ErrorMate(f"solo se envían mensajes declarados, no {nombre_tipo(msg)}")
+            raise ErrorMate(f"solo se envían mensajes declarados, no {tipo_claro(msg)}")
         return msg
 
     # ── sentencias ──
@@ -2052,7 +2383,8 @@ class Interprete:
     def condicion(self, nodo, env):
         v = self.ev(nodo, env)
         if type(v) is not bool:
-            raise ErrorMate(f"la condición tiene que ser verdadero o falso, no {nombre_tipo(v)}")
+            raise ErrorMate("la condición tiene que ser verdadero o falso, no "
+                            + tipo_claro(v))
         return v
 
     def contar_paso(self, linea):
@@ -2112,7 +2444,8 @@ class Interprete:
         elif clase == "para":
             col = self.ev(s[3], env)
             if not isinstance(col, (list, dict, str)):
-                raise ErrorMate(f"no se puede recorrer {nombre_tipo(col)}")
+                raise ErrorMate(f"no se puede recorrer {tipo_claro(col)}: 'para' recorre "
+                                "listas, mapas y textos")
             for x in list(col):
                 self.contar_paso(s[1])
                 paso = Entorno(env)
@@ -2246,14 +2579,14 @@ class Interprete:
         if clase == "indice":
             clave = self.ev(destino[3], env)
             if isinstance(base, list):
-                self.posicion(base, clave)
+                self.posicion(base, clave, al_asignar=True)
                 nueva = list(base)
                 nueva[clave] = valor
             elif isinstance(base, dict):
                 self.clave_de_mapa(clave)
                 nueva = {**base, clave: valor}
             else:
-                raise ErrorMate(f"no se puede asignar por índice en {nombre_tipo(base)}")
+                raise ErrorMate(f"no se puede asignar por índice en {tipo_claro(base)}")
         elif clase == "campo":
             campo = destino[3]
             if isinstance(base, dict):
@@ -2261,7 +2594,8 @@ class Interprete:
             elif isinstance(base, Registro):
                 nueva = self.construir(base.tipo, {**base.campos, campo: valor})
             else:
-                raise ErrorMate(f"{nombre_tipo(base)} no tiene campos")
+                raise ErrorMate(f"{tipo_claro(base)} no tiene campos"
+                                + (f". {CAUSA_DE_NADA}" if base is None else ""))
         else:
             raise ErrorMate(NO_ASIGNABLE)
         self.asignar(destino[2], nueva, env)
@@ -2288,13 +2622,37 @@ class Interprete:
 
     def clave_de_mapa(self, clave):
         if not isinstance(clave, str):
-            raise ErrorMate(f"las claves de un mapa son textos, no {nombre_tipo(clave)}")
+            raise ErrorMate(f"las claves de un mapa son textos, no {tipo_claro(clave)}")
 
-    def posicion(self, sec, i):
+    def posicion(self, sec, i, al_asignar=False):
+        """Controla que i sea una posición de esa lista (o de ese texto)."""
+        if type(i) is float:
+            raise ErrorMate(
+                f"la posición tiene que ser un número entero y dio {formato(i)}. Si salió "
+                "de una cuenta (una división, por ejemplo), pasala por redondear()")
         if type(i) is not int:
-            raise ErrorMate("el índice tiene que ser un número entero")
-        if not 0 <= i < len(sec):
-            raise ErrorMate(f"índice {i} fuera de rango (largo {len(sec)})")
+            raise ErrorMate("la posición tiene que ser un número entero, no "
+                            + tipo_claro(i))
+        cuantos = len(sec)
+        if 0 <= i < cuantos:
+            return
+        que, cosas = ("el texto", "letra") if isinstance(sec, str) else ("la lista", "elemento")
+        if cuantos == 0:
+            tiene = f"{que} no tiene ningún {cosas}"
+        elif cuantos == 1:
+            tiene = f"{que} tiene 1 {cosas}, así que la única posición es la 0"
+        else:
+            tiene = (f"{que} tiene {cuantos} {cosas}s, así que las posiciones van de 0 a "
+                     f"{cuantos - 1}")
+        pista = ""
+        if i < 0:
+            pista = ". Las posiciones no son negativas: para el último usá ultimo(...)"
+        elif al_asignar:
+            pista = ". Para sumar un elemento al final usá agregar(lista, valor)"
+        elif i == cuantos and cuantos:
+            pista = (f". Como se cuenta desde 0, el último está en la posición "
+                     f"{cuantos - 1} (o usá ultimo(...))")
+        raise ErrorMate(f"la posición {i} está fuera de rango: {tiene}{pista}")
 
     # ── expresiones ──
     def ev(self, n, env):
@@ -2335,7 +2693,8 @@ class Interprete:
         if clase == "neg":
             v = self.ev(n[2], env)
             if not es_num(v):
-                raise ErrorMate(f"no se puede negar {nombre_tipo(v)}")
+                raise ErrorMate(f"no se puede negar {tipo_claro(v)}: el signo menos va "
+                                "delante de un número")
             return -v
         if clase == "bin":
             return self.binaria(n[2], self.ev(n[3], env), self.ev(n[4], env))
@@ -2349,17 +2708,20 @@ class Interprete:
             if isinstance(base, dict):
                 self.clave_de_mapa(i)
                 if i not in base:
-                    raise ErrorMate(con_sugerencia(
+                    raise ErrorMate(no_esta(
                         f"el mapa no tiene la clave {formato(i, False)}", i, base))
                 return base[i]
-            raise ErrorMate(f"no se puede indexar {nombre_tipo(base)}")
+            raise ErrorMate(f"{tipo_claro(base)} no tiene posiciones ni claves: los "
+                            "corchetes van después de una lista, un texto o un mapa"
+                            + (f". {CAUSA_DE_NADA}" if base is None else ""))
         if clase == "campo":
             base = self.ev(n[2], env)
             campos = base.campos if isinstance(base, Registro) else base
             if not isinstance(campos, dict):
-                raise ErrorMate(f"{nombre_tipo(base)} no tiene campos")
+                raise ErrorMate(f"{tipo_claro(base)} no tiene campos"
+                                + (f". {CAUSA_DE_NADA}" if base is None else ""))
             if n[3] not in campos:
-                raise ErrorMate(con_sugerencia(
+                raise ErrorMate(no_esta(
                     f"{nombre_tipo(base)} no tiene un campo '{n[3]}'", n[3], campos))
             return campos[n[3]]
         if clase == "preguntar":
@@ -2403,6 +2765,9 @@ class Interprete:
         ambos_num = es_num(a) and es_num(b)
         if op in ("<", "<=", ">", ">="):
             if not (ambos_num or (isinstance(a, str) and isinstance(b, str))):
+                if a is None or b is None:
+                    raise ErrorMate(f"no se puede comparar {un(a)} con {un(b)} usando "
+                                    f"'{op}'. {CAUSA_DE_NADA}")
                 raise ErrorMate(f"no se puede comparar {nombre_tipo(a)} con {nombre_tipo(b)}")
             return {"<": a < b, "<=": a <= b, ">": a > b, ">=": a >= b}[op]
         if op == "+" and (ambos_num or (type(a) is type(b) and isinstance(a, (str, list)))):
@@ -2419,6 +2784,8 @@ class Interprete:
             if type(a) is int and type(b) is int and a % b == 0:
                 return a // b  # la división exacta entre enteros no pierde cifras
             return a / b
+        if a is None or b is None:
+            raise ErrorMate(f"no se puede {_VERBOS[op]} {un(a)} con {un(b)}. {CAUSA_DE_NADA}")
         pista = ""
         if op == "+" and isinstance(a, list):
             pista = " (para sumarle un valor a una lista usá agregar(lista, valor))"
@@ -2430,7 +2797,8 @@ class Interprete:
         if isinstance(f, Nativa):
             return f.fn(args)
         if not isinstance(f, Funcion):
-            raise ErrorMate(f"{nombre_tipo(f)} no es una función")
+            raise ErrorMate(f"{tipo_claro(f)} no es una función: no se le pueden poner "
+                            "paréntesis")
         if len(args) != len(f.params):
             raise ErrorMate(
                 f"{f.nombre}() espera {len(f.params)} argumento(s) y recibió {len(args)}")
@@ -2471,12 +2839,14 @@ RENGLONES
 - Los bloques van entre llaves {{ }}. Los textos, entre comillas dobles y en un renglón.
 
 VALORES
-- numero: 3   3.5 (decimales con punto)        texto: "hola"        logico: verdadero  falso
+- numero: 3   3.5 (decimales con punto)   1500 o 1_500 (los miles nunca llevan punto)
+- texto: "hola"        logico: verdadero  falso
 - nada (la ausencia de valor)
 - lista: [1, 2, 3]   lista[0] es el primero (las posiciones arrancan en 0)
 - mapa: {{ nombre: "yerba", precio: 3500 }}   mapa.nombre   mapa["nombre"]
 - Dentro de un texto, {{...}} se calcula: "Total: {{precio * 2}}". Adentro de las llaves no se
-  pueden escribir otras comillas. \n es salto de renglón y \{{ una llave de verdad.
+  puede haber otros textos: "Sale {{precios["yerba"]}}". \n es salto de renglón, \{{ una
+  llave de verdad y \\ una barra (las rutas de Windows van con / o con doble barra).
 
 VARIABLES
 - sea x = 1        fijo, no cambia más
@@ -2502,16 +2872,9 @@ CONTROL
 - intentar {{ ... }} si falla e {{ ... }}             e es el texto del error (el 'e' es opcional)
 
 FUNCIONES INCLUIDAS (no hay otras)
-- mostrar(a, b, ...)             escribe en pantalla
-- leer("pregunta", "respuesta de prueba")   le pide un texto a la persona; solo en el
-                                 programa principal. En las pruebas devuelve el segundo valor
-- texto(x)  numero("1.234,50")  tipo(x)  largo(x)
-- redondear(n, decimales)  pesos(n) da "$ 1.234,50"  sumar(lista)  rango(n)  rango(a, b)
-- tiene(lista_mapa_o_texto, x)  claves(mapa)  valores(mapa)  ordenar(lista)
-- agregar(lista, x) y quitar(lista_o_mapa, x) devuelven una copia NUEVA, no cambian la
-  original: lista = agregar(lista, x)
-- unir(lista, ", ")  partir(texto, ",")  mayusculas(t)  minusculas(t)
-- a_json(valor)  de_json(texto)
+{funciones}
+- agregar, quitar, ordenar y porcion devuelven una copia NUEVA, no cambian la original:
+  lista = agregar(lista, x)
 - Una función incluida suelta en un renglón (salvo mostrar y leer) es un error: hay que usar
   lo que devuelve.
 
@@ -2589,7 +2952,7 @@ CÓMO SE CORRE (Windows)
 
 
 def texto_de_guia():
-    return GUIA.format(version=VERSION)
+    return GUIA.format(version=VERSION, funciones=lista_de_funciones())
 
 
 def texto_de_ayuda():

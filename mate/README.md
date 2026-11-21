@@ -198,6 +198,21 @@ Mate nunca debería mostrarte un error de Python en inglés:
   `mensaje Envio { estado: texto, para: texto }` y después `e.estado`.
 - **"No se puede cambiar"**: el error dice por qué: es un `sea`, un parámetro, la variable del
   `para`, el mensaje recibido, una función o un agente.
+- **Números escritos a la argentina**: en el código el punto es el de los decimales, así que
+  `1.500` vale uno y medio. Como casi siempre se quiso decir mil quinientos, Mate frena y lo
+  explica (`1.500 vale 1.5, no 1500`); lo mismo con `1.500.000`. Los miles se escriben todos
+  juntos o con guion bajo: `1500` o `1_500`. Y `3,5` suelto dice `los decimales van con punto,
+  no con coma: 3.5`. (El aviso salta con tres decimales terminados en cero, como `1.500` o
+  `12.250`; `2.125` se toma como el decimal que es.)
+- **Errores con `nada`**: "no se puede hacer nada + numero" se leía como otra frase. Ahora dice
+  `no se puede sumar el valor nada con un número` y agrega la causa más común: a la función le
+  falta un `devolver`, o es un campo opcional que vino vacío.
+- **Posiciones de una lista**: `lista[3]` en una lista de tres dice `la lista tiene 3
+  elementos, así que las posiciones van de 0 a 2`, y recuerda `ultimo(lista)`. Si la posición
+  salió de una cuenta con decimales (`lista[largo(lista) / 2]`), sugiere `redondear()`.
+- **Más controles antes de correr**: `yo` o `remitente` fuera de un agente, una clave repetida
+  en un mapa (`{ a: 1, a: 2 }`), un parámetro o un estado repetido, y `nada` en un campo
+  obligatorio de un mensaje se avisan antes de empezar, no cuando el programa llega ahí.
 - **Un `asegurar` que falla muestra los valores**: `asegurar a + 1 == 4` dice
   `no se cumplió lo asegurado: dio 3 y se esperaba 4`. Si los dos lados se ven iguales pero no
   lo son (`0.1 + 0.2 == 0.3`), muestra el número completo y recuerda redondear antes de comparar.
@@ -338,11 +353,76 @@ romper                     continuar                  (solo dentro de mientras o
 y += 1                     y -= 1                     (lo mismo que y = y + 1)
 y  o  no   ==  !=  <  <=  >  >=   +  -  *  /  %
 { nombre: "yerba", precio: 3500 }       mapa.nombre      mapa["nombre"]
+"Total: {precio * 2}"      "Sale {precios["yerba"]}"  (lo que va entre llaves se calcula)
+3.5 (decimal con punto)    1_500 (mil quinientos; los miles nunca llevan punto)
 ```
 
-Funciones incluidas: `mostrar`, `largo`, `texto`, `numero`, `tipo`, `tiene`, `claves`, `valores`,
-`agregar`, `quitar`, `rango`, `sumar`, `ordenar`, `redondear`, `unir`, `partir`, `mayusculas`,
-`minusculas`, `a_json`, `de_json`, `pesos`, `leer`.
+### Funciones incluidas
+
+Son estas y no hay otras. Cada renglón es un ejemplo que se puede copiar:
+
+| Ejemplo | Qué da |
+|---|---|
+| `mostrar("Total:", total)` | escribe en pantalla |
+| `leer("¿Cuántos?", "3")` | le pide un texto a la persona (en las pruebas da el 2.º valor) |
+| `texto(3.5)` | lo pasa a texto: "3.5" |
+| `numero("1.234,50")` | lee un número escrito como texto: 1234.5 |
+| `tipo(x)` | dice qué es: "numero", "texto", "lista", "mapa"... |
+| `largo(lista)` | cuántos elementos tiene (o letras, o claves) |
+| `redondear(3.14159, 2)` | 3.14 (sin el 2.º valor, sin decimales) |
+| `pesos(1234.5)` | el texto "$ 1.234,50" |
+| `absoluto(-5)` | 5: el número sin el signo |
+| `sumar([1, 2, 3])` | 6 |
+| `promedio([4, 6])` | 5 |
+| `minimo([3, 1, 2])` | 1: el más chico de la lista |
+| `maximo([3, 1, 2])` | 3: el más grande de la lista |
+| `rango(1, 10, 3)` | [1, 4, 7]; rango(3) es [0, 1, 2] y rango(2, 5) es [2, 3, 4] |
+| `tiene(lista, x)` | verdadero si x está en la lista, es clave del mapa o parte del texto |
+| `claves(mapa)` | la lista de sus claves |
+| `valores(mapa)` | la lista de sus valores |
+| `obtener(mapa, "clave", 0)` | el valor de esa clave o, si el mapa no la tiene, el 3.er valor |
+| `agregar(lista, x)` | una lista NUEVA con x al final |
+| `quitar(lista, x)` | una lista NUEVA sin los que valen x (en un mapa, sin esa clave) |
+| `ordenar(lista, "precio")` | una lista NUEVA ordenada; el campo es opcional: ordenar(lista) |
+| `ultimo(lista)` | el último elemento (o la última letra de un texto) |
+| `porcion(lista, 1, 3)` | los de las posiciones 1 y 2; sin el 3.er valor, hasta el final |
+| `unir(lista, ", ")` | un texto con los elementos separados por coma |
+| `partir("a,b", ",")` | la lista ["a", "b"] |
+| `mayusculas("hola")` | "HOLA" |
+| `minusculas("HOLA")` | "hola" |
+| `recortar("  hola ")` | "hola": sin los espacios de las puntas |
+| `reemplazar(t, "a", "b")` | el texto con cada a cambiada por b |
+| `empieza_con(t, "Sr.")` | verdadero si el texto empieza así |
+| `termina_con(t, ".txt")` | verdadero si el texto termina así |
+| `a_json(valor)` | el valor escrito como texto JSON |
+| `de_json(texto)` | el valor que describe ese texto JSON |
+
+- Si a una función le das valores de más o de menos, el error trae el ejemplo:
+  `obtener() lleva 3 valores y recibió 2. Por ejemplo: obtener(mapa, "clave", 0)`.
+- `agregar`, `quitar`, `ordenar` y `porcion` no cambian la lista original: devuelven una nueva.
+  `quitar(lista, x)` saca **por valor** (todos los que valen `x`), no por posición.
+- `ordenar` ordena los textos como el diccionario: sin importar mayúsculas ni tildes, y con la
+  `ñ` después de la `n`. Con un segundo valor ordena una lista de mapas o de mensajes por ese
+  campo: `ordenar(productos, "precio")`.
+- `minimo`, `maximo`, `promedio` y `ultimo` no pueden con una lista vacía: es un error que lo
+  dice. `porcion(lista, 1, 3)` cuenta las posiciones desde 0 y no incluye la del final; si el
+  final se pasa del largo, llega hasta donde haya.
+- `obtener(mapa, "clave", 0)` sirve para no preguntar antes con `tiene`. Si en cambio escribís
+  `mapa["clave"]` y la clave no está, el error dice cuáles sí tiene:
+  `el mapa no tiene la clave "cafe" (tiene: yerba, azucar)`.
+- Esta tabla, la de `python mate\mate.py guia` y los ejemplos de los errores salen de un mismo
+  lugar dentro de `mate.py`, así que no se desacomodan entre sí.
+
+### Textos
+
+- Dentro de un texto, lo que va entre llaves se calcula: `"Total: {precio * 2}"`. Adentro de
+  las llaves puede haber otros textos con sus comillas: `"Sale {precios["yerba"]}"` o
+  `"Compras: {unir(lista, ", ")}"`.
+- La barra `\` es especial: `\n` es un salto de renglón, `\t` un espacio largo, `\"` una
+  comilla, `\{` una llave de verdad y `\\` una barra. Cualquier otra combinación es un error
+  que lo explica, y también un texto que parece una ruta de Windows con barras simples:
+  `"C:\temp\nuevo"` antes salía con un salto de renglón en el medio sin avisar. Las rutas se
+  escriben `"C:/temp/nuevo"` (Windows las entiende igual) o `"C:\\temp\\nuevo"`.
 
 ### Pedirle un dato a la persona: `leer`
 
@@ -405,7 +485,7 @@ Mate lo avisa antes de correr.
 Los nombres de mensajes y agentes empiezan con mayúscula; el resto, con minúscula.
 
 Detalles: `partir("abc", "")` separa letra por letra; `redondear(3.14159, 2)` lleva una cantidad
-entera de decimales; las claves de un mapa son siempre textos (`tiene(mapa, [1])` da `falso`);
+entera de decimales; `rango(10, 0, -1)` cuenta para atrás; las claves de un mapa son siempre textos (`tiene(mapa, [1])` da `falso`);
 solo se puede asignar a una variable o a una parte de ella (`x`, `x.campo`, `x[0]`).
 
 ## Qué cambió y puede frenar un programa viejo
@@ -434,12 +514,17 @@ seguro es por una de estas:
 | `[1] == [verdadero]` y `{ a: 1 } == { a: verdadero }` ahora dan `falso` | Nada: antes daban `verdadero` por error |
 | `romper`, `continuar` son palabras de Mate y `leer` es una función incluida: no sirven como nombre de variable | Elegir otro nombre |
 | El error de una llave sin cerrar cambió de redacción ("la llave que se abrió en la línea...") | No comparar el texto entero del error |
+| `recortar`, `reemplazar`, `empieza_con`, `termina_con`, `minimo`, `maximo`, `promedio`, `absoluto`, `ultimo`, `porcion` y `obtener` son funciones incluidas: no sirven como nombre de variable | Elegir otro nombre: `sea precio_minimo = ...`, `sea el_ultimo = ...` |
+| Dentro de un texto, una barra `\` seguida de algo que no es `n`, `t`, `\`, comilla o llave es un error; también `"C:\temp"` con una sola barra | Escribir `/` o doble barra: `"C:/temp"` o `"C:\\temp"` |
+| `1.500`, `12.000` (tres decimales terminados en cero) y `3,5` suelto son un error | `1500` o `1_500` si eran miles; `1.5` y `3.5` si eran decimales |
+| `ordenar` ya no pone las mayúsculas primero ni la `ñ` y las tildes al final | Nada: ahora ordena como el diccionario |
+| `yo` y `remitente` fuera de un agente (también en una función de afuera), una clave repetida en un mapa, un parámetro o estado repetido y `nada` en un campo obligatorio son un error antes de correr | Pasarle el agente a la función como valor; borrar el repetido; declarar el campo opcional con `?` |
+| Cambió la redacción de más errores: `la posición 3 está fuera de rango...` (antes "índice"), `el valor nada` en vez de `nada`, la lista `(tiene: ...)` en el error de clave, y `Por ejemplo: ...` al final del error de cantidad de valores | No comparar el texto entero del error; el de clave sigue trayendo la palabra "clave" |
 
 ## Límites de la versión 0.2
 
 - Los agentes corren todos dentro del mismo programa, de a uno y en orden (por eso el resultado
   es siempre el mismo). Todavía no se conectan con agentes de IA reales ni entre máquinas.
-- Dentro de `"{...}"` no se puede escribir otro texto entre comillas; se guarda antes en un `sea`.
 - Todo lo que trae `usar` queda en un único espacio de nombres: dos archivos no pueden declarar
   algo con el mismo nombre.
 

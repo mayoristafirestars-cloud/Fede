@@ -476,9 +476,12 @@ def test_las_funciones_incluidas_fallan_en_espanol():
     error = falla("sea a = 1\nmostrar(redondear(2.5, 1.5))")
     assert error.linea == 2 and "cantidad entera de decimales" in error.mensaje
     assert "cantidad entera de decimales" in falla("redondear(2.5, -1)").mensaje
-    assert falla("redondear(1, 2, 3)").mensaje == "redondear() lleva 1 o 2 valores y recibió 3"
-    assert falla("largo()").mensaje == "largo() lleva 1 valor y recibió 0"
-    assert falla("tiene(1)").mensaje == "tiene() lleva 2 valores y recibió 1"
+    assert falla("redondear(1, 2, 3)").mensaje == \
+        "redondear() lleva 1 o 2 valores y recibió 3. Por ejemplo: redondear(3.14159, 2)"
+    assert falla("largo()").mensaje == \
+        "largo() lleva 1 valor y recibió 0. Por ejemplo: largo(lista)"
+    assert falla("tiene(1)").mensaje == \
+        "tiene() lleva 2 valores y recibió 1. Por ejemplo: tiene(lista, x)"
     assert correr("mostrar(redondear(2.567, 2), redondear(7.4))")[0] == ["2.57 7"]
 
 
@@ -816,7 +819,8 @@ def test_sugiere_campos_claves_y_mensajes():
         "mapa no tiene un campo 'nombr'. ¿Quisiste decir 'nombre'?"
     clave = falla(mapa + 'mostrar(m["Precio"])').mensaje
     assert "clave" in clave and clave.endswith("¿Quisiste decir 'precio'?")
-    assert falla(mapa + 'mostrar(m["zzz"])').mensaje == 'el mapa no tiene la clave "zzz"'
+    assert falla(mapa + 'mostrar(m["zzz"])').mensaje == \
+        'el mapa no tiene la clave "zzz" (tiene: nombre, precio)'
     pedido = 'mensaje Pedido { producto: texto }\nsea p = Pedido { producto: "x" }\n'
     assert falla(pedido + "mostrar(p.produto)").mensaje.endswith("¿Quisiste decir 'producto'?")
     interprete = mate.Interprete()
@@ -2189,3 +2193,307 @@ def test_el_readme_avisa_lo_que_cambio_en_la_tanda_4():
                   "comparar un texto con un número", "`romper`", "`continuar`", "`leer`",
                   "total += precio", "mate.py guia", "01_hola.mate"]:
         assert frase in leeme, frase
+
+
+# ── Tanda 5: textos y números sin trampas, más funciones y más controles ──
+
+def mostrados(fuente):
+    return correr(fuente)[0]
+
+
+# Mejora 49: comillas dentro de "{...}"
+
+def test_comillas_dentro_de_las_llaves_de_un_texto():
+    assert mostrados('sea m = { a: 1, "b c": 2 }\n'
+                     'mostrar("valor {m["a"]} y {m["b c"]} y {unir(["x", "y"], "-")}.")') == [
+        "valor 1 y 2 y x-y."]
+    assert mostrados('mostrar("afuera {"adentro {1 + 1} }"} fin")') == ["afuera adentro 2 } fin"]
+    assert mostrados('mostrar("{largo("}")}", "{"\\{"}")') == ["1 {"]
+    assert mostrados('mostrar(“con comillas de Word {unir(["a"], "")}”)') == [
+        "con comillas de Word a"]
+    # lo que ya era un error lo sigue siendo, con la misma explicación
+    assert "falta '}'" in falla('mostrar("falta { algo")').mensaje
+    assert "comilla de cierre" in falla('mostrar("a {m["a} b")').mensaje
+    assert "otras comillas" not in mate.texto_de_guia()
+
+
+# Mejora 50: las barras de las rutas de Windows
+
+def test_las_barras_de_windows_no_se_rompen_en_silencio():
+    error = falla('sea a = 1\nmostrar("C:\\temp\\nuevo")')
+    assert error.linea == 2 and "ruta de Windows" in error.mensaje
+    assert '"C:/datos/lista.txt"' in error.mensaje and "doble barra" in error.mensaje
+    error = falla('mostrar("datos\\archivo.txt")')
+    assert "\\a no significa nada" in error.mensaje and "doble barra" in error.mensaje
+    assert mostrados('mostrar("C:\\\\temp\\\\nuevo", "C:/temp/nuevo")') == [
+        "C:\\temp\\nuevo C:/temp/nuevo"]
+    assert mostrados('mostrar("a\\tb\\nc \\"x\\" \\{ \\}")') == ['a\tb\nc "x" { }']
+
+
+# Mejora 51: 1.500 y 3,5 escritos en el código
+
+def test_aviso_para_miles_con_punto_y_decimales_con_coma():
+    error = falla("sea a = 1\nsea precio = 1.500")
+    assert error.linea == 2
+    assert "1.500 vale 1.5, no 1500" in error.mensaje and "1_500" in error.mensaje
+    assert "12.000 vale 12, no 12000" in falla("mostrar(12.000 * 2)").mensaje
+    assert "un solo punto" in falla("sea x = 1.500.000").mensaje
+    assert falla("sea x = 3,5").mensaje == "los decimales van con punto, no con coma: 3.5"
+    assert "decimales van con punto" in falla("si 4 > 3,5 { mostrar(1) }").mensaje
+    assert mostrados("mostrar(1_500, 1_500_000 + 1, 1.5, 2.125, 0.250, 1500.5)") == [
+        "1500 1500001 1.5 2.125 0.25 1500.5"]
+    # adentro de paréntesis o corchetes la coma separa valores, como siempre
+    assert mostrados("mostrar(3,5)\nmostrar([3,5], sumar([1,2]))") == ["3 5", "[3, 5] 3"]
+
+
+# Mejora 52: errores que no se leen como otra frase
+
+def test_los_errores_con_nada_no_se_leen_como_otra_frase():
+    error = falla("funcion precio(p) { sea x = p }\nmostrar(precio(1) + 10)")
+    assert error.linea == 2
+    assert error.mensaje.startswith("no se puede sumar el valor nada con un número.")
+    assert "¿a la función le falta un 'devolver'" in error.mensaje
+    assert falla('mostrar("a" * nada)').mensaje.startswith(
+        "no se puede multiplicar un texto con el valor nada.")
+    for fuente, frase in [
+            ("mostrar(nada.campo)", "el valor nada no tiene campos"),
+            ("mostrar(nada[0])", "el valor nada no tiene posiciones ni claves"),
+            ("mostrar(1 < nada)", "no se puede comparar un número con el valor nada"),
+            ("si nada { mostrar(1) }", "verdadero o falso, no el valor nada"),
+            ("mostrar(largo(nada))", "largo() no aplica al valor nada"),
+            ("mostrar(numero(nada))", "numero() espera texto y recibió el valor nada"),
+            ("para x en nada { mostrar(x) }", "no se puede recorrer el valor nada"),
+            ("sea f = nada\nf()", "el valor nada no es una función")]:
+        mensaje = falla(fuente).mensaje
+        assert frase in mensaje, mensaje
+        assert not re.search(r"(hacer|recibió|recorrer|comparar|a|con|no) nada\b", mensaje), mensaje
+    # sin 'nada' de por medio, los mensajes de siempre
+    assert falla("mostrar(1 + verdadero)").mensaje == "no se puede hacer numero + logico"
+    assert falla('mostrar("a" < 1)').mensaje == "no se puede comparar texto con numero"
+
+
+# Mejora 53: una tabla única de funciones incluidas
+
+def test_la_tabla_de_funciones_es_la_unica_fuente():
+    interprete = mate.Interprete(salida=lambda _: None)
+    assert sorted(interprete.glob.vars) == sorted(mate.FUNCIONES)
+    assert mate.incluidas() == frozenset(mate.FUNCIONES)
+    leeme = (RAIZ / "README.md").read_text(encoding="utf-8")
+    guia = mate.texto_de_guia()
+    for nombre, (minimo, maximo, ejemplo, que) in mate.FUNCIONES.items():
+        assert ejemplo.startswith(nombre + "("), nombre
+        assert f"- {ejemplo}" in guia and que in guia, nombre
+        assert f"| `{ejemplo}` | {que} |" in leeme, nombre
+        # el ejemplo de la tabla respeta la cantidad de valores que dice la tabla
+        llamada = mate.analizar(f"sea x = {ejemplo}")[0][3]
+        assert llamada[0] == "llamar" and minimo <= len(llamada[3]), nombre
+        assert maximo is None or len(llamada[3]) <= maximo, nombre
+
+
+def test_el_error_de_cantidad_de_valores_trae_un_ejemplo():
+    assert falla("mostrar(obtener({}, 1))").mensaje == \
+        'obtener() lleva 3 valores y recibió 2. Por ejemplo: obtener(mapa, "clave", 0)'
+    assert falla("mostrar(rango())").mensaje == \
+        "rango() lleva entre 1 y 3 valores y recibió 0. Por ejemplo: rango(1, 10, 3)"
+    assert mostrados("mostrar()") == [""]
+
+
+# Mejora 54: funciones de texto
+
+def test_funciones_de_texto_nuevas():
+    assert mostrados('mostrar(recortar("  hola  \\n") + "|", reemplazar("a-b-c", "-", " y "))') == [
+        "hola| a y b y c"]
+    assert mostrados('mostrar(empieza_con("Sr. Paz", "Sr."), empieza_con("Paz", "Sr."), '
+                     'termina_con("a.txt", ".txt"), termina_con("a.txt", ".mate"))') == [
+        "verdadero falso verdadero falso"]
+    assert falla("mostrar(recortar(5))").mensaje == "recortar() espera texto y recibió numero"
+    assert "no puede estar vacío" in falla('mostrar(reemplazar("a", "", "b"))').mensaje
+    assert "espera texto" in falla('mostrar(empieza_con("a", 1))').mensaje
+    assert "función incluida" in falla('sea recortar = 1').mensaje
+
+
+# Mejora 55: funciones de listas y números
+
+def test_funciones_de_listas_y_numeros_nuevas():
+    assert mostrados("mostrar(minimo([3, 1, 2]), maximo([3, 1.5, 2]), promedio([4, 6]), "
+                     "promedio([1, 2]), absoluto(-5), absoluto(2.5))") == ["1 3 5 1.5 5 2.5"]
+    assert mostrados('mostrar(ultimo([1, 2, 3]), ultimo("abc"), minimo(["pera", "Ananá"]))') == [
+        "3 c Ananá"]
+    assert mostrados('mostrar(porcion([0, 1, 2, 3, 4], 1, 3), porcion("hola mundo", 5), '
+                     "porcion([1, 2], 0, 99), porcion([1, 2], 2))") == ["[1, 2] mundo [1, 2] []"]
+    assert mostrados("mostrar(rango(1, 10, 3), rango(5, 0, -2), rango(3), rango(2, 5))") == [
+        "[1, 4, 7] [5, 3, 1] [0, 1, 2] [2, 3, 4]"]
+    for fuente, frase in [
+            ("minimo([])", "no puede con una lista vacía"),
+            ("promedio([])", "no puede con una lista vacía"),
+            ('maximo([1, "a"])', "sin mezclar"),
+            ('promedio(["a"])', "promedio() espera una lista de números"),
+            ("ultimo([])", "una lista vacía"),
+            ('absoluto("a")', "absoluto() espera numero y recibió texto"),
+            ("porcion([1], 2, 1)", "no puede ser mayor"),
+            ("porcion([1], -1)", "de 0 en adelante"),
+            ("porcion([1], 0.5)", "de 0 en adelante"),
+            ("rango(1, 5, 0)", "no puede ser 0"),
+            ("rango(0, 100000000000, 1)", "demasiados números"),
+            ("minimo(3, 5)", "Por ejemplo: minimo([3, 1, 2])")]:
+        assert frase in falla(f"mostrar({fuente})").mensaje, fuente
+
+
+# Mejora 56: obtener() y el error que lista las claves que sí hay
+
+def test_obtener_y_el_error_de_clave_que_lista_las_que_hay():
+    mapa = 'sea m = { yerba: 3500, azucar: 1200 }\n'
+    assert mostrados(mapa + 'mostrar(obtener(m, "yerba", 0), obtener(m, "café", 0), '
+                            'obtener(m, "café", nada))') == ["3500 0 nada"]
+    assert falla(mapa + 'mostrar(m["cafe"])').mensaje == \
+        'el mapa no tiene la clave "cafe" (tiene: yerba, azucar)'
+    assert falla(mapa + 'mostrar(m["Yerba"])').mensaje == \
+        'el mapa no tiene la clave "Yerba". ¿Quisiste decir \'yerba\'?'
+    assert falla(mapa + "mostrar(m.cafe)").mensaje == \
+        "mapa no tiene un campo 'cafe' (tiene: yerba, azucar)"
+    assert falla('sea v = {}\nmostrar(v["a"])').mensaje == \
+        'el mapa no tiene la clave "a" (está vacío)'
+    muchas = "{ " + ", ".join(f"k{i}: {i}" for i in range(12)) + " }"
+    assert falla(f'mostrar({muchas}["zzz"])').mensaje.endswith("k6, k7, ...)")
+    assert "espera mapa" in falla('mostrar(obtener([1], "a", 0))').mensaje
+    assert "claves de un mapa son textos" in falla("mostrar(obtener({}, 1, 0))").mensaje
+
+
+# Mejora 57: ordenar por campo y con el abecedario español
+
+def test_ordenar_usa_el_abecedario_y_ordena_por_campo():
+    assert mostrados('mostrar(ordenar(["zapallo", "Ñandú", "ananá", "Banana", "nuez", '
+                     '"ñoqui", "oso", "árbol"]))') == [
+        '["ananá", "árbol", "Banana", "nuez", "Ñandú", "ñoqui", "oso", "zapallo"]']
+    assert mostrados("mostrar(ordenar([3, 1.5, 2, 10]))") == ["[1.5, 2, 3, 10]"]
+    productos = ('sea productos = [{ nombre: "yerba", precio: 3500 }, '
+                 '{ nombre: "Azúcar", precio: 1200 }, { nombre: "café", precio: 9000 }]\n')
+    assert mostrados(productos + 'para p en ordenar(productos, "precio") { mostrar(p.nombre) }\n'
+                     'mostrar(productos[0].nombre)') == ["Azúcar", "yerba", "café", "yerba"]
+    assert mostrados(productos + 'para p en ordenar(productos, "nombre") { mostrar(p.nombre) }') \
+        == ["Azúcar", "café", "yerba"]
+    assert mostrados('mensaje P { n: numero }\n'
+                     'mostrar(ordenar([P { n: 2 }, P { n: 1 }], "n"))') == [
+        "[P { n: 1 }, P { n: 2 }]"]
+    assert falla(productos + 'mostrar(ordenar(productos, "precoi"))').mensaje == \
+        "ordenar(): un elemento de la lista no tiene 'precoi'. ¿Quisiste decir 'precio'?"
+    assert "sin mezclar" in falla('mostrar(ordenar([{ a: 1 }, { a: "x" }], "a"))').mensaje
+    assert "lista de mapas o de mensajes" in falla('mostrar(ordenar([1, 2], "a"))').mensaje
+    assert "comparables" in falla('mostrar(ordenar([1, "a"]))').mensaje
+
+
+# Mejora 58: errores de posición más claros
+
+def test_los_errores_de_posicion_dicen_cuantos_hay():
+    assert falla("sea l = [1, 2, 3]\nmostrar(l[3])").mensaje == (
+        "la posición 3 está fuera de rango: la lista tiene 3 elementos, así que las posiciones "
+        "van de 0 a 2. Como se cuenta desde 0, el último está en la posición 2 (o usá ultimo(...))")
+    assert falla("mostrar([][0])").mensaje == \
+        "la posición 0 está fuera de rango: la lista no tiene ningún elemento"
+    assert "la única posición es la 0" in falla("mostrar([7][5])").mensaje
+    assert "para el último usá ultimo(...)" in falla("mostrar([1, 2][-1])").mensaje
+    assert "el texto tiene 3 letras" in falla('mostrar("abc"[7])').mensaje
+    error = falla("sea l = [1, 2, 3]\nmostrar(l[largo(l) / 2])").mensaje
+    assert "dio 1.5" in error and "redondear()" in error
+    assert falla('mostrar([1]["a"])').mensaje == \
+        "la posición tiene que ser un número entero, no texto"
+    assert "agregar(lista, valor)" in falla("var l = [1]\nl[1] = 2").mensaje
+
+
+# Mejora 60: más controles antes de correr
+
+def test_mas_controles_antes_de_correr():
+    assert revisar("mostrar(1)\nmostrar(yo)") == [
+        (2, "'yo' solo existe dentro de un agente (es el agente que está atendiendo); "
+            "acá afuera no hay ninguno")]
+    assert "'remitente' solo existe dentro de un agente" in revisar(
+        "funcion f() {\n devolver remitente }")[0][1]
+    assert revisar("sea m = { a: 1,\n b: 2, a: 3 }") == [
+        (1, "la clave 'a' está repetida en el mapa: la segunda taparía a la primera")]
+    assert revisar("funcion f(a, b, a) { devolver a }") == [
+        (1, "f(): el parámetro 'a' está repetido")]
+    agente = ("mensaje P { n: numero, t: texto?, c: cualquiera }\n"
+              "agente A {\n estado x = 1\n estado x = 2\n"
+              ' al recibir P { mostrar("{yo} {remitente}") }\n}\n')
+    assert revisar(agente) == [(4, "A: el estado 'x' está repetido")]
+    assert revisar(agente.replace("estado x = 2", "") + "sea c = crear A { x: 1, x: 2 }") == [
+        (7, "A: el estado 'x' está repetido")]
+    assert revisar("mensaje P { n: numero, t: texto?, c: cualquiera }\n"
+                   "sea p = P { n: nada, t: nada, c: nada }") == [
+        (2, "P.n es obligatorio y le diste nada. Si puede faltar, declaralo opcional en el "
+            "mensaje: n: numero?")]
+
+
+# Mejora 61: prueba de bombardeo
+
+def romper_programa(fuente, azar):
+    """Una versión rota del programa: le saca, repite, cambia o agrega un pedazo."""
+    piezas = re.findall(r"\w+|\s+|.", fuente, re.S)
+    lugar = azar.randrange(len(piezas))
+    forma = azar.randrange(7)
+    if forma == 0:
+        del piezas[lugar]
+    elif forma == 1:
+        piezas.insert(lugar, piezas[lugar])
+    elif forma == 2:
+        otro = azar.randrange(len(piezas))
+        piezas[lugar], piezas[otro] = piezas[otro], piezas[lugar]
+    elif forma == 3:
+        piezas[lugar] = azar.choice([
+            "nada", "0", "-1", "1.5", '""', "[]", "{}", "verdadero", "yo", "remitente", "x",
+            "mostrar", "largo", "Pedido", "(", ")", "{", "}", "[", "]", '"', ",", ".", ":",
+            "=", "+", "-", "/", "\\", "\n", "si", "para", "en", "a", "responder", "devolver",
+            "romper", "enviar", "preguntar", "crear", "fallar", "asegurar", "ñ", "“", "\t",
+            "1.500", "3,5", "99999999999999999999", "%", "?", "#", "'", ";", "\u200b", "\x00"])
+    elif forma == 4:
+        del piezas[lugar:lugar + azar.randrange(1, 12)]
+    elif forma == 5:
+        del piezas[lugar:]
+    else:
+        piezas.insert(lugar, azar.choice([" ", "\n", "(", "nada", "sea x = ", '"{', "}"]))
+    return "".join(piezas)
+
+
+@pytest.mark.parametrize("nombre", sorted(p.name for p in (RAIZ / "ejemplos").glob("*.mate")))
+def test_bombardeo_nunca_un_error_interno(nombre, tmp_path, capsys, monkeypatch):
+    """Rompe cada ejemplo de muchas maneras: Mate siempre tiene que contestar en español,
+    con su código de salida, y nunca con un error interno ni de Python."""
+    import random
+    import shutil
+
+    def sin_teclado(_pregunta):
+        raise EOFError
+
+    monkeypatch.setattr(mate, "por_teclado", sin_teclado)
+    monkeypatch.setattr(mate, "MAX_PASOS", 20_000)
+    monkeypatch.setattr(mate, "MAX_MENSAJES", 2_000)
+    monkeypatch.setattr(mate, "MAX_LARGO", 100_000)
+    for ejemplo in (RAIZ / "ejemplos").glob("*.mate"):
+        shutil.copy(ejemplo, tmp_path / ejemplo.name)
+    original = (RAIZ / "ejemplos" / nombre).read_text(encoding="utf-8")
+    azar = random.Random(nombre)
+    archivo = tmp_path / "roto.mate"
+    for vuelta in range(60):
+        fuente = romper_programa(original, azar)
+        archivo.write_text(fuente, encoding="utf-8")
+        for orden in ("correr", "probar"):
+            capsys.readouterr()
+            codigo = mate.main([orden, str(archivo), "--traza"])
+            capturado = capsys.readouterr()
+            todo = capturado.out + capturado.err
+            assert codigo in (0, 1, 2), (vuelta, orden, fuente)
+            assert "error interno" not in todo and "Traceback" not in todo, (
+                vuelta, orden, capturado.err, fuente)
+            if codigo:
+                assert capturado.err.strip() or "pruebas pasaron" in capturado.out, (
+                    vuelta, orden, fuente)
+
+
+def test_el_readme_avisa_lo_que_cambio_en_la_tanda_5():
+    leeme = (RAIZ / "README.md").read_text(encoding="utf-8")
+    for frase in ["### Funciones incluidas", '"Sale {precios["yerba"]}"', '"C:/temp/nuevo"',
+                  "`1_500`", "el valor nada", "las posiciones van de 0 a 2",
+                  "(tiene: yerba, azucar)", "`ñ` después de la `n`", "no sirven como nombre",
+                  "`yo` y `remitente` fuera de un agente"]:
+        assert frase in leeme, frase
+    assert "no se puede escribir otro texto entre comillas" not in leeme
