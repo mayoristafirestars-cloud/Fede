@@ -10,6 +10,7 @@ Uso:
     python3 mate.py guia
     python3 mate.py ayuda     (o: ayuda si, ayuda largo... para una palabra o función)
     python3 mate.py consola   (para probar renglones sueltos)
+    python3 mate.py corregir  archivo.mate Agente "la lección"   (y: lecciones, bitacora)
 """
 
 import datetime
@@ -23,13 +24,15 @@ import sys
 import unicodedata
 from collections import deque
 
-VERSION = "0.3"
+VERSION = "0.4"
 
 # El tope para que Mate siga siendo chico (mejora 90): no puede haber más palabras propias
 # ni más funciones incluidas que estas. Para agregar una hay que sacar otra, o discutir el
 # tope. Y cada agregado lleva su renglón en el README y su prueba (las pruebas lo controlan).
 TOPE_DE_PALABRAS = 40
-TOPE_DE_FUNCIONES = 42
+# (En la 0.4 subió de 42 a 45, lo justo para que un agente aprenda: aprender, lecciones y
+# consultas_ia. 'recordado' no gasta una palabra: solo vale después de 'estado'.)
+TOPE_DE_FUNCIONES = 45
 
 PALABRAS = {
     "sea", "var", "funcion", "devolver", "si", "sino", "mientras", "para", "en",
@@ -53,8 +56,18 @@ MAX_LLAMADAS = 3_000  # funciones abiertas a la vez (una que se llama a sí mism
 NIVELES_DE_PYTHON = 30 * MAX_LLAMADAS if sys.version_info >= (3, 12) else 0
 
 ORDENES = ("correr", "probar", "verificar")
+# Las órdenes de lo que un agente aprende (0.4): llevan el programa y miran sus archivos
+# de memoria y de bitácora, sin correrlo.
+ORDENES_DE_MEMORIA = ("bitacora", "corregir", "lecciones")
 OPCIONES = ("--traza", "--depurar", "--sin-limite", "--version", "--ayuda",
-            "--ia-simulada")
+            "--ia-simulada", "--olvidar")
+# Lo que un agente aprende (0.4). Las lecciones viajan en cada consulta a la IA, y eso se
+# paga: por eso tienen tope de cantidad y de largo.
+MAX_LECCIONES = 20  # por agente; si se pasa, se olvida la más vieja
+LARGO_DE_LECCION = 300  # letras de una lección
+MAX_BITACORA = 200  # renglones que guarda la bitácora de errores (los últimos)
+TITULO_DE_LECCIONES = ("LECCIONES APRENDIDAS (correcciones que te hicieron antes: tenelas "
+                       "siempre en cuenta)")
 
 COMPARADORES = ("==", "!=", "<", "<=", ">", ">=")
 
@@ -120,6 +133,12 @@ FUNCIONES = {
                      "lo que contesta una IA de verdad (Claude), como texto; es pago"),
     "simular_ia": (1, 1, 'simular_ia("Sale $ 100")',
                    "solo en una prueba: lo que contesta la IA desde ahí (o una lista)"),
+    "aprender": (1, 2, 'aprender("Hoy no hay pan")',
+                 "dentro de un agente: se anota esa lección, y no la olvida al terminar"),
+    "lecciones": (0, 1, "lecciones()",
+                  "dentro de un agente: la lista de sus lecciones (cada una es un texto)"),
+    "consultas_ia": (0, 0, "consultas_ia()",
+                     "solo en una prueba: lo que se le consultó a la IA, con las lecciones"),
 }
 
 
@@ -131,7 +150,7 @@ def lista_de_funciones(formato_de_renglon="- {ejemplo:<27} {que}"):
 
 # Las funciones incluidas que hacen algo además de devolver un valor: pueden ir solas
 # en un renglón. Las demás, sueltas, no sirven de nada y Mate lo avisa.
-HACEN_ALGO = ("mostrar", "leer", "escribir_archivo", "simular_ia")
+HACEN_ALGO = ("mostrar", "leer", "escribir_archivo", "simular_ia", "aprender")
 
 # Palabras de otros lenguajes, o con tilde, y cómo se escriben en Mate. No se aceptan
 # como sinónimos: solo sirven para explicar el error.
@@ -185,7 +204,13 @@ SIMULAR_IA_SUELTO = ("simular_ia() solo va dentro de una prueba: fija lo que con
                      "mientras dura esa prueba. Para correr el programa sin la IA de verdad "
                      "está la opción --ia-simulada")
 # Las funciones incluidas que solo sirven adentro de una prueba, y lo que se avisa si no.
-SOLO_EN_PRUEBAS = {"mensajes_enviados": SOLO_EN_PRUEBA, "simular_ia": SIMULAR_IA_SUELTO}
+CONSULTAS_IA_SUELTO = ("consultas_ia() solo va dentro de una prueba: es para comprobar qué se "
+                       "le consultó a la IA (y con qué lecciones)")
+SOLO_EN_PRUEBAS = {"mensajes_enviados": SOLO_EN_PRUEBA, "simular_ia": SIMULAR_IA_SUELTO,
+                   "consultas_ia": CONSULTAS_IA_SUELTO}
+SOLO_EN_AGENTE = ("{n}() solo va dentro de un agente: cada agente anota y lee sus propias "
+                  "lecciones. Para corregirlo desde afuera, sin tocar el programa, está la "
+                  "orden 'corregir'; y en una prueba se le dice a cuál: {n}({antes}Mostrador)")
 RESPONDER_SUELTO = "'responder' solo va dentro de 'al recibir' (o de una función del agente)"
 # El 'al fallar' de un agente se guarda junto a sus 'al recibir', con este nombre (que
 # no puede ser el de un mensaje: tiene un espacio y empieza con minúscula).
@@ -612,6 +637,11 @@ def revisar_cierres(tokens, fuente):
 
 
 _DEFINEN = ("sea", "var", "funcion", "para", "como", "falla", "mensaje", "agente", "estado")
+
+
+class EstadoRecordado(tuple):
+    """Un 'estado recordado' de un agente: (renglón, nombre, valor inicial), igual que
+    cualquier estado, pero se guarda al terminar y se recupera en la próxima corrida."""
 
 
 class Parser:
@@ -1126,9 +1156,16 @@ class Parser:
         while not self.acepta("op", "}"):
             tk = self.ver()
             if self.acepta("kw", "estado"):
+                # 'estado recordado atendidos = 0': ese dato vuelve en la próxima corrida.
+                # 'recordado' no es una palabra reservada: 'estado recordado = 5' sigue
+                # siendo un estado que se llama así.
+                clase = tuple
+                if self.es("id", "recordado") and not self.es("op", "=", d=1):
+                    self.tomar()
+                    clase = EstadoRecordado
                 n = self.nombre_nuevo()
                 self.espera("op", "=")
-                estados.append((tk[2], n, self.expr()))
+                estados.append(clase((tk[2], n, self.expr())))
             elif self.acepta("kw", "al"):
                 if self.acepta("kw", "fallar"):  # al fallar como f { ... }
                     tipo = AL_FALLAR
@@ -2166,6 +2203,8 @@ class Agente:
         self.ocupado = False
         self.inicial = None  # el estado con el que nació (para empezar limpia cada prueba)
         self.creador = None  # si es una copia: el agente que la creó mientras atendía
+        self.recuerda = True  # una copia sin nombre ('crear' sin 'llamado') no tiene memoria
+        self.lecciones = []  # [{"fecha", "texto"}]: nunca se cambia, se reemplaza por otra
 
 
 class Funcion:
@@ -2766,6 +2805,228 @@ def recortado(texto, largo=70):
     return '"' + (texto if len(texto) <= largo else texto[:largo].rstrip() + "...") + '"'
 
 
+# ─────────────── Lo que un agente aprende: memoria, lecciones y bitácora (0.4) ───────────────
+# Todo vive en dos archivos al lado del programa, que se abren con el Bloc de notas:
+# mi_mostrador.memoria.json (lo que cada agente recuerda y sus lecciones) y
+# mi_mostrador.bitacora.txt (las fallas de los agentes). Solo los toca 'correr': con
+# 'probar' no se leen ni se escriben. Nada de esto sale nunca por la red.
+
+def archivo_de(ruta, que):
+    """El archivo que acompaña a un programa: mi_mostrador.mate -> mi_mostrador.memoria.json
+    (que es "memoria.json" o "bitacora.txt")."""
+    for final in (".mate.txt", ".mate"):
+        if ruta.lower().endswith(final):
+            return f"{ruta[:-len(final)]}.{que}"
+    return f"{ruta}.{que}"
+
+
+def escribir_entero(ruta, texto):
+    """Escribe el archivo de una sola vez: primero en uno provisorio al lado y recién
+    después lo pone en su lugar. Así nunca queda a medio escribir."""
+    provisorio = ruta + ".tmp"
+    try:
+        # con la marca del principio, para que el Bloc de notas muestre bien las tildes
+        with open(provisorio, "w", encoding="utf-8-sig", errors="backslashreplace") as f:
+            f.write(texto)
+        os.replace(provisorio, ruta)
+    except BaseException:
+        try:
+            os.remove(provisorio)
+        except OSError:
+            pass
+        raise
+
+
+def en_un_renglon(texto, largo):
+    texto = " ".join(str(texto).split())
+    return texto if len(texto) <= largo else texto[:largo].rstrip() + "..."
+
+
+def leer_memoria(ruta):
+    """Lo que dice el archivo de memoria: ({agente: {"estado": {...}, "lecciones": [...]}},
+    avisos). Si no existe, nada. Si está roto (alguien lo editó a mano y quedó mal), un
+    ErrorMate que dice dónde y cómo seguir: no se pisa un archivo que no se entiende."""
+    nombre = os.path.basename(ruta)
+
+    def roto(que):
+        return ErrorMate(
+            f"no entiendo el archivo de memoria {nombre}: {que}. Abrilo con el Bloc de notas "
+            "y arreglalo; o borralo para empezar de cero (se pierde lo que recordaban los "
+            f"agentes y también sus lecciones). Está en {os.path.dirname(os.path.abspath(ruta))}")
+
+    def numero_raro(_):
+        raise ValueError
+
+    def decimal(t):
+        return float(t) if math.isfinite(float(t)) else numero_raro(t)
+
+    try:
+        texto = leer_fuente(ruta)
+    except FileNotFoundError:
+        return {}, []
+    except (OSError, ErrorMate):
+        raise ErrorMate(f"no pude abrir el archivo de memoria {nombre}: fijate que no esté "
+                        "abierto en otro programa y que tengas permiso para leerlo")
+    if not texto.strip():
+        return {}, []
+    try:
+        datos = json.loads(texto, parse_constant=numero_raro, parse_float=decimal)
+    except json.JSONDecodeError as e:
+        raise roto(f"en el renglón {e.lineno} hay algo mal escrito (suele ser una coma o "
+                   "una comilla de más o de menos)")
+    except (ValueError, RecursionError):
+        raise roto("trae un número que no es válido, o demasiadas cosas una adentro de otra")
+    agentes = datos.get("agentes") if isinstance(datos, dict) else None
+    if not isinstance(agentes, dict):
+        raise roto('le falta la parte "agentes"')
+    limpio, avisos = {}, []
+    for agente, ficha in agentes.items():
+        if not isinstance(ficha, dict) or not isinstance(ficha.get("estado", {}), dict) \
+                or not isinstance(ficha.get("lecciones", []), list):
+            raise roto(f'lo que guarda de "{agente}" no tiene la forma de siempre (un '
+                       '"estado" entre llaves y las "lecciones" entre corchetes)')
+        lecciones = []
+        for leccion in ficha.get("lecciones", []):
+            if isinstance(leccion, str):  # escrita a mano, sin fecha: vale igual
+                leccion = {"texto": leccion}
+            dicho = leccion.get("texto") if isinstance(leccion, dict) else None
+            if not isinstance(dicho, str) or not dicho.strip():
+                avisos.append(f"en {nombre} hay una lección de {agente} que no se entiende "
+                              '(le falta el "texto"): la salteo')
+                continue
+            if len(" ".join(dicho.split())) > LARGO_DE_LECCION:
+                avisos.append(f"en {nombre} hay una lección de {agente} de más de "
+                              f"{LARGO_DE_LECCION} letras: uso solo el principio")
+            fecha = leccion.get("fecha")
+            lecciones.append({"fecha": fecha if isinstance(fecha, str) else "",
+                              "texto": en_un_renglon(dicho, LARGO_DE_LECCION)})
+        if len(lecciones) > MAX_LECCIONES:
+            avisos.append(f"en {nombre}, {agente} tiene más de {MAX_LECCIONES} lecciones, "
+                          "que es el tope: me quedo con las más nuevas")
+        limpio[str(agente)] = {"estado": dict(ficha.get("estado", {})),
+                               "lecciones": lecciones[-MAX_LECCIONES:]}
+    return limpio, avisos
+
+
+def guardar_memoria(ruta, programa, agentes):
+    """Deja la memoria en su archivo (o lo saca, si ya no hay nada que recordar). Devuelve
+    None si salió bien o la explicación de por qué no se pudo."""
+    agentes = {a: f for a, f in agentes.items() if f["estado"] or f["lecciones"]}
+    try:
+        if not agentes:
+            if os.path.lexists(ruta):
+                os.remove(ruta)
+            return None
+        datos = {
+            "que_es": f"La memoria de {programa}: lo que cada agente recuerda de una corrida "
+                      "a la otra (estado) y las lecciones que aprendió. La escribe Mate "
+                      "cada vez que el programa termina. Para empezar de cero: correr con "
+                      "--olvidar.",
+            "agentes": agentes}
+        escribir_entero(ruta, json.dumps(datos, ensure_ascii=False, indent=2,
+                                         allow_nan=False) + "\n")
+    except (OSError, ValueError, RecursionError):
+        return (f"no pude guardar la memoria en '{ruta}': lo que pasó en esta corrida no va "
+                "a estar en la próxima. Fijate que el archivo no esté abierto en otro "
+                "programa y que se pueda escribir en esa carpeta")
+    return None
+
+
+def leccion_limpia(texto):
+    """La lección en un solo renglón (o el error, si está vacía o es demasiado larga)."""
+    texto = " ".join(texto.split())
+    if not texto:
+        raise ErrorMate("la lección está vacía: escribí qué tiene que tener en cuenta el agente")
+    if len(texto) > LARGO_DE_LECCION:
+        raise ErrorMate(
+            f"la lección tiene {len(texto)} letras y el tope es {LARGO_DE_LECCION} (cada "
+            "lección viaja en cada consulta a la IA, y eso se paga): escribila más corta, "
+            "o partila en dos")
+    return texto
+
+
+def sumar_leccion(lecciones, texto, fecha):
+    """(la lista con esa lección al final, cuántas viejas hubo que olvidar). Si ya la
+    tenía, devuelve la misma lista: una lección no se anota dos veces."""
+    if any(leccion["texto"] == texto for leccion in lecciones):
+        return lecciones, 0
+    nuevas = lecciones + [{"fecha": fecha, "texto": texto}]
+    sobran = max(0, len(nuevas) - MAX_LECCIONES)
+    return nuevas[sobran:], sobran
+
+
+def con_lecciones(instrucciones, lecciones):
+    """Las instrucciones para la IA con las lecciones del agente al final, bajo su título."""
+    lista = "\n".join(f"{i}. {leccion}" for i, leccion in enumerate(lecciones, 1))
+    return f"{instrucciones.rstrip()}\n\n{TITULO_DE_LECCIONES}\n{lista}".lstrip()
+
+
+def usa_memoria(programa):
+    """¿El programa usa lo de aprender: un 'estado recordado', aprender() o lecciones()?
+    Si no, 'correr' no lee ni escribe ningún archivo de más."""
+    if isinstance(programa, EstadoRecordado):
+        return True
+    if not isinstance(programa, (list, tuple)):
+        return False
+    if _es_nodo(programa, "llamar", 4) and _es_nodo(programa[2], "nombre", 3) \
+            and programa[2][2] in ("aprender", "lecciones"):
+        return True
+    return any(usa_memoria(parte) for parte in programa)
+
+
+def se_puede_recordar(v):
+    """Solo se recuerdan datos: ni agentes ni funciones (tampoco adentro de una lista)."""
+    if isinstance(v, (Agente, Funcion, Nativa)):
+        return False
+    if isinstance(v, (list, dict)):
+        return all(se_puede_recordar(x) for x in (v.values() if isinstance(v, dict) else v))
+    if isinstance(v, Registro):
+        return all(se_puede_recordar(x) for x in v.campos.values())
+    return True
+
+
+def renglones_de_bitacora(ruta):
+    """Las fallas anotadas en la bitácora, una por renglón (sin los títulos). Si el
+    archivo no existe, ninguna; si no se puede leer, un ErrorMate."""
+    try:
+        texto = leer_fuente(ruta)
+    except FileNotFoundError:
+        return []
+    except (OSError, ErrorMate):
+        raise ErrorMate(f"no pude leer la bitácora '{ruta}': fijate que no esté abierta en "
+                        "otro programa")
+    return [r.strip() for r in texto.split("\n") if r.strip() and not r.startswith("#")]
+
+
+def guardar_bitacora(ruta, programa, fallas):
+    """Suma las fallas de esta corrida al final de la bitácora y deja las últimas
+    MAX_BITACORA. Cada falla es (fecha, agente, qué pasó, qué atendía, motivo). La clave
+    de la IA nunca queda escrita. Devuelve None o por qué no se pudo."""
+    if not fallas:
+        return None
+    clave = os.environ.get("ANTHROPIC_API_KEY", "").strip().strip("\"'").strip()
+    nuevos = [tapar_clave(" | ".join(
+        [fecha] + [en_un_renglon(parte, 300).replace("|", "/") for parte in (quien, que, atendia)]
+        + [en_un_renglon(motivo, 400)]), clave) for fecha, quien, que, atendia, motivo in fallas]
+    try:
+        renglones = (renglones_de_bitacora(ruta) + nuevos)[-MAX_BITACORA:]
+        escribir_entero(ruta, "\n".join([
+            f"# Bitácora de {programa}: las fallas de sus agentes, la más nueva abajo.",
+            "# Cada renglón:  fecha | agente | qué pasó | qué mensaje atendía | el motivo",
+            f"# La escribe Mate sola y guarda las últimas {MAX_BITACORA}. Para leerla "
+            f"resumida:  {como_se_llama()} bitacora {programa}",
+            "# Si la borrás no pasa nada: empieza de nuevo.", ""] + renglones) + "\n")
+    except (OSError, ValueError, ErrorMate):
+        return (f"no pude anotar las fallas de esta corrida en la bitácora '{ruta}': fijate "
+                "que no esté abierta en otro programa")
+    return None
+
+
+def como_se_llama():
+    """Cómo se escribe la orden para correr Mate en esta computadora."""
+    return "python mate\\mate.py" if os.name == "nt" else "python3 mate/mate.py"
+
+
 def incluidas():
     """Los nombres de las funciones incluidas (mostrar, texto, pesos...)."""
     return frozenset(FUNCIONES)
@@ -2931,6 +3192,14 @@ class Interprete:
         self.ia_en_orden = False  # si simular_ia() recibió una lista: se dan una por vez
         self.ia_usadas = 0  # cuántas de esa lista ya se dieron
         self.ia_consultas = 0  # consultas de verdad en esta corrida
+        self.ia_historial = []  # en una prueba: lo que se le consultó a la IA
+        # Lo que aprenden los agentes (0.4). Solo 'correr' con un archivo lo llena: con
+        # 'probar', en la consola y en las pruebas queda así, y nada toca el disco.
+        self.recordando = False  # si los 'estado recordado' se recuperan de la memoria
+        self.memoria = {}  # lo leído del archivo: agente -> {"estado": ..., "lecciones": ...}
+        self.bitacora = None  # una lista, si las fallas de los agentes se anotan
+        self.avisar = lambda texto: None  # por dónde salen los avisos de la memoria
+        self.avisados = set()  # los avisos que se dan una sola vez por corrida
         self._nativas()
 
     # ── funciones incorporadas ──
@@ -3393,10 +3662,20 @@ class Interprete:
                 raise error_de_ia("la pregunta está vacía: no hay nada para consultarle")
             quien = self.contexto[0].nombre if self.contexto else "(programa)"
             hondo = len(self.atendiendo)
+            # Las lecciones del agente van solas al final de las instrucciones (0.4).
+            aprendidas = self.lecciones_de(self.contexto[0]) if self.contexto else []
+            if aprendidas:
+                instrucciones = con_lecciones(instrucciones, aprendidas)
             if self.traza:
                 self.trazar(f"{quien} consulta a la IA"
                             f"{' (simulada)' if self.ia_simulada else ''}: "
                             f"{recortado(pregunta)}", None, hondo)
+                for i, leccion in enumerate(aprendidas, 1):
+                    self.trazar(f"   con la lección {i}: {recortado(leccion)}", None, hondo)
+            consulta = {"agente": quien, "instrucciones": instrucciones,
+                        "pregunta": pregunta, "respuesta": None}
+            if self.en_prueba:
+                self.ia_historial.append(consulta)
             try:
                 if self.ia_simulada:
                     respuesta = self.respuesta_simulada(pregunta, preparada)
@@ -3423,7 +3702,42 @@ class Interprete:
                 raise error_de_ia("la respuesta es demasiado larga para guardarla")
             if self.traza:
                 self.trazar(f"la IA contesta: {recortado(respuesta)}", None, hondo)
+            consulta["respuesta"] = respuesta
             return respuesta
+
+        @nativa("consultas_ia")
+        def _():
+            if not self.en_prueba:
+                raise ErrorMate(CONSULTAS_IA_SUELTO)
+            if self.contexto is None:
+                self.vaciar_cola()  # lo enviado en la prueba llega antes de mirar
+            return [dict(consulta) for consulta in self.ia_historial]
+
+        @nativa("aprender")
+        def _(leccion, agente=None):
+            quien = self.el_que_aprende("aprender", agente)
+            try:
+                texto = leccion_limpia(pedir(leccion, "texto", "aprender()"))
+            except ErrorMate as e:
+                e.mensaje = e.mensaje if e.mensaje.startswith("aprender()") \
+                    else "aprender(): " + e.mensaje
+                raise
+            nuevas, olvidadas = sumar_leccion(
+                quien.lecciones, texto, momento().strftime("%d/%m/%Y %H:%M"))
+            if nuevas is quien.lecciones:
+                return  # ya la sabía: no se anota dos veces
+            quien.lecciones = nuevas
+            if self.traza:
+                self.trazar(f"{quien.nombre} aprende: {recortado(texto)}", None,
+                            len(self.atendiendo))
+            if olvidadas:
+                self.avisar_una_vez(("tope", quien.nombre), (
+                    f"{quien.nombre} ya tenía {MAX_LECCIONES} lecciones, que es el tope: "
+                    "para anotar la nueva se olvidó de la más vieja"))
+
+        @nativa("lecciones")
+        def _(agente=None):
+            return self.lecciones_de(self.el_que_aprende("lecciones", agente))
 
         @nativa("simular_ia")
         def _(respuesta):
@@ -3456,6 +3770,129 @@ class Interprete:
                      "respuesta_a": respuesta_a - numero0 if respuesta_a else None}
                     for numero, de, a, msg, pregunta, conversacion, respuesta_a
                     in self.historial if tipo is None or msg.tipo == tipo]
+
+    # ── lo que aprenden los agentes (0.4) ──
+    def el_que_aprende(self, funcion, agente):
+        """De quién son las lecciones de aprender() o lecciones(): del agente que está
+        atendiendo o, en una prueba, del que se nombra."""
+        if self.contexto is not None:
+            if agente is not None and agente is not self.contexto[0]:
+                raise ErrorMate(f"{funcion}(): dentro de un agente va sin decir a cuál: cada "
+                                "uno anota y lee solo sus propias lecciones")
+            return self.contexto[0]
+        antes = '"la lección", ' if funcion == "aprender" else ""
+        if not self.en_prueba:
+            raise ErrorMate(SOLO_EN_AGENTE.format(n=funcion, antes=antes))
+        if agente is None:
+            raise ErrorMate(f"{funcion}(): en una prueba hay que decir de qué agente: "
+                            f"{funcion}({antes}Mostrador)")
+        if not isinstance(agente, Agente):
+            raise ErrorMate(f"{funcion}() espera un agente (por ejemplo "
+                            f"{funcion}({antes}Mostrador)) y recibió {un(agente)}")
+        self.vaciar_cola()  # lo enviado en la prueba llega antes de mirar
+        return agente
+
+    def lecciones_de(self, agente):
+        """Las lecciones que valen para ese agente, como textos: las suyas y, si es una
+        copia, antes las del agente del que es copia. Nunca más que el tope."""
+        molde = self.agentes.get(agente.decl[2])
+        todas = (molde.lecciones if molde is not None and molde is not agente else []) \
+            + agente.lecciones
+        if len(todas) > MAX_LECCIONES:
+            self.avisar_una_vez(("muchas", agente.nombre), (
+                f"entre las suyas y las de {agente.decl[2]}, {agente.nombre} tiene más de "
+                f"{MAX_LECCIONES} lecciones, que es el tope: usa solo las más nuevas"))
+        return [leccion["texto"] for leccion in todas[-MAX_LECCIONES:]]
+
+    def avisar_una_vez(self, cual, texto):
+        if cual not in self.avisados:
+            self.avisados.add(cual)
+            self.avisar(texto)
+
+    def recordado(self, agente, nombre, inicial):
+        """El valor con que arranca un 'estado recordado': el que quedó guardado en la
+        corrida anterior o, si no hay (o ya no es del mismo tipo), el inicial."""
+        if not self.recordando:
+            return inicial
+        if not agente.recuerda:
+            molde = agente.decl[2]
+            self.avisar_una_vez(("sin nombre", molde), (
+                f"las copias de {molde} creadas sin nombre no recuerdan nada de una corrida "
+                "a la otra (no se sabría cuál es cuál). Para que una copia tenga memoria, "
+                f'dale un nombre:  crear {molde} llamado "Centro"'))
+            return inicial
+        guardado = self.memoria.get(agente.nombre, {}).get("estado", {})
+        if nombre not in guardado:
+            return inicial
+        de = f"{agente.nombre}.{nombre}"
+        try:
+            valor = self._de_json(guardado[nombre])
+        except ErrorMate as e:
+            self.avisar(f"lo que {de} tenía guardado en la memoria ya no sirve "
+                        f"({e.mensaje}): arranca con su valor inicial")
+            return inicial
+        if inicial is not None and valor is not None \
+                and nombre_tipo(valor) != nombre_tipo(inicial):
+            self.avisar(f"{de} está guardado en la memoria como {nombre_tipo(valor)} y en el "
+                        f"programa ahora es {nombre_tipo(inicial)}: no uso lo guardado y "
+                        "arranca con su valor inicial")
+            return inicial
+        return valor
+
+    def memoria_actual(self):
+        """Lo que hay que guardar al terminar: lo que se leyó, con el estado recordado y
+        las lecciones de los agentes de esta corrida puestos encima."""
+        nueva = {a: {"estado": dict(f["estado"]), "lecciones": list(f["lecciones"])}
+                 for a, f in self.memoria.items()}
+        for agente in list(self.agentes.values()) + self.vivos:
+            if not agente.recuerda:
+                continue
+            previa = nueva.get(agente.nombre, {"estado": {}})["estado"]
+            estado = {}
+            for declarado in (agente.decl[3] if agente.env is not None else ()):
+                nombre = declarado[1]
+                if not isinstance(declarado, EstadoRecordado) or nombre not in agente.env.vars:
+                    continue
+                valor = agente.env.vars[nombre][0]
+                try:
+                    if not se_puede_recordar(valor):
+                        raise ValueError
+                    estado[nombre] = self._a_json(valor)
+                    json.dumps(estado[nombre], allow_nan=False)
+                except (ErrorMate, ValueError, RecursionError):
+                    estado.pop(nombre, None)
+                    if nombre in previa:
+                        estado[nombre] = previa[nombre]
+                    self.avisar(
+                        f"{agente.nombre}.{nombre} no se pudo guardar en la memoria: solo "
+                        "se recuerdan datos (números, textos, listas, mapas y mensajes), "
+                        "no agentes ni funciones")
+            if agente.env is None:
+                estado = previa  # no llegó a nacer en esta corrida: queda lo que había
+            nueva[agente.nombre] = {"estado": estado, "lecciones": list(agente.lecciones)}
+        return {a: f for a, f in nueva.items() if f["estado"] or f["lecciones"]}
+
+    def anotar_falla(self, agente, e, msg, atajada=False):
+        """Una falla de un agente, para la bitácora (si este programa la lleva). El mismo
+        error no se anota dos veces para el mismo agente."""
+        if self.bitacora is None or self.en_prueba:
+            return
+        vistos = e.__dict__.setdefault("en_bitacora", set())
+        if agente.nombre in vistos:
+            return
+        vistos.add(agente.nombre)
+        que = {"ia": "la IA no contestó", "contrato": "contrato rechazado"}.get(
+            e.familia, "falló")
+        if atajada:
+            que += " (lo atajó con 'intentar')"
+        if msg is None:
+            atendia = "(ningún mensaje)"
+        elif msg.tipo == AL_FALLAR:
+            atendia = "el aviso de que un mensaje suyo no se pudo atender"
+        else:
+            atendia = formato(msg)
+        self.bitacora.append((datetime.datetime.now().strftime("%d/%m/%Y %H:%M"),
+                              agente.nombre, que, atendia, e.mensaje))
 
     def respuesta_simulada(self, pregunta, preparada):
         """Lo que contesta la IA cuando no se sale a la red. Manda lo que fijó la prueba con
@@ -3600,6 +4037,7 @@ class Interprete:
                 elif s[0] == "agente":
                     ag = Agente(s[2])
                     ag.decl = s
+                    ag.lecciones = list(self.memoria.get(s[2], {}).get("lecciones", []))
                     ag.manejadores = self.manejadores_de(s)
                     self.agentes[s[2]] = ag
                     self.decl_agentes.append(s)
@@ -3622,10 +4060,13 @@ class Interprete:
         self.naciendo += 1
         ag.ocupado = True  # si alguien le habla mientras nace, es un ciclo
         try:
-            for ln, nombre, e in s[3]:
+            for declarado in s[3]:
+                ln, nombre, e = declarado
                 try:
-                    env.definir(nombre, self.estado_inicial(s[2], nombre, e, env, dados, linea),
-                                mutable=True)
+                    valor = self.estado_inicial(s[2], nombre, e, env, dados, linea)
+                    if isinstance(declarado, EstadoRecordado):
+                        valor = self.recordado(ag, nombre, valor)
+                    env.definir(nombre, valor, mutable=True)
                 except ErrorMate as err:
                     err.linea = err.linea or ln
                     raise
@@ -3750,6 +4191,9 @@ class Interprete:
                 "porque no se las podría distinguir. Elegí otro nombre", n[1])
         ag = Agente(f"{n[2]} {apodo}" if apodo is not None else f"{n[2]} nuevo")
         ag.decl = molde.decl
+        ag.recuerda = apodo is not None  # sin nombre no se sabría cuál es cuál
+        if ag.recuerda:
+            ag.lecciones = list(self.memoria.get(ag.nombre, {}).get("lecciones", []))
         self.instanciar(ag, dados, n[1])
         # Recién ahora gasta un número: un 'crear' rechazado no corre la numeración.
         self.copias[n[2]] = self.copias.get(n[2], 1) + 1
@@ -3792,6 +4236,8 @@ class Interprete:
         self.sin_teclado = self.sin_teclado or pruebas
         self.fecha_fija = self.fecha_fija or pruebas
         self.ia_simulada = self.ia_simulada or pruebas  # 'probar' nunca sale a la red
+        if pruebas:  # ...ni lee ni escribe memoria o bitácora: cada prueba arranca limpia
+            self.recordando, self.memoria, self.bitacora = False, {}, None
         self.cargar(programa)
         for s in programa:
             if s[0] == "agente":
@@ -3813,6 +4259,9 @@ class Interprete:
                 if s[0] != "prueba":
                     continue
                 self.volver_a(foto)
+                for agente in list(self.agentes.values()) + self.vivos:
+                    agente.lecciones = []  # las de la prueba se fijan con aprender()
+                self.ia_historial = []
                 self.errores_agentes, self.errores_agentes_det = [], []
                 self.pasos = 0
                 self.entregados = 0
@@ -3970,6 +4419,7 @@ class Interprete:
             respondio, valor = self.atender(rem, dest, msg, pregunta, linea)
         except ErrorMate as e:
             self.cuenta["fallaron"] += 1
+            self.anotar_falla(dest, e, msg)
             if self.traza and getattr(e, "sin_respuesta", None) is dest:
                 self.trazar(f"{dest.nombre} sin respuesta: terminó de atender {msg.tipo} sin "
                             "llegar a un 'responder'", visto, hondo)
@@ -4017,10 +4467,11 @@ class Interprete:
         if var:  # (el aviso de 'al fallar' llega como un mapa común)
             env.definir(var, dict(msg.campos) if aviso else msg, origen="mensaje")
         previo, dest.ocupado = self.contexto, True
-        self.contexto = (dest, rem, msg.tipo, env.serie)
+        self.contexto = (dest, rem, msg.tipo, env.serie, msg)
         respondio, valor = False, None
         # Si falla, el agente vuelve a como estaba antes de recibir este mensaje.
         estado_previo = {k: list(v) for k, v in dest.env.vars.items()}
+        lecciones_previas = dest.lecciones
         en_cola, llamadas, nacidos = len(self.cola), self.llamadas, len(self.vivos)
         self.llamadas = []
         self.atendiendo.append((dest, linea))
@@ -4060,6 +4511,7 @@ class Interprete:
             if not e.linea and not pregunta:
                 e.renglon = renglon  # para señalar al menos el 'al recibir' que atendía
             dest.env.vars = estado_previo
+            dest.lecciones = lecciones_previas
             # Las copias que creó atendiendo este mensaje tampoco quedan: nadie las tiene.
             self.vivos[nacidos:] = [a for a in self.vivos[nacidos:] if a.creador is not dest]
             nuevos = [self.cola.pop() for _ in range(len(self.cola) - en_cola)]
@@ -4237,6 +4689,8 @@ class Interprete:
                 if e.clase in ("limite", "escritura") or (
                         e.clase == "asegurar" and self.en_prueba):
                     raise
+                if self.contexto is not None:  # un agente atajó una falla: va a la bitácora
+                    self.anotar_falla(self.contexto[0], e, self.contexto[4], atajada=True)
                 manejo = Entorno(env)
                 if s[3]:
                     manejo.definir(s[3], ErrorAtajado(e), origen="falla")
@@ -4383,7 +4837,7 @@ class Interprete:
             e = e.padre
         if e is None or not e.vars[nombre][1]:
             return  # no existe o es fijo: lo explica el error de siempre
-        agente, _, _, desde = self.contexto
+        agente, _, _, desde, _ = self.contexto
         if e.serie >= desde:
             return  # una variable nacida mientras atiende este mensaje
         propio = e
@@ -4701,9 +5155,9 @@ FUNCIONES INCLUIDAS (no hay otras)
 - agregar, quitar, ordenar y porcion devuelven una copia NUEVA, no cambian la original:
   lista = agregar(lista, x)
 - quitar(lista, x) saca por valor, no por posición: se van todos los que valen x.
-- Una función incluida suelta en un renglón (salvo mostrar, leer y escribir_archivo) es un
-  error: hay que usar lo que devuelve. Ese error no se ataja con 'intentar': para validar
-  un dato se escribe  intentar {{ sea n = numero(dato) ... }} si falla e {{ ... }}
+- Una función incluida suelta en un renglón (salvo mostrar, leer, escribir_archivo y
+  aprender) es un error: hay que usar lo que devuelve. Ese error no se ataja con 'intentar':
+  para validar un dato se escribe  intentar {{ sea n = numero(dato) ... }} si falla e {{ ... }}
 - hoy() y ahora() dan textos: no se restan ni se comparan con < o > (sí con == y !=).
 - leer_archivo y escribir_archivo solo andan desde el programa principal (no desde un agente),
   con archivos de la carpeta del programa, y no pisan archivos .mate ni .py.
@@ -4743,6 +5197,18 @@ AGENTES Y MENSAJES
 - sea otro = crear Vendedor llamado "Norte" {{ contador: 5 }}     otra copia, con su estado
 - Un agente no puede cambiar variables de afuera ni el estado de otro. Los mensajes llevan
   datos, nunca funciones.
+- estado recordado atendidos = 0     como 'estado', pero ese dato se guarda cuando el programa
+  termina (en programa.memoria.json, al lado del programa) y vuelve en la próxima corrida.
+  Solo datos: números, textos, listas, mapas y mensajes. Vale para los agentes declarados y
+  para las copias con nombre (crear ... llamado "Centro"). Con 'probar' no se lee ni se
+  guarda nada. 'correr programa.mate --olvidar' arranca de cero.
+- Dentro de un agente, aprender("texto") le anota una lección (queda guardada junto con lo
+  recordado; no se repite ni se pasa de {max_lecciones}) y lecciones() da la lista de las suyas.
+  consultar_ia() dentro de ese agente las agrega solas al final de las instrucciones, bajo
+  un título, para que la IA las tenga en cuenta. El dueño anota lecciones sin tocar el
+  programa:  mate.py corregir programa.mate Agente "texto"
+- Si el programa usa 'estado recordado' o lecciones, cada falla de un agente queda anotada
+  sola en programa.bitacora.txt (se lee resumida con: mate.py bitacora programa.mate).
 - usar "otro.mate" trae los mensajes, agentes, funciones y variables ('sea' y 'var') de
   otro archivo. Un nombre que ya vino de ahí no se puede declarar de nuevo.
 
@@ -4761,6 +5227,11 @@ PRUEBAS
 - simular_ia("Sale $ 100") solo dentro de una prueba: desde ahí, consultar_ia() contesta eso.
   Con una lista las da en orden, una por consulta: simular_ia(["Hola", "Chau"]). En las
   pruebas nunca se habla con la IA de verdad.
+- En una prueba ningún agente tiene lecciones ni memoria: se le fijan con
+  aprender("texto", Mostrador), y lecciones(Mostrador) las devuelve. consultas_ia() da la
+  lista de lo que se le consultó a la IA en esa prueba; cada elemento es un mapa con agente,
+  instrucciones (con las lecciones al final), pregunta y respuesta:
+      asegurar tiene(ultimo(consultas_ia()).instrucciones, "texto de la lección")
 - Van en el nivel superior y corren con la orden 'probar'. Cada una empieza limpia.
 
 ANTES DE CORRER
@@ -4821,11 +5292,14 @@ prueba "suma solo lo que el vendedor vende" {{
 CÓMO SE CORRE (Windows)
   python mate\mate.py correr archivo.mate        python mate\mate.py probar archivo.mate
   python mate\mate.py verificar archivo.mate     (revisa sin correr)
+  python mate\mate.py corregir archivo.mate Agente "la lección"    (le anota una lección)
+  python mate\mate.py lecciones archivo.mate     python mate\mate.py bitacora archivo.mate
 """
 
 
 def texto_de_guia():
-    return GUIA.format(version=VERSION, funciones=lista_de_funciones(), tres=TRES_COMILLAS)
+    return GUIA.format(version=VERSION, funciones=lista_de_funciones(), tres=TRES_COMILLAS,
+                       max_lecciones=MAX_LECCIONES)
 
 
 _EJ_AGENTE = """mensaje Sumar { a: numero, b: numero }
@@ -4911,6 +5385,15 @@ AYUDA = {
                 "mostrar(p.producto, p.prioridad)"),
     "agente": ("alguien que recibe mensajes. Tiene su 'estado' privado, que solo él cambia, "
                "y un 'al recibir' por cada mensaje que entiende", _EJ_AGENTE),
+    "recordado": ("dentro de un agente, después de 'estado': ese dato se guarda cuando el "
+                  "programa termina y vuelve en la próxima corrida (queda en un archivo "
+                  ".memoria.json al lado del programa). Con 'probar' no se guarda nada, y "
+                  "con 'correr programa.mate --olvidar' se arranca de cero",
+                  "mensaje Llego {}\nagente Mostrador {\n"
+                  "    estado recordado atendidos = 0\n"
+                  "    al recibir Llego {\n        atendidos += 1\n"
+                  "        responder atendidos\n    }\n}\n"
+                  'mostrar("Clientes hasta hoy:", preguntar Llego {} a Mostrador)'),
     "responder": ("contesta al que mandó el mensaje y termina de atenderlo. Solo va dentro "
                   "de 'al recibir'", _EJ_AGENTE),
     "preguntar": ("le manda un mensaje a un agente y espera lo que responde. Si el agente "
@@ -5182,12 +5665,19 @@ def texto_de_ayuda():
         "  ayuda si                 explica una palabra o una función de Mate, con un ejemplo",
         "  consola                  para probar renglones sueltos sin crear un archivo",
         "",
+        "Para que un agente aprenda (mirá 'ayuda recordado'):",
+        '  corregir  archivo.mate Mostrador "la lección"   le anota una lección a ese agente',
+        "  lecciones archivo.mate   muestra las lecciones de cada agente",
+        "  lecciones archivo.mate Mostrador --borrar=2   le borra la lección 2",
+        "  bitacora  archivo.mate   resume las fallas que anotaron sus agentes",
+        "",
         "Opciones:",
         "  --traza       muestra la conversación entre agentes, numerada y con lo que falló",
         "  --traza=conversacion.txt   la guarda en ese archivo, con un resumen al final",
         "  --sin-limite  no corta los programas que dan muchísimos pasos",
         "  --ia-simulada consultar_ia() no sale a la red ni gasta: da su respuesta preparada",
         "  --ia-simulada=respuestas.txt   ...o las que están escritas en ese archivo",
+        "  --olvidar     con 'correr': los agentes arrancan de cero, sin lo que recordaban",
         "  --depurar     si Mate falla por dentro, muestra el detalle técnico",
         "  --version     dice qué versión de Mate es",
         "",
@@ -5283,6 +5773,196 @@ def guardar_conversacion(destino, programa, renglones, cuenta, sumar=False):
     except OSError:
         return f"no pude guardar la conversación en '{destino}'"
     return None
+
+
+def mostrar_bitacora(ruta, avisar):
+    """La orden 'bitacora': las fallas que anotaron los agentes de ese programa, resumidas."""
+    programa, archivo = os.path.basename(ruta), archivo_de(ruta, "bitacora.txt")
+    try:
+        renglones = renglones_de_bitacora(archivo)
+    except ErrorMate as e:
+        avisar(e.mensaje)
+        return 2
+    fallas = [r.split(" | ", 4) for r in renglones]
+    raros = sum(len(f) != 5 for f in fallas)
+    fallas = [f for f in fallas if len(f) == 5]
+    if not fallas:
+        print(f"{programa} no tiene fallas anotadas"
+              + (f" ({archivo} tiene {raros} renglón(es) que no entiendo)." if raros else "."))
+        print("La bitácora se arma sola cuando falla un agente de un programa que usa "
+              "'estado recordado' o lecciones, al correrlo con 'correr'.")
+        return 0
+    print(f"Bitácora de {programa}: {len(fallas)} falla(s) anotada(s), del {fallas[0][0]} "
+          f"al {fallas[-1][0]}.")
+
+    def tabla(titulo, columna, largo, cuantos=None):
+        veces = {}
+        for falla in fallas:
+            clave = en_un_renglon(falla[columna], largo)
+            veces[clave] = veces.get(clave, 0) + 1
+        print("")
+        print(titulo)
+        for clave, n in sorted(veces.items(), key=lambda par: -par[1])[:cuantos]:
+            print(f"  {n:>4} {'vez ' if n == 1 else 'veces'}  {clave}")
+
+    tabla("Por agente:", 1, 60)
+    tabla("Qué pasó:", 2, 60)
+    tabla("Los motivos que más se repiten:", 4, 110, 5)
+    print("")
+    print("Las últimas:")
+    for falla in fallas[-5:]:
+        print(f"  {falla[0]}  {falla[1]} {falla[2]} atendiendo {en_un_renglon(falla[3], 70)}")
+        print(f"      {en_un_renglon(falla[4], 110)}")
+    if raros:
+        print("")
+        print(f"({raros} renglón(es) del archivo no tienen la forma de siempre y no los conté)")
+    print("")
+    print(f"Está todo en {archivo} (se abre con el Bloc de notas; si lo borrás, empieza "
+          "de nuevo).")
+    return 0
+
+
+def orden_de_memoria(orden, args, borrar, avisar):
+    """Las órdenes 'corregir', 'lecciones' y 'bitacora': miran (o cambian) lo que aprendió
+    un programa, sin correrlo. Devuelven el código de salida."""
+    ejemplos = {"bitacora": "bitacora mi_mostrador.mate",
+                "lecciones": "lecciones mi_mostrador.mate",
+                "corregir": 'corregir mi_mostrador.mate Mostrador "Los lunes no hay pan"'}
+    if not args:
+        avisar(f"a '{orden}' le falta el programa, por ejemplo: {ejemplos[orden]}")
+        return 2
+    if borrar is not None and orden != "lecciones":
+        avisar("--borrar va con 'lecciones', por ejemplo: lecciones mi_mostrador.mate "
+               "Mostrador --borrar=2")
+        return 2
+    ruta, problema = _ubicar(args[0])
+    if problema:
+        avisar(problema)
+        return 2
+    programa = os.path.basename(ruta)
+    if orden == "bitacora":
+        if len(args) > 1:
+            avisar(f"'bitacora' lleva solo el programa: {ejemplos[orden]}")
+            return 2
+        return mostrar_bitacora(ruta, avisar)
+    try:
+        declarados = [s[2] for s in analizar(leer_fuente(ruta), ruta) if s[0] == "agente"]
+    except OSError:
+        avisar(f"no pude abrir {ruta}")
+        return 2
+    except ErrorMate:
+        avisar(f"{ruta} tiene un error y no puedo ver qué agentes tiene. Miralo con:  "
+               f"{como_se_llama()} verificar {args[0]}")
+        return 2
+    archivo = archivo_de(ruta, "memoria.json")
+    try:
+        memoria, avisos = leer_memoria(archivo)
+    except ErrorMate as e:
+        avisar(e.mensaje)
+        return 2
+    for aviso in avisos:
+        avisar(f"aviso: {aviso}")
+
+    def conocido(nombre):
+        """El agente con ese nombre, como está escrito en el programa (o None). Vale una
+        copia con nombre ("Mostrador Centro") y da igual mayúsculas que minúsculas."""
+        nombre = " ".join(nombre.split())
+        posibles = declarados + [a for a in memoria if a not in declarados]
+        for candidato in posibles:
+            if candidato.lower() == nombre.lower():
+                return candidato
+        molde, _, apodo = nombre.partition(" ")
+        for candidato in declarados:
+            if apodo and candidato.lower() == molde.lower():
+                return f"{candidato} {apodo}"
+        return None
+
+    def listar(agente):
+        for i, leccion in enumerate(memoria[agente]["lecciones"], 1):
+            print(f"  {i}. {leccion['texto']}"
+                  + (f"   (del {leccion['fecha']})" if leccion["fecha"] else ""))
+
+    agente = None
+    if len(args) > 1:
+        agente = conocido(args[1])
+        if agente is None:
+            avisar(f"{programa} no tiene un agente '{args[1]}'.{sugerir(args[1], declarados)}"
+                   + (" Sus agentes son: " + ", ".join(declarados) if declarados
+                      else " Ese programa no tiene agentes"))
+            return 2
+    if orden == "corregir":
+        if agente is None or len(args) < 3:
+            avisar("a 'corregir' le faltan el agente y la lección (entre comillas), por "
+                   f"ejemplo: {ejemplos[orden]}"
+                   + (". Los agentes de ese programa son: " + ", ".join(declarados)
+                      if declarados and agente is None else ""))
+            return 2
+        try:
+            texto = leccion_limpia(" ".join(args[2:]))
+        except ErrorMate as e:
+            avisar(e.mensaje)
+            return 2
+        ficha = memoria.setdefault(agente, {"estado": {}, "lecciones": []})
+        nuevas, olvidadas = sumar_leccion(
+            ficha["lecciones"], texto, datetime.datetime.now().strftime("%d/%m/%Y %H:%M"))
+        if nuevas is ficha["lecciones"]:
+            print(f"{agente} ya tenía anotada esa lección: no la repito.")
+            return 0
+        ficha["lecciones"] = nuevas
+        problema = guardar_memoria(archivo, programa, memoria)
+        if problema:
+            avisar(problema)
+            return 1
+        print(f"Anotado. {agente} tiene {len(nuevas)} lección(es):")
+        listar(agente)
+        if olvidadas:
+            print(f"(El tope es {MAX_LECCIONES}: para anotar esta se borró la más vieja.)")
+        print("La va a tener en cuenta cada vez que consulte a la IA con consultar_ia(), "
+              "desde la próxima corrida.")
+        print(f"Para borrar una:  {como_se_llama()} lecciones {args[0]} {agente} --borrar=1")
+        return 0
+    # lecciones
+    if len(args) > 2:
+        avisar(f"'lecciones' lleva el programa y, si querés, un agente: {ejemplos[orden]} "
+               "Mostrador")
+        return 2
+    los_que_tienen = [a for a in memoria if memoria[a]["lecciones"]]
+    if borrar is not None:
+        if agente is None:
+            avisar("para borrar una lección hay que decir de qué agente, por ejemplo: "
+                   "lecciones mi_mostrador.mate Mostrador --borrar=2")
+            return 2
+        suyas = memoria.get(agente, {"lecciones": []})["lecciones"]
+        if borrar.lower() == "todas" and suyas:
+            quedan = []
+        elif borrar.isdigit() and 1 <= int(borrar) <= len(suyas):
+            quedan = suyas[:int(borrar) - 1] + suyas[int(borrar):]
+        else:
+            avisar(f"{agente} no tiene lecciones para borrar" if not suyas else
+                   f"--borrar lleva el número de la lección (del 1 al {len(suyas)}) o "
+                   f"'todas', y recibió '{borrar}'")
+            return 2
+        memoria[agente]["lecciones"] = quedan
+        problema = guardar_memoria(archivo, programa, memoria)
+        if problema:
+            avisar(problema)
+            return 1
+        print(f"Borrada. A {agente} le quedan {len(quedan)} lección(es)"
+              + (":" if quedan else "."))
+        listar(agente)
+        return 0
+    mostrar_de = [agente] if agente else los_que_tienen
+    if not any(memoria.get(a, {"lecciones": []})["lecciones"] for a in mostrar_de):
+        print((f"{agente} todavía no tiene lecciones." if agente
+               else f"Los agentes de {programa} todavía no tienen lecciones.")
+              + f" Se anota una con:  {como_se_llama()} corregir {args[0]} "
+              + (agente or (declarados[0] if declarados else "Mostrador"))
+              + ' "la lección"')
+        return 0
+    for a in mostrar_de:
+        print(f"{a} tiene {len(memoria[a]['lecciones'])} lección(es):")
+        listar(a)
+    return 0
 
 
 def probar_varios(pedidos, opciones, avisar):
@@ -5385,10 +6065,16 @@ def _main(argv, donde):
         print(texto, file=sys.stderr)
 
     alias = {"-h": "--ayuda", "--help": "--ayuda", "-?": "--ayuda", "/?": "--ayuda"}
-    opciones, args, conversacion, respuestas = set(), [], None, None
+    opciones, args, conversacion, respuestas, borrar = set(), [], None, None, None
     for a in argv:
         if a.lower() in alias:
             opciones.add(alias[a.lower()])
+        elif a.lower().startswith("--borrar"):
+            borrar = a[len("--borrar="):].strip('"')
+            if not a.lower().startswith("--borrar=") or not borrar:
+                avisar("a --borrar le falta el número de la lección, por ejemplo: lecciones "
+                       "mi_mostrador.mate Mostrador --borrar=2")
+                return 2
         elif a.lower().startswith("--ia-simulada="):
             opciones.add("--ia-simulada")
             respuestas = a[len("--ia-simulada="):].strip('"')
@@ -5421,7 +6107,8 @@ def _main(argv, donde):
         print(f"Mate {VERSION} (Python {sys.version_info[0]}.{sys.version_info[1]})")
         return 0
     if args and args[0].lower() == "ayuda" and len(args) >= 2 and not (
-            len(args) == 2 and args[1].lower() in ORDENES + ("ayuda", "guia", "guía", "consola")):
+            len(args) == 2 and sin_tildes(args[1].lower()) in ORDENES + (
+                "ayuda", "guia", "consola") + ORDENES_DE_MEMORIA[:2]):
         # 'ayuda si', 'ayuda largo', 'ayuda al fallar'
         return ayuda_de_palabra(" ".join(args[1:]), print, avisar)
     if "--ayuda" in opciones or (args and args[0].lower() == "ayuda"):
@@ -5445,6 +6132,12 @@ def _main(argv, donde):
                 avisar(e.mensaje)
                 return 2
         return consola(ia_simulada="--ia-simulada" in opciones, ia_respuestas=preparadas)
+    if sin_tildes(args[0].lower()) in ORDENES_DE_MEMORIA:
+        return orden_de_memoria(sin_tildes(args[0].lower()), args[1:], borrar, avisar)
+    if borrar is not None:
+        avisar("--borrar va con 'lecciones', por ejemplo: lecciones mi_mostrador.mate "
+               "Mostrador --borrar=2")
+        return 2
 
     def parece_archivo(a):
         return (a.lower().endswith((".mate", ".mate.txt")) or os.path.isfile(a)
@@ -5458,16 +6151,22 @@ def _main(argv, donde):
             return 2
     orden, archivos = args[0].lower(), args[1:]
     if orden not in ORDENES:
-        parecidas = difflib.get_close_matches(orden, ORDENES + ("ayuda", "guia", "consola"), 1)
+        parecidas = difflib.get_close_matches(
+            orden, ORDENES + ("ayuda", "guia", "consola") + ORDENES_DE_MEMORIA, 1)
         avisar(f"no conozco la orden '{args[0]}'" + (
             f", ¿quisiste decir '{parecidas[0]}'?" if parecidas
-            else ". Las órdenes son: correr, probar, verificar, consola, guia y ayuda"))
+            else ". Las órdenes son: correr, probar, verificar, consola, guia, ayuda, "
+                 "corregir, lecciones y bitacora"))
         return 2
     if not archivos:
         avisar(f"a '{orden}' le falta el archivo, por ejemplo: {orden} hola.mate")
         return 2
     if orden == "probar" and (len(archivos) > 1 or os.path.isdir(archivos[0])):
         return probar_varios(archivos, [a for a in argv if a.startswith("-")], avisar)
+    if "--olvidar" in opciones and orden != "correr":
+        avisar("--olvidar va con 'correr': el programa corre con sus agentes de cero, sin "
+               "lo que recordaban")
+        return 2
     if len(archivos) > 1:
         avisar(f"'{orden}' lleva un solo archivo y recibió {len(archivos)}: "
                + ", ".join(archivos)
@@ -5519,6 +6218,26 @@ def _main(argv, donde):
             print(f"La conversación quedó guardada en {conversacion}")
         guardadas.append(ruta)
 
+    archivo_memoria = archivo_de(ruta, "memoria.json")
+    aprendido = {"leida": None, "abierta": False}  # leida: lo que decía el archivo al abrirlo
+
+    def cerrar_memoria():
+        """Al terminar 'correr': guarda lo que recuerdan los agentes (si cambió) y suma
+        sus fallas a la bitácora. Un programa que no usa nada de esto no crea archivos."""
+        interprete = donde["interprete"]
+        if not aprendido["abierta"]:
+            return
+        aprendido["abierta"] = False
+        nueva = interprete.memoria_actual()
+        if nueva != aprendido["leida"] and (nueva or os.path.lexists(archivo_memoria)):
+            problema = guardar_memoria(archivo_memoria, os.path.basename(ruta), nueva)
+            if problema:
+                avisar(f"aviso: {problema}")
+        problema = guardar_bitacora(archivo_de(ruta, "bitacora.txt"), os.path.basename(ruta),
+                                    interprete.bitacora or [])
+        if problema:
+            avisar(f"aviso: {problema}")
+
     try:
         try:
             fuente = leer_fuente(ruta)
@@ -5552,7 +6271,33 @@ def _main(argv, donde):
             except ErrorMate as e:
                 avisar(e.mensaje)
                 return 2
-        resultados = interprete.correr(programa, pruebas=orden == "probar")
+        if orden == "correr":
+            # Lo que aprendieron los agentes (0.4): solo 'correr' lee y escribe su memoria.
+            try:
+                memoria, avisos = leer_memoria(archivo_memoria)
+                aprendido["leida"] = json.loads(json.dumps(memoria))
+            except ErrorMate as e:
+                if "--olvidar" not in opciones:
+                    avisar(e.mensaje)
+                    return 2
+                memoria, avisos = {}, []  # no se entendía, y pidieron empezar de cero
+            for aviso in avisos:
+                avisar(f"aviso: {aviso}")
+            if "--olvidar" in opciones:
+                for ficha in memoria.values():
+                    ficha["estado"] = {}
+                avisar("aviso: --olvidar: los agentes arrancan de cero, sin lo que "
+                       "recordaban (las lecciones no se borran: eso se hace con la orden "
+                       "'lecciones')")
+            interprete.memoria, interprete.recordando = memoria, True
+            interprete.avisar = lambda texto: avisar(f"aviso: {texto}")
+            if usa_memoria(programa) or any(f["lecciones"] for f in memoria.values()):
+                interprete.bitacora = []
+            aprendido["abierta"] = True
+        try:
+            resultados = interprete.correr(programa, pruebas=orden == "probar")
+        finally:  # también si el programa termina con un error, o lo cortan con Ctrl+C
+            cerrar_memoria()
     except ErrorMate as e:
         # Primero lo que ya había fallado en los agentes: suele ser la causa del corte.
         for linea, texto in getattr(donde["interprete"], "errores_agentes_det", ()):

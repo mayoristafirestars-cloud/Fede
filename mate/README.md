@@ -1,11 +1,13 @@
 # Mate 🧉
 
-Un lenguaje chico, con palabras en español, pensado para dos cosas:
+Un lenguaje chico, con palabras en español, pensado para tres cosas:
 
 1. **Escribir código más práctico y con menos sorpresas.**
 2. **Que los agentes se hablen entre ellos** con mensajes que tienen contrato.
+3. **Aprender de sus errores.** Un agente recuerda de una corrida a la otra, anota solo lo
+   que le salió mal y no repite un error que le corregiste (ver [Mate aprende](#mate-aprende)).
 
-Versión 0.3. El intérprete es un solo archivo (`mate.py`), sin dependencias: alcanza con Python 3.
+Versión 0.4. El intérprete es un solo archivo (`mate.py`), sin dependencias: alcanza con Python 3.
 
 ```bash
 python3 mate/mate.py correr mate/ejemplos/negociacion.mate
@@ -93,7 +95,7 @@ castellano. En el Bloc de notas, `Ctrl+G` te lleva a ese renglón. Y si no te ac
 usa una palabra, preguntale a Mate: `python mate\mate.py ayuda si` (o `ayuda para`,
 `ayuda largo`...) muestra una explicación corta con un ejemplo para copiar.
 
-**7. Seguir aprendiendo.** En `mate\ejemplos` hay siete programas cortos, explicados renglón por
+**7. Seguir aprendiendo.** En `mate\ejemplos` hay ocho programas cortos, explicados renglón por
 renglón, para leer y correr en orden:
 
 | Archivo | Qué enseña |
@@ -105,6 +107,7 @@ renglón, para leer y correr en orden:
 | `05_funciones_y_pruebas.mate` | funciones, errores atajados y pruebas |
 | `06_primer_agente.mate` | el primer agente con sus mensajes |
 | `07_agente_con_ia.mate` | un agente que le consulta a una IA de verdad (se prueba sin clave) |
+| `08_agente_que_aprende.mate` | un agente con memoria, lecciones y bitácora de errores (se prueba sin clave) |
 
 ```
 python mate\mate.py correr mate\ejemplos\01_hola.mate
@@ -132,11 +135,15 @@ archivo y abrirla con el Bloc de notas: `python mate\mate.py guia > guia.txt`.
 | `ayuda` | muestra las órdenes y un ejemplo listo para copiar |
 | `ayuda si` | explica una palabra de Mate o una función incluida (`ayuda largo`), con un ejemplo |
 | `consola` | abre la consola, para probar renglones sueltos sin crear un archivo |
+| `corregir archivo.mate Mostrador "..."` | le anota una lección a ese agente, sin tocar el programa (ver [Mate aprende](#mate-aprende)) |
+| `lecciones archivo.mate` | muestra las lecciones de cada agente; con `Mostrador --borrar=2` le borra la 2 |
+| `bitacora archivo.mate` | resume las fallas que fueron anotando los agentes de ese programa |
 | `--traza` | muestra la conversación entre agentes, mensaje por mensaje, numerada y con lo que falló |
 | `--traza=conversacion.txt` | guarda esa conversación en un archivo, con un resumen al final |
 | `--sin-limite` | no corta los programas que dan muchísimos pasos |
 | `--ia-simulada` | `consultar_ia` no sale a la red ni gasta: da su respuesta preparada |
 | `--ia-simulada=respuestas.txt` | lo mismo, con las respuestas escritas en ese archivo |
+| `--olvidar` | con `correr`: los agentes arrancan de cero, sin lo que recordaban de otras corridas |
 | `--depurar` | si Mate falla por dentro, muestra el detalle técnico |
 | `--version` | dice qué versión de Mate es |
 
@@ -665,7 +672,7 @@ Lo que una prueba cambia no le llega a la siguiente. Además:
   pruebas no pueden tener el mismo nombre: se avisa antes de correr.
 - `probar` también acepta una carpeta o varios archivos: `python mate\mate.py probar mate\ejemplos`
   corre las pruebas de cada `.mate` de esa carpeta, uno por uno, y termina con el total
-  (`En total: 17 de 17 pruebas pasaron, en 12 archivos`) y la lista de los que tuvieron problemas.
+  (`En total: 21 de 21 pruebas pasaron, en 13 archivos`) y la lista de los que tuvieron problemas.
 - `asegurar falla { ... }` es la forma corta de comprobar que algo **tiene que fallar**:
 
   ```
@@ -754,6 +761,200 @@ texto que no es un número), `"json"`, `"agente"` (no sabe recibir ese mensaje o
 `"ia"` (la IA no contestó: sin clave, sin red, sin crédito...) y `"otro"` para el resto. Hay que pasarle `e` tal cual llegó: si lo
 cambiás (`e + "!"`) es un texto común y `detalle_de` avisa que no es un error atajado.
 
+## Mate aprende
+
+Desde la versión 0.4 un agente puede mejorar con el uso. Son tres piezas que encajan:
+
+| Pieza | Qué hace | Dónde queda |
+|---|---|---|
+| **Memoria** | un dato del agente no se pierde cuando el programa termina | `mi_mostrador.memoria.json` |
+| **Lecciones** | correcciones que el agente tiene siempre en cuenta, y que la IA recibe sola | en ese mismo archivo |
+| **Bitácora** | cada falla de un agente queda anotada sola, con fecha y motivo | `mi_mostrador.bitacora.txt` |
+
+Los dos archivos aparecen **al lado del programa** (si el programa es `mi_mostrador.mate`, se
+llaman como en la tabla), se abren con el Bloc de notas y nunca se mandan a ningún lado: lo
+único que sale por internet es lo que ya salía con `consultar_ia`. Un programa que no usa
+nada de esto corre igual que antes y no crea ningún archivo.
+
+Con `probar` nada de esto se lee ni se guarda: cada prueba arranca limpia, sin memoria y sin
+lecciones. Solo `correr` toca esos archivos.
+
+El ejemplo completo es `ejemplos/08_agente_que_aprende.mate`; arriba, en sus comentarios,
+están los pasos para probarlo en PowerShell.
+
+### Memoria: `estado recordado`
+
+Es un `estado` como cualquiera, con una palabra más:
+
+```
+agente Mostrador {
+    estado recordado atendidos = 0        (se guarda al terminar y vuelve la próxima vez)
+    estado saludo = "Hola"                (este no: arranca siempre igual)
+
+    al recibir Consulta como c {
+        atendidos += 1
+        ...
+    }
+}
+```
+
+```
+python mate\mate.py correr mi_mostrador.mate          (atendidos termina en 1)
+python mate\mate.py correr mi_mostrador.mate          (arranca en 1 y termina en 2)
+```
+
+- El valor escrito después del `=` es el de la **primera vez** (o el de después de
+  `--olvidar`). Las demás veces arranca con lo que quedó guardado.
+- Se recuerdan **datos**: números, textos, `verdadero`/`falso`, listas, mapas y mensajes. Un
+  agente o una función no se pueden recordar: Mate avisa y ese dato arranca de cero.
+- Cada agente tiene lo suyo, y también cada copia **con nombre**
+  (`crear Mostrador llamado "Centro"` recuerda aparte, como `Mostrador Centro`). Una copia sin
+  nombre no recuerda, porque no se sabría cuál es cuál: Mate lo avisa. Si a `crear` le das un
+  valor para un estado recordado, es solo el de la primera vez.
+- Se guarda **también si el programa termina con un error** o lo cortás con Ctrl+C. Lo que
+  un agente cambió mientras atendía un mensaje que falló no cuenta: el agente vuelve a como
+  estaba antes de ese mensaje, igual que siempre. El archivo se escribe entero de una vez:
+  nunca queda a medio escribir.
+- Si cambiás el programa y un dato pasa a ser de otro tipo (antes era un número y ahora un
+  texto), Mate avisa y usa el valor inicial:
+  `aviso: Mostrador.atendidos está guardado en la memoria como texto y en el programa ahora es numero...`
+- Para **empezar de cero**: `python mate\mate.py correr mi_mostrador.mate --olvidar`. Borra lo
+  recordado y deja las lecciones (esas se borran aparte, más abajo).
+- El archivo se puede mirar y hasta corregir a mano con el Bloc de notas. Si queda mal escrito
+  (una coma de más, una llave sin cerrar), Mate no lo pisa ni sigue como si nada: dice en qué
+  renglón está el problema y no corre hasta que lo arregles, lo borres o uses `--olvidar`.
+- `recordado` no es una palabra reservada: solo significa algo después de `estado`.
+
+Así se ve el archivo:
+
+```
+{
+  "que_es": "La memoria de mi_mostrador.mate: lo que cada agente recuerda...",
+  "agentes": {
+    "Mostrador": {
+      "estado": {
+        "atendidos": 2
+      },
+      "lecciones": [
+        {
+          "fecha": "21/11/2026 14:30",
+          "texto": "Si piden menos de 10 unidades, avisá que no hay envío"
+        }
+      ]
+    }
+  }
+}
+```
+
+### Lecciones: corregir a un agente
+
+Cuando el agente contesta algo mal, se lo corregís **desde PowerShell, sin tocar el programa**:
+
+```
+python mate\mate.py corregir mi_mostrador.mate Mostrador "Si piden menos de 10 unidades, avisá que no hay envío"
+```
+
+Va todo en un renglón: la orden, el programa, el nombre del agente y la lección entre comillas.
+Queda guardada con su fecha, y desde la próxima corrida el agente la tiene en cuenta.
+
+```
+python mate\mate.py lecciones mi_mostrador.mate                         (las muestra todas, numeradas)
+python mate\mate.py lecciones mi_mostrador.mate Mostrador               (solo las de ese agente)
+python mate\mate.py lecciones mi_mostrador.mate Mostrador --borrar=2    (le borra la número 2)
+python mate\mate.py lecciones mi_mostrador.mate Mostrador --borrar=todas
+```
+
+**Cómo le llegan a la IA.** No hay que cambiar nada en el programa: cada vez que ese agente
+llama a `consultar_ia`, Mate agrega sus lecciones solas al final de las instrucciones, así:
+
+```
+Atendés el mostrador de un almacén de barrio. Contestá en una sola oración corta.
+
+LECCIONES APRENDIDAS (correcciones que te hicieron antes: tenelas siempre en cuenta)
+1. Los domingos el almacén está cerrado.
+2. Si piden menos de 10 unidades, avisá que no hay envío
+```
+
+Con `--traza` se ve, debajo de cada consulta, un renglón por lección
+(`con la lección 1: "Los domingos..."`). Lo que consulta el programa principal, fuera de un
+agente, va sin lecciones.
+
+**Un agente también se anota lecciones solo**, y puede leer las que tiene:
+
+```
+al recibir Novedad como n {
+    aprender(n.texto)                 (se la anota; si ya la tenía, no la repite)
+}
+al recibir QueSabes {
+    responder lecciones()             (la lista de sus lecciones, como textos)
+}
+```
+
+- `aprender` y `lecciones` van dentro de un agente: cada uno anota y lee lo suyo. Una copia
+  con nombre usa las lecciones del agente del que es copia y, además, las propias.
+- Si el agente falla mientras atiende, lo que aprendió en ese mensaje no queda (igual que su
+  estado).
+- **Topes, para que no crezca el gasto** (las lecciones viajan en cada consulta, y cada
+  consulta se paga): hasta 20 lecciones por agente y hasta 300 letras cada una. Si se anota
+  una de más, se olvida la más vieja y Mate avisa. Una lección más larga que el tope no se
+  anota: es un error que dice cuántas letras tiene.
+- Las lecciones son texto que se le suma a las instrucciones: la IA las tiene en cuenta, pero
+  no es una garantía. Si algo tiene que cumplirse sí o sí, va en el programa (un `si`, un
+  contrato con `desde`/`hasta`), no en una lección.
+
+**En las pruebas** ningún agente tiene lecciones guardadas. Se le fijan con `aprender`,
+diciendo a qué agente, y `consultas_ia()` muestra lo que le llegó a la IA:
+
+```
+prueba "la lección le llega a la IA" {
+    aprender("No hay envío por menos de 10", Mostrador)
+    simular_ia("Por 5 no hay envío.")
+    sea a = preguntar Consulta { cliente: "Marta", pregunta: "¿Me mandan 5?" } a Mostrador
+    sea consulta = ultimo(consultas_ia())
+    asegurar tiene(consulta.instrucciones, "No hay envío por menos de 10")
+    asegurar lecciones(Mostrador) == ["No hay envío por menos de 10"]
+}
+```
+
+`consultas_ia()` da una lista con un mapa por consulta: `agente`, `instrucciones` (con las
+lecciones al final), `pregunta` y `respuesta` (`nada` si la consulta falló). Como
+`mensajes_enviados` y `simular_ia`, solo existe dentro de una prueba.
+
+### Bitácora: lo que salió mal queda anotado
+
+Si el programa tiene algún `estado recordado` o usa lecciones, cada falla de un agente se
+anota sola en `mi_mostrador.bitacora.txt`, un renglón por falla:
+
+```
+21/11/2026 14:30 | Mostrador | la IA no contestó (lo atajó con 'intentar') | Consulta { cliente: "Marta", pregunta: "¿Hay yerba?" } | consultar_ia(): falta la clave para hablar con la IA...
+```
+
+Cada renglón trae la fecha, el agente, qué pasó, qué mensaje estaba atendiendo y el motivo.
+Se anota cuando un agente falla al atender un mensaje, cuando la IA no le contesta, cuando un
+mensaje o una respuesta no cumple su contrato, y también cuando el agente ataja el error con
+`intentar` (esas son las fallas que de otro modo nadie ve). Para leerla resumida:
+
+```
+python mate\mate.py bitacora mi_mostrador.mate
+```
+
+Muestra cuántas fallas hay, cuáles agentes fallan más, qué pasó, los motivos que más se
+repiten y las últimas cinco. Es el lugar donde mirar antes de escribir una lección.
+
+- Guarda las últimas 200 fallas: las más viejas se van solas. Si borrás el archivo, empieza de
+  nuevo.
+- **La clave de la IA nunca queda escrita**, ni en la bitácora ni en la memoria.
+- Los avisos (`aviso: ...`) salen aparte de lo que muestra el programa, así que no se mezclan
+  con su salida.
+
+### Para sumárselo a un agente que ya tenés
+
+1. En el Bloc de notas, cambiá `estado atendidos = 0` por `estado recordado atendidos = 0` en
+   los datos que quieras que no se pierdan.
+2. Corré el programa como siempre. Cuando conteste algo que no te gusta, anotale la lección
+   con `corregir`.
+3. Cada tanto mirá `bitacora` para ver qué le viene fallando.
+
 ## Referencia rápida
 
 ```
@@ -821,6 +1022,9 @@ Son estas y no hay otras. Cada renglón es un ejemplo que se puede copiar:
 | `mensajes_enviados("Pedido")` | solo en una prueba: los mensajes que se mandaron (o los de ese tipo) |
 | `consultar_ia(reglas, duda)` | lo que contesta una IA de verdad (Claude), como texto; es pago |
 | `simular_ia("Sale $ 100")` | solo en una prueba: lo que contesta la IA desde ahí (o una lista) |
+| `aprender("Hoy no hay pan")` | dentro de un agente: se anota esa lección, y no la olvida al terminar |
+| `lecciones()` | dentro de un agente: la lista de sus lecciones (cada una es un texto) |
+| `consultas_ia()` | solo en una prueba: lo que se le consultó a la IA, con las lecciones |
 
 - Si a una función le das valores de más o de menos, el error trae el ejemplo:
   `obtener() lleva 3 valores y recibió 2. Por ejemplo: obtener(mapa, "clave", 0)`.
@@ -1002,7 +1206,7 @@ solo se puede asignar a una variable o a una parte de ella (`x`, `x.campo`, `x[0
 ## Qué cambió y puede frenar un programa viejo
 
 Varias mejoras vuelven error cosas que antes corrían. Esta tabla junta todo lo que cambió
-desde la versión 0.2 hasta la 0.3 (`python mate\mate.py --version` dice cuál tenés). Si un
+desde la versión 0.2 hasta la 0.4 (`python mate\mate.py --version` dice cuál tenés). Si un
 archivo viejo deja de andar, casi seguro es por una de estas:
 
 | Qué pasa ahora | Cómo se arregla |
@@ -1068,6 +1272,13 @@ archivo viejo deja de andar, casi seguro es por una de estas:
 | Adentro de `intentar { }` y de `asegurar falla { }`, un valor escrito a mano que no cumple la regla de su campo ya no frena el programa antes de correr: falla al llegar a ese renglón, y ahí se ataja | Nada: antes ese programa no arrancaba |
 | `consola --ia-simulada` ahora sí simula (antes la opción se ignoraba y la consulta salía a la IA de verdad) | Nada |
 | `probar` escribe los errores de cada prueba como `correr`: `archivo:5: error: ...` (antes `línea 5: ...` y `Agente al recibir X (línea 5): ...`) | Nada |
+| `aprender`, `lecciones` y `consultas_ia` son funciones incluidas (0.4): no sirven como nombre de variable, de parámetro ni de estado | Elegir otro nombre: `sea mis_lecciones = ...` |
+| `estado recordado atendidos = 0` declara un estado que se guarda entre corridas (antes era un error). `recordado` sigue sirviendo de nombre: `estado recordado = 5` es un estado que se llama así | Nada: un programa que corría no lo tenía |
+| `bitacora`, `corregir` y `lecciones` son órdenes: `python mate\mate.py lecciones` ya no busca un archivo llamado `lecciones.mate` para correrlo | Escribir la orden entera: `correr lecciones.mate` |
+| Si un agente tiene lecciones, `--traza` muestra un renglón por cada una debajo de su consulta a la IA (`con la lección 1: ...`) | Nada: sin lecciones la traza es la de antes |
+
+Un programa que no usa `estado recordado` ni lecciones corre exactamente igual que en la 0.3 y
+no crea ningún archivo al lado.
 
 ## El tope: Mate tiene que seguir siendo chico
 
@@ -1075,11 +1286,13 @@ Mate sirve porque entra en la cabeza. Para que siga así hay un presupuesto escr
 pruebas del intérprete no dejan pasarse:
 
 - **Palabras propias: 40 como mucho.** Hoy son 36 (`sea`, `si`, `agente`...).
-- **Funciones incluidas: 42 como mucho.** Hoy son 42. Empezó con 20 y el plan era sumar unas
+- **Funciones incluidas: 45 como mucho.** Hoy son 45. Empezó con 20 y el plan era sumar unas
   12; con las de archivos y fechas y la de las pruebas (`mensajes_enviados`) el cupo de 40
   quedó completo. Para conectar los agentes con una IA el tope se subió a 42, justo lo que
-  hacía falta (`consultar_ia` y `simular_ia`), y volvió a quedar completo. Para agregar otra
-  hay que sacar una, o discutir el tope.
+  hacía falta (`consultar_ia` y `simular_ia`). Para que un agente aprenda (0.4) el tope se subió a 45,
+  otra vez lo justo: `aprender`, `lecciones` y `consultas_ia`. La memoria no gastó ninguna
+  palabra (`recordado` solo significa algo después de `estado`) y lo demás son órdenes de la
+  línea de comandos, no del lenguaje. Para agregar otra hay que sacar una, o discutir el tope.
 - **Cada agregado trae lo suyo**: su renglón en este README (en la tabla de funciones o en la
   referencia), su explicación en `ayuda <palabra>` y al menos una prueba que lo use.
 - **Una sola forma de escribir cada cosa.** Nada de sinónimos (`función` con tilde, comillas
@@ -1088,7 +1301,7 @@ pruebas del intérprete no dejan pasarse:
 
 Los números están en `mate.py` (`TOPE_DE_PALABRAS` y `TOPE_DE_FUNCIONES`), bien arriba.
 
-## Límites de la versión 0.3
+## Límites de la versión 0.4
 
 - Los agentes corren todos dentro del mismo programa, de a uno y en orden (por eso el resultado
   es siempre el mismo). Un agente puede consultarle a una IA de verdad con `consultar_ia`,
@@ -1096,6 +1309,10 @@ Los números están en `mate.py` (`TOPE_DE_PALABRAS` y `TOPE_DE_FUNCIONES`), bie
   la pregunta) y los programas todavía no se conectan entre máquinas.
 - Todo lo que trae `usar` queda en un único espacio de nombres: dos archivos no pueden declarar
   algo con el mismo nombre.
+- La memoria de un programa es un archivo al lado del programa, pensado para una persona y una
+  computadora: si el mismo programa corre dos veces a la vez, se guarda lo de la corrida que
+  termina última. Las lecciones solo le llegan a la IA por `consultar_ia`: no cambian lo que
+  hace el resto del programa (para eso está `lecciones()`).
 
 ## Pruebas del intérprete
 

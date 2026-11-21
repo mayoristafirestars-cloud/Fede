@@ -1,0 +1,130 @@
+# Paso 8: un agente que aprende con el uso.
+#
+# Es el Mostrador del paso 7, con tres cosas nuevas:
+#   - MEMORIA: 'estado recordado' es un dato que no se pierde cuando el programa termina.
+#     Acá, cuántos clientes atendió: la cuenta sigue de una corrida a la otra.
+#   - LECCIONES: correcciones que el agente tiene siempre en cuenta. Se las anotás vos desde
+#     PowerShell, sin tocar el programa, o se las anota él mismo con aprender(). Cada vez que
+#     consulta a la IA, Mate se las agrega solas al final de las instrucciones.
+#   - BITÁCORA: si el agente falla (por ejemplo, la IA no contesta), queda anotado solo en un
+#     archivo, con la fecha y el motivo.
+#
+# PROBALO ASÍ, en PowerShell (no hace falta clave ni internet, y no gasta nada):
+#
+#   1. Corrélo dos veces y mirá cómo sigue la cuenta de clientes:
+#          python mate\mate.py correr mate\ejemplos\08_agente_que_aprende.mate --ia-simulada
+#      Al lado del programa aparece 08_agente_que_aprende.memoria.json: ahí está lo que el
+#      agente recuerda. Se puede abrir con el Bloc de notas.
+#
+#   2. Corregí al Mostrador (todo en un solo renglón, con la lección entre comillas):
+#          python mate\mate.py corregir mate\ejemplos\08_agente_que_aprende.mate Mostrador "Si piden menos de 10 unidades, avisá que no hay envío."
+#
+#   3. Corrélo de nuevo con --traza: vas a ver la lección viajando en la consulta a la IA.
+#          python mate\mate.py correr mate\ejemplos\08_agente_que_aprende.mate --ia-simulada --traza
+#
+#   4. Para ver las lecciones, o borrar la número 1:
+#          python mate\mate.py lecciones mate\ejemplos\08_agente_que_aprende.mate
+#          python mate\mate.py lecciones mate\ejemplos\08_agente_que_aprende.mate Mostrador --borrar=1
+#
+#   5. Para ver qué fallas anotó (corrélo una vez sin --ia-simulada y sin clave, y falla):
+#          python mate\mate.py bitacora mate\ejemplos\08_agente_que_aprende.mate
+#
+#   6. Para que arranque de cero, como si nunca hubiera atendido a nadie:
+#          python mate\mate.py correr mate\ejemplos\08_agente_que_aprende.mate --ia-simulada --olvidar
+#
+# Con la orden 'probar' nada de esto se lee ni se guarda: cada prueba arranca limpia.
+
+mensaje Consulta { cliente: texto, pregunta: texto }
+# (numero dice cuántos clientes van; aviso solo viene si la IA no pudo contestar)
+mensaje Atencion { cliente: texto, respuesta: texto, numero: numero, aviso: texto? }
+mensaje Novedad { texto: texto }
+mensaje QueSabes {}
+
+agente Mostrador {
+    estado instrucciones = """
+        Atendés el mostrador de un almacén de barrio. Contestá en castellano rioplatense,
+        con amabilidad y en una sola oración corta.
+    """
+    # 'recordado': al terminar el programa se guarda, y en la próxima corrida vuelve.
+    estado recordado atendidos = 0
+
+    al recibir Consulta como c {
+        atendidos += 1
+        intentar {
+            # Si el Mostrador tiene lecciones, Mate las agrega solas a las instrucciones.
+            sea dicho = consultar_ia(instrucciones, c.pregunta, "¡Hola! Ya te lo averiguo.")
+            responder Atencion { cliente: c.cliente, respuesta: dicho, numero: atendidos }
+        } si falla motivo {
+            # Esta falla queda anotada sola en la bitácora.
+            responder Atencion {
+                cliente: c.cliente,
+                respuesta: "Ahora no te puedo atender, volvé en un rato.",
+                numero: atendidos,
+                aviso: motivo,
+            }
+        }
+    }
+
+    # El agente también se anota lecciones solo: una novedad que le avisan, por ejemplo.
+    # (Si ya la tenía, no la anota dos veces.)
+    al recibir Novedad como n {
+        aprender(n.texto)
+    }
+
+    # lecciones() da la lista de las que tiene: las que anotó él y las que le anotaste vos.
+    al recibir QueSabes {
+        responder lecciones()
+    }
+}
+
+enviar Novedad { texto: "Los domingos el almacén está cerrado." } a Mostrador
+
+sea atencion = preguntar Consulta {
+    cliente: "Marta", pregunta: "¿Me mandan 5 paquetes de yerba a casa?",
+} a Mostrador
+mostrar("Marta: ¿Me mandan 5 paquetes de yerba a casa?")
+mostrar("Mostrador: {atencion.respuesta}")
+mostrar("Clientes atendidos hasta hoy, contando las otras veces que corrió: {atencion.numero}")
+
+sea sabe = preguntar QueSabes {} a Mostrador
+mostrar("Lecciones que tiene el Mostrador: {largo(sabe)}")
+para leccion en sabe {
+    mostrar("  - {leccion}")
+}
+si atencion.aviso != nada {
+    mostrar("")
+    mostrar("La IA no contestó. El motivo:")
+    mostrar(atencion.aviso)
+}
+
+# En las pruebas no hay memoria ni lecciones guardadas: cada una arranca de cero.
+prueba "cuenta los clientes que atiende" {
+    sea uno = preguntar Consulta { cliente: "Ana", pregunta: "¿Hay pan?" } a Mostrador
+    sea dos = preguntar Consulta { cliente: "Luis", pregunta: "¿Hay leche?" } a Mostrador
+    asegurar uno.numero == 1 y dos.numero == 2
+}
+
+# aprender("...", Mostrador) le fija una lección dentro de la prueba, y consultas_ia()
+# muestra lo que le llegó a la IA: ahí tiene que estar la lección.
+prueba "las lecciones le llegan a la IA" {
+    aprender("Si piden menos de 10 unidades, avisá que no hay envío.", Mostrador)
+    simular_ia("Por 5 paquetes no hacemos envío, pero te los guardo.")
+    sea a = preguntar Consulta { cliente: "Marta", pregunta: "¿Me mandan 5?" } a Mostrador
+    asegurar a.respuesta == "Por 5 paquetes no hacemos envío, pero te los guardo."
+    sea consulta = ultimo(consultas_ia())
+    asegurar tiene(consulta.instrucciones, "almacén de barrio")
+    asegurar tiene(consulta.instrucciones, "menos de 10 unidades, avisá que no hay envío")
+}
+
+prueba "una novedad queda anotada como lección, una sola vez" {
+    enviar Novedad { texto: "Los lunes no hay pan." } a Mostrador
+    enviar Novedad { texto: "Los lunes no hay pan." } a Mostrador
+    asegurar lecciones(Mostrador) == ["Los lunes no hay pan."]
+}
+
+prueba "sin lecciones, las instrucciones van como están escritas" {
+    asegurar lecciones(Mostrador) == []
+    sea a = preguntar Consulta { cliente: "Eva", pregunta: "¿Hay pan?" } a Mostrador
+    asegurar a.respuesta == "¡Hola! Ya te lo averiguo." y a.numero == 1
+    asegurar no tiene(consultas_ia()[0].instrucciones, "LECCIONES")
+}

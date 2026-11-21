@@ -1,0 +1,6 @@
+# Lo que deja al lado el ejemplo 8 cuando se lo corre (su memoria y su bitácora): es de cada
+# computadora, no del proyecto.
+ejemplos/*.memoria.json
+ejemplos/*.memoria.json.tmp
+ejemplos/*.bitacora.txt
+ejemplos/*.bitacora.txt.tmp
