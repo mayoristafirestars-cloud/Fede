@@ -1,0 +1,30 @@
+# Clase 6, ejercicio resuelto: al terminar dice cuántos paquetes se pidieron en total.
+
+sea precio = 3500
+
+funcion atender() {
+    var paquetes = 0
+    mientras verdadero {
+        sea dicho = leer("¿Cuántos paquetes de yerba?", "chau")
+        si minusculas(dicho) == "chau" {
+            romper
+        }
+        intentar {
+            sea cantidad = numero(dicho)
+            mostrar("{cantidad} paquetes salen {pesos(precio * cantidad)}")
+            paquetes += cantidad
+        } si falla {
+            mostrar("No entendí \"{dicho}\". Escribí un número, por ejemplo 3.")
+        }
+    }
+    devolver paquetes
+}
+
+mostrar("Mostrador de yerba. Para terminar, escribí chau.")
+sea vendidos = atender()
+mostrar("En total pidieron {vendidos} paquetes: {pesos(precio * vendidos)}")
+
+prueba "suma los paquetes de todos los pedidos" {
+    simular_teclado(["2", "muchos", "5", "chau"])
+    asegurar atender() == 7
+}

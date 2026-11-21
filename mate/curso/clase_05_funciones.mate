@@ -1,0 +1,22 @@
+# Clase 5: funciones y pruebas.
+# Una función es una cuenta con nombre: se escribe una vez y se usa muchas.
+
+funcion total_de(precio, cantidad) {
+    si cantidad >= 10 {
+        devolver precio * cantidad * 0.9
+    }
+    devolver precio * cantidad
+}
+
+mostrar("2 paquetes: {pesos(total_de(3500, 2))}")
+mostrar("10 paquetes: {pesos(total_de(3500, 10))}")
+
+# Una prueba comprueba sola que la función da lo que tiene que dar.
+# No corren con 'correr': corren con 'probar'.
+prueba "con menos de 10 no hay descuento" {
+    asegurar total_de(100, 2) == 200
+}
+
+prueba "desde 10 hay 10% de descuento" {
+    asegurar total_de(100, 10) == 900
+}

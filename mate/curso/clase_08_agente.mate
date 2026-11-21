@@ -1,0 +1,42 @@
+# Clase 8: el primer agente.
+# Un agente es como un empleado: tiene sus datos (su 'estado') y contesta los mensajes
+# que sabe recibir. Nadie más puede tocar sus datos.
+
+# Un 'mensaje' dice qué datos lleva y de qué tipo es cada uno: ese es su contrato.
+mensaje Pedido { producto: texto, cantidad: numero desde 1 hasta 100 }
+mensaje Cotizacion { producto: texto, total: numero }
+
+agente Vendedor {
+    estado precios = { yerba: 3500, azucar: 1250 }
+    estado atendidos = 0
+
+    al recibir Pedido como p {
+        si no tiene(precios, p.producto) {
+            fallar "no vendo {p.producto}"
+        }
+        atendidos += 1
+        sea total = precios[p.producto] * p.cantidad
+        responder Cotizacion { producto: p.producto, total: total }
+    }
+}
+
+# 'preguntar' le manda el mensaje al agente y espera su respuesta.
+sea c = preguntar Pedido { producto: "yerba", cantidad: 3 } a Vendedor
+mostrar("3 de {c.producto} salen {pesos(c.total)}")
+
+# Si el agente falla, el error le llega al que preguntó, que lo puede atajar.
+intentar {
+    sea otra = preguntar Pedido { producto: "clavos", cantidad: 1 } a Vendedor
+    mostrar(otra.total)
+} si falla motivo {
+    mostrar("El vendedor no pudo: {motivo}")
+}
+
+prueba "cotiza precio por cantidad" {
+    sea r = preguntar Pedido { producto: "azucar", cantidad: 2 } a Vendedor
+    asegurar r.total == 2500
+}
+
+prueba "el contrato no deja pedir 500" {
+    asegurar falla { Pedido { producto: "yerba", cantidad: 500 } }
+}

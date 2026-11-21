@@ -1,0 +1,23 @@
+# Clase 4: muchas cosas juntas.
+# Una lista va entre corchetes. Un mapa va entre llaves y le pone nombre a cada dato.
+
+sea productos = [
+    { nombre: "Yerba", precio: 3500 },
+    { nombre: "Azúcar", precio: 1200 },
+    { nombre: "Fideos", precio: 950 },
+]
+
+# 'para' repite lo que está entre llaves una vez por cada elemento de la lista.
+var total = 0
+para p en productos {
+    mostrar("- {p.nombre}: {pesos(p.precio)}")
+    total += p.precio
+}
+mostrar("Son {largo(productos)} productos y suman {pesos(total)}")
+
+# El primero de la lista está en la posición 0.
+mostrar("El primero es {productos[0].nombre}")
+
+# agregar() no cambia la lista: devuelve una lista nueva, con uno más.
+sea con_arroz = agregar(productos, { nombre: "Arroz", precio: 1800 })
+mostrar("Con el arroz son {largo(con_arroz)}")

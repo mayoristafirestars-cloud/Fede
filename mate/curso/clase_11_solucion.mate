@@ -1,0 +1,57 @@
+# Clase 11, ejercicio resuelto: el Mostrador también recuerda cuántas veces tuvo que
+# contestar con el texto de reserva, y lo dice cuando se lo preguntan.
+
+mensaje Consulta { pregunta: texto, sin_ia: texto }
+mensaje Atencion { respuesta: texto, numero: numero }
+mensaje CuantasReservas {}
+
+sea reserva = "Eso te lo confirma una persona. Ya te paso con alguien."
+
+agente Mostrador {
+    estado recordado atendidos = 0
+    estado recordado con_reserva = 0
+    estado permitidos = [3500, 1250.5, 950]
+
+    frenos {
+        precios: permitidos
+        prohibido: ["descuento", "fiado"]
+        reserva: reserva
+        consultas_por_dia: 50
+    }
+
+    al recibir Consulta como c {
+        atendidos += 1
+        sea instrucciones = """
+            Atendés el mostrador de un almacén. Contestá corto y amable.
+            Precios: yerba $ 3.500, azúcar $ 1.250,50 y fideos $ 950.
+        """
+        sea dicho = consultar_ia(instrucciones, c.pregunta, c.sin_ia)
+        si dicho == reserva {
+            con_reserva += 1
+        }
+        responder Atencion { respuesta: dicho, numero: atendidos }
+    }
+
+    al recibir CuantasReservas {
+        responder con_reserva
+    }
+}
+
+funcion atender(pregunta, sin_ia) {
+    sea atencion = preguntar Consulta { pregunta: pregunta, sin_ia: sin_ia } a Mostrador
+    mostrar("Cliente:   {pregunta}")
+    mostrar("Mostrador: {atencion.respuesta}")
+}
+
+atender("¿Cuánto sale la yerba?", "La yerba sale $ 3.500.")
+atender("¿Y el café?", "El café sale $ 9.000 el kilo.")
+sea reservas = preguntar CuantasReservas {} a Mostrador
+mostrar("Hasta ahora contestó con la reserva {reservas} vez/veces")
+
+prueba "cuenta las veces que contestó con la reserva" {
+    simular_ia(["Hola.", "El café sale $ 9.000.", "El café sale $ 9.000."])
+    sea una = preguntar Consulta { pregunta: "hola", sin_ia: "" } a Mostrador
+    sea otra = preguntar Consulta { pregunta: "¿café?", sin_ia: "" } a Mostrador
+    asegurar una.respuesta == "Hola." y otra.respuesta == reserva
+    asegurar (preguntar CuantasReservas {} a Mostrador) == 1
+}

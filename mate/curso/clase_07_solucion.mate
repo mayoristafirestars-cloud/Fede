@@ -1,0 +1,18 @@
+# Clase 7, ejercicio resuelto: cuánta plata hay en mercadería (precio por stock).
+
+sea precios = leer_tabla("precios.csv")
+
+funcion valor_del_stock(tabla) {
+    var total = 0
+    para fila en tabla {
+        total += fila.precio * fila.stock
+    }
+    devolver total
+}
+
+mostrar("En mercadería hay {pesos(valor_del_stock(precios))}")
+
+prueba "multiplica cada precio por su stock" {
+    sea tabla = [{ precio: 100, stock: 2 }, { precio: 50, stock: 0 }]
+    asegurar valor_del_stock(tabla) == 200
+}

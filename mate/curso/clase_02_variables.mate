@@ -1,0 +1,16 @@
+# Clase 2: guardar valores con nombre.
+# 'sea' guarda un valor que no cambia más. 'var' guarda uno que después puede cambiar.
+
+sea producto = "yerba"
+sea precio = 3500
+var cantidad = 2
+
+# Dentro de un texto, lo que va entre llaves se calcula. pesos() lo escribe como plata.
+mostrar("{cantidad} paquetes de {producto} salen {pesos(precio * cantidad)}")
+
+cantidad = 5
+mostrar("y {cantidad} paquetes salen {pesos(precio * cantidad)}")
+
+# Un porcentaje se escribe como una cuenta: 21 / 100 (o 0.21).
+sea iva = 21 / 100
+mostrar("El IVA de un paquete es {pesos(precio * iva)}")

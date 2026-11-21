@@ -1,0 +1,10 @@
+# Clase 2, ejercicio resuelto: otro producto, tres unidades y el total con IVA.
+
+sea producto = "azúcar"
+sea precio = 1200
+sea cantidad = 3
+sea iva = 21 / 100
+
+sea subtotal = precio * cantidad
+mostrar("{cantidad} paquetes de {producto} salen {pesos(subtotal)}")
+mostrar("Con IVA: {pesos(subtotal + subtotal * iva)}")

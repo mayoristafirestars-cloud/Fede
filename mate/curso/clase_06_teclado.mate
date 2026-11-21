@@ -1,0 +1,37 @@
+# Clase 6: que el programa te pregunte.
+# leer() muestra una pregunta y espera que escribas algo y aprietes Enter.
+
+sea precio = 3500
+
+funcion atender() {
+    var pedidos = 0
+    # 'mientras verdadero' repite sin parar: se sale con 'romper'.
+    mientras verdadero {
+        # El segundo valor ("chau") es lo que se "escribe" cuando no hay teclado, por
+        # ejemplo al correr las pruebas: así el programa nunca se queda esperando.
+        sea dicho = leer("¿Cuántos paquetes de yerba?", "chau")
+        si minusculas(dicho) == "chau" {
+            romper
+        }
+        # leer() siempre devuelve un texto. numero() lo pasa a número, y si no puede,
+        # falla: con 'intentar' esa falla se ataja en vez de cortar el programa.
+        intentar {
+            sea cantidad = numero(dicho)
+            mostrar("{cantidad} paquetes salen {pesos(precio * cantidad)}")
+            pedidos += 1
+        } si falla {
+            mostrar("No entendí \"{dicho}\". Escribí un número, por ejemplo 3.")
+        }
+    }
+    devolver pedidos
+}
+
+mostrar("Mostrador de yerba. Para terminar, escribí chau.")
+sea atendidos = atender()
+mostrar("Atendí {atendidos} pedido(s). ¡Hasta luego!")
+
+# En una prueba nadie teclea: simular_teclado() dice qué se "escribe" en cada leer().
+prueba "cuenta solo los pedidos que entendió" {
+    simular_teclado(["2", "muchos", "5", "chau"])
+    asegurar atender() == 2
+}

@@ -1,0 +1,60 @@
+# Clase 11: un agente que recuerda y aprende.
+# Tres cosas nuevas, y ninguna se programa: se usan desde PowerShell.
+#   - 'estado recordado': ese dato no se pierde cuando el programa termina.
+#   - lecciones: correcciones que le anotás al agente con la orden 'corregir'. Mate se
+#     las pasa a la IA en cada consulta, sin tocar el programa.
+#   - propuestas: cuando salta un freno, Mate deja una lección PROPUESTA. El agente no
+#     la usa hasta que la aprobás.
+
+mensaje Consulta { pregunta: texto, sin_ia: texto }
+mensaje Atencion { respuesta: texto, numero: numero }
+
+agente Mostrador {
+    # 'recordado': se guarda al terminar, y la próxima vez arranca con lo que quedó.
+    estado recordado atendidos = 0
+    estado permitidos = [3500, 1250.5, 950]
+
+    frenos {
+        precios: permitidos
+        prohibido: ["descuento", "fiado"]
+        reserva: "Eso te lo confirma una persona. Ya te paso con alguien."
+        consultas_por_dia: 50
+    }
+
+    al recibir Consulta como c {
+        atendidos += 1
+        sea instrucciones = """
+            Atendés el mostrador de un almacén. Contestá corto y amable.
+            Precios: yerba $ 3.500, azúcar $ 1.250,50 y fideos $ 950.
+        """
+        sea dicho = consultar_ia(instrucciones, c.pregunta, c.sin_ia)
+        responder Atencion { respuesta: dicho, numero: atendidos }
+    }
+}
+
+funcion atender(pregunta, sin_ia) {
+    sea atencion = preguntar Consulta { pregunta: pregunta, sin_ia: sin_ia } a Mostrador
+    mostrar("Cliente:   {pregunta}")
+    mostrar("Mostrador: {atencion.respuesta}")
+    mostrar("   (consulta número {atencion.numero} desde que abrió el mostrador)")
+}
+
+atender("¿Cuánto sale la yerba?", "La yerba sale $ 3.500.")
+atender("¿Y el café?", "El café sale $ 9.000 el kilo.")
+
+# En las pruebas no hay memoria ni lecciones guardadas: cada prueba arranca limpia.
+# aprender() le fija una lección al agente, para comprobar que le llega a la IA.
+prueba "cada prueba arranca de cero" {
+    simular_ia("Hola.")
+    sea atencion = preguntar Consulta { pregunta: "hola", sin_ia: "" } a Mostrador
+    asegurar atencion.numero == 1
+}
+
+prueba "la lección le llega a la IA con las instrucciones" {
+    aprender("Los domingos el almacén está cerrado.", Mostrador)
+    simular_ia("Los domingos cerramos.")
+    sea atencion = preguntar Consulta { pregunta: "¿Abren hoy?", sin_ia: "" } a Mostrador
+    sea instrucciones = ultimo(consultas_ia()).instrucciones
+    asegurar tiene(instrucciones, "Los domingos el almacén está cerrado.")
+    asegurar atencion.respuesta == "Los domingos cerramos."
+}

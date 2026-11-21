@@ -1,0 +1,15 @@
+# Clase 5, ejercicio resuelto: una función que suma el IVA, con su prueba.
+
+funcion con_iva(precio) {
+    devolver precio + precio * 21 / 100
+}
+
+mostrar("Con IVA: {pesos(con_iva(3500))}")
+
+prueba "le suma el 21%" {
+    asegurar con_iva(100) == 121
+}
+
+prueba "si es gratis sigue siendo gratis" {
+    asegurar con_iva(0) == 0
+}

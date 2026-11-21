@@ -1,0 +1,120 @@
+# Clase 12, ejercicio resuelto: cada consulta queda anotada en un archivo, para
+# mirarlas después con el Bloc de notas. Es el programa de la clase con dos cambios:
+# la función anotar() y el renglón que la llama dentro de charlar().
+
+mensaje CargarLista { filas: lista }
+mensaje Consulta { pregunta: texto, sin_ia: texto }
+mensaje Atencion { respuesta: texto, numero: numero, aviso: texto? }
+
+agente Mostrador {
+    estado filas = []
+    estado recordado atendidos = 0
+
+    frenos {
+        precios: solo_precios(filas)
+        prohibido: ["descuento", "fiado"]
+        largo: 300
+        reserva: "Eso te lo confirma una persona. Ya te paso con alguien."
+        consultas_por_dia: 200
+    }
+
+    al recibir CargarLista como c {
+        filas = c.filas
+    }
+
+    al recibir Consulta como c {
+        atendidos += 1
+        sea instrucciones = """
+            Atendés el mostrador de un almacén. Contestá en castellano rioplatense, corto
+            y amable. Usá SOLO los precios de esta lista. Si piden algo que no está,
+            decí que no lo trabajamos. Si dice SIN STOCK, avisá que ahora no hay.
+
+            LISTA DE PRECIOS:
+            {lista_en_texto(filas)}
+        """
+        intentar {
+            sea dicho = consultar_ia(instrucciones, c.pregunta, c.sin_ia)
+            responder Atencion { respuesta: dicho, numero: atendidos }
+        } si falla motivo {
+            responder Atencion { respuesta: c.sin_ia, numero: atendidos, aviso: motivo }
+        }
+    }
+}
+
+funcion solo_precios(tabla) {
+    var importes = []
+    para fila en tabla {
+        importes = agregar(importes, fila.precio)
+    }
+    devolver importes
+}
+
+funcion renglon_de(fila) {
+    si fila.stock == 0 {
+        devolver "{fila.producto}: {pesos(fila.precio)} - SIN STOCK"
+    }
+    devolver "{fila.producto}: {pesos(fila.precio)}"
+}
+
+funcion lista_en_texto(tabla) {
+    var renglones = []
+    para fila en tabla {
+        renglones = agregar(renglones, "- " + renglon_de(fila))
+    }
+    devolver unir(renglones, "\n")
+}
+
+funcion buscar_en_lista(tabla, pregunta) {
+    para fila en tabla {
+        sea palabra = minusculas(partir(fila.producto, " ")[0])
+        si tiene(minusculas(pregunta), palabra) {
+            devolver renglon_de(fila)
+        }
+    }
+    devolver "Eso no lo encuentro en la lista. Probá con el nombre del producto."
+}
+
+# LO NUEVO: un renglón por consulta, con la fecha y la hora, al final del archivo.
+funcion anotar(pregunta, respuesta) {
+    agregar_a_archivo("consultas_atendidas.txt", "{ahora()} | {pregunta} | {respuesta}")
+}
+
+funcion charlar(tabla) {
+    var consultas = 0
+    mientras verdadero {
+        sea dicho = leer("Cliente:", "chau")
+        si dicho == "" {
+            continuar
+        }
+        si minusculas(dicho) == "chau" {
+            romper
+        }
+        sea atencion = preguntar Consulta {
+            pregunta: dicho, sin_ia: buscar_en_lista(tabla, dicho),
+        } a Mostrador
+        mostrar("Mostrador: {atencion.respuesta}")
+        si atencion.aviso != nada {
+            mostrar("   (la IA no contestó y busqué en la lista. Motivo: {atencion.aviso})")
+        }
+        # LO NUEVO: se anota después de contestar.
+        anotar(dicho, atencion.respuesta)
+        consultas += 1
+    }
+    devolver consultas
+}
+
+sea precios = leer_tabla("precios.csv")
+enviar CargarLista { filas: precios } a Mostrador
+mostrar("Mostrador: cargué {largo(precios)} productos de precios.csv.")
+mostrar("Escribí tu consulta y apretá Enter. Para terminar, escribí chau.")
+sea atendidas = charlar(precios)
+mostrar("Hasta luego. En esta charla atendí {atendidas} consulta(s).")
+
+# (con 'probar' no se escribe el archivo de verdad: lo anotado se descarta al terminar)
+prueba "cada consulta queda anotada" {
+    enviar CargarLista { filas: precios } a Mostrador
+    simular_teclado(["arroz"])
+    asegurar charlar(precios) == 1
+    sea anotado = leer_archivo("consultas_atendidas.txt")
+    asegurar tiene(anotado, "01/01/2025 12:00 | arroz | Arroz 1 kg: $ 1.800,00")
+}

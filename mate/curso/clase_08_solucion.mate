@@ -1,0 +1,40 @@
+# Clase 8, ejercicio resuelto: el Vendedor también sabe decir cuántos pedidos atendió.
+
+mensaje Pedido { producto: texto, cantidad: numero desde 1 hasta 100 }
+mensaje Cotizacion { producto: texto, total: numero }
+mensaje CuantosVan {}
+
+agente Vendedor {
+    estado precios = { yerba: 3500, azucar: 1250 }
+    estado atendidos = 0
+
+    al recibir Pedido como p {
+        si no tiene(precios, p.producto) {
+            fallar "no vendo {p.producto}"
+        }
+        atendidos += 1
+        sea total = precios[p.producto] * p.cantidad
+        responder Cotizacion { producto: p.producto, total: total }
+    }
+
+    al recibir CuantosVan {
+        responder atendidos
+    }
+}
+
+sea c = preguntar Pedido { producto: "yerba", cantidad: 3 } a Vendedor
+mostrar("3 de {c.producto} salen {pesos(c.total)}")
+sea van = preguntar CuantosVan {} a Vendedor
+mostrar("El vendedor atendió {van} pedido(s)")
+
+prueba "cuenta los pedidos que atendió" {
+    sea uno = preguntar Pedido { producto: "yerba", cantidad: 1 } a Vendedor
+    sea dos = preguntar Pedido { producto: "azucar", cantidad: 1 } a Vendedor
+    asegurar uno.total + dos.total == 4750
+    asegurar (preguntar CuantosVan {} a Vendedor) == 2
+}
+
+prueba "un pedido que falla no cuenta" {
+    asegurar falla { preguntar Pedido { producto: "clavos", cantidad: 1 } a Vendedor }
+    asegurar (preguntar CuantosVan {} a Vendedor) == 0
+}

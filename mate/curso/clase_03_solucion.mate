@@ -1,0 +1,13 @@
+# Clase 3, ejercicio resuelto: el envío es gratis desde $ 30.000.
+
+sea precio = 3500
+sea cantidad = 4
+sea total = precio * cantidad
+
+mostrar("Total: {pesos(total)}")
+si total >= 30000 {
+    mostrar("El envío es gratis")
+} sino {
+    mostrar("El envío sale {pesos(2500)}")
+    mostrar("Total con envío: {pesos(total + 2500)}")
+}

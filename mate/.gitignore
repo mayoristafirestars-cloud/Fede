@@ -11,3 +11,13 @@ errores_de_uso.txt.tmp
 # Lo que anota el ejemplo 10 cuando se lo corre (las consultas que atendió).
 ejemplos/consultas_atendidas.txt
 ejemplos/consultas_atendidas.txt.tmp
+# Lo que deja el curso cuando se corren sus clases (memoria, bitácora, lo anotado) y el
+# archivo de práctica de quien lo hace: es de cada computadora.
+curso/*.memoria.json
+curso/*.memoria.json.tmp
+curso/*.memoria.rota.json
+curso/*.bitacora.txt
+curso/*.bitacora.txt.tmp
+curso/consultas_atendidas.txt
+curso/consultas_atendidas.txt.tmp
+curso/practica.mate

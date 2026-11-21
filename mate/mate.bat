@@ -4,6 +4,7 @@ rem   mate correr archivo.mate      (en PowerShell: .\mate correr archivo.mate)
 rem   mate probar archivo.mate
 rem Tambien se puede arrastrar un archivo .mate y soltarlo encima de este mate.bat.
 rem Tiene que estar en la misma carpeta que mate.py.
+rem Para tener la orden  mate  desde cualquier carpeta, sin el .\ adelante: instalar.bat
 setlocal
 set "MATE=%~dp0mate.py"
 
@@ -12,12 +13,17 @@ rem en esos dos casos se espera una tecla, para poder leer el resultado.
 set "ESPERAR="
 if "%~1"=="" set "ESPERAR=1"
 if "%~2"=="" if exist "%~1" if /i "%~1"=="%~f1" set "ESPERAR=1"
+rem (la orden  mate  que deja instalar.bat se escribe en una ventana que ya esta
+rem abierta: ahi no se espera nunca)
+if defined MATE_ORDEN set "ESPERAR="
 
+rem Se prueba que Python ande de verdad: en Windows puede haber un "python" de
+rem mentira, que no es Python sino un atajo a la tienda de Microsoft.
 set "PY=python"
-where python >nul 2>nul
+python -c "import sys" >nul 2>nul
 if not errorlevel 1 goto correr
 set "PY=py -3"
-where py >nul 2>nul
+py -3 -c "import sys" >nul 2>nul
 if not errorlevel 1 goto correr
 echo No encuentro Python en esta computadora.
 echo Instalalo desde https://www.python.org/downloads/ y, en la primera pantalla

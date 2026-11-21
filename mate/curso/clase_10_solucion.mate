@@ -1,0 +1,47 @@
+# Clase 10, ejercicio resuelto: tampoco puede prometer envíos, y contesta más corto.
+
+mensaje Consulta { pregunta: texto, sin_ia: texto }
+
+agente Mostrador {
+    estado permitidos = [3500, 1250.5, 950]
+
+    frenos {
+        precios: permitidos
+        prohibido: ["descuento", "fiado", "envío"]
+        largo: 120
+        reserva: "Eso te lo confirma una persona. Ya te paso con alguien."
+        consultas_por_dia: 50
+    }
+
+    al recibir Consulta como c {
+        sea instrucciones = """
+            Atendés el mostrador de un almacén. Contestá corto y amable.
+            Precios: yerba $ 3.500, azúcar $ 1.250,50 y fideos $ 950.
+        """
+        responder consultar_ia(instrucciones, c.pregunta, c.sin_ia)
+    }
+}
+
+funcion consultar(pregunta, sin_ia) {
+    devolver preguntar Consulta { pregunta: pregunta, sin_ia: sin_ia } a Mostrador
+}
+
+funcion atender(pregunta, sin_ia) {
+    mostrar("Cliente:   {pregunta}")
+    mostrar("Mostrador: {consultar(pregunta, sin_ia)}")
+}
+
+atender("¿Me lo mandan a casa?", "Sí, hacemos envíos a todo el barrio.")
+atender("¿Cuánto sale el azúcar?", "El azúcar sale $ 1.250,50.")
+
+sea reserva = "Eso te lo confirma una persona. Ya te paso con alguien."
+
+prueba "no promete envíos, con o sin tilde" {
+    simular_ia("Te hacemos el ENVIO gratis.")
+    asegurar consultar("¿mandan?", "") == reserva
+}
+
+prueba "una respuesta larguísima tampoco pasa" {
+    simular_ia(unir(rango(200), " "))
+    asegurar consultar("contame", "") == reserva
+}

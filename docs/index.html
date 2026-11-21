@@ -1,0 +1,268 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mate: programar agentes en castellano</title>
+<meta name="description" content="Mate es un lenguaje de programación chico, con palabras en castellano, para armar agentes que atienden con una IA sin inventar precios.">
+<style>
+:root {
+  --fondo: #f6f3ea;
+  --papel: #fffdf7;
+  --tinta: #1f2a22;
+  --suave: #55635a;
+  --linea: #ddd6c4;
+  --verde: #2f6b3f;
+  --verde-fuerte: #23522f;
+  --sobre-verde: #ffffff;
+  --codigo-fondo: #1d2620;
+  --codigo-tinta: #e9efe6;
+  --codigo-nota: #9db3a2;
+  --aviso-fondo: #fbf1d8;
+  --aviso-linea: #e2c26b;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --fondo: #141a16;
+    --papel: #1b231e;
+    --tinta: #e8eee6;
+    --suave: #a9b8ad;
+    --linea: #2f3b33;
+    --verde: #7fc08f;
+    --verde-fuerte: #9ad3a8;
+    --sobre-verde: #10160f;
+    --codigo-fondo: #0e1410;
+    --codigo-tinta: #e2eadf;
+    --codigo-nota: #8ea595;
+    --aviso-fondo: #2a2616;
+    --aviso-linea: #6f5e24;
+  }
+}
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0;
+  background: var(--fondo);
+  color: var(--tinta);
+  font: 17px/1.6 system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+main, header, footer { max-width: 46rem; margin: 0 auto; padding: 0 16px; }
+header { padding-top: 44px; padding-bottom: 8px; }
+.marca {
+  display: inline-block;
+  font-weight: 700;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  font-size: .8rem;
+  color: var(--verde);
+  border: 1.5px solid var(--verde);
+  border-radius: 999px;
+  padding: 2px 12px;
+}
+h1 {
+  font-size: clamp(2rem, 7vw, 3rem);
+  line-height: 1.12;
+  margin: 18px 0 14px;
+  text-wrap: balance;
+}
+.entrada { font-size: 1.14rem; margin: 0 0 6px; }
+.entrada p { margin: 0 0 6px; }
+h2 {
+  font-size: 1.4rem;
+  line-height: 1.25;
+  margin: 46px 0 12px;
+  text-wrap: balance;
+}
+h3 { font-size: 1.05rem; margin: 0 0 4px; }
+p { margin: 0 0 14px; }
+a { color: var(--verde-fuerte); }
+ul, ol { padding-left: 1.3em; margin: 0 0 14px; }
+li { margin-bottom: 7px; }
+code, pre, kbd {
+  font-family: ui-monospace, "Cascadia Mono", Consolas, "Liberation Mono", Menlo, monospace;
+  font-size: .92em;
+}
+code { background: var(--papel); border: 1px solid var(--linea); border-radius: 5px; padding: 1px 5px; }
+pre {
+  background: var(--codigo-fondo);
+  color: var(--codigo-tinta);
+  border-radius: 10px;
+  padding: 16px;
+  margin: 0 0 14px;
+  overflow-x: auto;
+  line-height: 1.5;
+  font-size: .86rem;
+  -webkit-overflow-scrolling: touch;
+}
+pre code { background: none; border: 0; padding: 0; font-size: inherit; color: inherit; }
+pre .nota { color: var(--codigo-nota); }
+.botones { display: flex; flex-wrap: wrap; gap: 10px; margin: 22px 0 6px; }
+.boton {
+  display: inline-block;
+  background: var(--verde);
+  color: var(--sobre-verde);
+  text-decoration: none;
+  font-weight: 600;
+  padding: 11px 18px;
+  border-radius: 9px;
+  border: 1.5px solid var(--verde);
+}
+.boton.claro { background: transparent; color: var(--verde-fuerte); }
+.grilla { display: grid; gap: 12px; grid-template-columns: 1fr; margin-bottom: 14px; }
+@media (min-width: 640px) { .grilla { grid-template-columns: 1fr 1fr; } }
+.tarjeta {
+  background: var(--papel);
+  border: 1px solid var(--linea);
+  border-radius: 12px;
+  padding: 16px;
+}
+.tarjeta p { margin: 0; color: var(--suave); }
+.numero { color: var(--verde); font-weight: 700; margin-right: 6px; }
+.sincero {
+  background: var(--aviso-fondo);
+  border: 1px solid var(--aviso-linea);
+  border-radius: 12px;
+  padding: 16px 16px 4px;
+}
+.chico { color: var(--suave); font-size: .93rem; }
+.oculto { display: none; }
+footer { padding-top: 34px; padding-bottom: 46px; color: var(--suave); font-size: .9rem; }
+footer hr { border: 0; border-top: 1px solid var(--linea); margin: 0 0 16px; }
+</style>
+</head>
+<body>
+
+<header>
+  <span class="marca">Mate 0.5</span>
+  <h1>Programar agentes en castellano, sin que la IA te invente precios</h1>
+  <div class="entrada">
+    <p>Mate es un lenguaje de programación chico, con palabras en castellano.</p>
+    <p>Sirve para armar agentes: partes del programa que reciben mensajes, consultan a una IA y contestan.</p>
+    <p>Vos escribís las reglas, y Mate revisa cada respuesta de la IA antes de que salga.</p>
+  </div>
+  <div class="botones">
+    <a class="boton" href="#instalar">Bajarlo e instalarlo</a>
+    <a class="boton claro" href="#curso">Ver el curso</a>
+  </div>
+</header>
+
+<main>
+
+<h2>Para quién es</h2>
+<ul>
+  <li>Para quien tiene un negocio, usa Windows y quiere probar un agente que atienda consultas con su lista de precios, sin aprender inglés técnico.</li>
+  <li>Para quien nunca programó y quiere empezar por algo que se lee como se habla: <code>si</code>, <code>para</code>, <code>mostrar</code>, <code>preguntar</code>.</li>
+  <li>Para quien ya programa y quiere ver una idea: que los límites de la IA se escriban en el programa y los controle el lenguaje, no la IA.</li>
+</ul>
+<p class="chico">Se escribe con el Bloc de notas y se corre desde PowerShell. Lo único que hay que tener instalado es Python.</p>
+
+<h2>Un mostrador con IA, entero</h2>
+<p>Este programa es completo: se puede copiar, guardar como <code>mostrador.mate</code> y correr. Los precios son de muestra.</p>
+<pre><code id="ejemplo">mensaje Consulta { pregunta: texto }
+
+agente Mostrador {
+    estado permitidos = [3500, 1250, 950]
+
+    frenos {
+        precios: permitidos
+        prohibido: ["descuento", "fiado"]
+        reserva: "Eso te lo confirma una persona. Ya te paso."
+        consultas_por_dia: 100
+    }
+
+    al recibir Consulta como c {
+        responder consultar_ia(
+            "Atendés un almacén. Yerba $ 3.500, azúcar $ 1.250, fideos $ 950.",
+            c.pregunta, "La yerba sale $ 3.500.")
+    }
+}
+
+mostrar(preguntar Consulta { pregunta: "¿Cuánto sale la yerba?" } a Mostrador)
+
+prueba "un precio inventado no le llega al cliente" {
+    simular_ia("El café sale $ 9.000.")
+    sea dicho = preguntar Consulta { pregunta: "¿Y el café?" } a Mostrador
+    asegurar dicho == "Eso te lo confirma una persona. Ya te paso."
+}</code></pre>
+<p>Si la IA nombra un precio que no está entre los permitidos, o promete un descuento, Mate no deja pasar esa respuesta: le pide otra y, si vuelve a estar mal, contesta con el texto de <code>reserva</code>. La prueba de abajo lo comprueba sin gastar un peso, porque en las pruebas la IA es simulada.</p>
+<pre><code><span class="nota"># ensayarlo sin clave, sin internet y sin gastar</span>
+mate correr mostrador.mate --ia-simulada
+<span class="nota"># correr sus pruebas</span>
+mate probar mostrador.mate</code></pre>
+
+<h2>Las cuatro cosas que lo diferencian</h2>
+<div class="grilla">
+  <div class="tarjeta">
+    <h3><span class="numero">1</span>Se lee en castellano</h3>
+    <p>Las palabras del lenguaje, la ayuda y los errores están en castellano. Un error dice el archivo, el renglón y qué pasó, y muchas veces sugiere el arreglo.</p>
+  </div>
+  <div class="tarjeta">
+    <h3><span class="numero">2</span>Mensajes con contrato</h3>
+    <p>Cada mensaje declara qué datos lleva y de qué tipo. Un pedido mal armado se avisa antes de correr el programa, no cuando ya le llegó a un cliente.</p>
+  </div>
+  <div class="tarjeta">
+    <h3><span class="numero">3</span>Frenos</h3>
+    <p>Precios permitidos, palabras prohibidas, largo máximo y tope de consultas por día. Los escribís vos, y los controla Mate en cada respuesta de la IA.</p>
+  </div>
+  <div class="tarjeta">
+    <h3><span class="numero">4</span>Aprende de las correcciones</h3>
+    <p>Cuando el agente contesta mal, le anotás una lección desde PowerShell, sin tocar el programa. Mate también propone lecciones, y no las usa hasta que las aprobás.</p>
+  </div>
+</div>
+
+<h2 id="instalar">Cómo bajarlo e instalarlo</h2>
+<p>En Windows 10 u 11, sin permisos de administrador:</p>
+<ol>
+  <li><strong>Instalá Python</strong> desde <code>python.org/downloads</code>. En la primera pantalla del instalador, abajo, marcá la casilla <strong>Add python.exe to PATH</strong> antes de tocar "Install Now".</li>
+  <li><strong>Bajá Mate</strong> como archivo ZIP, hacé clic derecho sobre el archivo y elegí "Extraer todo".
+    <span class="con-repo oculto"><br><a class="boton" data-ruta="archive/HEAD.zip" href="#instalar">Bajar el ZIP</a></span>
+    <span class="sin-repo chico"><br>El enlace para bajarlo aparece cuando esta página se abre desde su dirección de internet. Si te la pasaron como archivo, pedile a esa persona el enlace o la carpeta.</span>
+  </li>
+  <li><strong>Instalá la orden <code>mate</code>:</strong> en la carpeta que quedó, entrá a la carpeta <code>mate</code> y hacé doble clic en <code>instalar.bat</code>. Dice qué hizo y cómo deshacerlo. Si Windows muestra un cartel azul, elegí "Más información" y después "Ejecutar de todas formas".</li>
+  <li><strong>Probalo:</strong> abrí PowerShell y escribí:</li>
+</ol>
+<pre><code>mate --version
+mate curso</code></pre>
+<p class="chico">El instalador escribe un solo archivo en tu usuario y no toca nada más. Si no anda en tu computadora, Mate se usa igual con la orden larga, parado en la carpeta que contiene a <code>mate</code>: <code>python mate\mate.py curso</code>.</p>
+
+<h2 id="curso">El curso</h2>
+<p>Doce clases cortas, de "hola" a un mostrador con IA, lista de precios, frenos y lecciones. Cada una trae el programa completo, el comando para correrlo, lo que tiene que salir, el error más común y un ejercicio resuelto. Ninguna necesita clave ni internet.</p>
+<p>Viene dentro de Mate, en la carpeta <code>mate\curso</code>. Para verlo: <code>mate curso</code>, y para leer la primera clase: <code>mate curso 1</code>.</p>
+<p class="con-repo oculto"><a class="boton claro" data-ruta="tree/HEAD/mate/curso" href="#curso">Leer el curso en internet</a></p>
+
+<h2>Para qué no sirve todavía</h2>
+<div class="sincero">
+  <ul>
+    <li><strong>No atiende por WhatsApp ni por una página web.</strong> Hoy la charla con el agente es por teclado, en la ventana de PowerShell.</li>
+    <li><strong>Es un proyecto nuevo, hecho por una sola persona.</strong> No hay comunidad ni soporte. Lo que hay para aprender es el curso, los ejemplos y la ayuda que trae adentro.</li>
+    <li><strong>Es lento y chico al lado de Python o JavaScript.</strong> Está pensado para programas cortos y claros, no para sistemas grandes.</li>
+    <li><strong>Los frenos no entienden lo que leen.</strong> Buscan importes, palabras y cuentan letras. Atajan lo más común; no son una garantía absoluta.</li>
+    <li><strong>La IA de verdad es paga</strong> (se le paga a Anthropic, por consulta) y cada consulta es suelta: la IA no recuerda la pregunta anterior.</li>
+    <li><strong>Dos partes todavía no se probaron en condiciones reales:</strong> la conexión con la IA de verdad y el instalador de Windows. Todo lo demás tiene pruebas automáticas, y todo se puede ensayar sin gastar.</li>
+  </ul>
+</div>
+
+</main>
+
+<footer>
+  <hr>
+  <p>Mate es un solo archivo de Python, sin nada más que instalar. Lo que hace un programa de Mate se puede hacer en Python con más trabajo: la ventaja es que acá los contratos, los frenos y las lecciones ya vienen hechos y se escriben en castellano.</p>
+</footer>
+
+<script>
+// Los enlaces de descarga se arman solos cuando la página está publicada con GitHub
+// Pages (usuario.github.io/proyecto): así este archivo no lleva escrito ningún nombre.
+(function () {
+  var sitio = location.hostname.match(/^([a-z0-9-]+)\.github\.io$/i);
+  var proyecto = location.pathname.split("/").filter(Boolean)[0];
+  if (!sitio || !proyecto || /\.html?$/i.test(proyecto)) { return; }
+  var base = "https://github.com/" + sitio[1] + "/" + proyecto + "/";
+  document.querySelectorAll("a[data-ruta]").forEach(function (enlace) {
+    enlace.href = base + enlace.getAttribute("data-ruta");
+  });
+  document.querySelectorAll(".con-repo").forEach(function (e) { e.classList.remove("oculto"); });
+  document.querySelectorAll(".sin-repo").forEach(function (e) { e.classList.add("oculto"); });
+})();
+</script>
+</body>
+</html>

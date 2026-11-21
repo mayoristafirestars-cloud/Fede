@@ -1,5 +1,130 @@
 # Mate 🧉
 
+Mate es un lenguaje de programación chico, con palabras en castellano. Sirve para armar
+**agentes**: partes del programa que reciben mensajes, consultan a una IA y contestan. Vos
+escribís las reglas (qué precios puede nombrar, qué no puede prometer, cuánto puede gastar por
+día) y Mate revisa cada respuesta de la IA antes de que salga.
+
+Versión 0.5. El intérprete es un solo archivo (`mate.py`), sin dependencias: alcanza con Python 3.
+Se escribe con el Bloc de notas y se corre desde PowerShell.
+
+```
+mensaje Consulta { pregunta: texto }
+
+agente Mostrador {
+    frenos {
+        precios: [3500, 1250, 950]
+        prohibido: ["descuento", "fiado"]
+        reserva: "Eso te lo confirma una persona. Ya te paso."
+    }
+    al recibir Consulta como c {
+        responder consultar_ia("Atendés un almacén. La yerba sale $ 3.500.", c.pregunta,
+                               "La yerba sale $ 3.500.")
+    }
+}
+
+mostrar(preguntar Consulta { pregunta: "¿Cuánto sale la yerba?" } a Mostrador)
+```
+
+## Instalarlo
+
+En Windows 10 u 11, sin permisos de administrador. Son tres pasos y se hacen una sola vez.
+
+**1. Instalá Python.** Bajalo de `python.org/downloads` y abrí el instalador. En la primera
+pantalla, abajo, marcá la casilla **"Add python.exe to PATH"** antes de tocar "Install Now".
+
+**2. Tené la carpeta `mate` en tu computadora.** Si te pasaron Mate como archivo `.zip`, hacé
+clic derecho sobre el archivo y elegí "Extraer todo" (no alcanza con abrirlo: hay que
+sacarlo afuera).
+
+**3. Doble clic en `instalar.bat`**, que está dentro de la carpeta `mate`. Deja la orden
+`mate` lista para usar desde cualquier carpeta, y dice en pantalla qué hizo y cómo deshacerlo.
+Si Windows muestra un cartel azul ("Windows protegió su PC"), elegí "Más información" y
+después "Ejecutar de todas formas". Para comprobarlo, abrí PowerShell y escribí:
+
+```
+mate --version
+mate curso
+```
+
+Lo que hay que saber del instalador:
+
+- **Escribe un solo archivo**: un "lanzador" de cinco renglones, `mate.cmd`, en una carpeta de
+  tu usuario que Windows ya revisa cuando escribís una orden
+  (`AppData\Local\Microsoft\WindowsApps`). No toca el PATH ni el registro de Windows, no copia
+  Mate a otro lado y no baja nada de internet.
+- **Mate sigue viviendo en su carpeta.** Si la movés o le cambiás el nombre, la orden deja de
+  andar: corré `instalar.bat` de nuevo desde el lugar nuevo.
+- **Para deshacerlo**: `.\mate\instalar.bat quitar` en PowerShell, o borrá ese `mate.cmd` a
+  mano. No queda nada más.
+- **Si falta Python**, o es anterior al 3.10, lo avisa y no instala nada. Lo mismo si no puede
+  escribir el lanzador o si, después de escribirlo, la orden `mate` no anda: en ese caso lo
+  borra y te dice por qué.
+- **Todavía no se probó en una Windows de verdad.** Se escribió y se revisó con cuidado
+  (carpetas con espacios, con paréntesis, usuarios con tildes), pero desde una computadora
+  con Linux. Si hace algo raro, Mate anda igual sin instalar, con la orden larga de abajo.
+
+**Sin instalar** (y en Linux o Mac) se usa con la orden larga, parado en la carpeta que
+contiene a la carpeta `mate`. Todo este README está escrito con esa forma, que anda siempre:
+
+```
+python mate\mate.py curso
+```
+
+Con la orden instalada es lo mismo, más corto: donde dice `python mate\mate.py` se escribe
+`mate`. Los comandos que Mate te sugiere en pantalla ya salen con la forma que te toca.
+
+## Por dónde empezar
+
+| Si querés... | Hacé esto |
+|---|---|
+| Aprender desde cero, sin saber programar | El **curso**: `python mate\mate.py curso`. Son 12 clases cortas, de "hola" a un mostrador con IA, lista de precios, frenos y lecciones. Están en `mate\curso` (ver [El curso](#el-curso)) |
+| Ver programas terminados | `mate\ejemplos`: once programas comentados renglón por renglón (la tabla está en [Primeros pasos en Windows](#primeros-pasos-en-windows)) |
+| Saber qué hace una palabra | `python mate\mate.py ayuda si` (o `ayuda para`, `ayuda frenos`, `ayuda leer_tabla`...) |
+| Que una IA te escriba un programa en Mate | `python mate\mate.py guia` imprime una página para pegarle antes de pedírselo |
+| Contarle a otra persona qué es Mate | La página `docs\index.html` (está fuera de la carpeta `mate`): un solo archivo que se ve bien en el celular |
+| Saber qué cambió en esta versión | [Qué cambió en la 0.5](#qué-cambió-en-la-05) |
+
+**Para qué no sirve todavía:** no atiende por WhatsApp ni por una página web (la charla es por
+teclado, en PowerShell); es un proyecto nuevo, de una sola persona, sin comunidad; y es lento
+y chico al lado de Python. El detalle está en [Límites de la versión 0.5](#límites-de-la-versión-05).
+
+## El curso
+
+En `mate\curso` hay doce clases. Cada una es un texto para leer (`clase_01_hola.md`, se abre
+con el Bloc de notas) y un programa para correr (`clase_01_hola.mate`), y trae siempre lo
+mismo: qué vas a lograr, el programa completo, el comando de PowerShell, lo que tiene que
+salir, el error más común con su arreglo, y un ejercicio con la solución
+(`clase_01_solucion.mate`). Ninguna necesita clave ni internet: desde la clase 9 la IA se
+ensaya con `--ia-simulada`.
+
+```
+python mate\mate.py curso
+python mate\mate.py curso 1
+notepad mate\curso\clase_01_hola.md
+python mate\mate.py correr mate\curso\clase_01_hola.mate
+```
+
+`curso` muestra la lista de clases y cómo abrir cada una; `curso 1` muestra la clase 1 en la
+misma ventana. `mate\curso\README.md` cuenta cómo hacer el curso.
+
+| Clase | Tema |
+|---|---|
+| 1 | Hola, tu primer programa |
+| 2 | Guardar valores con nombre (`sea`, `var`, `pesos`) |
+| 3 | Que el programa decida (`si`, `sino`) |
+| 4 | Listas y bucles (`para`) |
+| 5 | Funciones y pruebas (`funcion`, `prueba`, `asegurar`) |
+| 6 | Que el programa te pregunte (`leer`, `mientras`, `intentar`) |
+| 7 | Tu lista de precios de Excel (`leer_tabla`) |
+| 8 | El primer agente (`mensaje`, `agente`, `preguntar`) |
+| 9 | Un agente que consulta a una IA (`consultar_ia`, `--ia-simulada`) |
+| 10 | Frenos, para poder confiar en la IA (`frenos`) |
+| 11 | Un agente que recuerda y aprende (`estado recordado`, `corregir`, `propuestas`) |
+| 12 | El mostrador completo |
+
+## Qué busca Mate
+
 Un lenguaje chico, con palabras en español, pensado para tres cosas:
 
 1. **Escribir código más práctico y con menos sorpresas.**
@@ -11,23 +136,6 @@ Y una cuarta, que es lo que más lo separa de "hacerlo en Python": **que puedas 
 atención a un agente con IA.** El agente declara sus `frenos` en castellano y Mate revisa
 cada respuesta de la IA antes de que salga: que no invente precios, que no prometa lo que no
 puede, que no gaste más de lo que le dijiste (ver [Frenos](#frenos)).
-
-Versión 0.5. El intérprete es un solo archivo (`mate.py`), sin dependencias: alcanza con Python 3.
-
-Lo nuevo de la 0.5: los programas corren **entre 2 y 5 veces más rápido** en los bucles y las
-llamadas a funciones (ver [Qué tan rápido es](#qué-tan-rápido-es)), y un programa puede sumar
-lo que Mate no trae con funciones escritas en Python (ver
-[Funciones escritas en Python](#funciones-escritas-en-python-usar-python)).
-Además, un programa ya puede **trabajar con tus datos y charlar con vos**: lee tu lista de
-precios guardada desde Excel (`leer_tabla`), anota renglones en un archivo
-(`agregar_a_archivo`) y conversa por teclado (`leer`, que ya estaba, ahora se puede probar con
-`simular_teclado` y se corta bien con Ctrl+C). El ejemplo completo es
-`ejemplos\10_mostrador_mayorista.mate` (ver
-[Una lista de precios de Excel](#una-lista-de-precios-de-excel-leer_tabla) y
-[Charlar por teclado](#charlar-por-teclado)).
-Y lo último de la 0.5: **frenos para la IA, tope de gasto por día y lecciones propuestas**
-que vos aprobás o descartás. El ejemplo es `ejemplos\11_mostrador_con_frenos.mate` (ver
-[Frenos](#frenos)).
 
 ```bash
 python3 mate/mate.py correr mate/ejemplos/negociacion.mate
@@ -108,14 +216,16 @@ con una orden más corta:
 También podés arrastrar un archivo `.mate` con el mouse y soltarlo encima de `mate.bat`: lo
 corre y deja la ventana abierta hasta que apretás una tecla. (El `mate.bat` se escribió con
 cuidado pero todavía no se probó en una Windows de verdad: si hace algo raro, la orden larga
-del paso 4 anda siempre.)
+del paso 4 anda siempre.) Y para no escribir ni el `.\mate\`, está `instalar.bat`: deja la
+orden `mate` lista desde cualquier carpeta (ver [Instalarlo](#instalarlo)).
 
 **6. Si algo sale mal.** Mate te dice el archivo, el número de renglón y qué pasó, en
 castellano. En el Bloc de notas, `Ctrl+G` te lleva a ese renglón. Y si no te acordás cómo se
 usa una palabra, preguntale a Mate: `python mate\mate.py ayuda si` (o `ayuda para`,
 `ayuda largo`...) muestra una explicación corta con un ejemplo para copiar.
 
-**7. Seguir aprendiendo.** En `mate\ejemplos` hay once programas cortos, explicados renglón por
+**7. Seguir aprendiendo.** Lo mejor para arrancar es [el curso](#el-curso)
+(`python mate\mate.py curso`). Además, en `mate\ejemplos` hay once programas cortos, explicados renglón por
 renglón, para leer y correr en orden:
 
 | Archivo | Qué enseña |
@@ -158,6 +268,7 @@ archivo y abrirla con el Bloc de notas: `python mate\mate.py guia > guia.txt`.
 | `ayuda` | muestra las órdenes y un ejemplo listo para copiar |
 | `ayuda si` | explica una palabra de Mate o una función incluida (`ayuda largo`), con un ejemplo |
 | `consola` | abre la consola, para probar renglones sueltos sin crear un archivo |
+| `curso` | lista las clases del curso y dice cómo abrir cada una; `curso 3` muestra la clase 3 (ver [El curso](#el-curso)) |
 | `corregir archivo.mate Mostrador "..."` | le anota una lección a ese agente, sin tocar el programa (ver [Mate aprende](#mate-aprende)) |
 | `lecciones archivo.mate` | muestra las lecciones de cada agente; con `Mostrador --borrar=2` le borra la 2 |
 | `bitacora archivo.mate` | resume las fallas que fueron anotando los agentes de ese programa, los frenos que saltaron y cuánto consultó a la IA cada agente por día |
@@ -1819,6 +1930,50 @@ python mate\pruebas\velocidad.py
 
 Si igual algo queda lento, la salida es escribir esa parte en Python y llamarla con
 [`usar python`](#funciones-escritas-en-python-usar-python): ahí corre a la velocidad de Python.
+
+## Qué cambió en la 0.5
+
+Todo lo nuevo de esta versión, en un solo lugar. Un programa que no usa nada de esto corre
+igual que en la 0.4 y no crea ningún archivo.
+
+| Qué hay de nuevo | Dónde se explica |
+|---|---|
+| El intérprete corre entre 2 y 5 veces más rápido en bucles y llamadas | [Qué tan rápido es](#qué-tan-rápido-es) |
+| `usar python "ayudas.py"`: sumar lo que Mate no trae con funciones escritas en Python | [Funciones escritas en Python](#funciones-escritas-en-python-usar-python) |
+| `leer_tabla("precios.csv")`: leer tu lista de precios guardada desde Excel | [Una lista de precios de Excel](#una-lista-de-precios-de-excel-leer_tabla) |
+| `agregar_a_archivo(...)`: anotar un renglón más en un archivo | [Anotar en un archivo](#anotar-en-un-archivo-agregar_a_archivo) |
+| Charlar por teclado: `leer` se prueba con `simular_teclado` y se corta bien con Ctrl+C | [Charlar por teclado](#charlar-por-teclado) |
+| `frenos { ... }`: Mate revisa cada respuesta de la IA (precios, palabras prohibidas, largo) | [Frenos](#frenos) |
+| Tope de gasto por día (`consultas_por_dia`, `tokens_por_dia`) y la cuenta en `bitacora` | [Tope de gasto](#tope-de-gasto) |
+| Lecciones propuestas: las órdenes `propuestas` y `proponer` | [Lecciones propuestas](#lecciones-propuestas) |
+| El curso: 12 clases en `mate\curso` y la orden `curso` | [El curso](#el-curso) |
+| `instalar.bat`: la orden `mate` desde cualquier carpeta, sin permisos de administrador | [Instalarlo](#instalarlo) |
+| `docs\index.html`: una página para compartir, que se ve bien en el celular | [Por dónde empezar](#por-dónde-empezar) |
+| `mate.bat` ya no se confunde con el "python" de mentira de Windows (el atajo a la tienda): prueba que Python ande antes de usarlo | [Primeros pasos en Windows](#primeros-pasos-en-windows) |
+
+Con más detalle:
+
+Los programas corren **entre 2 y 5 veces más rápido** en los bucles y las
+llamadas a funciones (ver [Qué tan rápido es](#qué-tan-rápido-es)), y un programa puede sumar
+lo que Mate no trae con funciones escritas en Python (ver
+[Funciones escritas en Python](#funciones-escritas-en-python-usar-python)).
+Además, un programa ya puede **trabajar con tus datos y charlar con vos**: lee tu lista de
+precios guardada desde Excel (`leer_tabla`), anota renglones en un archivo
+(`agregar_a_archivo`) y conversa por teclado (`leer`, que ya estaba, ahora se puede probar con
+`simular_teclado` y se corta bien con Ctrl+C). El ejemplo completo es
+`ejemplos\10_mostrador_mayorista.mate` (ver
+[Una lista de precios de Excel](#una-lista-de-precios-de-excel-leer_tabla) y
+[Charlar por teclado](#charlar-por-teclado)).
+También hay **frenos para la IA, tope de gasto por día y lecciones propuestas**
+que vos aprobás o descartás. El ejemplo es `ejemplos\11_mostrador_con_frenos.mate` (ver
+[Frenos](#frenos)).
+
+Y para que otra persona pueda instalarlo y aprenderlo sola: el **curso** de doce clases
+(`python mate\mate.py curso`), el instalador `instalar.bat` y la página `docs\index.html`.
+`curso` es una orden nueva: si tenías un programa llamado `curso.mate`, se corre con
+`correr curso.mate`. El instalador avisa con la variable `MATE_ORDEN` que la orden es `mate`,
+y entonces los comandos que Mate sugiere en pantalla se escriben `mate ...` en vez de
+`python mate\mate.py ...`; sin instalar, todo se ve como antes.
 
 ## Qué cambió y puede frenar un programa viejo
 

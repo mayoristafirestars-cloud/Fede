@@ -12,6 +12,7 @@ Uso:
     python3 mate.py consola   (para probar renglones sueltos)
     python3 mate.py corregir  archivo.mate Agente "la lección"   (y: lecciones, bitacora)
     python3 mate.py informe   (los errores de uso anotados; --para-mejorar, --borrar)
+    python3 mate.py curso     (las clases para aprender Mate; curso 1 muestra la primera)
 """
 
 import ast
@@ -3776,7 +3777,12 @@ def para_pegar(a):
 
 
 def como_se_llama():
-    """Cómo se escribe la orden para correr Mate en esta computadora."""
+    """Cómo se escribe la orden para correr Mate en esta computadora. Si Mate se instaló
+    con instalar.bat, la orden corta 'mate' anda desde cualquier carpeta: el lanzador que
+    deja el instalador lo avisa con la variable MATE_ORDEN, y los comandos que Mate
+    sugiere se escriben con esa orden."""
+    if os.environ.get("MATE_ORDEN", "").strip().lower() == "mate":
+        return "mate"
     return "python mate\\mate.py" if os.name == "nt" else "python3 mate/mate.py"
 
 
@@ -7643,6 +7649,115 @@ def consola(entrada=None, mostrar=print, ia_simulada=False, ia_respuestas=(), an
     return 0
 
 
+# ─────────────────────── El curso: aprender Mate desde cero (0.5) ───────────────────────
+# Al lado de mate.py, en la carpeta 'curso', hay una clase por archivo: clase_01_hola.md es
+# el texto para leer (se abre con el Bloc de notas) y clase_01_hola.mate, el programa de
+# esa clase. La orden 'curso' las lista y dice cómo abrir cada una; 'curso 3' muestra la
+# clase 3 en la pantalla. Solo lee esos archivos: no corre nada ni escribe nada.
+CARPETA_DEL_CURSO = "curso"
+_ARCHIVO_DE_CLASE = re.compile(r"clase_(\d\d)_[a-z0-9_]+\.md")
+
+
+def carpeta_del_curso():
+    """La carpeta del curso: siempre al lado de mate.py."""
+    return os.path.join(os.path.dirname(os.path.abspath(__file__)), CARPETA_DEL_CURSO)
+
+
+def clases_del_curso(carpeta=None):
+    """Las clases que hay en la carpeta del curso, en orden: una lista de mapas con numero,
+    titulo (el primer renglón escrito del texto), texto (la ruta del .md) y programa (la
+    ruta del .mate de esa clase, o None si no está). Si la carpeta no existe, nada."""
+    carpeta = carpeta_del_curso() if carpeta is None else os.fspath(carpeta)
+    try:
+        nombres = sorted(os.listdir(carpeta))
+    except OSError:
+        return []
+    clases = []
+    for nombre in nombres:
+        es_clase = _ARCHIVO_DE_CLASE.fullmatch(nombre)
+        if not es_clase:
+            continue
+        ruta = os.path.join(carpeta, nombre)
+        try:
+            renglones = leer_fuente(ruta).split("\n")
+        except (OSError, ErrorMate):
+            continue
+        titulo = next((r.strip().lstrip("#").strip() for r in renglones if r.strip()), nombre)
+        programa = ruta[:-len(".md")] + ".mate"
+        clases.append({"numero": int(es_clase.group(1)), "titulo": titulo, "texto": ruta,
+                       "programa": programa if os.path.isfile(programa) else None})
+    return clases
+
+
+def ruta_para_escribir(ruta):
+    """Una ruta como conviene escribirla en una orden desde la carpeta donde está parada
+    la persona: corta (mate\\curso\\...) si queda adentro de esa carpeta, completa si no,
+    y entre comillas si trae espacios."""
+    completa = os.path.abspath(ruta)
+    try:
+        corta = os.path.relpath(completa)
+    except ValueError:  # (en Windows, cuando está en otro disco)
+        corta = completa
+    return para_pegar(completa if corta.startswith("..") else corta)
+
+
+def orden_curso(args, avisar, carpeta=None, mostrar=print):
+    """La orden 'curso': sin nada más, lista las clases y dice cómo abrir cada una; con un
+    número, muestra esa clase. Devuelve el código de salida."""
+    carpeta = carpeta_del_curso() if carpeta is None else os.fspath(carpeta)
+    clases = clases_del_curso(carpeta)
+    if not clases:
+        avisar(f"no encuentro las clases del curso: tendrían que estar en {para_pegar(carpeta)}"
+               " (la carpeta 'curso', al lado de mate.py). Si copiaste solo mate.py, bajá "
+               "Mate de nuevo con todas sus carpetas",
+               "al escribir la orden: no está la carpeta del curso")
+        return 2
+    numeros = [c["numero"] for c in clases]
+    if numeros == list(range(numeros[0], numeros[-1] + 1)) and len(numeros) > 1:
+        numeros = f"del {numeros[0]} al {numeros[-1]}"
+    else:
+        numeros = ", ".join(str(n) for n in numeros)
+    if len(args) > 1 or (args and not (args[0].isascii() and args[0].isdigit()
+                                       and len(args[0]) <= 4)):
+        avisar(f"después de 'curso' va solo el número de la clase ({numeros}) y recibió "
+               f"'{' '.join(args)}'. Por ejemplo:  {como_se_llama()} curso {clases[0]['numero']}",
+               "al escribir la orden: 'curso' con algo que no es un número de clase")
+        return 2
+    if args:
+        elegida = [c for c in clases if c["numero"] == int(args[0])]
+        if not elegida:
+            avisar(f"el curso no tiene una clase {int(args[0])}: van {numeros}. "
+                   f"Para ver la lista:  {como_se_llama()} curso",
+                   "al escribir la orden: 'curso' con un número de clase que no existe")
+            return 2
+        mostrar(leer_fuente(elegida[0]["texto"]).rstrip("\n"))
+        return 0
+    primera = clases[0]
+    mostrar(f"El curso de Mate: {len(clases)} clases cortas, para hacer en orden. No hace falta "
+            "saber programar.")
+    mostrar("Cada clase es un texto para leer (termina en .md) y un programa para correr "
+            "(termina en .mate).")
+    mostrar("")
+    ancho = max(len(re.sub(r"^Clase \d+:\s*", "", c["titulo"])) for c in clases)
+    for clase in clases:
+        titulo = re.sub(r"^Clase \d+:\s*", "", clase["titulo"])
+        mostrar(f"  {clase['numero']:>2}. {titulo.ljust(ancho)}   "
+                f"{os.path.basename(clase['texto'])}")
+    mostrar("")
+    mostrar(f"Para leer la clase {primera['numero']} acá mismo (las demás, con su número):")
+    mostrar(f"  {como_se_llama()} curso {primera['numero']}")
+    mostrar("Para abrirla con el Bloc de notas (las demás, con el nombre de su archivo):")
+    mostrar(f"  notepad {ruta_para_escribir(primera['texto'])}")
+    if primera["programa"]:
+        mostrar("Para correr el programa de esa clase:")
+        mostrar(f"  {como_se_llama()} correr {ruta_para_escribir(primera['programa'])}")
+    mostrar("")
+    mostrar(f"Todo está en la carpeta {ruta_para_escribir(carpeta)}. Ahí también hay un "
+            "README.md que cuenta cómo")
+    mostrar("hacer el curso. Ninguna clase necesita clave ni internet.")
+    return 0
+
+
 def texto_de_ayuda():
     if os.name == "nt":
         ejemplo = "python mate\\mate.py correr mate\\ejemplos\\hola.mate"
@@ -7660,6 +7775,8 @@ def texto_de_ayuda():
         "  ayuda                    muestra esta ayuda",
         "  ayuda si                 explica una palabra o una función de Mate, con un ejemplo",
         "  consola                  para probar renglones sueltos sin crear un archivo",
+        "  curso                    las clases para aprender Mate desde cero, en orden",
+        "  curso 1                  muestra la clase 1 (también se abre con el Bloc de notas)",
         "",
         "Para que un agente aprenda (mirá 'ayuda recordado'):",
         '  corregir  archivo.mate Mostrador "la lección"   le anota una lección a ese agente',
@@ -8293,7 +8410,8 @@ def probar_varios(pedidos, opciones, avisar):
 # Solo anota cuando Mate se usa desde la línea de comandos (como módulo, o en las pruebas,
 # no), nunca con la orden 'probar', y se apaga con MATE_SIN_REGISTRO=1 o --sin-registro.
 
-ORDENES_SABIDAS = ORDENES + ORDENES_DE_MEMORIA + ("ayuda", "guia", "consola", "informe")
+ORDENES_SABIDAS = ORDENES + ORDENES_DE_MEMORIA + ("ayuda", "guia", "consola", "informe",
+                                                  "curso")
 _FECHA_DE_REGISTRO = "%d/%m/%Y %H:%M"
 _LARGO_A_TAPAR = 800
 # Cómo es una opción ('--traza', '-h', '--borrar=2'). Lo que empieza con guion y no tiene
@@ -8916,7 +9034,7 @@ def _main(argv, donde):
         return 0
     if args and args[0].lower() == "ayuda" and len(args) >= 2 and not (
             len(args) == 2 and sin_tildes(args[1].lower()) in ORDENES + (
-                "ayuda", "guia", "consola", "informe") + ORDENES_DE_MEMORIA[:2]):
+                "ayuda", "guia", "consola", "informe", "curso") + ORDENES_DE_MEMORIA[:2]):
         # 'ayuda si', 'ayuda largo', 'ayuda al fallar'
         return ayuda_de_palabra(" ".join(args[1:]), print, avisar)
     if "--ayuda" in opciones or (args and args[0].lower() == "ayuda"):
@@ -8928,6 +9046,12 @@ def _main(argv, donde):
     if args[0].lower() in ("guia", "guía"):
         print(texto_de_guia())
         return 0
+    if args[0].lower() == "curso":
+        if len(args) == 1 and os.path.isfile("curso.mate"):
+            avisar("aviso: en esta carpeta hay un curso.mate, pero 'curso' sola es una orden "
+                   "de Mate (muestra las clases para aprender). Para correr tu programa:  "
+                   f"{como_se_llama()} correr curso.mate")
+        return orden_curso(args[1:], avisar)
     if args[0].lower() == "consola":
         if len(args) > 1:
             avisar("'consola' va sola, sin archivo: ahí adentro se escriben los renglones")
@@ -8981,7 +9105,7 @@ def _main(argv, donde):
         avisar(f"no conozco la orden '{args[0]}'" + (
             f", ¿quisiste decir '{parecidas[0]}'?" if parecidas
             else ". Las órdenes son: correr, probar, verificar, consola, guia, ayuda, "
-                 "corregir, lecciones, propuestas, proponer, bitacora e informe"),
+                 "curso, corregir, lecciones, propuestas, proponer, bitacora e informe"),
             "al escribir la orden: orden que no existe")
         return 2
     if not archivos:

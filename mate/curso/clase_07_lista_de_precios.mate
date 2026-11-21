@@ -1,0 +1,38 @@
+# Clase 7: usar tu lista de precios de Excel.
+# leer_tabla() lee una planilla guardada como CSV. Cada fila queda como un mapa, y los
+# nombres de los datos son los títulos de la primera fila: fila.producto, fila.precio...
+
+sea precios = leer_tabla("precios.csv")
+mostrar("Cargué {largo(precios)} productos de precios.csv")
+
+para fila en precios {
+    si fila.stock == 0 {
+        mostrar("- {fila.producto}: {pesos(fila.precio)} (ahora no hay)")
+    } sino {
+        mostrar("- {fila.producto}: {pesos(fila.precio)}")
+    }
+}
+
+# Busca en la lista el primer producto que tenga esa palabra en el nombre.
+# Si no hay ninguno devuelve 'nada', que es la forma de decir "no hay valor".
+funcion buscar(tabla, palabra) {
+    para fila en tabla {
+        si tiene(minusculas(fila.producto), minusculas(palabra)) {
+            devolver fila
+        }
+    }
+    devolver nada
+}
+
+sea encontrado = buscar(precios, "arroz")
+mostrar("Busqué arroz y encontré: {encontrado.producto}, a {pesos(encontrado.precio)}")
+
+prueba "los precios llegan como números" {
+    asegurar precios[0].precio == 3500
+    asegurar precios[1].precio == 1250.5
+}
+
+prueba "busca sin importar las mayúsculas" {
+    asegurar buscar(precios, "YERBA").precio == 3500
+    asegurar buscar(precios, "clavos") == nada
+}

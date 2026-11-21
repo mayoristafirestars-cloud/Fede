@@ -9170,3 +9170,298 @@ def test_la_documentacion_cuenta_los_frenos(capsys):
                   "python mate\\mate.py propuestas mate\\ejemplos\\11_mostrador_con_frenos.mate "
                   "aprobar 1", "python mate\\mate.py bitacora"]:
         assert frase in ejemplo, frase
+
+
+# ───────── 0.5: que otra persona pueda instalarlo y aprenderlo (mejoras 117 a 119) ─────────
+
+CURSO = RAIZ / "curso"
+CLASES = sorted(p.name[:-len(".md")] for p in CURSO.glob("clase_[0-9][0-9]_*.md"))
+SECCIONES_DE_CLASE = ["## Qué vas a lograr", "## El programa", "## Cómo se corre",
+                      "## Lo que tiene que salir", "## El error más común", "## Ejercicio",
+                      "## Solución"]
+
+
+def con_sangria(texto):
+    """Un programa como figura en el texto de una clase: cada renglón con cuatro espacios."""
+    return "\n".join("    " + r if r.strip() else "" for r in texto.rstrip("\n").split("\n"))
+
+
+def copia_del_curso(tmp_path):
+    import shutil
+    destino = tmp_path / "curso"
+    shutil.copytree(CURSO, destino, ignore=shutil.ignore_patterns(
+        "*.memoria.json", "*.bitacora.txt", "consultas_atendidas.txt", "practica.mate"))
+    return destino
+
+
+def test_el_curso_tiene_doce_clases_completas():
+    assert [c[:8] for c in CLASES] == [f"clase_{n:02d}" for n in range(1, 13)]
+    indice = (CURSO / "README.md").read_text(encoding="utf-8")
+    for clase in CLASES:
+        texto = (CURSO / f"{clase}.md").read_text(encoding="utf-8")
+        numero = int(clase[6:8])
+        assert texto.startswith(f"# Clase {numero}: "), clase
+        lugares = [texto.index(seccion) for seccion in SECCIONES_DE_CLASE]
+        assert lugares == sorted(lugares), clase
+        # el programa y la solución que muestra el texto son los de los archivos
+        programa = (CURSO / f"{clase}.mate").read_text(encoding="utf-8")
+        solucion = (CURSO / f"{clase[:8]}_solucion.mate").read_text(encoding="utf-8")
+        assert con_sangria(programa) in texto, clase
+        assert con_sangria(solucion) in texto, clase
+        # el comando está en forma Windows, y los renglones entran en el Bloc de notas
+        assert f"python mate\\mate.py correr mate\\curso\\{clase}.mate" in texto, clase
+        assert "python3" not in texto and "mate/curso" not in texto, clase
+        largos = [r for r in texto.splitlines() if len(r) > 100 and "python mate\\mate.py" not in r]
+        assert largos == [], clase
+        assert f"`{clase}.md`" in indice and f"`{clase}.mate`" in indice, clase
+    # nada más que el curso en esa carpeta: textos, programas y los dos archivos de datos
+    resto = sorted(p.name for p in CURSO.iterdir() if p.suffix not in (".md", ".mate")
+                   and "memoria" not in p.name and "bitacora" not in p.name
+                   and p.name != "consultas_atendidas.txt")
+    assert resto == ["precios.csv", "respuestas.txt"]
+
+
+@pytest.mark.parametrize("clase", CLASES)
+def test_cada_clase_del_curso_verifica_prueba_y_muestra_lo_que_dice(clase, tmp_path, capsys,
+                                                                     monkeypatch):
+    # (en una copia: desde la clase 10, 'correr' deja la memoria y la bitácora al lado)
+    curso = copia_del_curso(tmp_path)
+    monkeypatch.chdir(tmp_path)
+    texto = (curso / f"{clase}.md").read_text(encoding="utf-8")
+    for nombre in (f"{clase}.mate", f"{clase[:8]}_solucion.mate"):
+        ruta = str(curso / nombre)
+        fuente = (curso / nombre).read_text(encoding="utf-8")
+        assert mate.main(["verificar", ruta]) == 0, nombre
+        capsys.readouterr()
+        assert mate.main(["probar", ruta]) == 0, nombre
+        salida = capsys.readouterr().out
+        assert "✗" not in salida, nombre
+        if "prueba " in fuente:
+            assert re.search(r"(\d+) de \1 pruebas pasaron", salida), nombre
+        opciones = ["--ia-simulada"] if "consultar_ia(" in fuente else []
+        assert mate.main(["correr", ruta] + opciones) == 0, nombre
+        capturado = capsys.readouterr()
+        assert all(r.startswith("aviso: ") for r in capturado.err.splitlines()), nombre
+        assert capturado.out.strip(), nombre
+        if "leer(" not in fuente:  # (lo de una charla depende de lo que se escriba)
+            for renglon in capturado.out.splitlines():
+                assert "    " + renglon in texto, (nombre, renglon)
+    # 'probar' no dejó nada al lado de los programas que todavía no se corrieron
+    assert not list(tmp_path.rglob("consultas_atendidas.txt"))
+
+
+def test_probar_el_curso_no_deja_archivos(capsys):
+    antes = sorted(p.name for p in CURSO.iterdir())
+    assert mate.main(["probar", str(CURSO)]) == 0
+    assert re.search(r"En total: (\d+) de \1 pruebas pasaron, en 24 archivos\n$",
+                     capsys.readouterr().out)
+    assert sorted(p.name for p in CURSO.iterdir()) == antes
+
+
+def test_la_orden_curso_lista_las_clases_y_muestra_una(tmp_path, capsys, monkeypatch):
+    monkeypatch.chdir(RAIZ.parent)
+    monkeypatch.delenv("MATE_ORDEN", raising=False)
+    assert mate.main(["curso"]) == 0
+    capturado = capsys.readouterr()
+    assert capturado.err == ""
+    for frase in ["El curso de Mate: 12 clases cortas", " 1. Hola, tu primer programa",
+                  "12. El mostrador completo", "clase_07_lista_de_precios.md",
+                  f"{mate.como_se_llama()} curso 1", "notepad ", "clase_01_hola.md",
+                  f"{mate.como_se_llama()} correr ", "clase_01_hola.mate",
+                  "Ninguna clase necesita clave ni internet"]:
+        assert frase in capturado.out, frase
+    assert max(len(r) for r in capturado.out.splitlines()) <= 100
+    # las rutas se escriben cortas desde la carpeta donde está parada la persona
+    assert str(RAIZ) not in capturado.out
+    # ...y completas (y entre comillas si hay espacios) cuando el curso queda en otro lado
+    con_espacio = tmp_path / "mis cosas" / "curso"
+    con_espacio.parent.mkdir()
+    import shutil
+    shutil.copytree(CURSO, con_espacio)
+    assert mate.orden_curso([], print, carpeta=con_espacio) == 0
+    assert f'notepad "{con_espacio / "clase_01_hola.md"}"' in capsys.readouterr().out
+    # 'curso 3' muestra el texto de la clase, tal cual
+    assert mate.main(["curso", "3"]) == 0
+    assert capsys.readouterr().out == (CURSO / "clase_03_decisiones.md").read_text(
+        encoding="utf-8")
+    assert mate.main(["curso", "03"]) == 0
+    assert capsys.readouterr().out.startswith("# Clase 3: Que el programa decida\n")
+
+
+def test_la_orden_curso_explica_lo_que_no_entiende(tmp_path, capsys, monkeypatch):
+    monkeypatch.delenv("MATE_ORDEN", raising=False)
+    assert mate.main(["curso", "13"]) == 2
+    assert "el curso no tiene una clase 13: van del 1 al 12" in capsys.readouterr().err
+    for mal in (["curso", "tres"], ["curso", "1", "2"], ["curso", "²"], ["curso", "-1"]):
+        assert mate.main(mal) == 2, mal
+        capturado = capsys.readouterr()
+        assert capturado.out == "" and capturado.err.strip(), mal
+    assert mate.main(["curso", "tres"]) == 2
+    assert ("después de 'curso' va solo el número de la clase (del 1 al 12) y recibió 'tres'"
+            in capsys.readouterr().err)
+    assert mate.main(["cursos"]) == 2
+    assert "¿quisiste decir 'curso'?" in capsys.readouterr().err
+    # si falta la carpeta (alguien copió solo mate.py), lo dice en vez de romperse
+    avisos = []
+    assert mate.orden_curso([], lambda texto, *_: avisos.append(texto),
+                            carpeta=tmp_path / "no_esta") == 2
+    assert "no encuentro las clases del curso" in avisos[0] and "al lado de mate.py" in avisos[0]
+    # 'curso' es una orden: un curso.mate propio se corre con 'correr', y Mate lo avisa
+    (tmp_path / "curso.mate").write_text('mostrar("mío")\n', encoding="utf-8")
+    monkeypatch.chdir(tmp_path)
+    assert mate.main(["curso"]) == 0
+    capturado = capsys.readouterr()
+    assert "correr curso.mate" in capturado.err and "El curso de Mate" in capturado.out
+    assert mate.main(["correr", "curso.mate"]) == 0
+    assert capsys.readouterr().out == "mío\n"
+    # 'ayuda curso' muestra la ayuda general, que la nombra
+    assert mate.main(["ayuda", "curso"]) == 0
+    assert "  curso 1 " in capsys.readouterr().out
+    assert "curso" in mate.ORDENES_SABIDAS and mate.orden_usada(["curso", "3"]) == "curso"
+
+
+def test_con_la_orden_instalada_los_comandos_sugeridos_dicen_mate(capsys, monkeypatch):
+    monkeypatch.delenv("MATE_ORDEN", raising=False)
+    de_siempre = mate.como_se_llama()
+    assert de_siempre in ("python mate\\mate.py", "python3 mate/mate.py")
+    monkeypatch.setenv("MATE_ORDEN", "cualquier cosa")  # solo vale la palabra 'mate'
+    assert mate.como_se_llama() == de_siempre
+    monkeypatch.setenv("MATE_ORDEN", "mate")
+    assert mate.como_se_llama() == "mate"
+    assert mate.main(["curso"]) == 0
+    salida = capsys.readouterr().out
+    assert "\n  mate curso 1\n" in salida and "\n  mate correr " in salida
+    assert de_siempre not in salida
+
+
+def test_instalar_bat_esta_escrito_con_cuidado():
+    # (no se puede correr acá: se controla su forma, que es donde un .bat se rompe)
+    crudo = (RAIZ / "instalar.bat").read_bytes()
+    assert crudo.isascii()  # sin tildes: la consola de Windows las mostraría mal
+    assert b"\r\n" in crudo and b"\n" not in crudo.replace(b"\r\n", b"")
+    renglones = crudo.decode("ascii").split("\r\n")
+    texto = "\n".join(renglones)
+    codigo = [r for r in renglones if not r.lower().startswith(("rem", "echo "))]
+    # cada salto va a una etiqueta que existe, y no queda ninguna etiqueta sin usar
+    etiquetas = {r[1:].strip() for r in renglones if r.startswith(":")}
+    saltos = set(re.findall(r"\bgoto (\w+)", "\n".join(codigo)))
+    assert saltos == etiquetas and "fin" in etiquetas
+    # sin bloques entre paréntesis (se rompen con carpetas como "mate (1)") y sin expansión
+    # demorada (se rompe con un signo de admiración en la ruta)
+    assert not [r for r in codigo if r.rstrip().endswith("(") or r.lstrip().startswith(")")]
+    assert "DisableDelayedExpansion" in texto and "!" not in texto
+    # no toca el PATH ni el registro, no baja nada y no pide permisos
+    for prohibido in ["setx", "reg add", "reg delete", "regedit", "powershell", "curl",
+                      "bitsadmin", "runas", "path=", "rmdir", "rd /s", "format"]:
+        assert prohibido not in "\n".join(codigo).lower(), prohibido
+    # lo único que escribe o borra es el lanzador, y siempre entre comillas
+    def sin_comillas(renglon):  # (adentro de las comillas, un > no manda nada a un archivo)
+        return re.sub(r'"[^"]*"', '""', renglon.replace(">nul", ""))
+
+    escribe = [r for r in codigo if re.search(r"(?<![2^])>", sin_comillas(r))]
+    assert len(escribe) == 5 and all(re.match(r'>>?"%LANZADOR%" echo ', r) for r in escribe)
+    borra = [r for r in codigo if re.match(r"\s*(del|erase)\b", r)]
+    assert borra and all(r.startswith('del "%LANZADOR%"') for r in borra)
+    assert not re.search(r'(?<!")%(AQUI|LANZADOR|CARPETA)%', "\n".join(
+        r for r in renglones if not r.lower().startswith(("rem", "set "))))
+    for frase in ['set "AQUI=%~dp0"', 'set "CARPETA=%LOCALAPPDATA%\\Microsoft\\WindowsApps"',
+                  '>>"%LANZADOR%" echo "%AQUI%mate.bat" %%*', 'echo set "MATE_ORDEN=mate"',
+                  "sys.version_info[:2] >= (3, 10)", "py -3 -c", 'if /i "%~1"=="quitar"',
+                  "Add python.exe to PATH", "No toque el PATH", "Para deshacerlo", "pause",
+                  "exit /b %CODIGO%", 'findstr /c:"%MARCA%" "%LANZADOR%"']:
+        assert frase in texto, frase
+    # los renglones que se muestran no llevan signos que la consola tomaría como órdenes
+    for renglon in renglones:
+        if renglon.lower().startswith("echo "):
+            assert not re.search(r"[&|<>]", renglon), renglon
+            assert len(renglon) <= 90, renglon
+    # mate.bat: prueba a Python corriéndolo y no espera una tecla si lo llama el lanzador
+    lanzado = (RAIZ / "mate.bat").read_bytes().decode("ascii")
+    assert 'python -c "import sys" >nul 2>nul' in lanzado and "where python" not in lanzado
+    assert 'if defined MATE_ORDEN set "ESPERAR="' in lanzado
+
+
+def test_la_pagina_para_compartir_es_un_solo_archivo_y_su_ejemplo_anda(tmp_path, capsys,
+                                                                       monkeypatch):
+    import html
+    pagina = (RAIZ.parent / "docs" / "index.html").read_text(encoding="utf-8")
+    assert pagina.startswith("<!doctype html>") and '<html lang="es">' in pagina
+    assert '<meta name="viewport" content="width=device-width, initial-scale=1">' in pagina
+    assert "prefers-color-scheme: dark" in pagina
+    # sin nada de afuera: ni hojas de estilo, ni programas, ni imágenes, ni letras ajenas
+    for ajeno in ["<link", "<img", "<iframe", "@import", "url(", "src=", "fonts.g", "cdn"]:
+        assert ajeno not in pagina.lower(), ajeno
+    assert re.findall(r'href="([^"#][^"]*)"', pagina) == []  # solo enlaces de la misma página
+    # sin el nombre de nadie: la dirección del proyecto se arma sola al publicarla
+    assert not re.search(r"github\.com/\w", pagina) and not re.search(r"\w@\w", pagina)
+    assert "mayorista" not in pagina.lower()
+    for frase in ["Para quién es", "Un mostrador con IA", "Se lee en castellano",
+                  "Mensajes con contrato", "Frenos", "Aprende de las correcciones",
+                  "Cómo bajarlo e instalarlo", "instalar.bat", "Add python.exe to PATH",
+                  "El curso", "mate curso", "Para qué no sirve todavía",
+                  "No atiende por WhatsApp", "hecho por una sola persona",
+                  "python mate\\mate.py curso", 'data-ruta="tree/HEAD/mate/curso"',
+                  'data-ruta="archive/HEAD.zip"', f"Mate {mate.VERSION}"]:
+        assert frase in pagina, frase
+    # el ejemplo de la página es un programa entero: verifica, corre y pasa su prueba
+    ejemplo = html.unescape(re.search(r'<code id="ejemplo">(.*?)</code>', pagina, re.S).group(1))
+    assert "<" not in ejemplo and max(len(r) for r in ejemplo.splitlines()) <= 80
+    ruta = tmp_path / "mostrador.mate"
+    ruta.write_text(ejemplo + "\n", encoding="utf-8")
+    monkeypatch.chdir(tmp_path)
+    assert mate.main(["verificar", str(ruta)]) == 0
+    capsys.readouterr()
+    assert mate.main(["correr", str(ruta), "--ia-simulada"]) == 0
+    assert capsys.readouterr().out == "La yerba sale $ 3.500.\n"
+    assert mate.main(["probar", str(ruta)]) == 0
+    assert "1 de 1 pruebas pasaron" in capsys.readouterr().out
+
+
+def test_el_readme_arranca_por_que_es_como_se_instala_y_por_donde_empezar(tmp_path, capsys,
+                                                                          monkeypatch):
+    leeme = (RAIZ / "README.md").read_text(encoding="utf-8")
+    titulos = re.findall(r"(?m)^## (.+)$", leeme)
+    assert titulos[:4] == ["Instalarlo", "Por dónde empezar", "El curso", "Qué busca Mate"]
+    assert titulos.index("Qué cambió en la 0.5") < titulos.index(
+        "Qué cambió y puede frenar un programa viejo")
+    primer_pantallazo = leeme[:leeme.index("## Por dónde empezar")]
+    for frase in ["Mate es un lenguaje de programación chico, con palabras en castellano",
+                  "Versión 0.5", "Add python.exe to PATH", "instalar.bat", "mate --version",
+                  "No toca el PATH ni el registro", ".\\mate\\instalar.bat quitar",
+                  "Todavía no se probó en una Windows de verdad", "python mate\\mate.py curso"]:
+        assert frase in primer_pantallazo, frase
+    for frase in ["| `curso` |", "`docs\\index.html`", "python mate\\mate.py curso 1",
+                  "notepad mate\\curso\\clase_01_hola.md", "`MATE_ORDEN`",
+                  "correr curso.mate", "no atiende por WhatsApp"]:
+        assert frase in leeme, frase
+    # todo lo de la 0.5 está en 'Qué cambió en la 0.5'
+    novedades = leeme.split("## Qué cambió en la 0.5")[1].split("\n## ")[0]
+    for frase in ["entre 2 y 5 veces más rápido", "usar python", "leer_tabla",
+                  "agregar_a_archivo", "simular_teclado", "frenos", "consultas_por_dia",
+                  "`propuestas` y `proponer`", "El curso", "instalar.bat", "docs\\index.html",
+                  "mate.bat"]:
+        assert frase in novedades, frase
+    for ancla in re.findall(r"\]\(#([^)]+)\)", novedades + primer_pantallazo):
+        assert any(ancla == re.sub(r"[^\w\- ]", "", t.lower()).replace(" ", "-")
+                   for t in re.findall(r"(?m)^#{2,3} (.+)$", leeme)), ancla
+    # el programa del primer pantallazo anda tal cual está escrito
+    ejemplo = re.search(r"```\n(mensaje Consulta .*?)```", primer_pantallazo, re.S).group(1)
+    ruta = tmp_path / "primero.mate"
+    ruta.write_text(ejemplo, encoding="utf-8")
+    monkeypatch.chdir(tmp_path)
+    assert mate.main(["correr", str(ruta), "--ia-simulada"]) == 0
+    assert capsys.readouterr().out == "La yerba sale $ 3.500.\n"
+    # las fichas de las mejoras, y la ayuda
+    mejoras = (RAIZ / "MEJORAS.md").read_text(encoding="utf-8")
+    for numero, titulo in [(117, "El curso: doce clases y la orden `curso`"),
+                           (118, "Instalador para Windows: `instalar.bat`"),
+                           (119, "Una página para compartir y un README que se entiende de "
+                                 "entrada")]:
+        ficha = mejoras.split(f"\n**{numero}. {titulo}**")[1].split("\n\n")[0]
+        assert "Estado: hecha" in ficha and "Nota de lo decidido" in ficha, numero
+    assert "Sin probar en Windows real" in mejoras
+    assert mate.TOPE_DE_FUNCIONES == 48 == len(mate.FUNCIONES) and len(mate.PALABRAS) == 36
+    ayuda = mate.texto_de_ayuda()
+    assert "  curso  " in ayuda and "  curso 1  " in ayuda
+    assert max(len(r) for r in ayuda.splitlines()) <= 100
+    assert "mate.py curso" in mate.__doc__ and mate.VERSION == "0.5"

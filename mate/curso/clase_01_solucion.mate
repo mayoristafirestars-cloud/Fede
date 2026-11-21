@@ -1,0 +1,4 @@
+# Clase 1, ejercicio resuelto: mi nombre y cuántos minutos tiene un día.
+
+mostrar("Hola, soy Marta")
+mostrar("Un día tiene", 24 * 60, "minutos")

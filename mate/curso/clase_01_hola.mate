@@ -1,0 +1,6 @@
+# Clase 1: mi primer programa.
+# Los renglones que empiezan con # son comentarios: Mate no los lee, son para vos.
+
+mostrar("Hola, soy Mate")
+mostrar("Hoy empiezo a programar")
+mostrar("2 + 3 es", 2 + 3)

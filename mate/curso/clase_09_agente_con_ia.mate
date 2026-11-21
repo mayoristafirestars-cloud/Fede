@@ -1,0 +1,47 @@
+# Clase 9: un agente que le consulta a una IA.
+# consultar_ia(instrucciones, pregunta, ensayo) le manda la pregunta a una IA de verdad
+# y devuelve lo que contesta, como texto.
+#   - las instrucciones le dicen quién es y cómo tiene que contestar;
+#   - el tercer valor es lo que "contesta" cuando NO se habla con la IA de verdad: en
+#     las pruebas y con la opción --ia-simulada. Así se ensaya sin clave y sin gastar.
+
+mensaje Consulta { pregunta: texto }
+mensaje Atencion { respuesta: texto }
+
+agente Mostrador {
+    al recibir Consulta como c {
+        # Un texto largo va entre tres comillas, y puede ocupar varios renglones.
+        sea instrucciones = """
+            Atendés el mostrador de un almacén de barrio. Contestá en una sola oración,
+            corta y amable.
+        """
+        sea dicho = consultar_ia(instrucciones, c.pregunta, "Ya te lo averiguo.")
+        responder Atencion { respuesta: dicho }
+    }
+}
+
+funcion atender(pregunta) {
+    sea atencion = preguntar Consulta { pregunta: pregunta } a Mostrador
+    mostrar("Cliente:   {pregunta}")
+    mostrar("Mostrador: {atencion.respuesta}")
+}
+
+atender("¿Tienen yerba sin palo?")
+atender("¿A qué hora cierran?")
+
+# En una prueba la IA nunca es de verdad. simular_ia() fija lo que "contesta", y
+# consultas_ia() cuenta qué le llegó: las instrucciones, la pregunta y la respuesta.
+prueba "el Mostrador contesta lo que dijo la IA" {
+    simular_ia("Sí, tenemos de medio kilo.")
+    sea atencion = preguntar Consulta { pregunta: "¿Hay yerba?" } a Mostrador
+    asegurar atencion.respuesta == "Sí, tenemos de medio kilo."
+}
+
+prueba "a la IA le llegan las instrucciones y la pregunta" {
+    simular_ia("Hola.")
+    sea atencion = preguntar Consulta { pregunta: "¿Hay yerba?" } a Mostrador
+    sea consulta = ultimo(consultas_ia())
+    asegurar tiene(consulta.instrucciones, "almacén de barrio")
+    asegurar consulta.pregunta == "¿Hay yerba?"
+    asegurar atencion.respuesta == "Hola."
+}

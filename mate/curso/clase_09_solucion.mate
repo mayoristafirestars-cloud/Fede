@@ -1,0 +1,37 @@
+# Clase 9, ejercicio resuelto: el Mostrador sabe el horario, porque está en sus
+# instrucciones, y si la IA no puede contestar no se cae: avisa.
+
+mensaje Consulta { pregunta: texto }
+mensaje Atencion { respuesta: texto }
+
+agente Mostrador {
+    al recibir Consulta como c {
+        sea instrucciones = """
+            Atendés el mostrador de un almacén de barrio. Contestá en una sola oración,
+            corta y amable.
+            Horario: de lunes a sábado, de 8 a 20. Los domingos está cerrado.
+        """
+        intentar {
+            sea dicho = consultar_ia(instrucciones, c.pregunta, "Ya te lo averiguo.")
+            responder Atencion { respuesta: dicho }
+        } si falla {
+            # Sin clave, sin internet o sin crédito: no inventa nada.
+            responder Atencion { respuesta: "Ahora no te puedo atender. Probá en un rato." }
+        }
+    }
+}
+
+funcion atender(pregunta) {
+    sea atencion = preguntar Consulta { pregunta: pregunta } a Mostrador
+    mostrar("Cliente:   {pregunta}")
+    mostrar("Mostrador: {atencion.respuesta}")
+}
+
+atender("¿Abren los domingos?")
+
+prueba "el horario le llega a la IA en las instrucciones" {
+    simular_ia("Los domingos cerramos.")
+    sea atencion = preguntar Consulta { pregunta: "¿Abren los domingos?" } a Mostrador
+    asegurar tiene(ultimo(consultas_ia()).instrucciones, "Los domingos está cerrado")
+    asegurar atencion.respuesta == "Los domingos cerramos."
+}

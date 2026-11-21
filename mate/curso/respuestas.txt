@@ -1,0 +1,7 @@
+# Respuestas de ensayo para la clase 9: lo que "contesta la IA" con
+#   --ia-simulada=mate\curso\respuestas.txt
+# A la izquierda, una palabra que tiene que traer la pregunta (no importan las mayúsculas
+# ni las tildes). A la derecha, lo que se contesta. El * contesta a todo lo demás.
+yerba => Sí, tenemos yerba con palo y sin palo.
+hora => Abrimos de 8 a 20, de lunes a sábado.
+* => Eso te lo averiguo y te aviso.

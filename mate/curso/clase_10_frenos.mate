@@ -1,0 +1,63 @@
+# Clase 10: frenos, para poder confiar en lo que dice la IA.
+# Una IA a veces inventa: un precio que no existe, un descuento que nadie autorizó.
+# Con 'frenos', el agente declara sus reglas y MATE revisa cada respuesta de la IA
+# antes de que salga. Si una respuesta rompe una regla, Mate consulta una vez más
+# avisándole a la IA qué hizo mal; si la vuelve a romper, devuelve el texto de 'reserva'.
+
+# (sin_ia es lo que "contesta la IA" en los ensayos, con --ia-simulada)
+mensaje Consulta { pregunta: texto, sin_ia: texto }
+
+agente Mostrador {
+    estado permitidos = [3500, 1250.5, 950]
+
+    frenos {
+        precios: permitidos
+        prohibido: ["descuento", "fiado"]
+        largo: 200
+        reserva: "Eso te lo confirma una persona. Ya te paso con alguien."
+        consultas_por_dia: 50
+    }
+
+    al recibir Consulta como c {
+        sea instrucciones = """
+            Atendés el mostrador de un almacén. Contestá corto y amable.
+            Precios: yerba $ 3.500, azúcar $ 1.250,50 y fideos $ 950.
+        """
+        responder consultar_ia(instrucciones, c.pregunta, c.sin_ia)
+    }
+}
+
+funcion consultar(pregunta, sin_ia) {
+    devolver preguntar Consulta { pregunta: pregunta, sin_ia: sin_ia } a Mostrador
+}
+
+funcion atender(pregunta, sin_ia) {
+    mostrar("Cliente:   {pregunta}")
+    mostrar("Mostrador: {consultar(pregunta, sin_ia)}")
+}
+
+# 1. Una respuesta buena: el precio está entre los permitidos, así que pasa tal cual.
+atender("¿Cuánto sale la yerba?", "La yerba sale $ 3.500.")
+# 2. Un precio inventado: $ 9.000 no está permitido. Al cliente le llega la reserva.
+atender("¿Y el café?", "El café sale $ 9.000 el kilo.")
+# 3. Un descuento que nadie autorizó: la palabra está entre las prohibidas.
+atender("¿Me hacés precio?", "¡Dale! Te hago un descuento.")
+
+sea reserva = "Eso te lo confirma una persona. Ya te paso con alguien."
+
+prueba "un precio permitido pasa" {
+    simular_ia("Los fideos salen $ 950.")
+    asegurar consultar("¿fideos?", "") == "Los fideos salen $ 950."
+}
+
+prueba "un precio inventado no le llega al cliente" {
+    simular_ia("El café sale $ 9.000 el kilo.")
+    asegurar consultar("¿café?", "") == reserva
+    # Fueron dos consultas: la primera y el segundo intento, que tampoco pasó.
+    asegurar largo(consultas_ia()) == 2
+}
+
+prueba "si en el segundo intento la IA se corrige, vale esa respuesta" {
+    simular_ia(["El café sale $ 9.000 el kilo.", "Café no trabajamos."])
+    asegurar consultar("¿café?", "") == "Café no trabajamos."
+}
