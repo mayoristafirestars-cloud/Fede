@@ -127,6 +127,7 @@ archivo y abrirla con el Bloc de notas: `python mate\mate.py guia > guia.txt`.
 | `guia` | imprime una página con todo Mate, para pegarle a una IA (`python mate\mate.py guia`) |
 | `ayuda` | muestra las órdenes y un ejemplo listo para copiar |
 | `--traza` | muestra la conversación entre agentes, mensaje por mensaje |
+| `--traza=conversacion.txt` | guarda esa conversación en un archivo, con un resumen al final |
 | `--sin-limite` | no corta los programas que dan muchísimos pasos |
 | `--depurar` | si Mate falla por dentro, muestra el detalle técnico |
 | `--version` | dice qué versión de Mate es |
@@ -216,6 +217,10 @@ Mate nunca debería mostrarte un error de Python en inglés:
 - **Un `asegurar` que falla muestra los valores**: `asegurar a + 1 == 4` dice
   `no se cumplió lo asegurado: dio 3 y se esperaba 4`. Si los dos lados se ven iguales pero no
   lo son (`0.1 + 0.2 == 0.3`), muestra el número completo y recuerda redondear antes de comparar.
+- **Por dónde se llegó al error**: si el error pasó adentro de una función, o en un agente al
+  que otro le preguntó, debajo del renglón señalado aparece el recorrido:
+  `cómo se llegó: en dividir(), llamada desde precio() (línea 5), llamada desde la línea 9`,
+  o `... se lo preguntó Comprador a Vendedor (línea 16)`. El texto del error no cambia.
 - Si igual aparece "error interno de Mate", no es culpa tuya: corré de nuevo con `--depurar`
   y guardá lo que muestra.
 
@@ -262,6 +267,13 @@ prueba "cotiza precio por cantidad" {
 
 - `mensaje Nombre { campo: tipo }` declara el **contrato** de un mensaje. Tipos: `numero`,
   `texto`, `logico`, `lista`, `mapa`, `agente`, `cualquiera` u otro mensaje. `tipo?` lo hace opcional.
+- Una lista puede decir de qué es: `items: lista de Pedido`, `vendedores: lista de agente`,
+  `precios: lista de numero`. Así no pasa una lista con cosas mezcladas: el error dice en qué
+  posición está lo que sobra (`recibió una lista que en la posición 1 tiene un número`).
+- El contrato también puede decir **qué se contesta**:
+  `mensaje Pedido { producto: texto } responde Cotizacion`. Si un agente le responde otra cosa
+  a un `Pedido`, la falla es de ese agente (no del que preguntó) y el error señala su
+  `responder`. Sin `responde`, se puede contestar cualquier valor, como siempre.
 - `agente Nombre { ... }` tiene su `estado` privado y un `al recibir Tipo como x { }` por cada
   mensaje que entiende. Ningún agente puede tocar el estado de otro ni las variables de afuera
   (tampoco llamando a una función de afuera que las cambie).
@@ -287,8 +299,19 @@ prueba "cotiza precio por cantidad" {
   `al recibir` (o de una función del agente); `devolver` va dentro de una función, o dentro de
   `al recibir` para terminar sin contestar. Fuera de lugar, Mate lo avisa antes de correr.
 - `yo` es el agente que está atendiendo; sirve para mandarse a sí mismo dentro de un mensaje.
-- `--traza` muestra la conversación entera, mensaje por mensaje.
+- Si los agentes se preguntan en ronda, el error muestra la cadena completa:
+  `ciclo de preguntas: A → B → C → A. A le preguntó a B (línea 4), B le preguntó a C (línea 5)...`
+- `--traza` muestra la conversación entera, mensaje por mensaje. Con
+  `--traza=conversacion.txt` no la muestra: la guarda en ese archivo (se abre con el Bloc de
+  notas) y al final anota cuántos mensajes hubo y cuántos fallaron. El archivo queda en la
+  carpeta donde estás parado; Mate no acepta un nombre terminado en `.mate` o `.py`, para no
+  pisar un programa.
 - `a_json(mensaje)` y `de_json(texto)` pasan los mensajes a JSON y de vuelta, validando el contrato.
+  También viajan los agentes, incluidas las copias hechas con `crear`.
+- `de_json(texto, "Pedido")` además exige que lo que llegó sea un `Pedido` (o un `"numero"`,
+  una `"lista de Pedido"`...): sirve para los datos que vienen de afuera. Si el texto trae un
+  mapa suelto con los campos (`{"producto": "yerba", "cantidad": 2}`), arma el `Pedido` con
+  ellos; si no cumple el contrato, el error lo dice.
 
 ### Varias copias de un agente
 
@@ -306,6 +329,8 @@ Mate avisa (`Vendedor.precios arranca como mapa y le diste numero`). `nada` vale
 ("sin tope", "sin cliente todavía"). Lo que le das reemplaza a lo declarado: esa parte de la
 declaración ni se calcula.
 `llamado` le pone nombre para la traza (`Vendedor Norte`); sin eso se llama `Vendedor#2`.
+El nombre puede ser cualquier texto (`llamado "Sucursal " + ciudad`), pero no se repite: crear
+dos `Vendedor` llamados `"Norte"` es un error, porque no se los podría distinguir.
 Las copias se guardan en variables y se pueden mandar dentro de un mensaje (tipo `agente` o `lista`).
 
 ### Varios archivos
@@ -340,6 +365,55 @@ Lo que una prueba cambia no le llega a la siguiente. Además:
   `usar`, el error lo nombra: `catalogo.mate, línea 7`.
 - Si un agente falló al correr el programa, antes de las pruebas, `probar` lo muestra arriba de
   los resultados y termina con error aunque las pruebas pasen.
+- Lo que una prueba muestra con `mostrar` aparece debajo de su nombre, con una barra adelante
+  (`      | Compro 10 de yerba`), y no mezclado con los resultados.
+- Si el archivo no tiene ninguna prueba, `probar` lo dice (y muestra cómo se escribe una). Dos
+  pruebas no pueden tener el mismo nombre: se avisa antes de correr.
+- `asegurar falla { ... }` es la forma corta de comprobar que algo **tiene que fallar**:
+
+  ```
+  prueba "no se puede dividir por cero" {
+      asegurar falla { dividir(1, 0) }
+  }
+  ```
+
+  Se cumple si lo de adentro falla; si no falla, la prueba dice `se esperaba que esto fallara,
+  y no falló` (o el texto que le pongas después de una coma). Sirve para lo que falla en el
+  momento: una cuenta, una función, un `preguntar`.
+- `simular` reemplaza, **solo dentro de esa prueba**, lo que un agente contesta a un mensaje:
+
+  ```
+  prueba "el comprador suma lo que le cotizan" {
+      simular Vendedor al recibir Pedido como p {
+          responder Cotizacion { total: p.cantidad * 10 }
+      }
+      asegurar preguntar Comprar { cantidad: 2 } a Comprador == 20
+  }
+  ```
+
+  Así se prueba al `Comprador` sin depender del `Vendedor` de verdad (el día de mañana, un
+  agente de IA). Lo simulado ve las variables de la prueba pero no las puede cambiar, no ve el
+  estado del agente, tiene que cumplir el contrato (`responde`) y se termina con la prueba: la
+  siguiente ya habla con el agente real. También vale para una copia: `simular norte al recibir ...`.
+
+### Los datos de un error atajado: `detalle_de`
+
+En `intentar { ... } si falla e { ... }`, `e` es el texto del error. Para decidir qué hacer sin
+depender de cómo está redactado ese texto, `detalle_de(e)` devuelve un mapa con cuatro datos:
+
+| Dato | Qué trae |
+|---|---|
+| `detalle_de(e).texto` | el mismo texto de `e` |
+| `detalle_de(e).linea` | el número de renglón donde pasó |
+| `detalle_de(e).clase` | qué clase de error fue (la lista de abajo): no cambia aunque cambie la redacción |
+| `detalle_de(e).dato` | el valor que se le dio a `fallar`, tal cual (`fallar { codigo: 404 }`); en los demás errores, `nada` |
+
+Las clases son: `"fallar"` (un `fallar` del programa), `"asegurar"`, `"contrato"` (un mensaje
+o una respuesta que no cumple su contrato), `"clave"` (una clave o un campo que no está),
+`"posicion"`, `"division"` (por cero), `"nombre"` (un nombre que no existe), `"numero"` (un
+texto que no es un número), `"json"`, `"agente"` (no sabe recibir ese mensaje o no respondió),
+`"ciclo"` (de preguntas) y `"otro"` para el resto. Hay que pasarle `e` tal cual llegó: si lo
+cambiás (`e + "!"`) es un texto común y `detalle_de` avisa que no es un error atajado.
 
 ## Referencia rápida
 
@@ -395,7 +469,8 @@ Son estas y no hay otras. Cada renglón es un ejemplo que se puede copiar:
 | `empieza_con(t, "Sr.")` | verdadero si el texto empieza así |
 | `termina_con(t, ".txt")` | verdadero si el texto termina así |
 | `a_json(valor)` | el valor escrito como texto JSON |
-| `de_json(texto)` | el valor que describe ese texto JSON |
+| `de_json(texto, "Pedido")` | el valor que describe ese JSON; el 2.º valor (opcional) exige ese tipo |
+| `detalle_de(e)` | los datos de un error atajado: un mapa con texto, linea, clase y dato |
 
 - Si a una función le das valores de más o de menos, el error trae el ejemplo:
   `obtener() lleva 3 valores y recibió 2. Por ejemplo: obtener(mapa, "clave", 0)`.
@@ -519,6 +594,11 @@ seguro es por una de estas:
 | `1.500`, `12.000` (tres decimales terminados en cero) y `3,5` suelto son un error | `1500` o `1_500` si eran miles; `1.5` y `3.5` si eran decimales |
 | `ordenar` ya no pone las mayúsculas primero ni la `ñ` y las tildes al final | Nada: ahora ordena como el diccionario |
 | `yo` y `remitente` fuera de un agente (también en una función de afuera), una clave repetida en un mapa, un parámetro o estado repetido y `nada` en un campo obligatorio son un error antes de correr | Pasarle el agente a la función como valor; borrar el repetido; declarar el campo opcional con `?` |
+| `simular` es una palabra de Mate y `detalle_de` es una función incluida: no sirven como nombre de variable | Elegir otro nombre |
+| Dos copias de un agente no pueden tener el mismo nombre (`crear Vendedor llamado "Norte"` dos veces, o en una prueba cuando el programa ya creó esa copia) | Darles nombres distintos, o crear sin `llamado` |
+| Dos pruebas con el mismo nombre son un error antes de correr | Cambiarle el nombre a una |
+| `probar` muestra lo que cada prueba escribe debajo de su nombre (con `|` adelante), y si no hay pruebas ya no dice `0 de 0 pruebas pasaron` | Nada |
+| El error de un ciclo de preguntas ahora trae la cadena (`A → B → A`), y el de responderle mal a un `enviar` trae el renglón del `responder` | No comparar el texto entero del error |
 | Cambió la redacción de más errores: `la posición 3 está fuera de rango...` (antes "índice"), `el valor nada` en vez de `nada`, la lista `(tiene: ...)` en el error de clave, y `Por ejemplo: ...` al final del error de cantidad de valores | No comparar el texto entero del error; el de clave sigue trayendo la palabra "clave" |
 
 ## Límites de la versión 0.2

@@ -176,6 +176,10 @@ arrancan en "pendiente". Las primeras 36 son las que se programan primero, en tr
 - **Tanda 5 (mejoras 49 a 61, salvo la 59)**: comillas dentro de `"{...}"`, avisos para rutas de
   Windows y para `1.500`, la tabla única de funciones, las funciones nuevas y más controles
   antes de correr. La 59 se salteó por ser de esfuerzo grande.
+- **Tanda 6 (mejoras 62 a 75, salvo la 63 y la 65)**: `probar` más prolijo, la conversación
+  guardada en un archivo, errores que dicen por dónde se llegó, contratos más completos
+  (`lista de Tipo`, `responde`), `detalle_de(e)`, `asegurar falla { }`, `simular` y copias con
+  nombre único. La 63 y la 65 se saltearon: cada una tiene anotado el motivo.
 
 ### Tanda 1: nunca un error interno en inglés
 
@@ -456,63 +460,79 @@ Una prueba automática que rompe los ejemplos de cientos de maneras y comprueba 
 Nota al hacerla: la prueba rompe cada uno de los 11 ejemplos de 60 maneras con un sorteo fijo (siempre las mismas) y los pasa por `correr` y `probar`: 1.320 corridas en un par de segundos. Antes de dejarla así se la corrió una vez con 33.000 variantes y no apareció ningún error interno.
 *Mirada: crítico · Esfuerzo: chico · Estado: hecha*
 
-### Lo que sigue
+### Tanda 6: pruebas más cómodas, contratos más completos y errores que cuentan el camino
 
 **62. `probar` más prolijo**
 No mezcla la salida del programa con los resultados, avisa si el archivo no tiene pruebas y si hay dos pruebas con el mismo nombre.
-*Mirada: principiante, agentes · Esfuerzo: chico · Estado: pendiente*
+Nota al hacerla: lo que cada prueba muestra con `mostrar` aparece debajo de su nombre, con una barra `|` adelante. Si no hay pruebas, `probar` lo dice y muestra cómo se escribe una (ya no dice `0 de 0 pruebas pasaron`). Dos pruebas con el mismo nombre son un error antes de correr.
+*Mirada: principiante, agentes · Esfuerzo: chico · Estado: hecha*
 
 **63. Una traza que muestra las fallas**
 Mensajes numerados, sangría para las preguntas anidadas, y renglones "falló" y "sin respuesta", para seguir la conversación completa.
+Nota (tanda 6): salteada. Cualquiera de los tres cambios (números, sangría, renglones "falló") modifica la salida de `--traza` de los ejemplos `mercado.mate` y `negociacion.mate`, que las pruebas existentes comparan letra por letra. Hay que decidir primero si esas salidas se pueden cambiar.
 *Mirada: agentes · Esfuerzo: mediano · Estado: pendiente*
 
 **64. Guardar la conversación en un archivo**
 `--traza=conversacion.txt` deja la conversación en un archivo que se abre con el Bloc de notas, con un resumen al final.
-*Mirada: agentes · Esfuerzo: chico · Estado: pendiente*
+Nota al hacerla: con `--traza=archivo` la conversación no se muestra en pantalla, va al archivo. El resumen dice cuántos mensajes se entregaron, cuántos con `enviar`, cuántos con `preguntar` y cuántos fallaron. Mate no acepta un nombre terminado en `.mate` o `.py`, para no pisar un programa. Como la 63 quedó pendiente, los renglones del archivo son los mismos que muestra `--traza`.
+*Mirada: agentes · Esfuerzo: chico · Estado: hecha*
 
 **65. Aviso cuando una respuesta no tiene quién la reciba**
 Si un agente responde a un `enviar` del programa, hoy la respuesta desaparece. Mate va a avisar y sugerir `preguntar`.
+Nota (tanda 6): se programó y se deshizo. El ejemplo `mercado.mate` hace exactamente esto a propósito (el mismo `al recibir` sirve para un `enviar` del programa y para un `preguntar` de las pruebas), así que pasaba a mostrar un aviso en cada corrida. Antes de hacerla hay que decidir cómo distinguir ese uso, o cambiar el ejemplo.
 *Mirada: agentes · Esfuerzo: chico · Estado: pendiente*
 
 **66. El error de "ciclo de preguntas" muestra la cadena**
 "A → B → C → A", diciendo quién le preguntó a quién y en qué renglón.
-*Mirada: agentes · Esfuerzo: chico · Estado: pendiente*
+Nota al hacerla: el error sigue empezando con "ciclo de preguntas" y sigue diciendo quién "todavía está atendiendo otro mensaje"; en el medio trae la cadena y los renglones.
+*Mirada: agentes · Esfuerzo: chico · Estado: hecha*
 
 **67. Los errores dicen por dónde se llegó**
 "En precio (línea 2), llamada desde a (línea 4)" y, entre agentes, "se lo preguntó A (línea 16)".
-*Mirada: agentes, robustez · Esfuerzo: mediano · Estado: pendiente*
+Nota al hacerla: el recorrido aparece en un renglón aparte, "cómo se llegó: ...", debajo del renglón señalado (en `correr` y en `probar`). El texto del error no cambia, así que lo que ataja `si falla e` es lo mismo de antes. Si una función se llama a sí misma muchas veces, el recorrido se acorta con puntos suspensivos.
+*Mirada: agentes, robustez · Esfuerzo: mediano · Estado: hecha*
 
 **68. Responder algo que no es un mensaje a un `enviar` da un error con renglón**
 Hoy ese error llega tarde y sin número de línea.
-*Mirada: agentes · Esfuerzo: chico · Estado: pendiente*
+Nota al hacerla: el error ahora señala el renglón del `responder`. También lo trae el de "respondió X a Y, pero Y no tiene 'al recibir X'". Dos pruebas viejas comprobaban justamente que el error señalaba solo el `al recibir`: se actualizaron esos dos renglones.
+*Mirada: agentes · Esfuerzo: chico · Estado: hecha*
 
 **69. `lista de Tipo` en los contratos**
 `vendedores: lista de agente` o `items: lista de Pedido`, para que no pase una lista con cosas mezcladas.
-*Mirada: lenguaje, agentes · Esfuerzo: mediano · Estado: pendiente*
+Nota al hacerla: vale `lista de` cualquier tipo, también `lista de lista de numero`, y se puede marcar opcional (`lista de texto?`). Lo escrito a mano se revisa antes de correr; lo demás, al armar el mensaje, y el error dice en qué posición está lo que no corresponde.
+*Mirada: lenguaje, agentes · Esfuerzo: mediano · Estado: hecha*
 
 **70. Contrato de respuesta: `responde`**
 `mensaje Pedido { ... } responde Cotizacion` declara qué se contesta, y Mate lo controla del lado de quien responde.
-*Mirada: agentes, robustez · Esfuerzo: mediano · Estado: pendiente*
+Nota al hacerla: se puede declarar `responde` con un mensaje, un tipo común o una `lista de ...`. Responder otra cosa es una falla del que responde (su estado vuelve atrás) y el error señala su `responder`. Si lo que responde está escrito a mano, se avisa antes de correr. Un mensaje sin `responde` sigue aceptando cualquier respuesta.
+*Mirada: agentes, robustez · Esfuerzo: mediano · Estado: hecha*
 
 **71. `detalle(e)`: los datos de un error atajado**
 Devuelve el texto, el renglón, una clase de error que no cambia con la redacción, y el dato original de `fallar`.
-*Mirada: lenguaje, agentes, crítico · Esfuerzo: mediano · Estado: pendiente*
+Nota al hacerla: la función se llama `detalle_de(e)` y no `detalle(e)`, porque el ejemplo `equipo.mate` ya usa `detalle` como nombre de variable y una función incluida ocupa su nombre. Devuelve un mapa con `texto`, `linea`, `clase` y `dato`. Las clases son: fallar, asegurar, contrato, clave, posicion, division, nombre, numero, json, agente, ciclo y otro. `e` sigue siendo un texto.
+*Mirada: lenguaje, agentes, crítico · Esfuerzo: mediano · Estado: hecha*
 
 **72. `asegurar falla { ... }`**
 Una forma corta de escribir la prueba "esto tiene que fallar".
-*Mirada: agentes, robustez, crítico · Esfuerzo: chico · Estado: pendiente*
+Nota al hacerla: después de la llave se puede poner una coma y un texto propio. Igual que `intentar`, no cuenta como falla un `asegurar` de la prueba que no se cumple ni el freno de pasos. También funciona fuera de las pruebas.
+*Mirada: agentes, robustez, crítico · Esfuerzo: chico · Estado: hecha*
 
 **73. `simular`: reemplazar un agente en una prueba**
 Dentro de una prueba se puede decir "en esta prueba, Vendedor contesta esto". Deja listo el enchufe para probar sin un agente de IA real.
-*Mirada: agentes · Esfuerzo: mediano · Estado: pendiente*
+Nota al hacerla: se escribe `simular Vendedor al recibir Pedido como p { ... }` y solo va dentro de una prueba. Vale hasta que termina esa prueba. Lo simulado ve las variables de la prueba (no las puede cambiar), no ve el estado del agente y tiene que cumplir el contrato `responde`. Solo se simula un mensaje que el agente ya recibe. Suma una palabra al lenguaje: `simular`.
+*Mirada: agentes · Esfuerzo: mediano · Estado: hecha*
 
 **74. Copias de agentes con nombre único**
 No se pueden crear dos copias con el mismo nombre, las copias sobreviven al ida y vuelta por JSON, y el apodo acepta cualquier valor de texto.
-*Mirada: agentes, robustez · Esfuerzo: chico · Estado: pendiente*
+Nota al hacerla: dos copias con el mismo nombre son un error en el renglón del segundo `crear`; también en una prueba, si el programa ya había creado esa copia. El nombre después de `llamado` puede ser una cuenta de textos (`"Sucursal " + ciudad`) y no puede estar vacío.
+*Mirada: agentes, robustez · Esfuerzo: chico · Estado: hecha*
 
 **75. `de_json(texto, "Pedido")` exige el tipo**
 El que recibe datos de afuera puede pedir "esto tiene que ser un Pedido" y recibir un error claro si no lo es.
-*Mirada: agentes · Esfuerzo: chico · Estado: pendiente*
+Nota al hacerla: el segundo valor puede ser un mensaje, un tipo común o una `lista de ...`. Si se pide un mensaje y el texto trae un mapa suelto con esos campos, Mate arma el mensaje con ellos (así llegan los datos de programas que no conocen Mate).
+*Mirada: agentes · Esfuerzo: chico · Estado: hecha*
+
+### Lo que sigue
 
 **76. `enviar` a una lista de agentes**
 `enviar Aviso { ... } a [norte, sur]` le manda el mismo mensaje a cada uno.

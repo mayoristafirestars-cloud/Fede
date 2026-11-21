@@ -1322,7 +1322,8 @@ def test_la_respuesta_a_un_enviar_tiene_que_poder_recibirse():
         enviar Arrancar {} a Sordo
     """)
     assert interprete.errores_agentes == [
-        "Eco al recibir Ping: Eco respondió Pong a Sordo, pero Sordo no tiene 'al recibir Pong'"]
+        "Eco al recibir Ping (línea 5): Eco respondió Pong a Sordo, pero Sordo no tiene "
+        "'al recibir Pong'"]  # (mejora 68: ahora trae el renglón del 'responder')
 
 
 # ───────────── Correcciones de la revisión de las tandas 1 a 3 ─────────────
@@ -1631,9 +1632,9 @@ def test_responder_mal_o_no_responder_tambien_deja_al_agente_como_estaba():
     """)
     assert salida == ["0", "atajado", "0"]
     assert interprete.errores_agentes == [
-        "Caja al recibir Venta: a un 'enviar' solo se le responde con un mensaje"]
-    # el error señala al menos el 'al recibir' que estaba atendiendo
-    assert [int(linea) for linea, _ in interprete.errores_agentes_det] == [7]
+        "Caja al recibir Venta (línea 10): a un 'enviar' solo se le responde con un mensaje"]
+    # el error señala el renglón del 'responder' (mejora 68; antes, solo el 'al recibir')
+    assert [int(linea) for linea, _ in interprete.errores_agentes_det] == [10]
     assert len(interprete.cola) == 0
 
 
@@ -2497,3 +2498,554 @@ def test_el_readme_avisa_lo_que_cambio_en_la_tanda_5():
                   "`yo` y `remitente` fuera de un agente"]:
         assert frase in leeme, frase
     assert "no se puede escribir otro texto entre comillas" not in leeme
+
+
+# ── Tanda 6 ──
+
+# Mejora 62: 'probar' más prolijo
+
+def test_probar_no_mezcla_lo_que_muestra_cada_prueba(tmp_path, capsys):
+    codigo, out, err = por_main(tmp_path, capsys, """mostrar("arranca")
+prueba "una" { mostrar("adentro de una") }
+prueba "dos" {
+    mostrar("adentro de dos")
+    asegurar 1 == 2
+}
+""", orden="probar")
+    assert (codigo, err) == (1, "")
+    assert out.splitlines() == [
+        "arranca",
+        "  ✓ una",
+        "      | adentro de una",
+        "  ✗ dos",
+        "      | adentro de dos",
+        "      línea 5: no se cumplió lo asegurado: dio 1 y se esperaba 2",
+        "          5 |     asegurar 1 == 2",
+        "1 de 2 pruebas pasaron"]
+
+
+def test_probar_avisa_si_no_hay_pruebas(tmp_path, capsys):
+    codigo, out, err = por_main(tmp_path, capsys, 'mostrar("hola")\n', orden="probar")
+    assert (codigo, err) == (0, "")
+    assert out.splitlines()[0] == "hola"
+    assert "este archivo no tiene pruebas" in out and 'prueba "suma bien"' in out
+    assert "0 de 0" not in out
+
+
+def test_dos_pruebas_con_el_mismo_nombre_se_avisan_antes_de_correr(tmp_path, capsys):
+    codigo, out, err = por_main(
+        tmp_path, capsys, 'prueba "suma" { asegurar 1 == 1 }\nprueba "suma" { asegurar 2 == 2 }\n',
+        orden="probar")
+    assert codigo == 1 and out == ""
+    assert 'programa.mate:2: error: ya hay una prueba llamada "suma" (línea 1)' in err
+
+
+# Mejora 64: guardar la conversación en un archivo
+
+def test_traza_a_un_archivo_con_resumen(tmp_path, capsys):
+    destino = tmp_path / "conversacion.txt"
+    codigo = mate.main(["correr", str(RAIZ / "ejemplos" / "negociacion.mate"),
+                        f"--traza={destino}"])
+    out = capsys.readouterr().out
+    assert codigo == 0
+    # en pantalla queda solo lo que el programa muestra, y el aviso de dónde se guardó
+    assert out.splitlines() == ["Me cotizaron 10500 por 3 de yerba", "Cerramos en 9600.",
+                                f"La conversación quedó guardada en {destino}"]
+    guardado = destino.read_text(encoding="utf-8-sig").splitlines()
+    assert guardado[0].startswith("Conversación de ")
+    assert '  · Comprador pregunta a Vendedor: Pedido { producto: "yerba", cantidad: 3 }' in guardado
+    assert guardado[-1] == ("Resumen: 3 mensaje(s) entregado(s): 1 con 'enviar' y 2 con "
+                            "'preguntar'. Ninguno falló.")
+
+
+def test_traza_a_un_archivo_cuenta_las_fallas_y_no_pisa_programas(tmp_path, capsys):
+    destino = tmp_path / "c.txt"
+    codigo, out, err = por_main(tmp_path, capsys, """mensaje Ping
+agente Roto { al recibir Ping { fallar "me rompí" } }
+enviar Ping {} a Roto
+""", f"--traza={destino}")
+    assert codigo == 1 and "me rompí" in err
+    assert destino.read_text(encoding="utf-8-sig").splitlines()[-1].endswith("Fallaron 1.")
+    for malo in ("--traza=programa.mate", "--traza=mate.py", "--traza="):
+        codigo, out, err = por_main(tmp_path, capsys, "mostrar(1)\n", malo)
+        assert (codigo, out) == (2, "") and "--traza=conversacion.txt" in err
+
+
+# Mejora 65 (aviso cuando una respuesta no tiene quién la reciba): quedó pendiente. El
+# ejemplo mercado.mate responde a un 'enviar' del programa a propósito, y no debe avisar.
+
+def test_responder_a_un_enviar_del_programa_sigue_sin_molestar(capsys):
+    assert mate.main(["correr", str(RAIZ / "ejemplos" / "mercado.mate")]) == 0
+    assert capsys.readouterr().err == ""
+
+
+# Mejora 66: el ciclo de preguntas muestra la cadena
+
+def test_el_ciclo_de_preguntas_muestra_la_cadena():
+    error = falla("""mensaje Ir
+agente A { al recibir Ir { responder preguntar Ir {} a B } }
+agente B { al recibir Ir { responder preguntar Ir {} a C } }
+agente C { al recibir Ir { responder preguntar Ir {} a A } }
+preguntar Ir {} a A""")
+    assert error.mensaje == (
+        "ciclo de preguntas: A → B → C → A. A le preguntó a B (línea 2), B le preguntó a C "
+        "(línea 3), C le preguntó a A (línea 4), y A todavía está atendiendo otro mensaje")
+    solo = falla("mensaje Ir\nagente A { al recibir Ir { responder preguntar Ir {} a yo } }\n"
+                 "preguntar Ir {} a A")
+    assert "ciclo de preguntas: A → A. A le preguntó a A (línea 2)" in solo.mensaje
+
+
+# Mejora 67: los errores dicen por dónde se llegó
+
+CAMINO = """funcion dividir(a, b) {
+    devolver a / b
+}
+funcion precio(x) {
+    devolver dividir(10, x)
+}
+mensaje Pedir
+agente Caja { al recibir Pedir { responder precio(0) } }
+"""
+
+
+def test_el_error_dice_por_donde_se_llego(tmp_path, capsys):
+    codigo, _, err = por_main(tmp_path, capsys, CAMINO + "mostrar(precio(0))\n")
+    assert codigo == 1
+    assert err.splitlines() == [
+        f"{tmp_path / 'programa.mate'}:2: error: división por cero",
+        "    2 |     devolver a / b",
+        "    cómo se llegó: en dividir(), llamada desde precio() (línea 5), llamada desde "
+        "la línea 9"]
+
+
+def test_el_camino_tambien_nombra_al_que_pregunto(tmp_path, capsys):
+    codigo, _, err = por_main(tmp_path, capsys, CAMINO + """mensaje Ir
+agente Jefe { al recibir Ir { responder preguntar Pedir {} a Caja } }
+mostrar(preguntar Ir {} a Jefe)
+""")
+    assert codigo == 1
+    assert err.splitlines()[2] == (
+        "    cómo se llegó: en dividir(), llamada desde precio() (línea 5), llamada desde la "
+        "línea 8, se lo preguntó Jefe a Caja (línea 10), se lo preguntó el programa a Jefe "
+        "(línea 11)")
+
+
+def test_el_camino_en_las_pruebas_y_sin_camino_no_se_agrega_nada(tmp_path, capsys):
+    codigo, out, _ = por_main(tmp_path, capsys, CAMINO + 'prueba "precio" { asegurar '
+                              'precio(0) == 1 }\n', orden="probar")
+    assert codigo == 1
+    assert "          cómo se llegó: en dividir(), llamada desde precio() (línea 5), " \
+        "llamada desde la línea 9" in out
+    codigo, _, err = por_main(tmp_path, capsys, "mostrar(1 / 0)\n")
+    assert "cómo se llegó" not in err
+    # el texto del error atajado no cambia: el camino va aparte
+    assert correr(CAMINO + "intentar { precio(0) } si falla e { mostrar(e) }")[0] == [
+        "división por cero"]
+
+
+def test_el_camino_de_una_funcion_que_se_llama_mil_veces_es_corto(tmp_path, capsys):
+    codigo, _, err = por_main(tmp_path, capsys, """funcion bajar(n) {
+    si n == 0 { fallar "llegué" }
+    bajar(n - 1)
+}
+bajar(30)
+""")
+    assert codigo == 1
+    camino = err.splitlines()[2]
+    assert camino.count("bajar()") <= 6 and "..., " in camino and camino.endswith("línea 5")
+
+
+# Mejora 68: responder mal a un 'enviar' señala el renglón del 'responder'
+
+def test_responder_algo_que_no_es_mensaje_a_un_enviar_dice_el_renglon(tmp_path, capsys):
+    codigo, _, err = por_main(tmp_path, capsys, """mensaje Venta
+mensaje Arrancar
+agente Caja {
+    al recibir Venta {
+        responder 5
+    }
+}
+agente Cliente { al recibir Arrancar { enviar Venta {} a Caja } }
+enviar Arrancar {} a Cliente
+""")
+    assert codigo == 1
+    assert err.splitlines() == [
+        f"{tmp_path / 'programa.mate'}:5: error: Caja al recibir Venta: a un 'enviar' solo se "
+        "le responde con un mensaje",
+        "    5 |         responder 5"]
+
+
+# Mejora 69: 'lista de Tipo' en los contratos
+
+LISTAS = """
+mensaje Item { nombre: texto, cantidad: numero }
+mensaje Pedido { items: lista de Item, notas: lista de texto? }
+mensaje Reparto { vendedores: lista de agente, tablas: lista de lista de numero }
+agente Deposito {
+    al recibir Pedido como p { responder largo(p.items) }
+    al recibir Reparto como r { responder largo(r.vendedores) }
+}
+sea yerba = Item { nombre: "yerba", cantidad: 2 }
+"""
+
+
+def test_lista_de_tipo_acepta_lo_que_cumple():
+    salida, _ = correr(LISTAS + """
+        mostrar(preguntar Pedido { items: [yerba, yerba], notas: ["urgente"] } a Deposito)
+        mostrar(preguntar Pedido { items: [] } a Deposito)
+        mostrar(preguntar Reparto { vendedores: [Deposito], tablas: [[1, 2], []] } a Deposito)
+        mostrar(de_json(a_json(Pedido { items: [yerba] })).items[0].nombre)
+    """)
+    assert salida == ["2", "0", "1", "yerba"]
+
+
+def test_lista_de_tipo_rechaza_una_lista_con_cosas_mezcladas():
+    assert falla(LISTAS + "sea mezcla = [yerba, 3]\nmostrar(Pedido { items: mezcla })").mensaje == (
+        "Pedido.items es de tipo lista de Item y recibió una lista que en la posición 1 "
+        "tiene un número")
+    assert falla(LISTAS + 'sea n = 4\nmostrar(Pedido { items: n })').mensaje == (
+        "Pedido.items es de tipo lista de Item y recibió numero")
+    assert "en la posición 0 tiene una lista" in falla(
+        LISTAS + 'sea t = [[1, "a"]]\nmostrar(Reparto { vendedores: [], tablas: t })').mensaje
+    assert "JSON" not in falla(
+        LISTAS + 'mostrar(de_json("{\\"tipo\\": \\"Pedido\\", \\"campos\\": '
+                 '{\\"items\\": [1]}}"))').mensaje
+
+
+def test_lista_de_tipo_se_revisa_antes_de_correr():
+    programa = mate.analizar(LISTAS + """
+        mensaje Raro { xs: lista de Fantasma }
+        enviar Pedido { items: [yerba, "suelto"] } a Deposito
+        enviar Pedido { items: 5 } a Deposito
+        enviar Pedido { items: [yerba, Item { nombre: "a", cantidad: 1 }] } a Deposito
+    """)
+    assert [t for _, t in mate.verificar(programa)] == [
+        "Raro.xs: no existe el tipo 'Fantasma'",
+        "Pedido.items es de tipo lista de Item, y adentro de la lista hay un valor de tipo texto",
+        "Pedido.items es de tipo lista de Item, no numero"]
+
+
+# Mejora 70: contrato de respuesta con 'responde'
+
+RESPONDE = """
+mensaje Cotizacion { total: numero }
+mensaje Pedido { cantidad: numero } responde Cotizacion
+mensaje Precios responde lista de numero
+agente Vendedor {
+    estado ventas = 0
+    al recibir Pedido como p {
+        ventas += 1
+        sea total = p.cantidad * 100
+        si p.cantidad > 10 { responder total }
+        responder Cotizacion { total: total }
+    }
+    al recibir Precios { responder [100, 200] }
+}
+"""
+
+
+def test_responde_controla_lo_que_contesta_el_agente():
+    salida, _ = correr(RESPONDE + """
+        mostrar(preguntar Pedido { cantidad: 2 } a Vendedor)
+        mostrar(preguntar Precios {} a Vendedor)
+        intentar { preguntar Pedido { cantidad: 20 } a Vendedor } si falla e { mostrar(e) }
+    """)
+    assert salida == [
+        "Cotizacion { total: 200 }", "[100, 200]",
+        "Vendedor respondió numero a 'Pedido', y el contrato dice que a Pedido se le "
+        "responde Cotizacion"]
+
+
+def test_responder_fuera_de_contrato_es_falla_del_que_responde(tmp_path, capsys):
+    # la falla es del vendedor: su estado vuelve atrás y el error señala su 'responder'
+    codigo, out, err = por_main(tmp_path, capsys, RESPONDE + """mensaje Cuantas
+agente Espia { al recibir Cuantas { responder 0 } }
+mostrar(preguntar Pedido { cantidad: 20 } a Vendedor)
+""")
+    assert codigo == 1 and out == ""
+    assert err.splitlines()[:2] == [
+        f"{tmp_path / 'programa.mate'}:10: error: Vendedor respondió numero a 'Pedido', y el "
+        "contrato dice que a Pedido se le responde Cotizacion",
+        "    10 |         si p.cantidad > 10 { responder total }"]
+
+
+def test_responde_se_revisa_antes_de_correr():
+    programa = mate.analizar("""mensaje Cotizacion { total: numero }
+mensaje Pedido responde Cotizacion
+mensaje Otro responde Fantasma
+mensaje Nombres responde lista de texto
+agente Vendedor {
+    al recibir Pedido { responder "cien" }
+    al recibir Nombres { responder ["a", 1] }
+}""")
+    assert mate.verificar(programa) == [
+        (3, "Otro responde 'Fantasma', que no es un tipo ni un mensaje declarado"),
+        (6, "Vendedor responde texto a 'Pedido', y el contrato dice que a Pedido se le "
+            "responde Cotizacion"),
+        (7, "Vendedor responde una lista con un valor de tipo numero a 'Nombres', y el "
+            "contrato dice que a Nombres se le responde lista de texto")]
+    # sin 'responde' todo sigue como antes: se puede contestar cualquier cosa
+    assert correr("mensaje Ping\nagente A { al recibir Ping { responder 1 } }\n"
+                  "mostrar(preguntar Ping {} a A)")[0] == ["1"]
+
+
+# Mejora 71: detalle_de(e), los datos de un error atajado
+
+def test_detalle_de_un_error_atajado():
+    salida, _ = correr("""funcion vender(producto) {
+    fallar { codigo: 404, producto: producto }
+}
+intentar {
+    vender("café")
+} si falla e {
+    sea d = detalle_de(e)
+    mostrar(d.clase, d.linea, d.dato.codigo, d.dato.producto)
+    mostrar(d.texto == e, tipo(e), e + "!")
+}""")
+    assert salida == ['fallar 2 404 café', "verdadero texto {codigo: 404, producto: \"café\"}!"]
+
+
+@pytest.mark.parametrize("codigo,clase", [
+    ("fallar nada", "fallar"),
+    ("asegurar 1 == 2", "asegurar"),
+    ('sea m = { a: 1 }\nmostrar(m["b"])', "clave"),
+    ("sea m = { a: 1 }\nmostrar(m.b)", "clave"),
+    ("mostrar([1, 2][5])", "posicion"),
+    ("mostrar(1 / 0)", "division"),
+    ("mostrar(no_existe)", "nombre"),
+    ('mostrar(numero("abc"))', "numero"),
+    ('mostrar(de_json("[1,"))', "json"),
+    ("sea n = \"x\"\nmostrar(Sumar { a: n, b: 1 })", "contrato"),
+    ("sea quien = [Calculadora]\npreguntar Ping {} a quien[0]", "agente"),
+    ("preguntar Sumar { a: 1, b: 2 } a Tercero", "ciclo"),
+    ('mostrar("a" + 1)', "otro"),
+])
+def test_la_clase_del_error_no_depende_de_la_redaccion(codigo, clase):
+    salida, _ = correr(AGENTES + """
+        mensaje Vuelta
+        agente Tercero { al recibir Sumar como s { responder preguntar Sumar { a: 1, b: 1 } a yo } }
+        intentar {
+        """ + codigo + """
+        } si falla e { mostrar(detalle_de(e).clase, detalle_de(e).dato) }""")
+    assert salida == [f"{clase} nada"]
+
+
+def test_el_detalle_viaja_con_el_error_y_e_sigue_siendo_un_texto():
+    salida, _ = correr("""mensaje Pedir
+agente Caja { al recibir Pedir { fallar ["sin stock", 3] } }
+var guardado = ""
+intentar { preguntar Pedir {} a Caja } si falla e { guardado = e }
+mostrar(detalle_de(guardado).dato[1], guardado == "[\\"sin stock\\", 3]")
+mostrar(tiene(guardado, "stock"), largo(guardado), a_json(guardado) == a_json(texto(guardado)))""")
+    assert salida == ["3 verdadero", "verdadero 16 verdadero"]
+    error = falla('mostrar(detalle_de("un texto cualquiera"))')
+    assert "espera el error que ataja 'si falla e'" in error.mensaje and "un texto" in error.mensaje
+    assert "función incluida" in falla("sea detalle_de = 1").mensaje
+
+
+# Mejora 72: asegurar falla { ... }
+
+def test_asegurar_falla_pasa_si_lo_de_adentro_falla(tmp_path, capsys):
+    codigo, out, err = por_main(tmp_path, capsys, """funcion dividir(a, b) { devolver a / b }
+prueba "dividir por cero falla" {
+    asegurar falla { dividir(1, 0) }
+}
+prueba "esto no falla" {
+    asegurar falla { dividir(4, 2) }
+}
+prueba "con mensaje propio" {
+    asegurar falla { dividir(4, 2) }, "tenía que frenar la división"
+}
+prueba "un asegurar de adentro no cuenta como falla" {
+    asegurar falla { asegurar 1 == 2 }
+}
+""", orden="probar")
+    assert (codigo, err) == (1, "")
+    renglones = out.splitlines()
+    assert renglones[0] == "  ✓ dividir por cero falla"
+    assert renglones[1:3] == ["  ✗ esto no falla",
+                              "      línea 6: se esperaba que esto fallara, y no falló"]
+    assert "      línea 9: tenía que frenar la división" in renglones
+    assert "      línea 12: no se cumplió lo asegurado: dio 1 y se esperaba 2" in renglones
+    assert renglones[-1] == "1 de 4 pruebas pasaron"
+
+
+def test_asegurar_falla_tambien_vale_fuera_de_las_pruebas():
+    assert correr('asegurar falla { fallar "x" }\nmostrar("sigue")')[0] == ["sigue"]
+    assert "no falló" in falla("asegurar falla { mostrar(1) }").mensaje
+    # lo que se define adentro no queda afuera, y el freno no se ataja
+    assert "no existe 'x'" in falla("asegurar falla {\nsea x = 1\nfallar 2\n}\nmostrar(x)").mensaje
+    assert "asegurar total == 10" in falla("asegurar\nfalla { }").mensaje
+
+
+# Mejora 73: 'simular', reemplazar un agente en una prueba
+
+SIMULAR = """mensaje Cotizacion { total: numero }
+mensaje Pedido { cantidad: numero } responde Cotizacion
+mensaje Comprar { cantidad: numero }
+agente Vendedor {
+    estado atendidos = 0
+    al recibir Pedido como p {
+        atendidos += 1
+        responder Cotizacion { total: p.cantidad * 3500 }
+    }
+}
+agente Comprador {
+    al recibir Comprar como c {
+        sea cot = preguntar Pedido { cantidad: c.cantidad } a Vendedor
+        responder cot.total
+    }
+}
+"""
+
+
+def test_simular_reemplaza_la_respuesta_solo_en_esa_prueba():
+    resultados = probar(SIMULAR + """
+prueba "con el vendedor simulado" {
+    sea precio = 10
+    simular Vendedor al recibir Pedido como p {
+        responder Cotizacion { total: p.cantidad * precio }
+    }
+    asegurar preguntar Comprar { cantidad: 2 } a Comprador == 20
+}
+prueba "la prueba siguiente ve al vendedor de verdad" {
+    asegurar preguntar Comprar { cantidad: 2 } a Comprador == 7000
+}
+prueba "el simulado puede fallar, y vale para una copia" {
+    sea otro = crear Vendedor llamado "Otro"
+    simular otro al recibir Pedido { fallar "cerrado" }
+    asegurar falla { preguntar Pedido { cantidad: 1 } a otro }
+    asegurar (preguntar Pedido { cantidad: 1 } a Vendedor).total == 3500
+}
+""")
+    assert resultados == {"con el vendedor simulado": None,
+                          "la prueba siguiente ve al vendedor de verdad": None,
+                          "el simulado puede fallar, y vale para una copia": None}
+
+
+def test_simular_respeta_el_contrato_y_no_toca_lo_de_la_prueba():
+    resultados = probar(SIMULAR + """
+prueba "fuera de contrato" {
+    sea mal = "caro"
+    simular Vendedor al recibir Pedido { responder mal }
+    mostrar(preguntar Comprar { cantidad: 2 } a Comprador)
+}
+prueba "no cambia variables de la prueba" {
+    var veces = 0
+    simular Vendedor al recibir Pedido {
+        veces += 1
+        responder Cotizacion { total: 1 }
+    }
+    mostrar(preguntar Comprar { cantidad: 2 } a Comprador)
+}
+""")
+    assert "Vendedor respondió texto a 'Pedido'" in resultados["fuera de contrato"]
+    assert "Vendedor no puede modificar 'veces'" in resultados["no cambia variables de la prueba"]
+
+
+def test_simular_solo_va_en_una_prueba_y_se_revisa_antes():
+    assert "'simular' solo va dentro de una prueba" in falla(
+        SIMULAR + "simular Vendedor al recibir Pedido { responder 1 }").mensaje
+    assert "'simular' solo va dentro de una prueba" in falla(
+        SIMULAR + 'prueba "x" {\nfuncion f() { simular Vendedor al recibir Pedido { fallar 1 } }\n}'
+    ).mensaje
+    assert "'al recibir'" in falla(SIMULAR + 'prueba "x" { simular Vendedor Pedido { } }').mensaje
+    programa = mate.analizar(SIMULAR + """prueba "x" {
+    simular Vendedor al recibir Comprar { responder 1 }
+    simular Vendedor al recibir Fantasma { responder 1 }
+    simular Vendedor al recibir Pedido { responder "barato" }
+}""")
+    assert [t for _, t in mate.verificar(programa)] == [
+        "Vendedor no sabe recibir 'Comprar': solo se simula un mensaje que el agente ya recibe",
+        "no existe el mensaje 'Fantasma'",
+        "Vendedor responde texto a 'Pedido', y el contrato dice que a Pedido se le responde "
+        "Cotizacion"]
+    assert "palabra propia de Mate" in falla("sea simular = 1").mensaje
+
+
+# Mejora 74: copias de agentes con nombre único
+
+def test_dos_copias_no_pueden_llamarse_igual():
+    error = falla(AGENTES + 'sea a = crear Calculadora llamado "Norte"\n'
+                            'sea b = crear Calculadora llamado "Norte"')
+    assert error.mensaje.startswith('ya hay un Calculadora llamado "Norte"') and error.linea == 16
+    assert "no puede estar vacío" in falla(AGENTES + 'sea a = crear Calculadora llamado " "').mensaje
+    # sin nombre, o con nombres distintos, no hay problema; y cada prueba empieza limpia
+    salida, _ = correr(AGENTES + """
+        sea sucursales = ["Norte", "Sur"]
+        para s en sucursales { mostrar(crear Calculadora llamado "Sucursal " + s { usos: 3 }) }
+        mostrar(crear Calculadora, crear Calculadora llamado sucursales[0])
+    """)
+    assert salida == ["Calculadora Sucursal Norte", "Calculadora Sucursal Sur",
+                      "Calculadora#4 Calculadora Norte"]
+    assert probar(AGENTES + 'prueba "una" { mostrar(crear Calculadora llamado "X") }\n'
+                            'prueba "otra" { mostrar(crear Calculadora llamado "X") }') == {
+        "una": None, "otra": None}
+
+
+def test_las_copias_sobreviven_al_ida_y_vuelta_por_json():
+    salida, _ = correr(AGENTES + """
+        mensaje Reparto { quienes: lista de agente }
+        sea norte = crear Calculadora llamado "Norte" { usos: 7 }
+        sea sin_nombre = crear Calculadora
+        sea t = a_json(Reparto { quienes: [norte, sin_nombre, Calculadora] })
+        sea vuelta = de_json(t)
+        mostrar(vuelta.quienes == [norte, sin_nombre, Calculadora])
+        mostrar(preguntar Contar {} a vuelta.quienes[0])
+        mostrar(tipo(de_json("\\{\\"agente\\": \\"Calculadora Fantasma\\"\\}")))
+    """)
+    assert salida == ["verdadero", "7", "mapa"]
+
+
+# Mejora 75: de_json(texto, "Pedido") exige el tipo
+
+def test_de_json_con_tipo_exige_ese_tipo():
+    salida, _ = correr(AGENTES + """
+        sea t = a_json(Sumar { a: 1, b: 2 })
+        mostrar(de_json(t, "Sumar"), de_json("[1, 2]", "lista de numero"), de_json("3", "numero"))
+        mostrar(de_json("\\{\\"a\\": 5, \\"b\\": 6\\}", "Sumar"))
+        para caso in [["[1, 2]", "Sumar"], [t, "Resultado"], [t, "mapa"],
+                      ["[1, \\"x\\"]", "lista de numero"], ["\\{\\"a\\": 5\\}", "Sumar"],
+                      ["1", "Sumarr"], ["\\{\\"a\\": \\"x\\", \\"b\\": 1\\}", "Sumar"]] {
+            intentar { mostrar(de_json(caso[0], caso[1])) } si falla e {
+                mostrar("{detalle_de(e).clase}: {e}")
+            }
+        }
+    """.replace("para caso in", "para caso en"))
+    assert salida == [
+        "Sumar { a: 1, b: 2 } [1, 2] 3",
+        "Sumar { a: 5, b: 6 }",
+        "contrato: de_json(): se esperaba Sumar y el texto trae lista",
+        "contrato: de_json(): se esperaba Resultado y el texto trae Sumar",
+        "contrato: de_json(): se esperaba mapa y el texto trae Sumar",
+        "contrato: de_json(): se esperaba lista de numero y el texto trae una lista que en "
+        "la posición 1 tiene un texto",
+        "contrato: a Sumar le falta el campo 'b'",
+        "otro: de_json(): no existe el tipo 'Sumarr'. ¿Quisiste decir 'Sumar'?",
+        "contrato: Sumar.a es de tipo numero y recibió texto"]
+    assert correr('mostrar(de_json("[1]"))')[0] == ["[1]"]  # sin tipo, como siempre
+
+
+def test_el_readme_cuenta_lo_de_la_tanda_6(tmp_path, capsys):
+    leeme = (RAIZ / "README.md").read_text(encoding="utf-8")
+    for frase in ["`--traza=conversacion.txt`", "cómo se llegó: en dividir()", "lista de Pedido",
+                  "responde Cotizacion", "detalle_de(e).clase", "asegurar falla { dividir(1, 0) }",
+                  "simular Vendedor al recibir Pedido como p", 'de_json(texto, "Pedido")',
+                  "ciclo de preguntas: A → B → C → A", "no se repite"]:
+        assert frase in leeme, frase
+    # los dos ejemplos de pruebas del README andan tal cual están escritos
+    bloques = re.findall(r"(?m)^  ```\n(  prueba .*?)^  ```", leeme, re.S)
+    assert len(bloques) == 2
+    programa = """funcion dividir(a, b) { devolver a / b }
+mensaje Cotizacion { total: numero }
+mensaje Pedido { cantidad: numero } responde Cotizacion
+mensaje Comprar { cantidad: numero }
+agente Vendedor { al recibir Pedido como p { responder Cotizacion { total: 0 } } }
+agente Comprador {
+    al recibir Comprar como c {
+        responder (preguntar Pedido { cantidad: c.cantidad } a Vendedor).total
+    }
+}
+""" + "\n".join(re.sub(r"(?m)^  ", "", b) for b in bloques)
+    codigo, out, err = por_main(tmp_path, capsys, programa, orden="probar")
+    assert (codigo, err) == (0, "") and out.endswith("2 de 2 pruebas pasaron\n")

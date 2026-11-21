@@ -3,7 +3,8 @@
 los agentes se hablen entre ellos con mensajes que tienen contrato.
 
 Uso:
-    python3 mate.py correr    archivo.mate [--traza] [--sin-limite] [--depurar]
+    python3 mate.py correr    archivo.mate [--traza] [--traza=conversacion.txt]
+                                           [--sin-limite] [--depurar]
     python3 mate.py probar    archivo.mate
     python3 mate.py verificar archivo.mate
     python3 mate.py guia
@@ -27,7 +28,7 @@ PALABRAS = {
     "y", "o", "no", "verdadero", "falso", "nada", "mensaje", "agente", "estado",
     "al", "recibir", "como", "enviar", "preguntar", "responder", "fallar",
     "intentar", "falla", "asegurar", "prueba", "remitente", "yo", "crear", "usar",
-    "romper", "continuar",
+    "romper", "continuar", "simular",
 }
 
 TIPOS_BASE = {"numero", "texto", "logico", "lista", "mapa", "agente", "cualquiera"}
@@ -84,7 +85,10 @@ FUNCIONES = {
     "empieza_con": (2, 2, 'empieza_con(t, "Sr.")', "verdadero si el texto empieza así"),
     "termina_con": (2, 2, 'termina_con(t, ".txt")', "verdadero si el texto termina así"),
     "a_json": (1, 1, "a_json(valor)", "el valor escrito como texto JSON"),
-    "de_json": (1, 1, "de_json(texto)", "el valor que describe ese texto JSON"),
+    "de_json": (1, 2, 'de_json(texto, "Pedido")',
+                "el valor que describe ese JSON; el 2.º valor (opcional) exige ese tipo"),
+    "detalle_de": (1, 1, "detalle_de(e)",
+                   "los datos de un error atajado: un mapa con texto, linea, clase y dato"),
 }
 
 
@@ -130,11 +134,16 @@ class ErrorMate(Exception):
     'falla' (lo común, se puede atajar con 'intentar'), 'asegurar' (un 'asegurar' que
     no se cumplió: dentro de una prueba no se ataja) o 'limite' (el freno: no se ataja)."""
 
-    def __init__(self, mensaje, linea=None, clase="falla"):
+    def __init__(self, mensaje, linea=None, clase="falla", familia=None, dato=None):
         super().__init__(mensaje)
         self.mensaje = mensaje
         self.linea = linea
         self.clase = clase
+        # Para detalle_de(e): de qué familia es el error (no cambia con la redacción) y,
+        # si salió de un 'fallar', el valor que le dieron.
+        self.familia = familia or ("asegurar" if clase == "asegurar" else "otro")
+        self.dato = dato
+        self.camino = []  # por dónde se llegó: las funciones y las preguntas de por medio
 
 
 def sin_tildes(texto):
@@ -398,6 +407,7 @@ class Parser:
         self.i = 0
         # Para avisar de 'devolver' y 'responder' fuera de lugar antes de correr.
         self.en_funcion = self.en_recibir = self.en_agente = self.en_bucle = 0
+        self.en_prueba = 0
         self.abiertos = 0  # paréntesis, corchetes o llaves de un valor sin cerrar
         # Los nombres que el programa le pone a algo: si alguien llama 'def' o 'Crear' a
         # una variable o función suya, no se le da la pista de "en Mate se escribe...".
@@ -597,7 +607,13 @@ class Parser:
             if val == "prueba":
                 self.tomar()
                 nombre = self.espera("str", que="el nombre de la prueba")[1]
-                return ("prueba", ln, nombre, self.bloque())
+                self.en_prueba += 1
+                try:
+                    return ("prueba", ln, nombre, self.bloque())
+                finally:
+                    self.en_prueba -= 1
+            if val == "simular":
+                return self.simular()
             if val == "enviar":
                 self.tomar()
                 self.en_su_renglon(val, ln, "enviar Aviso { ... } a Agente")
@@ -624,6 +640,11 @@ class Parser:
             if val == "asegurar":
                 self.tomar()
                 self.en_su_renglon(val, ln, "asegurar total == 10")
+                if self.es("kw", "falla"):  # asegurar falla { ... }: esto tiene que fallar
+                    self.tomar()
+                    cuerpo = self.bloque()
+                    msg = self.expr() if self.acepta("op", ",") else None
+                    return ("asegurar_falla", ln, cuerpo, msg)
                 cond = self.expr()
                 self.pista_de_igual()
                 msg = self.expr() if self.acepta("op", ",") else None
@@ -642,6 +663,26 @@ class Parser:
                     raise ErrorMate(NO_ASIGNABLE, ln)
                 return ("asignar", ln, e, ("bin", ln, atajo[0], e, self.expr()))
         return ("expr", ln, e)
+
+    def simular(self):
+        """simular Vendedor al recibir Pedido como p { responder ... }: en lo que queda de
+        la prueba, ese agente contesta eso."""
+        ln = self.tomar()[2]
+        if not self.en_prueba or self.en_funcion or self.en_recibir:
+            raise ErrorMate("'simular' solo va dentro de una prueba", ln)
+        ejemplo = "simular Vendedor al recibir Pedido como p { responder ... }"
+        self.en_su_renglon("simular", ln, ejemplo)
+        agente = self.postfijo()
+        self.espera("kw", "al", que=f"'al recibir' ({ejemplo})")
+        self.espera("kw", "recibir", que=f"'al recibir' ({ejemplo})")
+        tipo = self.espera("id", que="un tipo de mensaje")[1]
+        var = self.nombre_nuevo() if self.acepta("kw", "como") else None
+        self.en_recibir += 1
+        try:
+            cuerpo = self.aparte()
+        finally:
+            self.en_recibir -= 1
+        return ("simular", ln, agente, tipo, var, cuerpo)
 
     def vuelta(self):
         """El bloque de un 'mientras' o un 'para': adentro valen 'romper' y 'continuar'."""
@@ -690,13 +731,25 @@ class Parser:
             while not self.es("op", "}"):
                 campo = self.nombre_de_campo()
                 self.espera("op", ":")
-                tipo = (self.acepta("kw", "agente") or self.espera("id", que="un tipo"))[1]
+                tipo = self.tipo_de_campo()
                 opcional = bool(self.acepta("op", "?"))
                 campos.append((campo, tipo, opcional))
                 if not self.acepta("op", ","):
                     break
             self.espera("op", "}")
-        return ("mensaje", ln, nombre, campos)
+        responde = None  # mensaje Pedido { ... } responde Cotizacion
+        if self.es("id", "responde") and self.ver()[2] == self.linea_previa():
+            self.tomar()
+            responde = self.tipo_de_campo()
+        return ("mensaje", ln, nombre, campos, responde)
+
+    def tipo_de_campo(self):
+        """numero, texto, Pedido... o 'lista de' cualquiera de esos."""
+        tipo = (self.acepta("kw", "agente") or self.espera("id", que="un tipo"))[1]
+        if tipo == "lista" and self.es("id", "de"):
+            self.tomar()
+            return "lista de " + self.tipo_de_campo()
+        return tipo
 
     def nombre_propio(self, que):
         tk = self.espera("id", que=f"el nombre del {que}")
@@ -866,7 +919,7 @@ class Parser:
                 apodo, pares = None, []
                 if self.es("id", "llamado"):
                     self.tomar()
-                    apodo = self.primario()
+                    apodo = self.suma()  # cualquier texto: "Sucursal " + nombre
                 if self.es("op", "{") and self.ver()[2] == self.linea_previa():
                     self.tomar()
                     pares = self.pares(False)
@@ -1055,6 +1108,8 @@ def _ligaduras(programa):
                 anotar(parametro)
         elif _es_nodo(n, "intentar", 5):
             anotar(n[3])
+        elif _es_nodo(n, "simular", 6):
+            anotar(n[4])
         elif _es_nodo(n, "agente", 6):
             anotar(n[2])
             for _, nombre, _ in n[3]:
@@ -1081,6 +1136,23 @@ def _nombra(n, nombres):
         return ((_es_nodo(n, "nombre", 3) and n[2] in nombres)
                 or any(_nombra(x, nombres) for x in n))
     return False
+
+
+def literal_que_no_cumple(e, tipo):
+    """Si ese valor escrito a mano seguro no es de ese tipo, dice de qué tipo es (y si el
+    problema está adentro de una lista): (tipo, adentro). Si cumple o no se sabe, None."""
+    real = e[2] if e[0] == "ctor" else _LITERALES.get(e[0])
+    if not real or tipo == "cualquiera":
+        return None
+    if not tipo.startswith("lista de "):
+        return (real, False) if real != tipo else None
+    if real != "lista":
+        return (real, False)
+    for x in e[2]:
+        malo = literal_que_no_cumple(x, tipo[len("lista de "):])
+        if malo:
+            return (malo[0], True)
+    return None
 
 
 def repetidos(nombres):
@@ -1117,6 +1189,14 @@ def verificar(programa):
                 buscar_copias(x)
 
     buscar_copias(programa)
+    pruebas = {}
+    for s in programa:
+        if s[0] == "prueba":
+            if s[2] in pruebas:
+                errores.append((s[1], f'ya hay una prueba llamada "{s[2]}" (línea '
+                                      f"{pruebas[s[2]]}): poneles nombres distintos, así se "
+                                      "sabe cuál es la que falla"))
+            pruebas.setdefault(s[2], s[1])
     for s in programa:
         if s[0] == "mensaje":
             if s[2] in mensajes or s[2] in agentes:
@@ -1129,16 +1209,45 @@ def verificar(programa):
             estados[s[2]] = {e[1]: e[2] for e in s[3]}
             declarados[s[2]] = s
 
+    def respuestas_de(agente, tipo, cuerpo):
+        """Los 'responder' con un valor escrito a mano que no cumple el contrato."""
+        esperado = mensajes[tipo][4] if tipo in mensajes else None
+
+        def mirar(n):
+            if isinstance(n, list):
+                for x in n:
+                    mirar(x)
+            elif isinstance(n, tuple):
+                if _es_nodo(n, "responder", 3) and isinstance(n[2], tuple):
+                    malo = literal_que_no_cumple(n[2], esperado)
+                    if malo:
+                        que = f"una lista con un valor de tipo {malo[0]}" if malo[1] else malo[0]
+                        errores.append((n[1], (
+                            f"{agente} responde {que} a '{tipo}', y el contrato dice "
+                            f"que a {tipo} se le responde {esperado}")))
+                for x in n:
+                    mirar(x)
+
+        if esperado:
+            mirar(cuerpo)
+
     for s in mensajes.values():
         vistos = set()
         for campo, tipo, _ in s[3]:
             if campo in vistos:
                 errores.append((s[1], f"{s[2]}: el campo '{campo}' está repetido"))
             vistos.add(campo)
+            tipo = tipo.rsplit(" de ", 1)[-1]  # de 'lista de Pedido' importa 'Pedido'
             if tipo not in TIPOS_BASE and tipo not in mensajes:
                 errores.append((s[1], con_pista(
                     f"{s[2]}.{campo}: no existe el tipo '{tipo}'", tipo,
                     sorted(TIPOS_BASE) + list(mensajes))))
+        if s[4]:
+            tipo = s[4].rsplit(" de ", 1)[-1]
+            if tipo not in TIPOS_BASE and tipo not in mensajes:
+                errores.append((s[1], con_pista(
+                    f"{s[2]} responde '{tipo}', que no es un tipo ni un mensaje declarado",
+                    tipo, sorted(TIPOS_BASE) + list(mensajes))))
 
     for s in programa:
         if s[0] == "agente":
@@ -1146,12 +1255,13 @@ def verificar(programa):
                 errores.append((next(e[0] for e in reversed(s[3]) if e[1] == k),
                                 f"{s[2]}: el estado '{k}' está repetido"))
             vistos = set()
-            for ln, tipo, _, _ in s[4]:
+            for ln, tipo, _, cuerpo in s[4]:
                 if tipo not in mensajes:
                     errores.append((ln, f"{s[2]} recibe '{tipo}', que no es un mensaje declarado"))
                 if tipo in vistos:
                     errores.append((ln, f"{s[2]} ya tiene un 'al recibir {tipo}'"))
                 vistos.add(tipo)
+                respuestas_de(s[2], tipo, cuerpo)
 
     def agente_de(dest, ag):
         """A qué agente declarado le habla, si se puede saber antes de correr."""
@@ -1160,7 +1270,7 @@ def verificar(programa):
                 return dest[2]
             return copias.get(dest[2]) if copias.get(dest[2]) in agentes else None
         if _es_nodo(dest, "yo", 2):
-            return ag
+            return ag if ag in agentes else None
         return None
 
     def nunca_responde(agente, tipo):
@@ -1179,6 +1289,17 @@ def verificar(programa):
             return
         if _es_nodo(n, "agente", 6):
             ag = n[2]
+        if _es_nodo(n, "simular", 6) and isinstance(n[5], list):
+            a_quien = agente_de(n[2], ag)
+            if n[3] not in mensajes:
+                errores.append((n[1], con_sugerencia(
+                    f"no existe el mensaje '{n[3]}'", n[3], mensajes)))
+            elif a_quien and n[3] not in agentes[a_quien]:
+                errores.append((n[1], f"{a_quien} no sabe recibir '{n[3]}': solo se simula "
+                                      "un mensaje que el agente ya recibe"))
+            else:
+                respuestas_de(a_quien or "el agente simulado", n[3], n[5])
+            ag = ag or "(simulado)"  # adentro valen 'yo' y 'remitente'
         if len(n) == 4 and n[0] == "ctor" and isinstance(n[3], list):
             _, ln, nombre, pares = n
             if nombre not in mensajes:
@@ -1205,9 +1326,12 @@ def verificar(programa):
                         errores.append((ln, "los mensajes llevan datos, no funciones "
                                             f"(campo '{k}' de {nombre})"))
                         continue
-                    real = e[2] if e[0] == "ctor" else _LITERALES.get(e[0])
-                    if real and tipo != "cualquiera" and real != tipo:
-                        errores.append((ln, f"{nombre}.{k} es de tipo {tipo}, no {real}"))
+                    malo = literal_que_no_cumple(e, tipo)
+                    if malo and malo[1]:
+                        errores.append((ln, f"{nombre}.{k} es de tipo {tipo}, y adentro de "
+                                            f"la lista hay un valor de tipo {malo[0]}"))
+                    elif malo:
+                        errores.append((ln, f"{nombre}.{k} es de tipo {tipo}, no {malo[0]}"))
                 for c, (_, opcional) in decl.items():
                     if c not in dados and not opcional:
                         errores.append((ln, f"a {nombre} le falta el campo '{c}'"))
@@ -1272,6 +1396,18 @@ class Registro:
     __hash__ = None
 
 
+class ErrorAtajado(str):
+    """El error que ataja 'si falla e'. Es un texto como cualquier otro, que además
+    recuerda los datos del error para detalle_de(e)."""
+
+    def __new__(cls, error):
+        obj = super().__new__(cls, error.mensaje)
+        obj.detalle = {"texto": error.mensaje,
+                       "linea": int(error.linea) if error.linea else None,
+                       "clase": error.familia, "dato": error.dato}
+        return obj
+
+
 class Agente:
     def __init__(self, nombre):
         self.nombre = nombre
@@ -1298,8 +1434,9 @@ class _Retorno(Exception):
 
 
 class _Respuesta(Exception):
-    def __init__(self, valor):
+    def __init__(self, valor, linea=None):
         self.valor = valor
+        self.linea = linea  # el renglón del 'responder'
 
 
 class _Romper(Exception):
@@ -1402,6 +1539,8 @@ def igual(a, b):
     1 no es igual a verdadero, ni [1] a [verdadero]."""
     if es_num(a) and es_num(b):
         return a == b
+    if isinstance(a, str) and isinstance(b, str):
+        return str(a) == str(b)
     if type(a) is not type(b):
         return False
     if isinstance(a, list):
@@ -1411,6 +1550,11 @@ def igual(a, b):
     if isinstance(a, Registro):
         return a.tipo == b.tipo and igual(a.campos, b.campos)
     return a == b
+
+
+def se_juntan(a, b):
+    """¿Son dos textos o dos listas? (lo que '+' pega uno atrás del otro)"""
+    return any(isinstance(a, clase) and isinstance(b, clase) for clase in (str, list))
 
 
 def decimal_limpio(v):
@@ -1465,7 +1609,7 @@ _NUMERO_MILES = re.compile(r"[+-]?[0-9]{1,3}(\.[0-9]{3}){2,}")        # 1.234.56
 def numero_de_texto(texto):
     """Lee un número escrito como texto, también a la argentina ("$ 1.234,50")."""
     def no_es():
-        return ErrorMate(f"'{texto}' no es un número")
+        return ErrorMate(f"'{texto}' no es un número", familia="numero")
 
     t = texto.strip()
     if not t:
@@ -1635,11 +1779,12 @@ class Entorno:
     def no_existe(self, nombre, al_asignar=False):
         mensaje = f"no existe '{nombre}'"
         if va_en_minuscula(nombre):
-            return ErrorMate(f"{mensaje}: va en minúscula, '{nombre.lower()}'")
+            return ErrorMate(f"{mensaje}: va en minúscula, '{nombre.lower()}'",
+                             familia="nombre")
         completo = con_pista(mensaje, nombre, self.visibles())
         if al_asignar and completo == mensaje:
             completo += f". Para crear la variable escribí: var {nombre} = ..."
-        return ErrorMate(completo)
+        return ErrorMate(completo, familia="nombre")
 
     def buscar(self, nombre):
         e = self
@@ -1674,8 +1819,11 @@ class Interprete:
     def __init__(self, salida=print, traza=False):
         self.salida = salida
         self.traza = traza
+        self.anotar = None  # si la traza va a un archivo, quién recibe cada renglón
+        self.cuenta = {"enviar": 0, "preguntar": 0, "fallaron": 0}  # para el resumen
         self.glob = Entorno()
         self.mensajes = {}
+        self.responde = {}  # mensaje -> qué se le contesta, si el contrato lo dice
         self.agentes = {}
         self.decl_agentes = []
         self.copias = {}
@@ -1694,7 +1842,10 @@ class Interprete:
         self.tipos_estado = {}  # (agente, estado) -> tipo con el que arrancó
         self.archivo = None  # el archivo principal, para nombrar los otros en los errores
         self.detalle_pruebas = []  # por cada prueba, [(linea, texto)] de lo que falló
+        self.separar_salida = False  # 'probar': lo que muestra cada prueba se guarda aparte
+        self.mostrado_pruebas = []  # por cada prueba, los renglones que mostró
         self.llamadas = []  # nombres de las funciones que se están ejecutando
+        self.atendiendo = []  # (agente, renglón de la pregunta) de los que están atendiendo
         self.entrada = por_teclado  # de dónde saca leer() lo que contesta la persona
         self.sin_teclado = False  # en las pruebas leer() usa la respuesta preparada
         self._nativas()
@@ -1989,15 +2140,37 @@ class Interprete:
             return f if math.isfinite(f) else numero_invalido(t)
 
         @nativa("de_json")
-        def _(t):
+        def _(t, tipo=None):
             try:
-                return self._de_json(json.loads(
+                valor = self._de_json(json.loads(
                     pedir(t, "texto", "de_json()"),
                     parse_constant=numero_invalido, parse_float=decimal_de_json))
             except json.JSONDecodeError as e:
-                raise ErrorMate(json_invalido(t, e))
+                raise ErrorMate(json_invalido(t, e), familia="json")
             except ValueError:  # un entero de miles de cifras
                 numero_invalido(t)
+            if tipo is None:
+                return valor
+            # de_json(texto, "Pedido"): lo que viene de afuera tiene que ser de ese tipo.
+            base = pedir(tipo, "texto", "de_json()").rsplit(" de ", 1)[-1]
+            if base not in TIPOS_BASE and base not in self.mensajes:
+                raise ErrorMate(con_sugerencia(
+                    f"de_json(): no existe el tipo '{tipo}'", base,
+                    sorted(TIPOS_BASE) + list(self.mensajes)))
+            if tipo in self.mensajes and isinstance(valor, dict):
+                valor = self.construir(tipo, valor)  # un mapa suelto con esos campos sirve
+            if not self.cumple(valor, tipo):
+                raise ErrorMate(f"de_json(): se esperaba {tipo} y el texto trae "
+                                f"{self.no_cumple(valor, tipo)}", familia="contrato")
+            return valor
+
+        @nativa("detalle_de")
+        def _(e):
+            if not isinstance(e, ErrorAtajado):
+                raise ErrorMate(
+                    "detalle_de() espera el error que ataja 'si falla e', tal cual llegó "
+                    f"(sin cambiarle nada), y recibió {un(e)}")
+            return dict(e.detalle)
 
     def _a_json(self, v):
         if isinstance(v, Registro):
@@ -2020,9 +2193,12 @@ class Interprete:
                     and v["tipo"] in self.mensajes and isinstance(v["campos"], dict):
                 return self.construir(
                     v["tipo"], {k: self._de_json(x) for k, x in v["campos"].items()})
-            if set(v) == {"agente"} and isinstance(v["agente"], str) \
-                    and v["agente"] in self.agentes:
-                return self.agentes[v["agente"]]
+            if set(v) == {"agente"} and isinstance(v["agente"], str):
+                # un agente declarado o una copia: los nombres no se repiten
+                ag = self.agentes.get(v["agente"]) or next(
+                    (a for a in self.vivos if a.nombre == v["agente"]), None)
+                if ag is not None:
+                    return ag
             return {k: self._de_json(x) for k, x in v.items()}
         return v
 
@@ -2030,9 +2206,27 @@ class Interprete:
     def cumple(self, valor, tipo):
         if tipo == "cualquiera":
             return True
+        if tipo.startswith("lista de "):
+            return isinstance(valor, list) and all(
+                self.cumple(x, tipo[len("lista de "):]) for x in valor)
         return nombre_tipo(valor) == tipo
 
+    def no_cumple(self, valor, tipo):
+        """Qué recibió, dicho para un error: 'texto', o qué hay de más adentro de la lista."""
+        if tipo.startswith("lista de ") and isinstance(valor, list):
+            de = tipo[len("lista de "):]
+            i = next(i for i, x in enumerate(valor) if not self.cumple(x, de))
+            return f"una lista que en la posición {i} tiene {un(valor[i])}"
+        return tipo_claro(valor)
+
     def construir(self, nombre, dados):
+        try:
+            return self._construir(nombre, dados)
+        except ErrorMate as e:
+            e.familia = "contrato"
+            raise
+
+    def _construir(self, nombre, dados):
         if nombre not in self.mensajes:
             raise ErrorMate(con_sugerencia(
                 f"no existe el mensaje '{nombre}'", nombre, self.mensajes))
@@ -2049,7 +2243,7 @@ class Interprete:
                                 f"(campo '{campo}' de {nombre})")
             if not (self.cumple(v, tipo) or (opcional and v is None)):
                 raise ErrorMate(
-                    f"{nombre}.{campo} es de tipo {tipo} y recibió {tipo_claro(v)}")
+                    f"{nombre}.{campo} es de tipo {tipo} y recibió {self.no_cumple(v, tipo)}")
             campos[campo] = v
         for k in dados:
             if k not in campos:
@@ -2061,6 +2255,8 @@ class Interprete:
         for s in programa:
             if s[0] == "mensaje":
                 self.mensajes[s[2]] = s[3]
+                if s[4]:
+                    self.responde[s[2]] = s[4]
         for s in programa:
             try:
                 if s[0] == "funcion":
@@ -2140,6 +2336,7 @@ class Interprete:
             else:
                 self.restaurar(ag.env, ag.inicial)
                 ag.ocupado = False
+                ag.manejadores = self.manejadores_de(s)  # sin lo que se haya simulado
         self.cola.clear()
 
     def entornos_vivos(self):
@@ -2187,6 +2384,7 @@ class Interprete:
         self.vivos = list(foto[1])
         for ag in self.vivos:
             ag.ocupado = False
+            ag.manejadores = self.manejadores_de(ag.decl)
         self.copias = dict(foto[2])
         self.reiniciar_agentes()
 
@@ -2202,6 +2400,13 @@ class Interprete:
                 raise ErrorMate(f"{n[2]} no tiene un estado '{k}'")
             dados[k] = self.ev(e, env)
         apodo = None if n[3] is None else formato(self.ev(n[3], env))
+        if apodo is not None and not apodo.strip():
+            raise ErrorMate("el nombre de la copia (después de 'llamado') no puede estar "
+                            "vacío", n[1])
+        if apodo is not None and any(a.nombre == f"{n[2]} {apodo}" for a in self.vivos):
+            raise ErrorMate(
+                f'ya hay un {n[2]} llamado "{apodo}": dos copias no pueden llamarse igual, '
+                "porque no se las podría distinguir. Elegí otro nombre", n[1])
         ag = Agente(f"{n[2]} {apodo}" if apodo is not None else f"{n[2]} nuevo")
         ag.decl = molde.decl
         self.instanciar(ag, dados, n[1])
@@ -2251,13 +2456,18 @@ class Interprete:
                 self.errores_agentes, self.errores_agentes_det = [], []
                 self.pasos = 0
                 self.entregados = 0
-                fallas = []
+                fallas, mostrado, salida = [], [], self.salida
+                if self.separar_salida:
+                    self.salida = mostrado.append
                 try:
                     self.bloque(s[3], Entorno(self.glob, borde=True), nuevo=False)
                     self.vaciar_cola()
                 except ErrorMate as e:
-                    fallas.append((e.linea, f"{self.donde(e.linea)}: {e.mensaje}"
-                                   if e.linea else e.mensaje))
+                    fallas.append((e.linea, self.con_camino(
+                        f"{self.donde(e.linea)}: {e.mensaje}" if e.linea else e.mensaje, e)))
+                finally:
+                    self.salida = salida
+                self.mostrado_pruebas.append(mostrado)
                 # Además de lo que cortó la prueba, lo que falló en los agentes: suele
                 # ser la causa.
                 fallas += [(linea, texto) for (linea, _), texto
@@ -2285,34 +2495,77 @@ class Interprete:
                 if e.clase == "limite":  # el freno corta todo el programa, no un solo mensaje
                     raise
                 donde = f" ({self.donde(e.linea)})" if e.linea else ""
-                self.errores_agentes.append(
-                    f"{dest.nombre} al recibir {msg.tipo}{donde}: {e.mensaje}")
+                self.errores_agentes.append(self.con_camino(
+                    f"{dest.nombre} al recibir {msg.tipo}{donde}: {e.mensaje}", e))
                 self.errores_agentes_det.append(
-                    (e.linea or getattr(e, "renglon", None),
-                     f"{dest.nombre} al recibir {msg.tipo}: {e.mensaje}"))
+                    (e.linea or getattr(e, "renglon", None), self.con_camino(
+                        f"{dest.nombre} al recibir {msg.tipo}: {e.mensaje}", e)))
 
-    def entregar(self, rem, dest, msg, pregunta):
+    def ciclo(self, dest, linea):
+        """El error de un ciclo de preguntas, con la cadena: A → B → A."""
+        fin = f"{dest.nombre} todavía está atendiendo otro mensaje"
+        desde = next((i for i, a in enumerate(self.atendiendo) if a[0] is dest), None)
+        if desde is None:
+            return ErrorMate(f"ciclo de preguntas: {fin}", familia="ciclo")
+        cadena = self.atendiendo[desde:] + [(dest, linea)]
+        pasos = []
+        for (quien, _), (a_quien, renglon) in zip(cadena, cadena[1:]):
+            en = f" ({self.donde(renglon)})" if renglon else ""
+            pasos.append(f"{quien.nombre} le preguntó a {a_quien.nombre}{en}")
+        flecha = simbolo(" → ", " -> ")
+        return ErrorMate(f"ciclo de preguntas: {flecha.join(a.nombre for a, _ in cadena)}. "
+                         f"{', '.join(pasos)}, y {fin}", familia="ciclo")
+
+    def camino(self, e):
+        """Por dónde se llegó al error: '' o un renglón como "cómo se llegó: en precio(),
+        llamada desde total() (línea 4), llamada desde la línea 9"."""
+        partes, pendiente = [], None  # pendiente: el renglón desde donde se llamó a la última
+        for paso in e.camino:
+            if paso[0] == "funcion":
+                partes.append(f"en {paso[1]}()" if pendiente is None else
+                              f"llamada desde {paso[1]}() ({self.donde(pendiente)})")
+                pendiente = paso[2] or 0
+            else:
+                if pendiente:
+                    partes.append(f"llamada desde la {self.donde(pendiente)}")
+                pendiente = None
+                en = f" ({self.donde(paso[3])})" if paso[3] else ""
+                partes.append(f"se lo preguntó {paso[2] or 'el programa'} a {paso[1]}{en}")
+        if pendiente:
+            partes.append(f"llamada desde la {self.donde(pendiente)}")
+        if len(partes) > 7:  # una función que se llama a sí misma muchas veces
+            partes = partes[:4] + ["..."] + partes[-2:]
+        return "cómo se llegó: " + ", ".join(partes) if partes else ""
+
+    def con_camino(self, texto, e):
+        camino = self.camino(e)
+        return f"{texto}\n{camino}" if camino else texto
+
+    def entregar(self, rem, dest, msg, pregunta, linea=None):
         self.entregados += 1
         if self.entregados > MAX_MENSAJES:
             raise ErrorMate(
                 f"se superaron {MAX_MENSAJES} mensajes: ¿los agentes entraron en bucle?",
                 clase="limite")
+        self.cuenta["preguntar" if pregunta else "enviar"] += 1
         if self.traza:
             flecha = "pregunta a" if pregunta else "→"
-            self.salida(f"  · {rem.nombre if rem else '(programa)'} {flecha} "
-                        f"{dest.nombre}: {formato(msg)}")
+            (self.anotar or self.salida)(
+                f"  · {rem.nombre if rem else '(programa)'} {flecha} "
+                f"{dest.nombre}: {formato(msg)}")
         if msg.tipo not in dest.manejadores:
-            raise ErrorMate(f"{dest.nombre} no sabe recibir '{msg.tipo}'")
+            raise ErrorMate(f"{dest.nombre} no sabe recibir '{msg.tipo}'", familia="agente")
         if dest.ocupado and dest.env is None:
             raise ErrorMate(f"{dest.nombre} todavía está armando su estado inicial y no "
                             "puede recibir mensajes")
         if dest.ocupado:
-            raise ErrorMate(
-                f"ciclo de preguntas: {dest.nombre} todavía está atendiendo otro mensaje")
+            raise self.ciclo(dest, linea)
         if dest.env is None:
             self.instanciar(dest)
-        renglon, var, cuerpo = dest.manejadores[msg.tipo]
-        env = Entorno(dest.env, borde=True)
+        # Un 'al recibir' simulado en una prueba corre con las variables de esa prueba
+        # a la vista (no con el estado del agente).
+        renglon, var, cuerpo, *de_la_prueba = dest.manejadores[msg.tipo]
+        env = Entorno(de_la_prueba[0] if de_la_prueba else dest.env, borde=True)
         if var:
             env.definir(var, msg, origen="mensaje")
         previo, dest.ocupado = self.contexto, True
@@ -2322,28 +2575,39 @@ class Interprete:
         estado_previo = {k: list(v) for k, v in dest.env.vars.items()}
         en_cola, llamadas = len(self.cola), self.llamadas
         self.llamadas = []
+        self.atendiendo.append((dest, linea))
         try:
             try:
                 self.bloque(cuerpo, env, nuevo=False)
             except _Respuesta as r:
-                respondio, valor = True, r.valor
+                respondio, valor, renglon_respuesta = True, r.valor, r.linea
             except _Retorno:
                 pass
             # Responder mal (o no responder) también es una falla del que atiende.
+            esperado = self.responde.get(msg.tipo)
+            if respondio and esperado and not self.cumple(valor, esperado):
+                raise ErrorMate(
+                    f"{dest.nombre} respondió {self.no_cumple(valor, esperado)} a "
+                    f"'{msg.tipo}', y el contrato dice que a {msg.tipo} se le responde "
+                    f"{esperado}", renglon_respuesta, familia="contrato")
             if pregunta and not respondio:
                 raise ErrorMate(f"{dest.nombre} no respondió a '{msg.tipo}': el 'al recibir' "
-                                "terminó sin llegar a un 'responder'")
+                                "terminó sin llegar a un 'responder'", familia="agente")
             if not pregunta and respondio and rem is not None:
                 # (si lo mandó el programa, no hay a quién contestar)
                 if not isinstance(valor, Registro):
-                    raise ErrorMate("a un 'enviar' solo se le responde con un mensaje")
+                    raise ErrorMate("a un 'enviar' solo se le responde con un mensaje",
+                                    renglon_respuesta)
                 if valor.tipo not in rem.manejadores:
                     raise ErrorMate(
                         f"{dest.nombre} respondió {valor.tipo} a {rem.nombre}, pero "
-                        f"{rem.nombre} no tiene 'al recibir {valor.tipo}'")
+                        f"{rem.nombre} no tiene 'al recibir {valor.tipo}'", renglon_respuesta)
         except ErrorMate as e:
+            if pregunta and len(e.camino) < 40:
+                e.camino.append(("pregunta", dest.nombre, rem.nombre if rem else None, linea))
             if not e.linea and not pregunta:
                 e.renglon = renglon  # para señalar al menos el 'al recibir' que atendía
+            self.cuenta["fallaron"] += 1
             dest.env.vars = estado_previo
             nuevos = [self.cola.pop() for _ in range(len(self.cola) - en_cola)]
             self.cola.extend(m for m in reversed(nuevos) if m[0] is not dest)
@@ -2352,10 +2616,12 @@ class Interprete:
             raise
         finally:
             self.contexto, dest.ocupado, self.llamadas = previo, False, llamadas
+            self.atendiendo.pop()
         if pregunta:
             if self.traza:
-                self.salida(f"  · {dest.nombre} responde a "
-                            f"{rem.nombre if rem else '(programa)'}: {formato(valor, False)}")
+                (self.anotar or self.salida)(
+                    f"  · {dest.nombre} responde a "
+                    f"{rem.nombre if rem else '(programa)'}: {formato(valor, False)}")
             return valor
         if respondio and rem is not None:
             self.cola.append((dest, rem, valor))
@@ -2468,7 +2734,8 @@ class Interprete:
             msg = self.un_mensaje(s[2], env)
             dest = self.destino(s[3], env)
             if msg.tipo not in dest.manejadores:
-                raise ErrorMate(f"{dest.nombre} no sabe recibir '{msg.tipo}'", s[1])
+                raise ErrorMate(f"{dest.nombre} no sabe recibir '{msg.tipo}'", s[1],
+                                familia="agente")
             self.cola.append((self.contexto[0] if self.contexto else None, dest, msg))
         elif clase == "responder":
             if not self.contexto:
@@ -2477,9 +2744,11 @@ class Interprete:
             if lleva_funcion(valor):
                 raise ErrorMate("no se puede responder con una función: "
                                 "las respuestas llevan datos", s[1])
-            raise _Respuesta(valor)
+            raise _Respuesta(valor, s[1])
         elif clase == "fallar":
-            raise ErrorMate(formato(self.ev(s[2], env)), s[1])
+            motivo = self.ev(s[2], env)
+            raise ErrorMate(formato(motivo), s[1], familia="fallar",
+                            dato=None if lleva_funcion(motivo) else motivo)
         elif clase == "intentar":
             try:
                 self.bloque(s[2], env)
@@ -2490,7 +2759,7 @@ class Interprete:
                     raise
                 manejo = Entorno(env)
                 if s[3]:
-                    manejo.definir(s[3], e.mensaje, origen="falla")
+                    manejo.definir(s[3], ErrorAtajado(e), origen="falla")
                 self.bloque(s[4], manejo, nuevo=False)
         elif clase == "asegurar":
             cond, valores = s[2], ""
@@ -2514,6 +2783,26 @@ class Interprete:
                 else:
                     detalle = "no se cumplió lo asegurado" + (f": {valores}" if valores else "")
                 raise ErrorMate(detalle, s[1], clase="asegurar")
+        elif clase == "simular":
+            if not self.en_prueba or self.contexto is not None:
+                raise ErrorMate("'simular' solo va dentro de una prueba")
+            dest = self.destino(s[2], env)
+            if s[3] not in dest.manejadores:
+                raise ErrorMate(f"{dest.nombre} no sabe recibir '{s[3]}': solo se simula un "
+                                "mensaje que el agente ya recibe", familia="agente")
+            dest.manejadores = {**dest.manejadores, s[3]: (s[1], s[4], s[5], env)}
+        elif clase == "asegurar_falla":
+            if self.contexto is None and self.en_prueba:
+                self.vaciar_cola()
+            try:
+                self.bloque(s[2], env)
+            except ErrorMate as e:
+                # Igual que 'intentar': ni el freno ni un 'asegurar' de la prueba cuentan.
+                if e.clase == "limite" or (e.clase == "asegurar" and self.en_prueba):
+                    raise
+                return
+            raise ErrorMate(formato(self.ev(s[3], env)) if s[3] else
+                            "se esperaba que esto fallara, y no falló", s[1], clase="asegurar")
         else:
             raise ErrorMate(f"'{clase}' no puede ir acá")
 
@@ -2536,7 +2825,7 @@ class Interprete:
                             f"(sea x = ...), mostralo con mostrar(...) o borralo{pista}", e[1])
         f = self.ev(e[2], env)
         try:
-            self.llamar(f, [self.ev(a, env) for a in e[3]])
+            self.llamar(f, [self.ev(a, env) for a in e[3]], e[1])
         except ErrorMate as error:
             error.linea = error.linea or e[1]
             raise
@@ -2652,7 +2941,8 @@ class Interprete:
         elif i == cuantos and cuantos:
             pista = (f". Como se cuenta desde 0, el último está en la posición "
                      f"{cuantos - 1} (o usá ultimo(...))")
-        raise ErrorMate(f"la posición {i} está fuera de rango: {tiene}{pista}")
+        raise ErrorMate(f"la posición {i} está fuera de rango: {tiene}{pista}",
+                        familia="posicion")
 
     # ── expresiones ──
     def ev(self, n, env):
@@ -2699,7 +2989,7 @@ class Interprete:
         if clase == "bin":
             return self.binaria(n[2], self.ev(n[3], env), self.ev(n[4], env))
         if clase == "llamar":
-            return self.llamar(self.ev(n[2], env), [self.ev(a, env) for a in n[3]])
+            return self.llamar(self.ev(n[2], env), [self.ev(a, env) for a in n[3]], n[1])
         if clase == "indice":
             base, i = self.ev(n[2], env), self.ev(n[3], env)
             if isinstance(base, (list, str)):
@@ -2709,7 +2999,8 @@ class Interprete:
                 self.clave_de_mapa(i)
                 if i not in base:
                     raise ErrorMate(no_esta(
-                        f"el mapa no tiene la clave {formato(i, False)}", i, base))
+                        f"el mapa no tiene la clave {formato(i, False)}", i, base),
+                        familia="clave")
                 return base[i]
             raise ErrorMate(f"{tipo_claro(base)} no tiene posiciones ni claves: los "
                             "corchetes van después de una lista, un texto o un mapa"
@@ -2722,14 +3013,16 @@ class Interprete:
                                 + (f". {CAUSA_DE_NADA}" if base is None else ""))
             if n[3] not in campos:
                 raise ErrorMate(no_esta(
-                    f"{nombre_tipo(base)} no tiene un campo '{n[3]}'", n[3], campos))
+                    f"{nombre_tipo(base)} no tiene un campo '{n[3]}'", n[3], campos),
+                    familia="clave")
             return campos[n[3]]
         if clase == "preguntar":
             msg = self.un_mensaje(n[2], env)
             dest = self.destino(n[3], env)
             if self.contexto is None and not self.naciendo:
                 self.vaciar_cola()  # lo que el programa ya envió llega antes que la pregunta
-            return self.entregar(self.contexto[0] if self.contexto else None, dest, msg, True)
+            return self.entregar(self.contexto[0] if self.contexto else None, dest, msg, True,
+                                 n[1])
         raise ErrorMate(f"expresión desconocida: {clase}")
 
     def binaria(self, op, a, b):
@@ -2739,8 +3032,7 @@ class Interprete:
                 raise ErrorMate(DEMASIADO_GRANDE)
             if op in "+-" and max(a.bit_length(), b.bit_length()) >= MAX_BITS:
                 raise ErrorMate(DEMASIADO_GRANDE)
-        elif op == "+" and isinstance(a, (str, list)) and type(a) is type(b) \
-                and len(a) + len(b) > MAX_LARGO:
+        elif op == "+" and se_juntan(a, b) and len(a) + len(b) > MAX_LARGO:
             tope = f"{MAX_LARGO:,}".replace(",", ".")
             raise ErrorMate(f"el texto quedaría demasiado largo (más de {tope} letras)"
                             if isinstance(a, str) else
@@ -2770,7 +3062,7 @@ class Interprete:
                                     f"'{op}'. {CAUSA_DE_NADA}")
                 raise ErrorMate(f"no se puede comparar {nombre_tipo(a)} con {nombre_tipo(b)}")
             return {"<": a < b, "<=": a <= b, ">": a > b, ">=": a >= b}[op]
-        if op == "+" and (ambos_num or (type(a) is type(b) and isinstance(a, (str, list)))):
+        if op == "+" and (ambos_num or se_juntan(a, b)):
             return a + b
         if ambos_num:
             if op == "-":
@@ -2778,7 +3070,7 @@ class Interprete:
             if op == "*":
                 return a * b
             if b == 0:
-                raise ErrorMate("división por cero")
+                raise ErrorMate("división por cero", familia="division")
             if op == "%":
                 return a % b
             if type(a) is int and type(b) is int and a % b == 0:
@@ -2793,7 +3085,7 @@ class Interprete:
             pista = " (usá texto() o \"{...}\" para armar textos)"
         raise ErrorMate(f"no se puede hacer {nombre_tipo(a)} {op} {nombre_tipo(b)}{pista}")
 
-    def llamar(self, f, args):
+    def llamar(self, f, args, linea=None):
         if isinstance(f, Nativa):
             return f.fn(args)
         if not isinstance(f, Funcion):
@@ -2810,6 +3102,10 @@ class Interprete:
             self.bloque(f.cuerpo, env, nuevo=False)
         except _Retorno as r:
             return r.valor
+        except ErrorMate as e:
+            if len(e.camino) < 40:
+                e.camino.append(("funcion", f.nombre, linea))
+            raise
         finally:
             self.llamadas.pop()
         return None
@@ -2870,6 +3166,9 @@ CONTROL
 - funcion nombre(a, b) {{ devolver a + b }}        'devolver' solo, sin valor, devuelve nada
 - fallar "motivo"                                 corta con un error
 - intentar {{ ... }} si falla e {{ ... }}             e es el texto del error (el 'e' es opcional)
+  detalle_de(e).clase dice qué pasó sin depender de la redacción: "fallar", "asegurar",
+  "contrato", "clave", "posicion", "division", "nombre", "numero", "json", "agente",
+  "ciclo" u "otro". detalle_de(e).dato es el valor que se le dio a 'fallar'.
 
 FUNCIONES INCLUIDAS (no hay otras)
 {funciones}
@@ -2880,7 +3179,9 @@ FUNCIONES INCLUIDAS (no hay otras)
 
 AGENTES Y MENSAJES
 - mensaje Pedido {{ producto: texto, cantidad: numero, nota: texto? }}     (? = opcional)
-  Tipos: numero texto logico lista mapa agente cualquiera, u otro mensaje.
+  Tipos: numero texto logico lista mapa agente cualquiera, u otro mensaje. Una lista
+  puede decir de qué es: items: lista de Pedido     vendedores: lista de agente
+- mensaje Pedido {{ ... }} responde Cotizacion     declara qué se le contesta a un Pedido
 - Crear un mensaje: Pedido {{ producto: "yerba", cantidad: 2 }}     Sin campos: Ping {{}}
 - agente Nombre {{
       estado contador = 0                  memoria privada; solo él la cambia
@@ -2898,6 +3199,9 @@ AGENTES Y MENSAJES
 
 PRUEBAS
 - prueba "nombre" {{ asegurar total == 10 }}        asegurar cond, "mensaje si falla"
+- asegurar falla {{ dividir(1, 0) }}                 se cumple si lo de adentro falla
+- simular Vendedor al recibir Pedido como p {{ responder Cotizacion {{ total: 1 }} }}
+  Solo dentro de una prueba: hasta que termina, ese agente contesta eso a ese mensaje.
 - Van en el nivel superior y corren con la orden 'probar'. Cada una empieza limpia.
 
 UN PROGRAMA COMPLETO
@@ -2972,6 +3276,7 @@ def texto_de_ayuda():
         "",
         "Opciones:",
         "  --traza       muestra la conversación entre agentes, mensaje por mensaje",
+        "  --traza=conversacion.txt   la guarda en ese archivo, con un resumen al final",
         "  --sin-limite  no corta los programas que dan muchísimos pasos",
         "  --depurar     si Mate falla por dentro, muestra el detalle técnico",
         "  --version     dice qué versión de Mate es",
@@ -3038,6 +3343,24 @@ def avisar_pendientes(interprete, avisar):
         avisar(f"  ... y {len(cola) - 5} más")
 
 
+def guardar_conversacion(destino, programa, renglones, cuenta):
+    """Deja la conversación en un archivo de texto, con un resumen al final. Devuelve
+    None si salió bien o la explicación de por qué no se pudo."""
+    total = cuenta["enviar"] + cuenta["preguntar"]
+    resumen = (f"Resumen: {total} mensaje(s) entregado(s): {cuenta['enviar']} con 'enviar' "
+               f"y {cuenta['preguntar']} con 'preguntar'. ")
+    resumen += ("Ninguno falló." if not cuenta["fallaron"]
+                else f"Fallaron {cuenta['fallaron']}.")
+    texto = "\n".join([f"Conversación de {programa}", ""] + renglones + ["", resumen, ""])
+    try:
+        # con la marca del principio, para que el Bloc de notas muestre bien las tildes
+        with open(destino, "w", encoding="utf-8-sig") as f:
+            f.write(texto)
+    except OSError:
+        return f"no pude guardar la conversación en '{destino}'"
+    return None
+
+
 def main(argv=None):
     argv = list(sys.argv[1:] if argv is None else argv)
     for flujo in (sys.stdout, sys.stderr):
@@ -3101,10 +3424,20 @@ def _main(argv, donde):
         print(texto, file=sys.stderr)
 
     alias = {"-h": "--ayuda", "--help": "--ayuda", "-?": "--ayuda", "/?": "--ayuda"}
-    opciones, args = set(), []
+    opciones, args, conversacion = set(), [], None
     for a in argv:
         if a.lower() in alias:
             opciones.add(alias[a.lower()])
+        elif a.lower().startswith("--traza="):
+            conversacion = a[len("--traza="):].strip('"')
+            if not conversacion:
+                avisar("a --traza= le falta el nombre del archivo, por ejemplo: "
+                       "--traza=conversacion.txt")
+                return 2
+            if conversacion.lower().endswith((".mate", ".py")):
+                avisar(f"no guardo la conversación en '{conversacion}' para no pisar un "
+                       "programa: elegí otro nombre, por ejemplo --traza=conversacion.txt")
+                return 2
         elif a.startswith("-") and a != "-":
             if a.lower() not in OPCIONES:
                 parecidas = difflib.get_close_matches(a.lower(), OPCIONES, 1)
@@ -3169,17 +3502,33 @@ def _main(argv, donde):
 
     def reportar(linea, texto):
         archivo = getattr(linea, "archivo", None) or ruta
-        avisar(f"{archivo}:{linea}: error: {texto}" if linea else f"{archivo}: error: {texto}")
+        texto, _, camino = texto.partition("\ncómo se llegó: ")
+        avisar(f"{archivo}:{linea}: error: {texto}" if linea
+               else f"{archivo}: error: {texto}")
         renglon = renglon_de(archivo, linea) if linea else None
         if renglon and (archivo, renglon) != mostrado.get("ultimo"):
             avisar(renglon)  # el mismo renglón no se repite si trae varios errores
         mostrado["ultimo"] = (archivo, renglon)
+        if camino:
+            avisar(f"    cómo se llegó: {camino}")
 
     if simbolo("·→", ""):
         salida = print
     else:  # consola que no conoce esos símbolos: la traza se escribe con letras comunes
         def salida(texto):
             print(texto.replace("→", "->").replace("·", "-"))
+
+    renglones = []  # la conversación, si va a un archivo
+
+    def cerrar_conversacion():
+        interprete = donde["interprete"]
+        if not conversacion or interprete is None:
+            return
+        problema = guardar_conversacion(conversacion, ruta, renglones, interprete.cuenta)
+        if problema:
+            avisar(problema)
+        else:
+            print(f"La conversación quedó guardada en {conversacion}")
 
     try:
         try:
@@ -3199,8 +3548,12 @@ def _main(argv, donde):
         if orden == "verificar":
             print(f"{ruta}: sin errores")
             return 0
-        interprete = donde["interprete"] = Interprete(salida=salida, traza="--traza" in opciones)
+        interprete = donde["interprete"] = Interprete(
+            salida=salida, traza="--traza" in opciones or bool(conversacion))
+        if conversacion:
+            interprete.anotar = renglones.append
         interprete.archivo = ruta
+        interprete.separar_salida = orden == "probar"
         if "--sin-limite" in opciones:
             interprete.max_pasos = None
         resultados = interprete.correr(programa, pruebas=orden == "probar")
@@ -3208,10 +3561,15 @@ def _main(argv, donde):
         # Primero lo que ya había fallado en los agentes: suele ser la causa del corte.
         for linea, texto in getattr(donde["interprete"], "errores_agentes_det", ()):
             reportar(linea, texto)
-        reportar(e.linea, e.mensaje)
+        if donde["interprete"] is not None:
+            reportar(e.linea, donde["interprete"].con_camino(e.mensaje, e))
+        else:
+            reportar(e.linea, e.mensaje)
         avisar_pendientes(donde["interprete"], avisar)
+        cerrar_conversacion()
         return 1
 
+    cerrar_conversacion()
     if orden == "probar":
         if interprete.errores_principal:
             avisar("errores al correr el programa (antes de las pruebas):")
@@ -3219,9 +3577,18 @@ def _main(argv, donde):
                 reportar(linea, texto)
         fallidas = 0
         bien, mal = simbolo("✓", "OK"), simbolo("✗", "FALLA")
-        for (nombre, error), fallas in zip(resultados, interprete.detalle_pruebas):
+        if not resultados:
+            print("este archivo no tiene pruebas. Una prueba se escribe así:  "
+                  'prueba "suma bien" { asegurar 1 + 1 == 2 }')
+            return 1 if interprete.errores_principal else 0
+        for (nombre, error), fallas, mostrado in zip(
+                resultados, interprete.detalle_pruebas, interprete.mostrado_pruebas):
             print(f"  {mal if error else bien} {nombre}")
+            for texto in mostrado:  # lo que la prueba mostró, debajo de su nombre
+                for parte in str(texto).split("\n"):
+                    print(f"      | {parte}")
             for linea, texto in fallas:
+                texto, _, camino = texto.partition("\ncómo se llegó: ")
                 for parte in texto.split("\n"):
                     print(f"      {parte}")
                 # debajo, el renglón señalado (como hace 'correr')
@@ -3229,6 +3596,8 @@ def _main(argv, donde):
                     if linea else None
                 if renglon:
                     print(f"      {renglon}")
+                if camino:
+                    print(f"          cómo se llegó: {camino}")
             fallidas += bool(error)
         print(f"{len(resultados) - fallidas} de {len(resultados)} pruebas pasaron")
         return 1 if fallidas or interprete.errores_principal else 0
