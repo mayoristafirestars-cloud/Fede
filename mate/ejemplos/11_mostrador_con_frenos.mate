@@ -1,0 +1,175 @@
+# Paso 11: un mostrador al que se le puede confiar la atención, porque tiene FRENOS.
+#
+# Una IA a veces inventa: un precio que no existe, un descuento que nadie autorizó. Con
+# 'frenos', el agente declara sus reglas y MATE revisa cada respuesta de consultar_ia()
+# antes de que le llegue al cliente (no se le pide a la IA que se controle sola):
+#   - precios: los únicos importes en pesos que puede nombrar (acá, los de la lista).
+#   - prohibido: palabras o temas que no puede tocar.
+#   - largo: cuántas letras puede tener la respuesta, como mucho.
+#   - reserva: lo que se contesta en lugar de una respuesta mala.
+#   - consultas_por_dia: el tope de gasto. Al llegar, no consulta más por ese día.
+# Cuando una respuesta rompe una regla, Mate consulta UNA vez más avisándole a la IA qué
+# regla rompió. Si la vuelve a romper, al cliente le llega el texto de 'reserva'.
+#
+# PROBALO ASÍ, en PowerShell (no hace falta clave ni internet, y no gasta nada):
+#
+#   1. Para ver los frenos saltando, con la conversación completa:
+#          python mate\mate.py correr mate\ejemplos\11_mostrador_con_frenos.mate --ia-simulada --traza
+#      Con --ia-simulada no hay IA: "contesta" lo que está escrito más abajo, y dos de esas
+#      respuestas están mal a propósito (un precio inventado y un descuento).
+#
+#   2. Cada freno que salta queda anotado, junto con la cuenta de consultas del día:
+#          python mate\mate.py bitacora mate\ejemplos\11_mostrador_con_frenos.mate
+#
+#   3. Y deja una lección PROPUESTA, que el Mostrador no usa hasta que la apruebes:
+#          python mate\mate.py propuestas mate\ejemplos\11_mostrador_con_frenos.mate
+#          python mate\mate.py propuestas mate\ejemplos\11_mostrador_con_frenos.mate aprobar 1
+#
+#   4. Para correr las pruebas de abajo (no tocan la cuenta ni escriben ningún archivo):
+#          python mate\mate.py probar mate\ejemplos\11_mostrador_con_frenos.mate
+#
+# Con la IA de verdad es el mismo comando del punto 1 sin --ia-simulada (es pago; la clave
+# va en la variable ANTHROPIC_API_KEY, como se explica en el paso 7).
+
+mensaje CargarLista { precios: lista }
+mensaje Consulta { pregunta: texto, sin_ia: texto }
+# (aviso solo viene si la IA no pudo contestar)
+mensaje Atencion { respuesta: texto, aviso: texto? }
+
+agente Mostrador {
+    # La lista de precios: una fila por producto, como la deja leer_tabla().
+    estado filas = []
+
+    frenos {
+        # Los únicos importes que puede nombrar: los de la columna "precio" de la lista.
+        # (Con  precios: filas  valdrían todos los números de la tabla, también el stock.)
+        precios: solo_precios(filas)
+        prohibido: ["descuento", "rebaja", "fiado"]
+        largo: 300
+        reserva: "Eso te lo confirma una persona. Ya te paso con alguien."
+        consultas_por_dia: 200
+    }
+
+    # Un agente no toca archivos: el programa lee la lista y se la manda en un mensaje.
+    al recibir CargarLista como c {
+        filas = c.precios
+    }
+
+    al recibir Consulta como c {
+        sea instrucciones = """
+            Atendés el mostrador de un mayorista de almacén. Contestá en castellano
+            rioplatense, con amabilidad y en pocas palabras. Usá SOLO los precios de esta
+            lista; si piden algo que no está, decí que no lo trabajamos.
+
+            LISTA DE PRECIOS DE HOY:
+            {lista_en_texto(filas)}
+        """
+        intentar {
+            # El tercer valor es lo que "contesta la IA" con --ia-simulada. Pasa por los
+            # mismos frenos que una respuesta de verdad.
+            sea dicho = consultar_ia(instrucciones, c.pregunta, c.sin_ia)
+            responder Atencion { respuesta: dicho }
+        } si falla motivo {
+            # Sin clave, sin internet o sin crédito: tampoco ahí se inventa nada.
+            responder Atencion {
+                respuesta: "Ahora no te puedo atender. Ya te paso con alguien.",
+                aviso: motivo,
+            }
+        }
+    }
+}
+
+# La columna "precio" de la lista: [35000, 9800.5, ...]
+funcion solo_precios(tabla) {
+    var importes = []
+    para fila en tabla {
+        importes = agregar(importes, fila.precio)
+    }
+    devolver importes
+}
+
+funcion lista_en_texto(tabla) {
+    var renglones = []
+    para fila en tabla {
+        renglones = agregar(renglones, "- {fila.producto} ({fila.presentacion}): {pesos(fila.precio)}")
+    }
+    devolver unir(renglones, "\n")
+}
+
+# Hace una consulta y muestra lo que le llega al cliente.
+funcion atender(pregunta, sin_ia) {
+    sea atencion = preguntar Consulta { pregunta: pregunta, sin_ia: sin_ia } a Mostrador
+    mostrar("Cliente:   {pregunta}")
+    mostrar("Mostrador: {atencion.respuesta}")
+    si atencion.aviso != nada {
+        mostrar("   (la IA no contestó. El motivo: {atencion.aviso})")
+    }
+    devolver atencion.respuesta
+}
+
+enviar CargarLista { precios: leer_tabla("precios.csv") } a Mostrador
+
+# 1. Una respuesta buena: el precio está en la lista, así que pasa tal cual.
+atender("¿Cuánto sale el bolsón de yerba?", "El bolsón de yerba sale $ 35.000.")
+# 2. Un precio inventado: el café no está en la lista. Al cliente le llega la reserva.
+atender("¿Y el café?", "El café sale $ 12.000 el kilo.")
+# 3. Un descuento que nadie autorizó: está entre lo prohibido.
+atender("¿Me hacés precio si llevo dos?", "¡Dale! Te hago un descuento del 10%.")
+
+# En las pruebas la IA nunca es de verdad: simular_ia() fija lo que "contesta".
+sea reserva = "Eso te lo confirma una persona. Ya te paso con alguien."
+
+funcion consultar(pregunta) {
+    sea atencion = preguntar Consulta { pregunta: pregunta, sin_ia: "Hola." } a Mostrador
+    devolver atencion.respuesta
+}
+
+prueba "un precio de la lista pasa, escrito de cualquier forma" {
+    enviar CargarLista { precios: leer_tabla("precios.csv") } a Mostrador
+    simular_ia("El bolsón de yerba sale $ 35.000 y el azúcar 9.800,50 pesos.")
+    asegurar consultar("yerba y azúcar") == "El bolsón de yerba sale $ 35.000 y el azúcar 9.800,50 pesos."
+    # consultas_ia() cuenta qué pasó con cada consulta: 'freno' está vacío si pasó.
+    asegurar ultimo(consultas_ia()).freno == ""
+}
+
+prueba "un precio inventado no le llega al cliente" {
+    enviar CargarLista { precios: leer_tabla("precios.csv") } a Mostrador
+    simular_ia("El café sale $ 12.000 el kilo.")
+    asegurar consultar("¿Y el café?") == reserva
+    # Fueron dos consultas: la primera y el segundo intento, que tampoco pasó.
+    asegurar largo(consultas_ia()) == 2
+    asegurar tiene(consultas_ia()[0].freno, "$ 12.000")
+    asegurar tiene(consultas_ia()[1].pregunta, "tu respuesta anterior")
+    asegurar ultimo(consultas_ia()).devuelto == reserva
+}
+
+prueba "si en el segundo intento la IA se corrige, vale esa respuesta" {
+    enviar CargarLista { precios: leer_tabla("precios.csv") } a Mostrador
+    simular_ia(["El café sale $ 12.000 el kilo.", "Café no trabajamos."])
+    asegurar consultar("¿Y el café?") == "Café no trabajamos."
+}
+
+prueba "las cantidades, los teléfonos y las fechas no son precios" {
+    enviar CargarLista { precios: leer_tabla("precios.csv") } a Mostrador
+    simular_ia("Hay 40 bolsones. Llamá al 11 4567-8901 antes del 15/12, de 9 a 18.")
+    asegurar tiene(consultar("¿Hay yerba?"), "40 bolsones")
+}
+
+prueba "no promete descuentos ni se va de largo" {
+    simular_ia("Te hago un DESCUENTO especial.")
+    asegurar consultar("¿Me hacés precio?") == reserva
+    asegurar tiene(consultas_ia()[0].freno, "prohibido")
+    simular_ia(unir(rango(400), ""))
+    asegurar consultar("Contame todo") == reserva
+}
+
+prueba "al llegar al tope del día no consulta más" {
+    simular_ia("Sí, hay.")
+    para i en rango(200) {
+        asegurar consultar("¿Hay?") == "Sí, hay."
+    }
+    asegurar consultar("¿Hay?") == reserva
+    asegurar largo(consultas_ia()) == 201
+    asegurar tiene(ultimo(consultas_ia()).freno, "tope")
+    asegurar ultimo(consultas_ia()).respuesta == nada
+}

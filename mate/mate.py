@@ -40,6 +40,9 @@ TOPE_DE_PALABRAS = 40
 # consultas_ia. 'recordado' no gasta una palabra: solo vale después de 'estado'.)
 # (En la 0.5 subió de 45 a 48, para trabajar con datos de verdad y charlar por teclado:
 # leer_tabla, agregar_a_archivo y simular_teclado.)
+# (Los frenos para la IA, el tope de gasto y las lecciones propuestas, también de la 0.5,
+# no gastaron nada: 'frenos' solo vale dentro de un agente y seguida de una llave, y sus
+# reglas (precios, prohibido, largo, reserva...) son nombres comunes en cualquier otro lado.)
 TOPE_DE_FUNCIONES = 48
 
 PALABRAS = {
@@ -67,7 +70,7 @@ NIVELES_DE_PYTHON = 30 * MAX_LLAMADAS if sys.version_info >= (3, 12) else 0
 ORDENES = ("correr", "probar", "verificar")
 # Las órdenes de lo que un agente aprende (0.4): llevan el programa y miran sus archivos
 # de memoria y de bitácora, sin correrlo.
-ORDENES_DE_MEMORIA = ("bitacora", "corregir", "lecciones")
+ORDENES_DE_MEMORIA = ("bitacora", "corregir", "lecciones", "propuestas", "proponer")
 OPCIONES = ("--traza", "--depurar", "--sin-limite", "--version", "--ayuda",
             "--ia-simulada", "--olvidar", "--para-mejorar", "--sin-registro")
 # El registro de errores de uso (0.4): lo que Mate anota de los errores que le muestra a
@@ -1201,18 +1204,55 @@ class Parser:
         ln = self.tomar()[2]
         nombre = self.nombre_propio("agente")
         self.espera("op", "{")
-        estados, manejadores, funciones = [], [], []
+        estados, manejadores, funciones, frenos = [], [], [], []
         self.en_agente += 1
         try:
-            self.miembros_de_agente(estados, manejadores, funciones)
+            self.miembros_de_agente(estados, manejadores, funciones, frenos, nombre)
         finally:
             self.en_agente -= 1
-        return ("agente", ln, nombre, estados, manejadores, funciones)
+        return ("agente", ln, nombre, estados, manejadores, funciones, frenos)
 
-    def miembros_de_agente(self, estados, manejadores, funciones):
+    def frenos(self, nombre_del_agente, frenos):
+        """frenos { precios: lista  reserva: "..." }: las reglas que Mate comprueba sobre
+        cada respuesta de consultar_ia() de ese agente (0.5). 'frenos' no es una palabra
+        reservada: solo significa esto dentro de un agente y seguida de una llave."""
+        ln = self.tomar()[2]
+        if frenos:
+            raise ErrorMate(f"{nombre_del_agente} ya tiene sus 'frenos' (línea "
+                            f"{frenos[0][0]}): van todos juntos, en un solo bloque", ln)
+        self.espera("op", "{")
+        while not self.acepta("op", "}"):
+            tk = self.tomar()
+            if tk[0] == "eof":
+                raise ErrorMate("a los 'frenos' les falta la llave de cierre }", ln)
+            if tk[0] not in ("id", "kw") or not self.es("op", ":"):
+                raise ErrorMate(
+                    "dentro de 'frenos' va una regla por renglón, con su nombre, dos puntos "
+                    f"y el valor (por ejemplo  largo: 400). Las reglas son: {REGLAS_EN_LISTA}",
+                    tk[2])
+            if tk[1] not in REGLAS_DE_FRENO:
+                raise ErrorMate(con_sugerencia(
+                    f"'{tk[1]}' no es una regla de 'frenos'", tk[1], REGLAS_DE_FRENO)
+                    + f". Las reglas son: {REGLAS_EN_LISTA}", tk[2])
+            if any(tk[1] == regla for _, regla, _ in frenos):
+                raise ErrorMate(f"la regla '{tk[1]}' está dos veces en los frenos de "
+                                f"{nombre_del_agente}: va una sola", tk[2])
+            self.tomar()
+            if self.es("op", "}") or self.ver()[2] != tk[2]:
+                raise ErrorMate(f"a la regla '{tk[1]}' le falta el valor, en el mismo "
+                                f"renglón: {REGLAS_DE_FRENO[tk[1]][1]}", tk[2])
+            frenos.append((tk[2], tk[1], self.expr()))
+            self.acepta("op", ",")
+        if not frenos:
+            raise ErrorMate("estos 'frenos' están vacíos: poneles al menos una regla, por "
+                            f"ejemplo  {REGLAS_DE_FRENO['largo'][1]}", ln)
+
+    def miembros_de_agente(self, estados, manejadores, funciones, frenos, nombre):
         while not self.acepta("op", "}"):
             tk = self.ver()
-            if self.acepta("kw", "estado"):
+            if tk[:2] == ("id", "frenos") and self.es("op", "{", d=1):
+                self.frenos(nombre, frenos)
+            elif self.acepta("kw", "estado"):
                 # 'estado recordado atendidos = 0': ese dato vuelve en la próxima corrida.
                 # 'recordado' no es una palabra reservada: 'estado recordado = 5' sigue
                 # siendo un estado que se llama así.
@@ -1245,8 +1285,10 @@ class Parser:
                 raise ErrorMate(f"'{tk[1]}' va en minúscula: '{tk[1].lower()}'", tk[2])
             else:
                 raise ErrorMate(
-                    "dentro de un agente solo van 'estado', 'al recibir' y 'funcion'", tk[2]
-                )
+                    "dentro de un agente solo van 'estado', 'al recibir', 'funcion' y "
+                    "'frenos'" if tk[:2] == ("id", "frenos") or self.es("op", ":", d=1)
+                    else "dentro de un agente solo van 'estado', 'al recibir' y 'funcion'",
+                    tk[2])
 
     # expresiones
     def expr(self):
@@ -1755,7 +1797,7 @@ def _ligaduras(programa):
             anotar(n[3])
         elif _es_nodo(n, "simular", 6):
             anotar(n[4])
-        elif _es_nodo(n, "agente", 6):
+        elif _es_nodo(n, "agente", 7):
             anotar(n[2])
             for _, nombre, _ in n[3]:
                 anotar(nombre)
@@ -1988,6 +2030,8 @@ def revisar_nombres(programa, mensajes, veces, en_consola=False):
                 bloque(cuerpo, adentro + [{var} if var else set()])
             for f in s[5]:
                 funcion(f, adentro)
+            for _, _, regla in s[6]:  # los frenos ven el estado y las funciones del agente
+                valor(regla, adentro)
         elif clase == "prueba":
             bloque(s[3], alcance)
         elif clase == "simular":
@@ -2222,6 +2266,22 @@ def verificar(programa, en_consola=False):
             for k in repetidos(e[1] for e in s[3]):
                 errores.append((next(e[0] for e in reversed(s[3]) if e[1] == k),
                                 f"{s[2]}: el estado '{k}' está repetido"))
+            # Los frenos (0.5): un valor escrito que no es del tipo de su regla, y las
+            # reglas que miran la respuesta sin un texto de 'reserva' para cuando saltan.
+            for ln, regla, e in s[6]:
+                escrito = "nada" if e[0] == "nada" else _LITERALES.get(e[0])
+                if escrito and escrito not in REGLAS_DE_FRENO[regla][0]:
+                    errores.append((ln, (
+                        f"en los frenos de {s[2]}, '{regla}' no lleva "
+                        f"{_CON_ARTICULO[escrito]}: son "
+                        f"{REGLAS_DE_FRENO[regla][2]}. Por ejemplo:  "
+                        f"{REGLAS_DE_FRENO[regla][1]}")))
+            reglas = [regla for _, regla, _ in s[6]]
+            if "reserva" not in reglas and any(r in REGLAS_DE_CONTENIDO for r in reglas):
+                errores.append((s[6][0][0], (
+                    f"a los frenos de {s[2]} les falta 'reserva': lo que contesta el agente "
+                    "cuando la IA rompe una regla dos veces seguidas. Por ejemplo:  "
+                    f"{REGLAS_DE_FRENO['reserva'][1]}")))
             vistos = set()
             for ln, tipo, _, cuerpo in s[4]:
                 if tipo == AL_FALLAR:
@@ -2267,7 +2327,7 @@ def verificar(programa, en_consola=False):
             return
         if not isinstance(n, tuple):
             return
-        if _es_nodo(n, "agente", 6):
+        if _es_nodo(n, "agente", 7):
             ag = n[2]
         # Lo que va de condición y, escrito así, nunca puede dar verdadero o falso.
         condiciones = []
@@ -2450,6 +2510,9 @@ class Agente:
         self.creador = None  # si es una copia: el agente que la creó mientras atendía
         self.recuerda = True  # una copia sin nombre ('crear' sin 'llamado') no tiene memoria
         self.lecciones = []  # [{"fecha", "texto"}]: nunca se cambia, se reemplaza por otra
+        # Lo de la 0.5, solo en los agentes declarados (sus copias usan lo del original):
+        self.propuestas = []  # lecciones propuestas, sin aprobar: [{"fecha", "texto", "motivo"}]
+        self.gasto = {}  # la cuenta de consultas: {"2026-11-21": {"consultas", "simuladas", "tokens"}}
 
 
 class Funcion:
@@ -3177,7 +3240,9 @@ def pedir_a_la_ia(instrucciones, pregunta):
         except (ValueError, UnicodeError):
             datos = None
         if problema is None and codigo == 200:
-            return texto_de_la_ia(datos)
+            texto = texto_de_la_ia(datos)
+            _USO_DE_LA_IA["tokens"] = tokens_de(datos)
+            return texto
         detalle = datos.get("error") if isinstance(datos, dict) else None
         detalle = detalle if isinstance(detalle, dict) else {}
         dicho = detalle.get("message") if isinstance(detalle.get("message"), str) else ""
@@ -3228,6 +3293,19 @@ def respuestas_de_archivo(ruta):
         raise ErrorMate(f"el archivo de respuestas '{ruta}' está vacío. Cada renglón va así:  "
                         "lo que trae la pregunta => lo que contesta la IA")
     return pares
+
+
+def respuesta_del_archivo(pares, pregunta):
+    """Lo que contesta el archivo de --ia-simulada a esa pregunta (o None): el primer
+    renglón cuyo texto esté en la pregunta y, si ninguno, el del asterisco."""
+    buscada = " ".join(sin_tildes(pregunta).lower().split())
+    for si_trae, contesta in pares:
+        if si_trae != "*" and si_trae in buscada:
+            return contesta
+    for si_trae, contesta in pares:
+        if si_trae == "*":
+            return contesta
+    return None
 
 
 def recortado(texto, largo=70):
@@ -3336,13 +3414,30 @@ def leer_memoria(ruta):
                           "que es el tope: me quedo con las más nuevas")
         limpio[str(agente)] = {"estado": dict(ficha.get("estado", {})),
                                "lecciones": lecciones[-MAX_LECCIONES:]}
+        # Lo de la 0.5 (lecciones propuestas y cuenta de consultas) solo está si hay algo.
+        propuestas = []
+        for propuesta in ficha.get("propuestas", []) \
+                if isinstance(ficha.get("propuestas"), list) else []:
+            dicho = propuesta.get("texto") if isinstance(propuesta, dict) else None
+            if not isinstance(dicho, str) or not dicho.strip():
+                continue
+            fecha, motivo = propuesta.get("fecha"), propuesta.get("motivo")
+            propuestas.append({"fecha": fecha if isinstance(fecha, str) else "",
+                               "texto": en_un_renglon(dicho, LARGO_DE_LECCION),
+                               "motivo": en_un_renglon(motivo, 400)
+                               if isinstance(motivo, str) else ""})
+        if propuestas:
+            limpio[str(agente)]["propuestas"] = propuestas[-MAX_PROPUESTAS:]
+        gasto = gasto_limpio(ficha.get("gasto"))
+        if gasto:
+            limpio[str(agente)]["gasto"] = gasto
     return limpio, avisos
 
 
 def guardar_memoria(ruta, programa, agentes):
     """Deja la memoria en su archivo (o lo saca, si ya no hay nada que recordar). Devuelve
     None si salió bien o la explicación de por qué no se pudo."""
-    agentes = {a: f for a, f in agentes.items() if f["estado"] or f["lecciones"]}
+    agentes = {a: f for a, f in agentes.items() if any(f.values())}
     try:
         if not agentes:
             if os.path.lexists(ruta):
@@ -3392,8 +3487,205 @@ def con_lecciones(instrucciones, lecciones):
     return f"{instrucciones.rstrip()}\n\n{TITULO_DE_LECCIONES}\n{lista}".lstrip()
 
 
+# ─────────────── Frenos para la IA, tope de gasto y lecciones propuestas (0.5) ───────────────
+# Un agente declara sus frenos:
+#     frenos {
+#         precios: lista                  (los importes que la IA puede nombrar)
+#         prohibido: ["descuento"]        (palabras o temas que no puede tocar)
+#         largo: 400                      (letras, como mucho)
+#         reserva: "Eso te lo confirma una persona, ya te paso."
+#         consultas_por_dia: 100          (tope de gasto)
+#         tokens_por_dia: 200000
+#     }
+# y MATE (no la IA) revisa cada respuesta de consultar_ia() de ese agente antes de
+# devolverla. Si una regla no se cumple, consulta UNA vez más diciéndole a la IA qué regla
+# rompió; si la vuelve a romper, devuelve el texto de 'reserva'. Cada freno que salta queda
+# en la bitácora y deja una lección PROPUESTA, que no se usa hasta que el dueño la aprueba.
+
+# regla -> (qué tipo de valor lleva, un ejemplo, qué hace)
+REGLAS_DE_FRENO = {
+    "precios": (("lista", "mapa"), "precios: lista",
+                "los importes en pesos que puede nombrar la IA: una lista de números, o la "
+                "tabla de precios entera (valen todos sus números)"),
+    "prohibido": (("lista",), 'prohibido: ["descuento", "garantía"]',
+                  "palabras o temas que no pueden aparecer en la respuesta"),
+    "largo": (("numero",), "largo: 400", "cuántas letras puede tener la respuesta, como mucho"),
+    "reserva": (("texto",), 'reserva: "Eso te lo confirma una persona, ya te paso."',
+                "lo que se contesta cuando la IA rompe una regla dos veces, o se llegó al tope"),
+    "consultas_por_dia": (("numero",), "consultas_por_dia: 100",
+                          "cuántas consultas a la IA puede hacer el agente por día"),
+    "tokens_por_dia": (("numero",), "tokens_por_dia: 200000",
+                       "cuántos tokens (lo que cobra el servicio) puede gastar por día"),
+}
+REGLAS_EN_LISTA = ", ".join(REGLAS_DE_FRENO)
+REGLAS_DE_CONTENIDO = ("precios", "prohibido", "largo")  # las que miran la respuesta
+MAX_PROPUESTAS = 20  # lecciones propuestas (sin aprobar) por agente; se va la más vieja
+DIAS_DE_GASTO = 30  # cuántos días se guarda la cuenta de consultas de cada agente
+MAX_PROHIBIDOS = 100  # textos en la regla 'prohibido'
+# Un número suelto (sin $ ni "pesos") después de "sale", "cuesta"... cuenta como importe
+# solo desde este valor: así "sale 2 por 1" o "vale 3 puntos" no hacen saltar el freno.
+IMPORTE_SUELTO_DESDE = 100
+
+_NUM_DE_IMPORTE = (r"(?:\d{1,3}(?:\.\d{3})+(?:,\d+)?|\d{1,3}(?:,\d{3})+(?:\.\d+)?"
+                   r"|\d+(?:[.,]\d+)?)(?!\d)")
+_MIL_O_MILLON = r"(?:\s*(mil|millones|mill[oó]n)\b)?"
+# $ 3.500   $3500   $ 3.500,00   AR$ 1.234,50   $ 3 mil
+_IMPORTE_CON_SIGNO = re.compile(r"\$\s*(" + _NUM_DE_IMPORTE + ")" + _MIL_O_MILLON, re.I)
+# 3500 pesos   3.500 pesos   3 mil pesos   2 millones de pesos   3500$
+_IMPORTE_CON_PESOS = re.compile(
+    r"(?<![\w.,$])(" + _NUM_DE_IMPORTE + ")" + _MIL_O_MILLON
+    + r"(?:\s+de)?\s*(?:pesos?\b|\$)", re.I)
+# sale 3500   cuesta 3.500   el precio es de 3500   (sin $ ni "pesos")
+_IMPORTE_SUELTO = re.compile(
+    r"\b(?:sale|salen|cuesta|cuestan|vale|valen|precio|cobramos)\b"
+    r"(?:\s+(?:es|son|de|a|en|final|total|solo|sólo))*\s*:?\s*(" + _NUM_DE_IMPORTE + ")"
+    + _MIL_O_MILLON
+    + r"(?!\s*[/%:°x-]\s*\d)(?!\s*%)"
+    r"(?!\s+(?!(?:por|cada|el|la|los|las|y|o|e|más|mas|con|c|final|en|al|si|pero|sin)\b)"
+    r"[a-záéíóúñü])", re.I)
+
+
+def valores_de_importe(escrito, cuanto=None):
+    """Lo que puede valer un importe escrito. "3.500" es 3500 (acá el punto es de los
+    miles) y "3,5" es tres y medio. "3,500" puede ser las dos cosas (a la inglesa son tres
+    mil quinientos): ante la duda se dan las dos lecturas, y alcanza con que una esté
+    permitida."""
+    valores = set()
+    if re.fullmatch(r"\d{1,3}(\.\d{3})+(,\d+)?", escrito):  # a la argentina: 1.234,50
+        valores.add(float(escrito.replace(".", "").replace(",", ".")))
+    elif re.fullmatch(r"\d{1,3}(,\d{3})+(\.\d+)?", escrito):  # a la inglesa: 1,234.50
+        valores.add(float(escrito.replace(",", "")))
+        if escrito.count(",") == 1 and "." not in escrito:
+            valores.add(float(escrito.replace(",", ".")))
+    else:
+        valores.add(float(escrito.replace(",", ".")))
+    veces = {"mil": 1000}.get((cuanto or "").lower(), 1_000_000 if cuanto else 1)
+    return {v * veces for v in valores}
+
+
+def importes_de(texto):
+    """Los importes en pesos que nombra un texto: [(como está escrito, lo que puede valer)].
+    Cuenta como importe un número con el signo $ adelante o atrás, con la palabra "pesos",
+    o suelto justo después de "sale", "cuesta", "vale", "precio" o "cobramos" (y de 100 o
+    más). Lo demás (cantidades, teléfonos, fechas, porcentajes) no se mira: ante la duda,
+    este freno prefiere no saltar. Tampoco ve los importes escritos con letras."""
+    vistos = {}
+    for patron, suelto in ((_IMPORTE_CON_SIGNO, False), (_IMPORTE_CON_PESOS, False),
+                           (_IMPORTE_SUELTO, True)):
+        for m in patron.finditer(texto):
+            if m.start(1) in vistos:
+                continue
+            valores = valores_de_importe(m.group(1), m.group(2))
+            if suelto and max(valores) < IMPORTE_SUELTO_DESDE:
+                continue
+            escrito = m.group(1) + (f" {m.group(2)}" if m.group(2) else "")
+            vistos[m.start(1)] = (escrito if suelto else "$ " + escrito, valores)
+    return [vistos[i] for i in sorted(vistos)]
+
+
+def numeros_permitidos(valor, hondo=0):
+    """Todos los números que hay en un valor: en una lista, en una tabla (una lista de
+    mapas), en un mapa o en un mensaje. Son los importes que la IA puede nombrar."""
+    if es_num(valor):
+        return {float(valor)}
+    if hondo > 20:
+        return set()
+    if isinstance(valor, Registro):
+        valor = valor.campos
+    if isinstance(valor, dict):
+        valor = list(valor.values())
+    if isinstance(valor, list):
+        return set().union(*(numeros_permitidos(x, hondo + 1) for x in valor))
+    return set()
+
+
+def reglas_rotas(respuesta, frenos):
+    """Qué reglas de esos frenos no cumple la respuesta: [(regla, qué pasó, la lección que
+    se propone)]. Una lista vacía quiere decir que la respuesta pasa."""
+    rotas = []
+    if frenos.get("precios") is not None:
+        permitidos = frenos["precios"]
+        ajenos = [escrito for escrito, valores in importes_de(respuesta)
+                  if not any(abs(v - p) < 0.005 for v in valores for p in permitidos)]
+        if ajenos:
+            ajenos = list(dict.fromkeys(ajenos))
+            cuales = ", ".join(ajenos[:3]) + (" y otros" if len(ajenos) > 3 else "")
+            rotas.append(("precios", (
+                f"nombró {'el importe' if len(ajenos) == 1 else 'los importes'} {cuales}, "
+                f"que no está{'' if len(ajenos) == 1 else 'n'} entre los precios permitidos"),
+                "No nombres ningún importe que no esté en los precios que te dieron. Si no "
+                "sabés un precio, decí que lo confirma una persona."))
+    if frenos.get("prohibido"):
+        llano = " ".join(sin_tildes(respuesta).lower().split())
+        for palabra in frenos["prohibido"]:
+            buscada = " ".join(sin_tildes(palabra).lower().split())
+            if buscada and re.search(r"(?<!\w)" + re.escape(buscada), llano):
+                rotas.append(("prohibido", f'dijo "{palabra}", que está entre lo prohibido',
+                              f'No hables de "{en_un_renglon(palabra, 80)}": de eso acá no '
+                              "se habla. Si te lo preguntan, decí que lo ve una persona."))
+                break
+    if frenos.get("largo") is not None and len(respuesta) > frenos["largo"]:
+        rotas.append(("largo", f"la respuesta tiene {len(respuesta)} letras y el máximo es "
+                               f"{frenos['largo']}",
+                      f"Contestá corto: como mucho {frenos['largo']} letras."))
+    return rotas
+
+
+def aviso_de_freno(pregunta, rotas):
+    """La consulta que se manda en el segundo intento: la misma, más qué regla se rompió."""
+    que = "; ".join(motivo for _, motivo, _ in rotas)
+    return (f"{pregunta}\n\n[Aviso del sistema: tu respuesta anterior a esta misma consulta "
+            f"no se pudo usar porque {que}. Contestá de nuevo cumpliendo esa regla. Si no "
+            "podés contestar sin romperla, decí que eso lo confirma una persona.]")
+
+
+def sumar_propuesta(propuestas, lecciones, texto, motivo, fecha):
+    """La lista de propuestas con esa lección al final (o la misma lista, si ya estaba
+    propuesta o ya es una lección aprobada). Nunca más que el tope: se va la más vieja."""
+    texto = en_un_renglon(texto, LARGO_DE_LECCION)
+    if any(p["texto"] == texto for p in propuestas) \
+            or any(leccion["texto"] == texto for leccion in lecciones):
+        return propuestas
+    nuevas = propuestas + [{"fecha": fecha, "texto": texto,
+                            "motivo": en_un_renglon(motivo, 400)}]
+    return nuevas[-MAX_PROPUESTAS:]
+
+
+def gasto_limpio(gasto):
+    """La cuenta de consultas de un agente como se guarda: {"2026-11-21": {"consultas": 3,
+    "simuladas": 0, "tokens": 1200}}, con los últimos DIAS_DE_GASTO días y solo los que
+    tienen algo. Lo que no tenga esa forma (alguien editó el archivo) se saltea."""
+    limpio = {}
+    for dia, cuenta in (gasto.items() if isinstance(gasto, dict) else ()):
+        if not (isinstance(dia, str) and re.fullmatch(r"\d{4}-\d\d-\d\d", dia)
+                and isinstance(cuenta, dict)):
+            continue
+        numeros = {k: cuenta.get(k, 0) for k in ("consultas", "simuladas", "tokens")}
+        if all(type(n) is int and 0 <= n < 10 ** 15 for n in numeros.values()) \
+                and any(numeros.values()):
+            limpio[dia] = numeros
+    return {dia: limpio[dia] for dia in sorted(limpio)[-DIAS_DE_GASTO:]}
+
+
+def tokens_de(datos):
+    """Los tokens que gastó una consulta, según lo que informa el servicio (los de la
+    pregunta más los de la respuesta), o None si no lo dice."""
+    uso = datos.get("usage") if isinstance(datos, dict) else None
+    if not isinstance(uso, dict):
+        return None
+    partes = [uso.get(k) for k in ("input_tokens", "output_tokens")]
+    if not all(type(n) is int and 0 <= n < 10 ** 12 for n in partes):
+        return None
+    return sum(partes)
+
+
+# Lo que gastó la última consulta de verdad (lo deja pedir_a_la_ia): {"tokens": 1234}.
+_USO_DE_LA_IA = {}
+
+
 def usa_memoria(programa, propios=None):
-    """¿El programa usa lo de aprender: un 'estado recordado', aprender() o lecciones()?
+    """¿El programa usa lo de aprender: un 'estado recordado', aprender(), lecciones() o
+    los 'frenos' de un agente?
     Si no, 'correr' no lee ni escribe ningún archivo de más. (Si el programa le puso
     'aprender' o 'lecciones' a algo suyo, llamarlo no es usar lo de aprender.)"""
     if propios is None:
@@ -3402,6 +3694,8 @@ def usa_memoria(programa, propios=None):
         return True
     if not isinstance(programa, (list, tuple)):
         return False
+    if _es_nodo(programa, "agente", 7) and programa[6]:
+        return True  # un agente con frenos lleva la cuenta de sus consultas (0.5)
     if _es_nodo(programa, "llamar", 4) and _es_nodo(programa[2], "nombre", 3) \
             and programa[2][2] in ("aprender", "lecciones") and programa[2][2] not in propios:
         return True
@@ -3844,6 +4138,8 @@ class Interprete:
         self.bitacora = None  # una lista, si las fallas de los agentes se anotan
         self.avisar = lambda texto: None  # por dónde salen los avisos de la memoria
         self.avisados = set()  # los avisos que se dan una sola vez por corrida
+        self.guardar_cuenta = None  # 'correr': deja la cuenta de consultas en el disco
+        self.calculando_frenos = False  # mientras se calculan los valores de unos 'frenos'
         self._armados = {}  # lo que ya está armado para correr (ver 'armar_bloque')
         self._nativas()
 
@@ -4391,6 +4687,21 @@ class Interprete:
                 raise error_de_ia("la pregunta está vacía: no hay nada para consultarle")
             quien = self.contexto[0].nombre if self.contexto else "(programa)"
             hondo = len(self.atendiendo)
+            # Los frenos del agente (0.5). Sin frenos, todo sigue como siempre.
+            agente = self.contexto[0] if self.contexto else None
+            frenos = self.frenos_de(agente) if agente is not None and agente.decl[6] else None
+            if frenos is None:
+                return una_consulta(instrucciones, pregunta, preparada, quien, hondo)[0]
+            return self.con_frenos(
+                agente, frenos, instrucciones, pregunta, momento(),
+                lambda de_nuevo=None: una_consulta(
+                    instrucciones, de_nuevo or pregunta, preparada, quien, hondo,
+                    simulada_con=pregunta))
+
+        def una_consulta(instrucciones, pregunta, preparada, quien, hondo, simulada_con=None):
+            """Una consulta a la IA (de verdad o simulada). Devuelve (lo que contestó, la
+            anotación que queda para consultas_ia()). simulada_con: en el segundo intento
+            de un freno, la respuesta simulada se busca por la pregunta original."""
             # Las lecciones del agente van solas al final de las instrucciones (0.4).
             aprendidas = self.lecciones_de(self.contexto[0]) if self.contexto else []
             if aprendidas:
@@ -4407,7 +4718,7 @@ class Interprete:
                 self.ia_historial.append(consulta)
             try:
                 if self.ia_simulada:
-                    respuesta = self.respuesta_simulada(pregunta, preparada)
+                    respuesta = self.respuesta_simulada(simulada_con or pregunta, preparada)
                 else:
                     if self.max_pasos is not None and self.ia_consultas >= MAX_CONSULTAS_IA:
                         raise ErrorMate(
@@ -4416,6 +4727,7 @@ class Interprete:
                             "bucle. Si de verdad hacen falta más, corré con --sin-limite",
                             clase="limite")
                     self.ia_consultas += 1
+                    _USO_DE_LA_IA.clear()
                     try:
                         respuesta = pedir_a_la_ia(instrucciones, pregunta)
                     except (ErrorMate, KeyboardInterrupt, MemoryError):
@@ -4432,7 +4744,7 @@ class Interprete:
             if self.traza:
                 self.trazar(f"la IA contesta: {recortado(respuesta)}", None, hondo)
             consulta["respuesta"] = respuesta
-            return respuesta
+            return respuesta, consulta
 
         @nativa("consultas_ia")
         def _():
@@ -4548,6 +4860,178 @@ class Interprete:
                 f"{MAX_LECCIONES} lecciones, que es el tope: usa solo las más nuevas"))
         return [leccion["texto"] for leccion in todas[-MAX_LECCIONES:]]
 
+    # ── frenos para la IA y tope de gasto (0.5) ──
+    def frenos_de(self, agente):
+        """Los frenos de ese agente con sus valores de ahora (se calculan en cada consulta,
+        así 'precios: lista' sigue a la lista aunque cambie). Un valor 'nada' es "sin esa
+        regla". Lo que no tiene la forma de su regla es un error que dice cuál y cómo va."""
+        if self.calculando_frenos:
+            raise error_de_ia("dentro de 'frenos' no se puede consultar a la IA: ahí van "
+                              "datos (una lista, un número, un texto)")
+        frenos = dict.fromkeys(REGLAS_DE_FRENO)
+        self.calculando_frenos = True
+        try:
+            for ln, regla, e in agente.decl[6]:
+                try:
+                    valor = self.ev(e, agente.env)
+                    if valor is None:
+                        continue
+                    que = f"en los frenos de {agente.decl[2]}, '{regla}'"
+                    ejemplo = f". Por ejemplo:  {REGLAS_DE_FRENO[regla][1]}"
+                    if nombre_tipo(valor) not in REGLAS_DE_FRENO[regla][0]:
+                        raise ErrorMate(f"{que} recibió {un(valor)} y lleva otra cosa: son "
+                                        f"{REGLAS_DE_FRENO[regla][2]}{ejemplo}")
+                    if regla == "precios":
+                        valor = numeros_permitidos(valor)
+                    elif regla == "prohibido":
+                        if len(valor) > MAX_PROHIBIDOS or not all(
+                                isinstance(t, str) and t.strip() for t in valor):
+                            raise ErrorMate(
+                                f"{que} lleva una lista de textos (palabras o frases, hasta "
+                                f"{MAX_PROHIBIDOS}, ninguna vacía){ejemplo}")
+                    elif regla == "reserva":
+                        if not valor.strip():
+                            raise ErrorMate(f"{que} está vacía: es lo que va a leer el "
+                                            f"cliente cuando salte un freno{ejemplo}")
+                    elif type(valor) is not int or valor < (1 if regla == "largo" else 0):
+                        raise ErrorMate(f"{que} lleva un número entero"
+                                        f"{' mayor que cero' if regla == 'largo' else ''} y "
+                                        f"recibió {formato(valor)}{ejemplo}")
+                    frenos[regla] = valor
+                except ErrorMate as error:
+                    error.linea = ln
+                    raise
+        finally:
+            self.calculando_frenos = False
+        if frenos["reserva"] is None and any(
+                frenos[regla] is not None for regla in REGLAS_DE_CONTENIDO):
+            raise ErrorMate(f"a los frenos de {agente.decl[2]} les falta 'reserva' (quedó en "
+                            "nada): es lo que contesta cuando la IA rompe una regla dos veces",
+                            agente.decl[6][0][0])
+        return frenos
+
+    def anotar_freno(self, agente, que, pregunta, motivo):
+        """Un freno que saltó (o un tope alcanzado), para la bitácora."""
+        if self.bitacora is None or self.en_prueba:
+            return
+        self.bitacora.append((datetime.datetime.now().strftime("%d/%m/%Y %H:%M"),
+                              agente.nombre, que, f"la consulta {recortado(pregunta)}", motivo))
+
+    def con_frenos(self, agente, frenos, instrucciones, pregunta, ahora, consultar):
+        """consultar_ia() de un agente con frenos: mira el tope de gasto, consulta, revisa
+        la respuesta y, si rompe una regla, consulta UNA vez más avisándole a la IA cuál;
+        si la vuelve a romper, devuelve el texto de reserva. Todo queda en la traza, en la
+        bitácora y en consultas_ia() (los campos 'freno' y 'devuelto')."""
+        quien, hondo = agente.nombre, len(self.atendiendo)
+        molde = self.agentes.get(agente.decl[2], agente)  # las copias cuentan con el original
+        dia, simulada = ahora.strftime("%Y-%m-%d"), self.ia_simulada
+        anotadas = []
+
+        def en_el_tope():
+            hoy = molde.gasto.get(dia, {})
+            hechas = hoy.get("simuladas" if simulada else "consultas", 0)
+            tope = frenos["consultas_por_dia"]
+            if tope is not None and hechas >= tope:
+                return (f"ya hizo {hechas} consulta(s) {'simuladas ' if simulada else ''}a "
+                        f"la IA hoy y su tope es {tope} por día")
+            tope = frenos["tokens_por_dia"]
+            if tope is not None and not simulada and hoy.get("tokens", 0) >= tope:
+                return f"ya gastó {hoy['tokens']} tokens hoy y su tope es {tope} por día"
+            return None
+
+        def contar():
+            hoy = molde.gasto.setdefault(dia, {"consultas": 0, "simuladas": 0, "tokens": 0})
+            if simulada:
+                hoy["simuladas"] += 1
+                return
+            hoy["consultas"] += 1
+            hoy["tokens"] += _USO_DE_LA_IA.get("tokens") or 0
+            if self.guardar_cuenta is not None and not self.en_prueba:
+                self.guardar_cuenta()  # ya, por si después cierran la ventana
+
+        def devolver(valor):
+            for consulta in anotadas:
+                consulta.setdefault("freno", "")
+                consulta["devuelto"] = valor
+            return valor
+
+        def trazar(texto):
+            if self.traza:
+                self.trazar(texto, None, hondo)
+
+        def sin_consultar(tope, que):
+            """Se llegó al tope: no se consulta. Sale la reserva o, si no hay, un error."""
+            trazar(f"tope de {quien}: {tope}. No consulta"
+                   + ("" if frenos["reserva"] is None else " y devuelve el texto de reserva"))
+            if (quien, "tope") not in self.avisados:  # una vez por corrida en la bitácora
+                self.avisados.add((quien, "tope"))
+                self.anotar_freno(agente, "llegó al tope de gasto", pregunta, tope)
+            if self.en_prueba and not anotadas:
+                anotadas.append({"agente": quien, "instrucciones": instrucciones,
+                                 "pregunta": pregunta, "respuesta": None, "freno": que})
+                self.ia_historial.append(anotadas[-1])
+            if frenos["reserva"] is None:
+                devolver(None)
+                raise ErrorMate(
+                    f"consultar_ia(): {quien} {tope}: por hoy no consulta más. (Para que en "
+                    "vez de fallar conteste algo, ponele una 'reserva' a sus frenos; el "
+                    "tope se cambia ahí mismo)", familia="tope")
+            return devolver(frenos["reserva"])
+
+        tope = en_el_tope()
+        if tope:
+            return sin_consultar(tope, "tope de gasto: " + tope)
+        respuesta, consulta = consultar()
+        contar()
+        anotadas.append(consulta)
+        rotas = reglas_rotas(respuesta, frenos)
+        if not rotas:
+            return devolver(respuesta)
+        que = "; ".join(motivo for _, motivo, _ in rotas)
+        consulta["freno"] = que
+        dicho = f"La IA había contestado: {recortado(respuesta, 200)}"
+        trazar(f"freno de {quien}: la respuesta no pasa ({que}). Consulta una vez más")
+        if self.recordando and not self.en_prueba:
+            # Queda una lección propuesta: no se usa hasta que el dueño la aprueba.
+            cuantas = len(molde.propuestas)
+            for _, motivo, leccion in rotas:
+                molde.propuestas = sumar_propuesta(
+                    molde.propuestas, molde.lecciones, leccion,
+                    f"saltó un freno: {motivo}. {dicho}", ahora.strftime("%d/%m/%Y %H:%M"))
+            if len(molde.propuestas) != cuantas:
+                self.avisar_una_vez(("propuestas", molde.nombre), (
+                    f"saltó un freno de {molde.nombre} y quedó una lección propuesta, que "
+                    "no se usa hasta que la apruebes. Para verlas:  "
+                    f"{como_se_llama()} propuestas {para_pegar(self.archivo or 'programa.mate')}"))
+        tope = en_el_tope()
+        if tope:
+            self.anotar_freno(agente, "saltó un freno (contestó con el texto de reserva)",
+                              pregunta, f"{que}. {dicho}. No hubo segundo intento: {tope}")
+            self.avisados.add((quien, "tope"))  # (ya quedó dicho en ese renglón)
+            return sin_consultar(tope, que)
+        try:
+            respuesta, consulta = consultar(aviso_de_freno(pregunta, rotas))
+        except ErrorMate as error:
+            if error.clase != "falla":
+                raise
+            segundo = "el segundo intento falló (" + error.mensaje.split("\n")[0] + ")"
+        else:
+            contar()
+            anotadas.append(consulta)
+            rotas = reglas_rotas(respuesta, frenos)
+            if not rotas:
+                trazar(f"freno de {quien}: el segundo intento pasa")
+                self.anotar_freno(agente, "saltó un freno (el segundo intento salió bien)",
+                                  pregunta, f"{que}. {dicho}")
+                return devolver(respuesta)
+            consulta["freno"] = "; ".join(motivo for _, motivo, _ in rotas)
+            segundo = f"el segundo intento tampoco pasa ({consulta['freno']})"
+        trazar(f"freno de {quien}: {segundo}. Devuelve el texto de reserva: "
+               f"{recortado(frenos['reserva'])}")
+        self.anotar_freno(agente, "saltó un freno (contestó con el texto de reserva)",
+                          pregunta, f"{que}. {dicho}")
+        return devolver(frenos["reserva"])
+
     def avisar_una_vez(self, cual, texto):
         if cual not in self.avisados:
             self.avisados.add(cual)
@@ -4586,7 +5070,7 @@ class Interprete:
     def memoria_actual(self):
         """Lo que hay que guardar al terminar: lo que se leyó, con el estado recordado y
         las lecciones de los agentes de esta corrida puestos encima."""
-        nueva = {a: {"estado": dict(f["estado"]), "lecciones": list(f["lecciones"])}
+        nueva = {a: dict(f, estado=dict(f["estado"]), lecciones=list(f["lecciones"]))
                  for a, f in self.memoria.items()}
         for agente in list(self.agentes.values()) + self.vivos:
             if not agente.recuerda:
@@ -4613,8 +5097,18 @@ class Interprete:
                         "no agentes ni funciones")
             if agente.env is None:
                 estado = previa  # no llegó a nacer en esta corrida: queda lo que había
-            nueva[agente.nombre] = {"estado": estado, "lecciones": list(agente.lecciones)}
-        return {a: f for a, f in nueva.items() if f["estado"] or f["lecciones"]}
+            ficha = {"estado": estado, "lecciones": list(agente.lecciones)}
+            if self.agentes.get(agente.nombre) is agente:
+                propuestas, gasto = list(agente.propuestas), gasto_limpio(agente.gasto)
+            else:  # una copia con nombre: lo que tuviera anotado a mano queda como estaba
+                anterior = nueva.get(agente.nombre, {})
+                propuestas, gasto = anterior.get("propuestas"), anterior.get("gasto")
+            if propuestas:
+                ficha["propuestas"] = propuestas
+            if gasto:
+                ficha["gasto"] = gasto
+            nueva[agente.nombre] = ficha
+        return {a: f for a, f in nueva.items() if any(f.values())}
 
     def anotar_falla(self, agente, e, msg, atajada=False):
         """Una falla de un agente, para la bitácora (si este programa la lleva). El mismo
@@ -4651,13 +5145,9 @@ class Interprete:
                     "lista")
             self.ia_usadas += 1
             return self.ia_fijada[self.ia_usadas - 1]
-        buscada = " ".join(sin_tildes(pregunta).lower().split())
-        for si_trae, contesta in self.ia_respuestas:
-            if si_trae != "*" and si_trae in buscada:
-                return contesta
-        for si_trae, contesta in self.ia_respuestas:
-            if si_trae == "*":
-                return contesta
+        del_archivo = respuesta_del_archivo(self.ia_respuestas, pregunta)
+        if del_archivo is not None:
+            return del_archivo
         if preparada is not None:
             return preparada
         if self.ia_respuestas:
@@ -4803,6 +5293,9 @@ class Interprete:
                     ag = Agente(s[2])
                     ag.decl = s
                     ag.lecciones = list(self.memoria.get(s[2], {}).get("lecciones", []))
+                    ag.propuestas = list(self.memoria.get(s[2], {}).get("propuestas", []))
+                    ag.gasto = {dia: dict(cuenta) for dia, cuenta in
+                                self.memoria.get(s[2], {}).get("gasto", {}).items()}
                     ag.manejadores = self.manejadores_de(s)
                     self.agentes[s[2]] = ag
                     self.decl_agentes.append(s)
@@ -5029,6 +5522,7 @@ class Interprete:
                 self.volver_a(foto)
                 for agente in list(self.agentes.values()) + self.vivos:
                     agente.lecciones = []  # las de la prueba se fijan con aprender()
+                    agente.gasto = {}  # y la cuenta de consultas arranca de cero
                 self.ia_historial = []
                 self.errores_agentes, self.errores_agentes_det = [], []
                 self.pasos = 0
@@ -6470,8 +6964,8 @@ CONTROL
 - intentar {{ ... }} si falla e {{ ... }}             e es el texto del error (el 'e' es opcional)
   detalle_de(e).clase dice qué pasó sin depender de la redacción: "fallar", "asegurar",
   "contrato", "clave", "posicion", "division", "nombre", "numero", "json", "agente",
-  "ciclo", "archivo", "ia", "python" u "otro". detalle_de(e).dato es el valor que se le
-  dio a 'fallar'.
+  "ciclo", "archivo", "ia", "tope", "python" u "otro". detalle_de(e).dato es el valor que
+  se le dio a 'fallar'.
 
 FUNCIONES INCLUIDAS (no hay otras)
 {funciones}
@@ -6552,6 +7046,36 @@ AGENTES Y MENSAJES
   programa:  mate.py corregir programa.mate Agente "texto"
 - Si el programa usa 'estado recordado' o lecciones, cada falla de un agente queda anotada
   sola en programa.bitacora.txt (se lee resumida con: mate.py bitacora programa.mate).
+- FRENOS: reglas que el agente declara y que MATE comprueba sobre cada respuesta de
+  consultar_ia() de ese agente, antes de devolverla (no se le pide a la IA que se controle):
+      agente Mostrador {{
+          estado lista = [3500, 1200]
+          frenos {{
+              precios: lista                    # los únicos importes en pesos que puede nombrar
+              prohibido: ["descuento", "fiado"]  # palabras o temas que no pueden aparecer
+              largo: 400                        # letras de la respuesta, como mucho
+              reserva: "Eso te lo confirma una persona, ya te paso."
+              consultas_por_dia: 100            # tope de gasto (opcional)
+              tokens_por_dia: 200000            # tope de gasto (opcional)
+          }}
+          al recibir Consulta como c {{ responder consultar_ia("Atendés...", c.pregunta) }}
+      }}
+  Una regla por renglón; todas son opcionales, pero si hay precios, prohibido o largo tiene
+  que haber reserva. Cada valor es una expresión que puede usar el estado y las funciones
+  del agente, y se calcula en cada consulta. 'frenos' no es una palabra reservada.
+  - precios: una lista de números (o una tabla o un mapa: valen todos sus números). Cuenta
+    como importe un número con $ ($ 3.500, $3500, $ 3.500,00), con "pesos" (3500 pesos, 3 mil
+    pesos) o suelto después de sale/cuesta/vale/precio si es de 100 o más. Cantidades,
+    teléfonos, fechas, porcentajes e importes escritos con letras no se miran.
+  - prohibido: sin distinguir mayúsculas ni tildes; "descuento" también frena "descuentos".
+  - Si la respuesta rompe una regla, Mate consulta UNA vez más avisándole a la IA cuál; si
+    la vuelve a romper, consultar_ia() devuelve el texto de reserva. Queda en --traza, en la
+    bitácora y como lección PROPUESTA (no se usa hasta que el dueño la aprueba con
+    mate.py propuestas programa.mate aprobar 1).
+  - Al llegar a un tope, consultar_ia() no consulta: devuelve la reserva o, si no hay
+    reserva, falla con un error que se ataja (clase "tope"). La cuenta es por día, se guarda
+    en programa.memoria.json y se ve con mate.py bitacora programa.mate. Las consultas
+    simuladas se cuentan aparte de las de verdad. El segundo intento también cuenta.
 - usar "otro.mate" trae los mensajes, agentes, funciones y variables ('sea' y 'var') de
   otro archivo. Un nombre que ya vino de ahí no se puede declarar de nuevo.
 - usar python "ayudas.py" trae las funciones escritas con 'def' en ese archivo de Python,
@@ -6584,6 +7108,12 @@ PRUEBAS
   lista de lo que se le consultó a la IA en esa prueba; cada elemento es un mapa con agente,
   instrucciones (con las lecciones al final), pregunta y respuesta:
       asegurar tiene(ultimo(consultas_ia()).instrucciones, "texto de la lección")
+  Si el agente tiene frenos, cada elemento trae además freno (qué regla rompió esa
+  respuesta, o "" si pasó) y devuelto (lo que consultar_ia() le devolvió al programa); el
+  segundo intento es otro elemento, y en una prueba la cuenta del tope arranca de cero:
+      simular_ia("Sale $ 9.999")
+      asegurar (preguntar Consulta {{ pregunta: "¿yerba?" }} a Mostrador) == "Eso te lo ..."
+      asegurar tiene(consultas_ia()[0].freno, "$ 9.999")
 - Van en el nivel superior y corren con la orden 'probar'. Cada una empieza limpia.
 
 ANTES DE CORRER
@@ -6646,6 +7176,9 @@ CÓMO SE CORRE (Windows)
   python mate\mate.py verificar archivo.mate     (revisa sin correr)
   python mate\mate.py corregir archivo.mate Agente "la lección"    (le anota una lección)
   python mate\mate.py lecciones archivo.mate     python mate\mate.py bitacora archivo.mate
+  python mate\mate.py propuestas archivo.mate    (las lecciones propuestas, sin aprobar)
+  python mate\mate.py propuestas archivo.mate aprobar 1         (o: descartar 1)
+  python mate\mate.py proponer archivo.mate Agente "qué estuvo mal"   (Mate la redacta)
   python mate\mate.py informe      (los errores de uso que Mate fue anotando en esa
   computadora, sin datos de la persona; con --para-mejorar arma un texto para pedir mejoras)
   En PowerShell el comando se escribe una sola vez por renglón, y los comandos no van
@@ -6750,6 +7283,27 @@ AYUDA = {
                   "    al recibir Llego {\n        atendidos += 1\n"
                   "        responder atendidos\n    }\n}\n"
                   'mostrar("Clientes hasta hoy:", preguntar Llego {} a Mostrador)'),
+    "frenos": ("dentro de un agente: las reglas que Mate le revisa a cada respuesta de "
+               "consultar_ia() antes de devolverla. precios (los importes que puede nombrar), "
+               "prohibido (palabras que no pueden aparecer), largo (letras, como mucho), "
+               "reserva (lo que contesta si la IA rompe una regla dos veces) y los topes "
+               "consultas_por_dia y tokens_por_dia. Si una regla no se cumple, Mate consulta "
+               "una vez más avisándole a la IA; si la rompe de nuevo, devuelve la reserva. "
+               "Cada freno que salta queda en la bitácora y deja una lección propuesta "
+               "(orden 'propuestas')",
+               "mensaje Consulta { pregunta: texto }\nagente Mostrador {\n"
+               "    estado lista = [3500, 1200]\n"
+               "    frenos {\n        precios: lista\n"
+               '        prohibido: ["descuento", "fiado"]\n        largo: 400\n'
+               '        reserva: "Eso te lo confirma una persona, ya te paso."\n'
+               "        consultas_por_dia: 100\n    }\n"
+               "    al recibir Consulta como c {\n"
+               '        responder consultar_ia("Atendés un almacén.", c.pregunta)\n    }\n}\n'
+               'prueba "un precio inventado no llega al cliente" {\n'
+               '    simular_ia("La yerba sale $ 9.999")\n'
+               '    sea dicho = preguntar Consulta { pregunta: "¿Y la yerba?" } a Mostrador\n'
+               '    asegurar dicho == "Eso te lo confirma una persona, ya te paso."\n'
+               '    asegurar tiene(consultas_ia()[0].freno, "$ 9.999")\n}'),
     "responder": ("contesta al que mandó el mensaje y termina de atenderlo. Solo va dentro "
                   "de 'al recibir'", _EJ_AGENTE),
     "preguntar": ("le manda un mensaje a un agente y espera lo que responde. Si el agente "
@@ -6857,6 +7411,9 @@ VER_AYUDA_DE = {
     "estado": "agente", "al": "agente", "recibir": "agente", "como": "agente",
     "yo": "remitente", "falla": "intentar", "llamado": "crear", "responde": "mensaje",
     "cualquiera": "mensaje", "a": "enviar",
+    "freno": "frenos", "reserva": "frenos", "prohibido": "frenos", "precios": "frenos",
+    "consultas_por_dia": "frenos", "tokens_por_dia": "frenos", "propuestas": "frenos",
+    "proponer": "frenos",
 }
 
 
@@ -7108,7 +7665,18 @@ def texto_de_ayuda():
         '  corregir  archivo.mate Mostrador "la lección"   le anota una lección a ese agente',
         "  lecciones archivo.mate   muestra las lecciones de cada agente",
         "  lecciones archivo.mate Mostrador --borrar=2   le borra la lección 2",
-        "  bitacora  archivo.mate   resume las fallas que anotaron sus agentes",
+        "  bitacora  archivo.mate   resume las fallas que anotaron sus agentes, los frenos",
+        "                           que saltaron y cuánto consultó a la IA cada agente por día",
+        "",
+        "Para confiarle la atención a un agente con IA (mirá 'ayuda frenos'):",
+        "  frenos { ... }           va en el programa, dentro del agente: las reglas que Mate",
+        "                           le revisa a cada respuesta de la IA (precios permitidos,",
+        "                           palabras prohibidas, largo) y el tope de consultas por día",
+        "  propuestas archivo.mate  muestra las lecciones propuestas: las deja cada freno que",
+        "                           salta, y ningún agente las usa hasta que las aprobás",
+        "  propuestas archivo.mate aprobar 1     la aprueba (o: descartar 1)",
+        '  proponer  archivo.mate Mostrador "qué estuvo mal"   Mate redacta la lección y la',
+        "                           deja propuesta (con clave la redacta la IA, y se paga)",
         "",
         "Para trabajar con tus datos y charlar con el programa (son funciones: van adentro",
         "del programa, y cada una tiene su ayuda, por ejemplo 'ayuda leer_tabla'):",
@@ -7237,6 +7805,93 @@ def guardar_conversacion(destino, programa, renglones, cuenta, sumar=False):
     return None
 
 
+def con_puntos(n):
+    """12345 -> "12.345" (los miles con punto, como se escribe acá)."""
+    return f"{n:,}".replace(",", ".")
+
+
+def lineas_de_gasto(memoria, hoy):
+    """Los renglones de 'bitacora' que cuentan cuánto consultó a la IA cada agente con
+    frenos: hoy, día por día en la última semana, y el total de lo guardado. Se cuentan
+    consultas y tokens (lo que informa el servicio), no plata: el precio cambia."""
+    def cuanto(cuentas):
+        consultas, simuladas, tokens = (sum(c.get(k, 0) for c in cuentas)
+                                        for k in ("consultas", "simuladas", "tokens"))
+        partes = [f"{con_puntos(consultas)} consulta{'' if consultas == 1 else 's'}"]
+        if tokens:
+            partes.append(f"{con_puntos(tokens)} tokens")
+        texto = ", ".join(partes)
+        if simuladas:
+            texto += (f"  (y {con_puntos(simuladas)} simulada{'' if simuladas == 1 else 's'}, "
+                      "que no se pagan)")
+        return texto
+
+    lineas = []
+    for agente, ficha in memoria.items():
+        gasto = ficha.get("gasto")
+        if not gasto:
+            continue
+        lineas.append(f"  {agente}")
+        lineas.append(f"    hoy:              {cuanto([gasto.get(hoy.isoformat(), {})])}")
+        for atras in range(1, 7):
+            dia = hoy - datetime.timedelta(days=atras)
+            if dia.isoformat() in gasto:
+                lineas.append(f"    {dia.strftime('%d/%m/%Y')}:       "
+                              f"{cuanto([gasto[dia.isoformat()]])}")
+        lineas.append(f"    últimos {len(gasto)} día(s) con consultas (se guardan "
+                      f"{DIAS_DE_GASTO}): {cuanto(list(gasto.values()))}")
+    if not lineas:
+        return []
+    return (["Consultas a la IA (la cuenta la llevan los agentes que tienen 'frenos'):"]
+            + lineas + ["  Se cuentan consultas y tokens, que es lo que cobra el servicio; el "
+                        "tope por día se pone en los 'frenos' del agente."])
+
+
+INSTRUCCIONES_PARA_REDACTAR = (
+    "Vas a ayudar al dueño de un negocio a corregir a su asistente, que atiende clientes. El "
+    "dueño cuenta qué hizo mal el asistente. Escribí UNA lección corta para ese asistente, "
+    "en castellano rioplatense y hablándole de vos (por ejemplo: 'No ofrezcas envíos: el "
+    "negocio no los hace.'). Un solo renglón de no más de 250 letras, sin comillas y sin "
+    "explicaciones: solo la lección.")
+
+
+def redactar_leccion(queja, respuesta, opciones, respuestas):
+    """La lección que se propone a partir de lo que cuenta el dueño: (texto, quién la
+    redactó, los tokens que costó). Con clave la redacta la IA; con --ia-simulada=archivo,
+    el archivo; y si no hay IA (o falla, o se pasa de largo), va una redacción fija."""
+    pregunta = f"Lo que estuvo mal, según el dueño: {queja}"
+    if respuesta:
+        pregunta += f"\nLo que había contestado el asistente: {respuesta}"
+    fija = en_un_renglon(f"Una respuesta tuya estuvo mal: {queja.rstrip(' .')}. No lo "
+                         "repitas.", LARGO_DE_LECCION)
+    if "--ia-simulada" in opciones:
+        pares = respuestas_de_archivo(respuestas) if respuestas else []
+        dicho = respuesta_del_archivo(pares, pregunta)
+        if dicho is None:
+            return fija, "Es una redacción fija (con --ia-simulada sola no hay IA).", None
+        como, tokens = "La redactó la IA simulada (el archivo de respuestas).", None
+    elif not os.environ.get("ANTHROPIC_API_KEY", "").strip():
+        return fija, ("Es una redacción fija: no hay clave para la IA (con la clave puesta "
+                      "en ANTHROPIC_API_KEY la redacta la IA, y esa consulta se paga)."), None
+    else:
+        _USO_DE_LA_IA.clear()
+        try:
+            dicho = pedir_a_la_ia(INSTRUCCIONES_PARA_REDACTAR, pregunta)
+        except ErrorMate as e:
+            return fija, ("Es una redacción fija, porque la IA no contestó: "
+                          + e.mensaje.split("\n")[0]), None
+        except Exception as e:  # nunca un error de Python (ni la clave) a la vista
+            return fija, ("Es una redacción fija, porque algo salió mal al hablar con la IA "
+                          f"({type(e).__name__})."), None
+        como, tokens = "La redactó la IA (fue una consulta de verdad, paga).", \
+            _USO_DE_LA_IA.get("tokens") or 0
+    dicho = " ".join(dicho.split()).strip('"“”')
+    if not dicho or len(dicho) > LARGO_DE_LECCION:
+        return fija, ("Es una redacción fija: lo que redactó la IA estaba vacío o pasaba las "
+                      f"{LARGO_DE_LECCION} letras de una lección."), tokens
+    return dicho, como, tokens
+
+
 def mostrar_bitacora(ruta, avisar):
     """La orden 'bitacora': las fallas que anotaron los agentes de ese programa, resumidas."""
     programa, archivo = os.path.basename(ruta), archivo_de(ruta, "bitacora.txt")
@@ -7248,11 +7903,19 @@ def mostrar_bitacora(ruta, avisar):
     fallas = [r.split(" | ", 4) for r in renglones]
     raros = sum(len(f) != 5 for f in fallas)
     fallas = [f for f in fallas if len(f) == 5]
+    try:  # la cuenta de consultas a la IA de los agentes con frenos (0.5)
+        gasto = lineas_de_gasto(leer_memoria(archivo_de(ruta, "memoria.json"))[0],
+                                datetime.date.today())
+    except ErrorMate:
+        gasto = []  # (la memoria no se entiende: eso lo explican 'correr' y 'lecciones')
     if not fallas:
         print(f"{programa} no tiene fallas anotadas"
               + (f" ({archivo} tiene {raros} renglón(es) que no entiendo)." if raros else "."))
+        if gasto:
+            print("\n".join([""] + gasto))
+            return 0
         print("La bitácora se arma sola cuando falla un agente de un programa que usa "
-              "'estado recordado' o lecciones, al correrlo con 'correr'.")
+              "'estado recordado', lecciones o frenos, al correrlo con 'correr'.")
         return 0
     print(f"Bitácora de {programa}: {len(fallas)} falla(s) anotada(s), del {fallas[0][0]} "
           f"al {fallas[-1][0]}.")
@@ -7278,18 +7941,23 @@ def mostrar_bitacora(ruta, avisar):
     if raros:
         print("")
         print(f"({raros} renglón(es) del archivo no tienen la forma de siempre y no los conté)")
+    if gasto:
+        print("\n".join([""] + gasto))
     print("")
     print(f"Está todo en {archivo} (se abre con el Bloc de notas; si lo borrás, empieza "
           "de nuevo).")
     return 0
 
 
-def orden_de_memoria(orden, args, borrar, avisar):
-    """Las órdenes 'corregir', 'lecciones' y 'bitacora': miran (o cambian) lo que aprendió
-    un programa, sin correrlo. Devuelven el código de salida."""
+def orden_de_memoria(orden, args, borrar, avisar, opciones=(), respuestas=None):
+    """Las órdenes 'corregir', 'lecciones', 'bitacora', 'propuestas' y 'proponer': miran (o
+    cambian) lo que aprendió un programa, sin correrlo. Devuelven el código de salida."""
     ejemplos = {"bitacora": "bitacora mi_mostrador.mate",
                 "lecciones": "lecciones mi_mostrador.mate",
-                "corregir": 'corregir mi_mostrador.mate Mostrador "Los lunes no hay pan"'}
+                "corregir": 'corregir mi_mostrador.mate Mostrador "Los lunes no hay pan"',
+                "propuestas": "propuestas mi_mostrador.mate",
+                "proponer": 'proponer mi_mostrador.mate Mostrador "Ofreció envíos y no '
+                            'hacemos envíos"'}
     if not args:
         avisar(f"a '{orden}' le falta el programa, por ejemplo: {ejemplos[orden]}"
                + (f" (en esta carpeta hay un {orden}.mate: para correrlo, correr {orden}.mate)"
@@ -7347,6 +8015,15 @@ def orden_de_memoria(orden, args, borrar, avisar):
             print(f"  {i}. {leccion['texto']}"
                   + (f"   (del {leccion['fecha']})" if leccion["fecha"] else ""))
 
+    def guardar():
+        problema = guardar_memoria(archivo, programa, memoria)
+        if problema:
+            avisar(problema)
+        return problema
+
+    if orden == "propuestas":
+        return orden_propuestas(args, memoria, guardar, listar, avisar)
+
     # Una copia se nombra con el agente y su nombre: "Mostrador Centro". Si se escribió sin
     # comillas (Mostrador Centro), también vale: con 'lecciones' siempre, y con 'corregir'
     # cuando esa copia existe (está en el programa o en la memoria).
@@ -7354,7 +8031,7 @@ def orden_de_memoria(orden, args, borrar, avisar):
         r'\bcrear\s+(\w+)\s+llamado\s+"([^"\n{}]+)"', fuente)} | {a.lower() for a in memoria}
     if orden == "lecciones" and len(args) > 2:
         args = [args[0], " ".join(args[1:])]
-    elif orden == "corregir" and len(args) > 2 and args[2].strip() \
+    elif orden in ("corregir", "proponer") and len(args) > 2 and args[2].strip() \
             and conocido(args[1]) in declarados \
             and " ".join(f"{args[1]} {args[2]}".lower().split()) in copias:
         args = [args[0], f"{args[1]} {args[2]}"] + args[3:]
@@ -7366,6 +8043,57 @@ def orden_de_memoria(orden, args, borrar, avisar):
                    + (" Sus agentes son: " + ", ".join(declarados) if declarados
                       else " Ese programa no tiene agentes"))
             return 2
+    if orden == "proponer":
+        if agente is None or len(args) < 3 or len(args) > 4 or not args[2].strip():
+            avisar("a 'proponer' le faltan el agente y qué estuvo mal (entre comillas), por "
+                   f"ejemplo: {ejemplos[orden]}"
+                   + (". Los agentes de ese programa son: " + ", ".join(declarados)
+                      if declarados and agente is None else "")
+                   + (". Después puede ir, también entre comillas, lo que había contestado "
+                      "el agente; nada más" if len(args) > 4 else ""))
+            return 2
+        queja = " ".join(args[2].split())
+        if len(queja) > 220:
+            avisar(f"lo que estuvo mal tiene {len(queja)} letras y el tope es 220: contalo "
+                   "más corto (de ahí sale una lección, y las lecciones son cortas)")
+            return 2
+        try:
+            texto, como, tokens = redactar_leccion(
+                queja, en_un_renglon(args[3], 600) if len(args) > 3 else "", opciones,
+                respuestas)
+        except ErrorMate as e:
+            avisar(e.mensaje)
+            return 2
+        ficha = memoria.setdefault(agente, {"estado": {}, "lecciones": []})
+        if tokens is not None:  # fue una consulta de verdad: entra en la cuenta de hoy
+            hoy = ficha.setdefault("gasto", {}).setdefault(
+                datetime.date.today().isoformat(), {"consultas": 0, "simuladas": 0, "tokens": 0})
+            hoy["consultas"], hoy["tokens"] = hoy["consultas"] + 1, hoy["tokens"] + tokens
+        antes = ficha.get("propuestas", [])
+        nuevas = sumar_propuesta(antes, ficha["lecciones"], texto,
+                                 f"lo dijo el dueño: {queja}",
+                                 datetime.datetime.now().strftime("%d/%m/%Y %H:%M"))
+        if nuevas is antes:
+            if tokens is not None:
+                guardar()
+            print(f"{agente} ya tenía esa lección (propuesta o aprobada): no la repito.")
+            print(f"  {texto}")
+            return 0
+        ficha["propuestas"] = nuevas
+        if guardar():
+            return 1
+        numero = sum(len(memoria[a].get("propuestas", [])) for a in list(memoria)[
+            :list(memoria).index(agente) + 1])
+        print(f"Quedó propuesta para {agente} (todavía NO la usa: falta que la apruebes):")
+        print(f"  {numero}. {texto}")
+        print(como)
+        print(f"Para aprobarla:    {como_se_llama()} propuestas {para_pegar(args[0])} "
+              f"aprobar {numero}")
+        print(f"Para descartarla:  {como_se_llama()} propuestas {para_pegar(args[0])} "
+              f"descartar {numero}")
+        print(f"Si preferís escribirla vos:  {como_se_llama()} corregir "
+              f'{para_pegar(args[0])} {para_pegar(agente)} "la lección"')
+        return 0
     if orden == "corregir":
         if agente is None or len(args) < 3:
             avisar("a 'corregir' le faltan el agente y la lección (entre comillas), por "
@@ -7439,6 +8167,85 @@ def orden_de_memoria(orden, args, borrar, avisar):
     for a in mostrar_de:
         print(f"{a} tiene {len(memoria[a]['lecciones'])} lección(es):")
         listar(a)
+    return 0
+
+
+def orden_propuestas(args, memoria, guardar, listar, avisar):
+    """La orden 'propuestas': ver las lecciones propuestas (las que dejó un freno al saltar
+    o la orden 'proponer') y aprobarlas o descartarlas por su número. Una propuesta no se
+    usa hasta que se aprueba; al aprobarla pasa a ser una lección como las de 'corregir'."""
+    programa = para_pegar(args[0])
+    todas = [(agente, propuesta) for agente, ficha in memoria.items()
+             for propuesta in ficha.get("propuestas", [])]
+    ver = f"{como_se_llama()} propuestas {programa}"
+    if len(args) == 1:
+        if not todas:
+            print(f"{os.path.basename(args[0])} no tiene lecciones propuestas. Aparecen "
+                  "solas cuando salta un freno de un agente, o las pedís con:  "
+                  f'{como_se_llama()} proponer {programa} Agente "qué estuvo mal"')
+            return 0
+        print(f"Lecciones propuestas, sin aprobar ({len(todas)}). Ningún agente las usa "
+              "todavía:")
+        for numero, (agente, propuesta) in enumerate(todas, 1):
+            print(f"  {numero}. Para {agente}: {propuesta['texto']}"
+                  + (f"   (del {propuesta['fecha']})" if propuesta["fecha"] else ""))
+            if propuesta["motivo"]:
+                print(f"       Por qué: {propuesta['motivo']}")
+        print(f"Para aprobar una:    {ver} aprobar 1")
+        print(f"Para descartar una:  {ver} descartar 1     (o varias: descartar 1 2, o todas)")
+        return 0
+    que = sin_tildes(args[1].lower())
+    if que not in ("aprobar", "descartar"):
+        avisar(f"después del programa va 'aprobar' o 'descartar' y el número de la propuesta "
+               f"(recibió '{args[1]}'). Para verlas con su número:  {ver}")
+        return 2
+    if not todas:
+        avisar(f"no hay propuestas para {que}: {os.path.basename(args[0])} no tiene ninguna")
+        return 2
+    pedidas = args[2:]
+    if [p.lower() for p in pedidas] == ["todas"]:
+        numeros = list(range(1, len(todas) + 1))
+    elif pedidas and all(p.isdigit() and 1 <= int(p) <= len(todas) for p in pedidas):
+        numeros = sorted({int(p) for p in pedidas})
+    else:
+        avisar(f"a '{que}' le falta el número de la propuesta (del 1 al {len(todas)}; pueden "
+               f"ser varios, o 'todas')" + (f" y recibió '{' '.join(pedidas)}'" if pedidas
+                                            else "") + f". Para verlas:  {ver}")
+        return 2
+    tocados, olvidadas, repetidas = [], 0, 0
+    for numero in numeros:
+        agente, propuesta = todas[numero - 1]
+        ficha = memoria[agente]
+        ficha["propuestas"] = [p for p in ficha["propuestas"] if p is not propuesta]
+        if not ficha["propuestas"]:
+            del ficha["propuestas"]
+        if que == "aprobar":
+            nuevas, sobran = sumar_leccion(
+                ficha["lecciones"], propuesta["texto"],
+                datetime.datetime.now().strftime("%d/%m/%Y %H:%M"))
+            repetidas += nuevas is ficha["lecciones"]
+            ficha["lecciones"], olvidadas = nuevas, olvidadas + sobran
+        if agente not in tocados:
+            tocados.append(agente)
+    if guardar():
+        return 1
+    cuantas = "1 propuesta" if len(numeros) == 1 else f"{len(numeros)} propuestas"
+    if que == "descartar":
+        print(f"Listo: descarté {cuantas}. Quedan {len(todas) - len(numeros)} sin aprobar.")
+        return 0
+    print(f"Listo: aprobé {cuantas}. Desde la próxima corrida "
+          f"{'la' if len(numeros) == 1 else 'las'} va a tener en cuenta en cada consulta a "
+          "la IA.")
+    for agente in tocados:
+        print(f"{agente} tiene {len(memoria[agente]['lecciones'])} lección(es):")
+        listar(agente)
+    if repetidas:
+        print(f"({repetidas} ya estaba(n) entre las lecciones: no se repite(n).)")
+    if olvidadas:
+        print(f"(El tope es {MAX_LECCIONES} lecciones por agente: para anotar "
+              f"{'esta' if len(numeros) == 1 else 'estas'} se borró la más vieja.)")
+    if len(todas) > len(numeros):
+        print(f"Quedan {len(todas) - len(numeros)} propuesta(s) sin aprobar:  {ver}")
     return 0
 
 
@@ -8150,7 +8957,8 @@ def _main(argv, donde):
         avisar("--para-mejorar va con 'informe', sin archivo: informe --para-mejorar")
         return 2
     if sin_tildes(args[0].lower()) in ORDENES_DE_MEMORIA:
-        return orden_de_memoria(sin_tildes(args[0].lower()), args[1:], borrar, avisar)
+        return orden_de_memoria(sin_tildes(args[0].lower()), args[1:], borrar, avisar,
+                                opciones, respuestas)
     if borrar is not None:
         avisar("--borrar va con 'lecciones', por ejemplo: lecciones mi_mostrador.mate "
                "Mostrador --borrar=2")
@@ -8173,7 +8981,7 @@ def _main(argv, donde):
         avisar(f"no conozco la orden '{args[0]}'" + (
             f", ¿quisiste decir '{parecidas[0]}'?" if parecidas
             else ". Las órdenes son: correr, probar, verificar, consola, guia, ayuda, "
-                 "corregir, lecciones, bitacora e informe"),
+                 "corregir, lecciones, propuestas, proponer, bitacora e informe"),
             "al escribir la orden: orden que no existe")
         return 2
     if not archivos:
@@ -8345,6 +9153,22 @@ def _main(argv, donde):
                            f"programa:  {como_se_llama()} corregir {para_pegar(ruta)} "
                            f'{agente} "la lección"')
             interprete.memoria, interprete.recordando = memoria, True
+
+            def guardar_cuenta():
+                """Después de cada consulta de verdad de un agente con frenos: la cuenta de
+                hoy queda en el disco ya, por si cierran la ventana sin dejar terminar. Lo
+                demás de la memoria queda como estaba al empezar; se guarda al final."""
+                en_disco = json.loads(json.dumps(aprendido["leida"] or {}))
+                for nombre, agente in interprete.agentes.items():
+                    gasto = gasto_limpio(agente.gasto)
+                    if gasto:
+                        en_disco.setdefault(
+                            nombre, {"estado": {}, "lecciones": []})["gasto"] = gasto
+                if en_disco != aprendido["leida"] and not guardar_memoria(
+                        archivo_memoria, os.path.basename(ruta), en_disco):
+                    aprendido["leida"] = en_disco
+
+            interprete.guardar_cuenta = guardar_cuenta
             interprete.avisar = lambda texto: avisar(f"aviso: {texto}")
             if usa_memoria(programa) or any(f["lecciones"] for f in memoria.values()):
                 interprete.bitacora = []

@@ -7,6 +7,11 @@ Un lenguaje chico, con palabras en español, pensado para tres cosas:
 3. **Aprender de sus errores.** Un agente recuerda de una corrida a la otra, anota solo lo
    que le salió mal y no repite un error que le corregiste (ver [Mate aprende](#mate-aprende)).
 
+Y una cuarta, que es lo que más lo separa de "hacerlo en Python": **que puedas confiarle la
+atención a un agente con IA.** El agente declara sus `frenos` en castellano y Mate revisa
+cada respuesta de la IA antes de que salga: que no invente precios, que no prometa lo que no
+puede, que no gaste más de lo que le dijiste (ver [Frenos](#frenos)).
+
 Versión 0.5. El intérprete es un solo archivo (`mate.py`), sin dependencias: alcanza con Python 3.
 
 Lo nuevo de la 0.5: los programas corren **entre 2 y 5 veces más rápido** en los bucles y las
@@ -20,6 +25,9 @@ precios guardada desde Excel (`leer_tabla`), anota renglones en un archivo
 `ejemplos\10_mostrador_mayorista.mate` (ver
 [Una lista de precios de Excel](#una-lista-de-precios-de-excel-leer_tabla) y
 [Charlar por teclado](#charlar-por-teclado)).
+Y lo último de la 0.5: **frenos para la IA, tope de gasto por día y lecciones propuestas**
+que vos aprobás o descartás. El ejemplo es `ejemplos\11_mostrador_con_frenos.mate` (ver
+[Frenos](#frenos)).
 
 ```bash
 python3 mate/mate.py correr mate/ejemplos/negociacion.mate
@@ -107,7 +115,7 @@ castellano. En el Bloc de notas, `Ctrl+G` te lleva a ese renglón. Y si no te ac
 usa una palabra, preguntale a Mate: `python mate\mate.py ayuda si` (o `ayuda para`,
 `ayuda largo`...) muestra una explicación corta con un ejemplo para copiar.
 
-**7. Seguir aprendiendo.** En `mate\ejemplos` hay diez programas cortos, explicados renglón por
+**7. Seguir aprendiendo.** En `mate\ejemplos` hay once programas cortos, explicados renglón por
 renglón, para leer y correr en orden:
 
 | Archivo | Qué enseña |
@@ -122,6 +130,7 @@ renglón, para leer y correr en orden:
 | `08_agente_que_aprende.mate` | un agente con memoria, lecciones y bitácora de errores (se prueba sin clave) |
 | `09_con_python.mate` | sumar lo que Mate no trae con funciones escritas en Python (usa `ayudas.py`, que está al lado) |
 | `10_mostrador_mayorista.mate` | un mostrador que lee tu lista de precios de Excel (usa `precios.csv`, que está al lado), charla por teclado y contesta con la IA (se prueba sin clave) |
+| `11_mostrador_con_frenos.mate` | un mostrador con frenos: Mate revisa cada respuesta de la IA (precios, palabras prohibidas, largo), le pone tope al gasto del día y propone lecciones (se prueba sin clave) |
 
 ```
 python mate\mate.py correr mate\ejemplos\01_hola.mate
@@ -151,7 +160,10 @@ archivo y abrirla con el Bloc de notas: `python mate\mate.py guia > guia.txt`.
 | `consola` | abre la consola, para probar renglones sueltos sin crear un archivo |
 | `corregir archivo.mate Mostrador "..."` | le anota una lección a ese agente, sin tocar el programa (ver [Mate aprende](#mate-aprende)) |
 | `lecciones archivo.mate` | muestra las lecciones de cada agente; con `Mostrador --borrar=2` le borra la 2 |
-| `bitacora archivo.mate` | resume las fallas que fueron anotando los agentes de ese programa |
+| `bitacora archivo.mate` | resume las fallas que fueron anotando los agentes de ese programa, los frenos que saltaron y cuánto consultó a la IA cada agente por día |
+| `propuestas archivo.mate` | muestra las lecciones propuestas, que ningún agente usa hasta que las aprobás (ver [Lecciones propuestas](#lecciones-propuestas)) |
+| `propuestas archivo.mate aprobar 1` | aprueba la propuesta 1 (pasa a ser una lección); con `descartar 1` la saca |
+| `proponer archivo.mate Mostrador "..."` | le contás qué estuvo mal y Mate redacta la lección y la deja propuesta |
 | `informe` | resume los errores de uso que Mate fue anotando en esta computadora (ver [El lenguaje también aprende](#el-lenguaje-también-aprende-el-registro-de-errores-de-uso)) |
 | `informe --para-mejorar` | arma un texto listo para pegarle a un asistente o a un equipo de agentes y pedirle mejoras para Mate |
 | `informe --borrar` | borra el registro de errores de uso |
@@ -857,7 +869,7 @@ o una respuesta que no cumple su contrato), `"clave"` (una clave o un campo que 
 `"posicion"`, `"division"` (por cero), `"nombre"` (un nombre que no existe), `"numero"` (un
 texto que no es un número), `"json"`, `"agente"` (no sabe recibir ese mensaje o no respondió),
 `"ciclo"` (de preguntas), `"archivo"` (un archivo que no está o que no se puede tocar),
-`"ia"` (la IA no contestó: sin clave, sin red, sin crédito...), `"python"` (falló una función
+`"ia"` (la IA no contestó: sin clave, sin red, sin crédito...), `"tope"` (el agente llegó a su tope de consultas del día y sus frenos no tienen `reserva`), `"python"` (falló una función
 de un archivo traído con `usar python`) y `"otro"` para el resto. Hay que pasarle `e` tal cual llegó: si lo
 cambiás (`e + "!"`) es un texto común y `detalle_de` avisa que no es un error atajado.
 
@@ -1043,12 +1055,13 @@ prueba "la lección le llega a la IA" {
 
 `consultas_ia()` da una lista con un mapa por consulta: `agente`, `instrucciones` (con las
 lecciones al final), `pregunta` y `respuesta` (`nada` si la consulta falló). Como
-`mensajes_enviados` y `simular_ia`, solo existe dentro de una prueba.
+`mensajes_enviados` y `simular_ia`, solo existe dentro de una prueba. Si el agente tiene
+[frenos](#frenos), cada consulta trae además `freno` y `devuelto`.
 
 ### Bitácora: lo que salió mal queda anotado
 
-Si el programa tiene algún `estado recordado` o usa lecciones, cada falla de un agente se
-anota sola en `mi_mostrador.bitacora.txt`, un renglón por falla:
+Si el programa tiene algún `estado recordado`, usa lecciones o algún agente tiene `frenos`,
+cada falla de un agente se anota sola en `mi_mostrador.bitacora.txt`, un renglón por falla:
 
 ```
 21/11/2026 14:30 | Mostrador | la IA no contestó (lo atajó con 'intentar') | Consulta { cliente: "Marta", pregunta: "¿Hay yerba?" } | consultar_ia(): falta la clave para hablar con la IA...
@@ -1064,7 +1077,9 @@ python mate\mate.py bitacora mi_mostrador.mate
 ```
 
 Muestra cuántas fallas hay, cuáles agentes fallan más, qué pasó, los motivos que más se
-repiten y las últimas cinco. Es el lugar donde mirar antes de escribir una lección.
+repiten y las últimas cinco. Es el lugar donde mirar antes de escribir una lección. Si algún
+agente tiene [frenos](#frenos), ahí quedan también los frenos que saltaron, y al final sale
+cuánto consultó a la IA cada agente, día por día.
 
 - Guarda las últimas 200 fallas: las más viejas se van solas. Si borrás el archivo, empieza de
   nuevo.
@@ -1154,6 +1169,243 @@ pedido.txt`.
 
 Si al archivo (o a una bitácora) se le daña un renglón, Mate saltea ese solo: los demás se
 siguen leyendo bien, con sus tildes.
+
+## Frenos
+
+Una IA a veces inventa: un precio que no existe, un descuento que nadie autorizó, una
+respuesta de tres párrafos. Si un agente atiende clientes, eso no puede llegarle al cliente.
+Con **frenos**, el agente declara sus reglas y **Mate revisa cada respuesta de `consultar_ia`
+antes de devolverla**. No se le pide a la IA que se controle sola: el control lo hace Mate,
+siempre igual, y queda anotado.
+
+```
+mensaje Consulta { pregunta: texto }
+
+agente Mostrador {
+    estado lista = [35000, 9800.5, 14500]
+
+    frenos {
+        precios: lista
+        prohibido: ["descuento", "fiado"]
+        largo: 400
+        reserva: "Eso te lo confirma una persona, ya te paso."
+        consultas_por_dia: 100
+    }
+
+    al recibir Consulta como c {
+        responder consultar_ia("Atendés el mostrador de un mayorista.", c.pregunta)
+    }
+}
+```
+
+`frenos` va dentro del agente, una regla por renglón. Todas son opcionales:
+
+| Regla | Qué lleva | Qué controla |
+|---|---|---|
+| `precios` | una lista de números (o la tabla de precios) | los únicos importes en pesos que la IA puede nombrar |
+| `prohibido` | una lista de textos | palabras o temas que no pueden aparecer en la respuesta |
+| `largo` | un número | cuántas letras puede tener la respuesta, como mucho |
+| `reserva` | un texto | lo que se contesta en lugar de una respuesta mala |
+| `consultas_por_dia` | un número | el tope de gasto: cuántas consultas a la IA puede hacer por día |
+| `tokens_por_dia` | un número | otro tope de gasto: cuántos tokens puede gastar por día |
+
+Si hay `precios`, `prohibido` o `largo`, tiene que haber `reserva` (Mate lo avisa antes de
+correr). El valor de cada regla puede usar el estado y las funciones del agente, y se calcula
+de nuevo en cada consulta: si la lista de precios cambia, el freno la sigue. Un agente sin
+`frenos` funciona exactamente igual que antes.
+
+### Qué pasa cuando un freno salta
+
+1. Mate **no devuelve** esa respuesta.
+2. Consulta **una vez más**, con la misma pregunta y un aviso para la IA que dice qué regla
+   rompió ("nombró el importe $ 12.000, que no está entre los precios permitidos").
+3. Si la segunda respuesta cumple, vale esa. Si vuelve a romper una regla (o la IA no
+   contesta), `consultar_ia` devuelve **el texto de `reserva`**. La respuesta mala no llega
+   nunca al programa.
+
+Con `--traza` se ve todo:
+
+```
+  ·        Mostrador consulta a la IA (simulada): "¿Y el café?"
+  ·        la IA contesta: "El café sale $ 12.000 el kilo."
+  ·        freno de Mostrador: la respuesta no pasa (nombró el importe $ 12.000, que no está entre los precios permitidos). Consulta una vez más
+  ·        Mostrador consulta a la IA (simulada): "¿Y el café? [Aviso del sistema: tu respuesta anterior a esta misma con..."
+  ·        la IA contesta: "El café sale $ 12.000 el kilo."
+  ·        freno de Mostrador: el segundo intento tampoco pasa (nombró el importe $ 12.000, que no está entre los precios permitidos). Devuelve el texto de reserva: "Eso te lo confirma una persona, ya te paso."
+```
+
+Y queda en la bitácora (`python mate\mate.py bitacora mi_mostrador.mate`), con la pregunta, la
+regla y lo que había contestado la IA. El segundo intento es otra consulta: también se paga
+y también cuenta para el tope.
+
+### El freno de precios, con detalle
+
+`precios` lleva los importes permitidos. Lo más común es la columna de precios de tu lista:
+
+```
+funcion solo_precios(tabla) {
+    var importes = []
+    para fila en tabla {
+        importes = agregar(importes, fila.precio)
+    }
+    devolver importes
+}
+```
+
+y en los frenos, `precios: solo_precios(filas)`. Si ponés la tabla entera (`precios: filas`)
+valen **todos** los números de la tabla, también el stock: es más cómodo y frena menos. Si el
+programa calcula un total y la IA lo tiene que poder decir, sumalo a esa lista.
+
+Qué cuenta como un importe en pesos dentro de la respuesta:
+
+| Escrito así | Se lee como |
+|---|---|
+| `$ 3.500`, `$3500`, `$ 3.500,00`, `$ 3.500.-` | 3500 (el punto es de los miles y la coma, de los centavos) |
+| `3500 pesos`, `3.500 pesos`, `3500$` | 3500 |
+| `3 mil pesos`, `$ 2 millones` | 3000 y 2.000.000 |
+| `sale 3500`, `cuesta 3.500`, `vale 3500`, `el precio es de 3500` | 3500 (solo si es de 100 o más) |
+| `$ 3,500` | 3,5 o 3500: alcanza con que uno de los dos esté permitido |
+
+**Lo que no se mira, a propósito:** cantidades ("40 bolsones"), teléfonos, fechas, horarios,
+porcentajes ("10%") y cualquier número que no tenga `$`, la palabra "pesos" ni venga justo
+después de "sale", "cuesta", "vale", "precio" o "cobramos". Ante la duda, este freno prefiere
+no saltar antes que tapar una respuesta buena. Por eso mismo **no ve** un importe escrito con
+letras ("tres mil quinientos pesos") ni uno suelto en otra frase ("te lo dejo en 4000"): no
+es una garantía absoluta, es una red que ataja lo más común. Los dólares escritos `US$ 100`
+se miran igual que los pesos.
+
+### Palabras prohibidas y largo
+
+`prohibido` no distingue mayúsculas ni tildes, y busca desde el comienzo de una palabra:
+`"descuento"` frena "Descuento" y "descuentos", pero `"oferta"` no frena "transferta". Puede
+ser una frase (`"precio especial"`). `largo` cuenta letras, con espacios.
+
+### Tope de gasto
+
+`consultas_por_dia: 100` hace que ese agente no consulte a la IA más de 100 veces en un día.
+Al llegar al tope, `consultar_ia` **no consulta**: devuelve el texto de `reserva` o, si los
+frenos no tienen reserva, falla con un error que se ataja con `intentar`
+(`detalle_de(e).clase` es `"tope"`). Queda en la bitácora.
+
+- **La cuenta vale entre corridas del mismo día**: se guarda con la memoria del programa
+  (`mi_mostrador.memoria.json`), después de cada consulta de verdad. Al día siguiente
+  arranca de cero. Las copias de un agente (`crear`) cuentan todas juntas, con el original.
+- **`tokens_por_dia`** usa lo que informa el servicio en cada respuesta (los tokens de la
+  pregunta más los de la respuesta, que es lo que se cobra). Mate se entera de cuánto gastó
+  una consulta recién cuando termina, así que el tope se puede pasar por lo que gaste la
+  última.
+- **Mate no calcula plata**: cuenta consultas y tokens. El precio de cada token depende del
+  modelo y cambia; lo que se gastó en plata se mira en platform.claude.com.
+- **Con `--ia-simulada` también cuenta**, en una cuenta aparte ("simuladas"): así podés ver
+  el tope funcionando sin gastar, y sin que esas pruebas te coman las consultas de verdad.
+  Con `--ia-simulada` no hay tokens.
+- **Con `probar` no se toca la cuenta de verdad**: cada prueba arranca con la cuenta en cero.
+- El tope de siempre (50 consultas de verdad por corrida, que saca `--sin-limite`) sigue
+  estando: es para los bucles, y este otro es para el día.
+
+Para ver cuánto consultó cada agente:
+
+```
+python mate\mate.py bitacora mi_mostrador.mate
+```
+
+```
+Consultas a la IA (la cuenta la llevan los agentes que tienen 'frenos'):
+  Mostrador
+    hoy:              12 consultas, 8.450 tokens  (y 4 simuladas, que no se pagan)
+    20/11/2026:       31 consultas, 22.300 tokens
+    últimos 2 día(s) con consultas (se guardan 30): 43 consultas, 30.750 tokens  (y 4 simuladas, que no se pagan)
+```
+
+La cuenta la llevan solo los agentes que tienen `frenos`. Si querés la cuenta y ningún
+control, alcanza con `frenos { consultas_por_dia: 100000 }`.
+
+### Lecciones propuestas
+
+Las [lecciones](#lecciones-corregir-a-un-agente) las escribís vos con `corregir`. Ahora Mate
+también puede **proponerlas**, de dos maneras:
+
+- **Cuando salta un freno**, queda sola una lección propuesta con lo que pasó.
+- **Cuando una respuesta estuvo mal y se lo contás**:
+
+  ```
+  python mate\mate.py proponer mi_mostrador.mate Mostrador "Ofreció envíos y no hacemos envíos"
+  ```
+
+  Mate redacta la lección. Si la clave de la IA está puesta (`ANTHROPIC_API_KEY`), la redacta
+  la IA: es una consulta de verdad, se paga y entra en la cuenta del día. Sin clave, o si la
+  IA no contesta, usa una redacción fija ("Una respuesta tuya estuvo mal: ... No lo
+  repitas."). Siempre te dice cuál de las dos fue. Después de lo que estuvo mal podés
+  agregar, también entre comillas, lo que había contestado el agente.
+
+**Una propuesta no se usa hasta que la aprobás.** Para verlas, con su número:
+
+```
+python mate\mate.py propuestas mi_mostrador.mate
+```
+
+```
+Lecciones propuestas, sin aprobar (1). Ningún agente las usa todavía:
+  1. Para Mostrador: No nombres ningún importe que no esté en los precios que te dieron. Si no sabés un precio, decí que lo confirma una persona.   (del 21/11/2026 10:30)
+       Por qué: saltó un freno: nombró el importe $ 12.000, que no está entre los precios permitidos. La IA había contestado: "El café sale $ 12.000 el kilo."
+```
+
+Y para decidir:
+
+```
+python mate\mate.py propuestas mi_mostrador.mate aprobar 1
+python mate\mate.py propuestas mi_mostrador.mate descartar 1
+```
+
+(`aprobar 1 3` aprueba varias; `descartar todas` las saca a todas.) Una propuesta aprobada
+pasa a ser una lección como las de `corregir`: viaja en cada consulta a la IA desde la
+próxima corrida, se ve con `lecciones` y se borra con `lecciones ... --borrar=1`. Valen los
+mismos topes: 20 lecciones por agente y 300 letras cada una. Las propuestas sin aprobar
+también tienen tope (20 por agente; se va la más vieja), y la misma no se propone dos veces.
+
+### Probar los frenos sin gastar
+
+En una prueba, `simular_ia` fija lo que "contesta" la IA y `consultas_ia()` cuenta qué pasó.
+Si el agente tiene frenos, cada consulta trae dos datos más: `freno` (qué regla rompió esa
+respuesta, o `""` si pasó) y `devuelto` (lo que `consultar_ia` le devolvió al programa).
+
+```
+prueba "un precio inventado no le llega al cliente" {
+    simular_ia("El café sale $ 12.000 el kilo.")
+    sea dicho = preguntar Consulta { pregunta: "¿Y el café?" } a Mostrador
+    asegurar dicho == "Eso te lo confirma una persona, ya te paso."
+    asegurar largo(consultas_ia()) == 2
+    asegurar tiene(consultas_ia()[0].freno, "$ 12.000")
+}
+
+prueba "si en el segundo intento se corrige, vale esa respuesta" {
+    simular_ia(["El café sale $ 12.000 el kilo.", "Café no trabajamos."])
+    asegurar (preguntar Consulta { pregunta: "¿Y el café?" } a Mostrador) == "Café no trabajamos."
+}
+```
+
+El segundo intento es otra consulta: con una lista en `simular_ia`, gasta la respuesta
+siguiente. El ejemplo completo es `ejemplos\11_mostrador_con_frenos.mate`:
+
+```
+python mate\mate.py correr mate\ejemplos\11_mostrador_con_frenos.mate --ia-simulada --traza
+python mate\mate.py probar mate\ejemplos\11_mostrador_con_frenos.mate
+```
+
+### Lo que los frenos no hacen
+
+- Revisan lo que devuelve `consultar_ia` **dentro de un agente que está atendiendo un
+  mensaje**. Una consulta hecha desde el programa principal, o al calcular el estado inicial
+  de un agente, no tiene frenos.
+- No entienden el sentido de la respuesta: buscan importes, palabras y cuentan letras. Una
+  promesa escrita con otras palabras ("te lo dejo más barato") pasa, salvo que la pongas en
+  `prohibido`.
+- Si la IA directamente no contesta (no hay internet, falta la clave), el error es el de
+  siempre y se ataja con `intentar`: la `reserva` es para las respuestas malas y para el tope.
+- Si cerrás la ventana de PowerShell con la X en vez de dejar terminar el programa, la
+  cuenta de consultas de verdad ya quedó guardada, pero los frenos que saltaron en esa
+  corrida no llegan a la bitácora ni quedan como propuestas. Para terminar una charla, mejor
+  `chau` o Ctrl+C.
 
 ## Referencia rápida
 
@@ -1664,7 +1916,11 @@ pruebas del intérprete no dejan pasarse:
   `usar python`, sin agrandar Mate. Lo que sí hizo falta fue trabajar con datos de verdad y
   charlar por teclado: para eso el tope se subió de 45 a 48, otra vez lo justo (`leer_tabla`,
   `agregar_a_archivo` y `simular_teclado`). Si hay que achicar, la candidata es
-  `simular_teclado`, que solo sirve en las pruebas.
+  `simular_teclado`, que solo sirve en las pruebas. Los frenos para la IA, el tope de gasto
+  y las lecciones propuestas **no gastaron nada**: `frenos` no es una palabra propia (solo
+  significa algo dentro de un agente y seguida de una llave, así que sigue sirviendo como
+  nombre), sus reglas tampoco, y lo demás son órdenes de la línea de comandos (`propuestas`
+  y `proponer`) y dos datos más en lo que ya devolvía `consultas_ia()`.
 - **Cada agregado trae lo suyo**: su renglón en este README (en la tabla de funciones o en la
   referencia), su explicación en `ayuda <palabra>` y al menos una prueba que lo use.
 - **Una sola forma de escribir cada cosa.** Nada de sinónimos (`función` con tilde, comillas
@@ -1689,7 +1945,11 @@ mensaje menos claro):
 da las mismas salidas y los mismos errores. Lo único que se mueve es un tope de seguridad, y
 para más lugar: con un Python anterior al 3.12, una función puede llamarse a sí misma unas 180
 veces seguidas en vez de unas 120. `usar python "archivo.py"` antes era un error de escritura,
-así que ningún programa viejo lo usaba.
+así que ningún programa viejo lo usaba. Lo mismo con los `frenos`: `frenos { ... }` dentro
+de un agente antes era un error de escritura. Un agente sin frenos consulta a la IA igual que
+antes, y un programa sin frenos no crea ningún archivo nuevo. `propuestas` y `proponer` son
+órdenes nuevas: si tenías un programa llamado `propuestas.mate`, se corre con
+`correr propuestas.mate`.
 
 ## Límites de la versión 0.5
 
@@ -1711,6 +1971,11 @@ así que ningún programa viejo lo usaba.
   que hacer "Guardar como"), y trae la planilla entera a la memoria: está pensada para listas
   de cientos o miles de filas, no de millones. Cada vez que cambiás la planilla en Excel hay
   que guardarla de nuevo como CSV.
+- Los frenos buscan importes, palabras y cuentan letras: no entienden el sentido de una
+  respuesta, no ven un importe escrito con letras y solo valen para `consultar_ia` dentro de
+  un agente que atiende un mensaje (ver [Lo que los frenos no hacen](#lo-que-los-frenos-no-hacen)).
+  El tope de gasto cuenta consultas y tokens, no plata, y es por programa y por computadora:
+  si el mismo agente corre en dos programas, cada uno lleva su cuenta.
 - La charla por teclado es en la ventana de PowerShell: un programa de Mate todavía no
   atiende por WhatsApp ni por una página web.
 
