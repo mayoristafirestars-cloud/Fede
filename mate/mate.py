@@ -15,9 +15,11 @@ Uso:
 """
 
 import ast
+import csv
 import datetime
 import decimal
 import difflib
+import io
 import json
 import math
 import operator
@@ -36,7 +38,9 @@ VERSION = "0.5"
 TOPE_DE_PALABRAS = 40
 # (En la 0.4 subió de 42 a 45, lo justo para que un agente aprenda: aprender, lecciones y
 # consultas_ia. 'recordado' no gasta una palabra: solo vale después de 'estado'.)
-TOPE_DE_FUNCIONES = 45
+# (En la 0.5 subió de 45 a 48, para trabajar con datos de verdad y charlar por teclado:
+# leer_tabla, agregar_a_archivo y simular_teclado.)
+TOPE_DE_FUNCIONES = 48
 
 PALABRAS = {
     "sea", "var", "funcion", "devolver", "si", "sino", "mientras", "para", "en",
@@ -88,6 +92,8 @@ FUNCIONES = {
     "mostrar": (0, None, 'mostrar("Total:", total)', "escribe en pantalla"),
     "leer": (1, 2, 'leer("¿Cuántos?", "3")',
              "le pide un texto a la persona (en las pruebas da el 2.º valor)"),
+    "simular_teclado": (1, 1, 'simular_teclado(["hola", "chau"])',
+                        "solo en una prueba: lo que 'teclea' la persona en cada leer()"),
     "texto": (1, 1, "texto(3.5)", 'lo pasa a texto: "3.5"'),
     "numero": (1, 1, 'numero("1.234,50")', "lee un número escrito como texto: 1234.5"),
     "tipo": (1, 1, "tipo(x)", 'dice qué es: "numero", "texto", "lista", "mapa"...'),
@@ -136,6 +142,10 @@ FUNCIONES = {
                      "el texto de ese archivo (de la carpeta del programa)"),
     "escribir_archivo": (2, 2, 'escribir_archivo("notas.txt", t)',
                          "guarda el texto t en ese archivo (si ya existía, lo pisa)"),
+    "agregar_a_archivo": (2, 2, 'agregar_a_archivo("pedidos.txt", t)',
+                          "suma el texto t como un renglón más al final de ese archivo"),
+    "leer_tabla": (1, 1, 'leer_tabla("precios.csv")',
+                   "la planilla guardada como CSV: una lista con un mapa por fila"),
     "mensajes_enviados": (0, 1, 'mensajes_enviados("Pedido")',
                           "solo en una prueba: los mensajes que se mandaron (o los de ese "
                           "tipo)"),
@@ -160,10 +170,13 @@ def lista_de_funciones(formato_de_renglon="- {ejemplo:<27} {que}"):
 
 # Las funciones incluidas que hacen algo además de devolver un valor: pueden ir solas
 # en un renglón. Las demás, sueltas, no sirven de nada y Mate lo avisa.
-HACEN_ALGO = ("mostrar", "leer", "escribir_archivo", "simular_ia", "aprender")
-# Las tres funciones que llegaron con la 0.4. Un programa de antes puede tener algo suyo con
-# esos nombres ('sea lecciones = [...]'): se le deja, y en ese programa el nombre es suyo.
-SE_PUEDEN_TAPAR = ("aprender", "lecciones", "consultas_ia")
+HACEN_ALGO = ("mostrar", "leer", "escribir_archivo", "simular_ia", "aprender",
+              "agregar_a_archivo", "simular_teclado")
+# Las funciones que llegaron con la 0.4 y con la 0.5. Un programa de antes puede tener algo
+# suyo con esos nombres ('sea lecciones = [...]'): se le deja, y en ese programa el nombre
+# es suyo.
+SE_PUEDEN_TAPAR = ("aprender", "lecciones", "consultas_ia",
+                   "leer_tabla", "agregar_a_archivo", "simular_teclado")
 
 # Palabras de otros lenguajes, o con tilde, y cómo se escriben en Mate. No se aceptan
 # como sinónimos: solo sirven para explicar el error.
@@ -219,8 +232,12 @@ SIMULAR_IA_SUELTO = ("simular_ia() solo va dentro de una prueba: fija lo que con
 # Las funciones incluidas que solo sirven adentro de una prueba, y lo que se avisa si no.
 CONSULTAS_IA_SUELTO = ("consultas_ia() solo va dentro de una prueba: es para comprobar qué se "
                        "le consultó a la IA (y con qué lecciones)")
+SIMULAR_TECLADO_SUELTO = ("simular_teclado() solo va dentro de una prueba: fija lo que "
+                          "'teclea' la persona en los leer() de esa prueba. Al correr el "
+                          "programa de verdad, leer() espera el teclado")
 SOLO_EN_PRUEBAS = {"mensajes_enviados": SOLO_EN_PRUEBA, "simular_ia": SIMULAR_IA_SUELTO,
-                   "consultas_ia": CONSULTAS_IA_SUELTO}
+                   "consultas_ia": CONSULTAS_IA_SUELTO,
+                   "simular_teclado": SIMULAR_TECLADO_SUELTO}
 SOLO_EN_AGENTE = ("{n}() solo va dentro de un agente: cada agente anota y lee sus propias "
                   "lecciones. Para corregirlo desde afuera, sin tocar el programa, está la "
                   "orden 'corregir'; y en una prueba se le dice a cuál: {n}({antes}Mostrador)")
@@ -1484,6 +1501,15 @@ def renglon_sin_uso(e):
     return ErrorMate("este renglón calcula un valor y no hace nada con él: guardalo "
                      f"(sea x = ...), mostralo con mostrar(...) o borralo{pista}", e[1],
                      clase="escritura")
+
+
+def es_de_excel(ruta):
+    """¿Ese archivo es una planilla de Excel (.xlsx o .xls) y no un texto?"""
+    try:
+        with open(ruta, "rb") as f:
+            return f.read(4) in (b"PK\x03\x04", b"\xd0\xcf\x11\xe0")
+    except OSError:
+        return False
 
 
 def leer_fuente(ruta):
@@ -2834,6 +2860,127 @@ def por_teclado(pregunta):
                  else pregunta + " ")
 
 
+class CorteEnElTeclado(KeyboardInterrupt):
+    """Ctrl+C mientras leer() esperaba que la persona escribiera (0.5): es la manera normal
+    de cortar una charla, así que el programa termina ahí, prolijo y sin cartel de error.
+    (Lo que recuerdan los agentes se guarda igual, como con cualquier otro final.)"""
+
+
+CORTE_EN_EL_TECLADO = ("Listo: cortaste con Ctrl+C mientras el programa esperaba que "
+                       "escribieras, y terminó ahí.")
+
+
+# ───────────────────────── Tablas: leer_tabla() (0.5) ─────────────────────────
+# Una planilla de Excel guardada como CSV: la primera fila son los títulos, y cada fila de
+# abajo queda como un mapa con esos títulos como claves. Se aceptan las dos formas en que
+# Excel la guarda (separada por punto y coma, que es lo que hace en la Argentina, o por
+# coma) y los números escritos a la argentina.
+_SOLO_MILES = re.compile(r"[+-]?[0-9]{1,3}(\.[0-9]{3})+")   # 3.500 en una planilla: 3500
+_EMPIEZA_CON_CERO = re.compile(r"[+-]?0[0-9]+")              # 00123: un código, no un número
+COMO_GUARDAR_CSV = ("En Excel: Archivo > Guardar como > en 'Tipo' elegí "
+                    "\"CSV (delimitado por comas) (*.csv)\" y guardalo en la carpeta del "
+                    "programa")
+
+
+def valor_de_celda(celda):
+    """Lo que vale una celda de la planilla: un número si está escrita como número (también
+    a la argentina: 3.500, 3.500,50, $ 3.500), y si no, el texto tal cual, sin los espacios
+    de las puntas. Una celda vacía es el texto vacío."""
+    t = celda.strip()
+    sin_pesos = re.sub(r"^([+-]?)\$\s*", r"\1", t)
+    if not t or _EMPIEZA_CON_CERO.fullmatch(sin_pesos):
+        return t
+    if _SOLO_MILES.fullmatch(sin_pesos):  # en una planilla argentina el punto es de los miles
+        sin_pesos = sin_pesos.replace(".", "")
+    try:
+        return numero_de_texto(sin_pesos)
+    except ErrorMate:
+        return t
+
+
+def separador_de(titulos):
+    """Con qué están separadas las columnas: se mira la fila de los títulos. Si hay duda,
+    punto y coma, que es lo que usa Excel en la Argentina."""
+    cuenta, entre_comillas = {";": 0, ",": 0, "\t": 0}, False
+    for letra in titulos:
+        if letra == '"':
+            entre_comillas = not entre_comillas
+        elif letra in cuenta and not entre_comillas:
+            cuenta[letra] += 1
+    return max(cuenta, key=lambda s: cuenta[s])
+
+
+def tabla_de_texto(texto, nombre):
+    """Las filas de un CSV, como una lista de mapas. 'nombre' es para los errores."""
+    def mal(que):
+        return ErrorMate(f"leer_tabla(): {que}", familia="archivo")
+
+    texto = texto.lstrip("\ufeff")
+    corrido = 0  # renglones del archivo que quedaron arriba de lo que se lee
+    aviso_de_excel = re.match(r"sep=(.)[ \t]*\n", texto)  # un renglón que a veces pone Excel
+    if aviso_de_excel:
+        texto, corrido = texto[aviso_de_excel.end():], 1
+    renglones = texto.split("\n")
+    while renglones and not renglones[0].strip(" \t;,"):
+        renglones.pop(0)  # renglones en blanco antes de los títulos
+        corrido += 1
+    if not renglones:
+        raise mal(f"'{nombre}' está vacío. Tiene que traer una primera fila con los títulos "
+                   "de las columnas (por ejemplo producto;precio) y, debajo, un renglón por "
+                   "cada producto")
+    separador = aviso_de_excel.group(1) if aviso_de_excel else separador_de(renglones[0])
+    try:
+        lector = csv.reader(io.StringIO("\n".join(renglones)), delimiter=separador)
+    except (csv.Error, TypeError):
+        lector = csv.reader(io.StringIO("\n".join(renglones)), delimiter=";")
+    titulos, filas, anterior = None, [], 0
+    while True:
+        try:
+            celdas = next(lector)
+        except StopIteration:
+            break
+        except csv.Error:
+            raise mal(f"no pude entender el renglón {corrido + anterior + 1} de '{nombre}': "
+                       "¿hay una comilla que abre y no cierra?")
+        renglon, anterior = corrido + anterior + 1, lector.line_num
+        celdas = [c.strip() for c in celdas]
+        if not any(celdas):
+            continue  # un renglón en blanco (o los ;;; que deja Excel al final)
+        if titulos is None:
+            while celdas and not celdas[-1]:
+                celdas.pop()  # columnas vacías que Excel deja a la derecha
+            sin_titulo = [i + 1 for i, t in enumerate(celdas) if not t]
+            if sin_titulo:
+                raise mal(f"en '{nombre}' la columna {sin_titulo[0]} no tiene título (los "
+                           f"títulos van en la primera fila, el renglón {renglon}): "
+                           "escribile uno, o borrá esa columna")
+            repetido = repetidos(celdas)
+            if repetido:
+                raise mal(f"en '{nombre}' hay dos columnas con el mismo título, "
+                           f"'{repetido[0]}': cambiale el nombre a una")
+            titulos = celdas
+            continue
+        while len(celdas) > len(titulos) and not celdas[-1]:
+            celdas.pop()
+        if len(celdas) != len(titulos):
+            if len(celdas) > len(titulos):
+                pista = ("le sobra algo. Si un dato lleva coma o punto y coma adentro (un "
+                         "precio como 3.500,50 en un archivo separado por comas), tiene que "
+                         "ir entre comillas: \"3.500,50\"")
+            else:
+                pista = "le falta un dato, o un separador"
+            separa = {";": "punto y coma", ",": "coma", "\t": "tabulación"}.get(
+                separador, f"'{separador}'")
+            raise mal(
+                f"el renglón {renglon} de '{nombre}' tiene {len(celdas)} "
+                f"{'columna' if len(celdas) == 1 else 'columnas'} y los títulos son "
+                f"{len(titulos)} ({', '.join(titulos)}): {pista}. (Las columnas están "
+                f"separadas por {separa}.) El renglón dice: "
+                f"{recortado(separador.join(celdas), 80)}")
+        filas.append({titulo: valor_de_celda(c) for titulo, c in zip(titulos, celdas)})
+    return filas
+
+
 # ───────────────────────────── La IA (mejora 100) ─────────────────────────────
 # consultar_ia() le habla a Claude, de Anthropic, por la red. Todo con la biblioteca
 # estándar. La clave nunca está en el programa: se lee de la variable ANTHROPIC_API_KEY.
@@ -3676,6 +3823,11 @@ class Interprete:
         self.atendiendo = []  # (agente, renglón de la pregunta) de los que están atendiendo
         self.entrada = por_teclado  # de dónde saca leer() lo que contesta la persona
         self.sin_teclado = False  # en las pruebas leer() usa la respuesta preparada
+        self.tecleado = None  # en una prueba: lo que dijo simular_teclado() (una lista)
+        self.tecleados = 0  # cuántos de esa lista ya se dieron
+        # Con 'probar', agregar_a_archivo() no toca el disco (0.5): lo agregado queda acá
+        # (ruta -> texto entero) y leer_archivo() y leer_tabla() lo ven. None = se escribe.
+        self.archivos_de_prueba = None
         self.fecha_fija = False  # en las pruebas hoy() y ahora() dan siempre lo mismo
         # La IA (mejora 100). Simulada no sale a la red: en las pruebas siempre es así.
         self.ia_simulada = False
@@ -3948,14 +4100,27 @@ class Interprete:
                     "frenar todo esperando el teclado. Leé el dato afuera y mandáselo en "
                     "un mensaje")
             if self.sin_teclado:
+                if self.tecleado is not None and self.tecleados < len(self.tecleado):
+                    self.tecleados += 1  # lo que fijó simular_teclado(), de a uno
+                    return self.tecleado[self.tecleados - 1].strip()
+                if preparada is None and self.tecleado is not None:
+                    raise ErrorMate(
+                        f"la prueba llegó a {self.tecleados + 1} leer() y simular_teclado() "
+                        f"tenía {len(self.tecleado)} texto(s): agregá los que faltan a la "
+                        "lista, o dale a ese leer() una respuesta preparada como segundo "
+                        'valor, por ejemplo leer("Cliente:", "chau")')
                 if preparada is None:
                     raise ErrorMate(
                         "en las pruebas leer() no espera el teclado: dale una respuesta "
-                        'preparada como segundo valor, por ejemplo leer("¿Cuántos?", "3")')
+                        'preparada como segundo valor, por ejemplo leer("¿Cuántos?", "3"), '
+                        'o fijá antes lo que se teclea: simular_teclado(["3"])')
                 return preparada
             try:
-                return self.entrada(pregunta).strip()
-            except EOFError:
+                # (si lo tecleado llega de un archivo con marca al principio, se le saca)
+                return self.entrada(pregunta).replace("\ufeff", "").strip()
+            except KeyboardInterrupt:
+                raise CorteEnElTeclado()
+            except (EOFError, OSError):
                 if preparada is not None:
                     return preparada
                 raise ErrorMate("leer(): no hay nadie para contestar (el programa no "
@@ -3998,13 +4163,18 @@ class Interprete:
                     f'y nombralo sin la ruta: "{suelto}"', familia="archivo")
             return carpeta, ruta
 
-        @nativa("leer_archivo")
-        def _(nombre):
-            carpeta, ruta = archivo_de_datos(nombre, "leer_archivo()")
+        def texto_del_archivo(nombre, donde, si_no_esta=None):
+            """El texto de un archivo de la carpeta del programa, para leer_archivo() y
+            leer_tabla(). Si no está, el error dice en qué carpeta se lo buscó."""
+            carpeta, ruta = archivo_de_datos(nombre, donde)
             if os.path.isdir(ruta):
-                raise ErrorMate(f"leer_archivo(): '{nombre}' es una carpeta, no un archivo",
+                raise ErrorMate(f"{donde}: '{nombre}' es una carpeta, no un archivo",
                                 familia="archivo")
+            if self.archivos_de_prueba is not None and ruta in self.archivos_de_prueba:
+                return self.archivos_de_prueba[ruta]  # lo que 'agregó' la prueba
             try:
+                if donde == "leer_tabla()" and es_de_excel(ruta):
+                    raise ErrorMate("es una planilla de Excel sin convertir")
                 contenido = leer_fuente(ruta)
             except FileNotFoundError:
                 try:
@@ -4017,52 +4187,118 @@ class Interprete:
                     pista = f" ¿Quisiste decir '{suelto}.txt'?"
                 else:
                     pista = sugerir(suelto, otros)
-                raise ErrorMate(f"leer_archivo(): no encuentro el archivo '{nombre}' en "
+                if si_no_esta is not None:
+                    return si_no_esta
+                raise ErrorMate(f"{donde}: no encuentro el archivo '{nombre}' en "
                                 f"{os.path.dirname(ruta)}.{pista}".rstrip("."), familia="archivo")
             except OSError:
-                raise ErrorMate(f"leer_archivo(): no pude abrir '{nombre}'", familia="archivo")
+                raise ErrorMate(f"{donde}: no pude abrir '{nombre}'", familia="archivo")
             except ErrorMate:
-                raise ErrorMate(f"leer_archivo(): no pude leer las letras de '{nombre}': "
+                if es_de_excel(ruta):
+                    raise ErrorMate(f"{donde}: '{nombre}' es una planilla de Excel, y Mate "
+                                    f"lee texto. {COMO_GUARDAR_CSV}", familia="archivo")
+                raise ErrorMate(f"{donde}: no pude leer las letras de '{nombre}': "
                                 "¿seguro que es un archivo de texto?", familia="archivo")
             if len(contenido) > MAX_LARGO:
-                raise ErrorMate(f"leer_archivo(): '{nombre}' es demasiado grande para leerlo "
+                raise ErrorMate(f"{donde}: '{nombre}' es demasiado grande para leerlo "
                                 "entero", familia="archivo")
             return contenido
 
-        @nativa("escribir_archivo")
-        def _(nombre, contenido):
-            carpeta, ruta = archivo_de_datos(nombre, "escribir_archivo()")
+        nativa("leer_archivo")(lambda nombre: texto_del_archivo(nombre, "leer_archivo()"))
+
+        @nativa("leer_tabla")
+        def _(nombre):
+            pedir(nombre, "texto", "leer_tabla()")
+            if nombre.strip().lower().endswith((".xlsx", ".xls", ".xlsm", ".ods")):
+                raise ErrorMate(
+                    f"leer_tabla(): '{nombre}' es una planilla de Excel, y Mate lee la "
+                    f"planilla guardada como CSV. {COMO_GUARDAR_CSV}; después nombrala con "
+                    f'.csv: leer_tabla("{os.path.splitext(nombre.strip())[0]}.csv")',
+                    familia="archivo")
+            return tabla_de_texto(texto_del_archivo(nombre, "leer_tabla()"), nombre)
+
+        def donde_guardar(nombre, contenido, donde):
+            """Los controles antes de guardar algo: devuelve la ruta completa."""
+            carpeta, ruta = archivo_de_datos(nombre, donde)
             if nombre_tipo(contenido) != "texto":
                 raise ErrorMate(
-                    f"escribir_archivo() guarda un texto y recibió {tipo_claro(contenido)}. "
+                    f"{donde} guarda un texto y recibió {tipo_claro(contenido)}. "
                     'Pasalo a texto antes: texto(valor), unir(lista, "\\n") o a_json(valor)')
             # (Windows ignora los puntos y espacios del final, y lo que sigue a un ':')
             if os.path.basename(ruta).split(":")[0].rstrip(". ").lower().endswith(NO_SE_PISAN):
                 raise ErrorMate(
-                    f"escribir_archivo() no escribe en '{nombre}' para no pisar un programa: "
+                    f"{donde} no escribe en '{nombre}' para no pisar un programa: "
                     'elegí otro nombre, por ejemplo "notas.txt"', familia="archivo")
             if os.path.isdir(ruta):
-                raise ErrorMate(f"escribir_archivo(): '{nombre}' es una carpeta, no un archivo",
+                raise ErrorMate(f"{donde}: '{nombre}' es una carpeta, no un archivo",
                                 familia="archivo")
             try:
                 contenido.encode("utf-8")  # antes de tocar el archivo: si falla, queda como estaba
             except UnicodeError:
                 raise ErrorMate(
-                    f"escribir_archivo(): el texto trae una letra que no se puede guardar "
+                    f"{donde}: el texto trae una letra que no se puede guardar "
                     f"(un símbolo roto, que suele venir de un JSON). '{nombre}' quedó como "
                     "estaba", familia="archivo")
+            return ruta
+
+        def guardar_en(ruta, nombre, donde, escribir):
             try:
-                # con la marca del principio, para que el Bloc de notas muestre bien las tildes
-                with open(ruta, "w", encoding="utf-8-sig") as f:
-                    f.write(contenido)
+                escribir()
             except FileNotFoundError:
-                raise ErrorMate(f"escribir_archivo(): no existe la carpeta donde iría "
+                raise ErrorMate(f"{donde}: no existe la carpeta donde iría "
                                 f"'{nombre}'. Creala antes, o guardá el archivo al lado del "
                                 "programa", familia="archivo")
             except (OSError, UnicodeError):
-                raise ErrorMate(f"escribir_archivo(): no pude guardar '{nombre}' (¿está "
+                raise ErrorMate(f"{donde}: no pude guardar '{nombre}' (¿está "
                                 "abierto en otro programa, o no hay permiso?)",
                                 familia="archivo")
+
+        @nativa("escribir_archivo")
+        def _(nombre, contenido):
+            ruta = donde_guardar(nombre, contenido, "escribir_archivo()")
+
+            def escribir():
+                # con la marca del principio, para que el Bloc de notas muestre bien las tildes
+                with open(ruta, "w", encoding="utf-8-sig") as f:
+                    f.write(contenido)
+            guardar_en(ruta, nombre, "escribir_archivo()", escribir)
+
+        @nativa("agregar_a_archivo")
+        def _(nombre, renglon):
+            ruta = donde_guardar(nombre, renglon, "agregar_a_archivo()")
+            if not renglon.endswith("\n"):
+                renglon += "\n"  # cada agregado es un renglón
+            # Lo que el archivo ya tenía, y si se le puede sumar al final tal como está
+            # (UTF-8) o hay que guardarlo entero de nuevo (lo dejó el Bloc de notas en ANSI
+            # o en "Unicode": mezclar codificaciones rompería las tildes).
+            antes = texto_del_archivo(nombre, "agregar_a_archivo()", si_no_esta="")
+            if antes and not antes.endswith("\n"):
+                antes += "\n"
+            if len(antes) + len(renglon) > MAX_LARGO:
+                raise ErrorMate(f"agregar_a_archivo(): '{nombre}' ya es demasiado grande: "
+                                "empezá un archivo nuevo, con otro nombre", familia="archivo")
+            if self.archivos_de_prueba is not None:
+                self.archivos_de_prueba[ruta] = antes + renglon  # 'probar' no toca el disco
+                return
+
+            def escribir():
+                try:
+                    with open(ruta, "rb") as f:
+                        crudo = f.read()
+                except FileNotFoundError:
+                    crudo = None
+                if crudo is None or not crudo:
+                    with open(ruta, "w", encoding="utf-8-sig") as f:
+                        f.write(renglon)
+                    return
+                try:
+                    crudo.decode("utf-8")
+                except UnicodeError:
+                    escribir_entero(ruta, antes + renglon)
+                    return
+                with open(ruta, "a", encoding="utf-8") as f:
+                    f.write(renglon if crudo.endswith(b"\n") else "\n" + renglon)
+            guardar_en(ruta, nombre, "agregar_a_archivo()", escribir)
 
         @nativa("recortar")
         def _(t):
@@ -4245,6 +4481,21 @@ class Interprete:
                     + (" (vacía, o con algo que no es un texto con letras)" if en_orden
                        else " (vacío)" if isinstance(respuesta, str) else ""))
             self.ia_fijada, self.ia_en_orden, self.ia_usadas = list(lista), en_orden, 0
+
+        @nativa("simular_teclado")
+        def _(tecleado):
+            if not self.en_prueba:
+                raise ErrorMate(SIMULAR_TECLADO_SUELTO)
+            lista = tecleado if isinstance(tecleado, list) else [tecleado]
+            if not lista or not all(isinstance(t, str) for t in lista):
+                raise ErrorMate(
+                    "simular_teclado() espera lo que 'teclea' la persona: un texto, o una "
+                    'lista de textos para que salgan en orden, uno por cada leer() (por '
+                    f'ejemplo simular_teclado(["hola", "chau"])), y recibió '
+                    f"{un(tecleado)}"
+                    + (" (vacía, o con algo que no es un texto)"
+                       if isinstance(tecleado, list) else ""))
+            self.tecleado, self.tecleados = list(lista), 0
 
         @nativa("mensajes_enviados")
         def _(tipo=None):
@@ -4750,6 +5001,8 @@ class Interprete:
         self.sin_teclado = self.sin_teclado or pruebas
         self.fecha_fija = self.fecha_fija or pruebas
         self.ia_simulada = self.ia_simulada or pruebas  # 'probar' nunca sale a la red
+        if pruebas and self.archivos_de_prueba is None:
+            self.archivos_de_prueba = {}  # ...ni agrega renglones a los archivos de verdad
         if pruebas:  # ...ni lee ni escribe memoria o bitácora: cada prueba arranca limpia
             self.recordando, self.memoria, self.bitacora = False, {}, None
         self.cargar(programa)
@@ -4766,6 +5019,7 @@ class Interprete:
             return []
         self.errores_principal = list(self.errores_agentes_det)
         foto = self.foto()
+        agregado = dict(self.archivos_de_prueba)  # lo que 'agregó' el programa, sin el disco
         resultados = []
         self.en_prueba = True
         try:
@@ -4782,6 +5036,8 @@ class Interprete:
                 # El historial de cada prueba arranca vacío, y cuenta desde 1.
                 self.historial = []
                 self.ia_fijada, self.ia_en_orden, self.ia_usadas = None, False, 0
+                self.tecleado, self.tecleados = None, 0
+                self.archivos_de_prueba = dict(agregado)
                 self.desde = (self.cuenta["enviar"] + self.cuenta["preguntar"],
                               self.conversaciones)
                 fallas, mostrado, salida = [], [], self.salida
@@ -6222,12 +6478,32 @@ FUNCIONES INCLUIDAS (no hay otras)
 - agregar, quitar, ordenar y porcion devuelven una copia NUEVA, no cambian la original:
   lista = agregar(lista, x)
 - quitar(lista, x) saca por valor, no por posición: se van todos los que valen x.
-- Una función incluida suelta en un renglón (salvo mostrar, leer, escribir_archivo y
-  aprender) es un error: hay que usar lo que devuelve. Ese error no se ataja con 'intentar':
-  para validar un dato se escribe  intentar {{ sea n = numero(dato) ... }} si falla e {{ ... }}
+- Una función incluida suelta en un renglón (salvo mostrar, leer, escribir_archivo,
+  agregar_a_archivo y aprender) es un error: hay que usar lo que devuelve. Ese error no se
+  ataja con 'intentar': para validar un dato se escribe
+      intentar {{ sea n = numero(dato) ... }} si falla e {{ ... }}
 - hoy() y ahora() dan textos: no se restan ni se comparan con < o > (sí con == y !=).
-- leer_archivo y escribir_archivo solo andan desde el programa principal (no desde un agente),
-  con archivos de la carpeta del programa, y no pisan archivos .mate ni .py.
+- leer_archivo, leer_tabla, escribir_archivo y agregar_a_archivo solo andan desde el programa
+  principal (no desde un agente: se le pasan los datos en un mensaje), con archivos de la
+  carpeta del programa, y no pisan archivos .mate ni .py.
+- leer_tabla("precios.csv") lee una planilla guardada desde Excel como CSV (separada por
+  punto y coma o por coma) y da una lista con un mapa por fila; las claves son los títulos
+  de la primera fila, tal cual están escritos:
+      para fila en leer_tabla("precios.csv") {{ mostrar(fila.producto, pesos(fila.precio)) }}
+  Una celda escrita como número ya llega como número, también a la argentina (3.500 es 3500;
+  3.500,50; $ 3.500). Lo demás llega como texto, y una celda vacía es "". Un título con
+  espacios se lee con corchetes: fila["precio de lista"].
+- agregar_a_archivo("pedidos.txt", renglon) suma ese texto como un renglón más, al final (si
+  el archivo no existe, lo crea). Con 'probar' no toca el archivo de verdad: lo agregado se
+  ve con leer_archivo() dentro de esa prueba y nada más.
+- leer("Cliente:", "chau") espera que la persona escriba y apriete Enter; devuelve un texto.
+  El 2.º valor es lo que da cuando no hay teclado (con 'probar' nunca lo espera). Una charla
+  es un bucle que sale con una palabra (Ctrl+C también la termina bien):
+      mientras verdadero {{
+          sea dicho = leer("Cliente:", "chau")
+          si minusculas(dicho) == "chau" {{ romper }}
+          mostrar("Dijiste: {{dicho}}")
+      }}
 - consultar_ia(instrucciones, pregunta) le pregunta a una IA de verdad (Claude) y devuelve su
   respuesta como texto. Sirve adentro de un agente: el agente arma la pregunta, consulta y
   responde con su mensaje de siempre. Es paga y necesita la clave en la variable de entorno
@@ -6301,6 +6577,8 @@ PRUEBAS
 - simular_ia("Sale $ 100") solo dentro de una prueba: desde ahí, consultar_ia() contesta eso.
   Con una lista las da en orden, una por consulta: simular_ia(["Hola", "Chau"]). En las
   pruebas nunca se habla con la IA de verdad.
+- simular_teclado(["hola", "chau"]) solo dentro de una prueba: lo que "teclea" la persona,
+  un texto por cada leer(), en orden. Cuando se acaban, leer() da su 2.º valor.
 - En una prueba ningún agente tiene lecciones ni memoria: se le fijan con
   aprender("texto", Mostrador), y lecciones(Mostrador) las devuelve. consultas_ia() da la
   lista de lo que se le consultó a la IA en esa prueba; cada elemento es un mapa con agente,
@@ -6535,6 +6813,43 @@ AYUDA = {
                   '    al fallar como f { mostrar("No salió: {f.motivo}") }\n}\n'
                   "enviar Arrancar {} a Vendedor"),
 }
+# Las funciones incluidas que piden más explicación que su renglón de la tabla (0.5): lo
+# que se agrega al título y un ejemplo más largo.
+AYUDA_DE_FUNCION = {
+    "leer": ("El 2.º valor es lo que da cuando no hay teclado (con 'probar' nunca lo "
+             "espera). Con Ctrl+C mientras espera, el programa termina ahí sin error",
+             "# Una charla: sigue hasta que escriben chau.\n"
+             "mientras verdadero {\n"
+             '    sea dicho = leer("Cliente:", "chau")\n'
+             '    si minusculas(dicho) == "chau" {\n'
+             "        romper\n"
+             "    }\n"
+             '    mostrar("Dijiste: {dicho}")\n'
+             "}"),
+    "simular_teclado": ("Cuando se acaban los textos, leer() da su 2.º valor",
+                        "funcion saludar() {\n"
+                        '    devolver "Hola, " + leer("¿Cómo te llamás?", "nadie")\n'
+                        "}\n"
+                        'prueba "saluda a quien escribe" {\n'
+                        '    simular_teclado(["Ana"])\n'
+                        '    asegurar saludar() == "Hola, Ana"\n'
+                        '    asegurar saludar() == "Hola, nadie"\n'
+                        "}"),
+    "leer_tabla": ("En Excel: Archivo > Guardar como > Tipo: CSV (delimitado por comas), en "
+                   "la carpeta del programa. Las claves son los títulos de la primera fila. "
+                   "Los números llegan como números, también 3.500, 3.500,50 y $ 3.500",
+                   "# precios.csv está al lado del programa y dice:\n"
+                   "#     producto;precio\n"
+                   "#     Yerba;3.500\n"
+                   'para fila en leer_tabla("precios.csv") {\n'
+                   '    mostrar("{fila.producto} sale {pesos(fila.precio)}")\n'
+                   "}"),
+    "agregar_a_archivo": ("Si el archivo no existe, lo crea. Con 'probar' no toca el archivo "
+                          "de verdad: lo agregado se ve con leer_archivo() en esa prueba",
+                          'agregar_a_archivo("pedidos.txt", "{hoy()}: 2 de yerba")\n'
+                          'agregar_a_archivo("pedidos.txt", "{hoy()}: 1 de azúcar")\n'
+                          'mostrar(leer_archivo("pedidos.txt"))'),
+}
 # Las palabras que se explican junto con otra.
 VER_AYUDA_DE = {
     "devolver": "funcion", "sino": "si", "en": "para", "continuar": "romper",
@@ -6552,7 +6867,10 @@ def ayuda_de(palabra):
     nota = []
     if nombre in FUNCIONES:
         _, _, ejemplo, que = FUNCIONES[nombre]
-        titulo, ejemplo = f"{nombre} (función incluida): {que}", ejemplo
+        titulo = f"{nombre} (función incluida): {que}"
+        if nombre in AYUDA_DE_FUNCION:
+            titulo += ". " + AYUDA_DE_FUNCION[nombre][0]
+            ejemplo = AYUDA_DE_FUNCION[nombre][1]
     else:
         tema = VER_AYUDA_DE.get(nombre, nombre)
         if tema not in AYUDA:
@@ -6791,6 +7109,12 @@ def texto_de_ayuda():
         "  lecciones archivo.mate   muestra las lecciones de cada agente",
         "  lecciones archivo.mate Mostrador --borrar=2   le borra la lección 2",
         "  bitacora  archivo.mate   resume las fallas que anotaron sus agentes",
+        "",
+        "Para trabajar con tus datos y charlar con el programa (son funciones: van adentro",
+        "del programa, y cada una tiene su ayuda, por ejemplo 'ayuda leer_tabla'):",
+        '  leer_tabla("precios.csv")   la planilla de Excel guardada como CSV, fila por fila',
+        '  agregar_a_archivo("pedidos.txt", t)   anota un renglón más al final de ese archivo',
+        '  leer("Cliente:", "chau")    espera que escribas y aprietes Enter (Ctrl+C termina)',
         "",
         "Para sumar lo que Mate no trae (mirá 'ayuda python'):",
         '  usar python "ayudas.py"  va en el programa: trae las funciones de ese archivo de',
@@ -7674,6 +7998,11 @@ def _con_red(argv, donde):
         except Exception:
             pass
         return 1
+    except CorteEnElTeclado:
+        # Ctrl+C en un leer(): la charla se cortó a propósito. No es un error.
+        print()
+        print(CORTE_EN_EL_TECLADO)
+        return 0
     except KeyboardInterrupt:
         if lugar():
             avisar(f"{lugar()}: cortado con Ctrl+C mientras corría esta línea")

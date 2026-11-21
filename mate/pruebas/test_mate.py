@@ -2013,13 +2013,15 @@ def test_mate_bat_esta_listo_para_windows():
 
 # Mejora 43: ejemplos graduales
 
-GRADUALES = sorted(p.name for p in (RAIZ / "ejemplos").glob("0*.mate"))
+GRADUALES = sorted(p.name for p in (RAIZ / "ejemplos").glob("[0-9][0-9]_*.mate"))
 
 
-def test_estan_los_seis_ejemplos_graduales():  # (y el 7.º, la IA; el 8.º, aprende; el 9.º, Python)
-    assert [n[:2] for n in GRADUALES] == ["01", "02", "03", "04", "05", "06", "07", "08", "09"]
-    assert GRADUALES[0] == "01_hola.mate" and GRADUALES[-1] == "09_con_python.mate"
-    assert GRADUALES[-2] == "08_agente_que_aprende.mate"
+def test_estan_los_seis_ejemplos_graduales():  # (y el 7.º, la IA; el 8.º, aprende; el 9.º, Python...)
+    assert [n[:2] for n in GRADUALES] == ["01", "02", "03", "04", "05", "06", "07", "08", "09",
+                                          "10"]
+    assert GRADUALES[0] == "01_hola.mate" and GRADUALES[-2] == "09_con_python.mate"
+    assert GRADUALES[-3] == "08_agente_que_aprende.mate"
+    assert GRADUALES[-1] == "10_mostrador_mayorista.mate"
     for nombre in GRADUALES:  # están comentados: al menos un comentario cada cuatro renglones
         renglones = [r.strip() for r in (RAIZ / "ejemplos" / nombre).read_text(
             encoding="utf-8").splitlines() if r.strip()]
@@ -2032,6 +2034,7 @@ def test_los_ejemplos_graduales_corren_y_pasan_sus_pruebas(nombre, capsys, tmp_p
     import shutil
     ruta = str(shutil.copy(RAIZ / "ejemplos" / nombre, tmp_path / nombre))
     shutil.copy(RAIZ / "ejemplos" / "ayudas.py", tmp_path)  # (el del ejemplo 9)
+    shutil.copy(RAIZ / "ejemplos" / "precios.csv", tmp_path)  # (el del ejemplo 10)
     assert mate.main(["verificar", ruta]) == 0
     assert mate.main(["correr", ruta]) == 0
     capturado = capsys.readouterr()
@@ -2507,7 +2510,8 @@ def test_bombardeo_nunca_un_error_interno(nombre, tmp_path, capsys, monkeypatch)
     monkeypatch.setattr(mate, "MAX_PASOS", 20_000)
     monkeypatch.setattr(mate, "MAX_MENSAJES", 2_000)
     monkeypatch.setattr(mate, "MAX_LARGO", 100_000)
-    for ejemplo in list((RAIZ / "ejemplos").glob("*.mate")) + [RAIZ / "ejemplos" / "ayudas.py"]:
+    for ejemplo in list((RAIZ / "ejemplos").glob("*.mate")) + [
+            RAIZ / "ejemplos" / "ayudas.py", RAIZ / "ejemplos" / "precios.csv"]:
         shutil.copy(ejemplo, tmp_path / ejemplo.name)
     original = (RAIZ / "ejemplos" / nombre).read_text(encoding="utf-8")
     azar = random.Random(nombre)
@@ -3420,7 +3424,7 @@ def test_el_readme_cuenta_lo_de_la_tanda_7(tmp_path, capsys):
     for frase in ["a [norte, sur]", "al fallar como f", "3.000 llamadas", "`sea Listo = verdadero`",
                   "Escribí Ping {}", "en el renglón siguiente", "`verdadero y 1`",
                   "para i, item en lista", 'usar "catalogo"', "a_mapa(pedido)",
-                  "probar mate\\ejemplos", "En total: 24 de 24 pruebas pasaron"]:
+                  "probar mate\\ejemplos", "En total: 30 de 30 pruebas pasaron, en 15 archivos"]:
         assert frase in leeme, frase
     # el ejemplo de 'al fallar' del README anda tal cual está escrito
     ejemplo = re.search(r"(?m)^  ```\n(  agente Comprador .*?)^  ```", leeme, re.S).group(1)
@@ -5812,7 +5816,8 @@ def test_la_memoria_se_guarda_aunque_el_programa_termine_con_error(tmp_path, cap
     cortado = CUENTA_CLIENTES + 'enviar Llego { quien: "a" } a Mostrador\n' \
                          'mostrar(preguntar Cuantos {} a Mostrador)\nsea x = leer("¿Seguimos?")'
     codigo, salida, err = por_main(tmp_path, capsys, cortado)
-    assert (codigo, salida) == (130, "3\n")
+    # (desde la 0.5, Ctrl+C en un leer() es un final prolijo: sin error y con la memoria guardada)
+    assert (codigo, salida, err) == (0, f"3\n\n{mate.CORTE_EN_EL_TECLADO}\n", "")
     assert memoria_de(tmp_path)["agentes"]["Mostrador"]["estado"] == {"atendidos": 3}
 
 
@@ -7038,7 +7043,8 @@ def test_ctrl_c_a_mitad_de_un_mensaje_no_guarda_lo_que_cambio_ese_mensaje(
 ])
 def test_un_programa_de_antes_puede_usar_los_nombres_nuevos_de_la_04(
         fuente, mostrado, tmp_path, capsys):
-    assert set(mate.SE_PUEDEN_TAPAR) == {"aprender", "lecciones", "consultas_ia"}
+    assert set(mate.SE_PUEDEN_TAPAR) == {"aprender", "lecciones", "consultas_ia", "leer_tabla",
+                                         "agregar_a_archivo", "simular_teclado"}
     assert mostrados(fuente) == mostrado
     # y sigue sin crear ningún archivo: llamar a algo propio no es "usar lo de aprender"
     codigo, salida, err = por_main(tmp_path, capsys, fuente)
@@ -7954,9 +7960,462 @@ def test_la_documentacion_cuenta_el_puente_a_python_y_su_riesgo(capsys):
                   (RAIZ / "ejemplos" / "09_con_python.mate").read_text(encoding="utf-8")]:
         assert 'usar python "ayudas.py"' in texto
         assert "todos los permisos" in " ".join(texto.split())
-    for frase in ["`09_con_python.mate`", "nueve programas cortos", "también con `probar`",
+    for frase in ["`09_con_python.mate`", "diez programas cortos", "también con `probar`",
                   "`\"python\"`", "copiados", "python mate\\mate.py ayuda python"]:
         assert frase in leeme, frase
     assert mate.ayuda_de("usar") and "'ayuda python'" in mate.ayuda_de("usar")
     assert mate.main(["ayuda", "python"]) == 0
     assert "mostrar(ayudas.doble(21))" in capsys.readouterr().out
+
+
+# ── 0.5, cuarta parte: datos de verdad y charla por teclado (mejoras 111 a 113) ──
+
+def con_teclado(monkeypatch, tecleado):
+    """Lo que 'se escribe' en el teclado al correr de verdad: un texto por cada leer(), y
+    cuando se acaban, lo que pasa al apretar Ctrl+Z (no hay más)."""
+    pendientes, preguntas = list(tecleado), []
+
+    def teclear(pregunta):
+        preguntas.append(pregunta)
+        if not pendientes:
+            raise EOFError
+        siguiente = pendientes.pop(0)
+        if isinstance(siguiente, BaseException):
+            raise siguiente
+        return siguiente
+
+    monkeypatch.setattr(mate, "por_teclado", teclear)
+    return preguntas
+
+
+# 111: leer_tabla
+
+def test_leer_tabla_lee_la_planilla_como_la_guarda_excel(tmp_path, capsys):
+    # separada por punto y coma, con la marca del principio y saltos de Windows
+    (tmp_path / "precios.csv").write_bytes(
+        "﻿producto;precio;stock;codigo;nota\r\n"
+        "Yerba 1 kg;3.500;12;00123;\r\n"
+        "\r\n"
+        'Azúcar;$ 1.250,50;3,5;A1;"con ; adentro"\r\n'
+        ";;;;\r\n".encode("utf-8"))
+    codigo, salida, err = por_main(tmp_path, capsys, """
+        sea filas = leer_tabla("precios.csv")
+        mostrar(filas)
+        mostrar(tipo(filas), largo(filas), filas[0].precio + 1, pesos(filas[1].precio))
+        para fila en filas { mostrar("{fila.producto}: {fila.stock}") }
+    """)
+    assert (codigo, err) == (0, "")
+    assert salida.splitlines() == [
+        '[{producto: "Yerba 1 kg", precio: 3500, stock: 12, codigo: "00123", nota: ""}, '
+        '{producto: "Azúcar", precio: 1250.5, stock: 3.5, codigo: "A1", nota: "con ; adentro"}]',
+        "lista 2 3501 $ 1.250,50", "Yerba 1 kg: 12", "Azúcar: 3.5"]
+    assert archivos_de(tmp_path) == ["precios.csv", "programa.mate"]  # leer no crea nada
+
+
+@pytest.mark.parametrize("crudo,esperado", [
+    # separada por comas: el precio con coma va entre comillas, como lo guarda Excel
+    ('producto,precio\nPan,"1.200,50"\nLeche,900\n'.encode("utf-8"),
+     '[{producto: "Pan", precio: 1200.5}, {producto: "Leche", precio: 900}]'),
+    # en ANSI de Windows (lo que guarda un Excel viejo): la ñ y las tildes llegan bien
+    ("producto;precio\nÑoquis;2.300\nAzúcar;1.100\n".encode("cp1252"),
+     '[{producto: "Ñoquis", precio: 2300}, {producto: "Azúcar", precio: 1100}]'),
+    # el renglón "sep=" que a veces pone Excel, y columnas vacías a la derecha
+    (b"sep=;\nproducto;precio;;\nPan;1200;;\n", '[{producto: "Pan", precio: 1200}]'),
+    # separada por tabulaciones (copiada de la planilla al Bloc de notas)
+    (b"producto\tprecio\nPan\t1.200\n", '[{producto: "Pan", precio: 1200}]'),
+    # títulos con mayúsculas y espacios: quedan tal cual; una sola columna también sirve
+    ("Precio de lista\n$ 3.500\n".encode("utf-8"), '[{Precio de lista: 3500}]'),
+    # solo los títulos: una lista vacía
+    (b"producto;precio\n", "[]"),
+    # un dato de varios renglones entre comillas
+    (b'producto;nota\nPan;"dos\nrenglones"\nLeche;fin\n',
+     '[{producto: "Pan", nota: "dos\\nrenglones"}, {producto: "Leche", nota: "fin"}]'),
+])
+def test_leer_tabla_acepta_las_formas_de_guardar_un_csv(crudo, esperado, tmp_path, capsys):
+    (tmp_path / "lista.csv").write_bytes(crudo)
+    codigo, salida, err = por_main(tmp_path, capsys, 'mostrar(leer_tabla("lista.csv"))')
+    assert (codigo, salida, err) == (0, esperado + "\n", "")
+
+
+@pytest.mark.parametrize("celda,valor", [
+    ("3.500", 3500), ("3.500,50", 3500.5), ("$ 3.500", 3500), ("$3.500,5", 3500.5),
+    ("1.234.567", 1234567), ("3,5", 3.5), ("12", 12), ("-$ 100", -100), ("0", 0), ("0,5", 0.5),
+    (" 40 ", 40), ("00123", "00123"), ("011 4444", "011 4444"), ("Yerba", "Yerba"), ("", ""),
+    ("  con espacios  ", "con espacios"), ("12/05/2026", "12/05/2026"), ("21%", "21%"),
+    ("1,234.50", "1,234.50"), ("3.50", 3.5), ("A1", "A1"),
+])
+def test_los_numeros_de_una_planilla_se_leen_a_la_argentina(celda, valor):
+    leido = mate.valor_de_celda(celda)
+    assert leido == valor and type(leido) is type(valor)
+
+
+def test_el_separador_se_decide_por_la_fila_de_titulos():
+    assert mate.separador_de("producto;precio") == ";"
+    assert mate.separador_de("producto,precio") == ","
+    assert mate.separador_de('"precio, con IVA";producto') == ";"
+    assert mate.separador_de("producto") == ";"  # ante la duda, lo que usa Excel acá
+    assert mate.separador_de("producto\tprecio\tstock") == "\t"
+
+
+@pytest.mark.parametrize("crudo,frases", [
+    # una fila con columnas de más: dice el renglón del archivo y cómo se arregla
+    (b"producto,precio\nPan,900\nLeche,1.200,50\n",
+     ["el renglón 3 de 'lista.csv' tiene 3 columnas y los títulos son 2 (producto, precio)",
+      "le sobra algo", '"3.500,50"', "separadas por coma", 'El renglón dice: "Leche,1.200,50"']),
+    # de menos (y el renglón en blanco de arriba también cuenta para decir cuál es)
+    (b"producto;precio;stock\n\nPan;900;4\nLeche\n",
+     ["el renglón 4 de 'lista.csv' tiene 1 columna y los títulos son 3",
+      "le falta un dato, o un separador", "separadas por punto y coma"]),
+    (b"", ["'lista.csv' está vacío", "una primera fila con los títulos"]),
+    (b"\n \n;;\n", ["'lista.csv' está vacío"]),
+    (b"producto;;precio\nPan;x;900\n", ["la columna 2 no tiene título", "el renglón 1"]),
+    (b"producto;precio;precio\nPan;1;2\n",
+     ["hay dos columnas con el mismo título, 'precio'"]),
+    # lo que viene de Excel sin convertir (un .xlsx con otro nombre): cómo guardarlo
+    (b"PK\x03\x04\x14\x00\x06\x00\x08\x00\x00\x00!\x00\x81\x8d\x90\x9d",
+     ["'lista.csv' es una planilla de Excel", "Guardar como", "CSV (delimitado por comas)"]),
+])
+def test_leer_tabla_explica_lo_que_esta_mal_en_la_planilla(crudo, frases, tmp_path, capsys):
+    (tmp_path / "lista.csv").write_bytes(crudo)
+    codigo, salida, err = por_main(tmp_path, capsys, 'mostrar(leer_tabla("lista.csv"))')
+    assert (codigo, salida) == (1, "")
+    assert "programa.mate:1: error: leer_tabla(): " in err and "Traceback" not in err
+    for frase in frases:
+        assert frase in err, frase
+
+
+def test_leer_tabla_dice_donde_busco_el_archivo_que_no_esta(tmp_path, capsys):
+    (tmp_path / "precio.csv").write_text("a;b\n1;2\n", encoding="utf-8")
+    codigo, _, err = por_main(tmp_path, capsys, 'sea t = leer_tabla("precios.csv")')
+    assert codigo == 1
+    assert f"leer_tabla(): no encuentro el archivo 'precios.csv' en {tmp_path}" in err
+    assert "¿Quisiste decir 'precio.csv'?" in err
+    # la planilla de Excel sin convertir: no hace falta ni que exista para explicarlo
+    codigo, _, err = por_main(tmp_path, capsys, 'sea t = leer_tabla("Lista Mayo.XLSX")')
+    assert codigo == 1 and "es una planilla de Excel" in err
+    assert 'leer_tabla("Lista Mayo.csv")' in err and "Guardar como" in err
+    # afuera de la carpeta del programa no se lee, igual que leer_archivo()
+    codigo, _, err = por_main(tmp_path, capsys, 'sea t = leer_tabla("../precios.csv")')
+    assert codigo == 1 and "solo trabaja con archivos de la carpeta del programa" in err
+    codigo, _, err = por_main(tmp_path, capsys, "sea t = leer_tabla(3)")
+    assert codigo == 1 and "leer_tabla()" in err
+    # y se ataja con 'intentar': es de la familia de los archivos
+    codigo, salida, _ = por_main(tmp_path, capsys, """
+        intentar { sea t = leer_tabla("no_esta.csv") } si falla e { mostrar(detalle_de(e).clase) }
+    """)
+    assert (codigo, salida) == (0, "archivo\n")
+
+
+def test_un_agente_no_lee_tablas_ni_agrega_a_archivos(tmp_path, capsys):
+    (tmp_path / "p.csv").write_text("a;b\n1;2\n", encoding="utf-8")
+    for llamada in ['leer_tabla("p.csv")', 'agregar_a_archivo("p.txt", "x")']:
+        codigo, _, err = por_main(tmp_path, capsys, f"""
+            mensaje Ver {{}}
+            agente A {{ al recibir Ver {{ sea t = [{llamada}]
+                responder 1 }} }}
+            mostrar(preguntar Ver {{}} a A)
+        """)
+        assert codigo == 1 and "solo se usa desde el programa principal" in err, llamada
+    assert archivos_de(tmp_path) == ["p.csv", "programa.mate"]
+
+
+# 112: agregar_a_archivo
+
+def test_agregar_a_archivo_suma_renglones_sin_pisar(tmp_path, capsys):
+    programa = """
+        agregar_a_archivo("pedidos.txt", "2 de yerba ñ")
+        agregar_a_archivo("pedidos.txt", "1 de azúcar\\n")
+        mostrar(leer_archivo("pedidos.txt"))
+    """
+    codigo, salida, err = por_main(tmp_path, capsys, programa)
+    assert (codigo, salida, err) == (0, "2 de yerba ñ\n1 de azúcar\n\n", "")
+    crudo = (tmp_path / "pedidos.txt").read_bytes()
+    assert crudo.startswith(b"\xef\xbb\xbf")  # la marca, para el Bloc de notas
+    assert crudo.decode("utf-8-sig").splitlines() == ["2 de yerba ñ", "1 de azúcar"]
+    # otra corrida sigue sumando al final
+    assert por_main(tmp_path, capsys, programa)[0] == 0
+    assert (tmp_path / "pedidos.txt").read_text(encoding="utf-8-sig").splitlines() == [
+        "2 de yerba ñ", "1 de azúcar"] * 2
+    assert not [a for a in archivos_de(tmp_path) if a.endswith(".tmp")]
+
+
+def test_agregar_a_archivo_respeta_lo_que_dejo_el_bloc_de_notas(tmp_path, capsys):
+    # sin salto al final: lo nuevo va en su propio renglón
+    (tmp_path / "a.txt").write_bytes("uno".encode("utf-8"))
+    # en ANSI de Windows: no se mezclan codificaciones (queda todo en UTF-8, con las tildes bien)
+    (tmp_path / "b.txt").write_bytes("señor\r\nazúcar\r\n".encode("cp1252"))
+    (tmp_path / "c.txt").write_bytes(b"")
+    codigo, _, err = por_main(tmp_path, capsys, """
+        para nombre en ["a.txt", "b.txt", "c.txt"] { agregar_a_archivo(nombre, "ñandú") }
+    """)
+    assert (codigo, err) == (0, "")
+    assert (tmp_path / "a.txt").read_text(encoding="utf-8").splitlines() == ["uno", "ñandú"]
+    assert (tmp_path / "b.txt").read_text(encoding="utf-8-sig").splitlines() == [
+        "señor", "azúcar", "ñandú"]
+    assert (tmp_path / "c.txt").read_text(encoding="utf-8-sig") == "ñandú\n"
+    assert not [a for a in archivos_de(tmp_path) if a.endswith(".tmp")]
+
+
+@pytest.mark.parametrize("llamada,frase", [
+    ('agregar_a_archivo("pedidos.txt", 3)', "agregar_a_archivo() guarda un texto y recibió"),
+    ('agregar_a_archivo("otro.mate", "x")', "no escribe en 'otro.mate' para no pisar un programa"),
+    ('agregar_a_archivo("../afuera.txt", "x")', "solo trabaja con archivos de la carpeta"),
+    ('agregar_a_archivo("no_hay/p.txt", "x")', "no existe la carpeta donde iría 'no_hay/p.txt'"),
+    ('agregar_a_archivo("", "x")', "falta el nombre del archivo"),
+    ('agregar_a_archivo("p.txt")', "agregar_a_archivo("),
+    ('sea x = 1\nleer_tabla("p.csv")', "leer_tabla"),  # suelta no sirve: hay que usar lo que da
+])
+def test_agregar_a_archivo_tiene_los_cuidados_de_escribir_archivo(
+        llamada, frase, tmp_path, capsys):
+    codigo, salida, err = por_main(tmp_path, capsys, llamada)
+    assert (codigo, salida) == (1, "") and frase in err and "Traceback" not in err
+    assert archivos_de(tmp_path) == ["programa.mate"]
+
+
+def test_con_probar_agregar_a_archivo_no_toca_el_archivo_de_verdad(tmp_path, capsys):
+    (tmp_path / "pedidos.txt").write_bytes(b"lo de ayer\n")
+    programa = """
+        funcion anotar(pedido) { agregar_a_archivo("pedidos.txt", pedido) }
+        anotar("del programa")
+        agregar_a_archivo("nuevo.txt", "no se crea")
+        mostrar(leer_archivo("pedidos.txt"))
+        prueba "lo agregado se ve adentro de la prueba" {
+            anotar("de la prueba")
+            asegurar leer_archivo("pedidos.txt") == "lo de ayer\\ndel programa\\nde la prueba\\n"
+            asegurar leer_archivo("nuevo.txt") == "no se crea\\n"
+        }
+        prueba "cada prueba arranca sin lo que agregó la anterior" {
+            asegurar leer_archivo("pedidos.txt") == "lo de ayer\\ndel programa\\n"
+            agregar_a_archivo("tabla.csv", "producto;precio")
+            agregar_a_archivo("tabla.csv", "Pan;1.200")
+            asegurar leer_tabla("tabla.csv") == [{ producto: "Pan", precio: 1200 }]
+        }
+    """
+    codigo, salida, err = por_main(tmp_path, capsys, programa, orden="probar")
+    assert (codigo, err) == (0, "") and "2 de 2 pruebas pasaron" in salida
+    assert salida.startswith("lo de ayer\ndel programa\n")
+    assert archivos_de(tmp_path) == ["pedidos.txt", "programa.mate"]
+    assert (tmp_path / "pedidos.txt").read_bytes() == b"lo de ayer\n"
+    # con 'correr' sí se escribe
+    assert por_main(tmp_path, capsys, programa)[0] == 0
+    assert (tmp_path / "pedidos.txt").read_bytes().decode("utf-8").splitlines() == [
+        "lo de ayer", "del programa"]
+    assert (tmp_path / "nuevo.txt").exists()
+
+
+# 113: charla por teclado
+
+CHARLA = """
+funcion charlar() {
+    var dichos = []
+    mientras verdadero {
+        sea dicho = leer("Cliente:", "chau")
+        si minusculas(dicho) == "chau" { romper }
+        dichos = agregar(dichos, dicho)
+    }
+    devolver dichos
+}
+"""
+
+
+def test_simular_teclado_fija_lo_que_se_teclea_en_una_prueba(tmp_path, capsys):
+    codigo, salida, err = por_main(tmp_path, capsys, CHARLA + """
+        mostrar(charlar())
+        prueba "una charla de dos consultas" {
+            simular_teclado(["  ¿Hay ñoquis?  ", "", "y azúcar", "CHAU", "esto no se lee"])
+            asegurar charlar() == ["¿Hay ñoquis?", "", "y azúcar"]
+            asegurar leer("¿Algo más?", "no") == "esto no se lee"
+            asegurar leer("¿Algo más?", "no") == "no"    # se acabó lo tecleado: la preparada
+        }
+        prueba "cada prueba arranca sin nada tecleado" {
+            asegurar charlar() == []
+            simular_teclado("uno solo")
+            asegurar leer("¿Qué?") == "uno solo"
+            asegurar falla { leer("¿Y ahora?") }
+        }
+    """, orden="probar")
+    assert (codigo, err) == (0, "")
+    assert salida.startswith("[]\n") and "2 de 2 pruebas pasaron" in salida  # nunca esperó
+
+
+def test_simular_teclado_explica_lo_que_esta_mal(tmp_path, capsys):
+    codigo, salida, _ = por_main(tmp_path, capsys, """
+        prueba "se queda sin textos" {
+            simular_teclado(["a"])
+            sea uno = leer("¿Uno?")
+            sea dos = leer("¿Dos?")
+        }
+        prueba "una lista vacía" { simular_teclado([]) }
+        prueba "algo que no es texto" { simular_teclado(["a", 3]) }
+        prueba "sin nada preparado" { sea x = leer("¿Qué?") }
+    """, orden="probar")
+    assert codigo == 1 and "0 de 4 pruebas pasaron" in salida
+    assert "la prueba llegó a 2 leer() y simular_teclado() tenía 1 texto(s)" in salida
+    assert 'leer("Cliente:", "chau")' in salida
+    assert salida.count("simular_teclado() espera lo que 'teclea' la persona") == 2
+    assert "recibió una lista (vacía, o con algo que no es un texto)" in salida
+    assert 'o fijá antes lo que se teclea: simular_teclado(["3"])' in salida
+    # fuera de una prueba no va: se avisa antes de correr
+    codigo, salida, err = por_main(tmp_path, capsys, 'mostrar("antes")\nsimular_teclado(["a"])')
+    assert (codigo, salida) == (1, "") and mate.SIMULAR_TECLADO_SUELTO in err
+    assert "simular_teclado" in mate.SOLO_EN_PRUEBAS and "simular_teclado" in mate.HACEN_ALGO
+
+
+def test_al_correr_de_verdad_leer_usa_el_teclado(tmp_path, capsys, monkeypatch):
+    preguntas = con_teclado(monkeypatch, ["  ¿Hay ñandú?  ", "﻿azúcar", "chau"])
+    codigo, salida, err = por_main(tmp_path, capsys, CHARLA + "mostrar(charlar())")
+    assert (codigo, salida, err) == (0, '["¿Hay ñandú?", "azúcar"]\n', "")
+    assert preguntas == ["Cliente:"] * 3
+    # si se acaba lo tecleado (Ctrl+Z, o no hay teclado), vale la respuesta preparada
+    con_teclado(monkeypatch, ["hola"])
+    assert por_main(tmp_path, capsys, CHARLA + "mostrar(charlar())")[1] == '["hola"]\n'
+    # ...también si la entrada está cerrada y ni siquiera se puede leer
+    con_teclado(monkeypatch, ["hola", OSError("no hay entrada")])
+    assert por_main(tmp_path, capsys, CHARLA + "mostrar(charlar())")[:2] == (0, '["hola"]\n')
+    con_teclado(monkeypatch, [OSError("no hay entrada")])
+    codigo, _, err = por_main(tmp_path, capsys, 'sea x = leer("¿Qué?")')
+    assert codigo == 1 and "leer(): no hay nadie para contestar" in err
+
+
+def test_ctrl_c_en_la_charla_termina_prolijo_y_guarda_la_memoria(tmp_path, capsys, monkeypatch):
+    programa = """
+        mensaje Consulta { texto: texto }
+        agente Mostrador {
+            estado recordado atendidos = 0
+            al recibir Consulta como c {
+                atendidos += 1
+                responder atendidos
+            }
+        }
+        mientras verdadero {
+            sea dicho = leer("Cliente:", "chau")
+            si dicho == "chau" { romper }
+            mostrar(preguntar Consulta { texto: dicho } a Mostrador)
+        }
+        mostrar("esto no se llega a mostrar")
+    """
+    con_teclado(monkeypatch, ["yerba", "pan", KeyboardInterrupt()])
+    codigo, salida, err = por_main(tmp_path, capsys, programa)
+    assert (codigo, err) == (0, "")
+    assert salida == f"1\n2\n\n{mate.CORTE_EN_EL_TECLADO}\n"
+    assert memoria_de(tmp_path)["agentes"]["Mostrador"]["estado"] == {"atendidos": 2}
+    # la próxima corrida sigue la cuenta
+    con_teclado(monkeypatch, ["azúcar", "chau"])
+    codigo, salida, err = por_main(tmp_path, capsys, programa)
+    assert (codigo, salida, err) == (0, "3\nesto no se llega a mostrar\n", "")
+    # Ctrl+C en cualquier otro momento sigue siendo un corte con su línea (ver más arriba)
+    assert issubclass(mate.CorteEnElTeclado, KeyboardInterrupt)
+
+
+def test_un_programa_de_antes_puede_usar_los_nombres_nuevos_de_la_05(tmp_path, capsys):
+    fuente = ('sea leer_tabla = [1, 2]\nvar simular_teclado = "a"\n'
+              "funcion agregar_a_archivo(a, b) { devolver a + b }\n"
+              'mostrar(leer_tabla, simular_teclado, agregar_a_archivo(1, 2))')
+    codigo, salida, err = por_main(tmp_path, capsys, fuente)
+    assert (codigo, salida, err) == (0, "[1, 2] a 3\n", "")
+    assert archivos_de(tmp_path) == ["programa.mate"]
+
+
+# El ejemplo completo: el mostrador mayorista
+
+def test_el_ejemplo_del_mostrador_mayorista(tmp_path, capsys, monkeypatch, ia):
+    import shutil
+    original = RAIZ / "ejemplos" / "10_mostrador_mayorista.mate"
+    en_la_carpeta = archivos_de(RAIZ / "ejemplos")
+    assert "precios.csv" in en_la_carpeta
+    codigo, salida, err = orden_mate(capsys, "probar", original)
+    assert (codigo, err) == (0, "") and "6 de 6 pruebas pasaron" in salida and ia.pedidos == []
+    assert archivos_de(RAIZ / "ejemplos") == en_la_carpeta  # 'probar' no deja nada
+    ruta = shutil.copy(original, tmp_path / original.name)
+    shutil.copy(RAIZ / "ejemplos" / "precios.csv", tmp_path)
+    # una charla de verdad, con la IA simulada: busca en la lista de precios
+    con_teclado(monkeypatch, ["¿Tenés yerba?", "", "AZUCAR y harina", "clavos", "Chau"])
+    codigo, salida, err = orden_mate(capsys, "correr", ruta, "--ia-simulada")
+    assert (codigo, err) == (0, "") and ia.pedidos == []
+    renglones = salida.splitlines()
+    assert renglones[0] == "Mostrador mayorista: cargué 6 productos de precios.csv."
+    assert "Mostrador: Yerba mate (bolsón de 10 paquetes de 1 kg): $ 35.000,00" in renglones
+    assert ("Mostrador: Azúcar (bolsa de 10 kg): $ 9.800,50 / "
+            "Harina 000 (bolsa de 25 kg): $ 14.500,00") in renglones
+    assert "   (consulta número 3 desde que abrió el mostrador)" in renglones
+    assert renglones[-1] == "Hasta luego. En esta charla atendí 3 consulta(s)."
+    anotado = (tmp_path / "consultas_atendidas.txt").read_text(encoding="utf-8-sig").splitlines()
+    assert len(anotado) == 3 and " | ¿Tenés yerba? | Yerba mate" in anotado[0]
+    assert memoria_de(tmp_path, "10_mostrador_mayorista")["agentes"]["Mostrador"]["estado"] == {
+        "atendidos": 3}
+    # otra corrida, cortada con Ctrl+C: recuerda las de antes y guarda la nueva
+    con_teclado(monkeypatch, ["arroz", KeyboardInterrupt()])
+    codigo, salida, err = orden_mate(capsys, "correr", ruta, "--ia-simulada")
+    assert (codigo, err) == (0, "")
+    assert "   (consulta número 4 desde que abrió el mostrador)" in salida
+    assert salida.endswith(f"\n{mate.CORTE_EN_EL_TECLADO}\n")
+    assert memoria_de(tmp_path, "10_mostrador_mayorista")["agentes"]["Mostrador"]["estado"] == {
+        "atendidos": 4}
+    assert len((tmp_path / "consultas_atendidas.txt").read_bytes().splitlines()) == 4
+    # con la IA de verdad, la lista de precios viaja en las instrucciones
+    con_teclado(monkeypatch, ["¿Cuánto sale la yerba?", "chau"])
+    codigo, salida, err = orden_mate(capsys, "correr", ruta)
+    assert (codigo, err) == (0, "") and "Mostrador: Sí, hay yerba." in salida
+    (pedido,) = ia.pedidos
+    assert pedido["cuerpo"]["messages"] == [{"role": "user", "content": "¿Cuánto sale la yerba?"}]
+    assert "- Azúcar (bolsa de 10 kg): $ 9.800,50\n" in pedido["cuerpo"]["system"]
+    assert "$ 18.900,00 - SIN STOCK" in pedido["cuerpo"]["system"]
+    assert CLAVE_DE_MENTIRA not in salida + err
+    # una planilla con un renglón roto: el error dice cuál
+    (tmp_path / "precios.csv").write_text(
+        "producto;presentacion;precio;stock\nYerba;bolsón;35.000\n", encoding="utf-8")
+    codigo, salida, err = orden_mate(capsys, "correr", ruta, "--ia-simulada")
+    assert codigo == 1 and "el renglón 2 de 'precios.csv' tiene 3 columnas" in err
+
+
+def test_la_documentacion_cuenta_los_datos_y_la_charla(capsys):
+    leeme = (RAIZ / "README.md").read_text(encoding="utf-8")
+    for frase in ["### Una lista de precios de Excel: `leer_tabla`", "### Charlar por teclado",
+                  "### Anotar en un archivo: `agregar_a_archivo`",
+                  "CSV (delimitado por comas) (*.csv)", "`10_mostrador_mayorista.mate`",
+                  "diez programas cortos", "el tope se subió de 45 a 48",
+                  'simular_teclado(["2 de yerba", "1 de azúcar", "chau"])',
+                  "**Con `probar` no escribe el archivo de verdad.**", "Ctrl+C",
+                  "`3.500` es tres mil", "qué renglón del archivo es"]:
+        assert frase in leeme, frase
+    guia = mate.texto_de_guia()
+    for frase in ['leer_tabla("precios.csv")', 'agregar_a_archivo("pedidos.txt", renglon)',
+                  'simular_teclado(["hola", "chau"]) solo dentro de una prueba',
+                  'sea dicho = leer("Cliente:", "chau")', "Ctrl+C", "3.500 es 3500"]:
+        assert frase in guia, frase
+    for texto in [mate.texto_de_ayuda(), mate.ayuda_de("leer_tabla"),
+                  mate.ayuda_de("agregar_a_archivo"), mate.ayuda_de("simular_teclado"),
+                  mate.ayuda_de("leer")]:
+        assert max(len(r) for r in texto.splitlines()) <= 100
+    assert 'leer_tabla("precios.csv")' in mate.texto_de_ayuda()
+    assert "Guardar como" in mate.ayuda_de("leer_tabla")
+    assert "Ctrl+C" in mate.ayuda_de("leer") and "romper" in mate.ayuda_de("leer")
+    assert mate.main(["ayuda", "agregar_a_archivo"]) == 0
+    assert "Con 'probar' no toca el archivo" in " ".join(capsys.readouterr().out.split())
+    mejoras = (RAIZ / "MEJORAS.md").read_text(encoding="utf-8")
+    for frase in ["**111. Leer una planilla: `leer_tabla`**",
+                  "**112. Anotar en un archivo: `agregar_a_archivo`**",
+                  "**113. Charla por teclado que se puede probar y cortar: `simular_teclado` "
+                  "y Ctrl+C**", "**El tope de funciones pasó de 45 a 48**"]:
+        assert frase in mejoras, frase
+    assert mate.TOPE_DE_FUNCIONES == 48 == len(mate.FUNCIONES)
+    ejemplo = (RAIZ / "ejemplos" / "10_mostrador_mayorista.mate").read_text(encoding="utf-8")
+    for frase in ["python mate\\mate.py correr mate\\ejemplos\\10_mostrador_mayorista.mate "
+                  "--ia-simulada", "CSV (delimitado por comas) (*.csv)", "precios.csv"]:
+        assert frase in ejemplo, frase
+
+
+def test_los_ejemplos_largos_de_la_ayuda_de_funciones_andan(tmp_path, monkeypatch):
+    (tmp_path / "precios.csv").write_text("producto;precio\nYerba;3.500\n", encoding="utf-8")
+    monkeypatch.chdir(tmp_path)
+    for nombre, (_, ejemplo) in mate.AYUDA_DE_FUNCION.items():
+        assert nombre in mate.FUNCIONES and nombre in ejemplo, nombre
+        programa = mate.analizar(ejemplo)
+        assert mate.verificar(programa) == [], nombre
+        salida = []
+        interprete = mate.Interprete(salida=salida.append)
+        resultados = interprete.correr(programa, pruebas=True)
+        assert all(error is None for _, error in resultados), (nombre, resultados)
+        # (la charla de 'ayuda leer' no muestra nada: sin teclado, sale sola con "chau")
+        assert salida or resultados or nombre == "leer", nombre
+    assert archivos_de(tmp_path) == ["precios.csv"]  # (con las pruebas, nada se escribe)

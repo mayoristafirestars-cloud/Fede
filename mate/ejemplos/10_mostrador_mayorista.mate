@@ -1,0 +1,195 @@
+# Paso 10: un mostrador mayorista que trabaja con TU lista de precios y charla por teclado.
+#
+# Junta todo lo anterior con tres cosas nuevas:
+#   - leer_tabla("precios.csv") trae la lista de precios que está al lado del programa (una
+#     planilla de Excel guardada como CSV). Cada fila queda como un mapa: fila.producto,
+#     fila.precio... con los títulos de la primera fila.
+#   - leer("Cliente:", "chau") espera que alguien escriba en el teclado y apriete Enter. Así
+#     se charla con el Mostrador, una consulta atrás de otra, hasta escribir "chau".
+#   - agregar_a_archivo("consultas_atendidas.txt", ...) anota cada consulta en un archivo,
+#     un renglón por vez, para mirarlo después con el Bloc de notas.
+# El Mostrador contesta con consultar_ia(), con la lista de precios puesta en sus
+# instrucciones, y recuerda cuántas consultas atendió (también de las otras veces).
+#
+# PROBALO ASÍ, en PowerShell (no hace falta clave ni internet, y no gasta nada):
+#
+#   1. Corrélo y escribí consultas: "yerba", "¿cuánto sale el azúcar?"... Para terminar,
+#      escribí chau (o apretá Ctrl+C):
+#          python mate\mate.py correr mate\ejemplos\10_mostrador_mayorista.mate --ia-simulada
+#      Con --ia-simulada no hay IA: el Mostrador busca en la lista el producto que nombraste.
+#
+#   2. Con la IA de verdad (es paga; la clave va en la variable ANTHROPIC_API_KEY, como se
+#      explica en el paso 7), el mismo comando sin --ia-simulada:
+#          python mate\mate.py correr mate\ejemplos\10_mostrador_mayorista.mate
+#
+#   3. Para correr las pruebas de abajo (no esperan el teclado ni escriben ningún archivo):
+#          python mate\mate.py probar mate\ejemplos\10_mostrador_mayorista.mate
+#
+# PARA USAR TU PROPIA LISTA DE PRECIOS:
+#   1. Abrí tu planilla en Excel. La primera fila tiene que tener los títulos, en minúscula y
+#      sin espacios: producto, presentacion, precio, stock. Debajo, un producto por fila.
+#   2. Archivo > Guardar como > en "Tipo" elegí "CSV (delimitado por comas) (*.csv)".
+#      Si Excel pregunta si querés mantener ese formato, decile que sí.
+#   3. Guardala con el nombre precios.csv en la misma carpeta que este programa
+#      (mate\ejemplos), en lugar de la que viene de muestra.
+#   Los precios pueden estar escritos como en la Argentina: 35.000, 9.800,50 o $ 31.200.
+#   Si a un renglón le falta o le sobra un dato, Mate avisa qué renglón es.
+
+mensaje CargarLista { lista: texto }
+mensaje Consulta { pregunta: texto, sin_ia: texto }
+# (numero dice cuántas consultas van, contando las de otras corridas; aviso solo viene si
+# la IA no pudo contestar)
+mensaje Atencion { respuesta: texto, numero: numero, aviso: texto? }
+
+agente Mostrador {
+    estado lista = "(todavía no me pasaron la lista de precios)"
+    # 'recordado': al terminar el programa se guarda, y en la próxima corrida vuelve.
+    estado recordado atendidos = 0
+
+    # Un agente no toca archivos: el programa lee la lista y se la manda en un mensaje.
+    al recibir CargarLista como c {
+        lista = c.lista
+    }
+
+    al recibir Consulta como c {
+        atendidos += 1
+        sea instrucciones = """
+            Atendés el mostrador de un mayorista de almacén. Contestá en castellano
+            rioplatense, con amabilidad y en pocas palabras. Usá SOLO los precios de esta
+            lista; si piden algo que no está, decí que no lo trabajamos. Si el stock es 0,
+            avisá que ahora no hay.
+
+            LISTA DE PRECIOS DE HOY:
+            {lista}
+        """
+        intentar {
+            # El tercer valor es lo que contesta sin IA (con --ia-simulada y en las pruebas).
+            sea dicho = consultar_ia(instrucciones, c.pregunta, c.sin_ia)
+            responder Atencion { respuesta: dicho, numero: atendidos }
+        } si falla motivo {
+            responder Atencion { respuesta: c.sin_ia, numero: atendidos, aviso: motivo }
+        }
+    }
+}
+
+# Un renglón de la lista, como se lo va a leer la IA (y el cliente).
+funcion renglon_de(fila) {
+    var renglon = "{fila.producto} ({fila.presentacion}): {pesos(fila.precio)}"
+    si fila.stock == 0 {
+        renglon += " - SIN STOCK"
+    }
+    devolver renglon
+}
+
+funcion lista_en_texto(precios) {
+    var renglones = []
+    para fila en precios {
+        renglones = agregar(renglones, "- " + renglon_de(fila))
+    }
+    devolver unir(renglones, "\n")
+}
+
+# En minúscula y sin tildes, para que "AZUCAR" y "azúcar" sean lo mismo al buscar.
+funcion llano(t) {
+    var r = minusculas(t)
+    para con, sin en { "á": "a", "é": "e", "í": "i", "ó": "o", "ú": "u" } {
+        r = reemplazar(r, con, sin)
+    }
+    devolver r
+}
+
+# Lo que se contesta cuando no hay IA: los productos de la lista nombrados en la consulta.
+funcion buscar_en_lista(precios, pregunta) {
+    var encontrados = []
+    para fila en precios {
+        # (alcanza con la primera palabra del producto: "yerba", "azúcar", "harina"...)
+        sea palabra = llano(partir(fila.producto, " ")[0])
+        si tiene(llano(pregunta), palabra) {
+            encontrados = agregar(encontrados, renglon_de(fila))
+        }
+    }
+    si largo(encontrados) == 0 {
+        devolver "Eso no lo encuentro en la lista. Probá con el nombre del producto."
+    }
+    devolver unir(encontrados, " / ")
+}
+
+# La charla: una consulta atrás de otra hasta que escriben "chau". Devuelve cuántas fueron.
+funcion charlar(precios) {
+    var consultas = 0
+    mientras verdadero {
+        # El segundo valor es lo que "se escribe" cuando no hay teclado (con 'probar', por
+        # ejemplo): así el programa nunca se queda esperando.
+        sea dicho = leer("Cliente:", "chau")
+        si dicho == "" {
+            continuar
+        }
+        si tiene(["chau", "salir", "listo", "nada más"], minusculas(dicho)) {
+            romper
+        }
+        sea atencion = preguntar Consulta {
+            pregunta: dicho, sin_ia: buscar_en_lista(precios, dicho),
+        } a Mostrador
+        mostrar("Mostrador: {atencion.respuesta}")
+        si atencion.aviso != nada {
+            mostrar("   (la IA no contestó y busqué en la lista. El motivo: {atencion.aviso})")
+        }
+        agregar_a_archivo("consultas_atendidas.txt",
+                          "{ahora()} | {dicho} | {atencion.respuesta}")
+        consultas += 1
+        mostrar("   (consulta número {atencion.numero} desde que abrió el mostrador)")
+    }
+    devolver consultas
+}
+
+sea precios = leer_tabla("precios.csv")
+enviar CargarLista { lista: lista_en_texto(precios) } a Mostrador
+mostrar("Mostrador mayorista: cargué {largo(precios)} productos de precios.csv.")
+mostrar("Escribí tu consulta y apretá Enter. Para terminar, escribí chau.")
+sea atendidas = charlar(precios)
+mostrar("Hasta luego. En esta charla atendí {atendidas} consulta(s).")
+
+# En las pruebas nadie teclea: simular_teclado() fija lo que "escribe" el cliente, en orden.
+prueba "charla con dos consultas y se despide" {
+    simular_teclado(["¿Cuánto sale la yerba?", "", "y el azucar?", "Chau", "esto ya no se lee"])
+    asegurar charlar(precios) == 2
+    sea consultas = mensajes_enviados("Consulta")
+    asegurar consultas[0].mensaje.pregunta == "¿Cuánto sale la yerba?"
+    asegurar consultas[1].mensaje.pregunta == "y el azucar?"
+}
+
+prueba "la lista de precios le llega a la IA" {
+    enviar CargarLista { lista: lista_en_texto(precios) } a Mostrador
+    simular_ia("El bolsón de yerba sale $ 35.000.")
+    simular_teclado(["¿Cuánto sale la yerba?"])
+    asegurar charlar(precios) == 1
+    sea consulta = ultimo(consultas_ia())
+    asegurar tiene(consulta.instrucciones, "Yerba mate (bolsón de 10 paquetes de 1 kg): $ 35.000,00")
+    asegurar tiene(consulta.instrucciones, "Fideos secos (caja de 20 paquetes de 500 g): $ 18.900,00 - SIN STOCK")
+    asegurar consulta.pregunta == "¿Cuánto sale la yerba?"
+}
+
+prueba "los precios se leen como números, también los escritos a la argentina" {
+    asegurar largo(precios) == 6
+    asegurar precios[0].precio == 35000 y precios[1].precio == 9800.5
+    asegurar precios[3].precio == 31200 y precios[4].stock == 0
+}
+
+prueba "sin IA busca el producto en la lista" {
+    asegurar buscar_en_lista(precios, "Necesito HARINA para mañana") == "Harina 000 (bolsa de 25 kg): $ 14.500,00"
+    asegurar empieza_con(buscar_en_lista(precios, "y el AZUCAR?"), "Azúcar (bolsa de 10 kg): $ 9.800,50")
+    asegurar empieza_con(buscar_en_lista(precios, "¿tienen clavos?"), "Eso no lo encuentro")
+}
+
+prueba "cada consulta queda anotada (en la prueba no se escribe el archivo de verdad)" {
+    simular_teclado(["arroz"])
+    asegurar charlar(precios) == 1
+    sea anotado = leer_archivo("consultas_atendidas.txt")
+    asegurar tiene(anotado, "01/01/2025 12:00 | arroz | Arroz largo fino (bolsa de 30 kg): $ 27.300,00")
+}
+
+prueba "cuenta las consultas que atiende" {
+    sea una = preguntar Consulta { pregunta: "yerba", sin_ia: "Hay." } a Mostrador
+    sea otra = preguntar Consulta { pregunta: "arroz", sin_ia: "Hay." } a Mostrador
+    asegurar una.numero == 1 y otra.numero == 2
+}

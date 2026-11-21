@@ -8,3 +8,6 @@ ejemplos/*.bitacora.txt.tmp
 # computadora y no se sube nunca.
 errores_de_uso.txt
 errores_de_uso.txt.tmp
+# Lo que anota el ejemplo 10 cuando se lo corre (las consultas que atendió).
+ejemplos/consultas_atendidas.txt
+ejemplos/consultas_atendidas.txt.tmp

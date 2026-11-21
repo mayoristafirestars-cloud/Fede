@@ -13,6 +13,13 @@ Lo nuevo de la 0.5: los programas corren **entre 2 y 5 veces más rápido** en l
 llamadas a funciones (ver [Qué tan rápido es](#qué-tan-rápido-es)), y un programa puede sumar
 lo que Mate no trae con funciones escritas en Python (ver
 [Funciones escritas en Python](#funciones-escritas-en-python-usar-python)).
+Además, un programa ya puede **trabajar con tus datos y charlar con vos**: lee tu lista de
+precios guardada desde Excel (`leer_tabla`), anota renglones en un archivo
+(`agregar_a_archivo`) y conversa por teclado (`leer`, que ya estaba, ahora se puede probar con
+`simular_teclado` y se corta bien con Ctrl+C). El ejemplo completo es
+`ejemplos\10_mostrador_mayorista.mate` (ver
+[Una lista de precios de Excel](#una-lista-de-precios-de-excel-leer_tabla) y
+[Charlar por teclado](#charlar-por-teclado)).
 
 ```bash
 python3 mate/mate.py correr mate/ejemplos/negociacion.mate
@@ -100,7 +107,7 @@ castellano. En el Bloc de notas, `Ctrl+G` te lleva a ese renglón. Y si no te ac
 usa una palabra, preguntale a Mate: `python mate\mate.py ayuda si` (o `ayuda para`,
 `ayuda largo`...) muestra una explicación corta con un ejemplo para copiar.
 
-**7. Seguir aprendiendo.** En `mate\ejemplos` hay nueve programas cortos, explicados renglón por
+**7. Seguir aprendiendo.** En `mate\ejemplos` hay diez programas cortos, explicados renglón por
 renglón, para leer y correr en orden:
 
 | Archivo | Qué enseña |
@@ -114,6 +121,7 @@ renglón, para leer y correr en orden:
 | `07_agente_con_ia.mate` | un agente que le consulta a una IA de verdad (se prueba sin clave) |
 | `08_agente_que_aprende.mate` | un agente con memoria, lecciones y bitácora de errores (se prueba sin clave) |
 | `09_con_python.mate` | sumar lo que Mate no trae con funciones escritas en Python (usa `ayudas.py`, que está al lado) |
+| `10_mostrador_mayorista.mate` | un mostrador que lee tu lista de precios de Excel (usa `precios.csv`, que está al lado), charla por teclado y contesta con la IA (se prueba sin clave) |
 
 ```
 python mate\mate.py correr mate\ejemplos\01_hola.mate
@@ -763,7 +771,7 @@ Lo que una prueba cambia no le llega a la siguiente. Además:
   pruebas no pueden tener el mismo nombre: se avisa antes de correr.
 - `probar` también acepta una carpeta o varios archivos: `python mate\mate.py probar mate\ejemplos`
   corre las pruebas de cada `.mate` de esa carpeta, uno por uno, y termina con el total
-  (`En total: 24 de 24 pruebas pasaron, en 14 archivos`) y la lista de los que tuvieron problemas.
+  (`En total: 30 de 30 pruebas pasaron, en 15 archivos`) y la lista de los que tuvieron problemas.
 - `asegurar falla { ... }` es la forma corta de comprobar que algo **tiene que fallar**:
 
   ```
@@ -1174,6 +1182,7 @@ Son estas y no hay otras. Cada renglón es un ejemplo que se puede copiar:
 |---|---|
 | `mostrar("Total:", total)` | escribe en pantalla |
 | `leer("¿Cuántos?", "3")` | le pide un texto a la persona (en las pruebas da el 2.º valor) |
+| `simular_teclado(["hola", "chau"])` | solo en una prueba: lo que 'teclea' la persona en cada leer() |
 | `texto(3.5)` | lo pasa a texto: "3.5" |
 | `numero("1.234,50")` | lee un número escrito como texto: 1234.5 |
 | `tipo(x)` | dice qué es: "numero", "texto", "lista", "mapa"... |
@@ -1211,6 +1220,8 @@ Son estas y no hay otras. Cada renglón es un ejemplo que se puede copiar:
 | `ahora()` | fecha y hora, "21/11/2026 14:30" (en las pruebas, "01/01/2025 12:00") |
 | `leer_archivo("notas.txt")` | el texto de ese archivo (de la carpeta del programa) |
 | `escribir_archivo("notas.txt", t)` | guarda el texto t en ese archivo (si ya existía, lo pisa) |
+| `agregar_a_archivo("pedidos.txt", t)` | suma el texto t como un renglón más al final de ese archivo |
+| `leer_tabla("precios.csv")` | la planilla guardada como CSV: una lista con un mapa por fila |
 | `mensajes_enviados("Pedido")` | solo en una prueba: los mensajes que se mandaron (o los de ese tipo) |
 | `consultar_ia(reglas, duda)` | lo que contesta una IA de verdad (Claude), como texto; es pago |
 | `simular_ia("Sale $ 100")` | solo en una prueba: lo que contesta la IA desde ahí (o una lista) |
@@ -1305,6 +1316,50 @@ sea cantidad = numero(leer("¿Cuántos paquetes?", "3"))
 - Solo se usa desde el programa principal (o desde una función llamada por él). Un agente no
   puede frenar a todos esperando el teclado: se lee el dato afuera y se le manda en un mensaje.
 
+### Charlar por teclado
+
+Una charla es un bucle con un `leer` adentro, que sale cuando escriben una palabra:
+
+```
+funcion charlar() {
+    var consultas = 0
+    mientras verdadero {
+        sea dicho = leer("Cliente:", "chau")
+        si minusculas(dicho) == "chau" {
+            romper
+        }
+        mostrar("Mostrador: me pediste {dicho}")
+        consultas += 1
+    }
+    devolver consultas
+}
+
+mostrar("Escribí tu pedido y apretá Enter. Para terminar, escribí chau.")
+sea atendidas = charlar()
+mostrar("Atendí {atendidas} consulta(s).")
+
+prueba "atiende hasta que dicen chau" {
+    simular_teclado(["2 de yerba", "1 de azúcar", "chau"])
+    asegurar charlar() == 2
+}
+```
+
+- La respuesta preparada (`"chau"`) es la palabra de salida: así, cuando no hay teclado (con
+  `probar`, por ejemplo), la charla termina sola en vez de quedarse esperando.
+- **Ctrl+C** mientras el programa espera que escribas también termina bien: Mate avisa
+  `Listo: cortaste con Ctrl+C...`, no muestra ningún error, y lo que recuerdan los agentes
+  (`estado recordado`) queda guardado igual. Lo que el programa tenía escrito después del
+  bucle no se llega a hacer; si necesitás que se haga, salí con la palabra.
+- En una prueba nadie teclea: `simular_teclado(["2 de yerba", "chau"])` fija lo que se
+  "escribe", un texto por cada `leer`, en orden. Cuando se acaban, `leer` devuelve su respuesta
+  preparada. Solo vale adentro de una prueba, y cada prueba arranca sin nada tecleado.
+- Las tildes y la ñ andan bien al escribir en la ventana de PowerShell. (Si en vez de teclear
+  le pasás un texto con `|` desde PowerShell 5.1, las tildes pueden llegar como `?`: eso lo
+  hace PowerShell antes de que el texto llegue a Mate.)
+- Para que conteste un agente, el programa lee y le pregunta:
+  `sea a = preguntar Consulta { pregunta: dicho } a Mostrador`. El ejemplo completo, con IA y
+  lista de precios, es `ejemplos\10_mostrador_mayorista.mate`.
+
 ### Archivos de texto: `leer_archivo` y `escribir_archivo`
 
 ```
@@ -1316,7 +1371,8 @@ sea renglones = partir(leer_archivo("compras.txt"), "\n")
   `partir(texto, "\n")` queda una lista con un renglón por elemento. Lee lo que guarda el Bloc
   de notas en cualquiera de sus codificaciones.
 - `escribir_archivo("compras.txt", texto)` guarda ese texto. Si el archivo ya existía, **lo
-  reemplaza entero** (para agregar, leelo antes y guardá lo viejo más lo nuevo). Lo que se
+  reemplaza entero** (para sumar un renglón sin tocar lo que había está
+  `agregar_a_archivo`, más abajo). Lo que se
   guarda tiene que ser un texto: un número va con `texto(n)`, una lista con `unir(lista, "\n")`
   y un mensaje con `a_json(mensaje)`.
 - Los archivos son **los de la carpeta del programa** (o de una subcarpeta que ya exista:
@@ -1331,7 +1387,90 @@ sea renglones = partir(leer_archivo("compras.txt"), "\n")
   `intentar { sea t = leer_archivo("notas.txt") } si falla e { ... }`, y
   `detalle_de(e).clase` vale `"archivo"`.
 - Ojo: `probar` también corre el programa antes de las pruebas, así que lo que el programa
-  escribe se escribe igual.
+  guarda con `escribir_archivo` se guarda igual. (`agregar_a_archivo` no: con `probar` no toca
+  el archivo de verdad.)
+
+### Anotar en un archivo: `agregar_a_archivo`
+
+```
+agregar_a_archivo("pedidos.txt", "{ahora()} | Almacén Don Luis | 2 bolsones de yerba")
+```
+
+- Suma ese texto como **un renglón más al final** del archivo, sin tocar lo que ya tenía. Si
+  el archivo no existe, lo crea. Sirve para ir anotando pedidos o consultas y mirarlos después
+  con el Bloc de notas.
+- Tiene los mismos cuidados que `escribir_archivo`: solo en la carpeta del programa, solo
+  desde el programa principal, nunca sobre un programa, y lo que se agrega es un texto.
+- **Con `probar` no escribe el archivo de verdad.** Lo que el programa o una prueba "agregan"
+  queda en el aire: dentro de esa prueba, `leer_archivo("pedidos.txt")` devuelve el archivo
+  como está en el disco más lo agregado, y al terminar la prueba se descarta. Así se
+  comprueba sin ensuciar:
+
+  ```
+  funcion anotar(pedido) {
+      agregar_a_archivo("pedidos.txt", pedido)
+  }
+
+  prueba "el pedido queda anotado" {
+      anotar("2 bolsones de yerba")
+      asegurar termina_con(leer_archivo("pedidos.txt"), "2 bolsones de yerba\n")
+  }
+  ```
+
+### Una lista de precios de Excel: `leer_tabla`
+
+`leer_tabla` lee una planilla **guardada como CSV** y la devuelve como una lista con un mapa
+por fila. Las claves de cada mapa son los títulos de la primera fila.
+
+Si `precios.csv` (al lado del programa) dice:
+
+```
+producto;precio;stock
+Yerba mate;3.500;40
+Azúcar;1.250,50;0
+```
+
+entonces:
+
+```
+sea precios = leer_tabla("precios.csv")
+para fila en precios {
+    mostrar("{fila.producto} sale {pesos(fila.precio)}")
+}
+mostrar(precios[0].precio + 100)
+```
+
+muestra `Yerba mate sale $ 3.500,00`, `Azúcar sale $ 1.250,50` y `3600`.
+
+**Cómo guardar la planilla desde Excel:**
+
+1. La primera fila tiene que tener los títulos de las columnas (conviene en minúscula y sin
+   espacios: `producto`, `precio`, `stock`). Debajo, un producto por fila.
+2. Archivo > Guardar como > en "Tipo" elegí **CSV (delimitado por comas) (*.csv)**. Si Excel
+   pregunta si querés mantener ese formato, decile que sí.
+3. Guardala en la misma carpeta que el programa.
+
+Lo que hay que saber:
+
+- Anda con las dos formas en que Excel guarda un CSV: separado por **punto y coma** (lo que
+  hace en la Argentina) o por **coma**. También si lo guardaste como "CSV UTF-8" o desde el
+  Bloc de notas en cualquiera de sus codificaciones: las tildes y la ñ llegan bien.
+- **Los números llegan como números**, también escritos a la argentina: `3.500` es tres mil
+  quinientos, `3.500,50`, `$ 3.500`, `3,5`. Ojo: en una planilla el punto es siempre de los
+  miles (`1.250` es mil doscientos cincuenta); los decimales van con coma. Lo que no es un
+  número llega como texto, y también los códigos que empiezan con cero (`00123`). Una celda
+  vacía es el texto vacío `""`.
+- Las claves son los títulos **tal cual están escritos**: si la columna se llama `Precio`, es
+  `fila.Precio`. Un título con espacios se lee con corchetes: `fila["precio de lista"]`.
+- Los renglones en blanco se saltean. Si la planilla tiene solo los títulos, da una lista vacía.
+- Los errores dicen qué pasa y dónde:
+  - si el archivo no está, en qué carpeta lo buscó (y si hay uno de nombre parecido);
+  - si a una fila le sobra o le falta un dato, **qué renglón del archivo es** y qué dice;
+  - si el archivo está vacío, si una columna no tiene título o si dos se llaman igual;
+  - si le pasás la planilla de Excel sin convertir (`precios.xlsx`), cómo guardarla como CSV.
+- Como `leer_archivo`, solo anda desde el programa principal y con archivos de la carpeta del
+  programa. Para que un agente use la lista, el programa se la manda en un mensaje (así lo hace
+  `ejemplos\10_mostrador_mayorista.mate`, que la pone en las instrucciones de la IA).
 
 ### La fecha y la hora: `hoy` y `ahora`
 
@@ -1437,6 +1576,7 @@ archivo viejo deja de andar, casi seguro es por una de estas:
 
 | Qué pasa ahora | Cómo se arregla |
 |---|---|
+| Con Ctrl+C mientras el programa espera en un `leer`, termina sin cartel de error (antes decía en qué línea se había cortado) | Nada: es la manera de cortar una charla. Lo que recuerdan los agentes se guarda igual |
 | Un parámetro, un estado o una variable no puede llamarse como una función incluida (`texto`, `tipo`, `numero`, `largo`, `valores`, `pesos`...), tampoco dentro de una función | Elegir otro nombre: `funcion saludar(nombre)`. Ojo: cada función incluida nueva ocupa un nombre |
 | `responder` dentro de una función de afuera de un agente es un error antes de correr | Pasar la función adentro del agente, o que devuelva el valor y el `responder` quede en el `al recibir` |
 | `preguntar` a un agente que para ese mensaje nunca responde es un error antes de correr | Usar `enviar`: ahora se entrega solo antes del siguiente `preguntar` |
@@ -1512,16 +1652,19 @@ Mate sirve porque entra en la cabeza. Para que siga así hay un presupuesto escr
 pruebas del intérprete no dejan pasarse:
 
 - **Palabras propias: 40 como mucho.** Hoy son 36 (`sea`, `si`, `agente`...).
-- **Funciones incluidas: 45 como mucho.** Hoy son 45. Empezó con 20 y el plan era sumar unas
+- **Funciones incluidas: 48 como mucho.** Hoy son 48. Empezó con 20 y el plan era sumar unas
   12; con las de archivos y fechas y la de las pruebas (`mensajes_enviados`) el cupo de 40
   quedó completo. Para conectar los agentes con una IA el tope se subió a 42, justo lo que
   hacía falta (`consultar_ia` y `simular_ia`). Para que un agente aprenda (0.4) el tope se subió a 45,
   otra vez lo justo: `aprender`, `lecciones` y `consultas_ia`. La memoria no gastó ninguna
   palabra (`recordado` solo significa algo después de `estado`) y lo demás son órdenes de la
   línea de comandos, no del lenguaje. Para agregar otra hay que sacar una, o discutir el tope.
-  La 0.5 no gastó ni palabras ni funciones: `python` solo significa algo después de `usar`
+  En la 0.5, `python` no gastó ninguna palabra: solo significa algo después de `usar`
   (sigue sirviendo como nombre de variable), y lo que falte se suma desde afuera, con
-  `usar python`, sin agrandar Mate.
+  `usar python`, sin agrandar Mate. Lo que sí hizo falta fue trabajar con datos de verdad y
+  charlar por teclado: para eso el tope se subió de 45 a 48, otra vez lo justo (`leer_tabla`,
+  `agregar_a_archivo` y `simular_teclado`). Si hay que achicar, la candidata es
+  `simular_teclado`, que solo sirve en las pruebas.
 - **Cada agregado trae lo suyo**: su renglón en este README (en la tabla de funciones o en la
   referencia), su explicación en `ayuda <palabra>` y al menos una prueba que lo use.
 - **Una sola forma de escribir cada cosa.** Nada de sinónimos (`función` con tilde, comillas
@@ -1564,6 +1707,12 @@ así que ningún programa viejo lo usaba.
   cuántos más hubo) y no anota nada con `probar`. Tapa lo que tiene forma de dato tuyo, pero
   los nombres que no van entre comillas en un mensaje (el de un mensaje o un campo) pueden
   quedar: leelo antes de compartirlo.
+- `leer_tabla` lee planillas guardadas como CSV, no el `.xlsx` de Excel directamente (hay
+  que hacer "Guardar como"), y trae la planilla entera a la memoria: está pensada para listas
+  de cientos o miles de filas, no de millones. Cada vez que cambiás la planilla en Excel hay
+  que guardarla de nuevo como CSV.
+- La charla por teclado es en la ventana de PowerShell: un programa de Mate todavía no
+  atiende por WhatsApp ni por una página web.
 
 - Sigue siendo un intérprete: es entre 2 y 5 veces más rápido que la 0.4 en bucles y llamadas,
   pero un programa de Python hace las mismas cuentas mucho más rápido todavía. Armar una
