@@ -6,6 +6,7 @@ Uso:
     python3 mate.py correr    archivo.mate [--traza] [--sin-limite] [--depurar]
     python3 mate.py probar    archivo.mate
     python3 mate.py verificar archivo.mate
+    python3 mate.py guia
     python3 mate.py ayuda
 """
 
@@ -26,6 +27,7 @@ PALABRAS = {
     "y", "o", "no", "verdadero", "falso", "nada", "mensaje", "agente", "estado",
     "al", "recibir", "como", "enviar", "preguntar", "responder", "fallar",
     "intentar", "falla", "asegurar", "prueba", "remitente", "yo", "crear", "usar",
+    "romper", "continuar",
 }
 
 TIPOS_BASE = {"numero", "texto", "logico", "lista", "mapa", "agente", "cualquiera"}
@@ -40,6 +42,10 @@ OPCIONES = ("--traza", "--depurar", "--sin-limite", "--version", "--ayuda")
 
 COMPARADORES = ("==", "!=", "<", "<=", ">", ">=")
 
+# Las funciones incluidas que hacen algo además de devolver un valor: pueden ir solas
+# en un renglón. Las demás, sueltas, no sirven de nada y Mate lo avisa.
+HACEN_ALGO = ("mostrar", "leer")
+
 # Palabras de otros lenguajes, o con tilde, y cómo se escriben en Mate. No se aceptan
 # como sinónimos: solo sirven para explicar el error.
 PISTAS = {
@@ -48,7 +54,7 @@ PISTAS = {
     "true": "verdadero", "false": "falso", "null": "nada", "none": "nada",
     "return": "devolver", "function": "funcion", "def": "funcion",
     "and": "y", "or": "o", "not": "no", "to": "a",
-    "break": "romper (todavía no existe en Mate)",
+    "break": "romper", "continue": "continuar",
     "función": "funcion", "sinó": "sino", "número": "numero", "lógico": "logico",
     "mayúsculas": "mayusculas", "minúsculas": "minusculas",
 }
@@ -141,7 +147,7 @@ _TOKEN = re.compile(
   | (?P<str>"(?:\\.|[^"\\\n])*")
   | (?P<curva>[“”„](?:\\.|[^"“”„\\\n])*[“”„"])
   | (?P<id>[^\W\d]\w*)
-  | (?P<op>==|!=|<=|>=|[-+*/%<>=(){}\[\],.:?])
+  | (?P<op>==|!=|<=|>=|\+=|-=|[-+*/%<>=(){}\[\],.:?])
     """,
     re.X,
 )
@@ -200,6 +206,53 @@ def tokenizar(fuente, archivo=None):
     return tokens
 
 
+_CIERRES = {"(": ")", "[": "]", "{": "}"}
+_SIGNOS = {"(": "el paréntesis", "[": "el corchete", "{": "la llave"}
+
+
+def revisar_cierres(tokens, fuente):
+    """Si una llave, un paréntesis o un corchete nunca se cierra, dice dónde se abrió
+    (y no "falta algo al final del archivo"). Lo demás lo explica el análisis."""
+    renglones = fuente.split("\n")
+
+    def texto_de(linea):
+        return renglones[linea - 1] if 0 < linea <= len(renglones) else ""
+
+    def sangria(linea):
+        t = texto_de(linea)
+        return len(t) - len(t.lstrip())
+
+    def sin_cerrar(signo, linea, hasta):
+        # El error se anota donde se notó la falta (el final del archivo, o la llave
+        # que cerró otra cosa); el mensaje dice dónde se abrió.
+        de_que = texto_de(linea).strip().rstrip("{([").strip()
+        de_que = f" ({de_que})" if de_que and signo == "{" else ""
+        return ErrorMate(f"{_SIGNOS[signo]} que se abrió en la línea {linea}{de_que} "
+                         "nunca se cierra", hasta)
+
+    abiertos, sospechoso, previa = [], None, None
+    for tipo, valor, linea in tokens:
+        if tipo == "op" and valor in _CIERRES:
+            abiertos.append((valor, linea))
+        elif tipo == "op" and valor in ")]}":
+            if not abiertos:
+                return  # sobra un cierre: lo dice el análisis
+            signo, donde = abiertos[-1]
+            if _CIERRES[signo] != valor:
+                if signo != "{" and valor == "}":
+                    raise sin_cerrar(signo, donde, linea)
+                return
+            abiertos.pop()
+            # Una '}' sola en su renglón y más a la izquierda que el renglón que abrió:
+            # casi seguro cierra otra cosa, y la que quedó abierta es esa.
+            if (valor == "}" and linea != previa and linea != donde
+                    and sangria(linea) < sangria(donde) and sospechoso is None):
+                sospechoso = (signo, donde)
+        previa = linea
+    if abiertos:
+        raise sin_cerrar(*(sospechoso or abiertos[-1]), tokens[-1][2])
+
+
 # ───────────────────────────── Parser ─────────────────────────────
 
 
@@ -211,7 +264,8 @@ class Parser:
         self.t = tokens
         self.i = 0
         # Para avisar de 'devolver' y 'responder' fuera de lugar antes de correr.
-        self.en_funcion = self.en_recibir = self.en_agente = 0
+        self.en_funcion = self.en_recibir = self.en_agente = self.en_bucle = 0
+        self.abiertos = 0  # paréntesis, corchetes o llaves de un valor sin cerrar
         # Los nombres que el programa le pone a algo: si alguien llama 'def' o 'Crear' a
         # una variable o función suya, no se le da la pista de "en Mate se escribe...".
         self.definidos = {
@@ -307,11 +361,41 @@ class Parser:
     def linea_previa(self):
         return self.t[self.i - 1][2] if self.i else 0
 
+    # La regla de los renglones: una sentencia termina donde termina su renglón, salvo
+    # que quede abierto un paréntesis, un corchete o una llave, o que el renglón termine
+    # en un operador (+, -, y, ==, =...) o en una coma.
+    def sigue_con(self, tipo, valores):
+        """¿Viene uno de esos operadores a continuar la cuenta?"""
+        tk = self.ver()
+        if tk[0] != tipo or tk[1] not in valores:
+            return False
+        if self.abiertos or tk[2] == self.linea_previa():
+            return True
+        if tk[1] == "-":
+            return False  # un '-' al principio de un renglón empieza otra sentencia
+        raise ErrorMate(
+            f"un renglón no puede empezar con '{tk[1]}': si la cuenta sigue abajo, dejá el "
+            f"'{tk[1]}' al final del renglón de arriba", tk[2])
+
+    def en_su_renglon(self, palabra, ln, ejemplo):
+        """Lo que acompaña a 'responder', 'fallar', etc. empieza en el mismo renglón."""
+        if self.ver()[2] != ln or self.es("eof") or self.es("op", "}"):
+            raise ErrorMate(f"a '{palabra}' le falta lo que sigue, en el mismo renglón: "
+                            f"{ejemplo}", ln)
+
+    def fin_de_sentencia(self, s):
+        """'mostrar "hola"': un nombre suelto y algo más en el mismo renglón."""
+        tk = self.ver()
+        if (s[0] == "expr" and s[2][0] == "nombre" and tk[2] == self.linea_previa()
+                and tk[0] in ("str", "num", "id")):
+            raise ErrorMate(f"a '{s[2][2]}' le faltan los paréntesis: {s[2][2]}(...)", tk[2])
+
     # programa y sentencias
     def programa(self):
         cuerpo = []
         while not self.es("eof"):
             cuerpo.append(self.sentencia(nivel_superior=True))
+            self.fin_de_sentencia(cuerpo[-1])
         return cuerpo
 
     def bloque(self):
@@ -321,6 +405,7 @@ class Parser:
             if self.es("eof"):
                 raise ErrorMate("falta cerrar un bloque con '}'", self.ver()[2])
             cuerpo.append(self.sentencia())
+            self.fin_de_sentencia(cuerpo[-1])
         self.tomar()
         return cuerpo
 
@@ -355,12 +440,18 @@ class Parser:
                 return ("si", ln, ramas, otro)
             if val == "mientras":
                 self.tomar()
-                return ("mientras", ln, self.condicion(), self.bloque())
+                return ("mientras", ln, self.condicion(), self.vuelta())
             if val == "para":
                 self.tomar()
                 nombre = self.nombre_nuevo()
                 self.espera("kw", "en")
-                return ("para", ln, nombre, self.expr(), self.bloque())
+                return ("para", ln, nombre, self.expr(), self.vuelta())
+            if val in ("romper", "continuar"):
+                if not self.en_bucle:
+                    raise ErrorMate(
+                        f"'{val}' solo va dentro de un 'mientras' o de un 'para'", ln)
+                self.tomar()
+                return (val, ln)
             if val in ("mensaje", "agente", "prueba", "usar") and not nivel_superior:
                 raise ErrorMate(f"'{val}' solo puede declararse en el nivel superior", ln)
             if val == "usar":
@@ -376,6 +467,7 @@ class Parser:
                 return ("prueba", ln, nombre, self.bloque())
             if val == "enviar":
                 self.tomar()
+                self.en_su_renglon(val, ln, "enviar Aviso { ... } a Agente")
                 msg = self.expr()
                 self.espera("id", "a", que="'a' (enviar Mensaje a Agente)")
                 return ("enviar", ln, msg, self.expr())
@@ -383,9 +475,11 @@ class Parser:
                 if not (self.en_recibir or (self.en_funcion and self.en_agente)):
                     raise ErrorMate(RESPONDER_SUELTO, ln)
                 self.tomar()
+                self.en_su_renglon(val, ln, "responder valor")
                 return ("responder", ln, self.expr())
             if val == "fallar":
                 self.tomar()
+                self.en_su_renglon(val, ln, 'fallar "el motivo"')
                 return ("fallar", ln, self.expr())
             if val == "intentar":
                 self.tomar()
@@ -396,6 +490,7 @@ class Parser:
                 return ("intentar", ln, cuerpo, var, self.bloque())
             if val == "asegurar":
                 self.tomar()
+                self.en_su_renglon(val, ln, "asegurar total == 10")
                 cond = self.expr()
                 self.pista_de_igual()
                 msg = self.expr() if self.acepta("op", ",") else None
@@ -408,7 +503,29 @@ class Parser:
             if not self.asignable(e):
                 raise ErrorMate(NO_ASIGNABLE, ln)
             return ("asignar", ln, e, self.expr())
+        for atajo in ("+=", "-="):  # suma += precio es suma = suma + precio
+            if self.acepta("op", atajo):
+                if not self.asignable(e):
+                    raise ErrorMate(NO_ASIGNABLE, ln)
+                return ("asignar", ln, e, ("bin", ln, atajo[0], e, self.expr()))
         return ("expr", ln, e)
+
+    def vuelta(self):
+        """El bloque de un 'mientras' o un 'para': adentro valen 'romper' y 'continuar'."""
+        self.en_bucle += 1
+        try:
+            return self.bloque()
+        finally:
+            self.en_bucle -= 1
+
+    def aparte(self):
+        """El bloque de una función o de un 'al recibir': empieza de cero, no está
+        dentro del bucle que lo rodee."""
+        afuera, self.en_bucle = self.en_bucle, 0
+        try:
+            return self.bloque()
+        finally:
+            self.en_bucle = afuera
 
     def asignable(self, e):
         """Se asigna a una variable o a una parte de una variable: x, x.campo, x[0]."""
@@ -426,7 +543,7 @@ class Parser:
         self.espera("op", ")")
         self.en_funcion += 1
         try:
-            cuerpo = self.bloque()
+            cuerpo = self.aparte()
         finally:
             self.en_funcion -= 1
         return ("funcion", ln, nombre, params, cuerpo)
@@ -479,7 +596,7 @@ class Parser:
                 var = self.nombre_nuevo() if self.acepta("kw", "como") else None
                 self.en_recibir += 1
                 try:
-                    cuerpo = self.bloque()
+                    cuerpo = self.aparte()
                 finally:
                     self.en_recibir -= 1
                 manejadores.append((tk[2], tipo, var, cuerpo))
@@ -495,7 +612,7 @@ class Parser:
     # expresiones
     def expr(self):
         izq = self.expr_y()
-        while self.es("kw", "o"):
+        while self.sigue_con("kw", ("o",)):
             ln = self.tomar()[2]
             self.tras_y_o("o")
             izq = ("o", ln, izq, self.expr_y())
@@ -503,7 +620,7 @@ class Parser:
 
     def expr_y(self):
         izq = self.expr_no()
-        while self.es("kw", "y"):
+        while self.sigue_con("kw", ("y",)):
             ln = self.tomar()[2]
             self.tras_y_o("y")
             izq = ("y", ln, izq, self.expr_no())
@@ -517,7 +634,7 @@ class Parser:
 
     def comparacion(self):
         izq = self.suma()
-        if self.es_comparador():
+        if self.sigue_con("op", COMPARADORES):
             _, op, ln = self.tomar()
             if self.es("op", "=") and self.ver()[2] == ln:
                 raise ErrorMate("para comparar se usa '==' (con dos signos '=', no más)", ln)
@@ -531,14 +648,14 @@ class Parser:
 
     def suma(self):
         izq = self.producto()
-        while self.ver()[0] == "op" and self.ver()[1] in ("+", "-"):
+        while self.sigue_con("op", ("+", "-")):
             _, op, ln = self.tomar()
             izq = ("bin", ln, op, izq, self.producto())
         return izq
 
     def producto(self):
         izq = self.unario()
-        while self.ver()[0] == "op" and self.ver()[1] in ("*", "/", "%"):
+        while self.sigue_con("op", ("*", "/", "%")):
             _, op, ln = self.tomar()
             izq = ("bin", ln, op, izq, self.unario())
         return izq
@@ -560,7 +677,9 @@ class Parser:
                 e = ("llamar", tk[2], e, args)
             elif misma and self.es("op", "["):
                 self.tomar()
+                self.abiertos += 1
                 idx = self.expr()
+                self.abiertos -= 1
                 self.espera("op", "]")
                 e = ("indice", tk[2], e, idx)
             elif self.es("op", "."):
@@ -571,15 +690,18 @@ class Parser:
 
     def lista_hasta(self, cierre):
         items = []
+        self.abiertos += 1
         while not self.es("op", cierre):
             items.append(self.expr())
             if not self.acepta("op", ","):
                 break
+        self.abiertos -= 1
         self.espera("op", cierre)
         return items
 
     def pares(self, claves_texto):
         pares = []
+        self.abiertos += 1
         while not self.es("op", "}"):
             tk = self.tomar()
             if not (tk[0] == "id" or (claves_texto and tk[0] == "str")
@@ -589,6 +711,7 @@ class Parser:
             pares.append((tk[1], self.expr()))
             if not self.acepta("op", ","):
                 break
+        self.abiertos -= 1
         self.espera("op", "}")
         return pares
 
@@ -630,7 +753,9 @@ class Parser:
             return ("nombre", ln, val)
         if tipo == "op":
             if val == "(":
+                self.abiertos += 1
                 e = self.expr()
+                self.abiertos -= 1
                 self.pista_de_igual()
                 self.espera("op", ")")
                 return e
@@ -638,6 +763,11 @@ class Parser:
                 return ("lista", ln, self.lista_hasta("]"))
             if val == "{":
                 return ("mapa", ln, self.pares(True))
+        previo = self.t[self.i - 2] if self.i >= 2 else (None, None, None)
+        if (tipo, val) == ("op", "=") and previo[0] == "op" and previo[1] in ("*", "/", "%") \
+                and previo[2] == ln:  # x *= 2
+            raise ErrorMate("los únicos atajos son '+=' y '-='; lo demás se escribe "
+                            f"entero: x = x {previo[1]} ...", ln)
         visto = "el final del archivo" if tipo == "eof" else f"'{val}'"
         raise ErrorMate(f"no esperaba {visto} acá", ln)
 
@@ -716,7 +846,9 @@ def analizar(fuente, ruta=None, _vistos=None):
         vistos.add(os.path.realpath(ruta))
     carpeta = os.path.dirname(os.path.abspath(ruta)) if ruta else os.getcwd()
     programa = []
-    for s in Parser(tokenizar(fuente, ruta)).programa():
+    tokens = tokenizar(fuente, ruta)
+    revisar_cierres(tokens, fuente)
+    for s in Parser(tokens).programa():
         if s[0] != "usar":
             programa.append(s)
             continue
@@ -956,7 +1088,7 @@ class Registro:
         self.campos = campos
 
     def __eq__(self, otro):
-        return isinstance(otro, Registro) and self.tipo == otro.tipo and self.campos == otro.campos
+        return igual(self, otro)
 
     __hash__ = None
 
@@ -989,6 +1121,14 @@ class _Retorno(Exception):
 class _Respuesta(Exception):
     def __init__(self, valor):
         self.valor = valor
+
+
+class _Romper(Exception):
+    """'romper': sale del bucle."""
+
+
+class _Continuar(Exception):
+    """'continuar': salta a la vuelta siguiente."""
 
 
 def es_num(v):
@@ -1029,9 +1169,19 @@ def lleva_funcion(v):
 
 
 def igual(a, b):
+    """Igualdad sin conversiones a escondidas, también adentro de listas y mapas:
+    1 no es igual a verdadero, ni [1] a [verdadero]."""
     if es_num(a) and es_num(b):
         return a == b
-    return type(a) is type(b) and a == b
+    if type(a) is not type(b):
+        return False
+    if isinstance(a, list):
+        return len(a) == len(b) and all(igual(x, y) for x, y in zip(a, b))
+    if isinstance(a, dict):
+        return a.keys() == b.keys() and all(igual(v, b[k]) for k, v in a.items())
+    if isinstance(a, Registro):
+        return a.tipo == b.tipo and igual(a.campos, b.campos)
+    return a == b
 
 
 def decimal_limpio(v):
@@ -1184,6 +1334,12 @@ NO_SE_CAMBIA = {
 }
 
 
+def por_teclado(pregunta):
+    """Muestra la pregunta y espera que la persona escriba y apriete Enter."""
+    return input(pregunta if pregunta.endswith((" ", "\n")) or not pregunta
+                 else pregunta + " ")
+
+
 _INCLUIDAS = []
 
 
@@ -1197,13 +1353,14 @@ def incluidas():
 class Entorno:
     nacidos = 0  # cuántos entornos se crearon: sirve para saber cuál es anterior a cuál
 
-    def __init__(self, padre=None, frontera=False):
+    def __init__(self, padre=None, frontera=False, borde=False):
         Entorno.nacidos += 1
         self.serie = Entorno.nacidos
         self.vars = {}
         self.origen = {}  # de dónde salió cada nombre: sea, var, parametro, para, funcion...
         self.padre = padre
         self.frontera = frontera  # el estado de un agente: de acá para arriba no se escribe
+        self.borde = borde  # donde empieza una función, un 'al recibir' o una prueba
 
     def definir(self, nombre, valor, mutable=False, origen=None):
         if nombre in self.vars:
@@ -1223,6 +1380,25 @@ class Entorno:
                 raise ErrorMate(INCLUIDA.format(n=nombre))
         self.vars[nombre] = [valor, mutable]
         self.origen[nombre] = origen or ("var" if mutable else "sea")
+
+    def no_tapar(self, nombre):
+        """Un 'sea' o 'var' de un bloque de adentro (si, mientras, para, intentar) no
+        puede repetir el nombre de una variable de más afuera: casi siempre se quiso
+        cambiar esa variable, y con el 'sea' de más no cambia nada."""
+        e = self
+        while not e.borde and e.padre is not None:
+            e = e.padre
+            if nombre in e.vars and e.origen.get(nombre) in (
+                    "sea", "var", "parametro", "para", "mensaje", "falla"):
+                raise ErrorMate(
+                    f"'{nombre}' ya existe afuera de este bloque. Si querés cambiarle el "
+                    f"valor, sacá el 'sea' o el 'var': {nombre} = ... Si es otra cosa, "
+                    "ponele otro nombre")
+        if e.borde and e.padre is not None and e.padre.frontera and nombre in e.padre.vars \
+                and e.padre.origen.get(nombre) == "var":
+            raise ErrorMate(
+                f"'{nombre}' es un estado de este agente. Si querés cambiarle el valor, "
+                f"sacá el 'sea' o el 'var': {nombre} = ... Si es otra cosa, ponele otro nombre")
 
     def visibles(self):
         """Todos los nombres que se ven desde acá, de adentro hacia afuera."""
@@ -1295,6 +1471,8 @@ class Interprete:
         self.archivo = None  # el archivo principal, para nombrar los otros en los errores
         self.detalle_pruebas = []  # por cada prueba, [(linea, texto)] de lo que falló
         self.llamadas = []  # nombres de las funciones que se están ejecutando
+        self.entrada = por_teclado  # de dónde saca leer() lo que contesta la persona
+        self.sin_teclado = False  # en las pruebas leer() usa la respuesta preparada
         self._nativas()
 
     # ── funciones incorporadas ──
@@ -1437,6 +1615,30 @@ class Interprete:
             if pedir(sep, "texto", "partir()") == "":
                 return list(t)  # sin separador: letra por letra
             return t.split(sep)
+
+        @nativa("leer", 1, 2)
+        def _(pregunta, preparada=None):
+            pedir(pregunta, "texto", "leer()")
+            if preparada is not None:
+                pedir(preparada, "texto", "leer()")
+            if self.contexto is not None or self.naciendo:
+                raise ErrorMate(
+                    "leer() solo se usa desde el programa principal: un agente no puede "
+                    "frenar todo esperando el teclado. Leé el dato afuera y mandáselo en "
+                    "un mensaje")
+            if self.sin_teclado:
+                if preparada is None:
+                    raise ErrorMate(
+                        "en las pruebas leer() no espera el teclado: dale una respuesta "
+                        'preparada como segundo valor, por ejemplo leer("¿Cuántos?", "3")')
+                return preparada
+            try:
+                return self.entrada(pregunta).strip()
+            except EOFError:
+                if preparada is not None:
+                    return preparada
+                raise ErrorMate("leer(): no hay nadie para contestar (el programa no "
+                                "está corriendo en una consola con teclado)")
 
         nativa("mayusculas", 1)(lambda t: pedir(t, "texto", "mayusculas()").upper())
         nativa("minusculas", 1)(lambda t: pedir(t, "texto", "minusculas()").lower())
@@ -1688,8 +1890,12 @@ class Interprete:
             raise ErrorMate(DEVOLVER_SUELTO, self.linea_actual)
         except _Respuesta:
             raise ErrorMate(RESPONDER_SUELTO, self.linea_actual)
+        except (_Romper, _Continuar):
+            raise ErrorMate("'romper' y 'continuar' solo van dentro de un 'mientras' o de "
+                            "un 'para'", self.linea_actual)
 
     def _correr(self, programa, pruebas):
+        self.sin_teclado = self.sin_teclado or pruebas
         self.cargar(programa)
         for s in programa:
             if s[0] == "agente":
@@ -1716,7 +1922,7 @@ class Interprete:
                 self.entregados = 0
                 fallas = []
                 try:
-                    self.bloque(s[3], Entorno(self.glob))
+                    self.bloque(s[3], Entorno(self.glob, borde=True), nuevo=False)
                     self.vaciar_cola()
                 except ErrorMate as e:
                     fallas.append((e.linea, f"{self.donde(e.linea)}: {e.mensaje}"
@@ -1775,7 +1981,7 @@ class Interprete:
         if dest.env is None:
             self.instanciar(dest)
         renglon, var, cuerpo = dest.manejadores[msg.tipo]
-        env = Entorno(dest.env)
+        env = Entorno(dest.env, borde=True)
         if var:
             env.definir(var, msg, origen="mensaje")
         previo, dest.ocupado = self.contexto, True
@@ -1879,9 +2085,12 @@ class Interprete:
     def _ejecutar(self, s, env):
         clase = s[0]
         if clase == "expr":
-            self.ev(s[2], env)
+            self.suelta(s[2], env)
         elif clase == "sea":
-            env.definir(s[2], self.ev(s[3], env), mutable=s[4])
+            valor = self.ev(s[3], env)
+            if s[2] not in env.vars:  # (si está en este mismo bloque, lo dice definir)
+                env.no_tapar(s[2])
+            env.definir(s[2], valor, mutable=s[4])
         elif clase == "asignar":
             self.asignar(s[2], self.ev(s[3], env), env)
         elif clase == "si":
@@ -1894,7 +2103,12 @@ class Interprete:
         elif clase == "mientras":
             while self.condicion(s[2], env):
                 self.contar_paso(s[1])  # una vuelta cuenta aunque el cuerpo esté vacío
-                self.bloque(s[3], env)
+                try:
+                    self.bloque(s[3], env)
+                except _Continuar:
+                    pass
+                except _Romper:
+                    break
         elif clase == "para":
             col = self.ev(s[3], env)
             if not isinstance(col, (list, dict, str)):
@@ -1903,7 +2117,16 @@ class Interprete:
                 self.contar_paso(s[1])
                 paso = Entorno(env)
                 paso.definir(s[2], x, origen="para")
-                self.bloque(s[4], paso, nuevo=False)
+                try:
+                    self.bloque(s[4], paso, nuevo=False)
+                except _Continuar:
+                    pass
+                except _Romper:
+                    break
+        elif clase == "romper":
+            raise _Romper()
+        elif clase == "continuar":
+            raise _Continuar()
         elif clase == "funcion":
             env.definir(s[2], Funcion(s[2], s[3], s[4], env), origen="funcion")
         elif clase == "devolver":
@@ -1960,6 +2183,38 @@ class Interprete:
                 raise ErrorMate(detalle, s[1], clase="asegurar")
         else:
             raise ErrorMate(f"'{clase}' no puede ir acá")
+
+    def suelta(self, e, env):
+        """Un renglón que es solo un valor: vale si hace algo (llamar a una función
+        propia, mostrar, preguntar, crear). Si solo calcula y no lo usa, es un error."""
+        if e[0] in ("preguntar", "crear"):
+            self.ev(e, env)
+            return
+        if e[0] != "llamar":
+            valor = self.ev(e, env)
+            if isinstance(valor, (Funcion, Nativa)):
+                raise ErrorMate(f"a '{valor.nombre}' le faltan los paréntesis: "
+                                f"{valor.nombre}(...)", e[1])
+            pista = ""
+            if e[0] == "neg":
+                pista = (". Si era la continuación de la cuenta de arriba, dejá el '-' al "
+                         "final de ese renglón")
+            raise ErrorMate("este renglón calcula un valor y no hace nada con él: guardalo "
+                            f"(sea x = ...), mostralo con mostrar(...) o borralo{pista}", e[1])
+        f = self.ev(e[2], env)
+        try:
+            self.llamar(f, [self.ev(a, env) for a in e[3]])
+        except ErrorMate as error:
+            error.linea = error.linea or e[1]
+            raise
+        if isinstance(f, Nativa) and f.nombre not in HACEN_ALGO:
+            if f.nombre in ("agregar", "quitar"):
+                raise ErrorMate(
+                    f"{f.nombre}() no cambia la lista: devuelve una nueva. Guardá el "
+                    f"resultado: lista = {f.nombre}(lista, ...)", e[1])
+            raise ErrorMate(f"{f.nombre}() devuelve un valor y este renglón no lo usa: "
+                            f"guardalo (sea x = {f.nombre}(...)) o mostralo con mostrar(...)",
+                            e[1])
 
     def valores_de(self, op, izq, der):
         """Qué dio cada lado de un 'asegurar' que no se cumplió."""
@@ -2137,10 +2392,14 @@ class Interprete:
         return r
 
     def _binaria(self, op, a, b):
-        if op == "==":
-            return igual(a, b)
-        if op == "!=":
-            return not igual(a, b)
+        if op in ("==", "!="):
+            if (isinstance(a, str) and es_num(b)) or (es_num(a) and isinstance(b, str)):
+                t = a if isinstance(a, str) else b
+                raise ErrorMate(
+                    f"no se puede comparar un texto con un número ({formato(a, False)} "
+                    f"{op} {formato(b, False)}): nunca son iguales. Convertí uno de los "
+                    f"dos: numero({formato(t, False)}) o texto(...)")
+            return igual(a, b) if op == "==" else not igual(a, b)
         ambos_num = es_num(a) and es_num(b)
         if op in ("<", "<=", ">", ">="):
             if not (ambos_num or (isinstance(a, str) and isinstance(b, str))):
@@ -2175,7 +2434,7 @@ class Interprete:
         if len(args) != len(f.params):
             raise ErrorMate(
                 f"{f.nombre}() espera {len(f.params)} argumento(s) y recibió {len(args)}")
-        env = Entorno(f.env)
+        env = Entorno(f.env, borde=True)
         for p, a in zip(f.params, args):
             env.definir(p, a, origen="parametro")
         self.llamadas.append(f.nombre)
@@ -2200,6 +2459,139 @@ def simbolo(s, reemplazo):
         return reemplazo
 
 
+GUIA = r"""GUÍA DE MATE {version} (para pegarle a un asistente de IA antes de pedirle un programa)
+
+Mate es un lenguaje chico con palabras en español. Escribí solo lo que figura en esta guía:
+no inventes palabras ni funciones, y no uses las de otros lenguajes (if, print, return...).
+
+RENGLONES
+- Una sentencia por renglón, sin punto y coma. Los comentarios empiezan con #.
+- Un renglón sigue en el de abajo solo si queda abierto un ( [ {{ o si termina en un
+  operador o una coma. Un renglón no puede empezar con + * / == y o.
+- Los bloques van entre llaves {{ }}. Los textos, entre comillas dobles y en un renglón.
+
+VALORES
+- numero: 3   3.5 (decimales con punto)        texto: "hola"        logico: verdadero  falso
+- nada (la ausencia de valor)
+- lista: [1, 2, 3]   lista[0] es el primero (las posiciones arrancan en 0)
+- mapa: {{ nombre: "yerba", precio: 3500 }}   mapa.nombre   mapa["nombre"]
+- Dentro de un texto, {{...}} se calcula: "Total: {{precio * 2}}". Adentro de las llaves no se
+  pueden escribir otras comillas. \n es salto de renglón y \{{ una llave de verdad.
+
+VARIABLES
+- sea x = 1        fijo, no cambia más
+- var y = 0        puede cambiar:   y = y + 1     y += 1     y -= 1
+- y.campo = 5 y lista[0] = 5 cambian una parte (la variable tiene que ser 'var').
+- Copiar un valor lo copia entero: cambiar la copia no toca el original.
+- Un 'sea' o 'var' dentro de un bloque no puede repetir el nombre de una variable de afuera.
+- No se usan como nombre las palabras de Mate ni las funciones incluidas.
+- Nombres de variables y funciones en minúscula; mensajes y agentes con Mayúscula inicial.
+
+OPERADORES
+- + - * / %        == != < <= > >=        y  o  no
+- Nada se convierte solo: "a" + 1 es un error (usar "a{{1}}" o texto(1)), y "18" == 18
+  también (usar numero("18")). Las condiciones tienen que dar verdadero o falso.
+
+CONTROL
+- si cond {{ ... }} sino si cond {{ ... }} sino {{ ... }}
+- mientras cond {{ ... }}
+- para item en lista {{ ... }}      (también recorre las claves de un mapa y las letras de un texto)
+- romper sale del bucle; continuar salta a la vuelta siguiente.
+- funcion nombre(a, b) {{ devolver a + b }}        'devolver' solo, sin valor, devuelve nada
+- fallar "motivo"                                 corta con un error
+- intentar {{ ... }} si falla e {{ ... }}             e es el texto del error (el 'e' es opcional)
+
+FUNCIONES INCLUIDAS (no hay otras)
+- mostrar(a, b, ...)             escribe en pantalla
+- leer("pregunta", "respuesta de prueba")   le pide un texto a la persona; solo en el
+                                 programa principal. En las pruebas devuelve el segundo valor
+- texto(x)  numero("1.234,50")  tipo(x)  largo(x)
+- redondear(n, decimales)  pesos(n) da "$ 1.234,50"  sumar(lista)  rango(n)  rango(a, b)
+- tiene(lista_mapa_o_texto, x)  claves(mapa)  valores(mapa)  ordenar(lista)
+- agregar(lista, x) y quitar(lista_o_mapa, x) devuelven una copia NUEVA, no cambian la
+  original: lista = agregar(lista, x)
+- unir(lista, ", ")  partir(texto, ",")  mayusculas(t)  minusculas(t)
+- a_json(valor)  de_json(texto)
+- Una función incluida suelta en un renglón (salvo mostrar y leer) es un error: hay que usar
+  lo que devuelve.
+
+AGENTES Y MENSAJES
+- mensaje Pedido {{ producto: texto, cantidad: numero, nota: texto? }}     (? = opcional)
+  Tipos: numero texto logico lista mapa agente cualquiera, u otro mensaje.
+- Crear un mensaje: Pedido {{ producto: "yerba", cantidad: 2 }}     Sin campos: Ping {{}}
+- agente Nombre {{
+      estado contador = 0                  memoria privada; solo él la cambia
+      al recibir Pedido como p {{ ... }}     uno por cada mensaje que entiende
+      funcion ayuda(x) {{ ... }}             funciones propias
+  }}
+- responder valor        contesta y termina (solo dentro de 'al recibir')
+- enviar Mensaje {{ ... }} a Agente              lo deja en la cola y sigue
+- sea r = preguntar Mensaje {{ ... }} a Agente   espera la respuesta; si el otro falla, falla acá
+- remitente es quien mandó el mensaje; yo es el agente que está atendiendo.
+- sea otro = crear Vendedor llamado "Norte" {{ contador: 5 }}     otra copia, con su estado
+- Un agente no puede cambiar variables de afuera ni el estado de otro. Los mensajes llevan
+  datos, nunca funciones.
+- usar "otro.mate" trae los mensajes, agentes, funciones y 'sea' de otro archivo.
+
+PRUEBAS
+- prueba "nombre" {{ asegurar total == 10 }}        asegurar cond, "mensaje si falla"
+- Van en el nivel superior y corren con la orden 'probar'. Cada una empieza limpia.
+
+UN PROGRAMA COMPLETO
+--- ejemplo ---
+mensaje Pedido {{ producto: texto, cantidad: numero }}
+mensaje Cotizacion {{ producto: texto, total: numero }}
+
+agente Vendedor {{
+    estado precios = {{ yerba: 3500, azucar: 1200 }}
+    estado cotizados = 0
+
+    al recibir Pedido como p {{
+        si no tiene(precios, p.producto) {{
+            fallar "no vendo {{p.producto}}"
+        }}
+        cotizados += 1
+        responder Cotizacion {{ producto: p.producto, total: precios[p.producto] * p.cantidad }}
+    }}
+}}
+
+funcion total_de(pedidos) {{
+    var total = 0
+    para pedido en pedidos {{
+        si pedido.cantidad <= 0 {{
+            continuar
+        }}
+        intentar {{
+            sea c = preguntar Pedido {{
+                producto: pedido.producto, cantidad: pedido.cantidad,
+            }} a Vendedor
+            total += c.total
+        }} si falla motivo {{
+            mostrar("Se saltea: {{motivo}}")
+        }}
+    }}
+    devolver total
+}}
+
+sea lista = [{{ producto: "yerba", cantidad: 2 }}, {{ producto: "café", cantidad: 1 }}]
+mostrar("Total: {{pesos(total_de(lista))}}")
+
+prueba "suma solo lo que el vendedor vende" {{
+    asegurar total_de([{{ producto: "azucar", cantidad: 3 }}]) == 3600
+    asegurar total_de([]) == 0
+}}
+--- fin del ejemplo ---
+
+CÓMO SE CORRE (Windows)
+  python mate\mate.py correr archivo.mate        python mate\mate.py probar archivo.mate
+  python mate\mate.py verificar archivo.mate     (revisa sin correr)
+"""
+
+
+def texto_de_guia():
+    return GUIA.format(version=VERSION)
+
+
 def texto_de_ayuda():
     if os.name == "nt":
         ejemplo = "python mate\\mate.py correr mate\\ejemplos\\hola.mate"
@@ -2212,6 +2604,7 @@ def texto_de_ayuda():
         "  correr    archivo.mate   corre el programa",
         "  probar    archivo.mate   corre las pruebas que el programa trae adentro",
         "  verificar archivo.mate   revisa el programa sin correrlo",
+        "  guia                     una página con todo Mate, para pegarle a una IA",
         "  ayuda                    muestra esta ayuda",
         "",
         "Opciones:",
@@ -2369,6 +2762,9 @@ def _main(argv, donde):
     if not args:
         print(texto_de_ayuda())
         return 2
+    if args[0].lower() in ("guia", "guía"):
+        print(texto_de_guia())
+        return 0
 
     def parece_archivo(a):
         return (a.lower().endswith((".mate", ".mate.txt")) or os.path.isfile(a)
@@ -2382,10 +2778,10 @@ def _main(argv, donde):
             return 2
     orden, archivos = args[0].lower(), args[1:]
     if orden not in ORDENES:
-        parecidas = difflib.get_close_matches(orden, ORDENES + ("ayuda",), 1)
+        parecidas = difflib.get_close_matches(orden, ORDENES + ("ayuda", "guia"), 1)
         avisar(f"no conozco la orden '{args[0]}'" + (
             f", ¿quisiste decir '{parecidas[0]}'?" if parecidas
-            else ". Las órdenes son: correr, probar, verificar y ayuda"))
+            else ". Las órdenes son: correr, probar, verificar, guia y ayuda"))
         return 2
     if not archivos:
         avisar(f"a '{orden}' le falta el archivo, por ejemplo: {orden} hola.mate")

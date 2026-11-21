@@ -1,0 +1,45 @@
+# Paso 5: ponerle nombre a una cuenta (funciones) y comprobar que anda (pruebas).
+
+# Una función recibe valores entre paréntesis y 'devolver' entrega el resultado.
+funcion con_descuento(precio, porcentaje) {
+    devolver precio - precio * porcentaje / 100
+}
+
+# Se usa escribiendo su nombre y los valores.
+mostrar(con_descuento(2000, 10))
+
+# 'fallar' corta con un error explicado por vos.
+funcion dividir_cuenta(total, personas) {
+    si personas <= 0 {
+        fallar "tiene que haber al menos una persona"
+    }
+    devolver redondear(total / personas, 2)
+}
+mostrar(dividir_cuenta(10000, 3))
+
+# 'intentar' prueba algo que puede fallar; si falla, sigue por 'si falla'.
+# El nombre de después ('motivo') recibe el texto del error.
+intentar {
+    mostrar(dividir_cuenta(10000, 0))
+} si falla motivo {
+    mostrar("No se pudo: {motivo}")
+}
+
+# Una 'prueba' comprueba que el programa hace lo que esperás.
+# No corre con 'correr': corre con   python mate\mate.py probar <este archivo>
+prueba "el descuento se resta del precio" {
+    # 'asegurar' exige que algo sea verdadero. Si no lo es, la prueba falla
+    # y Mate muestra qué dio y qué se esperaba.
+    asegurar con_descuento(2000, 10) == 1800
+    asegurar con_descuento(500, 0) == 500
+}
+
+prueba "no se puede dividir entre cero personas" {
+    var fallo = falso
+    intentar {
+        dividir_cuenta(100, 0)
+    } si falla {
+        fallo = verdadero
+    }
+    asegurar fallo, "tendría que haber fallado"
+}

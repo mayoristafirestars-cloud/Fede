@@ -1,0 +1,48 @@
+# Paso 4: listas, mapas y repetir cosas.
+
+# Una lista es una fila de valores entre corchetes.
+var compras = ["yerba", "azúcar"]
+
+# agregar(lista, valor) devuelve una lista NUEVA con ese valor al final.
+# No cambia la original: por eso hay que guardar el resultado.
+compras = agregar(compras, "bizcochos")
+
+# Las posiciones se cuentan desde 0: la primera es compras[0].
+mostrar("Lo primero es {compras[0]} y son {largo(compras)} cosas")
+
+# 'para' recorre la lista: en cada vuelta, 'cosa' es el elemento que toca.
+para cosa en compras {
+    mostrar("- {cosa}")
+}
+
+# Un mapa guarda valores con nombre, entre llaves.
+sea precios = { yerba: 3500, bizcochos: 900 }
+mostrar("La yerba sale {precios.yerba}")
+
+# rango(5) es la lista [0, 1, 2, 3, 4]: sirve para repetir algo cinco veces.
+var suma = 0
+para n en rango(5) {
+    suma += n
+}
+mostrar("0 + 1 + 2 + 3 + 4 = {suma}")
+
+# 'continuar' salta a la vuelta siguiente; 'romper' corta el bucle ahí mismo.
+para cosa en compras {
+    si no tiene(precios, cosa) {
+        continuar
+    }
+    si precios[cosa] < 1000 {
+        mostrar("Lo primero que sale menos de 1000: {cosa}")
+        romper
+    }
+}
+
+# 'mientras' repite mientras la condición sea verdadera.
+# Adentro tiene que cambiar algo, si no, no termina nunca (Mate lo corta y avisa).
+var ahorro = 1000
+var meses = 0
+mientras ahorro < 5000 {
+    ahorro += 1500
+    meses += 1
+}
+mostrar("Llego en {meses} meses")

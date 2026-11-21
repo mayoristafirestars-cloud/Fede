@@ -1,0 +1,35 @@
+# Paso 3: hacer una cosa u otra según una condición.
+
+sea edad = 20
+sea tiene_entrada = verdadero
+
+# 'si' ejecuta lo que está entre llaves solo cuando la condición es verdadera.
+# Para comparar se usa == (con dos signos). Un solo = es para guardar un valor.
+si edad == 20 {
+    mostrar("Tiene justo 20")
+}
+
+# 'sino si' prueba otra condición, y 'sino' es para cuando no se cumplió ninguna.
+si edad < 13 {
+    mostrar("Paga entrada de menor")
+} sino si edad < 65 {
+    mostrar("Paga entrada general")
+} sino {
+    mostrar("Paga entrada de jubilado")
+}
+
+# Las condiciones se combinan con las palabras 'y', 'o' y 'no'.
+si edad >= 18 y tiene_entrada {
+    mostrar("Puede pasar")
+}
+si no tiene_entrada o edad < 18 {
+    mostrar("No puede pasar")
+}
+
+# Distinto se escribe !=
+si edad != 18 {
+    mostrar("No tiene 18")
+}
+
+# Una condición es siempre 'verdadero' o 'falso'. Un número solo no sirve:
+# 'si edad { }' es un error; se escribe 'si edad > 0 { }'.

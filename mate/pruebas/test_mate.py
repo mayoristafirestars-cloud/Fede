@@ -1,6 +1,7 @@
 """Pruebas del intérprete de Mate. Correr con: python3 -m pytest mate/pruebas -q"""
 
 import pathlib
+import re
 import sys
 
 import pytest
@@ -1786,3 +1787,405 @@ def test_hablarle_a_un_agente_que_esta_naciendo_es_un_error_claro():
         }
     """)
     assert "A todavía está armando su estado inicial" in error.mensaje
+
+
+# ── Tanda 4: renglones, atajos y primeros pasos ──
+
+# Mejora 37: lo que queda sin cerrar dice dónde se abrió
+
+def test_la_llave_sin_cerrar_dice_donde_se_abrio():
+    error = falla("mensaje Ping\n\nagente A {\n    al recibir Ping {\n        mostrar(1)\n\n"
+                  "    al recibir Ping {\n        mostrar(2)\n    }\n}\n")
+    assert error.mensaje == ("la llave que se abrió en la línea 4 (al recibir Ping) "
+                             "nunca se cierra")
+    error = falla("sea x = 1\nsi x == 1 {\n  mostrar(x)\n")
+    assert error.mensaje == "la llave que se abrió en la línea 2 (si x == 1) nunca se cierra"
+
+
+def test_parentesis_y_corchetes_sin_cerrar_dicen_donde_se_abrieron():
+    assert falla("sea x = [1, 2\nmostrar(x)\n").mensaje == \
+        "el corchete que se abrió en la línea 1 nunca se cierra"
+    error = falla("si verdadero {\n  mostrar((1 + 2)\n}\n")
+    assert error.mensaje == "el paréntesis que se abrió en la línea 2 nunca se cierra"
+    # las llaves dentro de un texto no cuentan, y un cierre de más lo explica el análisis
+    assert correr('mostrar("{1 + 1} \\{")')[0] == ["2 {"]
+    assert "no esperaba '}'" in falla("mostrar(1)\n}\n").mensaje
+
+
+# Mejora 38: un renglón que calcula algo y no lo usa
+
+def test_un_renglon_que_calcula_y_no_usa_es_un_error():
+    error = falla("sea i = 1\ni + 1\n")
+    assert error.linea == 2 and "calcula un valor y no hace nada con él" in error.mensaje
+    assert "calcula un valor" in falla('"hola"').mensaje
+    assert falla("largo").mensaje == "a 'largo' le faltan los paréntesis: largo(...)"
+    assert falla("funcion f() { devolver 1 }\nf\n").mensaje == \
+        "a 'f' le faltan los paréntesis: f(...)"
+    assert falla('mostrar "hola"').mensaje == "a 'mostrar' le faltan los paréntesis: mostrar(...)"
+
+
+def test_una_funcion_incluida_suelta_avisa_que_hay_que_guardar_el_resultado():
+    error = falla("sea lista = [1]\nagregar(lista, 4)\n")
+    assert error.linea == 2 and error.mensaje.startswith("agregar() no cambia la lista")
+    assert "lista = agregar(lista, ...)" in error.mensaje
+    assert "largo() devuelve un valor y este renglón no lo usa" in falla('largo("abc")').mensaje
+    # si la función falla, se ve ese error y no el de "no lo usa"
+    assert falla('numero("x")').mensaje == "'x' no es un número"
+
+
+def test_lo_que_hace_algo_puede_ir_suelto():
+    salida, _ = correr("""
+        mensaje Ping
+        agente A { al recibir Ping { responder 1 } }
+        funcion avisar(t) { mostrar(t) devolver 5 }
+        avisar("hola")
+        preguntar Ping {} a A
+        crear A
+        mostrar("chau")
+    """)
+    assert salida == ["hola", "chau"]
+
+
+# Mejora 39: dónde termina un renglón
+
+def test_un_menos_al_principio_del_renglon_no_se_pega_al_de_arriba():
+    error = falla("sea x = 5\n-1\nmostrar(x)\n")
+    assert error.linea == 2 and "dejá el '-' al final de ese renglón" in error.mensaje
+    assert correr("funcion f() {\n  sea x = 5\n  devolver x\n}\nmostrar(f())")[0] == ["5"]
+
+
+def test_un_renglon_no_empieza_con_un_operador():
+    for operador in ["+", "*", "==", "y", "o"]:
+        error = falla(f"sea a = verdadero\nsea x = a\n{operador} a\n")
+        assert error.linea == 3, operador
+        assert error.mensaje.startswith(f"un renglón no puede empezar con '{operador}'")
+
+
+def test_la_cuenta_sigue_abajo_si_queda_algo_abierto_o_termina_en_operador():
+    salida, _ = correr("""
+        sea a = 5 +
+            1
+        sea b = (5
+            - 1
+            + 3)
+        sea c = [1,
+            -2]
+        sea d = { uno: 1
+            - 1 }
+        sea e = a > 1 y
+            b > 1
+        mostrar(a, b, c, d, e)
+    """)
+    assert salida == ["6 7 [1, -2] {uno: 0} verdadero"]
+
+
+def test_responder_fallar_y_asegurar_no_se_comen_el_renglon_de_abajo():
+    error = falla("mensaje P\nagente A { al recibir P {\n responder\n mostrar(1)\n} }\n")
+    assert error.linea == 3 and error.mensaje.startswith("a 'responder' le falta lo que sigue")
+    assert falla('fallar\n"ups"\n').mensaje.startswith("a 'fallar' le falta lo que sigue")
+    assert falla("asegurar\n1 == 1\n").mensaje.startswith("a 'asegurar' le falta lo que sigue")
+    assert falla("mensaje P\nagente A { al recibir P { } }\nenviar\nP {} a A\n").linea == 3
+
+
+# Mejora 40: un 'sea' de adentro no tapa una variable de afuera
+
+def test_un_sea_de_adentro_no_tapa_una_variable_de_afuera():
+    error = falla("var cuenta = 0\npara i en rango(3) {\n    sea cuenta = i\n}\n")
+    assert error.linea == 3
+    assert error.mensaje.startswith("'cuenta' ya existe afuera de este bloque")
+    assert "sacá el 'sea'" in error.mensaje
+    error = falla("funcion f(n) {\n  si n > 0 {\n    var n = 1\n  }\n}\nf(1)\n")
+    assert error.linea == 3 and "'n' ya existe afuera" in error.mensaje
+    _, interprete = correr("""
+        mensaje P
+        agente A {
+            estado ventas = 0
+            al recibir P { sea ventas = 1 }
+        }
+        enviar P {} a A
+    """)
+    assert "'ventas' es un estado de este agente" in interprete.errores_agentes[0]
+
+
+def test_una_funcion_o_una_prueba_si_pueden_repetir_un_nombre_de_afuera():
+    salida, _ = correr("""
+        sea total = 10
+        funcion doble(n) {
+            sea total = n * 2
+            devolver total
+        }
+        para i en rango(2) { sea propio = i }
+        para i en rango(2) { sea propio = i }
+        mostrar(doble(4), total)
+    """)
+    assert salida == ["8 10"]
+    interprete = mate.Interprete(salida=lambda _: None)
+    resultados = interprete.correr(mate.analizar(
+        'sea c = 1\nprueba "p" { sea c = 2\n asegurar c == 2 }'), pruebas=True)
+    assert resultados == [("p", None)]
+
+
+# Mejora 41: comparar un texto con un número
+
+def test_comparar_un_texto_con_un_numero_es_un_error():
+    error = falla('sea edad = "18"\nsi edad == 18 { mostrar("sí") }')
+    assert error.linea == 2
+    assert error.mensaje.startswith('no se puede comparar un texto con un número ("18" == 18)')
+    assert 'numero("18")' in error.mensaje
+    assert "comparar un texto con un número" in falla('mostrar(1.5 != "a")').mensaje
+
+
+def test_comparar_con_nada_y_entre_otros_tipos_sigue_permitido():
+    assert mostrado('nada == "a"') == "falso"
+    assert mostrado("1 != nada") == "verdadero"
+    assert mostrado("1 == verdadero") == "falso"
+    assert mostrado('"18" == texto(18)') == "verdadero"
+    assert mostrado('tiene(["18"], 18)') == "falso"  # buscar en una lista no es un error
+
+
+def test_la_igualdad_no_convierte_adentro_de_listas_mapas_ni_mensajes():
+    assert mostrado("[1] == [verdadero]") == "falso"
+    assert mostrado("{ a: 1 } == { a: verdadero }") == "falso"
+    assert mostrado("[1, [2.0]] == [1.0, [2]]") == "verdadero"
+    assert mostrado("tiene([[verdadero]], [1])") == "falso"
+    salida, _ = correr("mensaje M { v: cualquiera }\nmostrar(M { v: 1 } == M { v: verdadero }, "
+                       "M { v: [1] } == M { v: [1] })")
+    assert salida == ["falso verdadero"]
+
+
+# Mejoras 42 y 44: primeros pasos en Windows y mate.bat
+
+def test_el_readme_trae_los_primeros_pasos_en_windows():
+    leeme = (RAIZ / "README.md").read_text(encoding="utf-8")
+    assert "## Primeros pasos en Windows" in leeme
+    for frase in ["python.org", "Add python.exe to PATH", "PowerShell", "Bloc de notas",
+                  "Todos los archivos", "python --version",
+                  "python mate\\mate.py correr hola.mate", ".\\mate\\mate correr hola.mate"]:
+        assert frase in leeme, frase
+
+
+def test_mate_bat_esta_listo_para_windows():
+    crudo = (RAIZ / "mate.bat").read_bytes()
+    assert crudo.isascii()  # sin tildes: la consola de Windows las mostraría mal
+    assert b"\r\n" in crudo and b"\n" not in crudo.replace(b"\r\n", b"")
+    texto = crudo.decode("ascii")
+    assert "%~dp0mate.py" in texto and "%*" in texto and "pause" in texto
+
+
+# Mejora 43: ejemplos graduales
+
+GRADUALES = sorted(p.name for p in (RAIZ / "ejemplos").glob("0*.mate"))
+
+
+def test_estan_los_seis_ejemplos_graduales():
+    assert [n[:2] for n in GRADUALES] == ["01", "02", "03", "04", "05", "06"]
+    assert GRADUALES[0] == "01_hola.mate" and GRADUALES[-1] == "06_primer_agente.mate"
+    for nombre in GRADUALES:  # están comentados: al menos un comentario cada cuatro renglones
+        renglones = [r.strip() for r in (RAIZ / "ejemplos" / nombre).read_text(
+            encoding="utf-8").splitlines() if r.strip()]
+        assert 4 * sum(r.startswith("#") for r in renglones) >= len(renglones), nombre
+
+
+@pytest.mark.parametrize("nombre", GRADUALES)
+def test_los_ejemplos_graduales_corren_y_pasan_sus_pruebas(nombre, capsys):
+    ruta = str(RAIZ / "ejemplos" / nombre)
+    assert mate.main(["verificar", ruta]) == 0
+    assert mate.main(["correr", ruta]) == 0
+    capturado = capsys.readouterr()
+    assert capturado.err == "" and len(capturado.out.splitlines()) >= 3
+    assert mate.main(["probar", ruta]) == 0
+    assert "✗" not in capsys.readouterr().out
+
+
+def test_los_ejemplos_graduales_muestran_lo_que_dicen_sus_comentarios(capsys):
+    assert mate.main(["correr", str(RAIZ / "ejemplos" / "01_hola.mate")]) == 0
+    assert capsys.readouterr().out == "Hola, mundo\n1 + 1 es 2\nMate amargo 3\n"
+    assert mate.main(["correr", str(RAIZ / "ejemplos" / "02_variables.mate")]) == 0
+    assert capsys.readouterr().out.splitlines()[0] == "Total: $ 8.000,00"
+    assert mate.main(["correr", str(RAIZ / "ejemplos" / "06_primer_agente.mate")]) == 0
+    assert capsys.readouterr().out == ("Dos de yerba salen $ 7.000\n"
+                                       "Después del aumento salen $ 8.000\n")
+
+
+# Mejora 45: la orden 'guia'
+
+def test_la_guia_nombra_todas_las_palabras_y_funciones(capsys):
+    assert mate.main(["guia"]) == 0
+    guia = capsys.readouterr().out
+    assert guia.startswith(f"GUÍA DE MATE {mate.VERSION}")
+    palabras = set(re.findall(r"\w+", guia))
+    assert sorted(mate.PALABRAS - palabras) == []
+    assert sorted(mate.incluidas() - palabras) == []
+    assert sorted(mate.TIPOS_BASE - palabras) == []
+    assert max(len(r) for r in guia.splitlines()) <= 100
+
+
+def test_el_ejemplo_de_la_guia_anda(tmp_path, capsys):
+    ejemplo = mate.texto_de_guia().split("--- ejemplo ---")[1].split("--- fin del ejemplo ---")[0]
+    codigo, salida, err = por_main(tmp_path, capsys, ejemplo, orden="probar")
+    assert (codigo, err) == (0, "")
+    assert salida.splitlines() == ["Se saltea: no vendo café", "Total: $ 7.000,00",
+                                   "  ✓ suma solo lo que el vendedor vende",
+                                   "1 de 1 pruebas pasaron"]
+
+
+def test_la_ayuda_y_los_errores_de_tipeo_conocen_la_guia(capsys):
+    assert mate.main(["ayuda"]) == 0
+    assert "guia " in capsys.readouterr().out
+    assert mate.main(["gia"]) == 2
+    assert "¿quisiste decir 'guia'?" in capsys.readouterr().err
+
+
+# Mejora 46: += y -=
+
+def test_los_atajos_mas_igual_y_menos_igual():
+    salida, _ = correr("""
+        var suma = 10
+        suma += 5
+        suma -= 2
+        var m = { a: [1], t: "ho" }
+        m.a[0] += 4
+        m.t += "la"
+        var l = [1]
+        l += [2]
+        mostrar(suma, m, l)
+    """)
+    assert salida == ['13 {a: [5], t: "hola"} [1, 2]']
+
+
+def test_los_atajos_dan_los_errores_de_siempre():
+    assert falla("sea s = 1\ns += 2").mensaje == \
+        "'s' es fijo (sea); declaralo con 'var' para cambiarlo"
+    assert falla("3 += 2").mensaje.startswith("solo se puede asignar a una variable")
+    assert "numero + texto" in falla('var s = 1\ns += "a"').mensaje
+    assert "no existe 'totl'" in falla("var total = 1\ntotl += 1").mensaje
+    error = falla("var s = 1\ns *= 2")
+    assert error.linea == 2 and error.mensaje.startswith("los únicos atajos son '+=' y '-='")
+
+
+# Mejora 47: romper y continuar
+
+def test_romper_y_continuar_en_para_y_mientras():
+    salida, _ = correr("""
+        var vistos = []
+        para i en rango(10) {
+            si i == 1 { continuar }
+            si i == 4 { romper }
+            vistos += [i]
+        }
+        var n = 0
+        mientras verdadero {
+            n += 1
+            si n % 2 == 1 { continuar }
+            intentar {
+                si n >= 6 { romper }
+            } si falla { mostrar("romper no es un error") }
+        }
+        var pares = 0
+        para i en rango(3) {
+            para j en rango(3) {
+                si j == 1 { romper }
+                pares += 1
+            }
+        }
+        mostrar(vistos, n, pares)
+    """)
+    assert salida == ["[0, 2, 3] 6 3"]
+
+
+def test_romper_y_continuar_fuera_de_un_bucle_se_avisan_antes_de_correr():
+    for palabra in ["romper", "continuar"]:
+        esperado = f"'{palabra}' solo va dentro de un 'mientras' o de un 'para'"
+        assert falla(f'mostrar("antes")\n{palabra}\n').mensaje == esperado
+        assert falla(f"si verdadero {{ {palabra} }}").mensaje == esperado
+        # una función declarada dentro de un bucle no está "dentro" del bucle
+        assert falla(f"mientras verdadero {{\n funcion f() {{ {palabra} }}\n}}").mensaje == esperado
+    assert "palabra propia de Mate" in falla("sea romper = 1").mensaje
+    assert falla("para i en rango(3) { break }").mensaje == "en Mate 'break' se escribe 'romper'"
+    assert falla("para i en rango(3) { continue }").mensaje == \
+        "en Mate 'continue' se escribe 'continuar'"
+
+
+def test_el_freno_sigue_cortando_un_bucle_que_solo_continua():
+    interprete = mate.Interprete(salida=lambda _: None)
+    interprete.max_pasos = 500
+    with pytest.raises(mate.ErrorMate) as info:
+        interprete.correr(mate.analizar("mientras verdadero { continuar }"))
+    assert info.value.clase == "limite"
+
+
+# Mejora 48: leer()
+
+def correr_con_teclado(fuente, respuestas, pruebas=False):
+    salida, preguntas, respuestas = [], [], list(respuestas)
+
+    def teclado(pregunta):
+        preguntas.append(pregunta)
+        if not respuestas:
+            raise EOFError
+        return respuestas.pop(0)
+
+    interprete = mate.Interprete(salida=salida.append)
+    interprete.entrada = teclado
+    resultados = interprete.correr(mate.analizar(fuente), pruebas=pruebas)
+    return salida, preguntas, resultados
+
+
+def test_leer_le_pide_un_dato_a_la_persona():
+    salida, preguntas, _ = correr_con_teclado(
+        'sea nombre = leer("¿Cómo te llamás?")\nsea edad = numero(leer("¿Edad?"))\n'
+        'leer("Enter para seguir")\nmostrar("Hola {nombre}, el año que viene tenés {edad + 1}")',
+        ["  Ana \n", "30", ""])
+    assert preguntas == ["¿Cómo te llamás?", "¿Edad?", "Enter para seguir"]
+    assert salida == ["Hola Ana, el año que viene tenés 31"]
+
+
+def test_leer_en_las_pruebas_usa_la_respuesta_preparada():
+    fuente = ('funcion saludo() { devolver "Hola " + leer("¿Nombre?", "Pepe") }\n'
+              'mostrar(saludo())\nprueba "saluda" { asegurar saludo() == "Hola Pepe" }')
+    salida, preguntas, resultados = correr_con_teclado(fuente, ["Ana"], pruebas=True)
+    assert (salida, preguntas, resultados) == (["Hola Pepe"], [], [("saluda", None)])
+    # al correr de verdad se usa lo que escribe la persona
+    assert correr_con_teclado(fuente, ["Ana"])[0] == ["Hola Ana"]
+    # y si no hay teclado (la entrada está cerrada), la preparada
+    assert correr_con_teclado(fuente, [])[0] == ["Hola Pepe"]
+    with pytest.raises(mate.ErrorMate) as info:
+        correr_con_teclado('leer("¿Nombre?")', [], pruebas=True)
+    assert "dale una respuesta preparada" in info.value.mensaje
+    with pytest.raises(mate.ErrorMate) as info:
+        correr_con_teclado('leer("¿Nombre?")', [])
+    assert "no hay nadie para contestar" in info.value.mensaje
+
+
+def test_un_agente_no_puede_leer_del_teclado():
+    with pytest.raises(mate.ErrorMate) as info:
+        correr_con_teclado("""
+            mensaje P
+            agente A { al recibir P { responder leer("¿Qué contesto?") } }
+            mostrar(preguntar P {} a A)
+        """, ["algo"])
+    assert info.value.mensaje.startswith("leer() solo se usa desde el programa principal")
+    assert falla("leer(5)").mensaje == "leer() espera texto y recibió numero"
+    assert "función incluida" in falla('sea leer = "x"').mensaje
+
+
+def test_leer_por_la_linea_de_comandos(tmp_path):
+    archivo = tmp_path / "saludo.mate"
+    archivo.write_text('sea n = leer("¿Nombre?")\nmostrar("Hola {n}")\n', encoding="utf-8")
+    r = subprocess.run([sys.executable, str(RAIZ / "mate.py"), "correr", str(archivo)],
+                       input="Ana\n", capture_output=True, encoding="utf-8",
+                       env=dict(os.environ, PYTHONIOENCODING="utf-8"))
+    assert (r.returncode, r.stdout, r.stderr) == (0, "¿Nombre? Hola Ana\n", "")
+    r = subprocess.run([sys.executable, str(RAIZ / "mate.py"), "correr", str(archivo)],
+                       input="", capture_output=True, encoding="utf-8",
+                       env=dict(os.environ, PYTHONIOENCODING="utf-8"))
+    assert r.returncode == 1 and "no hay nadie para contestar" in r.stderr
+    assert "Traceback" not in r.stderr
+
+
+def test_el_readme_avisa_lo_que_cambio_en_la_tanda_4():
+    leeme = (RAIZ / "README.md").read_text(encoding="utf-8")
+    for frase in ["calcula un valor y no hace nada", "no puede empezar con", "ya existe afuera",
+                  "comparar un texto con un número", "`romper`", "`continuar`", "`leer`",
+                  "total += precio", "mate.py guia", "01_hola.mate"]:
+        assert frase in leeme, frase

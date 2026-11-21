@@ -29,6 +29,94 @@ En Windows (PowerShell) es lo mismo con `python` y barras al revés:
 python mate\mate.py correr mate\ejemplos\hola.mate
 ```
 
+## Primeros pasos en Windows
+
+No hace falta saber programar ni instalar nada más que Python.
+
+**1. Instalar Python (una sola vez).** Bajalo de `python.org/downloads` y abrí el instalador.
+En la primera pantalla, abajo, marcá la casilla **"Add python.exe to PATH"** antes de tocar
+"Install Now". Sin esa casilla, Windows después no encuentra a Python.
+
+**2. Abrir PowerShell en la carpeta de trabajo.** En el Explorador de archivos entrá a la
+carpeta donde está la carpeta `mate` (tenés que ver `mate` como una carpeta más, no estar
+adentro). Hacé clic en la barra de arriba donde figura la dirección, escribí `powershell` y
+apretá Enter. Se abre una ventana azul o negra: ahí se escriben las órdenes. Para comprobar
+que Python quedó bien instalado:
+
+```
+python --version
+```
+
+Tiene que contestar algo como `Python 3.12.4`. Si dice que `python` "no se reconoce", cerrá
+PowerShell, volvé a correr el instalador marcando la casilla del paso 1 y abrí PowerShell de nuevo.
+
+**3. Escribir el programa en el Bloc de notas.** En esa misma ventana escribí:
+
+```
+notepad hola.mate
+```
+
+El Bloc de notas pregunta si querés crear el archivo: decile que sí. Escribí este renglón y
+guardá con `Ctrl+S`:
+
+```
+mostrar("Hola desde Mate")
+```
+
+Si en cambio creás el archivo desde el Bloc de notas con "Guardar como", elegí
+**Tipo: Todos los archivos** y **Codificación: UTF-8**; si no, queda como `hola.mate.txt`
+(Mate igual te avisa cuando pasa).
+
+**4. Correrlo.** De vuelta en PowerShell:
+
+```
+python mate\mate.py correr hola.mate
+```
+
+Tiene que aparecer `Hola desde Mate`. Con la flecha para arriba vuelve la última orden, así no
+hay que tipearla de nuevo cada vez que cambiás el programa.
+
+**5. Para escribir menos: `mate.bat`.** Al lado de `mate.py` hay un `mate.bat` que hace lo mismo
+con una orden más corta:
+
+```
+.\mate\mate correr hola.mate
+```
+
+También podés arrastrar un archivo `.mate` con el mouse y soltarlo encima de `mate.bat`: lo
+corre y deja la ventana abierta hasta que apretás una tecla. (El `mate.bat` se escribió con
+cuidado pero todavía no se probó en una Windows de verdad: si hace algo raro, la orden larga
+del paso 4 anda siempre.)
+
+**6. Si algo sale mal.** Mate te dice el archivo, el número de renglón y qué pasó, en
+castellano. En el Bloc de notas, `Ctrl+G` te lleva a ese renglón.
+
+**7. Seguir aprendiendo.** En `mate\ejemplos` hay seis programas cortos, explicados renglón por
+renglón, para leer y correr en orden:
+
+| Archivo | Qué enseña |
+|---|---|
+| `01_hola.mate` | mostrar algo en pantalla |
+| `02_variables.mate` | guardar valores con `sea` y `var`, plata y textos |
+| `03_decisiones.mate` | `si`, `sino si`, `sino` |
+| `04_listas_y_bucles.mate` | listas, mapas, `para`, `mientras`, `romper` y `continuar` |
+| `05_funciones_y_pruebas.mate` | funciones, errores atajados y pruebas |
+| `06_primer_agente.mate` | el primer agente con sus mensajes |
+
+```
+python mate\mate.py correr mate\ejemplos\01_hola.mate
+```
+
+**8. Pedirle un programa a una IA.** Esta orden imprime una página con todo Mate:
+
+```
+python mate\mate.py guia
+```
+
+Copiá lo que muestra y pegalo al empezar un chat con un asistente (Claude, por ejemplo) antes
+de pedirle el programa: así escribe Mate de verdad y no inventa palabras. Para guardarla en un
+archivo y abrirla con el Bloc de notas: `python mate\mate.py guia > guia.txt`.
+
 ## La línea de comandos
 
 | Qué escribís | Qué hace |
@@ -36,6 +124,7 @@ python mate\mate.py correr mate\ejemplos\hola.mate
 | `correr archivo.mate` | corre el programa (también alcanza con poner solo `archivo.mate`) |
 | `probar archivo.mate` | corre las pruebas que el programa trae adentro |
 | `verificar archivo.mate` | revisa el programa sin correrlo |
+| `guia` | imprime una página con todo Mate, para pegarle a una IA (`python mate\mate.py guia`) |
 | `ayuda` | muestra las órdenes y un ejemplo listo para copiar |
 | `--traza` | muestra la conversación entre agentes, mensaje por mensaje |
 | `--sin-limite` | no corta los programas que dan muchísimos pasos |
@@ -72,6 +161,25 @@ Mate nunca debería mostrarte un error de Python en inglés:
   renglón, y `numero("inf")` o `numero("nan")` no se aceptan.
 - **Consolas viejas de Windows**: si no pueden mostrar `✓`, `✗` o `→`, Mate escribe `OK`,
   `FALLA` y `->`.
+- **Llaves, paréntesis y corchetes sin cerrar**: en vez de quejarse del final del archivo, el
+  error dice dónde se abrió: `la llave que se abrió en la línea 4 (al recibir Ping) nunca se
+  cierra`.
+- **Un renglón que no hace nada**: `i + 1` suelto, `mostrar "hola"` sin paréntesis o
+  `agregar(lista, 4)` sin guardar el resultado antes pasaban en silencio. Ahora son un error
+  que dice qué faltó (`este renglón calcula un valor y no hace nada con él`, `a 'mostrar' le
+  faltan los paréntesis`, `agregar() no cambia la lista: devuelve una nueva`).
+- **Dónde termina un renglón**: una sentencia termina donde termina su renglón. Sigue en el
+  de abajo solo si quedó abierto un `(`, un `[` o una `{`, o si el renglón termina en un
+  operador (`+`, `-`, `y`, `==`, `=`...) o en una coma. Un renglón no puede empezar con `+`,
+  `*`, `/`, `==`, `y` u `o`; y un `-1` al principio de un renglón ya no se pega a la cuenta
+  de arriba. `responder`, `fallar`, `enviar` y `asegurar` llevan lo suyo en el mismo renglón.
+- **Un `sea` de más**: dentro de un `si`, `para`, `mientras` o `intentar`, escribir
+  `sea cuenta = i` cuando ya hay una `cuenta` afuera no cambiaba nada y no avisaba. Ahora el
+  error dice `'cuenta' ya existe afuera de este bloque` y que hay que sacar el `sea`. Lo
+  mismo con un `estado` del agente. (Una función o una prueba sí pueden usar adentro un
+  nombre que también existe en el programa.)
+- **Comparar un texto con un número**: `"18" == 18` daba `falso` sin avisar. Ahora es un
+  error que sugiere `numero("18")`. Comparar con `nada` sigue valiendo.
 - **El renglón del error**: debajo del mensaje Mate muestra el renglón señalado, por ejemplo
   `    2 | mostrar(totl)`. Para ir a ese renglón en el Bloc de notas: `Ctrl+G` y el número.
 - **Nombres mal tipeados**: si escribís `totl` y existe `total`, o `mostar` en vez de
@@ -132,6 +240,8 @@ prueba "cotiza precio por cantidad" {
 | Modificar una copia no toca el original | `var b = a` y después `b.n[0] = 99` deja `a` intacto |
 | Los errores dicen la línea y se pueden atajar | `intentar { ... } si falla e { ... }` |
 | Las pruebas viven al lado del código | `prueba "nombre" { asegurar ... }` y `mate probar` |
+| Un renglón que no sirve para nada se avisa | `agregar(lista, 4)` sin guardar el resultado es un error |
+| Atajos solo donde ahorran de verdad | `total += precio` y `total -= 1` (no hay `*=` ni `/=`) |
 
 ## Cómo hablan los agentes
 
@@ -224,13 +334,44 @@ sea x = 1                  var y = [1, 2]             y[0] = 5
 funcion doble(n) { devolver n * 2 }
 si a > b { } sino si a == b { } sino { }
 mientras cond { }          para item en lista { }
+romper                     continuar                  (solo dentro de mientras o para)
+y += 1                     y -= 1                     (lo mismo que y = y + 1)
 y  o  no   ==  !=  <  <=  >  >=   +  -  *  /  %
 { nombre: "yerba", precio: 3500 }       mapa.nombre      mapa["nombre"]
 ```
 
 Funciones incluidas: `mostrar`, `largo`, `texto`, `numero`, `tipo`, `tiene`, `claves`, `valores`,
 `agregar`, `quitar`, `rango`, `sumar`, `ordenar`, `redondear`, `unir`, `partir`, `mayusculas`,
-`minusculas`, `a_json`, `de_json`, `pesos`.
+`minusculas`, `a_json`, `de_json`, `pesos`, `leer`.
+
+### Pedirle un dato a la persona: `leer`
+
+```
+sea nombre = leer("¿Cómo te llamás?")
+sea cantidad = numero(leer("¿Cuántos paquetes?", "3"))
+```
+
+- `leer` muestra la pregunta, espera que la persona escriba y apriete Enter, y devuelve lo
+  escrito como **texto** (sin los espacios de las puntas). Para hacer cuentas, pasalo por
+  `numero(...)`.
+- El segundo valor es la **respuesta preparada**: es lo que devuelve `leer` cuando corren las
+  pruebas (`probar` nunca espera el teclado) o cuando no hay teclado. Si en una prueba se
+  llega a un `leer` sin respuesta preparada, es un error que lo explica.
+- Solo se usa desde el programa principal (o desde una función llamada por él). Un agente no
+  puede frenar a todos esperando el teclado: se lee el dato afuera y se le manda en un mensaje.
+
+### Salir de un bucle: `romper` y `continuar`
+
+```
+para cosa en compras {
+    si cosa == "" { continuar }      # salta a la vuelta siguiente
+    si cosa == "fin" { romper }      # corta el bucle acá
+    mostrar(cosa)
+}
+```
+
+Valen dentro de `para` y de `mientras`, y afectan al bucle más cercano. Fuera de un bucle,
+Mate lo avisa antes de correr.
 
 ### Números y plata
 
@@ -258,6 +399,9 @@ Funciones incluidas: `mostrar`, `largo`, `texto`, `numero`, `tipo`, `tiene`, `cl
   así lo que escribe `pesos()` se puede volver a leer. Un texto vacío o que no es un número
   (`"1e5"`, `"hola"`, `".5"`, `"5."`, `"1_000"`) es un error: medio se escribe `"0.5"` o `"0,5"`.
 
+- La igualdad no convierte nada, tampoco adentro de una lista o un mapa: `1 == verdadero` da
+  `falso` y `[1] == [verdadero]` también.
+
 Los nombres de mensajes y agentes empiezan con mayúscula; el resto, con minúscula.
 
 Detalles: `partir("abc", "")` separa letra por letra; `redondear(3.14159, 2)` lleva una cantidad
@@ -282,6 +426,14 @@ seguro es por una de estas:
 | Los decimales se muestran con 12 cifras como mucho, y `fallar 0.1 + 0.2` dice `0.3` | Ver "Números y plata" |
 | Cambió la redacción de varios errores (`largo() lleva 1 valor y recibió 2`, sugerencias `¿Quisiste decir...?`, `las claves de un mapa son textos, no numero`) | No comparar el texto entero del error con `==`; buscar una palabra con `tiene(e, "clave")` |
 | `if`, `else`, `true`, `función`... usados como si fueran de Mate son un error antes de correr | Escribir la palabra de Mate que dice el error |
+| Un renglón que solo calcula (`i + 1`, `largo(x)`, `agregar(lista, 4)` sin guardar) es un error: "calcula un valor y no hace nada con él" | Guardar el resultado (`lista = agregar(lista, 4)`), mostrarlo o borrar el renglón |
+| Un renglón no puede empezar con `+`, `*`, `/`, `==`, `y`, `o`; y un `-` al principio de un renglón empieza una sentencia nueva | Dejar el operador al final del renglón de arriba, o encerrar la cuenta entre paréntesis |
+| `responder`, `fallar`, `enviar` y `asegurar` con lo suyo en el renglón de abajo son un error | Escribirlo en el mismo renglón |
+| `sea x = ...` dentro de un `si`, `para`, `mientras` o `intentar` cuando `x` "ya existe afuera" (o es un `estado` del agente) es un error | Sacar el `sea` si querías cambiar la de afuera (tiene que ser `var`), o elegir otro nombre |
+| "No se puede comparar un texto con un número" con `==` o `!=` | Convertir uno de los dos: `numero(t) == 18` |
+| `[1] == [verdadero]` y `{ a: 1 } == { a: verdadero }` ahora dan `falso` | Nada: antes daban `verdadero` por error |
+| `romper`, `continuar` son palabras de Mate y `leer` es una función incluida: no sirven como nombre de variable | Elegir otro nombre |
+| El error de una llave sin cerrar cambió de redacción ("la llave que se abrió en la línea...") | No comparar el texto entero del error |
 
 ## Límites de la versión 0.2
 

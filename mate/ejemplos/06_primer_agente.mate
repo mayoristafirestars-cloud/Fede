@@ -1,0 +1,51 @@
+# Paso 6: el primer agente. Un agente es alguien que recibe mensajes y contesta.
+
+# Primero se declara qué mensajes existen y qué datos lleva cada uno: es el contrato.
+# Si a un mensaje le falta un dato, le sobra uno o es del tipo equivocado, Mate avisa.
+mensaje Pedido { producto: texto, cantidad: numero }
+mensaje Cotizacion { producto: texto, total: numero }
+mensaje CambioDePrecio { producto: texto, precio: numero }
+
+# Los nombres de mensajes y agentes empiezan con mayúscula.
+agente Vendedor {
+    # 'estado' es la memoria privada del agente: nadie más la puede tocar.
+    estado precios = { yerba: 3500, azucar: 1200 }
+
+    # 'al recibir' dice qué hace cuando le llega un mensaje de ese tipo.
+    # 'como p' le pone nombre al mensaje recibido para leer sus datos.
+    al recibir Pedido como p {
+        si no tiene(precios, p.producto) {
+            fallar "no vendo {p.producto}"
+        }
+        # 'responder' le contesta al que preguntó.
+        responder Cotizacion { producto: p.producto, total: precios[p.producto] * p.cantidad }
+    }
+
+    # Este mensaje cambia el estado y no contesta nada.
+    al recibir CambioDePrecio como c {
+        precios[c.producto] = c.precio
+    }
+}
+
+# 'preguntar' manda un mensaje y espera la respuesta.
+sea cotizacion = preguntar Pedido { producto: "yerba", cantidad: 2 } a Vendedor
+mostrar("Dos de yerba salen {pesos(cotizacion.total, 0)}")
+
+# 'enviar' manda un mensaje y sigue de largo, sin esperar respuesta.
+enviar CambioDePrecio { producto: "yerba", precio: 4000 } a Vendedor
+
+sea nueva = preguntar Pedido { producto: "yerba", cantidad: 2 } a Vendedor
+mostrar("Después del aumento salen {pesos(nueva.total, 0)}")
+
+# Cada prueba arranca con el agente como estaba al terminar de declararlo:
+# acá la yerba vuelve a salir 3500.
+prueba "cotiza precio por cantidad" {
+    sea c = preguntar Pedido { producto: "azucar", cantidad: 3 } a Vendedor
+    asegurar c.total == 3600
+}
+
+prueba "el cambio de precio se nota en la cotización siguiente" {
+    enviar CambioDePrecio { producto: "azucar", precio: 1500 } a Vendedor
+    sea c = preguntar Pedido { producto: "azucar", cantidad: 1 } a Vendedor
+    asegurar c.total == 1500
+}

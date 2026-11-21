@@ -1,0 +1,31 @@
+# Paso 2: guardar valores con nombre.
+
+# 'sea' guarda un valor que no cambia nunca más. Si después lo querés cambiar, Mate avisa.
+sea yerba = 3500
+
+# 'var' guarda un valor que sí puede cambiar.
+var total = 0
+
+# Para cambiar una 'var' se escribe el nombre, un = y el valor nuevo (sin 'var' adelante).
+total = yerba * 2
+
+# 'total += 1200' es la forma corta de 'total = total + 1200'. También existe '-='.
+total += 1200
+total -= 200
+
+# pesos(...) arma el texto de un importe como se escribe acá: $ 8.000,00
+mostrar("Total: {pesos(total)}")
+
+# Los números con decimales llevan punto, no coma.
+sea iva = 0.21
+
+# redondear(numero, decimales) redondea como en la escuela.
+mostrar("Con IVA: {pesos(redondear(total * (1 + iva), 2))}")
+
+# Un texto y un número no se mezclan solos: "Total: " + total es un error.
+# Se arma con llaves, como arriba, o convirtiendo con texto(...).
+mostrar("Son " + texto(total) + " pesos")
+
+# Al revés, numero(...) convierte un texto en un número. Entiende "1.234,50".
+sea precio = numero("1.234,50")
+mostrar(precio + 1)

@@ -171,6 +171,8 @@ arrancan en "pendiente". Las primeras 36 son las que se programan primero, en tr
 - **Tanda 1 (mejoras 1 a 12)**: que nunca aparezca un error interno en inglés.
 - **Tanda 2 (mejoras 13 a 24)**: números que se ven bien y errores que ayudan.
 - **Tanda 3 (mejoras 25 a 36)**: cerrar las garantías entre agentes y en las pruebas.
+- **Tanda 4 (mejoras 37 a 48)**: renglones sin sorpresas, atajos (`+=`, `romper`, `leer`) y
+  primeros pasos en Windows.
 
 ### Tanda 1: nunca un error interno en inglés
 
@@ -326,55 +328,65 @@ Hoy un error en un agente traído con `usar` nombra otro archivo, y en `probar` 
 El error aparece en el renglón del `enviar`, se puede atajar con `intentar`, y no llega suelto al final.
 *Mirada: agentes · Esfuerzo: chico · Estado: hecha*
 
-### Lo que sigue
+### Tanda 4: renglones sin sorpresas y primeros pasos
 
 **37. Llaves, paréntesis y corchetes sin cerrar dicen dónde se abrieron**
 "La llave que se abrió en la línea 4 (al recibir Ping) nunca se cierra", en vez de señalar el final del archivo.
-*Mirada: robustez, principiante · Esfuerzo: chico · Estado: pendiente*
+Nota al hacerla: el número de renglón del error sigue siendo el del final (donde Mate notó la falta) y el mensaje dice dónde se abrió; así no cambia lo que ya mostraba la mejora 24. Cuando falta una llave en el medio, Mate adivina cuál es por la sangría.
+*Mirada: robustez, principiante · Esfuerzo: chico · Estado: hecha*
 
 **38. Un renglón que calcula algo y no lo usa es un error**
 `i + 1` suelto, `mostrar "hola"` sin paréntesis o `agregar(lista, 4)` sin guardar el resultado hoy no hacen nada y nadie avisa. Va a ser un error con la pista correcta.
-*Mirada: las cuatro · Esfuerzo: mediano · Estado: pendiente*
+Nota al hacerla: se avisa al llegar a ese renglón, no antes de correr, para que un error de la propia cuenta (`numero("x")` suelto) se siga viendo primero. Llamar a una función propia, `mostrar`, `leer`, `preguntar` y `crear` pueden ir sueltos.
+*Mirada: las cuatro · Esfuerzo: mediano · Estado: hecha*
 
 **39. Una sola regla para saber dónde termina un renglón**
 Hoy un `-1` al principio de un renglón se pega al renglón de arriba, y `responder` solo se come la línea siguiente. Cada sentencia va a ir en su renglón.
-*Mirada: lenguaje, robustez, crítico · Esfuerzo: mediano · Estado: pendiente*
+Nota al hacerla: la regla es "un renglón termina donde termina, salvo que quede abierto un `(`, `[` o `{`, o que termine en un operador o una coma". Lo que NO se hizo: prohibir dos sentencias en un mismo renglón (`sea a = 1 sea b = 2`), porque las pruebas que ya existían lo usan; queda permitido aunque no se recomienda.
+*Mirada: lenguaje, robustez, crítico · Esfuerzo: mediano · Estado: hecha*
 
 **40. Un `sea` de adentro no puede tapar una variable de afuera**
 Escribir `sea cuenta = i` dentro de un bucle cuando ya existe `cuenta` afuera hoy no cambia nada y no avisa. Va a ser un error con la pista "sacá el 'sea'".
-*Mirada: lenguaje, crítico · Esfuerzo: chico · Estado: pendiente*
+Nota al hacerla: vale para los bloques de adentro (`si`, `para`, `mientras`, `intentar`) y para los estados del agente. Una función o una prueba sí pueden repetir un nombre del programa: si no, una función traída con `usar` podría romperse por una variable de otro archivo.
+*Mirada: lenguaje, crítico · Esfuerzo: chico · Estado: hecha*
 
 **41. Comparar un texto con un número es un error**
 Hoy `"18" == 18` da falso en silencio. Va a avisar y sugerir `numero(...)`. Comparar con `nada` sigue permitido. De paso se corrige que `[1] == [verdadero]` dé verdadero.
-*Mirada: principiante, robustez · Esfuerzo: chico · Estado: pendiente*
+*Mirada: principiante, robustez · Esfuerzo: chico · Estado: hecha*
 
 **42. README con "Primeros pasos en Windows"**
 Instalar Python, abrir PowerShell, guardar un `.mate` desde el Bloc de notas y correrlo, con los comandos tal como se escriben en Windows.
-*Mirada: principiante · Esfuerzo: mediano · Estado: pendiente*
+*Mirada: principiante · Esfuerzo: mediano · Estado: hecha*
 
 **43. Ejemplos graduales, de tres renglones en adelante**
 `01_hola.mate`, `02_variables.mate`, hasta `06_primer_agente.mate`, comentados renglón por renglón e incluidos en las pruebas para que no queden viejos.
-*Mirada: principiante · Esfuerzo: mediano · Estado: pendiente*
+*Mirada: principiante · Esfuerzo: mediano · Estado: hecha*
 
 **44. Un `mate.bat` para escribir menos**
 Permite escribir `mate correr archivo.mate` o arrastrar un archivo encima, y deja la ventana abierta para leer el resultado. (Que la ventana se cierre sola con doble clic es una suposición, no se pudo comprobar.)
-*Mirada: principiante, crítico · Esfuerzo: chico · Estado: pendiente*
+Nota al hacerla: `mate.bat` quedó escrito pero NO se pudo probar en una Windows de verdad (se programó en Linux). Falta que el dueño lo pruebe: doble clic, arrastrar un archivo y `.\mate\mate correr archivo.mate` desde PowerShell. El README lo avisa.
+*Mirada: principiante, crítico · Esfuerzo: chico · Estado: hecha*
 
 **45. Orden `guia`: una página de Mate para pegarle a una IA**
 Imprime la referencia completa y compacta del lenguaje, para copiarla al empezar un chat con un asistente y que escriba Mate sin inventar.
-*Mirada: crítico · Esfuerzo: chico · Estado: pendiente*
+Nota al hacerla: la guía trae un programa completo de ejemplo y una prueba automática lo corre, para que no quede vieja. Cuando salga la tabla única de funciones (mejora 53) conviene armar la lista de funciones desde ahí.
+*Mirada: crítico · Esfuerzo: chico · Estado: hecha*
 
 **46. Atajos `+=` y `-=`**
 `suma += precio` en vez de `suma = suma + precio`.
-*Mirada: lenguaje · Esfuerzo: chico · Estado: pendiente*
+*Mirada: lenguaje · Esfuerzo: chico · Estado: hecha*
 
 **47. `romper` y `continuar` en los bucles**
 Para salir de un `para` o `mientras` antes de tiempo, o saltar a la vuelta siguiente.
-*Mirada: lenguaje · Esfuerzo: chico · Estado: pendiente*
+Nota al hacerla: `romper` y `continuar` pasan a ser palabras propias de Mate (ya no sirven como nombre de variable).
+*Mirada: lenguaje · Esfuerzo: chico · Estado: hecha*
 
 **48. `leer("pregunta")` para pedirle un dato a la persona**
 Solo desde el programa principal (un agente no puede frenar todo esperando el teclado). En las pruebas usa respuestas preparadas.
-*Mirada: lenguaje, principiante, crítico · Esfuerzo: chico · Estado: pendiente*
+Nota al hacerla: la "respuesta preparada" es el segundo valor: `leer("¿Cuántos?", "3")`. En `probar` nunca se espera el teclado.
+*Mirada: lenguaje, principiante, crítico · Esfuerzo: chico · Estado: hecha*
+
+### Lo que sigue
 
 **49. Comillas dentro de `"{...}"`**
 Se va a poder escribir `"valor {m["a"]}"`, que hoy figura como límite en el README.

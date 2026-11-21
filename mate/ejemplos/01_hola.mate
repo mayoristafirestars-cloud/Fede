@@ -1,0 +1,13 @@
+# Paso 1: mostrar algo en la pantalla.
+# Los renglones que empiezan con # son comentarios: Mate no los lee, son para vos.
+# Para correrlo en Windows:  python mate\mate.py correr mate\ejemplos\01_hola.mate
+
+# mostrar(...) escribe en la pantalla lo que va entre paréntesis.
+# Los textos van siempre entre comillas dobles.
+mostrar("Hola, mundo")
+
+# Dentro de un texto, lo que va entre llaves se calcula: acá muestra "1 + 1 es 2".
+mostrar("1 + 1 es {1 + 1}")
+
+# A mostrar se le pueden dar varios valores separados por comas.
+mostrar("Mate", "amargo", 3)
