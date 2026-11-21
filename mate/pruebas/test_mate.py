@@ -6936,3 +6936,399 @@ def test_el_readme_la_guia_y_la_ayuda_cuentan_el_registro_de_errores_de_uso(caps
                   "**Nada sale de la computadora.**"]:
         assert frase in seccion, frase
     assert seccion.count("Nota de lo decidido") == 8
+
+
+# ── Correcciones de la revisión de la 0.4 ──
+
+def test_el_registro_tapa_un_dato_aunque_traiga_un_apostrofo(tmp_path, con_registro):
+    for mensaje, tapado in [
+        ("'O'Higgins 4500 depto 3' no es un número", "'<nombre>' no es un número"),
+        ("'debe $ 5.000 a D'Angelo, Juan' no es un número", "'<nombre>' no es un número"),
+        ("no pude abrir 'clientes D'Angelo Juan.mate'", "no pude abrir '<nombre>'"),
+        ("no existe 'totl'. ¿Quisiste decir 'total'?",
+         "no existe '<nombre>'. ¿Quisiste decir '<nombre>'?"),
+        ("'x' no es un campo de 'D'Angelo'", "'<nombre>' no es un campo de '<nombre>'"),
+        ("falta el 'al recibir' de 'Pedido'", "falta el 'al recibir' de '<nombre>'"),
+        # una comilla que queda suelta: se tapa todo, de la primera a la última
+        ("'D' Angelo Juan' no es un número", "'<texto>' no es un número"),
+    ]:
+        assert mate.tapar_datos(mensaje) == tapado, mensaje
+    correr_mate, registro = con_registro
+    programa = tmp_path / "q.mate"
+    programa.write_text('mostrar(numero("O\'Higgins 4500 depto 3"))\n', encoding="utf-8")
+    assert correr_mate("correr", programa)[0] == 1
+    [renglon] = renglones_anotados(registro)
+    assert renglon[3] == "al correr: '<nombre>' no es un número"
+    assert renglon[6] == "'<nombre>' no es un número"
+    assert "Higgins" not in registro.read_text(encoding="utf-8-sig")
+
+
+def test_anotar_un_error_con_un_texto_enorme_no_tarda():
+    import time
+    for texto in ["'" + "a-b_c" * 300_000 + "' no es un número", "abcdefghij" * 100_000,
+                  'x \\" ' * 100_000, "juan@" * 50_000, "'a' \"b' " * 50_000]:
+        empezo = time.time()
+        tapado = mate.tapar_datos(texto)
+        assert time.time() - empezo < 2 and len(tapado) <= 303
+    assert mate.tapar_datos("'" + "a-b_c" * 300_000 + "' no es un número") == \
+        "'<nombre>' no es un número"
+    # y lo que quedó cortado por la mitad no se escapa
+    assert "Perez" not in mate.tapar_datos('dijo "' + "Juan Perez " * 1000)
+    assert "Perez" not in mate.tapar_datos("'" + "Juan Perez " * 1000)
+
+
+def test_ctrl_c_a_mitad_de_un_mensaje_no_guarda_lo_que_cambio_ese_mensaje(
+        tmp_path, capsys, monkeypatch):
+    import urllib.request
+
+    def cortar(*_a, **_k):  # Ctrl+C mientras el agente espera a la IA
+        raise KeyboardInterrupt
+
+    monkeypatch.setattr(urllib.request, "urlopen", cortar)
+    monkeypatch.setenv("ANTHROPIC_API_KEY", "sk-ant-clave-de-mentira-para-la-prueba")
+    programa = """
+        mensaje Hola {}
+        mensaje Lento {}
+        mensaje Pasar {}
+        agente A {
+            estado recordado n = 0
+            al recibir Hola { n += 1
+                responder n }
+            al recibir Lento { n += 100
+                sea x = consultar_ia("Contestá corto", "¿Seguimos?")
+                responder n }
+        }
+        agente B {
+            estado recordado veces = 0
+            al recibir Pasar { veces += 1
+                responder preguntar Lento {} a A }
+        }
+        mostrar(preguntar Hola {} a A)
+        mostrar(preguntar Pasar {} a B)
+    """
+    codigo, salida, err = por_main(tmp_path, capsys, programa)
+    assert (codigo, salida) == (130, "1\n") and "Ctrl+C" in err
+    agentes = memoria_de(tmp_path)["agentes"]
+    assert agentes["A"]["estado"] == {"n": 1}  # el +100 del mensaje cortado no queda
+    assert agentes["B"]["estado"] == {"veces": 0}  # ni lo del que esperaba la respuesta
+
+
+@pytest.mark.parametrize("fuente, mostrado", [
+    ("sea aprender = 3\nmostrar(aprender)", ["3"]),
+    ('sea lecciones = ["lunes", "martes"]\nmostrar(lecciones)', ['["lunes", "martes"]']),
+    ("var consultas_ia = 1\nconsultas_ia += 1\nmostrar(consultas_ia)", ["2"]),
+    ("funcion aprender(a, b, c) { devolver a + b + c }\nmostrar(aprender(1, 2, 3))", ["6"]),
+    ("funcion f(lecciones, aprender) { devolver lecciones + aprender }\nmostrar(f(1, 2))", ["3"]),
+    ("""mensaje Ver {}
+        agente A {
+            estado lecciones = [1]
+            al recibir Ver { lecciones = agregar(lecciones, 2)
+                responder lecciones }
+        }
+        mostrar(preguntar Ver {} a A)""", ["[1, 2]"]),
+    ("para lecciones en [1, 2] { si lecciones > 1 { sea aprender = lecciones\n"
+     "mostrar(aprender) } }", ["2"]),
+])
+def test_un_programa_de_antes_puede_usar_los_nombres_nuevos_de_la_04(
+        fuente, mostrado, tmp_path, capsys):
+    assert set(mate.SE_PUEDEN_TAPAR) == {"aprender", "lecciones", "consultas_ia"}
+    assert mostrados(fuente) == mostrado
+    # y sigue sin crear ningún archivo: llamar a algo propio no es "usar lo de aprender"
+    codigo, salida, err = por_main(tmp_path, capsys, fuente)
+    assert (codigo, salida.split("\n")[:-1], err) == (0, mostrado, "")
+    assert archivos_de(tmp_path) == ["programa.mate"]
+    assert por_main(tmp_path, capsys, fuente, orden="probar")[0] == 0
+
+
+def test_las_demas_funciones_incluidas_siguen_sin_poder_taparse():
+    for nombre in ["texto", "largo", "consultar_ia", "simular_ia", "mostrar"]:
+        assert f"'{nombre}' es una función incluida de Mate" in falla(f"sea {nombre} = 3").mensaje
+    # y las tres de la 0.4 siguen siendo funciones para quien no les puso su nombre a nada
+    assert "aprender() solo va dentro de un agente" in falla('aprender("x")').mensaje
+    assert "lleva" in falla("mensaje V {}\nagente A { al recibir V { aprender() } }").mensaje
+    assert "es una función incluida de Mate y no se le puede asignar" in \
+        falla("lecciones = 3").mensaje
+
+
+def test_un_mapa_recordado_vuelve_como_mapa_aunque_parezca_un_agente_o_un_mensaje(
+        tmp_path, capsys):
+    programa = """
+        mensaje Hola { quien: texto }
+        mensaje Pedido { n: numero }
+        agente Vendedor {
+            estado recordado mejor = {agente: "nadie"}
+            estado recordado fichas = []
+            estado recordado forma = {tipo: "Pedido", campos: {n: 1}}
+            estado recordado envuelto = {mapa: {mapa: 1}}
+            estado recordado pedido = Pedido { n: 1 }
+            estado recordado n = 0
+            al recibir Hola como h {
+                n += 1
+                mejor = {agente: h.quien}
+                fichas = agregar(fichas, {agente: "Vendedor", ventas: n})
+                fichas = agregar(fichas, {agente: "Vendedor"})
+                responder [n, mejor, tipo(mejor), largo(fichas), tipo(fichas[1]), tipo(forma),
+                           forma.campos.n, envuelto, tipo(pedido)]
+            }
+        }
+        mostrar(preguntar Hola { quien: "Vendedor" } a Vendedor)
+    """
+    for vez in (1, 2, 3):
+        codigo, salida, err = por_main(tmp_path, capsys, programa)
+        assert (codigo, err) == (0, ""), err
+        assert salida == (f'[{vez}, {{agente: "Vendedor"}}, "mapa", {vez * 2}, "mapa", "mapa", '
+                          '1, {mapa: {mapa: 1}}, "Pedido"]\n')
+    estado = memoria_de(tmp_path)["agentes"]["Vendedor"]["estado"]
+    assert estado["mejor"] == {"agente": "Vendedor"} and len(estado["fichas"]) == 6
+    assert estado["forma"] == {"mapa": {"tipo": "Pedido", "campos": {"n": 1}}}
+    assert estado["pedido"] == {"tipo": "Pedido", "campos": {"n": 1}}
+    # a_json y de_json siguen como estaban
+    assert mostrados('mensaje P { n: numero }\nmostrar(a_json({tipo: "P", campos: {n: 1}}))\n'
+                     'mostrar(tipo(de_json(a_json(P { n: 1 }))))') == [
+        '{"tipo": "P", "campos": {"n": 1}}', "P"]
+
+
+CAJA_QUE_RECUERDA = """
+mensaje Suma { n: numero }
+agente Caja {
+    estado recordado total = 0
+    al recibir Suma como s {
+        total += s.n
+        si s.n < 0 { fallar "número negativo" }
+        responder lecciones()
+    }
+}
+"""
+
+
+def test_los_comandos_que_mate_sugiere_se_pueden_pegar_con_nombres_con_espacios(
+        tmp_path, capsys):
+    carpeta = tmp_path / "sub carpeta"
+    carpeta.mkdir()
+    programa = carpeta / "principal ñ.mate"
+    programa.write_text(CAJA_QUE_RECUERDA + 'sea centro = crear Caja llamado "Centro"\n'
+                        "enviar Suma { n: -1 } a Caja\n", encoding="utf-8")
+    codigo, salida, _ = orden_mate(capsys, "lecciones", programa)
+    assert codigo == 0 and f'corregir "{programa}" Caja "la lección"' in salida
+    codigo, salida, _ = orden_mate(capsys, "corregir", programa, "Caja Centro", "para la copia")
+    assert codigo == 0 and salida.splitlines()[-1].endswith(
+        f'lecciones "{programa}" "Caja Centro" --borrar=1')
+    # el nombre de la copia también vale en dos palabras, sin comillas
+    codigo, salida, _ = orden_mate(capsys, "lecciones", programa, "Caja", "Centro", "--borrar=1")
+    assert (codigo, salida) == (0, "Borrada. A Caja Centro le quedan 0 lección(es).\n")
+    codigo, salida, _ = orden_mate(capsys, "corregir", programa, "Caja", "Centro", "ojo con esto")
+    assert codigo == 0 and salida.startswith("Anotado. Caja Centro tiene 1 lección(es):\n"
+                                             "  1. ojo con esto ")
+    assert "Caja" not in memoria_de(carpeta, "principal ñ")["agentes"]
+    # (si no hay una copia con ese nombre, es parte de la lección, como siempre)
+    codigo, salida, _ = orden_mate(capsys, "corregir", programa, "Caja", "Cerrá", "temprano")
+    assert codigo == 0 and "  1. Cerrá temprano " in salida
+    assert mate.para_pegar("hola.mate") == "hola.mate" and mate.para_pegar("") == '""'
+    # el encabezado de la bitácora trae el programa como se lo nombró al correrlo
+    assert orden_mate(capsys, "correr", programa)[0] == 1
+    encabezado = (carpeta / "principal ñ.bitacora.txt").read_text(encoding="utf-8-sig")
+    assert f'bitacora "{programa}"\n' in encabezado
+    sin_espacios = tmp_path / "caja.mate"
+    sin_espacios.write_text(programa.read_text(encoding="utf-8"), encoding="utf-8")
+    assert orden_mate(capsys, "correr", sin_espacios)[0] == 1
+    assert f" bitacora {sin_espacios}\n" in \
+        (tmp_path / "caja.bitacora.txt").read_text(encoding="utf-8-sig")
+
+
+def test_la_memoria_es_del_programa_que_se_corre_y_se_avisa(tmp_path, capsys):
+    agentes = tmp_path / "agentes míos.mate"
+    agentes.write_text(CAJA_QUE_RECUERDA, encoding="utf-8")
+    principal = tmp_path / "principal.mate"
+    principal.write_text('usar "agentes míos.mate"\nmostrar(preguntar Suma { n: 1 } a Caja)\n',
+                         encoding="utf-8")
+    assert orden_mate(capsys, "correr", principal) == (0, "[]\n", "")  # sin nada raro, ni un aviso
+    codigo, salida, _ = orden_mate(capsys, "corregir", agentes, "Caja", "una lección")
+    assert codigo == 0 and "desde la próxima corrida de agentes míos.mate" in salida
+    assert "son del programa que se corre" in salida
+    codigo, salida, err = orden_mate(capsys, "correr", principal)
+    assert (codigo, salida) == (0, "[]\n")
+    assert err == ("aviso: agentes míos.mate tiene su propia memoria (agentes míos.memoria.json) "
+                   "y acá no se usa: la memoria y las lecciones son del programa que se corre. "
+                   "Para que a un agente le llegue una lección en este programa:  "
+                   f'{mate.como_se_llama()} corregir {principal} Caja "la lección"\n')
+    assert orden_mate(capsys, "corregir", principal, "Caja", "una lección")[0] == 0
+    assert orden_mate(capsys, "correr", principal)[1] == '["una lección"]\n'
+    leeme = (RAIZ / "README.md").read_text(encoding="utf-8")
+    assert "**La memoria es del programa que corrés.**" in leeme
+    assert '"Mostrador Centro"' in leeme
+
+
+def test_un_argumento_vacio_al_final_no_es_un_comando_pegado(tmp_path, capsys):
+    programa = tmp_path / "mi_mostrador.mate"
+    programa.write_text(CAJA_QUE_RECUERDA, encoding="utf-8")
+    assert mate.comando_pegado(["correr", str(programa), ""]) is None
+    assert mate.comando_pegado(["corregir", "sub carpeta/principal ñ.mate", "Caja", ""]) is None
+    codigo, _, err = orden_mate(capsys, "corregir", programa, "Caja", "")
+    assert codigo == 2
+    assert err == "la lección está vacía: escribí qué tiene que tener en cuenta el agente\n"
+    codigo, _, err = orden_mate(capsys, "correr", programa, "")
+    assert codigo == 2 and err.startswith("'correr' lleva un solo archivo y recibió 2")
+    codigo, _, err = orden_mate(capsys, "lecciones", programa, "")
+    assert codigo == 2 and "pegó dos veces" not in err
+    # el comando pegado de verdad se sigue avisando
+    assert mate.comando_pegado(["correr", "mio.matepython", "mate\\mate.py", "correr",
+                                "mio.mate"]) == "python mate\\mate.py correr mio.mate"
+
+
+def test_informe_avisa_si_hay_un_informe_mate_y_no_mezcla_borrar_con_para_mejorar(
+        tmp_path, con_registro, monkeypatch):
+    correr_mate, registro = con_registro
+    monkeypatch.chdir(tmp_path)
+    codigo, salida, err = correr_mate("informe")
+    assert codigo == 0 and err == ""
+    (tmp_path / "informe.mate").write_text('mostrar("soy informe")\n', encoding="utf-8")
+    codigo, salida, err = correr_mate("informe")
+    assert codigo == 0 and "Todavía no hay errores de uso anotados" in salida
+    assert err == ("aviso: en esta carpeta hay un informe.mate, pero 'informe' sola es una orden "
+                   "de Mate (muestra los errores de uso). Para correr tu programa:  "
+                   f"{mate.como_se_llama()} correr informe.mate\n")
+    assert correr_mate("correr", "informe.mate") == (0, "soy informe\n", "")
+    (tmp_path / "lecciones.mate").write_text("mostrar(1)\n", encoding="utf-8")
+    codigo, _, err = correr_mate("lecciones")
+    assert codigo == 2 and "para correrlo, correr lecciones.mate" in err
+    leeme = (RAIZ / "README.md").read_text(encoding="utf-8")
+    assert "`bitacora`, `corregir`, `lecciones` e `informe` son órdenes" in leeme
+    # --para-mejorar y --borrar juntas: no se borra nada
+    assert correr_mate("correr", "no_esta.mate")[0] == 2
+    antes = registro.read_bytes()
+    for opciones in (["--para-mejorar", "--borrar"], ["--borrar", "--para-mejorar"]):
+        codigo, salida, err = correr_mate("informe", *opciones, registro=None)
+        assert (codigo, salida) == (2, "")
+        assert "--para-mejorar y --borrar no van juntas, y no borré nada" in err
+    assert registro.read_bytes() == antes
+    assert correr_mate("informe", "--borrar")[0] == 0 and not registro.exists()
+
+
+def test_olvidar_con_la_memoria_rota_avisa_que_se_pierden_las_lecciones_y_guarda_el_archivo(
+        tmp_path, capsys):
+    programa = CUENTA_CLIENTES + "enviar Llego { quien: \"a\" } a Mostrador\n" \
+                          "mostrar(preguntar Cuantos {} a Mostrador)"
+    rota = ('{"agentes": {"Mostrador": {"estado": {"atendidos": 2,}, '
+            '"lecciones": [{"fecha":"x","texto":"valiosa"}]}}}')
+    (tmp_path / "programa.memoria.json").write_text(rota, encoding="utf-8")
+    codigo, salida, err = por_main(tmp_path, capsys, programa, "--olvidar")
+    assert (codigo, salida) == (0, "1\n")
+    assert "los agentes arrancan de cero" in err and "las lecciones no se borran" not in err
+    assert "se pierden también las lecciones" in err and "programa.memoria.rota.json" in err
+    assert "Bloc de notas" in err and "'corregir'" in err
+    assert (tmp_path / "programa.memoria.rota.json").read_text(encoding="utf-8") == rota
+    assert memoria_de(tmp_path)["agentes"]["Mostrador"] == {
+        "estado": {"atendidos": 1}, "lecciones": []}
+    # si no se puede guardar aparte, no corre ni pisa nada
+    (tmp_path / "programa.memoria.json").write_text(rota, encoding="utf-8")
+    (tmp_path / "programa.memoria.rota.json").unlink()
+    (tmp_path / "programa.memoria.rota.json").mkdir()
+    (tmp_path / "programa.memoria.rota.json" / "algo").write_text("x", encoding="utf-8")
+    codigo, salida, err = por_main(tmp_path, capsys, programa, "--olvidar")
+    assert (codigo, salida) == (2, "") and "no pude guardarlo aparte" in err
+    assert (tmp_path / "programa.memoria.json").read_text(encoding="utf-8") == rota
+    leeme = (RAIZ / "README.md").read_text(encoding="utf-8")
+    assert "`mi_mostrador.memoria.rota.json`" in leeme and "**también se pierden**" in leeme
+
+
+def test_una_leccion_puede_empezar_con_guion_y_no_queda_en_el_registro(tmp_path, con_registro):
+    correr_mate, registro = con_registro
+    programa = tmp_path / "mi_mostrador.mate"
+    programa.write_text(CAJA_QUE_RECUERDA, encoding="utf-8")
+    leccion = "-10% a Juan Perez de Lanus, tel 4444-5555"
+    codigo, salida, err = correr_mate("corregir", programa, "Caja", leccion)
+    assert (codigo, err) == (0, "") and f"  1. {leccion} " in salida
+    codigo, salida, _ = correr_mate("corregir", programa, "Caja", "--no mandes nada")
+    assert codigo == 0 and "  2. --no mandes nada " in salida
+    # una opción de verdad después de la lección sigue siendo una opción
+    codigo, salida, _ = correr_mate("corregir", programa, "Caja", "Sé amable", "--sin-registro")
+    assert codigo == 0 and "  3. Sé amable " in salida
+    assert not registro.exists()
+    # una sola palabra con guion se parece a una opción: se explica
+    codigo, _, err = correr_mate("corregir", programa, "Caja", "-urgente")
+    assert codigo == 2 and "no conozco la opción -urgente" in err
+    assert "Si era parte de la lección, escribila entre comillas y sin el guion adelante" in err
+    # y lo que la persona escribió con un guion adelante nunca queda en el registro
+    assert correr_mate("correr", programa, "-10% a Juan Perez de Lanus, tel 4444-5555")[0] == 2
+    assert correr_mate("lecciones", programa, "--no mandes nada a Perez")[0] == 2
+    anotado = registro.read_text(encoding="utf-8-sig")
+    assert len(renglones_anotados(registro)) == 3
+    for dato in ["Juan", "Perez", "Lanus", "mandes", "urgente"]:
+        assert dato not in anotado, dato
+
+
+def test_una_opcion_parecida_a_borrar_se_sugiere(tmp_path, capsys):
+    programa = tmp_path / "mi_mostrador.mate"
+    programa.write_text(CAJA_QUE_RECUERDA, encoding="utf-8")
+    for escrita in ("--borra=1", "-borrar=1", "--borar=1"):
+        codigo, _, err = orden_mate(capsys, "lecciones", programa, "Caja", escrita)
+        assert codigo == 2
+        assert err == f"no conozco la opción {escrita}, ¿quisiste decir --borrar=1?\n"
+    codigo, _, err = orden_mate(capsys, "correr", programa, "--trasa=c.txt")
+    assert err == "no conozco la opción --trasa=c.txt, ¿quisiste decir --traza=c.txt?\n"
+    codigo, _, err = orden_mate(capsys, "correr", programa, "--olvidr")
+    assert err == "no conozco la opción --olvidr, ¿quisiste decir --olvidar?\n"
+    codigo, _, err = orden_mate(capsys, "correr", programa, "--xyz")
+    assert codigo == 2 and err.rstrip().endswith("--sin-registro, --borrar")
+
+
+def test_un_renglon_danado_no_rompe_las_tildes_de_los_demas(tmp_path, con_registro):
+    correr_mate, registro = con_registro
+    programa = tmp_path / "caja.mate"
+    programa.write_text(CAJA_QUE_RECUERDA + "enviar Suma { n: -1 } a Caja\n", encoding="utf-8")
+    assert correr_mate("correr", programa)[0] == 1
+    bitacora = tmp_path / "caja.bitacora.txt"
+    for archivo in (bitacora, registro):
+        with open(archivo, "ab") as f:
+            f.write(b"\xff\xfe binario\n")
+    codigo, salida, err = correr_mate("bitacora", programa)
+    assert (codigo, err) == (0, "")
+    assert "1 falla(s) anotada(s)" in salida and "falló" in salida and "número negativo" in salida
+    assert "Ã" not in salida and "(1 renglón(es) del archivo no tienen la forma" in salida
+    codigo, salida, err = correr_mate("informe")
+    assert (codigo, err) == (0, "") and "Hay 1 error(es) de uso anotado(s)" in salida
+    assert "Ã" not in salida and "(1 renglón(es) del archivo no tienen la forma" in salida
+    # y al volver a escribirlos quedan parejos
+    assert correr_mate("correr", programa)[0] == 1
+    for archivo in (bitacora, registro):
+        assert "falló" in archivo.read_bytes().decode("utf-8-sig") or archivo == registro
+    assert "2 falla(s) anotada(s)" in correr_mate("bitacora", programa)[1]
+    # un archivo guardado como ANSI desde el Bloc de notas también se lee
+    bitacora.write_bytes(bitacora.read_bytes().decode("utf-8-sig").encode("cp1252"))
+    assert "falló" in correr_mate("bitacora", programa)[1]
+
+
+def test_lecciones_en_un_programa_sin_agentes_lo_dice(tmp_path, capsys):
+    programa = tmp_path / "hola.mate"
+    programa.write_text('mostrar("hola")\n', encoding="utf-8")
+    assert orden_mate(capsys, "lecciones", programa) == (
+        0, "hola.mate no tiene agentes, así que no hay lecciones: las lecciones son de los "
+           "agentes.\n", "")
+    assert archivos_de(tmp_path) == ["hola.mate"]
+
+
+def test_una_corrida_que_anduvo_bien_corta_las_veces_seguidas(tmp_path, con_registro):
+    correr_mate, registro = con_registro
+    bien = tmp_path / "bien.mate"
+    bien.write_text('mostrar("hola")\n', encoding="utf-8")
+    assert correr_mate("correr", bien)[0] == 0 and not registro.exists()  # no crea el archivo
+    assert correr_mate("correr", tmp_path / "nada.mate")[0] == 2
+    assert correr_mate("correr", tmp_path / "nada.mate")[0] == 2
+    assert correr_mate("correr", bien) == (0, "hola\n", "")
+    assert correr_mate("verificar", bien)[0] == 0  # (la marca se pone una sola vez)
+    texto = registro.read_text(encoding="utf-8-sig")
+    assert texto.count(mate._CORTE_DE_RACHA) == 1 and texto.endswith(mate._CORTE_DE_RACHA + "\n")
+    assert correr_mate("correr", tmp_path / "nada.mate")[0] == 2
+    assert correr_mate("correr", tmp_path / "nada.mate")[0] == 2
+    assert [r[5] for r in renglones_anotados(registro)] == [
+        "1 vez", "2 veces seguidas", "1 vez", "2 veces seguidas"]
+    assert mate._CORTE_DE_RACHA not in registro.read_text(encoding="utf-8-sig")
+    # 'probar' no toca el registro, y con el registro apagado tampoco
+    antes = registro.read_bytes()
+    con_prueba = tmp_path / "p.mate"
+    con_prueba.write_text('prueba "p" { asegurar 1 == 1 }\n', encoding="utf-8")
+    assert correr_mate("probar", con_prueba)[0] == 0
+    assert correr_mate("correr", bien, "--sin-registro")[0] == 0
+    assert registro.read_bytes() == antes
+    leeme = (RAIZ / "README.md").read_text(encoding="utf-8")
+    assert "ni una corrida\nque anduvo bien en el medio" in leeme

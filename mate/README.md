@@ -834,8 +834,9 @@ python mate\mate.py correr mi_mostrador.mate          (arranca en 1 y termina en
   nombre no recuerda, porque no se sabría cuál es cuál: Mate lo avisa. Si a `crear` le das un
   valor para un estado recordado, es solo el de la primera vez.
 - Se guarda **también si el programa termina con un error** o lo cortás con Ctrl+C. Lo que
-  un agente cambió mientras atendía un mensaje que falló no cuenta: el agente vuelve a como
-  estaba antes de ese mensaje, igual que siempre. El archivo se escribe entero de una vez:
+  un agente cambió mientras atendía un mensaje que falló (o que cortaste con Ctrl+C a mitad
+  de camino) no cuenta: el agente vuelve a como estaba antes de ese mensaje, igual que
+  siempre. El archivo se escribe entero de una vez:
   nunca queda a medio escribir.
 - Si cambiás el programa y un dato pasa a ser de otro tipo (antes era un número y ahora un
   texto), Mate avisa y usa el valor inicial:
@@ -845,6 +846,18 @@ python mate\mate.py correr mi_mostrador.mate          (arranca en 1 y termina en
 - El archivo se puede mirar y hasta corregir a mano con el Bloc de notas. Si queda mal escrito
   (una coma de más, una llave sin cerrar), Mate no lo pisa ni sigue como si nada: dice en qué
   renglón está el problema y no corre hasta que lo arregles, lo borres o uses `--olvidar`.
+  Ojo: con el archivo mal escrito, `--olvidar` no puede rescatar las lecciones, así que esa
+  vez **también se pierden**. Mate lo avisa y deja el archivo como estaba, con el nombre
+  `mi_mostrador.memoria.rota.json`, para que puedas abrirlo y volver a anotar con `corregir`
+  las que te importen.
+- **La memoria es del programa que corrés.** Si el agente está escrito en otro archivo y lo
+  traés con `usar`, lo que recuerda y sus lecciones se guardan con el programa principal
+  (`principal.memoria.json`), no con el archivo donde está escrito. Por eso en `corregir` y
+  `lecciones` va el programa que corrés. Si corregiste nombrando el otro archivo, Mate te
+  avisa al correr que esa memoria no se usa y te muestra el comando que sí.
+- Un mapa guardado vuelve siempre como mapa. Si tiene justo la forma que Mate usa para un
+  mensaje (las claves `tipo` y `campos`), en el archivo lo vas a ver envuelto en
+  `{"mapa": {...}}`: es para no confundirlo.
 - `recordado` no es una palabra reservada: solo significa algo después de `estado`.
 
 Así se ve el archivo:
@@ -877,7 +890,14 @@ python mate\mate.py corregir mi_mostrador.mate Mostrador "Si piden menos de 10 u
 ```
 
 Va todo en un renglón: la orden, el programa, el nombre del agente y la lección entre comillas.
-Queda guardada con su fecha, y desde la próxima corrida el agente la tiene en cuenta.
+Queda guardada con su fecha, y desde la próxima corrida el agente la tiene en cuenta. La
+lección puede empezar con un guion (`"-10% a los jubilados"`): con `corregir`, lo que viene
+después del agente es la lección.
+
+Una **copia con nombre** (`crear Mostrador llamado "Centro"`) se nombra con el agente y su
+nombre, entre comillas porque lleva un espacio: `corregir mi_mostrador.mate "Mostrador Centro"
+"Cerrá a las 20"`. Lo mismo en `lecciones`. Si el programa o su carpeta tienen espacios en el
+nombre, también van entre comillas; los comandos que Mate te sugiere ya las traen puestas.
 
 ```
 python mate\mate.py lecciones mi_mostrador.mate                         (las muestra todas, numeradas)
@@ -993,13 +1013,18 @@ la carpeta `mate`, no en la de tus programas). Se abre con el Bloc de notas. Cad
 
 Es decir: la fecha, la versión de Mate, la orden que usaste (sin el archivo), qué error fue,
 si Mate te dio una sugerencia, cuántas veces seguidas te salió, y el mensaje **con tus datos
-tapados**.
+tapados**. "Seguidas" es: el mismo error, con la misma orden, sin otro error ni una corrida
+que anduvo bien en el medio, y a pocos minutos del anterior. (Cuando un `correr` o un
+`verificar` termina bien justo después de un error, Mate agrega al final del archivo un
+renglón que empieza con `#` para acordarse; no anota nada más de lo que sale bien.)
 
 - **No guarda tus programas** ni el renglón donde cayó el error.
 - **Tapa tus datos con marcas**: los textos entre comillas quedan como `"<texto>"`, los nombres
   que elegiste como `'<nombre>'`, los archivos como `<archivo>`, las carpetas como `<ruta>` (ahí
   suele estar tu nombre de usuario de Windows), lo que escribiste en la orden como `<dato>`, y
   cualquier cosa con forma de clave como `<clave>`. La clave de la IA no queda escrita nunca.
+  Un dato entre comillas simples se tapa entero aunque traiga un apóstrofo (`'O'Higgins 4500'`,
+  `'D'Angelo'`), y una lección que empieza con guion también.
 - Lo que tu programa dice con `fallar` o con `asegurar` es texto tuyo: no se guarda, solo
   queda anotado que el programa cortó con `fallar`.
 - **Nunca sale de tu computadora.** Mate no lo manda a ningún lado: lo único que sale por
@@ -1041,7 +1066,11 @@ quedaría escrito, qué arreglar primero). Mate no lo manda: lo copiás vos, y a
 leer entero. Para guardarlo en un archivo: `python mate\mate.py informe --para-mejorar >
 pedido.txt`.
 
-**Para borrarlo:** `python mate\mate.py informe --borrar` (o borrá el archivo).
+**Para borrarlo:** `python mate\mate.py informe --borrar` (o borrá el archivo). `--borrar` y
+`--para-mejorar` van por separado: si las escribís juntas Mate no borra nada y te lo dice.
+
+Si al archivo (o a una bitácora) se le daña un renglón, Mate saltea ese solo: los demás se
+siguen leyendo bien, con sus tildes.
 
 ## Referencia rápida
 
@@ -1360,9 +1389,9 @@ archivo viejo deja de andar, casi seguro es por una de estas:
 | Adentro de `intentar { }` y de `asegurar falla { }`, un valor escrito a mano que no cumple la regla de su campo ya no frena el programa antes de correr: falla al llegar a ese renglón, y ahí se ataja | Nada: antes ese programa no arrancaba |
 | `consola --ia-simulada` ahora sí simula (antes la opción se ignoraba y la consulta salía a la IA de verdad) | Nada |
 | `probar` escribe los errores de cada prueba como `correr`: `archivo:5: error: ...` (antes `línea 5: ...` y `Agente al recibir X (línea 5): ...`) | Nada |
-| `aprender`, `lecciones` y `consultas_ia` son funciones incluidas (0.4): no sirven como nombre de variable, de parámetro ni de estado | Elegir otro nombre: `sea mis_lecciones = ...` |
+| `aprender`, `lecciones` y `consultas_ia` son funciones incluidas (0.4). Un programa que ya usaba esos nombres para algo suyo (`sea lecciones = [...]`, `funcion aprender(...)`) **sigue andando igual**: son las únicas tres funciones incluidas cuyo nombre se puede usar, y en ese programa el nombre es tuyo (ahí no vas a poder llamar a la función de Mate) | Nada. En un programa nuevo conviene otro nombre: `sea mis_lecciones = lecciones()` |
 | `estado recordado atendidos = 0` declara un estado que se guarda entre corridas (antes era un error). `recordado` sigue sirviendo de nombre: `estado recordado = 5` es un estado que se llama así | Nada: un programa que corría no lo tenía |
-| `bitacora`, `corregir` y `lecciones` son órdenes: `python mate\mate.py lecciones` ya no busca un archivo llamado `lecciones.mate` para correrlo | Escribir la orden entera: `correr lecciones.mate` |
+| `bitacora`, `corregir`, `lecciones` e `informe` son órdenes: `python mate\mate.py informe` ya no busca un archivo llamado `informe.mate` para correrlo (muestra el informe de errores de uso), y lo mismo las otras tres. Si en la carpeta hay un archivo con ese nombre, Mate te avisa cómo correrlo | Escribir la orden entera: `correr informe.mate`, `correr lecciones.mate` |
 | Si un agente tiene lecciones, `--traza` muestra un renglón por cada una debajo de su consulta a la IA (`con la lección 1: ...`) | Nada: sin lecciones la traza es la de antes |
 
 Un programa que no usa `estado recordado` ni lecciones corre exactamente igual que en la 0.3 y
@@ -1399,6 +1428,7 @@ mensaje menos claro):
 | Un texto de tres comillas sin cerrar, cuando en el archivo hay una cantidad impar de `"""`, dice cuántas hay, en qué renglones, y que sobra o falta una | Revisar esos renglones: cada texto abre y cierra con `"""` |
 | Un archivo `.mate` cuyo primer renglón es un comando de PowerShell o la pantalla (`PS C:\...>`) dice que se pegó adentro del archivo | Borrar ese renglón en el Bloc de notas |
 | `--borrar` sola (sin `=número`) ahora existe, y va con `informe` | Para una lección sigue siendo `lecciones archivo.mate Mostrador --borrar=2` |
+| Un argumento vacío al final (`correr hola.mate ""`) ya no dice que el comando se pegó dos veces: vuelve el mensaje de siempre | Sacar las comillas vacías |
 
 ## Límites de la versión 0.4
 

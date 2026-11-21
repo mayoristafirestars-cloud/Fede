@@ -157,6 +157,9 @@ def lista_de_funciones(formato_de_renglon="- {ejemplo:<27} {que}"):
 # Las funciones incluidas que hacen algo además de devolver un valor: pueden ir solas
 # en un renglón. Las demás, sueltas, no sirven de nada y Mate lo avisa.
 HACEN_ALGO = ("mostrar", "leer", "escribir_archivo", "simular_ia", "aprender")
+# Las tres funciones que llegaron con la 0.4. Un programa de antes puede tener algo suyo con
+# esos nombres ('sea lecciones = [...]'): se le deja, y en ese programa el nombre es suyo.
+SE_PUEDEN_TAPAR = ("aprender", "lecciones", "consultas_ia")
 
 # Palabras de otros lenguajes, o con tilde, y cómo se escriben en Mate. No se aceptan
 # como sinónimos: solo sirven para explicar el error.
@@ -742,7 +745,7 @@ class Parser:
     def nombre_nuevo(self, que="un nombre"):
         """El nombre de una variable, función o parámetro que se está creando."""
         tk = self.espera("id", que=que)
-        if tk[1] in incluidas():
+        if tk[1] in incluidas() and tk[1] not in SE_PUEDEN_TAPAR:
             raise ErrorMate(INCLUIDA.format(n=tk[1]), tk[2])
         if tk[1][0].isupper():
             minuscula = tk[1][0].lower() + tk[1][1:]
@@ -1805,6 +1808,7 @@ def revisar_nombres(programa, mensajes, veces, en_consola=False):
       lo que falta se puede escribir en el renglón siguiente, y una función se puede rehacer."""
     errores, avisados = [], set()
     arriba = set(FUNCIONES) | {s[2] for s in programa if s[0] in ("sea", "funcion", "agente")}
+    tapadas = set(SE_PUEDEN_TAPAR) & set(_ligaduras(programa))  # nombres que el programa usa
     # Las funciones propias que seguro son esa función donde se las nombre: las de un
     # nombre que en todo el programa se le pone a una sola cosa.
     cuantos_lleva = {}
@@ -1940,7 +1944,7 @@ def revisar_nombres(programa, mensajes, veces, en_consola=False):
             if e[2][0] != "nombre" or not any(e[2][2] in a for a in alcance):
                 return
             nombre, texto = e[2][2], None
-            if nombre in FUNCIONES:  # (una función incluida no se puede tapar)
+            if nombre in FUNCIONES and nombre not in tapadas:  # (las demás no se tapan)
                 texto = cantidad_equivocada(nombre, len(e[3]))
             elif nombre in cuantos_lleva and not (
                     cuantos_lleva[nombre][0] <= len(e[3]) <= cuantos_lleva[nombre][1]):
@@ -1963,7 +1967,7 @@ def verificar(programa, en_consola=False):
     veces = _ligaduras(programa)
     # Funciones que seguro son funciones donde se las nombre: las incluidas y las del
     # nivel superior cuyo nombre no se repite.
-    funciones = set(incluidas()) | {
+    funciones = (set(incluidas()) - set(veces)) | {
         s[2] for s in programa if s[0] == "funcion" and veces.get(s[2]) == 1}
     copias = {}  # 'sea v = crear V': la variable v es una copia de V
 
@@ -2219,7 +2223,7 @@ def verificar(programa, en_consola=False):
         """mensajes_enviados() o simular_ia() escritos en el programa o en un agente."""
         if isinstance(n, (list, tuple)):
             if (_es_nodo(n, "llamar", 4) and _es_nodo(n[2], "nombre", 3)
-                    and n[2][2] in SOLO_EN_PRUEBAS):
+                    and n[2][2] in SOLO_EN_PRUEBAS and n[2][2] not in veces):
                 errores.append((n[1], SOLO_EN_PRUEBAS[n[2][2]]))
             for x in n:
                 fuera_de_prueba(x)
@@ -3032,17 +3036,20 @@ def con_lecciones(instrucciones, lecciones):
     return f"{instrucciones.rstrip()}\n\n{TITULO_DE_LECCIONES}\n{lista}".lstrip()
 
 
-def usa_memoria(programa):
+def usa_memoria(programa, propios=None):
     """¿El programa usa lo de aprender: un 'estado recordado', aprender() o lecciones()?
-    Si no, 'correr' no lee ni escribe ningún archivo de más."""
+    Si no, 'correr' no lee ni escribe ningún archivo de más. (Si el programa le puso
+    'aprender' o 'lecciones' a algo suyo, llamarlo no es usar lo de aprender.)"""
+    if propios is None:
+        propios = set(_ligaduras(programa))
     if isinstance(programa, EstadoRecordado):
         return True
     if not isinstance(programa, (list, tuple)):
         return False
     if _es_nodo(programa, "llamar", 4) and _es_nodo(programa[2], "nombre", 3) \
-            and programa[2][2] in ("aprender", "lecciones"):
+            and programa[2][2] in ("aprender", "lecciones") and programa[2][2] not in propios:
         return True
-    return any(usa_memoria(parte) for parte in programa)
+    return any(usa_memoria(parte, propios) for parte in programa)
 
 
 def se_puede_recordar(v):
@@ -3056,23 +3063,42 @@ def se_puede_recordar(v):
     return True
 
 
+def leer_renglones(ruta):
+    """Los renglones de un archivo que escribe Mate (la bitácora, el registro). Si alguno
+    trae letras que no se entienden (se dañó, o alguien pegó algo raro), solo ese se lee
+    distinto: los demás conservan sus tildes."""
+    with open(ruta, "rb") as f:
+        datos = f.read()
+    if datos[:2] in (b"\xff\xfe", b"\xfe\xff") or (
+            len(datos) >= 4 and datos.count(0) >= len(datos) // 4):
+        return leer_fuente(ruta).split("\n")  # guardado como "Unicode" en el Bloc de notas
+    renglones = []
+    for crudo in datos.replace(b"\r\n", b"\n").replace(b"\r", b"\n").split(b"\n"):
+        try:
+            renglones.append(crudo.decode("utf-8-sig"))
+        except UnicodeError:
+            renglones.append(crudo.decode("cp1252", errors="replace"))
+    return renglones
+
+
 def renglones_de_bitacora(ruta):
     """Las fallas anotadas en la bitácora, una por renglón (sin los títulos). Si el
     archivo no existe, ninguna; si no se puede leer, un ErrorMate."""
     try:
-        texto = leer_fuente(ruta)
+        renglones = leer_renglones(ruta)
     except FileNotFoundError:
         return []
     except (OSError, ErrorMate):
         raise ErrorMate(f"no pude leer la bitácora '{ruta}': fijate que no esté abierta en "
                         "otro programa")
-    return [r.strip() for r in texto.split("\n") if r.strip() and not r.startswith("#")]
+    return [r.strip() for r in renglones if r.strip() and not r.startswith("#")]
 
 
-def guardar_bitacora(ruta, programa, fallas):
+def guardar_bitacora(ruta, programa, fallas, escrito=None):
     """Suma las fallas de esta corrida al final de la bitácora y deja las últimas
     MAX_BITACORA. Cada falla es (fecha, agente, qué pasó, qué atendía, motivo). La clave
-    de la IA nunca queda escrita. Devuelve None o por qué no se pudo."""
+    de la IA nunca queda escrita. Devuelve None o por qué no se pudo. escrito: el
+    programa como se lo nombró al correrlo (con su carpeta), para el comando de arriba."""
     if not fallas:
         return None
     clave = os.environ.get("ANTHROPIC_API_KEY", "").strip().strip("\"'").strip()
@@ -3085,12 +3111,18 @@ def guardar_bitacora(ruta, programa, fallas):
             f"# Bitácora de {programa}: las fallas de sus agentes, la más nueva abajo.",
             "# Cada renglón:  fecha | agente | qué pasó | qué mensaje atendía | el motivo",
             f"# La escribe Mate sola y guarda las últimas {MAX_BITACORA}. Para leerla "
-            f"resumida:  {como_se_llama()} bitacora {programa}",
+            f"resumida:  {como_se_llama()} bitacora {para_pegar(escrito or programa)}",
             "# Si la borrás no pasa nada: empieza de nuevo.", ""] + renglones) + "\n")
     except (OSError, ValueError, ErrorMate):
         return (f"no pude anotar las fallas de esta corrida en la bitácora '{ruta}': fijate "
                 "que no esté abierta en otro programa")
     return None
+
+
+def para_pegar(a):
+    """Un archivo o un nombre como hay que escribirlo en una orden: entre comillas si trae
+    espacios, así el comando que Mate sugiere se puede copiar y pegar."""
+    return f'"{a}"' if not a or re.search(r"\s", a) else a
 
 
 def como_se_llama():
@@ -3118,7 +3150,8 @@ class Entorno:
         self.borde = borde  # donde empieza una función, un 'al recibir' o una prueba
 
     def definir(self, nombre, valor, mutable=False, origen=None, linea=None):
-        if nombre in self.vars and not (
+        suyo = nombre in SE_PUEDEN_TAPAR  # (el programa puede usar ese nombre para lo suyo)
+        if nombre in self.vars and not (suyo and self.origen.get(nombre) == "nativa") and not (
                 self.se_pisa and self.origen.get(nombre) in ("sea", "var", "funcion", "agente")):
             previo = self.origen.get(nombre)
             if previo == "nativa":
@@ -3136,7 +3169,7 @@ class Entorno:
             raiz = self.padre
             while raiz.padre is not None:
                 raiz = raiz.padre
-            if raiz.origen.get(nombre) == "nativa":
+            if raiz.origen.get(nombre) == "nativa" and not suyo:
                 raise ErrorMate(INCLUIDA.format(n=nombre))
         self.vars[nombre] = [valor, mutable]
         self.origen[nombre] = origen or ("var" if mutable else "sea")
@@ -3897,7 +3930,7 @@ class Interprete:
             return inicial
         de = f"{agente.nombre}.{nombre}"
         try:
-            valor = self._de_json(guardado[nombre])
+            valor = self._de_json(guardado[nombre], memoria=True)
         except ErrorMate as e:
             self.avisar(f"lo que {de} tenía guardado en la memoria ya no sirve "
                         f"({e.mensaje}): arranca con su valor inicial")
@@ -3928,7 +3961,7 @@ class Interprete:
                 try:
                     if not se_puede_recordar(valor):
                         raise ValueError
-                    estado[nombre] = self._a_json(valor)
+                    estado[nombre] = self._a_json(valor, memoria=True)
                     json.dumps(estado[nombre], allow_nan=False)
                 except (ErrorMate, ValueError, RecursionError):
                     estado.pop(nombre, None)
@@ -3994,15 +4027,21 @@ class Interprete:
                 "* => lo que contesta")
         raise ErrorMate(SIN_RESPUESTA_SIMULADA, familia="ia")
 
-    def _a_json(self, v):
+    def _a_json(self, v, memoria=False):
+        """memoria: para el archivo de memoria, donde lo que se guardó como mapa tiene que
+        volver como mapa. Ahí un mapa del programa que tiene justo la forma de un mensaje
+        ({tipo, campos}) se guarda envuelto: {"mapa": {...}}."""
         if isinstance(v, Registro):
-            return {"tipo": v.tipo, "campos": {k: self._a_json(x) for k, x in v.campos.items()}}
+            return {"tipo": v.tipo,
+                    "campos": {k: self._a_json(x, memoria) for k, x in v.campos.items()}}
         if isinstance(v, Agente):
             return {"agente": v.nombre}
         if isinstance(v, list):
-            return [self._a_json(x) for x in v]
+            return [self._a_json(x, memoria) for x in v]
         if isinstance(v, dict):
-            return {k: self._a_json(x) for k, x in v.items()}
+            mapa = {k: self._a_json(x, memoria) for k, x in v.items()}
+            return {"mapa": mapa} if memoria and set(v) in ({"tipo", "campos"}, {"mapa"}) \
+                else mapa
         if isinstance(v, (Funcion, Nativa)):
             raise ErrorMate("una función no se puede pasar a JSON")
         return v
@@ -4019,9 +4058,18 @@ class Interprete:
                 k: self.amoldar(v, tipos[k]) if k in tipos else v for k, v in valor.items()})
         return valor
 
-    def _de_json(self, v):
+    def _de_json(self, v, memoria=False):
         if isinstance(v, list):
-            return [self._de_json(x) for x in v]
+            return [self._de_json(x, memoria) for x in v]
+        if memoria and isinstance(v, dict):
+            # En la memoria nunca hay agentes, y un mapa envuelto vuelve como mapa.
+            if set(v) == {"mapa"} and isinstance(v["mapa"], dict):
+                return {k: self._de_json(x, True) for k, x in v["mapa"].items()}
+            if set(v) == {"tipo", "campos"} and isinstance(v["tipo"], str) \
+                    and v["tipo"] in self.mensajes and isinstance(v["campos"], dict):
+                return self.construir(
+                    v["tipo"], {k: self._de_json(x, True) for k, x in v["campos"].items()})
+            return {k: self._de_json(x, True) for k, x in v.items()}
         if isinstance(v, dict):
             if set(v) == {"tipo", "campos"} and isinstance(v["tipo"], str) \
                     and v["tipo"] in self.mensajes and isinstance(v["campos"], dict):
@@ -4590,6 +4638,12 @@ class Interprete:
             self.cola.extend(m for m in reversed(nuevos) if m[0] is not dest)
             if e.clase == "asegurar":  # para quien le habló es una falla como cualquiera
                 e.clase = "falla"
+            raise
+        except KeyboardInterrupt:
+            # Cortado con Ctrl+C a mitad de un mensaje: lo que cambió atendiéndolo no queda
+            # (si no, la memoria guardaría un estado a medio cambiar).
+            dest.env.vars = estado_previo
+            dest.lecciones = lecciones_previas
             raise
         finally:
             self.contexto, dest.ocupado, self.llamadas = previo, False, llamadas
@@ -5946,7 +6000,9 @@ def orden_de_memoria(orden, args, borrar, avisar):
                 "lecciones": "lecciones mi_mostrador.mate",
                 "corregir": 'corregir mi_mostrador.mate Mostrador "Los lunes no hay pan"'}
     if not args:
-        avisar(f"a '{orden}' le falta el programa, por ejemplo: {ejemplos[orden]}")
+        avisar(f"a '{orden}' le falta el programa, por ejemplo: {ejemplos[orden]}"
+               + (f" (en esta carpeta hay un {orden}.mate: para correrlo, correr {orden}.mate)"
+                  if os.path.isfile(f"{orden}.mate") else ""))
         return 2
     if borrar is not None and orden != "lecciones":
         avisar("--borrar va con 'lecciones', por ejemplo: lecciones mi_mostrador.mate "
@@ -5963,7 +6019,8 @@ def orden_de_memoria(orden, args, borrar, avisar):
             return 2
         return mostrar_bitacora(ruta, avisar)
     try:
-        declarados = [s[2] for s in analizar(leer_fuente(ruta), ruta) if s[0] == "agente"]
+        fuente = leer_fuente(ruta)
+        declarados = [s[2] for s in analizar(fuente, ruta) if s[0] == "agente"]
     except OSError:
         avisar(f"no pude abrir {ruta}")
         return 2
@@ -5999,6 +6056,17 @@ def orden_de_memoria(orden, args, borrar, avisar):
             print(f"  {i}. {leccion['texto']}"
                   + (f"   (del {leccion['fecha']})" if leccion["fecha"] else ""))
 
+    # Una copia se nombra con el agente y su nombre: "Mostrador Centro". Si se escribió sin
+    # comillas (Mostrador Centro), también vale: con 'lecciones' siempre, y con 'corregir'
+    # cuando esa copia existe (está en el programa o en la memoria).
+    copias = {" ".join(f"{molde} {apodo}".lower().split()) for molde, apodo in re.findall(
+        r'\bcrear\s+(\w+)\s+llamado\s+"([^"\n{}]+)"', fuente)} | {a.lower() for a in memoria}
+    if orden == "lecciones" and len(args) > 2:
+        args = [args[0], " ".join(args[1:])]
+    elif orden == "corregir" and len(args) > 2 and args[2].strip() \
+            and conocido(args[1]) in declarados \
+            and " ".join(f"{args[1]} {args[2]}".lower().split()) in copias:
+        args = [args[0], f"{args[1]} {args[2]}"] + args[3:]
     agente = None
     if len(args) > 1:
         agente = conocido(args[1])
@@ -6035,14 +6103,12 @@ def orden_de_memoria(orden, args, borrar, avisar):
         if olvidadas:
             print(f"(El tope es {MAX_LECCIONES}: para anotar esta se borró la más vieja.)")
         print("La va a tener en cuenta cada vez que consulte a la IA con consultar_ia(), "
-              "desde la próxima corrida.")
-        print(f"Para borrar una:  {como_se_llama()} lecciones {args[0]} {agente} --borrar=1")
+              f"desde la próxima corrida de {programa} (la memoria y las lecciones son del "
+              "programa que se corre).")
+        print(f"Para borrar una:  {como_se_llama()} lecciones {para_pegar(args[0])} "
+              f"{para_pegar(agente)} --borrar=1")
         return 0
     # lecciones
-    if len(args) > 2:
-        avisar(f"'lecciones' lleva el programa y, si querés, un agente: {ejemplos[orden]} "
-               "Mostrador")
-        return 2
     los_que_tienen = [a for a in memoria if memoria[a]["lecciones"]]
     if borrar is not None:
         if agente is None:
@@ -6070,11 +6136,14 @@ def orden_de_memoria(orden, args, borrar, avisar):
         return 0
     mostrar_de = [agente] if agente else los_que_tienen
     if not any(memoria.get(a, {"lecciones": []})["lecciones"] for a in mostrar_de):
+        if not agente and not declarados:
+            print(f"{programa} no tiene agentes, así que no hay lecciones: las lecciones "
+                  "son de los agentes.")
+            return 0
         print((f"{agente} todavía no tiene lecciones." if agente
                else f"Los agentes de {programa} todavía no tienen lecciones.")
-              + f" Se anota una con:  {como_se_llama()} corregir {args[0]} "
-              + (agente or (declarados[0] if declarados else "Mostrador"))
-              + ' "la lección"')
+              + f" Se anota una con:  {como_se_llama()} corregir {para_pegar(args[0])} "
+              + para_pegar(agente or declarados[0]) + ' "la lección"')
         return 0
     for a in mostrar_de:
         print(f"{a} tiene {len(memoria[a]['lecciones'])} lección(es):")
@@ -6128,6 +6197,13 @@ def probar_varios(pedidos, opciones, avisar):
 
 ORDENES_SABIDAS = ORDENES + ORDENES_DE_MEMORIA + ("ayuda", "guia", "consola", "informe")
 _FECHA_DE_REGISTRO = "%d/%m/%Y %H:%M"
+_LARGO_A_TAPAR = 800
+# Cómo es una opción ('--traza', '-h', '--borrar=2'). Lo que empieza con guion y no tiene
+# esa forma ("-10% a Juan") es algo que escribió la persona: una lección, casi siempre.
+_FORMA_DE_OPCION = re.compile(r"--?[A-Za-zÀ-ÿ?][\w\-]*(=\S*)?")
+# Al final del registro: después del último error hubo una corrida que anduvo bien, así
+# que el próximo error, aunque sea el mismo, no viene "seguido".
+_CORTE_DE_RACHA = "# (después de esto hubo una corrida que anduvo bien)"
 _TEXTO_ENTRE_COMILLAS = re.compile(
     r'"""[\s\S]*?"""|"(?:\\.|[^"\\\n])*"|«[^»\n]*»|“[^”\n]*”')
 # Una ruta puede traer espacios ("C:\Users\Juan Perez\Desktop"): se tapa hasta donde
@@ -6170,9 +6246,15 @@ def tapar_datos(texto, propios=()):
     quedan reemplazados por marcas como <texto> o <archivo>. Todo en un renglón.
     propios: lo que la persona escribió en la orden (archivos, nombres): se tapa
     dondequiera que aparezca."""
-    texto = tapar_clave(texto, os.environ.get("ANTHROPIC_API_KEY", "").strip().strip("\"'"))
+    texto = tapar_clave(str(texto),
+                        os.environ.get("ANTHROPIC_API_KEY", "").strip().strip("\"'"))
     texto = re.sub(r"\bsk-[\w\-]{6,}|(?<![\w\-])(?=[\w\-]*\d)(?=[\w\-]*[A-Za-z])[\w\-]{24,}",
                    "<clave>", texto)
+    # Igual se guardan 300 letras: de un mensaje larguísimo (trae un texto entero adentro)
+    # se mira el principio y el final, para que anotar un error nunca tarde.
+    cortado = len(texto) > 2 * _LARGO_A_TAPAR
+    if cortado:
+        texto = texto[:_LARGO_A_TAPAR] + texto[-_LARGO_A_TAPAR:]
     texto = re.sub(r"https?://\S+", "<dirección>", texto)
     texto = re.sub(r"[\w.+\-]+@[\w\-]+(?:\.[\w\-]+)+", "<correo>", texto)
     usuarios = {os.environ.get(v, "") for v in ("USERNAME", "USER", "LOGNAME")}
@@ -6189,11 +6271,17 @@ def tapar_datos(texto, propios=()):
     for suyo in sorted(suyos, key=len, reverse=True):
         if len(suyo) >= 3 and sin_tildes(suyo) not in sabidas:
             texto = re.sub(re.escape(suyo), "<dato>", texto, flags=re.I)
-    texto = _TEXTO_ENTRE_COMILLAS.sub('"<texto>"', texto)
+    hecha = "\x00"  # una comilla que ya se miró
+    texto = _TEXTO_ENTRE_COMILLAS.sub(f"{hecha}<texto>{hecha}", texto)
+    if cortado and '"' in texto:  # al cortar, una comilla quedó sin su par: se tapa de más
+        primera, ultima = texto.find('"'), texto.rfind('"')
+        texto = texto[:primera] + '"<texto>"' + (texto[ultima + 1:] if primera < ultima else "")
+    texto = texto.replace(hecha, '"')
 
     def nombre(m):
         partes = m.group(1).lower().replace("(", " ").replace(")", " ").split()
-        return m.group(0) if partes and all(p in sabidas for p in partes) else "'<nombre>'"
+        sabido = partes and all(p in sabidas for p in partes)
+        return (m.group(0) if sabido else "'<nombre>'").replace("'", hecha)
 
     def archivo(m):
         propio = re.split(r"[\\/]", m.group(0))[-1].lower() in ("mate.py", "mate.bat")
@@ -6203,7 +6291,21 @@ def tapar_datos(texto, propios=()):
         sabida = m.group(1).lower() in OPCIONES + ("--borrar", "-h")
         return (m.group(1) if sabida else "--<opción>") + ("=<valor>" if m.group(2) else "")
 
-    texto = re.sub(r"'([^'\n]*)'", nombre, texto)
+    # Lo que va entre comillas simples puede traer un apóstrofo adentro ('O'Higgins 4500',
+    # 'D'Angelo'): la comilla que cierra es la que no tiene una letra pegada después.
+    texto = re.sub(r"(?<![\w'])'((?:[^'\n]|'(?=\w))*)'(?!\w)", nombre, texto)
+    if "'" in texto:
+        # Quedó una comilla suelta: no se sabe dónde termina el dato, así que se tapa
+        # todo, de la primera comilla a la última (mejor de más que de menos).
+        primera = min(i for i in (texto.find("'"), texto.find(hecha)) if i >= 0)
+        ultima = max(texto.rfind("'"), texto.rfind(hecha))
+        if primera < ultima:
+            texto = texto[:primera] + "'<texto>'" + texto[ultima + 1:]
+        elif cortado:
+            texto = texto[:primera] + "'<texto>'"
+        else:
+            texto = re.sub(r"\S*'\S*", "<texto>", texto)
+    texto = texto.replace(hecha, "'")
     # (las listas de nombres del programa: campos de un mapa, agentes)
     texto = re.sub(r"\((tiene|son|hay): [^)]*\)", r"(\1: <nombres>)", texto)
     texto = re.sub(r"(Sus agentes son|Los agentes de ese programa son): .*", r"\1: <nombres>",
@@ -6211,7 +6313,7 @@ def tapar_datos(texto, propios=()):
     texto = _NOMBRE_DE_ARCHIVO.sub(archivo, texto)
     texto = _RUTA_WIN_A_TAPAR.sub("<ruta>", texto)
     texto = _RUTA_LINUX_A_TAPAR.sub("<ruta>", texto)
-    texto = re.sub(r"(?<![\w\-<])(--?[A-Za-zÀ-ÿ][\w\-]*)(=\S*)?", opcion, texto)
+    texto = re.sub(r"(?<![\w\-<])(--?[A-Za-zÀ-ÿ][\w\-]*)(=[^\s,?]*)?", opcion, texto)
     texto = re.sub(r"\d{3,}(?:[.,]\d+)*", "<número>", texto)
     return en_un_renglon(texto, 300).replace("|", "/")
 
@@ -6231,13 +6333,13 @@ def entradas_del_registro(ruta):
     entienden). Cada entrada es un mapa con fecha, version, orden, categoria, sugerencia,
     seguidas y mensaje. Si el archivo no existe, nada; si no se puede leer, un ErrorMate."""
     try:
-        texto = leer_fuente(ruta)
+        texto = leer_renglones(ruta)
     except FileNotFoundError:
         return [], [], 0
     except (OSError, ErrorMate):
         raise ErrorMate(f"no pude leer el registro de errores de uso '{ruta}': fijate que "
                         "no esté abierto en otro programa")
-    renglones = [r.rstrip() for r in texto.split("\n")
+    renglones = [r.rstrip() for r in texto
                  if r.strip() and not r.lstrip().startswith("#")]
     entradas, raros = [], 0
     for renglon in renglones:
@@ -6288,7 +6390,7 @@ def anotar_error_de_uso(ruta, orden, etapa, mensaje, categoria=None, sugerencia=
         ahora = ahora or datetime.datetime.now()
         entradas, renglones, _ = entradas_del_registro(ruta)
         seguidas = 1
-        if entradas and renglones[-1].startswith(
+        if entradas and not racha_cortada(ruta) and renglones[-1].startswith(
                 entradas[-1]["fecha"].strftime(_FECHA_DE_REGISTRO)):
             ultima = entradas[-1]  # (solo si el último renglón del archivo se entiende)
             minutos = (ahora - ultima["fecha"]).total_seconds() / 60
@@ -6319,6 +6421,35 @@ def anotar_error_de_uso(ruta, orden, etapa, mensaje, categoria=None, sugerencia=
         pass
 
 
+def racha_cortada(ruta):
+    """¿Lo último que dice el registro es que después hubo una corrida que anduvo bien?"""
+    try:
+        escritos = [r.strip() for r in leer_renglones(ruta) if r.strip()]
+    except (OSError, ErrorMate):
+        return False
+    return bool(escritos) and escritos[-1] == _CORTE_DE_RACHA
+
+
+def cortar_racha(ruta, ahora=None):
+    """Al terminar bien un 'correr' o un 'verificar': si el último error anotado es de
+    hace un rato nomás, deja dicho que después hubo una corrida que anduvo bien, para que
+    el próximo error no cuente como 'seguido'. Solo toca un registro que ya existe."""
+    try:
+        if not ruta or not os.path.isfile(ruta) or racha_cortada(ruta):
+            return
+        entradas, _, _ = entradas_del_registro(ruta)
+        minutos = ((ahora or datetime.datetime.now()) - entradas[-1]["fecha"]
+                   ).total_seconds() / 60 if entradas else None
+        if minutos is None or not 0 <= minutos <= MINUTOS_SEGUIDO:
+            return
+        with open(ruta, "rb") as f:
+            termina_bien = f.read()[-1:] in (b"\n", b"")
+        with open(ruta, "a", encoding="utf-8") as f:
+            f.write(("" if termina_bien else "\n") + _CORTE_DE_RACHA + "\n")
+    except Exception:  # el registro nunca molesta
+        pass
+
+
 def orden_usada(argv):
     """La orden y las opciones de esta corrida, sin archivos ni nada que haya escrito la
     persona: 'correr --traza'."""
@@ -6337,6 +6468,8 @@ def anotar_corrida(argv, donde, codigo):
     """Al terminar una corrida que mostró un error: lo anota en el registro (el primero
     que vio la persona, y cuántos más hubo). Con 'probar' y sin errores, nada."""
     orden = orden_usada(argv)
+    if donde.get("registro") and not codigo and orden.split()[0] in ("correr", "verificar"):
+        cortar_racha(donde["registro"])
     if not donde.get("registro") or not codigo or orden.split()[0] in ("probar", "consola"):
         return
     errores = donde.get("errores") or [
@@ -6349,6 +6482,7 @@ def anotar_corrida(argv, donde, codigo):
         errores = errores[:1]  # (los renglones que siguen son parte del mismo aviso)
     propios = [a for a in argv if not a.startswith("-")]
     propios += [a.partition("=")[2].strip('"') for a in argv if a.startswith("-")]
+    propios += [a for a in argv if a.startswith("-") and not _FORMA_DE_OPCION.fullmatch(a)]
     anotar_error_de_uso(
         donde["registro"], orden, primero["etapa"], primero["mensaje"],
         categoria=primero.get("categoria"), sugerencia=primero.get("sugerencia"),
@@ -6360,13 +6494,13 @@ def comando_pegado(argv):
     ('correr mio.matepython mate\\mate.py correr mio.mate'), devuelve el comando escrito
     una sola vez. Si se pegaron dos comandos distintos, el último. Si no, None."""
     def entero(partes):
-        return " ".join(f'"{a}"' if " " in a or not a else a for a in partes)
+        return " ".join(para_pegar(a) for a in partes)
 
     junto = " ".join(argv)
     for k in range(1, len(argv)):
         cola = " ".join(argv[k:])
-        if not junto.startswith(cola):
-            continue
+        if not cola.strip() or not junto.startswith(cola):
+            continue  # (un "" suelto al final no es un comando pegado)
         resto = junto[len(cola):]
         for veces in (4, 3, 2, 1):  # el comando completo, repetido después del primero
             largo, sobra = divmod(len(resto), veces)
@@ -6445,6 +6579,11 @@ def orden_informe(args, opciones, borrar, ruta, avisar):
     if args:
         avisar("'informe' va sola, o con --para-mejorar o --borrar, por ejemplo: informe "
                "--para-mejorar")
+        return 2
+    if borrar is not None and "--para-mejorar" in opciones:
+        avisar("--para-mejorar y --borrar no van juntas, y no borré nada. Primero armá el "
+               "texto (informe --para-mejorar) y, cuando ya lo tengas, borrá el registro "
+               "(informe --borrar)")
         return 2
     if borrar is not None:
         if borrar.lower() not in ("", "todo", "todos"):
@@ -6613,6 +6752,7 @@ def _main(argv, donde):
     alias = {"-h": "--ayuda", "--help": "--ayuda", "-?": "--ayuda", "/?": "--ayuda"}
     opciones, args, conversacion, respuestas, borrar = set(), [], None, None, None
     for a in argv:
+        corrige = bool(args) and sin_tildes(args[0].lower()) == "corregir"
         if a.lower() in alias:
             opciones.add(alias[a.lower()])
         elif a.lower().startswith("--borrar"):
@@ -6640,12 +6780,20 @@ def _main(argv, donde):
                 avisar(f"no guardo la conversación en '{conversacion}' para no pisar un "
                        "programa: elegí otro nombre, por ejemplo --traza=conversacion.txt")
                 return 2
+        elif corrige and len(args) >= 3 and a.startswith("-") and (
+                not _FORMA_DE_OPCION.fullmatch(a)):
+            args.append(a)  # con 'corregir', la lección puede empezar con un guion: "-10% a..."
         elif a.startswith("-") and a != "-":
             if a.lower() not in OPCIONES:
-                parecidas = difflib.get_close_matches(a.lower(), OPCIONES, 1)
+                todas = OPCIONES + ("--borrar",)
+                nombre, igual, valor = a.partition("=")
+                parecidas = difflib.get_close_matches(nombre.lower(), todas, 1)
+                con_valor = parecidas and parecidas[0] in ("--borrar", "--traza", "--ia-simulada")
                 avisar(f"no conozco la opción {a}" + (
-                    f", ¿quisiste decir {parecidas[0]}?" if parecidas
-                    else ". Las opciones son: " + ", ".join(OPCIONES)),
+                    f", ¿quisiste decir {parecidas[0]}{igual + valor if con_valor else ''}?"
+                    if parecidas else ". Las opciones son: " + ", ".join(todas))
+                    + (". Si era parte de la lección, escribila entre comillas y sin el "
+                       "guion adelante" if corrige and len(args) >= 3 else ""),
                     "al escribir la orden: opción que no existe")
                 return 2
             opciones.add(a.lower())
@@ -6692,6 +6840,10 @@ def _main(argv, donde):
         return consola(ia_simulada="--ia-simulada" in opciones, ia_respuestas=preparadas,
                        anotar=anotar)
     if args[0].lower() == "informe":
+        if len(args) == 1 and borrar is None and os.path.isfile("informe.mate"):
+            avisar("aviso: en esta carpeta hay un informe.mate, pero 'informe' sola es una "
+                   "orden de Mate (muestra los errores de uso). Para correr tu programa:  "
+                   f"{como_se_llama()} correr informe.mate")
         return orden_informe(args[1:], opciones, borrar,
                              donde.get("informe") or ruta_del_registro(), avisar)
     if "--para-mejorar" in opciones:
@@ -6807,7 +6959,7 @@ def _main(argv, donde):
             if problema:
                 avisar(f"aviso: {problema}")
         problema = guardar_bitacora(archivo_de(ruta, "bitacora.txt"), os.path.basename(ruta),
-                                    interprete.bitacora or [])
+                                    interprete.bitacora or [], escrito=ruta)
         if problema:
             avisar(f"aviso: {problema}")
 
@@ -6854,15 +7006,44 @@ def _main(argv, donde):
                 if "--olvidar" not in opciones:
                     avisar(e.mensaje)
                     return 2
-                memoria, avisos = {}, []  # no se entendía, y pidieron empezar de cero
+                # No se entendía, y pidieron empezar de cero: ahí adentro puede haber
+                # lecciones, así que el archivo roto no se pisa: queda guardado aparte.
+                memoria, avisos, rota = {}, [], archivo_de(ruta, "memoria.rota.json")
+                try:
+                    os.replace(archivo_memoria, rota)
+                except OSError:
+                    avisar(f"{e.mensaje}\n(--olvidar no lo pisa: ahí pueden estar las "
+                           "lecciones, y no pude guardarlo aparte)")
+                    return 2
+                avisar("aviso: --olvidar: los agentes arrancan de cero. "
+                       f"{os.path.basename(archivo_memoria)} estaba mal escrito y no se "
+                       "entendía, así que esta vez se pierden también las "
+                       f"lecciones. Lo dejé como estaba en {rota} (se abre con el Bloc de "
+                       "notas) por si querés rescatar alguna y anotarla de nuevo con "
+                       "'corregir'")
             for aviso in avisos:
                 avisar(f"aviso: {aviso}")
             if "--olvidar" in opciones:
                 for ficha in memoria.values():
                     ficha["estado"] = {}
-                avisar("aviso: --olvidar: los agentes arrancan de cero, sin lo que "
-                       "recordaban (las lecciones no se borran: eso se hace con la orden "
-                       "'lecciones')")
+                if aprendido["leida"] is not None:
+                    avisar("aviso: --olvidar: los agentes arrancan de cero, sin lo que "
+                           "recordaban (las lecciones no se borran: eso se hace con la "
+                           "orden 'lecciones')")
+            # La memoria y las lecciones son del programa que se corre: si un archivo
+            # traído con 'usar' tiene las suyas (alguien lo corrigió por su nombre), se avisa.
+            traidos = {}  # archivo traído con 'usar' -> el primer agente que declara
+            for s in programa:
+                if s[0] == "agente" and (getattr(s[1], "archivo", None) or ruta) != ruta:
+                    traidos.setdefault(s[1].archivo, s[2])
+            for otro, agente in sorted(traidos.items()):
+                if os.path.isfile(archivo_de(otro, "memoria.json")):
+                    avisar(f"aviso: {os.path.basename(otro)} tiene su propia memoria "
+                           f"({os.path.basename(archivo_de(otro, 'memoria.json'))}) y acá no "
+                           "se usa: la memoria y las lecciones son del programa que se "
+                           "corre. Para que a un agente le llegue una lección en este "
+                           f"programa:  {como_se_llama()} corregir {para_pegar(ruta)} "
+                           f'{agente} "la lección"')
             interprete.memoria, interprete.recordando = memoria, True
             interprete.avisar = lambda texto: avisar(f"aviso: {texto}")
             if usa_memoria(programa) or any(f["lecciones"] for f in memoria.values()):

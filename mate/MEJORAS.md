@@ -794,3 +794,8 @@ tilde como sinónimo; comillas simples como segunda forma de texto; informar die
 juntos; aceptar decimales como posición de una lista; `preguntar ... a todos`; `preguntar ...
 con limite`; `estado_de()` para espiar agentes; un segundo formato de errores para
 herramientas; la traza en formato JSON; `*=` y `/=`; y la condición corta en un renglón.
+
+(Una sola excepción a "una variable no tapa una función incluida", decidida en la revisión de
+la 0.4: `aprender`, `lecciones` y `consultas_ia` llegaron con la 0.4 y son nombres muy
+comunes, así que un programa que ya los usaba para algo suyo sigue corriendo igual. Las demás
+funciones incluidas siguen sin poder taparse.)
