@@ -7,7 +7,12 @@ Un lenguaje chico, con palabras en español, pensado para tres cosas:
 3. **Aprender de sus errores.** Un agente recuerda de una corrida a la otra, anota solo lo
    que le salió mal y no repite un error que le corregiste (ver [Mate aprende](#mate-aprende)).
 
-Versión 0.4. El intérprete es un solo archivo (`mate.py`), sin dependencias: alcanza con Python 3.
+Versión 0.5. El intérprete es un solo archivo (`mate.py`), sin dependencias: alcanza con Python 3.
+
+Lo nuevo de la 0.5: los programas corren **entre 2 y 5 veces más rápido** en los bucles y las
+llamadas a funciones (ver [Qué tan rápido es](#qué-tan-rápido-es)), y un programa puede sumar
+lo que Mate no trae con funciones escritas en Python (ver
+[Funciones escritas en Python](#funciones-escritas-en-python-usar-python)).
 
 ```bash
 python3 mate/mate.py correr mate/ejemplos/negociacion.mate
@@ -95,7 +100,7 @@ castellano. En el Bloc de notas, `Ctrl+G` te lleva a ese renglón. Y si no te ac
 usa una palabra, preguntale a Mate: `python mate\mate.py ayuda si` (o `ayuda para`,
 `ayuda largo`...) muestra una explicación corta con un ejemplo para copiar.
 
-**7. Seguir aprendiendo.** En `mate\ejemplos` hay ocho programas cortos, explicados renglón por
+**7. Seguir aprendiendo.** En `mate\ejemplos` hay nueve programas cortos, explicados renglón por
 renglón, para leer y correr en orden:
 
 | Archivo | Qué enseña |
@@ -108,6 +113,7 @@ renglón, para leer y correr en orden:
 | `06_primer_agente.mate` | el primer agente con sus mensajes |
 | `07_agente_con_ia.mate` | un agente que le consulta a una IA de verdad (se prueba sin clave) |
 | `08_agente_que_aprende.mate` | un agente con memoria, lecciones y bitácora de errores (se prueba sin clave) |
+| `09_con_python.mate` | sumar lo que Mate no trae con funciones escritas en Python (usa `ayudas.py`, que está al lado) |
 
 ```
 python mate\mate.py correr mate\ejemplos\01_hola.mate
@@ -241,7 +247,7 @@ Mate nunca debería mostrarte un error de Python en inglés:
 - **Topes de seguridad**: además de ese freno, Mate corta una función que se llama a sí misma
   sin parar (`demasiada recursión`: hay lugar para 3.000 llamadas una adentro de la otra, y el
   error nombra la función) y los programas que se quedan sin memoria. Ninguno de esos cortes
-  se puede atajar con `intentar`. (Con un Python anterior al 3.12 el lugar es menor: unas 120
+  se puede atajar con `intentar`. (Con un Python anterior al 3.12 el lugar es menor: unas 180
   llamadas.)
 - **Cosas demasiado grandes**: un texto o una lista de más de 10.000.000 de elementos
   (`rango(100000000000)`, un texto que se duplica sin parar, `unir`, `texto`, `a_json` o
@@ -583,6 +589,74 @@ nunca llega a un `responder` (un `fallar` adentro de un `si` no cuenta como resp
 `al recibir` que termina en `fallar` sí vale: falla siempre, a propósito). Lo que no se puede
 saber de antemano se valida al construir el mensaje.
 
+### Funciones escritas en Python: `usar python`
+
+Mate es chico a propósito: hay cosas que no trae (una raíz cuadrada, contar los días entre dos
+fechas, leer una planilla). Para eso no hace falta tocar Mate: esa función se escribe en un
+archivo de Python que va **al lado del programa**, y el programa la llama.
+
+El archivo de Python, `ayudas.py` (se escribe con el Bloc de notas, igual que un `.mate`):
+
+```python
+import math
+
+def raiz(numero):
+    return math.sqrt(numero)
+```
+
+Y el programa de Mate:
+
+```
+usar python "ayudas.py"
+
+mostrar(ayudas.raiz(144))      # 12
+```
+
+`usar python` trae las funciones de ese archivo, y cada una se llama con el nombre del archivo
+adelante: `ayudas.raiz(...)`. El ejemplo completo es `ejemplos\09_con_python.mate`, y
+`python mate\mate.py ayuda python` lo resume.
+
+**Las reglas, que son pocas:**
+
+- **El archivo va en la carpeta del programa** (o en una carpeta de adentro:
+  `usar python "extras/ayudas.py"`). No puede estar afuera: ni `..`, ni una ruta completa.
+- **El nombre del archivo es el que se escribe en el programa**, así que va en minúsculas, sin
+  espacios ni guiones, y no puede ser una palabra de Mate: `ayudas.py`, `mis_cuentas.py`.
+- **Se ven las funciones escritas ahí con `def`.** Las que empiezan con guion bajo (`_asi`) no
+  se ven: en Python así se marcan las de uso interno.
+- **Solo cruzan valores simples**: números, textos, `verdadero`/`falso` (en Python, `True` y
+  `False`), `nada` (`None`), listas y mapas (en Python, diccionarios con claves de texto). Un
+  mensaje se pasa como mapa, con `a_mapa(pedido)`. Van y vuelven **copiados**: si el Python le
+  agrega algo a una lista que recibió, la lista del programa no cambia.
+- **Un error dentro del Python es un error de Mate**: sale con el renglón del `.mate` que hizo
+  la llamada, dice en qué renglón del `.py` pasó y qué dijo Python, y se ataja con `intentar`
+  (`detalle_de(e).clase` es `"python"`).
+- **Una función de Python puede ir sola en un renglón** (`ayudas.guardar(datos)`): Mate no
+  sabe si devuelve algo o si hace algo, así que no lo toma como un renglón sin uso.
+
+**Antes de correr**, `verificar` (y también `correr` y `probar`) avisa si el archivo no está
+(con el nombre parecido, o el aviso de que el Bloc de notas lo guardó como `ayudas.py.txt`), si
+Python no lo puede leer porque está mal escrito, y si el programa llama a una función que el
+archivo no tiene: `ayudas.py no tiene una función 'rais'. ¿Quisiste decir 'raiz'?`. Para eso
+Mate **lee** el `.py`, pero no lo ejecuta: `verificar` nunca corre código de Python.
+
+**⚠ Ese Python corre con todos los permisos de la computadora.** Lo que está en un `.mate`
+tiene los cuidados de Mate (no toca archivos fuera de su carpeta, no sale a internet salvo
+`consultar_ia`, tiene freno). Lo que está en el `.py` **no tiene ninguno**: puede leer, cambiar
+y borrar cualquier archivo, y salir a internet. Y corre igual con `correr` que con `probar`
+(también con `probar`: es código de tu computadora, y Mate no lo puede frenar). Por eso:
+
+- Usá solo archivos `.py` **tuyos o de alguien de confianza**. Si te lo escribió una IA, leelo
+  antes (o pedile a otra que te explique qué hace) y fijate que no toque archivos ni internet
+  si no hace falta.
+- Lo que el `.py` guarde en sus propias variables no vuelve atrás entre una prueba y la otra
+  (lo de Mate sí). Conviene que sus funciones solo calculen: reciben valores y devuelven otro.
+- El freno de pasos de Mate no cuenta lo que pasa adentro del Python: un bucle que no termina
+  ahí adentro se corta con `Ctrl+C`.
+- Desde el `.py` se puede usar con `import` todo lo que trae Python (`math`, `datetime`,
+  `csv`...) y lo que tengas instalado. Mate no deja nada al lado del programa (tampoco la
+  carpeta `__pycache__` que Python suele armar).
+
 ### Un agente que consulta a una IA de verdad
 
 `consultar_ia(instrucciones, pregunta)` le manda la pregunta a una IA de verdad (Claude, de la
@@ -689,7 +763,7 @@ Lo que una prueba cambia no le llega a la siguiente. Además:
   pruebas no pueden tener el mismo nombre: se avisa antes de correr.
 - `probar` también acepta una carpeta o varios archivos: `python mate\mate.py probar mate\ejemplos`
   corre las pruebas de cada `.mate` de esa carpeta, uno por uno, y termina con el total
-  (`En total: 21 de 21 pruebas pasaron, en 13 archivos`) y la lista de los que tuvieron problemas.
+  (`En total: 24 de 24 pruebas pasaron, en 14 archivos`) y la lista de los que tuvieron problemas.
 - `asegurar falla { ... }` es la forma corta de comprobar que algo **tiene que fallar**:
 
   ```
@@ -775,7 +849,8 @@ o una respuesta que no cumple su contrato), `"clave"` (una clave o un campo que 
 `"posicion"`, `"division"` (por cero), `"nombre"` (un nombre que no existe), `"numero"` (un
 texto que no es un número), `"json"`, `"agente"` (no sabe recibir ese mensaje o no respondió),
 `"ciclo"` (de preguntas), `"archivo"` (un archivo que no está o que no se puede tocar),
-`"ia"` (la IA no contestó: sin clave, sin red, sin crédito...) y `"otro"` para el resto. Hay que pasarle `e` tal cual llegó: si lo
+`"ia"` (la IA no contestó: sin clave, sin red, sin crédito...), `"python"` (falló una función
+de un archivo traído con `usar python`) y `"otro"` para el resto. Hay que pasarle `e` tal cual llegó: si lo
 cambiás (`e + "!"`) es un texto común y `detalle_de` avisa que no es un error atajado.
 
 ## Mate aprende
@@ -1320,10 +1395,44 @@ Detalles: `partir("abc", "")` separa letra por letra; `redondear(3.14159, 2)` ll
 entera de decimales; `rango(10, 0, -1)` cuenta para atrás; las claves de un mapa son siempre textos (`tiene(mapa, [1])` da `falso`);
 solo se puede asignar a una variable o a una parte de ella (`x`, `x.campo`, `x[0]`).
 
+## Qué tan rápido es
+
+Mate no es un lenguaje para cuentas pesadas: es un intérprete escrito en Python, pensado para
+programas chicos y claros. Hasta la 0.4, además, era bastante más lento de lo necesario. En la
+0.5 el intérprete "arma" cada programa una sola vez antes de correrlo (antes, cada vez que
+pasaba por un renglón volvía a preguntarse qué clase de renglón era) y quedó así, medido con
+`mate\pruebas\velocidad.py` en la misma computadora y en el mismo momento (Python 3.13; de
+cada programa, la más rápida de 7 corridas, en segundos):
+
+| Programa del medidor | 0.4 | 0.5 | Cuántas veces más rápido |
+|---|---|---|---|
+| bucle con cuentas (200.000 vueltas) | 1,687 | 0,310 | 5,43 |
+| llamadas a funciones (unas 65.000) | 0,405 | 0,140 | 2,90 |
+| listas y mapas | 0,394 | 0,189 | 2,09 |
+| textos | 1,152 | 0,879 | 1,31 |
+| mensajes entre agentes (16.000) | 0,262 | 0,180 | 1,46 |
+| en total | 3,901 | 1,698 | 2,30 |
+
+Lo que mejoró poco, y por qué: en **textos**, casi todo el tiempo se va en armar una lista
+larga con `lista = agregar(lista, x)`, que copia la lista entera en cada vuelta (así una
+copia nunca cambia el original); eso no se tocó. Y en los **mensajes entre agentes** el tiempo
+está en lo que Mate controla en cada mensaje (el contrato, guardar el estado por si el agente
+falla), que tampoco se tocó. Nada de lo que hace un programa cambió: mismas salidas, mismos
+errores con su renglón, misma traza y mismo freno de pasos.
+
+Para medir en tu computadora (tarda unos segundos y no escribe ningún archivo):
+
+```
+python mate\pruebas\velocidad.py
+```
+
+Si igual algo queda lento, la salida es escribir esa parte en Python y llamarla con
+[`usar python`](#funciones-escritas-en-python-usar-python): ahí corre a la velocidad de Python.
+
 ## Qué cambió y puede frenar un programa viejo
 
 Varias mejoras vuelven error cosas que antes corrían. Esta tabla junta todo lo que cambió
-desde la versión 0.2 hasta la 0.4 (`python mate\mate.py --version` dice cuál tenés). Si un
+desde la versión 0.2 hasta la 0.5 (`python mate\mate.py --version` dice cuál tenés). Si un
 archivo viejo deja de andar, casi seguro es por una de estas:
 
 | Qué pasa ahora | Cómo se arregla |
@@ -1410,6 +1519,9 @@ pruebas del intérprete no dejan pasarse:
   otra vez lo justo: `aprender`, `lecciones` y `consultas_ia`. La memoria no gastó ninguna
   palabra (`recordado` solo significa algo después de `estado`) y lo demás son órdenes de la
   línea de comandos, no del lenguaje. Para agregar otra hay que sacar una, o discutir el tope.
+  La 0.5 no gastó ni palabras ni funciones: `python` solo significa algo después de `usar`
+  (sigue sirviendo como nombre de variable), y lo que falte se suma desde afuera, con
+  `usar python`, sin agrandar Mate.
 - **Cada agregado trae lo suyo**: su renglón en este README (en la tabla de funciones o en la
   referencia), su explicación en `ayuda <palabra>` y al menos una prueba que lo use.
 - **Una sola forma de escribir cada cosa.** Nada de sinónimos (`función` con tilde, comillas
@@ -1430,7 +1542,13 @@ mensaje menos claro):
 | `--borrar` sola (sin `=número`) ahora existe, y va con `informe` | Para una lección sigue siendo `lecciones archivo.mate Mostrador --borrar=2` |
 | Un argumento vacío al final (`correr hola.mate ""`) ya no dice que el comando se pegó dos veces: vuelve el mensaje de siempre | Sacar las comillas vacías |
 
-## Límites de la versión 0.4
+**En la 0.5 no cambió nada de lo que hace un programa**: el intérprete es más rápido, pero
+da las mismas salidas y los mismos errores. Lo único que se mueve es un tope de seguridad, y
+para más lugar: con un Python anterior al 3.12, una función puede llamarse a sí misma unas 180
+veces seguidas en vez de unas 120. `usar python "archivo.py"` antes era un error de escritura,
+así que ningún programa viejo lo usaba.
+
+## Límites de la versión 0.5
 
 - Los agentes corren todos dentro del mismo programa, de a uno y en orden (por eso el resultado
   es siempre el mismo). Un agente puede consultarle a una IA de verdad con `consultar_ia`,
@@ -1447,8 +1565,21 @@ mensaje menos claro):
   los nombres que no van entre comillas en un mensaje (el de un mensaje o un campo) pueden
   quedar: leelo antes de compartirlo.
 
+- Sigue siendo un intérprete: es entre 2 y 5 veces más rápido que la 0.4 en bucles y llamadas,
+  pero un programa de Python hace las mismas cuentas mucho más rápido todavía. Armar una
+  lista larga con `agregar` en un bucle es lento (copia la lista en cada vuelta).
+- Con `usar python` solo cruzan valores simples, y lo que pasa adentro del `.py` queda fuera
+  de los cuidados de Mate (permisos, freno de pasos, volver atrás entre pruebas).
+
 ## Pruebas del intérprete
 
 ```bash
 python3 -m pytest mate/pruebas -q -p no:cacheprovider
+```
+
+Para medir la velocidad (no es una prueba: muestra cuánto tarda cada programa del medidor, y
+con `--contra=otro_mate.py` compara dos copias del intérprete):
+
+```bash
+python3 mate/pruebas/velocidad.py
 ```

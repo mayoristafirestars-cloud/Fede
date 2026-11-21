@@ -399,21 +399,22 @@ def test_demasiados_parentesis_no_muestra_un_error_de_python(tmp_path, capsys):
 
 
 def test_un_error_interno_se_cuenta_en_espanol(tmp_path, capsys, monkeypatch):
-    def roto(self, s, env):
+    # (se rompe algo que usa 'sea' por dentro, cuando ya se sabe por qué renglón va)
+    def roto(self, nombre):
         raise RuntimeError("algo se rompió adentro")
-    monkeypatch.setattr(mate.Interprete, "_ejecutar", roto)
+    monkeypatch.setattr(mate.Entorno, "no_tapar", roto)
     codigo, _, err = por_main(tmp_path, capsys, "sea a = 1\nmostrar(a)")
     assert codigo == 1
     assert "error interno de Mate (no es culpa tuya): RuntimeError: algo se rompió adentro" in err
     assert "programa.mate:1" in err and "--depurar" in err and "Traceback" not in err
     with pytest.raises(RuntimeError):
-        por_main(tmp_path, capsys, "mostrar(1)", "--depurar")
+        por_main(tmp_path, capsys, "sea b = 1", "--depurar")
 
 
 def test_ctrl_c_dice_en_que_linea_estaba(tmp_path, capsys, monkeypatch):
-    def cortar(self, s, env):
+    def cortar(self, nombre):
         raise KeyboardInterrupt
-    monkeypatch.setattr(mate.Interprete, "_ejecutar", cortar)
+    monkeypatch.setattr(mate.Entorno, "no_tapar", cortar)
     codigo, _, err = por_main(tmp_path, capsys, "sea a = 1\n")
     assert codigo == 130
     assert "programa.mate:1: cortado con Ctrl+C mientras corría esta línea" in err
@@ -2015,9 +2016,10 @@ def test_mate_bat_esta_listo_para_windows():
 GRADUALES = sorted(p.name for p in (RAIZ / "ejemplos").glob("0*.mate"))
 
 
-def test_estan_los_seis_ejemplos_graduales():  # (y el 7.º, el de la IA, y el 8.º: aprende)
-    assert [n[:2] for n in GRADUALES] == ["01", "02", "03", "04", "05", "06", "07", "08"]
-    assert GRADUALES[0] == "01_hola.mate" and GRADUALES[-1] == "08_agente_que_aprende.mate"
+def test_estan_los_seis_ejemplos_graduales():  # (y el 7.º, la IA; el 8.º, aprende; el 9.º, Python)
+    assert [n[:2] for n in GRADUALES] == ["01", "02", "03", "04", "05", "06", "07", "08", "09"]
+    assert GRADUALES[0] == "01_hola.mate" and GRADUALES[-1] == "09_con_python.mate"
+    assert GRADUALES[-2] == "08_agente_que_aprende.mate"
     for nombre in GRADUALES:  # están comentados: al menos un comentario cada cuatro renglones
         renglones = [r.strip() for r in (RAIZ / "ejemplos" / nombre).read_text(
             encoding="utf-8").splitlines() if r.strip()]
@@ -2029,6 +2031,7 @@ def test_los_ejemplos_graduales_corren_y_pasan_sus_pruebas(nombre, capsys, tmp_p
     # (en una copia: el ejemplo 8 guarda su memoria al lado, y las pruebas no ensucian)
     import shutil
     ruta = str(shutil.copy(RAIZ / "ejemplos" / nombre, tmp_path / nombre))
+    shutil.copy(RAIZ / "ejemplos" / "ayudas.py", tmp_path)  # (el del ejemplo 9)
     assert mate.main(["verificar", ruta]) == 0
     assert mate.main(["correr", ruta]) == 0
     capturado = capsys.readouterr()
@@ -2504,7 +2507,7 @@ def test_bombardeo_nunca_un_error_interno(nombre, tmp_path, capsys, monkeypatch)
     monkeypatch.setattr(mate, "MAX_PASOS", 20_000)
     monkeypatch.setattr(mate, "MAX_MENSAJES", 2_000)
     monkeypatch.setattr(mate, "MAX_LARGO", 100_000)
-    for ejemplo in (RAIZ / "ejemplos").glob("*.mate"):
+    for ejemplo in list((RAIZ / "ejemplos").glob("*.mate")) + [RAIZ / "ejemplos" / "ayudas.py"]:
         shutil.copy(ejemplo, tmp_path / ejemplo.name)
     original = (RAIZ / "ejemplos" / nombre).read_text(encoding="utf-8")
     azar = random.Random(nombre)
@@ -3417,7 +3420,7 @@ def test_el_readme_cuenta_lo_de_la_tanda_7(tmp_path, capsys):
     for frase in ["a [norte, sur]", "al fallar como f", "3.000 llamadas", "`sea Listo = verdadero`",
                   "Escribí Ping {}", "en el renglón siguiente", "`verdadero y 1`",
                   "para i, item en lista", 'usar "catalogo"', "a_mapa(pedido)",
-                  "probar mate\\ejemplos", "En total: 21 de 21 pruebas pasaron"]:
+                  "probar mate\\ejemplos", "En total: 24 de 24 pruebas pasaron"]:
         assert frase in leeme, frase
     # el ejemplo de 'al fallar' del README anda tal cual está escrito
     ejemplo = re.search(r"(?m)^  ```\n(  agente Comprador .*?)^  ```", leeme, re.S).group(1)
@@ -3513,16 +3516,17 @@ def test_la_orden_consola(capsys, monkeypatch):
     assert "¿quisiste decir 'consola'?" in capsys.readouterr().err
 
 
-# Mejora 89: versión 0.3 (y ahora 0.4: agentes que recuerdan y aprenden)
+# Mejora 89: versión 0.3 (después 0.4: agentes que recuerdan y aprenden; y ahora 0.5: más
+# rápido y con puente a Python)
 
-def test_version_0_4_y_el_readme_lo_dice(capsys):
-    assert mate.VERSION == "0.4"
+def test_version_0_5_y_el_readme_lo_dice(capsys):
+    assert mate.VERSION == "0.5"
     leeme = (RAIZ / "README.md").read_text(encoding="utf-8")
-    assert "Versión 0.4." in leeme and "## Límites de la versión 0.4" in leeme
-    assert "versión 0.2" not in leeme.replace("desde la versión 0.2 hasta la 0.4", "")
-    assert "desde la versión 0.2 hasta la 0.4" in leeme and "versión 0.3" not in leeme
+    assert "Versión 0.5." in leeme and "## Límites de la versión 0.5" in leeme
+    assert "versión 0.2" not in leeme.replace("desde la versión 0.2 hasta la 0.5", "")
+    assert "desde la versión 0.2 hasta la 0.5" in leeme and "versión 0.3" not in leeme
     assert mate.main(["--version"]) == 0
-    assert capsys.readouterr().out.startswith("Mate 0.4 ")
+    assert capsys.readouterr().out.startswith("Mate 0.5 ")
 
 
 # Mejora 90: el tope para que Mate siga siendo chico
@@ -3691,6 +3695,8 @@ def test_hay_ayuda_de_todo_y_los_ejemplos_andan(tmp_path, monkeypatch):
         assert destino in mate.AYUDA, destino
     # cada ejemplo es un programa entero que corre (y sus pruebas pasan)
     (tmp_path / "catalogo.mate").write_text("sea iva = 0.21\n", encoding="utf-8")
+    (tmp_path / "ayudas.py").write_text(  # (el de 'ayuda python', tal cual lo dice su ejemplo)
+        "def doble(numero):\n    return numero * 2\n", encoding="utf-8")
     monkeypatch.chdir(tmp_path)
     for palabra, (que, ejemplo) in mate.AYUDA.items():
         assert palabra in ejemplo or palabra in ("lista", "mapa"), palabra
@@ -6281,7 +6287,8 @@ def test_el_readme_la_guia_y_la_ayuda_cuentan_lo_de_la_0_4(capsys):
     for frase in ["**101. Memoria de agente", "**102. Bitácora de errores", "**103. Lecciones",
                   "Nota de lo decidido"]:
         assert frase in seccion, frase
-    assert seccion.count("Estado: hecha") == 8  # (101 a 103, y 104 a 108: el registro de uso)
+    # (101 a 103, y 104 a 108: el registro de uso; después vinieron las de la 0.5)
+    assert seccion.count("Estado: hecha") >= 8
 
 
 # ── 0.4, segunda parte: el lenguaje anota sus errores de uso para seguir mejorando ──
@@ -6671,7 +6678,7 @@ def test_informe_resume_el_registro(tmp_path, con_registro):
     renglones = out.splitlines()
     assert renglones[0] == "Informe de errores de uso de Mate"
     assert re.fullmatch(r"Hay 6 error\(es\) de uso anotado\(s\), del \d\d/\d\d/\d{4} \d\d:\d\d "
-                        r"al \d\d/\d\d/\d{4} \d\d:\d\d \(Mate 0\.4\)\.", renglones[1])
+                        r"al \d\d/\d\d/\d{4} \d\d:\d\d \(Mate 0\.5\)\.", renglones[1])
     assert renglones[3:6] == [
         "Los más frecuentes:",
         "    4 veces  antes de correr: no existe '<nombre>'",
@@ -6935,7 +6942,7 @@ def test_el_readme_la_guia_y_la_ayuda_cuentan_el_registro_de_errores_de_uso(caps
                   "**108. La pantalla de PowerShell adentro del archivo**",
                   "**Nada sale de la computadora.**"]:
         assert frase in seccion, frase
-    assert seccion.count("Nota de lo decidido") == 8
+    assert seccion.count("Nota de lo decidido") >= 8  # (de la 109 en adelante: la 0.5)
 
 
 # ── Correcciones de la revisión de la 0.4 ──
@@ -7332,3 +7339,624 @@ def test_una_corrida_que_anduvo_bien_corta_las_veces_seguidas(tmp_path, con_regi
     assert registro.read_bytes() == antes
     leeme = (RAIZ / "README.md").read_text(encoding="utf-8")
     assert "ni una corrida\nque anduvo bien en el medio" in leeme
+
+
+# ─────────────── Versión 0.5: intérprete más rápido y puente a Python ───────────────
+
+# ── 109: el programa se arma una vez (más rápido), y hace lo mismo que antes ──
+
+def test_el_medidor_de_velocidad_corre_y_sus_programas_dan_lo_esperado(capsys):
+    import importlib.util
+    spec = importlib.util.spec_from_file_location(
+        "velocidad", pathlib.Path(__file__).with_name("velocidad.py"))
+    velocidad = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(velocidad)
+    esperado = {
+        "bucle con cuentas": ["13333133333"],
+        "llamadas a funciones": ["10946 899970000"],
+        "listas y mapas": ["119980 600 3000 3500"],
+        "mensajes entre agentes": ["31996000"],
+    }
+    for nombre, fuente in velocidad.PROGRAMAS.items():
+        if nombre in esperado:  # (el de textos tarda más: lo corre main, abajo)
+            assert velocidad.medir(mate, fuente, 1)[1] == esperado[nombre], nombre
+    assert velocidad.main(["--vueltas=1"]) == 0
+    out = capsys.readouterr().out
+    assert out.startswith(f"Mate {mate.VERSION} con Python ")
+    for nombre in list(velocidad.PROGRAMAS) + ["en total"]:
+        assert nombre in out
+    with pytest.raises(SystemExit) as info:
+        velocidad.main(["--cualquiera"])
+    assert "no conozco '--cualquiera'" in str(info.value)
+
+
+def test_armado_cuenta_los_mismos_pasos_y_anota_el_mismo_renglon():
+    # (788 pasos son los que contaba la 0.4 con este mismo programa: el freno no cambió)
+    salida, interprete = correr("""
+        funcion f(n) {
+            si n < 2 { devolver n }
+            devolver f(n - 1) + f(n - 2)
+        }
+        var t = 0
+        para i en rango(10) {
+            si i % 2 == 0 { continuar }
+            mientras t < i * 3 { t += 1 }
+            intentar { t = t + f(i) / (i - 5) } si falla e { t = t - 1 }
+        }
+        mostrar(t, f(10))
+    """)
+    assert salida == ["36.75 55"]
+    assert interprete.pasos == 788 and interprete.linea_actual == 3
+
+
+def test_devolver_romper_y_continuar_salen_de_donde_tienen_que_salir():
+    assert mostrados("""
+        funcion buscar(lista, x) {
+            para i, valor en lista {
+                intentar {
+                    si valor == x { devolver i }
+                } si falla e { devolver -1 }
+            }
+            devolver nada
+        }
+        funcion sin_devolver() { sea a = 1 }
+        funcion corta() {
+            mientras verdadero {
+                para c en "abc" {
+                    si c == "b" { romper }
+                    mostrar(c)
+                }
+                devolver "listo"
+            }
+        }
+        mostrar(buscar([5, 6, 7], 7), buscar([5], 9), sin_devolver(), corta())
+        var pares = []
+        para n en rango(6) {
+            si n % 2 == 1 { continuar }
+            pares = agregar(pares, n)
+        }
+        mostrar(pares)
+    """) == ["a", "2 nada nada listo", "[0, 2, 4]"]
+    # fuera de lugar, los mismos errores de siempre (por la puerta de atrás del intérprete)
+    interprete = mate.Interprete()
+    for fuente, dice in [("devolver 1", "'devolver' solo va dentro de una función"),
+                         ("funcion f() { romper }\nf()", "'romper' y 'continuar' solo van")]:
+        with pytest.raises(mate.ErrorMate) as info:
+            interprete.correr(mate.Parser(mate.tokenizar(fuente)).programa()
+                              if "romper" not in fuente else
+                              [("funcion", 1, "g", [], [("romper", 1)], []),
+                               ("expr", 2, ("llamar", 2, ("nombre", 2, "g"), []))])
+        assert dice in info.value.mensaje, fuente
+
+
+def test_un_bloque_sin_declaraciones_no_arma_entorno_y_uno_con_sea_si():
+    antes = mate.Entorno.nacidos
+    correr("var t = 0\nmientras t < 50 { si t >= 0 { t += 1 } }")
+    assert mate.Entorno.nacidos - antes < 10  # (el del intérprete y poco más: no 100)
+    # ...y lo declarado adentro de un bloque sigue sin verse afuera, vuelta por vuelta
+    assert mostrados("""
+        var veces = 0
+        mientras veces < 3 {
+            sea doble = veces * 2
+            veces += 1
+        }
+        intentar { si verdadero { sea adentro = 1 } } si falla e { mostrar(e) }
+        funcion f() { si verdadero { sea x = 1 } devolver 2 }
+        mostrar(veces, f())
+    """) == ["3 2"]
+    assert "'t' ya existe afuera de este bloque" in falla(
+        "var t = 1\nsi verdadero { si verdadero { sea t = 2 } }").mensaje
+
+
+def test_las_cuentas_rapidas_dan_lo_mismo_que_las_completas():
+    assert mostrados("""
+        sea grande = 4611686018427387904
+        mostrar(grande + 1, grande - 1, grande * 2, grande / 2, grande % 10, grande > 1)
+        mostrar(7 / 2, 6 / 3, -7 / 2, -6 / 3, 7 % 3, -7 % 3, 2 * 3.5, 0.1 + 0.2, 1.5 - 2)
+        mostrar(1 == 1.0, 1 != 1.5, 2 < 2.5, 2.5 >= 2, "a" == "a", "a" != "a", [1] == [1])
+        mostrar(verdadero == verdadero, nada == nada, "a" < "b", 1 == verdadero)
+    """)[:3] == [
+        "4611686018427387905 4611686018427387903 9223372036854775808 2305843009213693952 4 "
+        "verdadero",
+        "3.5 2 -3.5 -2 1 2 7 0.3 -0.5",
+        "verdadero verdadero verdadero verdadero verdadero falso verdadero"]
+    for fuente, dice in [
+            ("mostrar(1 / 0)", "división por cero"), ("mostrar(1 % 0)", "división por cero"),
+            ("mostrar(1.5 / 0)", "división por cero"),
+            ("var x = 1.5\npara i en rango(20) { x = x * x * 1000000.5 }", "demasiado grande"),
+            ("var x = 1.5\npara i en rango(1100) { x = x + x }", "demasiado grande"),
+            ("var b = 2\npara i en rango(20) { b = b * b }", "demasiado grande"),
+            ('mostrar(1 == "1")', "no se puede comparar un texto con un número"),
+            ('mostrar("a" < 1)', "no se puede comparar"),
+            ('mostrar("01/01/2025" < "02/01/2025")', "las fechas son textos"),
+            ("mostrar(verdadero + 1)", "no se puede hacer"),
+            ("mostrar(1 y 2)", "la condición tiene que ser verdadero o falso"),
+            ("mostrar(no 3)", "la condición tiene que ser verdadero o falso"),
+            ("si 1 { }", "la condición tiene que ser verdadero o falso"),
+            ("mientras nada { }", "la condición tiene que ser verdadero o falso")]:
+        assert dice in falla(fuente).mensaje, fuente
+
+
+def test_el_error_sigue_saliendo_con_el_renglon_de_mas_adentro():
+    for fuente, linea in [
+            ("sea lista = [1, 2]\nmostrar(1,\n   lista[\n   5])", 3),
+            ("sea m = { a: 1 }\nmostrar(m.a +\n   m.b)", 3),
+            ("funcion b(x) {\n  devolver x /\n     0\n}\nmostrar(\n  b(1))", 2),
+            ("sea x = 1\nmostrar(\n  x(2))", 3),
+            ("si falso {\n  sea a = 1\n} sino si 5 {\n}", 1),
+            ("mostrar(\n  no_esta)", 2), ("mostrar(-\n  \"a\")", 1)]:
+        programa = mate.analizar(fuente)  # (sin la revisión previa: el error es el de correr)
+        with pytest.raises(mate.ErrorMate) as info:
+            mate.Interprete(salida=lambda t: None).correr(programa)
+        assert info.value.linea == linea, (fuente, info.value.linea, info.value.mensaje)
+
+
+def test_la_misma_funcion_armada_sirve_para_todas_sus_llamadas_y_sus_valores_por_defecto():
+    assert mostrados("""
+        funcion f(a, b = a * 2, c = b + 1) { devolver [a, b, c] }
+        funcion contador() {
+            var n = 0
+            funcion uno_mas() {
+                n += 1
+                devolver n
+            }
+            devolver uno_mas
+        }
+        sea uno = contador()
+        sea otro = contador()
+        mostrar(f(1), f(1, 5), f(1, 5, 9), uno(), uno(), otro())
+    """) == ["[1, 2, 3] [1, 5, 6] [1, 5, 9] 1 2 1"]
+    assert "f() espera entre 1 y 3 argumento(s) y recibió 0" in falla(
+        "funcion f(a, b = 1, c = 2) { devolver a }\nsea x = [f]\nmostrar(x[0]())").mensaje
+    # un parámetro con nombre de función incluida sigue siendo un error, llamada por llamada
+    interprete = mate.Interprete()
+    programa = [("funcion", 1, "g", ["largo"], [("devolver", 1, ("num", 1, 1))], []),
+                ("expr", 2, ("llamar", 2, ("nombre", 2, "mostrar"),
+                             [("llamar", 2, ("nombre", 2, "g"), [("num", 2, 5)])]))]
+    for _ in range(2):
+        with pytest.raises(mate.ErrorMate) as info:
+            interprete.correr(programa)
+        assert "'largo' es una función incluida de Mate" in info.value.mensaje
+        interprete = mate.Interprete()
+
+
+def test_el_readme_y_mejoras_cuentan_la_velocidad_con_numeros():
+    leeme = (RAIZ / "README.md").read_text(encoding="utf-8")
+    mejoras = (RAIZ / "MEJORAS.md").read_text(encoding="utf-8")
+    assert "## Qué tan rápido es" in leeme and "mate\\pruebas\\velocidad.py" in leeme
+    for texto in (leeme, mejoras):
+        for programa in ["bucle con cuentas", "llamadas a funciones", "listas y mapas",
+                         "textos", "mensajes entre agentes"]:
+            assert programa in texto, programa
+    assert "**109. Un intérprete más rápido**" in mejoras
+    assert "**110. Puente a Python (`usar python`)**" in mejoras
+
+
+# ── 110: puente a Python ──
+
+AYUDAS_PY = '''
+import math
+
+veces = 0
+
+
+def doble(numero):
+    return numero * 2
+
+
+def raiz(numero):
+    if numero < 0:
+        raise ValueError("no hay raíz de un negativo")
+    return math.sqrt(numero)
+
+
+def agrandar(lista, mapa):
+    lista.append("de más")
+    mapa["nueva"] = True
+    return lista, mapa
+
+
+def eco(valor=None, *resto):
+    return valor
+
+
+def contar():
+    global veces
+    veces += 1
+    return veces
+
+
+def conjunto():
+    return {1, 2}
+
+
+def clave_rara():
+    return {1: "uno"}
+
+
+def no_es_numero():
+    return float("nan")
+
+
+def enorme():
+    return 10 ** 5000
+
+
+def con_nombre(a, *, b):
+    return a
+
+
+def se_va():
+    raise SystemExit(3)
+
+
+def falta_clave(mapa):
+    return mapa["no está"]
+
+
+def varios():
+    return (1, "dos", [3.5, None, True], {"k": ()})
+
+
+def _interna():
+    return 1
+
+
+def se_contiene():
+    lista = []
+    lista.append(lista)
+    return lista
+'''
+
+
+def con_python(tmp_path, fuente, python=AYUDAS_PY, nombre="ayudas.py"):
+    """Deja el .py al lado de un programa.mate y devuelve la ruta del programa."""
+    (tmp_path / nombre).write_text(python, encoding="utf-8")
+    programa = tmp_path / "programa.mate"
+    programa.write_text(fuente, encoding="utf-8")
+    return str(programa)
+
+
+def correr_con_python(tmp_path, fuente, **mas):
+    """Lo que muestra ese programa (que tiene un ayudas.py al lado)."""
+    ruta = con_python(tmp_path, 'usar python "ayudas.py"\n' + fuente, **mas)
+    salida = []
+    interprete = mate.Interprete(salida=salida.append)
+    programa = mate.analizar((tmp_path / "programa.mate").read_text(encoding="utf-8"), ruta)
+    assert mate.verificar(programa) == []
+    interprete.correr(programa)
+    return salida
+
+
+def falla_con_python(tmp_path, fuente, **mas):
+    with pytest.raises(mate.ErrorMate) as info:
+        correr_con_python(tmp_path, fuente, **mas)
+    return info.value
+
+
+def test_usar_python_llama_funciones_de_un_archivo_que_esta_al_lado(tmp_path):
+    assert correr_con_python(tmp_path, """
+        mostrar(ayudas.doble(21), ayudas.raiz(16), ayudas.doble("ja"), ayudas.eco())
+        mostrar(ayudas.varios())
+        mostrar(ayudas.eco(verdadero), ayudas.eco(nada), ayudas.eco(1.5), ayudas.eco(1, 2, 3))
+        mostrar(tipo(ayudas.eco(verdadero)), tipo(ayudas.raiz(4)), tipo(ayudas.varios()))
+        mostrar(ayudas, ayudas.doble, tipo(ayudas), tipo(ayudas.doble))
+        funcion triple(n) { devolver ayudas.doble(n) + n }
+        mostrar(triple(5))
+    """) == ["42 4 jaja nada", '[1, "dos", [3.5, nada, verdadero], {k: []}]',
+             "verdadero nada 1.5 1", "logico numero lista",
+             "<python ayudas.py> <funcion ayudas.doble> python funcion", "15"]
+    # el programa no dejó nada al lado: ni la carpeta que arma Python cuando importa
+    assert sorted(p.name for p in tmp_path.iterdir()) == ["ayudas.py", "programa.mate"]
+
+
+def test_a_python_los_valores_van_y_vuelven_copiados(tmp_path):
+    assert correr_con_python(tmp_path, """
+        sea lista = [1, [2]]
+        sea mapa = { a: 1 }
+        sea vuelta = ayudas.agrandar(lista, mapa)
+        mostrar(lista, mapa)
+        mostrar(vuelta)
+        intentar { fallar "motivo" } si falla e { mostrar(ayudas.eco(e) == "motivo") }
+    """) == ['[1, [2]] {a: 1}', '[[1, [2], "de más"], {a: 1, nueva: verdadero}]', "verdadero"]
+
+
+def test_un_error_dentro_del_python_es_un_error_de_mate_con_su_renglon(tmp_path, capsys):
+    error = falla_con_python(tmp_path, "sea a = 1\nmostrar(\n  ayudas.raiz(-1))")
+    assert error.linea == 4 and error.familia == "python" and error.clase == "falla"
+    assert error.mensaje == (
+        "ayudas.raiz() falló adentro del Python (línea 13 de ayudas.py): un valor que no "
+        'sirve para lo que se quiso hacer. Python dice: "ValueError: no hay raíz de un '
+        'negativo"')
+    # se ataja con 'intentar', y detalle_de dice que fue del Python
+    assert correr_con_python(tmp_path, """
+        intentar {
+            mostrar(ayudas.raiz("x"))
+        } si falla e {
+            mostrar(detalle_de(e).clase, detalle_de(e).linea, tiene(e, "TypeError"))
+        }
+        intentar { ayudas.se_va() } si falla e { mostrar(tiene(e, "quiso cerrar el programa")) }
+        intentar { ayudas.falta_clave({}) } si falla e { mostrar(tiene(e, "KeyError: no está")) }
+        mostrar("sigue")
+    """) == ["python 4 verdadero", "verdadero", "verdadero", "sigue"]
+    # por la línea de comandos sale como cualquier error: archivo, renglón y sin 'Traceback'
+    ruta = con_python(tmp_path, 'usar python "ayudas.py"\nfuncion f() { devolver ayudas.raiz(-4) }\n'
+                                "mostrar(f())")
+    assert mate.main(["correr", ruta]) == 1
+    err = capsys.readouterr().err
+    assert "programa.mate:2: error: ayudas.raiz() falló adentro del Python" in err
+    assert "cómo se llegó: en f(), llamada desde la línea 3" in err and "Traceback" not in err
+
+
+def test_solo_cruzan_valores_simples_y_los_errores_lo_explican(tmp_path):
+    for llamada, dice in [
+            ("ayudas.conjunto()", "devolvió algo que Mate no conoce (en Python se llama 'set')"),
+            ("ayudas.clave_rara()", "una clave que no es un texto"),
+            ("ayudas.no_es_numero()", "devolvió un número que Mate no usa"),
+            ("ayudas.enorme()", "devolvió un número demasiado grande para Mate"),
+            ("ayudas.se_contiene()", "se tiene a sí mismo adentro"),
+            ("ayudas.doble(mostrar)", "solo se le pasan números, textos, verdadero o falso, "
+                                      "nada, listas y mapas, y recibió una función"),
+            ("ayudas.doble([ayudas])", "y recibió un archivo de Python"),
+            ("ayudas.doble(P { n: 1 })", "recibió un mensaje P. Pasalo como mapa: a_mapa(...)"),
+            ("ayudas.doble()", "ayudas.doble() lleva 1 valor y recibió 0 (así está escrita "
+                               "en ayudas.py)"),
+            ("ayudas.doble(1, 2)", "lleva 1 valor y recibió 2"),
+            ("ayudas.contar(1)", "lleva 0 valores y recibió 1"),
+            ("ayudas.con_nombre(1)", "no se puede llamar desde Mate: en ayudas.py pide 'b'"),
+            ("ayudas()", "un archivo de Python no es una función"),
+            ("ayudas[0]", "un archivo de Python no tiene posiciones ni claves"),
+            ("a_json(ayudas)", "no se puede pasar a JSON"),
+            ("M { f: ayudas.doble }", "los mensajes llevan datos, no funciones"),
+            ("M { f: ayudas }", "los mensajes llevan datos, no funciones")]:
+        error = falla_con_python(
+            tmp_path, f"mensaje P {{ n: numero }}\nmensaje M {{ f: cualquiera }}\n"
+                      f"sea x = {llamada}")
+        assert dice in error.mensaje and error.linea == 4, (llamada, error.mensaje)
+    assert "'ayudas' es el archivo de Python que trajo 'usar python'" in falla_con_python(
+        tmp_path, "ayudas = 1").mensaje
+    assert "'ayudas' ya está definido" in falla_con_python(tmp_path, "sea ayudas = 1").mensaje
+    assert "un archivo de Python no tiene campos" in falla_con_python(
+        tmp_path, "intentar { ayudas.doble = 1 } si falla e { fallar e }").mensaje
+
+
+def test_una_funcion_de_python_sola_en_un_renglon_vale_y_sin_parentesis_no(tmp_path):
+    assert correr_con_python(tmp_path, """
+        ayudas.contar()
+        ayudas.contar()
+        mostrar(ayudas.contar())
+    """) == ["3"]
+    error = falla_con_python(tmp_path, "sea f = ayudas.doble\nf")
+    assert "a 'ayudas.doble' le faltan los paréntesis: ayudas.doble(...)" in error.mensaje
+
+
+def test_las_funciones_que_no_estan_se_avisan_antes_de_correr(tmp_path):
+    ruta = con_python(tmp_path, 'usar python "ayudas.py"\n'
+                                "funcion f() { devolver ayudas.dobel(1) }\n"
+                                "mostrar(ayudas._interna(), ayudas.dobel(2), ayudas.math)\n"
+                                "intentar { ayudas.nada_de_esto() } si falla e { mostrar(e) }\n")
+    programa = mate.analizar((tmp_path / "programa.mate").read_text(encoding="utf-8"), ruta)
+    errores = [(int(linea), texto) for linea, texto in mate.verificar(programa)]
+    assert errores[0] == (2, "ayudas.py no tiene una función 'dobel'. ¿Quisiste decir 'doble'?")
+    assert [linea for linea, _ in errores] == [2, 3, 3]  # (una vez por nombre; 'intentar' no)
+    assert "no tiene una función '_interna' (tiene: agrandar, " in errores[1][1]
+    assert "no tiene una función 'math'" in errores[2][1]  # lo importado no cuenta
+    # y si igual se llega a correr (adentro de un 'intentar'), dice lo mismo
+    assert correr_con_python(tmp_path, """
+        intentar { ayudas.dobel(1) } si falla e { mostrar(e) }
+        intentar { ayudas._interna() } si falla e { mostrar(e) }
+        intentar { ayudas.math.sqrt(4) } si falla e { mostrar(tiene(e, "no tiene una función 'math'")) }
+    """) == ["ayudas.py no tiene una función 'dobel'. ¿Quisiste decir 'doble'?",
+             "'_interna' empieza con guion bajo, y esas funciones de ayudas.py no se ven desde "
+             "Mate: en Python así se marcan las que son de uso interno", "verdadero"]
+    # si otra cosa se llama igual que el archivo, no se adivina: se revisa al correr
+    assert correr_con_python(
+        tmp_path, "funcion f(ayudas) { devolver ayudas.x }\nmostrar(f({ x: 7 }))") == ["7"]
+    vacio = falla_con_python(tmp_path, "intentar { ayudas.f() } si falla e { fallar e }",
+                             python="import math\n_x = 1\n")
+    assert "ayudas.py no tiene ninguna función para usar desde Mate" in vacio.mensaje
+
+
+def test_verificar_avisa_si_el_archivo_de_python_no_esta(tmp_path, capsys):
+    (tmp_path / "ayudas.py").write_text("def f():\n    return 1\n", encoding="utf-8")
+    (tmp_path / "notas.py.txt").write_text("def f():\n    return 1\n", encoding="utf-8")
+    for escrito, dice in [
+            ("ayuda.py", "no encuentro el archivo de Python 'ayuda.py' (lo busqué en "),
+            ("ayuda.py", "¿Quisiste decir 'ayudas.py'?"),
+            ("otra_cosa.py", "Los archivos .py que hay ahí: ayudas.py"),
+            ("notas.py", "Encontré notas.py.txt: el Bloc de notas le agregó .txt"),
+            ("sub/ayudas.py", "Esa carpeta no existe")]:
+        for orden in ("verificar", "correr", "probar"):
+            codigo, out, err = por_main(tmp_path, capsys, f'mostrar(1)\nusar python "{escrito}"',
+                                        orden=orden)
+            assert codigo == 1 and out == "", (escrito, orden)
+            assert "programa.mate:2: error: " in err and dice in err, (escrito, orden, err)
+    codigo, out, _ = por_main(tmp_path, capsys, 'usar python "ayudas.py"\nmostrar(ayudas.f())',
+                              orden="verificar")
+    assert codigo == 0 and out.strip().endswith("sin errores")
+
+
+def test_el_archivo_de_python_no_puede_salir_de_la_carpeta_del_programa(tmp_path):
+    adentro = tmp_path / "programas"
+    (adentro / "sub").mkdir(parents=True)
+    (tmp_path / "afuera.py").write_text("def f():\n    return 1\n", encoding="utf-8")
+    (adentro / "sub" / "hondo.py").write_text("def f():\n    return 2\n", encoding="utf-8")
+    programa = adentro / "p.mate"
+
+    def error_de(escrito):
+        with pytest.raises(mate.ErrorMate) as info:
+            mate.analizar(f'usar python "{escrito}"', str(programa))
+        assert info.value.linea == 1
+        return info.value.mensaje
+
+    for escrito in ["../afuera.py", "sub/../../afuera.py", str(tmp_path / "afuera.py"),
+                    "/afuera.py", "C:/afuera.py"]:
+        mensaje = error_de(escrito)
+        assert "solo trae archivos de la carpeta del programa" in mensaje, escrito
+        assert 'nombralo sin la ruta: usar python "afuera.py"' in mensaje, escrito
+    try:
+        (adentro / "atajo.py").symlink_to(tmp_path / "afuera.py")
+    except OSError:  # (en Windows, sin permiso para hacer accesos directos)
+        pass
+    else:
+        assert "queda afuera" in error_de("atajo.py")
+    # una carpeta de adentro sí vale, y el nombre es el del archivo
+    arbol = mate.analizar('usar python "sub/hondo.py"\nmostrar(hondo.f())', str(programa))
+    assert mate.verificar(arbol) == []
+    salida = []
+    mate.Interprete(salida=salida.append).correr(arbol)
+    assert salida == ["2"]
+
+
+def test_el_nombre_del_archivo_de_python_tiene_que_servir_de_nombre(tmp_path):
+    for escrito, dice in [
+            ("Mis-Ayudas.py", "'Mis-Ayudas' no sirve: tiene mayúsculas, espacios, guiones"),
+            ("2da.py", "'2da' no sirve"), ("mis ayudas.py", "no sirve"),
+            ("largo.py", "'largo' no sirve: es una función incluida de Mate"),
+            ("para.py", "'para' no sirve: es una palabra de Mate"),
+            ("ayudas", "su nombre termina en .py"), ("ayudas.txt", "su nombre termina en .py"),
+            (".py", "su nombre termina en .py"), ("", "su nombre termina en .py")]:
+        with pytest.raises(mate.ErrorMate) as info:
+            mate.analizar(f'usar python "{escrito}"', str(tmp_path / "p.mate"))
+        assert dice in info.value.mensaje, escrito
+    for fuente, dice in [("usar python", "esperaba el nombre del archivo de Python entre "
+                                         'comillas (usar python "ayudas.py")'),
+                         ("usar python ayudas", "esperaba el nombre del archivo de Python"),
+                         ('funcion f() { usar python "a.py" }', "'usar' solo puede declararse")]:
+        with pytest.raises(mate.ErrorMate) as info:
+            mate.analizar(fuente, str(tmp_path / "p.mate"))
+        assert dice in info.value.mensaje, fuente
+    # 'python' no es una palabra reservada: sigue sirviendo de nombre (y no gasta del tope)
+    assert "python" not in mate.PALABRAS and len(mate.PALABRAS) == 36
+    assert mostrados("sea python = 3\nmostrar(python + 1)") == ["4"]
+
+
+def test_un_py_mal_escrito_o_que_falla_al_abrirlo_se_explica(tmp_path, capsys):
+    marca = tmp_path / "se_ejecuto.txt"
+    con_efecto = f"open({str(marca)!r}, 'w').close()\ndef f():\n    return 1\n"
+    ruta = con_python(tmp_path, 'usar python "ayudas.py"\nmostrar(ayudas.f())', python=con_efecto)
+    # 'verificar' lee el .py pero NO lo ejecuta
+    assert mate.main(["verificar", ruta]) == 0 and not marca.exists()
+    assert mate.main(["correr", ruta]) == 0 and marca.exists()
+    capsys.readouterr()
+    for python, dice in [
+            ("def f(:\n    return 1\n", "ayudas.py está mal escrito en su línea 1 y Python no "
+                                        "lo pudo leer. Python dice: "),
+            ("import no_existe_este_modulo\n", "ayudas.py falló apenas se lo abrió, antes de "
+                                               "llamar a ninguna de sus funciones (línea 1 de "
+                                               "ayudas.py): un 'import' de algo que no está "
+                                               "instalado"),
+            ("x = 1\ny = x / 0\n", "(línea 2 de ayudas.py): una división por cero"),
+            ("raise SystemExit(2)\n", "quiso cerrar el programa")]:
+        ruta = con_python(tmp_path, 'mostrar("antes")\nusar python "ayudas.py"\n', python=python)
+        assert mate.main(["correr", ruta]) == 1
+        capturado = capsys.readouterr()
+        assert capturado.out == "" and "Traceback" not in capturado.err
+        assert "programa.mate:2: error: " in capturado.err and dice in capturado.err, python
+    # un .py guardado por el Bloc de notas en ANSI (con tildes) se lee igual
+    (tmp_path / "ayudas.py").write_bytes('def saludo():\n    return "ñandú"\n'.encode("cp1252"))
+    (tmp_path / "programa.mate").write_text('usar python "ayudas.py"\nmostrar(ayudas.saludo())',
+                                            encoding="utf-8")
+    assert mate.main(["correr", str(tmp_path / "programa.mate")]) == 0
+    assert capsys.readouterr().out == "ñandú\n"
+
+
+def test_usar_python_anda_con_probar_con_agentes_y_desde_otro_archivo(tmp_path, capsys):
+    (tmp_path / "ayudas.py").write_text(AYUDAS_PY, encoding="utf-8")
+    (tmp_path / "lib.mate").write_text(
+        'usar python "ayudas.py"\nfuncion cuadruple(n) { devolver ayudas.doble(ayudas.doble(n)) }\n',
+        encoding="utf-8")
+    programa = tmp_path / "programa.mate"
+    programa.write_text("""
+        usar "lib.mate"
+        usar python "ayudas.py"
+        usar python "ayudas.py"
+        mensaje Doblar { n: numero }
+        agente Calculista {
+            estado hechas = 0
+            al recibir Doblar como d {
+                hechas += 1
+                responder ayudas.doble(d.n) + hechas
+            }
+        }
+        mostrar(cuadruple(2), preguntar Doblar { n: 5 } a Calculista)
+        prueba "desde una prueba" {
+            asegurar ayudas.doble(4) == 8
+            asegurar preguntar Doblar { n: 1 } a Calculista == 3
+            asegurar falla { ayudas.raiz(-1) }
+        }
+        prueba "esta falla" { asegurar ayudas.raiz(9) == 4 }
+    """, encoding="utf-8")
+    assert mate.main(["correr", str(programa)]) == 0
+    assert capsys.readouterr().out == "8 11\n"
+    assert mate.main(["probar", str(programa)]) == 1
+    out = capsys.readouterr().out
+    assert "✓ desde una prueba" in out and "✗ esta falla" in out
+    assert "dio 3 y se esperaba 4" in out and "1 de 2 pruebas pasaron" in out
+    assert sorted(p.name for p in tmp_path.iterdir()) == ["ayudas.py", "lib.mate", "programa.mate"]
+    # dos archivos distintos con el mismo nombre no pueden convivir
+    (tmp_path / "sub").mkdir()
+    (tmp_path / "sub" / "ayudas.py").write_text("def f():\n    return 1\n", encoding="utf-8")
+    programa.write_text('usar python "ayudas.py"\nusar python "sub/ayudas.py"\n', encoding="utf-8")
+    assert mate.main(["correr", str(programa)]) == 1
+    assert "programa.mate:2: error: 'ayudas' ya está definido" in capsys.readouterr().err
+
+
+def test_en_la_consola_usar_python_se_puede_traer_de_nuevo(tmp_path, monkeypatch):
+    (tmp_path / "ayudas.py").write_text("def f():\n    return 1\n", encoding="utf-8")
+    monkeypatch.chdir(tmp_path)
+    renglones = iter(['usar python "ayudas.py"', "ayudas.f()", "PISAR", 'usar python "ayudas.py"',
+                      "ayudas.f()", "ayudas", "salir"])
+
+    def entrada(_pregunta):
+        renglon = next(renglones)
+        if renglon == "PISAR":  # (como si el dueño corrigiera el .py con el Bloc de notas)
+            (tmp_path / "ayudas.py").write_text("def f():\n    return 2\n", encoding="utf-8")
+            renglon = "1 + 1"
+        return renglon
+
+    mostrado = []
+    mate.consola(entrada, mostrado.append)
+    assert mostrado[2:] == ["1", "2", "2", "<python ayudas.py>"]
+
+
+def test_el_registro_no_guarda_lo_que_dijo_el_python(tmp_path, con_registro):
+    correr_mate, registro = con_registro
+    ruta = con_python(tmp_path, 'usar python "ayudas.py"\nmostrar(ayudas.secreto())',
+                      python='def secreto():\n    raise ValueError("clave de Marta: 1234")\n')
+    codigo, _, err = correr_mate("correr", ruta)
+    assert codigo == 1 and "clave de Marta: 1234" in err  # en pantalla sí se ve
+    anotado = registro.read_text(encoding="utf-8-sig")
+    assert "Marta" not in anotado and "1234" not in anotado and "secreto" not in anotado
+    assert "al correr: falló algo de un archivo traído con 'usar python'" in anotado
+    assert "<lo que pasó en el archivo de Python del programa>" in anotado
+
+
+def test_el_ejemplo_9_muestra_lo_que_dicen_sus_comentarios(capsys):
+    assert mate.main(["correr", str(RAIZ / "ejemplos" / "09_con_python.mate")]) == 0
+    assert capsys.readouterr().out == (
+        "La raíz de 144 es 12\n"
+        "Del 1 al 15 de marzo van 14 días\n"
+        "La venta del medio fue de $ 1.200 y la mayor de $ 3.500\n"
+        "Esas fechas no se entienden: van como 01/03/2026\n")
+    assert mate.main(["probar", str(RAIZ / "ejemplos" / "09_con_python.mate")]) == 0
+    assert "3 de 3 pruebas pasaron" in capsys.readouterr().out
+    # correrlo no deja nada nuevo en la carpeta de ejemplos
+    assert not (RAIZ / "ejemplos" / "__pycache__").exists()
+    assert sorted(p.name for p in (RAIZ / "ejemplos").glob("*.py")) == ["ayudas.py"]
+
+
+def test_la_documentacion_cuenta_el_puente_a_python_y_su_riesgo(capsys):
+    leeme = (RAIZ / "README.md").read_text(encoding="utf-8")
+    assert "### Funciones escritas en Python: `usar python`" in leeme
+    for texto in [leeme, mate.ayuda_de("python"), mate.texto_de_guia(), mate.texto_de_ayuda(),
+                  (RAIZ / "ejemplos" / "ayudas.py").read_text(encoding="utf-8"),
+                  (RAIZ / "ejemplos" / "09_con_python.mate").read_text(encoding="utf-8")]:
+        assert 'usar python "ayudas.py"' in texto
+        assert "todos los permisos" in " ".join(texto.split())
+    for frase in ["`09_con_python.mate`", "nueve programas cortos", "también con `probar`",
+                  "`\"python\"`", "copiados", "python mate\\mate.py ayuda python"]:
+        assert frase in leeme, frase
+    assert mate.ayuda_de("usar") and "'ayuda python'" in mate.ayuda_de("usar")
+    assert mate.main(["ayuda", "python"]) == 0
+    assert "mostrar(ayudas.doble(21))" in capsys.readouterr().out

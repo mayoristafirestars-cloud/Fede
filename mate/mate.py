@@ -14,18 +14,21 @@ Uso:
     python3 mate.py informe   (los errores de uso anotados; --para-mejorar, --borrar)
 """
 
+import ast
 import datetime
 import decimal
 import difflib
 import json
 import math
+import operator
 import os
 import re
 import sys
+import types
 import unicodedata
 from collections import deque
 
-VERSION = "0.4"
+VERSION = "0.5"
 
 # El tope para que Mate siga siendo chico (mejora 90): no puede haber más palabras propias
 # ni más funciones incluidas que estas. Para agregar una hay que sacar otra, o discutir el
@@ -53,7 +56,8 @@ MAX_LLAMADAS = 3_000  # funciones abiertas a la vez (una que se llama a sí mism
 # Cada llamada de Mate gasta varios niveles de Python. Desde Python 3.12 esos niveles no
 # ocupan la pila del sistema (y lo que sí la ocupa tiene su propio freno), así que se
 # puede pedir lugar para miles de llamadas sin riesgo de que Python se caiga. En un
-# Python más viejo se deja el tope de siempre (unas 120 llamadas).
+# Python más viejo se deja el tope de siempre (unas 180 llamadas; eran unas 120 hasta la
+# 0.4, cuando cada llamada de Mate gastaba más niveles de Python).
 NIVELES_DE_PYTHON = 30 * MAX_LLAMADAS if sys.version_info >= (3, 12) else 0
 
 ORDENES = ("correr", "probar", "verificar")
@@ -909,6 +913,13 @@ class Parser:
                 raise ErrorMate(f"'{val}' solo puede declararse en el nivel superior", ln)
             if val == "usar":
                 self.tomar()
+                # usar python "ayudas.py": trae funciones escritas en Python (0.5). 'python'
+                # no es una palabra reservada: solo significa algo acá, antes de un texto.
+                if self.es("id", "python"):
+                    self.tomar()
+                    return ("usar_python", ln, self.espera(
+                        "str", que="el nombre del archivo de Python entre comillas (usar "
+                                   'python "ayudas.py")')[1])
                 return ("usar", ln, self.espera("str", que="el nombre de un archivo")[1])
             if val == "mensaje":
                 return self.mensaje()
@@ -1547,6 +1558,16 @@ def analizar(fuente, ruta=None, _vistos=None, en_consola=False):
     tokens = tokenizar(fuente, ruta)
     revisar_cierres(tokens, fuente)
     for s in Parser(tokens, en_consola).programa():
+        if s[0] == "usar_python":
+            try:
+                nombre, archivo = archivo_de_python(carpeta, s[2])
+            except ErrorMate as e:
+                e.linea = e.linea or s[1]
+                raise
+            if "python:" + os.path.realpath(archivo) not in vistos:  # una vez alcanza
+                vistos.add("python:" + os.path.realpath(archivo))
+                programa.append(("usar_python", s[1], nombre, archivo))
+            continue
         if s[0] != "usar":
             programa.append(s)
             continue
@@ -1579,8 +1600,67 @@ def analizar(fuente, ruta=None, _vistos=None, en_consola=False):
             raise
         # De un archivo usado se toman las declaraciones, no lo que ejecuta ni sus pruebas.
         programa.extend(x for x in traido
-                        if x[0] in ("mensaje", "agente", "funcion", "sea"))
+                        if x[0] in ("mensaje", "agente", "funcion", "sea", "usar_python"))
     return programa
+
+
+def archivo_de_python(carpeta, escrito):
+    """De 'usar python "ayudas.py"': (el nombre con que se usa en el programa, la ruta del
+    archivo). El archivo tiene que estar en la carpeta del programa (o en una de adentro)
+    y llamarse como una variable de Mate, porque después se escribe ayudas.algo(...)."""
+    ejemplo = 'usar python "ayudas.py"'
+    partes = [p for p in re.split(r"[\\/]", escrito.strip()) if p not in ("", ".")]
+    if not partes or not partes[-1].lower().endswith(".py") or len(partes[-1]) < 4:
+        raise ErrorMate(f"'usar python' trae un archivo de Python, y su nombre termina en "
+                        f'.py; acá dice "{escrito}". Por ejemplo: {ejemplo}')
+    afuera = ErrorMate(
+        f"'usar python' solo trae archivos de la carpeta del programa ({carpeta}), y "
+        f'"{escrito}" queda afuera. Copiá el archivo a esa carpeta y nombralo sin la '
+        f'ruta: usar python "{partes[-1]}"', familia="archivo")
+    if ".." in partes or escrito.strip()[:1] in ("/", "\\") or re.match(r"[A-Za-z]:", partes[0]):
+        raise afuera
+    nombre = partes[-1][:-3]
+    if not nombre.isidentifier() or nombre != nombre.lower() or nombre in PALABRAS \
+            or nombre in FUNCIONES:
+        porque = ("es una palabra de Mate" if nombre in PALABRAS else
+                  "es una función incluida de Mate" if nombre in FUNCIONES else
+                  "tiene mayúsculas, espacios, guiones o empieza con un número")
+        raise ErrorMate(
+            f"el nombre de un archivo de Python es el que después se escribe en el programa "
+            f"(ayudas.py se usa así: ayudas.algo(...)), y '{nombre}' no sirve: {porque}. "
+            "Renombrá el archivo con minúsculas, números y guion bajo, por ejemplo "
+            "mis_ayudas.py")
+    ruta = os.path.join(carpeta, *partes)
+    try:  # (un acceso directo que lleva afuera de la carpeta tampoco vale)
+        adentro = os.path.normcase(os.path.commonpath(
+            [os.path.realpath(carpeta), os.path.realpath(ruta)])) \
+            == os.path.normcase(os.path.realpath(carpeta))
+    except ValueError:  # en Windows, si está en otro disco
+        adentro = False
+    if not adentro:
+        raise afuera
+    if os.path.isfile(ruta):
+        return nombre, ruta
+    donde = os.path.dirname(ruta)
+    pista = ""
+    if os.path.isfile(ruta + ".txt"):
+        pista = (f". Encontré {partes[-1]}.txt: el Bloc de notas le agregó .txt; renombralo, "
+                 "o al guardar elegí Tipo: Todos los archivos")
+    elif not os.path.isdir(donde):
+        pista = ". Esa carpeta no existe"
+    else:
+        try:
+            hay = sorted(a for a in os.listdir(donde) if a.lower().endswith(".py"))
+        except OSError:
+            hay = []
+        parecido = difflib.get_close_matches(partes[-1], hay, n=1, cutoff=0.75)
+        if parecido:
+            pista = f". ¿Quisiste decir '{parecido[0]}'?"
+        elif hay:
+            pista = (". Los archivos .py que hay ahí: " + ", ".join(hay[:10])
+                     + (", ..." if len(hay) > 10 else ""))
+    raise ErrorMate(f"no encuentro el archivo de Python '{escrito}' (lo busqué en {donde})"
+                    + pista, familia="archivo")
 
 
 def pista_de_usar(carpeta, nombre):
@@ -1643,6 +1723,8 @@ def _ligaduras(programa):
             anotar(n[2])
             for parametro in n[3]:
                 anotar(parametro)
+        elif _es_nodo(n, "usar_python", 4):
+            anotar(n[2])
         elif _es_nodo(n, "intentar", 5):
             anotar(n[3])
         elif _es_nodo(n, "simular", 6):
@@ -1807,7 +1889,8 @@ def revisar_nombres(programa, mensajes, veces, en_consola=False):
     - En la consola solo se mira la cantidad de valores de las funciones incluidas: ahí
       lo que falta se puede escribir en el renglón siguiente, y una función se puede rehacer."""
     errores, avisados = [], set()
-    arriba = set(FUNCIONES) | {s[2] for s in programa if s[0] in ("sea", "funcion", "agente")}
+    arriba = set(FUNCIONES) | {s[2] for s in programa
+                               if s[0] in ("sea", "funcion", "agente", "usar_python")}
     tapadas = set(SE_PUEDEN_TAPAR) & set(_ligaduras(programa))  # nombres que el programa usa
     # Las funciones propias que seguro son esa función donde se las nombre: las de un
     # nombre que en todo el programa se le pone a una sola cosa.
@@ -1957,6 +2040,66 @@ def revisar_nombres(programa, mensajes, veces, en_consola=False):
     return errores
 
 
+def revisar_python(programa, veces):
+    """Lo que se puede saber de un archivo traído con 'usar python' SIN ejecutarlo: si
+    Python lo puede leer, y si tiene las funciones que el programa le pide. Devuelve
+    [(linea, texto)]. (Que el archivo exista ya lo controló 'analizar'.)"""
+    errores, tienen = [], {}
+    for s in programa:
+        if s[0] != "usar_python":
+            continue
+        archivo = os.path.basename(s[3])
+        try:
+            arbol = ast.parse(leer_fuente(s[3]))
+        except SyntaxError as e:
+            donde = f" en su línea {e.lineno}" if e.lineno else ""
+            errores.append((s[1], f"{archivo} está mal escrito{donde} y Python no lo pudo "
+                                  f"leer. Python dice: {recortado(e.msg or 'SyntaxError', 300)}"))
+            continue
+        except (OSError, ValueError, ErrorMate, RecursionError, MemoryError):
+            continue  # no se pudo mirar: si hay un problema, lo dirá al correr
+        # Los nombres que el archivo define arriba de todo (con 'def' o con '='): si el
+        # programa pide otro, seguro que no está. No se entra en las funciones ni clases.
+        nombres, pendientes = set(), list(arbol.body)
+        while pendientes:
+            n = pendientes.pop()
+            if isinstance(n, (ast.FunctionDef, ast.AsyncFunctionDef)):
+                nombres.add(n.name)
+            elif isinstance(n, ast.ClassDef):
+                pass
+            else:
+                nombres.update(x.id for x in ast.walk(n)
+                               if isinstance(x, ast.Name) and isinstance(x.ctx, ast.Store))
+                pendientes += [x for x in ast.iter_child_nodes(n) if isinstance(x, ast.stmt)]
+        if veces.get(s[2]) == 1:  # (si otra cosa se llama igual, no se sabe cuál es cuál)
+            tienen[s[2]] = (archivo, {n for n in nombres if not n.startswith("_")})
+    avisados = set()
+
+    def visitar(n):
+        if isinstance(n, (list, tuple)):
+            if (_es_nodo(n, "campo", 4) and _es_nodo(n[2], "nombre", 3) and n[2][2] in tienen
+                    and (n[2][2], n[3]) not in avisados):
+                archivo, nombres = tienen[n[2][2]]
+                if n[3] not in nombres:
+                    avisados.add((n[2][2], n[3]))
+                    errores.append((n[1], no_esta(
+                        f"{archivo} no tiene una función '{n[3]}'", n[3], sorted(nombres))
+                        if nombres else
+                        f"{archivo} no tiene ninguna función para usar desde Mate: se ven "
+                        "las que están escritas ahí con 'def' y no empiezan con guion bajo"))
+            # (como con los nombres: adentro de 'intentar' y de 'asegurar falla' no se mira)
+            if _es_nodo(n, "intentar", 5):
+                n = n[4]
+            elif _es_nodo(n, "asegurar_falla", 4):
+                return
+            for x in n:
+                visitar(x)
+
+    if tienen:
+        visitar(programa)
+    return errores
+
+
 def verificar(programa, en_consola=False):
     """Revisa el programa antes de correr: los contratos de los mensajes, los nombres que
     no existen y lo demás que se puede saber sin ejecutarlo. Devuelve [(linea, texto)].
@@ -1965,6 +2108,7 @@ def verificar(programa, en_consola=False):
     mensajes, agentes, estados = {}, {}, {}
     declarados = {}  # la declaración completa de cada agente
     veces = _ligaduras(programa)
+    errores += revisar_python(programa, veces)
     # Funciones que seguro son funciones donde se las nombre: las incluidas y las del
     # nivel superior cuyo nombre no se repite.
     funciones = (set(incluidas()) - set(veces)) | {
@@ -2286,11 +2430,44 @@ class Funcion:
     def __init__(self, nombre, params, cuerpo, env, defectos=()):
         self.nombre, self.params, self.cuerpo, self.env = nombre, params, cuerpo, env
         self.defectos = defectos  # [(parámetro, valor por defecto)]: son los últimos
+        self.armado = None  # el cuerpo listo para correr: se arma en la primera llamada
+        self.directa = None  # si sus parámetros se anotan sin más controles (ver llamar)
 
 
 class Nativa:
     def __init__(self, nombre, fn):
         self.nombre, self.fn = nombre, fn
+
+
+class DePython(Nativa):
+    """Una función escrita en Python, traída con 'usar python' (0.5). Se llama como
+    cualquier otra; un renglón que solo la llama vale, porque puede estar haciendo algo."""
+
+
+class ModuloPython:
+    """Un archivo .py traído con 'usar python "ayudas.py"': sus funciones se llaman
+    ayudas.nombre(...). No es un dato: no viaja en mensajes ni se guarda."""
+
+    def __init__(self, nombre, archivo, funciones):
+        self.nombre, self.archivo, self.funciones = nombre, archivo, funciones
+
+    def __str__(self):
+        return f"<python {os.path.basename(self.archivo)}>"
+
+    def funcion(self, nombre):
+        if nombre in self.funciones:
+            return self.funciones[nombre]
+        archivo = os.path.basename(self.archivo)
+        if not self.funciones:
+            raise ErrorMate(f"{archivo} no tiene ninguna función para usar desde Mate: se "
+                            "ven las que están escritas ahí con 'def' y no empiezan con "
+                            "guion bajo", familia="python")
+        if nombre.startswith("_"):
+            raise ErrorMate(f"'{nombre}' empieza con guion bajo, y esas funciones de "
+                            f"{archivo} no se ven desde Mate: en Python así se marcan las "
+                            "que son de uso interno", familia="python")
+        raise ErrorMate(no_esta(f"{archivo} no tiene una función '{nombre}'", nombre,
+                                self.funciones), familia="python")
 
 
 class _Retorno(Exception):
@@ -2310,6 +2487,26 @@ class _Romper(Exception):
 
 class _Continuar(Exception):
     """'continuar': salta a la vuelta siguiente."""
+
+
+# Lo que devuelve una sentencia ya armada cuando corta el camino (ver Interprete._paso):
+# 'romper', 'continuar' o, si fue un 'devolver', una tupla con el valor.
+_ROMPER, _CONTINUAR = object(), object()
+_SIN_VALOR = (None,)  # un 'devolver' solo
+# Lo que puede fallar dentro de una sentencia y Mate explica con su renglón.
+_SE_EXPLICAN = (ErrorMate, RecursionError, MemoryError)
+# Una cuenta entre enteros más chicos que esto no puede pasar ningún tope: va directo.
+_CHICO = 1 << 62
+_CUENTAS = {"+": operator.add, "-": operator.sub, "*": operator.mul}
+_COMPARACIONES = {"==": operator.eq, "!=": operator.ne, "<": operator.lt,
+                  "<=": operator.le, ">": operator.gt, ">=": operator.ge}
+_finito = math.isfinite
+
+
+def condicion_rara(v, linea=None):
+    """El error de una condición que no dio ni verdadero ni falso."""
+    return ErrorMate("la condición tiene que ser verdadero o falso, no " + tipo_claro(v),
+                     linea)
 
 
 def es_num(v):
@@ -2333,6 +2530,8 @@ def nombre_tipo(v):
         return v.tipo
     if isinstance(v, Agente):
         return "agente"
+    if isinstance(v, ModuloPython):
+        return "python"
     return "funcion"
 
 
@@ -2340,13 +2539,16 @@ CAUSA_DE_NADA = ("'nada' es la falta de valor: ¿a la función le falta un 'devo
                  "un campo opcional que vino vacío?")
 _CON_ARTICULO = {"nada": "el valor nada", "numero": "un número", "texto": "un texto",
                  "logico": "un valor lógico", "lista": "una lista", "mapa": "un mapa",
-                 "agente": "un agente", "funcion": "una función"}
+                 "agente": "un agente", "funcion": "una función",
+                 "python": "un archivo de Python"}
 _VERBOS = {"+": "sumar", "-": "restar", "*": "multiplicar", "/": "dividir", "%": "dividir"}
 
 
 def tipo_claro(v):
     """El tipo para un mensaje de error: 'nada' suelto se lee como otra frase ("no se
     puede hacer nada"), así que se dice "el valor nada"."""
+    if isinstance(v, ModuloPython):
+        return "un archivo de Python"
     return "el valor nada" if v is None else nombre_tipo(v)
 
 
@@ -2386,9 +2588,14 @@ def no_esta(mensaje, nombre, disponibles):
             else mensaje + lo_que_tiene(disponibles))
 
 
+_SUELTOS = frozenset((int, float, str, bool, type(None)))
+
+
 def lleva_funcion(v):
     """¿Hay una función en este valor, aunque sea adentro de una lista, mapa o mensaje?"""
-    if isinstance(v, (Funcion, Nativa)):
+    if v.__class__ in _SUELTOS:  # un número, un texto, verdadero, falso o nada: seguro que no
+        return False
+    if isinstance(v, (Funcion, Nativa, ModuloPython)):
         return True
     if isinstance(v, list):
         return any(lleva_funcion(x) for x in v)
@@ -2616,6 +2823,8 @@ NO_SE_CAMBIA = {
     "funcion": "'{n}' es una función y no se le puede asignar un valor",
     "agente": "'{n}' es un agente y no se le puede asignar un valor",
     "nativa": "'{n}' es una función incluida de Mate y no se le puede asignar un valor",
+    "python": "'{n}' es el archivo de Python que trajo 'usar python' y no se le puede "
+              "asignar un valor",
 }
 
 
@@ -3054,7 +3263,7 @@ def usa_memoria(programa, propios=None):
 
 def se_puede_recordar(v):
     """Solo se recuerdan datos: ni agentes ni funciones (tampoco adentro de una lista)."""
-    if isinstance(v, (Agente, Funcion, Nativa)):
+    if isinstance(v, (Agente, Funcion, Nativa, ModuloPython)):
         return False
     if isinstance(v, (list, dict)):
         return all(se_puede_recordar(x) for x in (v.values() if isinstance(v, dict) else v))
@@ -3135,23 +3344,203 @@ def incluidas():
     return frozenset(FUNCIONES)
 
 
+# ───────────────────────── Puente a Python (0.5) ─────────────────────────
+# usar python "ayudas.py" trae las funciones de un archivo de Python que está al lado del
+# programa, y se llaman ayudas.nombre(...). Sirve para sumar lo que Mate no trae sin tocar
+# el intérprete. Tres reglas:
+# - Solo cruzan valores simples: números, textos, verdadero/falso, nada, listas y mapas. Van
+#   y vuelven COPIADOS: el Python no puede cambiarle una lista a Mate por atrás.
+# - Un error dentro del Python llega como un error de Mate, con el renglón del .mate, y se
+#   ataja con 'intentar'.
+# - OJO: ese Python no tiene ninguno de los cuidados de Mate. Corre con todos los permisos
+#   de la computadora (puede leer, escribir y borrar archivos, y salir a internet), también
+#   con la orden 'probar'. Solo hay que usar archivos propios o de alguien de confianza.
+
+# Los errores de Python más comunes, dichos en castellano (después va lo que dijo Python).
+_ERRORES_DE_PYTHON = {
+    "ZeroDivisionError": "una división por cero",
+    "ValueError": "un valor que no sirve para lo que se quiso hacer",
+    "TypeError": "una cuenta entre cosas de distinto tipo, o una función mal llamada",
+    "KeyError": "una clave que no está en el diccionario",
+    "IndexError": "una posición que no existe en la lista",
+    "NameError": "un nombre que no existe (¿está mal escrito?)",
+    "AttributeError": "se le pidió a un valor algo que no tiene",
+    "FileNotFoundError": "un archivo que no está",
+    "PermissionError": "falta permiso para tocar un archivo",
+    "ModuleNotFoundError": "un 'import' de algo que no está instalado en esta computadora",
+    "RecursionError": "una función que se llama a sí misma sin parar",
+    "SystemExit": "el archivo quiso cerrar el programa (exit)",
+}
+SOLO_SIMPLES = "números, textos, verdadero o falso, nada, listas y mapas"
+
+
+def dicho_por_python(e, ruta):
+    """Un error de Python contado para quien no sabe Python: qué fue, en qué renglón del
+    .py, y al final lo que dijo Python tal cual (eso viene en inglés)."""
+    renglon, paso = None, e.__traceback__
+    while paso is not None:  # el último renglón de ese archivo por el que pasó
+        if paso.tb_frame.f_code.co_filename == ruta:
+            renglon = paso.tb_lineno
+        paso = paso.tb_next
+    clase = type(e).__name__
+    texto = str(e.args[0]) if clase == "KeyError" and e.args else str(e)
+    crudo = recortado(f"{clase}: {texto}" if texto else clase, 300)
+    que = _ERRORES_DE_PYTHON.get(clase)
+    return ((f" (línea {renglon} de {os.path.basename(ruta)})" if renglon else "") + ": "
+            + (f"{que}. Python dice: {crudo}" if que else f"Python dice: {crudo}"))
+
+
+def a_python(v, donde):
+    """Un valor de Mate, copiado, como lo recibe una función de Python."""
+    if v is None or type(v) in (bool, int, float):
+        return v
+    if isinstance(v, str):
+        return v[:]  # (un error atajado viaja como un texto común)
+    if isinstance(v, list):
+        return [a_python(x, donde) for x in v]
+    if isinstance(v, dict):
+        return {k[:]: a_python(x, donde) for k, x in v.items()}
+    if isinstance(v, Registro):
+        raise ErrorMate(f"{donde}(): a una función de Python solo se le pasan {SOLO_SIMPLES}, "
+                        f"y recibió un mensaje {v.tipo}. Pasalo como mapa: a_mapa(...)",
+                        familia="python")
+    raise ErrorMate(f"{donde}(): a una función de Python solo se le pasan {SOLO_SIMPLES}, y "
+                    f"recibió {un(v)}", familia="python")
+
+
+def de_python(v, donde):
+    """Lo que devolvió una función de Python, copiado, como valor de Mate."""
+    if v is None or type(v) is bool:
+        return v
+    if type(v) is int:
+        if v.bit_length() > MAX_BITS:
+            raise ErrorMate(f"{donde}() devolvió un número demasiado grande para Mate",
+                            familia="python")
+        return v
+    if type(v) is float:
+        if not math.isfinite(v):
+            raise ErrorMate(f"{donde}() devolvió un número que Mate no usa: infinito, o el "
+                            "resultado de una cuenta imposible ('nan')", familia="python")
+        return v
+    if type(v) is str:
+        if len(v) > MAX_LARGO:
+            raise muy_largo()
+        return v
+    if isinstance(v, (list, tuple)):
+        if len(v) > MAX_LARGO:
+            raise muy_largo("la lista")
+        return [de_python(x, donde) for x in v]
+    if isinstance(v, dict):
+        if len(v) > MAX_LARGO:
+            raise muy_largo("la lista")
+        for k in v:
+            if type(k) is not str:
+                raise ErrorMate(
+                    f"{donde}() devolvió un diccionario con una clave que no es un texto "
+                    f"({recortado(repr(k), 40)}): en Mate las claves de un mapa son textos. "
+                    "Convertila en el .py con str(...)", familia="python")
+        return {k: de_python(x, donde) for k, x in v.items()}
+    raise ErrorMate(
+        f"{donde}() devolvió algo que Mate no conoce (en Python se llama "
+        f"'{type(v).__name__}'). A Mate solo vuelven números, textos, True o False, None, "
+        "listas (o tuplas) y diccionarios con claves de texto. Convertilo en el .py antes "
+        "de devolverlo", familia="python")
+
+
+def funcion_de_python(completo, f, ruta):
+    """La función de Python lista para llamarla desde Mate: controla cuántos valores lleva,
+    copia lo que va y lo que vuelve, y lo que falle adentro sale como un error de Mate."""
+    archivo, codigo = os.path.basename(ruta), f.__code__
+    varios = bool(codigo.co_flags & 0x04)  # def f(*valores)
+    maximo = None if varios else codigo.co_argcount
+    minimo = codigo.co_argcount - len(f.__defaults__ or ())
+    # Los parámetros que en Python solo se pueden dar con su nombre: desde Mate no se puede.
+    con_nombre = codigo.co_varnames[codigo.co_argcount:
+                                    codigo.co_argcount + codigo.co_kwonlyargcount]
+    obligados = [n for n in con_nombre if n not in (f.__kwdefaults__ or {})]
+    if minimo == maximo:
+        lleva = f"{minimo} valor" + ("" if minimo == 1 else "es")
+    elif maximo is None:
+        lleva = (f"{minimo} valor{'' if minimo == 1 else 'es'} o más" if minimo
+                 else "cualquier cantidad de valores")
+    else:
+        lleva = f"entre {minimo} y {maximo} valores"
+
+    def llamada(args):
+        if obligados:
+            raise ErrorMate(
+                f"{completo}() no se puede llamar desde Mate: en {archivo} pide '{obligados[0]}' "
+                "por su nombre, y Mate pasa los valores en orden. En el .py, ponelo como un "
+                "parámetro común", familia="python")
+        if len(args) < minimo or (maximo is not None and len(args) > maximo):
+            raise ErrorMate(f"{completo}() lleva {lleva} y recibió {len(args)} (así está "
+                            f"escrita en {archivo})", familia="python")
+        dados = [a_python(a, completo) for a in args]
+        try:
+            devuelto = f(*dados)
+        except (ErrorMate, MemoryError):
+            raise
+        except (Exception, SystemExit) as e:
+            raise ErrorMate(f"{completo}() falló adentro del Python"
+                            + dicho_por_python(e, ruta), familia="python")
+        try:
+            return revisar_peso(de_python(devuelto, completo))
+        except RecursionError:
+            raise ErrorMate(f"{completo}() devolvió una lista o un diccionario que se tiene "
+                            "a sí mismo adentro (o con demasiados niveles): Mate no lo "
+                            "puede recibir", familia="python")
+    return llamada
+
+
+def cargar_python(nombre, ruta):
+    """Abre el archivo de Python y devuelve su ModuloPython, con las funciones que se ven
+    desde Mate: las escritas ahí con 'def' cuyo nombre no empieza con guion bajo. No deja
+    ningún archivo al lado (ni la carpeta __pycache__ que arma Python cuando importa)."""
+    archivo = os.path.basename(ruta)
+    try:
+        fuente = leer_fuente(ruta)
+    except OSError:
+        raise ErrorMate(f"no pude abrir {archivo}", familia="archivo")
+    modulo = types.ModuleType(f"mate_python_{nombre}")
+    modulo.__file__ = ruta
+    try:
+        exec(compile(fuente, ruta, "exec"), modulo.__dict__)
+    except SyntaxError as e:
+        donde = f" en su línea {e.lineno}" if e.lineno and e.filename == ruta else ""
+        raise ErrorMate(f"{archivo} está mal escrito{donde} y Python no lo pudo leer. "
+                        f"Python dice: {recortado(e.msg or 'SyntaxError', 300)}",
+                        familia="python")
+    except MemoryError:
+        raise
+    except (Exception, SystemExit) as e:
+        raise ErrorMate(f"{archivo} falló apenas se lo abrió, antes de llamar a ninguna de "
+                        "sus funciones" + dicho_por_python(e, ruta), familia="python")
+    funciones = {
+        n: DePython(f"{nombre}.{n}", funcion_de_python(f"{nombre}.{n}", f, ruta))
+        for n, f in vars(modulo).items()
+        if isinstance(f, types.FunctionType) and not n.startswith("_")
+        and f.__module__ == modulo.__name__}
+    return ModuloPython(nombre, ruta, funciones)
+
+
 class Entorno:
     nacidos = 0  # cuántos entornos se crearon: sirve para saber cuál es anterior a cuál
     se_pisa = False  # solo en la consola: declarar de nuevo un nombre reemplaza al anterior
 
     def __init__(self, padre=None, frontera=False, borde=False):
-        Entorno.nacidos += 1
-        self.serie = Entorno.nacidos
+        Entorno.nacidos = self.serie = Entorno.nacidos + 1
         self.vars = {}
         self.origen = {}  # de dónde salió cada nombre: sea, var, parametro, para, funcion...
         self.renglon = {}  # en qué renglón se declaró cada variable
         self.padre = padre
+        self.raiz = self if padre is None else padre.raiz  # el de más afuera de todos
         self.frontera = frontera  # el estado de un agente: de acá para arriba no se escribe
         self.borde = borde  # donde empieza una función, un 'al recibir' o una prueba
 
     def definir(self, nombre, valor, mutable=False, origen=None, linea=None):
-        suyo = nombre in SE_PUEDEN_TAPAR  # (el programa puede usar ese nombre para lo suyo)
-        if nombre in self.vars and not (suyo and self.origen.get(nombre) == "nativa") and not (
+        # (el programa puede usar para lo suyo los nombres de SE_PUEDEN_TAPAR)
+        if nombre in self.vars and not (
+                nombre in SE_PUEDEN_TAPAR and self.origen.get(nombre) == "nativa") and not (
                 self.se_pisa and self.origen.get(nombre) in ("sea", "var", "funcion", "agente")):
             previo = self.origen.get(nombre)
             if previo == "nativa":
@@ -3165,12 +3554,10 @@ class Entorno:
                 ayuda = (f"; para cambiarle el valor se escribe {nombre} = ... "
                          "(y tiene que ser 'var')")
             raise ErrorMate(f"'{nombre}' ya está definido en este bloque{ayuda}")
-        if self.padre is not None:  # tampoco se tapa una función incluida desde adentro
-            raiz = self.padre
-            while raiz.padre is not None:
-                raiz = raiz.padre
-            if raiz.origen.get(nombre) == "nativa" and not suyo:
-                raise ErrorMate(INCLUIDA.format(n=nombre))
+        raiz = self.raiz  # tampoco se tapa una función incluida desde adentro
+        if raiz is not self and raiz.origen.get(nombre) == "nativa" \
+                and nombre not in SE_PUEDEN_TAPAR:
+            raise ErrorMate(INCLUIDA.format(n=nombre))
         self.vars[nombre] = [valor, mutable]
         self.origen[nombre] = origen or ("var" if mutable else "sea")
         if linea:
@@ -3180,23 +3567,24 @@ class Entorno:
         """Un 'sea' o 'var' de un bloque de adentro (si, mientras, para, intentar) no
         puede repetir el nombre de una variable de más afuera: casi siempre se quiso
         cambiar esa variable, y con el 'sea' de más no cambia nada."""
-        ya_existe = ErrorMate(
-            f"'{nombre}' ya existe afuera de este bloque. Si querés cambiarle el "
-            f"valor, sacá el 'sea' o el 'var': {nombre} = ... Si es otra cosa, "
-            "ponele otro nombre")
+        def ya_existe():
+            return ErrorMate(
+                f"'{nombre}' ya existe afuera de este bloque. Si querés cambiarle el "
+                f"valor, sacá el 'sea' o el 'var': {nombre} = ... Si es otra cosa, "
+                "ponele otro nombre")
         e = self
         while not e.borde and e.padre is not None:
             e = e.padre
             if nombre in e.vars and e.origen.get(nombre) in (
                     "sea", "var", "parametro", "para", "mensaje", "falla"):
-                raise ya_existe
+                raise ya_existe()
         # Desde un bloque de adentro de una función, una prueba o un 'al recibir' tampoco
         # se tapa una variable 'var' del programa: ahí también se la quiso cambiar.
         afuera = e.padre if (e.borde and e is not self) else None
         while afuera is not None:
             if nombre in afuera.vars:
                 if afuera.origen.get(nombre) == "var" and not afuera.frontera:
-                    raise ya_existe
+                    raise ya_existe()
                 break
             afuera = afuera.padre
         if e.borde and e.padre is not None and e.padre.frontera and nombre in e.padre.vars \
@@ -3304,34 +3692,35 @@ class Interprete:
         self.bitacora = None  # una lista, si las fallas de los agentes se anotan
         self.avisar = lambda texto: None  # por dónde salen los avisos de la memoria
         self.avisados = set()  # los avisos que se dan una sola vez por corrida
+        self._armados = {}  # lo que ya está armado para correr (ver 'armar_bloque')
         self._nativas()
 
     # ── funciones incorporadas ──
     def _nativas(self):
         def nativa(nombre):
             def deco(fn):
+                minimo, maximo = FUNCIONES[nombre][:2]
+
                 def envuelta(args):
-                    if cantidad_equivocada(nombre, len(args)):
-                        raise ErrorMate(cantidad_equivocada(nombre, len(args)))
-                    return protegida(nombre, fn, args)
+                    """Ninguna función incluida falla con un error de Python."""
+                    cuantos = len(args)
+                    if cuantos < minimo or (maximo is not None and cuantos > maximo):
+                        raise ErrorMate(cantidad_equivocada(nombre, cuantos))
+                    try:
+                        r = fn(*args)
+                    except ErrorMate:
+                        raise
+                    except MemoryError:
+                        raise ErrorMate(f"{nombre}(): {SIN_MEMORIA}", clase="limite")
+                    except (TypeError, ValueError, ArithmeticError, KeyError, IndexError,
+                            AttributeError):
+                        raise ErrorMate(f"{nombre}(): no pude hacer eso con esos valores")
+                    if type(r) is float and not math.isfinite(r):
+                        raise ErrorMate(f"{nombre}(): {DEMASIADO_GRANDE}")
+                    return r
                 self.glob.definir(nombre, Nativa(nombre, envuelta), origen="nativa")
                 return fn
             return deco
-
-        def protegida(nombre, fn, args):
-            """Ninguna función incluida falla con un error de Python."""
-            try:
-                r = fn(*args)
-            except ErrorMate:
-                raise
-            except MemoryError:
-                raise ErrorMate(f"{nombre}(): {SIN_MEMORIA}", clase="limite")
-            except (TypeError, ValueError, ArithmeticError, KeyError, IndexError,
-                    AttributeError):
-                raise ErrorMate(f"{nombre}(): no pude hacer eso con esos valores")
-            if type(r) is float and not math.isfinite(r):
-                raise ErrorMate(f"{nombre}(): {DEMASIADO_GRANDE}")
-            return r
 
         def pedir(v, tipo, donde):
             if nombre_tipo(v) != tipo:
@@ -4042,7 +4431,7 @@ class Interprete:
             mapa = {k: self._a_json(x, memoria) for k, x in v.items()}
             return {"mapa": mapa} if memoria and set(v) in ({"tipo", "campos"}, {"mapa"}) \
                 else mapa
-        if isinstance(v, (Funcion, Nativa)):
+        if isinstance(v, (Funcion, Nativa, ModuloPython)):
             raise ErrorMate("una función no se puede pasar a JSON")
         return v
 
@@ -4153,6 +4542,12 @@ class Interprete:
                 if s[0] == "funcion":
                     self.glob.definir(s[2], Funcion(s[2], s[3], s[4], self.glob, s[5]),
                                       origen="funcion", linea=s[1])
+                elif s[0] == "usar_python":
+                    if self.glob.origen.get(s[2]) == "python" \
+                            and self.glob.vars[s[2]][0].archivo == s[3]:
+                        del self.glob.vars[s[2]]  # en la consola: se trae de nuevo, al día
+                    self.glob.definir(s[2], cargar_python(s[2], s[3]), origen="python",
+                                      linea=s[1])
                 elif s[0] == "agente":
                     ag = Agente(s[2])
                     ag.decl = s
@@ -4364,7 +4759,7 @@ class Interprete:
                 # salvo que alguien le haya hablado antes.
                 if self.agentes[s[2]].env is None:
                     self.instanciar(self.agentes[s[2]])
-            elif s[0] not in ("mensaje", "funcion", "prueba"):
+            elif s[0] not in ("mensaje", "funcion", "prueba", "usar_python"):
                 self.ejecutar(s, self.glob)
         self.vaciar_cola()
         if not pruebas:
@@ -4597,7 +4992,9 @@ class Interprete:
         self.atendiendo.append((dest, linea))
         try:
             try:
-                self.bloque(cuerpo, env, nuevo=False)
+                senal = self.armar_bloque(cuerpo, False)(env)
+                if type(senal) is not tuple:  # (un 'devolver' termina de atender y listo)
+                    self.fuera_de_lugar(senal)
             except _Respuesta as r:
                 respondio, valor, renglon_respuesta = True, r.valor, r.linea
             except _Retorno:
@@ -4650,8 +5047,8 @@ class Interprete:
             self.atendiendo.pop()
         return respondio, valor
 
-    def destino(self, nodo, env):
-        dest = self.ev(nodo, env)
+    def destino(self, dest):
+        """Controla que eso sea un agente: a quién se le pregunta o se le simula algo."""
         if not isinstance(dest, Agente):
             pista = ""
             if isinstance(dest, list):
@@ -4661,9 +5058,8 @@ class Interprete:
                             + pista)
         return dest
 
-    def destinos(self, nodo, env):
+    def destinos(self, dest):
         """A quiénes va un 'enviar': un agente, o una lista de agentes."""
-        dest = self.ev(nodo, env)
         if isinstance(dest, Agente):
             return [dest]
         if not isinstance(dest, list):
@@ -4675,234 +5071,516 @@ class Interprete:
                                 f"en la posición {i} hay {un(x)}")
         return dest
 
-    def un_mensaje(self, nodo, env):
-        msg = self.ev(nodo, env)
+    def un_mensaje(self, msg):
         if not isinstance(msg, Registro):
             raise ErrorMate(f"solo se envían mensajes declarados, no {tipo_claro(msg)}")
         return msg
 
-    # ── sentencias ──
+    # ── el programa, armado para correr (0.5) ──
+    # Antes, cada vez que pasaba por un renglón, Mate volvía a preguntarse qué clase de
+    # sentencia era (una cadena larga de 'si es esto, si es aquello'). Ahora cada sentencia
+    # y cada valor se "arman" una sola vez: se convierten en una función de Python que ya
+    # sabe qué tiene que hacer, y después solo se la llama. Hace lo mismo que antes, renglón
+    # por renglón (mismos errores, mismo freno, misma traza), pero varias veces más rápido.
+    #
+    # Una sentencia armada recibe el entorno y devuelve nada... salvo que corte el camino:
+    # (valor,) si fue un 'devolver', _ROMPER o _CONTINUAR. Así un 'devolver' no cuesta una
+    # excepción de Python. Donde ya no hay quién reciba esa señal, se convierte en la
+    # excepción de siempre (_Retorno, _Romper, _Continuar) y sigue el camino viejo.
+
+    @staticmethod
+    def fuera_de_lugar(senal):
+        """Una señal que llegó hasta donde nadie la espera sigue como excepción."""
+        if senal is None:
+            return
+        if senal is _ROMPER:
+            raise _Romper()
+        if senal is _CONTINUAR:
+            raise _Continuar()
+        raise _Retorno(senal[0])
+
     def bloque(self, cuerpo, env, nuevo=True):
-        if nuevo:
-            env = Entorno(env)
-        for s in cuerpo:
-            self.ejecutar(s, env)
+        """Corre esas sentencias. (Lo que ya está armado no pasa por acá: se llama solo.)"""
+        self.fuera_de_lugar(self.armar_bloque(cuerpo, nuevo)(env))
 
-    def condicion(self, nodo, env):
-        v = self.ev(nodo, env)
-        if type(v) is not bool:
-            raise ErrorMate("la condición tiene que ser verdadero o falso, no "
-                            + tipo_claro(v))
-        return v
-
-    def contar_paso(self, linea):
-        """El freno para los programas que nunca terminan."""
-        self.pasos += 1
-        if self.max_pasos is not None and self.pasos > self.max_pasos:
-            tope = f"{self.max_pasos:,}".replace(",", ".")
-            tope += " de pasos" if self.max_pasos % 1_000_000 == 0 else " pasos"
-            quien = (f"{self.contexto[0].nombre} atendiendo {self.contexto[2]}: "
-                     if self.contexto else "")
-            raise ErrorMate(
-                f"{quien}el programa lleva más de {tope}: ¿quedó en un bucle que nunca "
-                "termina? Si es un 'mientras', revisá que su condición cambie adentro. Si "
-                "el programa es largo de verdad, corrélo con --sin-limite",
-                linea, clase="limite")
+    def armar_bloque(self, cuerpo, nuevo=True):
+        """El bloque listo para correr; se arma la primera vez y queda guardado."""
+        clave = (id(cuerpo), nuevo)
+        listo = self._armados.get(clave)
+        if listo is None:  # (se guarda también el cuerpo: así su id no se repite)
+            listo = self._armados[clave] = (self._bloque(cuerpo, nuevo), cuerpo)
+        return listo[0]
 
     def ejecutar(self, s, env, vale_suelto=False):
-        self.linea_actual = s[1]
-        self.contar_paso(s[1])
-        try:
-            if vale_suelto and s[0] == "expr":
-                self.ev(s[2], env)
-            else:
-                self._ejecutar(s, env)
-        except ErrorMate as e:
-            e.linea = e.linea or s[1]
-            raise
-        except RecursionError:
-            raise self.demasiada_recursion(self.recursiva(), s[1])
-        except MemoryError:
-            raise ErrorMate(SIN_MEMORIA, s[1], clase="limite")
+        clave = (id(s), vale_suelto)
+        listo = self._armados.get(clave)
+        if listo is None:
+            listo = self._armados[clave] = (self._paso(s, vale_suelto), s)
+        self.fuera_de_lugar(listo[0](env))
 
-    def _ejecutar(self, s, env):
-        clase = s[0]
-        if clase == "expr":
-            self.suelta(s[2], env)
-        elif clase == "sea":
-            valor = self.ev(s[3], env)
-            if s[2] not in env.vars:  # (si está en este mismo bloque, lo dice definir)
-                env.no_tapar(s[2])
-            env.definir(s[2], valor, mutable=s[4], linea=s[1])
-        elif clase == "asignar":
-            self.asignar(s[2], self.ev(s[3], env), env)
-        elif clase == "si":
-            for cond, cuerpo in s[2]:
-                if self.condicion(cond, env):
-                    self.bloque(cuerpo, env)
-                    return
-            if s[3] is not None:
-                self.bloque(s[3], env)
-        elif clase == "mientras":
-            while self.condicion(s[2], env):
-                self.contar_paso(s[1])  # una vuelta cuenta aunque el cuerpo esté vacío
+    def freno(self, linea):
+        """El error del freno para los programas que nunca terminan."""
+        tope = f"{self.max_pasos:,}".replace(",", ".")
+        tope += " de pasos" if self.max_pasos % 1_000_000 == 0 else " pasos"
+        quien = (f"{self.contexto[0].nombre} atendiendo {self.contexto[2]}: "
+                 if self.contexto else "")
+        return ErrorMate(
+            f"{quien}el programa lleva más de {tope}: ¿quedó en un bucle que nunca "
+            "termina? Si es un 'mientras', revisá que su condición cambie adentro. Si "
+            "el programa es largo de verdad, corrélo con --sin-limite",
+            linea, clase="limite")
+
+    def con_renglon(self, e, linea):
+        """Lo que falló dentro de una sentencia, dicho como error de Mate y con su renglón."""
+        if isinstance(e, ErrorMate):
+            e.linea = e.linea or linea
+            return e
+        if isinstance(e, RecursionError):
+            return self.demasiada_recursion(self.recursiva(), linea)
+        return ErrorMate(SIN_MEMORIA, linea, clase="limite")
+
+    def _bloque(self, cuerpo, nuevo=True):
+        pasos = [self._paso(s) for s in cuerpo]
+        # Un bloque solo necesita su propio entorno si declara algo ('sea', 'var' o una
+        # función): si no, las variables que usa son las de afuera y se ahorra crearlo.
+        if nuevo and any(s[0] in ("sea", "funcion") for s in cuerpo):
+            def bloque(env):
+                env = Entorno(env)
+                for paso in pasos:
+                    senal = paso(env)
+                    if senal is not None:
+                        return senal
+            return bloque
+        if not pasos:
+            return lambda env: None
+        if len(pasos) == 1:
+            return pasos[0]
+
+        def bloque(env):
+            for paso in pasos:
+                senal = paso(env)
+                if senal is not None:
+                    return senal
+        return bloque
+
+    def _paso(self, s, vale_suelto=False):
+        """Arma una sentencia. Todas empiezan igual: anotan por qué renglón van, cuentan
+        un paso (el freno) y, si algo falla adentro, le ponen su renglón al error."""
+        if s[0] == "expr":
+            return self._p_expr(s, vale_suelto)
+        armar = getattr(self, "_p_" + s[0], None)
+        if armar is None or s[0] in ("mensaje", "agente", "prueba", "usar"):
+            clase = s[0]
+
+            def no_va(env):
+                raise ErrorMate(f"'{clase}' no puede ir acá")
+            return self._contado(s[1], no_va)
+        return armar(s)
+
+    def _contado(self, linea, hacer):
+        """El comienzo de toda sentencia, para las que no hace falta que vuelen."""
+        it = self
+
+        def paso(env):
+            it.linea_actual = linea
+            it.pasos = pasos = it.pasos + 1
+            tope = it.max_pasos
+            if tope is not None and pasos > tope:
+                raise it.freno(linea)
+            try:
+                return hacer(env)
+            except _SE_EXPLICAN as e:
+                raise it.con_renglon(e, linea)
+        return paso
+
+    def _p_expr(self, s, vale_suelto):
+        """Un renglón que es solo un valor: vale si hace algo (llamar a una función
+        propia, mostrar, preguntar, crear). Si solo calcula y no lo usa, es un error."""
+        it, linea, e = self, s[1], s[2]
+        if vale_suelto or e[0] in ("preguntar", "crear"):
+            de_valor = self.armar(e)
+
+            def hacer(env):
+                de_valor(env)
+            return self._contado(linea, hacer)
+        if e[0] != "llamar":
+            de_valor = self.armar(e)
+
+            def hacer(env):
+                valor = de_valor(env)
+                if isinstance(valor, (Funcion, Nativa)):
+                    raise ErrorMate(f"a '{valor.nombre}' le faltan los paréntesis: "
+                                    f"{valor.nombre}(...)", e[1], clase="escritura")
+                raise renglon_sin_uso(e)
+            return self._contado(linea, hacer)
+        de_quien, de_args, renglon = self.armar(e[2]), [self.armar(a) for a in e[3]], e[1]
+        llamar = self.llamar
+
+        def paso(env):
+            it.linea_actual = linea
+            it.pasos = pasos = it.pasos + 1
+            tope = it.max_pasos
+            if tope is not None and pasos > tope:
+                raise it.freno(linea)
+            try:
+                f = de_quien(env)
+                nativa = isinstance(f, Nativa) and not isinstance(f, DePython)
+                # (una consulta a la IA suelta no se llega a hacer: sería pagarla para
+                # tirarla)
+                if not (nativa and f.nombre == "consultar_ia"):
+                    try:
+                        llamar(f, [a(env) for a in de_args], renglon)
+                    except ErrorMate as error:
+                        error.linea = error.linea or renglon
+                        raise
+                if nativa and f.nombre not in HACEN_ALGO:
+                    if f.nombre in ("agregar", "quitar"):
+                        raise ErrorMate(
+                            f"{f.nombre}() no cambia la lista: devuelve una nueva. Guardá "
+                            f"el resultado: lista = {f.nombre}(lista, ...)", renglon,
+                            clase="escritura")
+                    raise ErrorMate(
+                        f"{f.nombre}() devuelve un valor y este renglón no lo usa: "
+                        f"guardalo (sea x = {f.nombre}(...)) o mostralo con mostrar(...)",
+                        renglon, clase="escritura")
+            except _SE_EXPLICAN as e:
+                raise it.con_renglon(e, linea)
+        return paso
+
+    def _p_sea(self, s):
+        it, linea, nombre, mutable = self, s[1], s[2], s[4]
+        de_valor = self.armar(s[3])
+
+        def paso(env):
+            it.linea_actual = linea
+            it.pasos = pasos = it.pasos + 1
+            tope = it.max_pasos
+            if tope is not None and pasos > tope:
+                raise it.freno(linea)
+            try:
+                valor = de_valor(env)
+                if nombre not in env.vars:  # (si está en este mismo bloque, lo dice definir)
+                    env.no_tapar(nombre)
+                env.definir(nombre, valor, mutable, None, linea)
+            except _SE_EXPLICAN as e:
+                raise it.con_renglon(e, linea)
+        return paso
+
+    def _p_asignar(self, s):
+        it, linea, destino = self, s[1], s[2]
+        de_valor = self.armar(s[3])
+        if destino[0] != "nombre":  # una parte de una variable: lista[0] = ..., m.campo = ...
+            asignar = self.asignar
+
+            def hacer(env):
+                asignar(destino, de_valor(env), env)
+            return self._contado(linea, hacer)
+        nombre = destino[2]
+
+        def paso(env):
+            it.linea_actual = linea
+            it.pasos = pasos = it.pasos + 1
+            tope = it.max_pasos
+            if tope is not None and pasos > tope:
+                raise it.freno(linea)
+            try:
+                valor = de_valor(env)
+                if it.contexto is not None:
+                    it.cuidar_lo_de_afuera(nombre, env)
+                env.asignar(nombre, valor)
+            except _SE_EXPLICAN as e:
+                raise it.con_renglon(e, linea)
+        return paso
+
+    def _p_si(self, s):
+        it, linea = self, s[1]
+        ramas = [(self.armar(cond), self._bloque(cuerpo)) for cond, cuerpo in s[2]]
+        otro = self._bloque(s[3]) if s[3] is not None else None
+        if len(ramas) == 1:
+            de_cond, cuerpo = ramas[0]
+
+            def paso(env):
+                it.linea_actual = linea
+                it.pasos = pasos = it.pasos + 1
+                tope = it.max_pasos
+                if tope is not None and pasos > tope:
+                    raise it.freno(linea)
                 try:
-                    self.bloque(s[3], env)
+                    v = de_cond(env)
+                    if v is True:
+                        return cuerpo(env)
+                    if v is not False:
+                        raise condicion_rara(v)
+                    if otro is not None:
+                        return otro(env)
+                except _SE_EXPLICAN as e:
+                    raise it.con_renglon(e, linea)
+            return paso
+
+        def hacer(env):
+            for de_cond, cuerpo in ramas:
+                v = de_cond(env)
+                if v is True:
+                    return cuerpo(env)
+                if v is not False:
+                    raise condicion_rara(v)
+            if otro is not None:
+                return otro(env)
+        return self._contado(linea, hacer)
+
+    def _p_mientras(self, s):
+        it, linea = self, s[1]
+        de_cond, cuerpo = self.armar(s[2]), self._bloque(s[3])
+
+        def hacer(env):
+            while True:
+                v = de_cond(env)
+                if v is not True:
+                    if v is False:
+                        return None
+                    raise condicion_rara(v)
+                # una vuelta cuenta aunque el cuerpo esté vacío
+                it.pasos = pasos = it.pasos + 1
+                tope = it.max_pasos
+                if tope is not None and pasos > tope:
+                    raise it.freno(linea)
+                try:
+                    senal = cuerpo(env)
                 except _Continuar:
-                    pass
+                    continue
                 except _Romper:
-                    break
-        elif clase in ("para", "para2"):
-            # 'para2' es "para posicion, item en lista" (o "para clave, valor en mapa")
-            nombres = (s[2],) if clase == "para" else (s[2], s[3])
-            col = self.ev(s[-2], env)
+                    return None
+                if senal is not None:
+                    if senal is _ROMPER:
+                        return None
+                    if senal is not _CONTINUAR:
+                        return senal
+        return self._contado(linea, hacer)
+
+    def _p_para(self, s):
+        # 'para2' es "para posicion, item en lista" (o "para clave, valor en mapa")
+        it, linea, de_a_dos = self, s[1], s[0] == "para2"
+        nombres = (s[2], s[3]) if de_a_dos else (s[2],)
+        primero, segundo, repetida = nombres[0], nombres[-1], len(set(nombres)) != len(nombres)
+        de_col, cuerpo = self.armar(s[-2]), self._bloque(s[-1], False)
+
+        def hacer(env):
+            col = de_col(env)
             if not isinstance(col, (list, dict, str)):
                 raise ErrorMate(f"no se puede recorrer {tipo_claro(col)}: 'para' recorre "
                                 "listas, mapas y textos")
-            if clase == "para":
-                vueltas = [(x,) for x in col]
-            else:
+            if de_a_dos:
                 vueltas = list(col.items() if isinstance(col, dict) else enumerate(col))
+            else:
+                vueltas = list(col)
+            # La variable de la vuelta se anota sin más controles, salvo que se llame
+            # como una función incluida (o las dos igual): eso lo explica definir.
+            de_afuera = env.raiz.origen
+            directo = not repetida and not any(
+                de_afuera.get(n) == "nativa" and n not in SE_PUEDEN_TAPAR for n in nombres)
             for valores in vueltas:
-                self.contar_paso(s[1])
+                it.pasos = pasos = it.pasos + 1
+                tope = it.max_pasos
+                if tope is not None and pasos > tope:
+                    raise it.freno(linea)
                 paso = Entorno(env)
-                for nombre, x in zip(nombres, valores):
-                    paso.definir(nombre, x, origen="para")
+                if not directo:
+                    for nombre, x in zip(nombres, valores if de_a_dos else (valores,)):
+                        paso.definir(nombre, x, False, "para")
+                elif de_a_dos:
+                    paso.vars = {primero: [valores[0], False], segundo: [valores[1], False]}
+                    paso.origen = {primero: "para", segundo: "para"}
+                else:
+                    paso.vars[primero] = [valores, False]
+                    paso.origen[primero] = "para"
                 try:
-                    self.bloque(s[-1], paso, nuevo=False)
+                    senal = cuerpo(paso)
                 except _Continuar:
-                    pass
+                    continue
                 except _Romper:
-                    break
-        elif clase == "romper":
-            raise _Romper()
-        elif clase == "continuar":
-            raise _Continuar()
-        elif clase == "funcion":
-            env.definir(s[2], Funcion(s[2], s[3], s[4], env, s[5]), origen="funcion")
-        elif clase == "devolver":
-            raise _Retorno(None if s[2] is None else self.ev(s[2], env))
-        elif clase == "enviar":
-            msg = self.un_mensaje(s[2], env)
-            destinos = self.destinos(s[3], env)
+                    return None
+                if senal is not None:
+                    if senal is _ROMPER:
+                        return None
+                    if senal is not _CONTINUAR:
+                        return senal
+        return self._contado(linea, hacer)
+
+    _p_para2 = _p_para
+
+    def _p_romper(self, s):
+        return self._contado(s[1], lambda env: _ROMPER)
+
+    def _p_continuar(self, s):
+        return self._contado(s[1], lambda env: _CONTINUAR)
+
+    def _p_funcion(self, s):
+        nombre, params, cuerpo, defectos = s[2], s[3], s[4], s[5]
+
+        def hacer(env):
+            env.definir(nombre, Funcion(nombre, params, cuerpo, env, defectos),
+                        origen="funcion")
+        return self._contado(s[1], hacer)
+
+    def _p_devolver(self, s):
+        it, linea = self, s[1]
+        if s[2] is None:
+            return self._contado(linea, lambda env: _SIN_VALOR)
+        de_valor = self.armar(s[2])
+
+        def paso(env):
+            it.linea_actual = linea
+            it.pasos = pasos = it.pasos + 1
+            tope = it.max_pasos
+            if tope is not None and pasos > tope:
+                raise it.freno(linea)
+            try:
+                return (de_valor(env),)
+            except _SE_EXPLICAN as e:
+                raise it.con_renglon(e, linea)
+        return paso
+
+    def _p_enviar(self, s):
+        it, linea = self, s[1]
+        de_msg, de_dest = self.armar(s[2]), self.armar(s[3])
+
+        def hacer(env):
+            msg = it.un_mensaje(de_msg(env))
+            destinos = it.destinos(de_dest(env))
             for dest in destinos:  # primero se revisan todos: sale para todos o para nadie
                 if msg.tipo not in dest.manejadores:
-                    raise ErrorMate(f"{dest.nombre} no sabe recibir '{msg.tipo}'", s[1],
+                    raise ErrorMate(f"{dest.nombre} no sabe recibir '{msg.tipo}'", linea,
                                     familia="agente")
-            sobre = (self.en_conversacion(), None)  # (a varios: una sola conversación)
+            sobre = (it.en_conversacion(), None)  # (a varios: una sola conversación)
+            rem = it.contexto[0] if it.contexto else None
             for dest in destinos:
-                self.cola.append(
-                    (self.contexto[0] if self.contexto else None, dest, msg, sobre))
-        elif clase == "responder":
-            if not self.contexto:
+                it.cola.append((rem, dest, msg, sobre))
+        return self._contado(linea, hacer)
+
+    def _p_responder(self, s):
+        it, linea = self, s[1]
+        de_valor = self.armar(s[2])
+
+        def hacer(env):
+            if not it.contexto:
                 raise ErrorMate(RESPONDER_SUELTO)
-            valor = self.ev(s[2], env)
+            valor = de_valor(env)
             if lleva_funcion(valor):
                 raise ErrorMate("no se puede responder con una función: "
-                                "las respuestas llevan datos", s[1])
-            raise _Respuesta(valor, s[1])
-        elif clase == "fallar":
-            motivo = self.ev(s[2], env)
-            raise ErrorMate(formato(motivo), s[1], familia="fallar",
+                                "las respuestas llevan datos", linea)
+            raise _Respuesta(valor, linea)
+        return self._contado(linea, hacer)
+
+    def _p_fallar(self, s):
+        linea, de_motivo = s[1], self.armar(s[2])
+
+        def hacer(env):
+            motivo = de_motivo(env)
+            raise ErrorMate(formato(motivo), linea, familia="fallar",
                             dato=None if lleva_funcion(motivo) else motivo)
-        elif clase == "intentar":
+        return self._contado(linea, hacer)
+
+    def _p_intentar(self, s):
+        it, var = self, s[3]
+        cuerpo, manejo = self._bloque(s[2]), self._bloque(s[4], False)
+
+        def hacer(env):
             try:
-                self.bloque(s[2], env)
+                return cuerpo(env)
             except ErrorMate as e:
                 # El freno no se ataja nunca, ni un renglón mal escrito. Un 'asegurar'
                 # tampoco dentro de una prueba (si no, pasaría en verde); al correr el
                 # programa es una falla más.
                 if e.clase in ("limite", "escritura") or (
-                        e.clase == "asegurar" and self.en_prueba):
+                        e.clase == "asegurar" and it.en_prueba):
                     raise
-                if self.contexto is not None:  # un agente atajó una falla: va a la bitácora
-                    self.anotar_falla(self.contexto[0], e, self.contexto[4], atajada=True)
-                manejo = Entorno(env)
-                if s[3]:
-                    manejo.definir(s[3], ErrorAtajado(e), origen="falla")
-                self.bloque(s[4], manejo, nuevo=False)
-        elif clase == "asegurar":
-            cond, valores = s[2], ""
-            if self.contexto is None and self.en_prueba:
-                self.vaciar_cola()  # lo enviado en la prueba llega antes de asegurar
-            if cond[0] == "bin" and cond[2] in COMPARADORES:
-                # Se evalúa cada lado una sola vez, para poder mostrar qué dio.
-                izq, der = self.ev(cond[3], env), self.ev(cond[4], env)
+                if it.contexto is not None:  # un agente atajó una falla: va a la bitácora
+                    it.anotar_falla(it.contexto[0], e, it.contexto[4], atajada=True)
+                adentro = Entorno(env)
+                if var:
+                    adentro.definir(var, ErrorAtajado(e), origen="falla")
+                return manejo(adentro)
+        return self._contado(s[1], hacer)
+
+    def _p_asegurar(self, s):
+        it, linea, cond = self, s[1], s[2]
+        de_texto = self.armar(s[3]) if s[3] else None
+        comparada = cond[0] == "bin" and cond[2] in COMPARADORES
+        if comparada:
+            # Se evalúa cada lado una sola vez, para poder mostrar qué dio.
+            de_izq, de_der = self.armar(cond[3]), self.armar(cond[4])
+            op, renglon = cond[2], cond[1]
+        else:
+            de_cond = self.armar(cond)
+
+        def hacer(env):
+            valores = ""
+            if it.contexto is None and it.en_prueba:
+                it.vaciar_cola()  # lo enviado en la prueba llega antes de asegurar
+            if comparada:
+                izq, der = de_izq(env), de_der(env)
                 try:
-                    cumple = self.binaria(cond[2], izq, der)
+                    cumple = it.binaria(op, izq, der)
                 except ErrorMate as e:
-                    e.linea = e.linea or cond[1]
+                    e.linea = e.linea or renglon
                     raise
                 if not cumple:
-                    valores = self.valores_de(cond[2], izq, der)
+                    valores = it.valores_de(op, izq, der)
             else:
-                cumple = self.condicion(cond, env)
+                cumple = de_cond(env)
+                if type(cumple) is not bool:
+                    raise condicion_rara(cumple)
             if not cumple:
-                if s[3]:
-                    detalle = formato(self.ev(s[3], env)) + (f" ({valores})" if valores else "")
+                if de_texto:
+                    detalle = formato(de_texto(env)) + (f" ({valores})" if valores else "")
                 else:
                     detalle = "no se cumplió lo asegurado" + (f": {valores}" if valores else "")
-                raise ErrorMate(detalle, s[1], clase="asegurar")
-        elif clase == "simular":
-            if not self.en_prueba or self.contexto is not None:
+                raise ErrorMate(detalle, linea, clase="asegurar")
+        return self._contado(linea, hacer)
+
+    def _p_simular(self, s):
+        it, linea, tipo, var, cuerpo = self, s[1], s[3], s[4], s[5]
+        de_dest = self.armar(s[2])
+
+        def hacer(env):
+            if not it.en_prueba or it.contexto is not None:
                 raise ErrorMate("'simular' solo va dentro de una prueba")
-            dest = self.destino(s[2], env)
-            if s[3] not in dest.manejadores:
-                raise ErrorMate(f"{dest.nombre} no sabe recibir '{s[3]}': solo se simula un "
+            dest = it.destino(de_dest(env))
+            if tipo not in dest.manejadores:
+                raise ErrorMate(f"{dest.nombre} no sabe recibir '{tipo}': solo se simula un "
                                 "mensaje que el agente ya recibe", familia="agente")
-            dest.manejadores = {**dest.manejadores, s[3]: (s[1], s[4], s[5], env)}
-        elif clase == "asegurar_falla":
-            if self.contexto is None and self.en_prueba:
-                self.vaciar_cola()
+            dest.manejadores = {**dest.manejadores, tipo: (linea, var, cuerpo, env)}
+        return self._contado(linea, hacer)
+
+    def _p_asegurar_falla(self, s):
+        it, linea = self, s[1]
+        # Acá una cuenta o una función suelta vale: se prueba que falle.
+        pasos = [self._paso(x, vale_suelto=True) for x in s[2]]
+        de_texto = self.armar(s[3]) if s[3] else None
+
+        def hacer(env):
+            if it.contexto is None and it.en_prueba:
+                it.vaciar_cola()
             try:
                 adentro = Entorno(env)
-                for x in s[2]:
-                    # Acá una cuenta o una función suelta vale: se prueba que falle.
-                    self.ejecutar(x, adentro, vale_suelto=True)
+                for paso in pasos:
+                    senal = paso(adentro)
+                    if senal is not None:
+                        return senal
             except ErrorMate as e:
                 # Igual que 'intentar': ni el freno, ni un renglón mal escrito, ni un
                 # 'asegurar' de la prueba cuentan.
                 if e.clase in ("limite", "escritura") or (
-                        e.clase == "asegurar" and self.en_prueba):
+                        e.clase == "asegurar" and it.en_prueba):
                     raise
                 if e.familia == "nombre":  # un nombre mal tipeado no es la falla esperada
                     raise ErrorMate(
                         f"lo de adentro de 'asegurar falla' no llegó a probarse: {e.mensaje}",
-                        e.linea or s[1], clase="asegurar")
-                return
-            raise ErrorMate(formato(self.ev(s[3], env)) if s[3] else
-                            "se esperaba que esto fallara, y no falló", s[1], clase="asegurar")
-        else:
-            raise ErrorMate(f"'{clase}' no puede ir acá")
-
-    def suelta(self, e, env):
-        """Un renglón que es solo un valor: vale si hace algo (llamar a una función
-        propia, mostrar, preguntar, crear). Si solo calcula y no lo usa, es un error."""
-        if e[0] in ("preguntar", "crear"):
-            self.ev(e, env)
-            return
-        if e[0] != "llamar":
-            valor = self.ev(e, env)
-            if isinstance(valor, (Funcion, Nativa)):
-                raise ErrorMate(f"a '{valor.nombre}' le faltan los paréntesis: "
-                                f"{valor.nombre}(...)", e[1], clase="escritura")
-            raise renglon_sin_uso(e)
-        f = self.ev(e[2], env)
-        # (una consulta a la IA suelta no se llega a hacer: sería pagarla para tirarla)
-        if not (isinstance(f, Nativa) and f.nombre == "consultar_ia"):
-            try:
-                self.llamar(f, [self.ev(a, env) for a in e[3]], e[1])
-            except ErrorMate as error:
-                error.linea = error.linea or e[1]
-                raise
-        if isinstance(f, Nativa) and f.nombre not in HACEN_ALGO:
-            if f.nombre in ("agregar", "quitar"):
-                raise ErrorMate(
-                    f"{f.nombre}() no cambia la lista: devuelve una nueva. Guardá el "
-                    f"resultado: lista = {f.nombre}(lista, ...)", e[1], clase="escritura")
-            raise ErrorMate(f"{f.nombre}() devuelve un valor y este renglón no lo usa: "
-                            f"guardalo (sea x = {f.nombre}(...)) o mostralo con mostrar(...)",
-                            e[1], clase="escritura")
+                        e.linea or linea, clase="asegurar")
+                return None
+            raise ErrorMate(formato(de_texto(env)) if de_texto else
+                            "se esperaba que esto fallara, y no falló", linea, clase="asegurar")
+        return self._contado(linea, hacer)
 
     def valores_de(self, op, izq, der):
         """Qué dio cada lado de un 'asegurar' que no se cumplió."""
@@ -5019,90 +5697,322 @@ class Interprete:
 
     # ── expresiones ──
     def ev(self, n, env):
-        try:
-            return self._ev(n, env)
-        except ErrorMate as e:
-            e.linea = e.linea or n[1]
-            raise
+        """El valor de esa expresión. (Lo que ya está armado no pasa por acá.)"""
+        listo = self._armados.get(id(n))
+        if listo is None:
+            listo = self._armados[id(n)] = (self.armar(n), n)
+        return listo[0](env)
 
-    def _ev(self, n, env):
-        clase = n[0]
-        if clase in ("num", "str", "bool"):
-            return n[2]
-        if clase == "nombre":
-            return env.buscar(n[2])
-        if clase == "nada":
-            return None
-        if clase == "interp":
-            partes, largo = [], 0
-            for p in n[2]:
-                partes.append(p if isinstance(p, str) else a_texto(self.ev(p, env)))
-                largo += len(partes[-1])
-                if largo > MAX_LARGO:
-                    raise muy_largo()
-            return "".join(partes)
-        if clase == "lista":
-            return [self.ev(x, env) for x in n[2]]
-        if clase == "mapa":
-            return {k: self.ev(e, env) for k, e in n[2]}
-        if clase == "ctor":
-            return self.construir(n[2], {k: self.ev(e, env) for k, e in n[3]})
-        if clase == "remitente":
-            return self.contexto[1] if self.contexto else None
-        if clase == "yo":
-            return self.contexto[0] if self.contexto else None
-        if clase == "crear":
-            return self.crear(n, env)
-        if clase == "y":
-            return self.condicion(n[2], env) and self.condicion(n[3], env)
-        if clase == "o":
-            return self.condicion(n[2], env) or self.condicion(n[3], env)
-        if clase == "no":
-            return not self.condicion(n[2], env)
-        if clase == "neg":
-            v = self.ev(n[2], env)
+    def armar(self, n):
+        """Arma una expresión: devuelve una función que recibe el entorno y da el valor.
+        Si falla, el error sale con el renglón de la expresión de más adentro."""
+        armar = getattr(self, "_x_" + n[0], None)
+        if armar is None:
+            clase, linea = n[0], n[1]
+
+            def desconocida(env):
+                raise ErrorMate(f"expresión desconocida: {clase}", linea)
+            return desconocida
+        return armar(n)
+
+    def _x_num(self, n):
+        valor = n[2]
+        return lambda env: valor
+
+    _x_str = _x_bool = _x_num
+
+    def _x_nada(self, n):
+        return lambda env: None
+
+    def _x_nombre(self, n):
+        linea, nombre = n[1], n[2]
+
+        def valor(env):
+            e = env
+            while e is not None:
+                caja = e.vars.get(nombre)
+                if caja is not None:
+                    return caja[0]
+                e = e.padre
+            error = env.no_existe(nombre)
+            error.linea = error.linea or linea
+            raise error
+        return valor
+
+    def _x_interp(self, n):
+        linea = n[1]
+        partes = [(True, p) if isinstance(p, str) else (False, self.armar(p)) for p in n[2]]
+
+        def valor(env):
+            try:
+                hechas, largo = [], 0
+                for fija, p in partes:
+                    if not fija:
+                        p = p(env)
+                        if type(p) is not str:
+                            p = a_texto(p)
+                    hechas.append(p)
+                    largo += len(p)
+                    if largo > MAX_LARGO:
+                        raise muy_largo()
+                return "".join(hechas)
+            except ErrorMate as e:
+                e.linea = e.linea or linea
+                raise
+        return valor
+
+    def _x_lista(self, n):
+        de_cada = [self.armar(x) for x in n[2]]
+        return lambda env: [de(env) for de in de_cada]
+
+    def _x_mapa(self, n):
+        pares = [(k, self.armar(e)) for k, e in n[2]]
+        return lambda env: {k: de(env) for k, de in pares}
+
+    def _x_ctor(self, n):
+        linea, tipo, construir = n[1], n[2], self.construir
+        pares = [(k, self.armar(e)) for k, e in n[3]]
+
+        def valor(env):
+            try:
+                return construir(tipo, {k: de(env) for k, de in pares})
+            except ErrorMate as e:
+                e.linea = e.linea or linea
+                raise
+        return valor
+
+    def _x_remitente(self, n):
+        it = self
+        return lambda env: it.contexto[1] if it.contexto else None
+
+    def _x_yo(self, n):
+        it = self
+        return lambda env: it.contexto[0] if it.contexto else None
+
+    def _x_crear(self, n):
+        it, linea = self, n[1]
+
+        def valor(env):
+            try:
+                return it.crear(n, env)
+            except ErrorMate as e:
+                e.linea = e.linea or linea
+                raise
+        return valor
+
+    def _x_y(self, n):
+        linea, de_a, de_b, es_o = n[1], self.armar(n[2]), self.armar(n[3]), n[0] == "o"
+
+        def valor(env):
+            a = de_a(env)
+            if a is es_o:  # 'y' con el primero falso, 'o' con el primero verdadero
+                return a
+            if a is True or a is False:
+                b = de_b(env)
+                if b is True or b is False:
+                    return b
+                a = b
+            raise condicion_rara(a, linea)
+        return valor
+
+    _x_o = _x_y
+
+    def _x_no(self, n):
+        linea, de_a = n[1], self.armar(n[2])
+
+        def valor(env):
+            a = de_a(env)
+            if a is True:
+                return False
+            if a is False:
+                return True
+            raise condicion_rara(a, linea)
+        return valor
+
+    def _x_neg(self, n):
+        linea, de_a = n[1], self.armar(n[2])
+
+        def valor(env):
+            v = de_a(env)
             if not es_num(v):
                 raise ErrorMate(f"no se puede negar {tipo_claro(v)}: el signo menos va "
-                                "delante de un número")
+                                "delante de un número", linea)
             return -v
-        if clase == "bin":
-            return self.binaria(n[2], self.ev(n[3], env), self.ev(n[4], env))
-        if clase == "llamar":
-            return self.llamar(self.ev(n[2], env), [self.ev(a, env) for a in n[3]], n[1])
-        if clase == "indice":
-            base, i = self.ev(n[2], env), self.ev(n[3], env)
-            if isinstance(base, (list, str)):
-                self.posicion(base, i)
+        return valor
+
+    def _x_bin(self, n):
+        linea, op, binaria = n[1], n[2], self.binaria
+        de_a, de_b = self.armar(n[3]), self.armar(n[4])
+
+        def completa(a, b):
+            """La cuenta con todos sus controles: para lo que no es el caso de siempre."""
+            try:
+                return binaria(op, a, b)
+            except ErrorMate as e:
+                e.linea = e.linea or linea
+                raise
+
+        # Lo de todos los días (números no gigantes, textos iguales o distintos) se
+        # resuelve acá mismo; da exactamente lo que daría la cuenta completa.
+        fijo = n[4][2] if n[4][0] == "num" and type(n[4][2]) is int else None
+        if fijo is not None and not -_CHICO < fijo < _CHICO:
+            fijo = None
+        if op in _CUENTAS:
+            cuenta = _CUENTAS[op]
+            if fijo is not None:
+                def valor(env):
+                    a = de_a(env)
+                    if type(a) is int and -_CHICO < a < _CHICO:
+                        return cuenta(a, fijo)
+                    return completa(a, fijo)
+                return valor
+
+            def valor(env):
+                a = de_a(env)
+                b = de_b(env)
+                ta = type(a)
+                if ta is int:
+                    if type(b) is int and -_CHICO < a < _CHICO and -_CHICO < b < _CHICO:
+                        return cuenta(a, b)
+                elif ta is float and type(b) is float:
+                    r = cuenta(a, b)
+                    if _finito(r):
+                        return r
+                return completa(a, b)
+            return valor
+        if op in _COMPARACIONES:
+            compara = _COMPARACIONES[op]
+            if fijo is not None:
+                def valor(env):
+                    a = de_a(env)
+                    ta = type(a)
+                    if ta is int or ta is float:
+                        return compara(a, fijo)
+                    return completa(a, fijo)
+                return valor
+
+            def valor(env):
+                a = de_a(env)
+                b = de_b(env)
+                ta, tb = type(a), type(b)
+                if (ta is int or ta is float) and (tb is int or tb is float):
+                    return compara(a, b)
+                if ta is str and tb is str and (op == "==" or op == "!="):
+                    return compara(a, b)
+                return completa(a, b)
+            return valor
+        if op in ("/", "%"):
+            resto = op == "%"
+
+            def valor(env):
+                a = de_a(env)
+                b = de_b(env)
+                if (type(a) is int and type(b) is int and b != 0
+                        and -_CHICO < a < _CHICO and -_CHICO < b < _CHICO):
+                    if resto:
+                        return a % b
+                    # la división exacta entre enteros no pierde cifras
+                    return a // b if a % b == 0 else a / b
+                return completa(a, b)
+            return valor
+        return lambda env: completa(de_a(env), de_b(env))
+
+    def _x_llamar(self, n):
+        linea, llamar = n[1], self.llamar
+        de_quien, de_args = self.armar(n[2]), [self.armar(a) for a in n[3]]
+
+        if len(de_args) == 1:  # (lo más común: se ahorra la vuelta que arma la lista)
+            de_uno = de_args[0]
+
+            def valor(env):
+                f = de_quien(env)
+                args = [de_uno(env)]
+                try:
+                    return llamar(f, args, linea)
+                except ErrorMate as e:
+                    e.linea = e.linea or linea
+                    raise
+            return valor
+
+        def valor(env):
+            f = de_quien(env)
+            args = [de(env) for de in de_args]
+            try:
+                return llamar(f, args, linea)
+            except ErrorMate as e:
+                e.linea = e.linea or linea
+                raise
+        return valor
+
+    def _x_indice(self, n):
+        it, linea = self, n[1]
+        de_base, de_i = self.armar(n[2]), self.armar(n[3])
+
+        def valor(env):
+            base, i = de_base(env), de_i(env)
+            tipo = type(base)
+            if tipo is list:
+                if type(i) is int and 0 <= i < len(base):
+                    return base[i]
+            elif tipo is dict and type(i) is str and i in base:
                 return base[i]
-            if isinstance(base, dict):
-                self.clave_de_mapa(i)
-                if i not in base:
-                    raise ErrorMate(no_esta(
-                        f"el mapa no tiene la clave {formato(i, False)}", i, base),
-                        familia="clave")
-                return base[i]
-            raise ErrorMate(f"{tipo_claro(base)} no tiene posiciones ni claves: los "
-                            "corchetes van después de una lista, un texto o un mapa"
-                            + (f". {CAUSA_DE_NADA}" if base is None else ""))
-        if clase == "campo":
-            base = self.ev(n[2], env)
+            try:
+                if isinstance(base, (list, str)):
+                    it.posicion(base, i)
+                    return base[i]
+                if isinstance(base, dict):
+                    it.clave_de_mapa(i)
+                    if i not in base:
+                        raise ErrorMate(no_esta(
+                            f"el mapa no tiene la clave {formato(i, False)}", i, base),
+                            familia="clave")
+                    return base[i]
+                raise ErrorMate(f"{tipo_claro(base)} no tiene posiciones ni claves: los "
+                                "corchetes van después de una lista, un texto o un mapa"
+                                + (f". {CAUSA_DE_NADA}" if base is None else ""))
+            except ErrorMate as e:
+                e.linea = e.linea or linea
+                raise
+        return valor
+
+    def _x_campo(self, n):
+        linea, campo, de_base = n[1], n[3], self.armar(n[2])
+
+        def valor(env):
+            base = de_base(env)
             campos = base.campos if isinstance(base, Registro) else base
             if not isinstance(campos, dict):
+                if isinstance(base, ModuloPython):  # ayudas.doble: una función de Python
+                    try:
+                        return base.funcion(campo)
+                    except ErrorMate as e:
+                        e.linea = e.linea or linea
+                        raise
                 raise ErrorMate(f"{tipo_claro(base)} no tiene campos"
-                                + (f". {CAUSA_DE_NADA}" if base is None else ""))
-            if n[3] not in campos:
+                                + (f". {CAUSA_DE_NADA}" if base is None else ""), linea)
+            if campo not in campos:
                 raise ErrorMate(no_esta(
-                    f"{nombre_tipo(base)} no tiene un campo '{n[3]}'", n[3], campos),
-                    familia="clave")
-            return campos[n[3]]
-        if clase == "preguntar":
-            msg = self.un_mensaje(n[2], env)
-            dest = self.destino(n[3], env)
-            if self.contexto is None and not self.naciendo:
-                self.vaciar_cola()  # lo que el programa ya envió llega antes que la pregunta
-            return self.entregar(self.contexto[0] if self.contexto else None, dest, msg, True,
-                                 n[1])
-        raise ErrorMate(f"expresión desconocida: {clase}")
+                    f"{nombre_tipo(base)} no tiene un campo '{campo}'", campo, campos),
+                    linea, familia="clave")
+            return campos[campo]
+        return valor
+
+    def _x_preguntar(self, n):
+        it, linea = self, n[1]
+        de_msg, de_dest = self.armar(n[2]), self.armar(n[3])
+
+        def valor(env):
+            try:
+                msg = it.un_mensaje(de_msg(env))
+                dest = it.destino(de_dest(env))
+                if it.contexto is None and not it.naciendo:
+                    it.vaciar_cola()  # lo que el programa ya envió llega antes
+                return it.entregar(it.contexto[0] if it.contexto else None, dest, msg,
+                                   True, linea)
+            except ErrorMate as e:
+                e.linea = e.linea or linea
+                raise
+        return valor
 
     def binaria(self, op, a, b):
         if type(a) is int and type(b) is int:
@@ -5167,38 +6077,68 @@ class Interprete:
         raise ErrorMate(f"no se puede hacer {nombre_tipo(a)} {op} {nombre_tipo(b)}{pista}")
 
     def llamar(self, f, args, linea=None):
-        if isinstance(f, Nativa):
+        if type(f) is Funcion:
+            pass
+        elif isinstance(f, Nativa):
             return f.fn(args)
-        if not isinstance(f, Funcion):
+        elif not isinstance(f, Funcion):
             raise ErrorMate(f"{tipo_claro(f)} no es una función: no se le pueden poner "
-                            "paréntesis")
-        minimo = len(f.params) - len(f.defectos)
-        if not minimo <= len(args) <= len(f.params):
-            raise ErrorMate(espera_otra_cantidad(f.nombre, minimo, len(f.params), len(args)))
+                            "paréntesis" + (
+                                f". Se llama a una de sus funciones: {f.nombre}.nombre(...)"
+                                if isinstance(f, ModuloPython) else ""))
+        params, nombre, cuantos = f.params, f.nombre, len(args)
+        minimo = len(params) - len(f.defectos)
+        if not minimo <= cuantos <= len(params):
+            raise ErrorMate(espera_otra_cantidad(nombre, minimo, len(params), cuantos))
         if self.abiertas >= MAX_LLAMADAS:
-            self.ultima_funcion = f.nombre
-            raise self.demasiada_recursion(f.nombre)
-        env = Entorno(f.env, borde=True)
-        for p, a in zip(f.params, args):
-            env.definir(p, a, origen="parametro")
-        self.llamadas.append(f.nombre)
+            self.ultima_funcion = nombre
+            raise self.demasiada_recursion(nombre)
+        env = Entorno(f.env, False, True)
+        directa = f.directa
+        if directa is None:
+            # ¿Se pueden anotar los parámetros sin más controles? Sí, salvo que alguno
+            # esté repetido o se llame como una función incluida: eso lo explica definir.
+            de_afuera = env.raiz.origen
+            directa = f.directa = len(set(params)) == len(params) and not any(
+                de_afuera.get(p) == "nativa" and p not in SE_PUEDEN_TAPAR for p in params)
+        if directa:
+            if cuantos == 1:  # (lo más común, sin vueltas)
+                env.vars[params[0]] = [args[0], False]
+                env.origen[params[0]] = "parametro"
+            elif cuantos:
+                variables, origen = env.vars, env.origen
+                for p, a in zip(params, args):
+                    variables[p] = [a, False]
+                    origen[p] = "parametro"
+        else:
+            for p, a in zip(params, args):
+                env.definir(p, a, False, "parametro")
+        self.llamadas.append(nombre)
         self.abiertas += 1
-        self.ultima_funcion = f.nombre
+        self.ultima_funcion = nombre
         try:
             # Los que no vinieron toman su valor por defecto, que se calcula en cada
             # llamada y puede usar los parámetros de antes: f(a, b = a * 2).
-            for p, e in f.defectos[len(args) - minimo:]:
-                env.definir(p, self.ev(e, env), origen="parametro")
-            self.bloque(f.cuerpo, env, nuevo=False)
+            if cuantos != len(params):
+                for p, e in f.defectos[cuantos - minimo:]:
+                    env.definir(p, self.ev(e, env), False, "parametro")
+            cuerpo = f.armado
+            if cuerpo is None:  # se arma la primera vez que se la llama
+                cuerpo = f.armado = self.armar_bloque(f.cuerpo, False)
+            senal = cuerpo(env)
         except _Retorno as r:
             return r.valor
         except ErrorMate as e:
-            anotar_paso(e, ("funcion", f.nombre, linea))
+            anotar_paso(e, ("funcion", nombre, linea))
             raise
         finally:
             self.llamadas.pop()
             self.abiertas -= 1
-        return None
+        if senal is None:
+            return None
+        if type(senal) is tuple:  # un 'devolver'
+            return senal[0]
+        return self.fuera_de_lugar(senal)
 
     def recursiva(self):
         """Si se acabó el lugar en medio de llamadas a funciones, el nombre de la última."""
@@ -5274,7 +6214,8 @@ CONTROL
 - intentar {{ ... }} si falla e {{ ... }}             e es el texto del error (el 'e' es opcional)
   detalle_de(e).clase dice qué pasó sin depender de la redacción: "fallar", "asegurar",
   "contrato", "clave", "posicion", "division", "nombre", "numero", "json", "agente",
-  "ciclo", "archivo", "ia" u "otro". detalle_de(e).dato es el valor que se le dio a 'fallar'.
+  "ciclo", "archivo", "ia", "python" u "otro". detalle_de(e).dato es el valor que se le
+  dio a 'fallar'.
 
 FUNCIONES INCLUIDAS (no hay otras)
 {funciones}
@@ -5337,6 +6278,13 @@ AGENTES Y MENSAJES
   sola en programa.bitacora.txt (se lee resumida con: mate.py bitacora programa.mate).
 - usar "otro.mate" trae los mensajes, agentes, funciones y variables ('sea' y 'var') de
   otro archivo. Un nombre que ya vino de ahí no se puede declarar de nuevo.
+- usar python "ayudas.py" trae las funciones escritas con 'def' en ese archivo de Python,
+  que está en la carpeta del programa (nombre en minúsculas, sin espacios). Se llaman con el
+  nombre del archivo adelante:  sea r = ayudas.raiz(144)
+  Solo cruzan números, textos, verdadero/falso, nada, listas y mapas, y van y vuelven
+  copiados. Un error dentro del Python es un error de Mate (clase "python") que se ataja
+  con 'intentar'. Sirve para lo que Mate no trae; si hace falta, hay que entregar también
+  el .py, y avisar que ese Python corre con todos los permisos de la computadora.
 
 PRUEBAS
 - prueba "nombre" {{ asegurar total == 10 }}        asegurar cond, "mensaje si falla"
@@ -5563,7 +6511,19 @@ AYUDA = {
                 "    simular Vendedor al recibir Precio como p { responder 10 }\n"
                 '    asegurar preguntar Precio { producto: "yerba" } a Vendedor == 10\n}'),
     "usar": ("trae los mensajes, agentes, funciones y variables ('sea' y 'var') de otro "
-             "archivo, que se busca al lado de este", 'usar "catalogo.mate"\nmostrar(iva)'),
+             "archivo, que se busca al lado de este. (Para traer funciones escritas en "
+             "Python: 'ayuda python')", 'usar "catalogo.mate"\nmostrar(iva)'),
+    "python": ("después de 'usar': trae las funciones de un archivo de Python que está al "
+               "lado del programa, para sumar lo que Mate no trae. Se llaman con el nombre "
+               "del archivo adelante. Cruzan números, textos, verdadero/falso, nada, listas "
+               "y mapas. Si el Python falla, es un error que se ataja con 'intentar'. OJO: "
+               "ese Python corre con todos los permisos de la computadora (también con "
+               "'probar'): usá solo archivos tuyos o de alguien de confianza",
+               "# ayudas.py está al lado del programa y dice:\n"
+               "#     def doble(numero):\n"
+               "#         return numero * 2\n"
+               'usar python "ayudas.py"\n'
+               "mostrar(ayudas.doble(21))"),
     "al fallar": ("dentro de un agente: se entera cuando un mensaje que él mandó con "
                   "'enviar' no pudo atenderse. Lo que llega trae motivo, mensaje y destino. "
                   "Ahí no va 'responder'",
@@ -5709,7 +6669,8 @@ def consola(entrada=None, mostrar=print, ia_simulada=False, ia_respuestas=(), an
         try:
             programa = analizar(fuente, en_consola=True)
             se_declaran = [s for s in programa
-                           if s[0] in ("sea", "funcion", "agente", "mensaje")]
+                           if s[0] in ("sea", "funcion", "agente", "mensaje",
+                                       "usar_python")]
             nuevos = {s[2] for s in se_declaran}
             previo = [s for s in declarado if s[2] not in nuevos]
             errores = verificar(previo + programa, en_consola=True)
@@ -5830,6 +6791,12 @@ def texto_de_ayuda():
         "  lecciones archivo.mate   muestra las lecciones de cada agente",
         "  lecciones archivo.mate Mostrador --borrar=2   le borra la lección 2",
         "  bitacora  archivo.mate   resume las fallas que anotaron sus agentes",
+        "",
+        "Para sumar lo que Mate no trae (mirá 'ayuda python'):",
+        '  usar python "ayudas.py"  va en el programa: trae las funciones de ese archivo de',
+        "                           Python, que está al lado, y se llaman ayudas.nombre(...).",
+        "                           Ojo: ese Python corre con todos los permisos de la",
+        "                           computadora. Usá solo archivos tuyos o de confianza",
         "",
         "Para que Mate mejore (anota en esta computadora los errores que te muestra):",
         "  informe                  resume los errores de uso: los más frecuentes y los que",
@@ -6382,6 +7349,10 @@ def anotar_error_de_uso(ruta, orden, etapa, mensaje, categoria=None, sugerencia=
         elif familia == "asegurar":
             categoria = categoria or f"{etapa}: no se cumplió un 'asegurar'"
             mensaje = "<un 'asegurar' del programa que no se cumplió>"
+        elif familia == "python":  # lo que diga un archivo de Python de la persona, tampoco
+            categoria = categoria or (f"{etapa}: falló algo de un archivo traído con "
+                                      "'usar python'")
+            mensaje = "<lo que pasó en el archivo de Python del programa>"
         else:
             mensaje = tapar_datos(mensaje, propios)
         categoria = en_un_renglon(categoria or categoria_de(etapa, mensaje), 110)

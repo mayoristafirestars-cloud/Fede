@@ -1,0 +1,58 @@
+# Paso 9: sumarle a Mate lo que no trae, con funciones escritas en Python.
+#
+# Mate es chico a propósito. Cuando hace falta algo que no tiene (una raíz cuadrada,
+# contar los días entre dos fechas, leer una planilla), se escribe esa función en un
+# archivo de Python que va AL LADO del programa, y se la llama desde acá.
+#
+# El archivo de este ejemplo es ayudas.py: abrilo con el Bloc de notas, es cortito.
+#
+#     python mate\mate.py correr mate\ejemplos\09_con_python.mate
+#     python mate\mate.py probar mate\ejemplos\09_con_python.mate
+#
+# OJO: lo que está en el .py no tiene los cuidados de Mate: corre con todos los permisos
+# de la computadora. Usá solo archivos tuyos o de alguien de confianza.
+
+# 'usar python' trae las funciones de ese archivo. El nombre del archivo (sin el .py)
+# es el que se escribe adelante de cada función.
+usar python "ayudas.py"
+
+# Se llaman como cualquier función, con el nombre del archivo y un punto adelante.
+mostrar("La raíz de 144 es {ayudas.raiz(144)}")
+
+sea dias = ayudas.dias_entre("01/03/2026", "15/03/2026")
+mostrar("Del 1 al 15 de marzo van {dias} días")
+
+# Van y vuelven números, textos, verdadero/falso, nada, listas y mapas.
+# Acá va una lista y vuelve un mapa.
+sea ventas = [1200, 3500, 800, 2100, 950]
+sea r = ayudas.resumen(ventas)
+mostrar("La venta del medio fue de {pesos(r.del_medio, 0)} y la mayor de {pesos(r.mayor, 0)}")
+
+# Si el Python falla, llega como un error de Mate y se ataja con 'intentar'.
+# 'motivo' trae la explicación completa, con el renglón del .py.
+intentar {
+    mostrar(ayudas.dias_entre("ayer", "hoy"))
+} si falla motivo {
+    mostrar("Esas fechas no se entienden: van como 01/03/2026")
+}
+
+# Las funciones de Python se prueban igual que las de Mate.
+prueba "la raíz cuadrada" {
+    asegurar ayudas.raiz(81) == 9
+}
+
+prueba "los días entre dos fechas" {
+    asegurar ayudas.dias_entre("31/12/2025", "01/01/2026") == 1
+    asegurar ayudas.dias_entre("15/03/2026", "01/03/2026") == -14
+}
+
+prueba "una fecha mal escrita es un error que se puede atajar" {
+    asegurar falla { ayudas.dias_entre("ayer", "hoy") }
+    var clase = ""
+    intentar {
+        ayudas.raiz(-1)
+    } si falla e {
+        clase = detalle_de(e).clase
+    }
+    asegurar clase == "python"
+}
