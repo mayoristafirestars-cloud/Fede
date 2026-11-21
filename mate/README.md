@@ -126,12 +126,12 @@ archivo y abrirla con el Bloc de notas: `python mate\mate.py guia > guia.txt`.
 | `correr archivo.mate` | corre el programa (también alcanza con poner solo `archivo.mate`) |
 | `probar archivo.mate` | corre las pruebas que el programa trae adentro |
 | `probar mate\ejemplos` | corre las pruebas de todos los `.mate` de esa carpeta (o de varios archivos) y da un total |
-| `verificar archivo.mate` | revisa el programa sin correrlo |
+| `verificar archivo.mate` | revisa el programa sin correrlo (contratos, nombres que no existen...) |
 | `guia` | imprime una página con todo Mate, para pegarle a una IA (`python mate\mate.py guia`) |
 | `ayuda` | muestra las órdenes y un ejemplo listo para copiar |
 | `ayuda si` | explica una palabra de Mate o una función incluida (`ayuda largo`), con un ejemplo |
 | `consola` | abre la consola, para probar renglones sueltos sin crear un archivo |
-| `--traza` | muestra la conversación entre agentes, mensaje por mensaje |
+| `--traza` | muestra la conversación entre agentes, mensaje por mensaje, numerada y con lo que falló |
 | `--traza=conversacion.txt` | guarda esa conversación en un archivo, con un resumen al final |
 | `--sin-limite` | no corta los programas que dan muchísimos pasos |
 | `--depurar` | si Mate falla por dentro, muestra el detalle técnico |
@@ -255,6 +255,23 @@ Mate nunca debería mostrarte un error de Python en inglés:
 - **Nombres mal tipeados**: si escribís `totl` y existe `total`, o `mostar` en vez de
   `mostrar`, el error termina con `¿Quisiste decir 'total'?`. Vale también para campos,
   claves de mapas, mensajes y agentes.
+- **Nombres que no existen, antes de correr**: un nombre mal escrito en una parte del
+  programa que casi nunca se usa (adentro de un `si`, de una función, de un agente, de una
+  prueba) antes saltaba recién el día que el programa pasaba por ahí. Ahora Mate lo avisa
+  antes de empezar, con el mismo texto (`no existe 'totl'. ¿Quisiste decir 'total'?`), y
+  también una llamada con valores de más o de menos (`largo(lista, 2)`, o `doble(1, 2)` si
+  `doble` lleva uno solo). Mate avisa solo cuando está seguro; ante la duda deja correr:
+  - lo declarado afuera de todo (`sea`, `var`, `funcion`, `agente`) vale aunque esté más
+    abajo en el archivo, o en un archivo traído con `usar`;
+  - adentro de `intentar { ... }` y de `asegurar falla { ... }` no revisa, porque ahí la
+    falla se ataja o es justo lo que se está probando;
+  - si el mismo nombre falta en varios renglones, lo dice una sola vez (el primero);
+  - en la consola no avisa de nombres, porque lo que falta se puede escribir en el renglón
+    siguiente.
+- **Todos los errores se escriben igual**: `archivo:renglón: error: lo que pasó`, y debajo
+  el renglón señalado. Vale para los errores comunes y para los de un agente
+  (`mercado.mate:12: error: Vendedor al recibir Pedido: no vendo café`), con `correr` y
+  también debajo de cada prueba con `probar`.
 - **Palabras de otros lenguajes, con tilde o con mayúscula**: `print`, `if`, `else`, `true`,
   `función`, `número` o `Si` no se aceptan, pero el error dice cómo se escribe en Mate
   (`mostrar`, `si`, `sino`, `verdadero`, `funcion`, `numero`, `si`). Si vos le pusiste uno de
@@ -404,9 +421,27 @@ prueba "cotiza precio por cantidad" {
 - `yo` es el agente que está atendiendo; sirve para mandarse a sí mismo dentro de un mensaje.
 - Si los agentes se preguntan en ronda, el error muestra la cadena completa:
   `ciclo de preguntas: A → B → C → A. A le preguntó a B (línea 4), B le preguntó a C (línea 5)...`
-- `--traza` muestra la conversación entera, mensaje por mensaje. Con
-  `--traza=conversacion.txt` no la muestra: la guarda en ese archivo (se abre con el Bloc de
-  notas) y al final anota cuántos mensajes hubo y cuántos fallaron. El archivo queda en la
+- `--traza` muestra la conversación entera, mensaje por mensaje:
+
+  ```
+    ·  1. (programa) → Comprador: Comprar { producto: "azucar", cantidad: 4 }
+    ·  2.    Comprador pregunta a Vendedor Norte: Pedido { producto: "azucar", cantidad: 4 }
+    ·  2.    Vendedor Norte responde a Comprador: Cotizacion { total: 4560 }
+    ·  3.    Comprador pregunta a Vendedor Sur: Pedido { producto: "azucar", cantidad: 4 }
+    ·  3.    Vendedor Sur falló: no vendo azucar
+    ·  1. la respuesta de Comprador se descartó (para recibirla, usá 'preguntar' en vez de 'enviar'): Cotizacion { total: 4560 }
+  ```
+
+  Cada mensaje lleva su número, en el orden en que se entregó, y lo que pasa con ese
+  mensaje repite el número: `responde` (lo que contestó), `falló` (con el motivo) o
+  `sin respuesta` (le preguntaron y terminó sin llegar a un `responder`). Lo que un agente
+  pregunta mientras atiende va con sangría, debajo del mensaje que está atendiendo. Si un
+  agente le responde a un `enviar` del programa, esa respuesta no le llega a nadie: la
+  traza lo dice (`la respuesta ... se descartó`) y sugiere `preguntar`. Sin `--traza` no se
+  muestra nada de esto.
+- Con `--traza=conversacion.txt` la conversación no se muestra: se guarda en ese archivo (se
+  abre con el Bloc de notas), con los mismos renglones, y al final anota cuántos mensajes
+  hubo y cuántos fallaron. El archivo queda en la
   carpeta donde estás parado; Mate no acepta un nombre terminado en `.mate` o `.py`, para no
   pisar un programa. Con `probar` sobre varios archivos o una carpeta, el archivo junta la
   conversación de todos, una sección por archivo.
@@ -461,7 +496,9 @@ archivo no aparece, el error sugiere el nombre parecido, avisa si el Bloc de not
 como `.mate.txt` o muestra los `.mate` que hay en esa carpeta (con o sin `.mate` en el nombre); y si el error está adentro del archivo traído, dice quién lo trajo:
 `(este archivo, catalogo.mate, se trajo con 'usar' desde mercado.mate, línea 5)`.
 
-**Antes de correr**, Mate revisa los contratos: avisa si a un mensaje le falta o le sobra un
+**Antes de correr**, Mate revisa los nombres (que todo lo que se nombra exista, y que las
+funciones reciban la cantidad de valores que llevan: ver "Cuando algo sale mal") y los
+contratos: avisa si a un mensaje le falta o le sobra un
 campo, si un valor literal es del tipo equivocado, si le mandás a un agente (o a una copia
 guardada con `sea`) algo que no sabe recibir, o si le preguntás a un agente que para ese mensaje
 nunca llega a un `responder` (un `fallar` adentro de un `si` no cuenta como respuesta; un
@@ -481,8 +518,9 @@ Lo que una prueba cambia no le llega a la siguiente. Además:
   que le preguntó.)
 - Si varios agentes fallan durante una prueba, se muestran todos los errores, no solo el
   primero, también cuando la prueba además falla por un `asegurar`.
-- Debajo de cada error se ve el renglón señalado. Si el renglón es de un archivo traído con
-  `usar`, el error lo nombra: `catalogo.mate, línea 7`.
+- Los errores de una prueba se escriben igual que con `correr`, sean de la prueba o de un
+  agente: `archivo:renglón: error: lo que pasó`, y debajo el renglón señalado. Si el renglón
+  es de un archivo traído con `usar`, el que se nombra es ese archivo: `catalogo.mate:7: error: ...`.
 - Si un agente falló al correr el programa, antes de las pruebas, `probar` lo muestra arriba de
   los resultados y termina con error aunque las pruebas pasen.
 - Lo que una prueba muestra con `mostrar` aparece debajo de su nombre, con una barra adelante
@@ -796,6 +834,9 @@ archivo viejo deja de andar, casi seguro es por una de estas:
 | Un agente con `al fallar` se hace cargo de las fallas de lo que envió: ya no aparecen como error del programa | Nada si no usás `al fallar` |
 | `hoy`, `ahora`, `leer_archivo` y `escribir_archivo` son funciones incluidas: no sirven como nombre de variable (`sea hoy = ...`) | Elegir otro nombre: `sea fecha = hoy()` |
 | `ayuda` seguida de una palabra (`ayuda si`) ya no muestra la ayuda general sino la de esa palabra; y `consola` es una orden | Nada: `ayuda` sola sigue igual |
+| Un nombre que no existe (`totl`), o una llamada con valores de más o de menos (`largo(x, 2)`), es un error antes de correr aunque esté en una parte que no se ejecuta (un `si`, una función, un agente o una prueba que no se usan): el programa ya no arranca. Si faltan varios nombres, se avisan todos juntos | Corregir el nombre o la llamada. Adentro de `intentar` y de `asegurar falla` sigue como antes |
+| `--traza` cambió de formato: cada mensaje lleva su número, lo que un agente pregunta mientras atiende va con sangría, y hay renglones nuevos (`falló`, `sin respuesta`, `la respuesta ... se descartó`). El archivo de `--traza=archivo` trae lo mismo | Nada, salvo que compares la traza letra por letra con una guardada |
+| `probar` escribe los errores de cada prueba como `correr`: `archivo:5: error: ...` (antes `línea 5: ...` y `Agente al recibir X (línea 5): ...`) | Nada |
 
 ## El tope: Mate tiene que seguir siendo chico
 

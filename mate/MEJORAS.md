@@ -180,6 +180,9 @@ arrancan en "pendiente". Las primeras 36 son las que se programan primero, en tr
   guardada en un archivo, errores que dicen por dónde se llegó, contratos más completos
   (`lista de Tipo`, `responde`), `detalle_de(e)`, `asegurar falla { }`, `simular` y copias con
   nombre único. La 63 y la 65 se saltearon: cada una tiene anotado el motivo.
+- **Tanda 9 (mejoras 59, 63, 65 y 93)**: las cuatro que habían quedado salteadas por cambiar
+  salidas que las pruebas comparaban letra por letra, o por ser de esfuerzo grande. El dueño
+  decidió que esas salidas se podían cambiar.
 
 ### Tanda 1: nunca un error interno en inglés
 
@@ -448,7 +451,8 @@ Nota al hacerla: el mensaje conserva las palabras "fuera de rango". Al asignar (
 **59. La revisión previa detecta nombres que no existen**
 Hoy un nombre mal escrito dentro de una parte poco usada del programa recién falla el día que se ejecuta. Se va a avisar antes de correr, junto con la cantidad de valores equivocada en una llamada.
 Nota (tanda 5): salteada por ser de esfuerzo grande. Necesita seguir, sin correr el programa, qué nombres se ven desde cada bloque, función, agente y archivo traído con `usar`; hecha a medias daría errores falsos, que es peor que no avisar.
-*Mirada: robustez, principiante · Esfuerzo: grande · Estado: pendiente*
+Nota al hacerla (tanda 9): hecha completa pero conservadora: ante la duda no avisa. El texto es el mismo que al correr (`no existe 'totl'. ¿Quisiste decir 'total'?`). Lo declarado afuera de todo vale aunque esté más abajo o venga de un `usar`; lo de adentro de un bloque, en ese bloque. No se mira adentro de `intentar { }` ni de `asegurar falla { }` (ahí la falla se ataja o es lo que se prueba), y en la consola no se avisa de nombres (lo que falta se puede escribir después). La cantidad de valores se revisa en las funciones incluidas y en las propias cuyo nombre se usa para una sola cosa. Cada nombre que falta se avisa una vez. Para comprobar que no hay errores falsos se hicieron más de 40.000 corridas de programas rotos al azar, comparando cada aviso con lo que pasaba al correr: ningún aviso cayó sobre un nombre que existía. Ojo: un programa viejo con un nombre mal escrito en una parte que nunca se ejecuta ahora no arranca (está en "Qué cambió"). Si un día cambia cómo se declaran los parámetros (mejora 95), hay que tocar `revisar_nombres`.
+*Mirada: robustez, principiante · Esfuerzo: grande · Estado: hecha*
 
 **60. Más controles antes de correr**
 `responder`, `remitente` y `yo` fuera de un agente; claves repetidas en un mapa; parámetros o estados repetidos; `nada` en un campo obligatorio.
@@ -470,7 +474,8 @@ Nota al hacerla: lo que cada prueba muestra con `mostrar` aparece debajo de su n
 **63. Una traza que muestra las fallas**
 Mensajes numerados, sangría para las preguntas anidadas, y renglones "falló" y "sin respuesta", para seguir la conversación completa.
 Nota (tanda 6): salteada. Cualquiera de los tres cambios (números, sangría, renglones "falló") modifica la salida de `--traza` de los ejemplos `mercado.mate` y `negociacion.mate`, que las pruebas existentes comparan letra por letra. Hay que decidir primero si esas salidas se pueden cambiar.
-*Mirada: agentes · Esfuerzo: mediano · Estado: pendiente*
+Nota al hacerla (tanda 9): se decidió que sí se podían cambiar. Cada mensaje lleva su número (el último coincide con el total del resumen); lo que pasa con ese mensaje repite el número: `responde`, `falló: motivo` o `sin respuesta`. Lo que un agente pregunta mientras atiende va con sangría. El aviso de `al fallar` va sin número, porque no es un mensaje. El archivo de `--traza=archivo` (mejora 64) trae los mismos renglones. Se actualizaron las salidas fijadas de `equipo`, `mercado` y `negociacion` con `--traza` y cuatro pruebas más que miraban un renglón de la traza. De paso, "Fallaron N" del resumen ahora cuenta también el mensaje que no se pudo ni empezar a atender (un ciclo de preguntas, por ejemplo).
+*Mirada: agentes · Esfuerzo: mediano · Estado: hecha*
 
 **64. Guardar la conversación en un archivo**
 `--traza=conversacion.txt` deja la conversación en un archivo que se abre con el Bloc de notas, con un resumen al final.
@@ -480,7 +485,8 @@ Nota al hacerla: con `--traza=archivo` la conversación no se muestra en pantall
 **65. Aviso cuando una respuesta no tiene quién la reciba**
 Si un agente responde a un `enviar` del programa, hoy la respuesta desaparece. Mate va a avisar y sugerir `preguntar`.
 Nota (tanda 6): se programó y se deshizo. El ejemplo `mercado.mate` hace exactamente esto a propósito (el mismo `al recibir` sirve para un `enviar` del programa y para un `preguntar` de las pruebas), así que pasaba a mostrar un aviso en cada corrida. Antes de hacerla hay que decidir cómo distinguir ese uso, o cambiar el ejemplo.
-*Mirada: agentes · Esfuerzo: chico · Estado: pendiente*
+Nota al hacerla (tanda 9): el aviso sale solo en la traza (en pantalla o en el archivo), como un renglón más: `la respuesta de Comprador se descartó (para recibirla, usá 'preguntar' en vez de 'enviar'): ...`. Con `correr` a secas no se muestra nada nuevo, así que `mercado.mate` sigue igual; con `--traza` ese ejemplo muestra el renglón dos veces, que es lo que de verdad pasa.
+*Mirada: agentes · Esfuerzo: chico · Estado: hecha*
 
 **66. El error de "ciclo de preguntas" muestra la cadena**
 "A → B → C → A", diciendo quién le preguntó a quién y en qué renglón.
@@ -625,7 +631,8 @@ Nota al hacerla: devuelven textos como se escriben acá, `"21/11/2026"` y `"21/1
 **93. Un solo formato para todos los errores**
 Los errores de agentes y los comunes se ven igual, con el archivo y el renglón adelante.
 Nota (tanda 8): salteada. Con `correr` ya se ven igual (`archivo:renglón: error: ...`, también los de agentes). Lo que queda distinto es `probar`, que debajo de cada prueba escribe `línea 5: ...` para los comunes y `Roto al recibir Ping (línea 2): ...` para los de agentes. Unificarlo cambia renglones que varias pruebas existentes comparan letra por letra (es el mismo problema de la mejora 63). Hay que decidir primero si esa salida de `probar` se puede cambiar.
-*Mirada: principiante · Esfuerzo: chico · Estado: pendiente*
+Nota al hacerla (tanda 9): se decidió que sí. `probar` escribe los errores de cada prueba igual que `correr`: `archivo:renglón: error: ...`, el renglón señalado debajo y, si lo hay, "cómo se llegó"; los de agentes dicen `archivo:2: error: Roto al recibir Ping: ...`. Una sola función arma ese texto para las dos órdenes. Por dentro (lo que devuelve el intérprete a las pruebas) también quedó uno solo: `línea 2: Roto al recibir Ping: ...` en vez de `Roto al recibir Ping (línea 2): ...`. Se actualizaron las pruebas que comparaban esos renglones. La consola sigue diciendo `línea N: error: ...`, porque ahí no hay archivo.
+*Mirada: principiante · Esfuerzo: chico · Estado: hecha*
 
 **94. `ayuda <palabra>`**
 `mate ayuda si` o `mate ayuda largo` muestra una explicación corta con un ejemplo, tomada de la tabla única de funciones.
