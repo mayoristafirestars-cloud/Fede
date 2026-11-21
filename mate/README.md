@@ -196,6 +196,9 @@ Aparece `  1>` y Mate espera un renglón. Lo que escribís corre al apretar Ente
   lo que escribiste. Un error no cierra la consola.
 - `ayuda si` explica una palabra ahí mismo. Las pruebas no corren en la consola: van en un
   archivo, con `probar`.
+- `consultar_ia` desde la consola sale a la IA de verdad (y se paga), igual que con `correr`.
+  Para probar sin gastar: `python mate\mate.py consola --ia-simulada` (o
+  `--ia-simulada=respuestas.txt`), y cada consulta da su respuesta preparada.
 - Para terminar: `salir` (o `Ctrl+Z` y Enter en Windows).
 
 ## Cuando algo sale mal
@@ -393,6 +396,13 @@ prueba "cotiza precio por cantidad" {
   o `Pedido.prioridad no puede valer "alto": el mensaje dice que tiene que ser una de estas opciones: "baja", "media", "alta". ¿Quisiste decir "alta"?`.
   Una regla que no cierra (`desde 5 hasta 1`, un valor por defecto que no cumple su propia
   regla, `desde` en un campo de texto) se avisa en la declaración del mensaje.
+  Para **probar que el contrato rechaza un valor** alcanza con
+  `asegurar falla { Pedido { producto: "yerba", cantidad: 500 } }`: adentro de
+  `asegurar falla { }` y de `intentar { }` ese valor escrito a mano no frena el programa antes
+  de correr, porque ahí la falla es justo lo que se espera. Si el valor sale de una cuenta con
+  decimales (`0.1 + 0.2` guarda 0.30000000000000004 aunque se muestre 0.3) y por ese resto
+  queda afuera de la regla, el error muestra el valor de verdad y avisa que hay que pasarlo
+  por `redondear()` antes de ponerlo en el mensaje.
 - El contrato también puede decir **qué se contesta**:
   `mensaje Pedido { producto: texto } responde Cotizacion`. Si un agente le responde otra cosa
   a un `Pedido`, la falla es de ese agente (no del que preguntó) y el error señala su
@@ -479,7 +489,9 @@ prueba "cotiza precio por cantidad" {
   ```
 
   No hay nada que escribir en el programa para tenerlo, y sin `--traza` no cambia nada. En
-  las pruebas el mismo sobre se puede consultar con `mensajes_enviados()` (ver "Las pruebas").
+  las pruebas el mismo sobre se puede consultar con `mensajes_enviados()` (ver "Las pruebas"),
+  y con `probar --traza` la traza de cada prueba usa esos mismos números: dentro de cada
+  prueba los mensajes y las conversaciones se cuentan desde 1.
   Es la base para, más adelante, conectar programas entre sí.
 - Con `--traza=conversacion.txt` la conversación no se muestra: se guarda en ese archivo (se
   abre con el Bloc de notas), con los mismos renglones, y al final anota cuántos mensajes
@@ -716,6 +728,12 @@ Lo que una prueba cambia no le llega a la siguiente. Además:
   también figuran los mensajes que fallaron. **Solo existe dentro de una prueba**: escrita en
   el programa o en un agente es un error antes de correr.
 
+  Para ver esos números mientras armás la prueba, corré `probar` con `--traza`: debajo de cada
+  prueba aparece su conversación numerada **igual que en `mensajes_enviados()`** (desde 1 en
+  cada prueba), así que si la traza dice `en respuesta al 2`, el `asegurar` compara contra 2.
+  Con `--traza=conversacion.txt`, en el archivo cada prueba va con su título
+  (`Prueba "el nombre" ...`) y debajo sus mensajes, también desde 1.
+
 ### Los datos de un error atajado: `detalle_de`
 
 En `intentar { ... } si falla e { ... }`, `e` es el texto del error. Para decidir qué hacer sin
@@ -853,8 +871,10 @@ Son estas y no hay otras. Cada renglón es un ejemplo que se puede copiar:
   comparten todos los renglones, así que el texto de arriba empieza en `Hola` y no tiene
   espacios adelante. Para que un texto quede con sangría, alcanza con poner las comillas de
   cierre más a la izquierda. Las comillas sueltas (`"gracias"`) van tal cual; una llave de
-  verdad sigue siendo `\{`. Lo que va entre llaves se escribe entero en un renglón. Si falta
-  el cierre, el error señala dónde se abrió. En la consola también se puede: sigue en los
+  verdad sigue siendo `\{`. Lo que va entre llaves se escribe entero en un renglón. Si el
+  texto termina con una comilla pegada al cierre (`dijo "hola""""`), la comilla es del texto y
+  cierran las últimas tres. Si falta el cierre, el error señala dónde se abrió (y si un renglón
+  termina en `\"""`, señala ese renglón: la barra deja el cierre con dos comillas). En la consola también se puede: sigue en los
   renglones de abajo hasta las tres comillas.
 
 ### Valores por defecto en una función
@@ -1042,6 +1062,11 @@ archivo viejo deja de andar, casi seguro es por una de estas:
 | `mensajes_enviados` es una función incluida (solo para las pruebas): no sirve como nombre de variable, de parámetro ni de estado | Elegir otro nombre: `sea enviados = ...` |
 | Tres comillas seguidas (`"""`) abren un texto de varios renglones (antes eran un error) | Nada: un programa que corría no las tenía |
 | En un `mensaje`, después del tipo de un campo y en el mismo renglón, `desde`, `hasta`, `en` y `=` son reglas de ese campo (antes eran un error) | Nada: un programa que corría no los tenía ahí |
+| Con `probar --traza` (y `--traza=archivo`), la traza de cada prueba numera los mensajes y las conversaciones desde 1, igual que `mensajes_enviados()` (antes seguía la cuenta de todo el archivo); en el archivo cada prueba lleva un renglón de título | Nada, salvo que compares la traza letra por letra con una guardada. Con `correr` no cambió |
+| Un texto de tres comillas que termina con una comilla pegada al cierre (`"hola""""`) ya no es un error: la comilla queda en el texto | Nada: antes no corría |
+| El error de un valor con decimales que queda afuera de una regla por el resto de una cuenta (`0.1 + 0.2`) muestra el valor real y sugiere `redondear()` | No comparar el texto entero del error |
+| Adentro de `intentar { }` y de `asegurar falla { }`, un valor escrito a mano que no cumple la regla de su campo ya no frena el programa antes de correr: falla al llegar a ese renglón, y ahí se ataja | Nada: antes ese programa no arrancaba |
+| `consola --ia-simulada` ahora sí simula (antes la opción se ignoraba y la consulta salía a la IA de verdad) | Nada |
 | `probar` escribe los errores de cada prueba como `correr`: `archivo:5: error: ...` (antes `línea 5: ...` y `Agente al recibir X (línea 5): ...`) | Nada |
 
 ## El tope: Mate tiene que seguir siendo chico

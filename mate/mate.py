@@ -401,6 +401,9 @@ SIN_CERRAR_TEXTO = ("a este texto de varios renglones le falta el cierre: termin
                     'comillas, igual que empieza (""" ... """)')
 
 
+_BARRA_Y_CIERRE = re.compile(r'(?<!\\)(?:\\\\)*\\"""[ \t\r]*$', re.M)
+
+
 class VariosRenglones(str):
     """El contenido de un texto de tres comillas, ya sin la sangría común. 'salto' dice
     cuántos renglones de arriba se le quitaron (para saber en qué renglón cae cada parte)."""
@@ -416,6 +419,10 @@ def _fin_de_texto_largo(s, i):
         if c == "\\":
             i += 2
         elif s.startswith(TRES_COMILLAS, i):
+            # Una tira de cuatro o más comillas: las de adelante son del texto y cierran
+            # las últimas tres ("""Ella dijo "hola"""" termina en "hola").
+            while s.startswith('"', i + 3):
+                i += 1
             return i + 3
         elif c == "{":
             fin = _fin_de_llave(s, i)
@@ -481,6 +488,15 @@ def tokenizar(fuente, archivo=None):
         if fuente.startswith(TRES_COMILLAS, pos):  # un texto de varios renglones
             fin = _fin_de_texto_largo(fuente, pos)
             if fin < 0:
+                # (el renglón culpable suele estar más arriba: ese texto "cerró" recién
+                # en las comillas que abrían el siguiente)
+                barra = _BARRA_Y_CIERRE.search(fuente)
+                if barra:  # el renglón termina en \""": la barra se "come" una comilla
+                    raise ErrorMate(
+                        'este renglón termina en \\""": la barra hace que la primera comilla '
+                        "sea parte del texto, y para el cierre quedan dos en vez de tres. "
+                        "Poné las tres comillas del cierre solas, en el renglón de abajo",
+                        Linea(1 + fuente.count("\n", 0, barra.start()), archivo))
                 error = ErrorMate(SIN_CERRAR_TEXTO, linea)
                 error.texto_abierto = True  # (en la consola: se sigue en el renglón de abajo)
                 raise error
@@ -1578,13 +1594,23 @@ def cumple_tipo(valor, tipo):
     return nombre_tipo(valor) == tipo
 
 
-def rompe_regla(donde, valor, regla):
+def rompe_regla(donde, valor, regla, _por_el_resto=False):
     """Si ese valor no cumple lo que el mensaje dice de ese campo (mejora 97), el texto del
     error, con el campo, el valor y la regla; si la cumple, None. Es el mismo texto antes
     de correr y al armar el mensaje."""
     if valor is None or not regla:
         return None
     no_puede = f"{donde} no puede valer {formato(valor, False)}"
+    if type(valor) is float and math.isfinite(valor) and not _por_el_resto:
+        # 0.1 + 0.2 se muestra 0.3 pero guarda 0.30000000000000004: si lo que se ve sí
+        # cumple la regla, el error muestra el valor de verdad y dice cómo arreglarlo.
+        rota = rompe_regla(donde, valor, regla, True)
+        if rota and rompe_regla(donde, float(formato(valor)), regla, True) is None:
+            return (rota.replace(no_puede, f"{donde} no puede valer {valor!r}", 1).rstrip(".")
+                    + f". Se muestra {formato(valor)}, pero las cuentas con decimales "
+                    "dejan un resto minúsculo: redondeá el valor antes de ponerlo en el "
+                    "mensaje, por ejemplo redondear(valor, 2)")
+        return rota
     if "en" in regla:
         if any(igual(valor, opcion) for opcion in regla["en"]):
             return None
@@ -1955,10 +1981,13 @@ def verificar(programa, en_consola=False):
             return False  # falla siempre, a propósito: eso se ataja con 'intentar'
         return not _nombra(cuerpo, {f[2] for f in s[5]})  # quizá responde una función suya
 
-    def visitar(n, ag=None):
+    def visitar(n, ag=None, atajado=False):
+        """atajado: adentro de 'intentar { }' o de 'asegurar falla { }'. Ahí un valor que
+        no cumple la regla de su campo (mejora 97) no frena el programa antes de correr:
+        es la falla que se ataja, o justo la que se quiere probar."""
         if isinstance(n, list):
             for x in n:
-                visitar(x, ag)
+                visitar(x, ag, atajado)
             return
         if not isinstance(n, tuple):
             return
@@ -2028,7 +2057,7 @@ def verificar(programa, en_consola=False):
                         errores.append((ln, f"{nombre}.{k} es de tipo {tipo}, no {malo[0]}"))
                     else:  # un valor escrito a mano que no cumple la regla del campo
                         hay, valor = valor_escrito(e)
-                        rota = hay and rompe_regla(f"{nombre}.{k}", valor,
+                        rota = hay and not atajado and rompe_regla(f"{nombre}.{k}", valor,
                                                    mensajes[nombre][5].get(k))
                         if rota:
                             errores.append((ln, rota))
@@ -2076,8 +2105,13 @@ def verificar(programa, en_consola=False):
                    else "quien le mandó el mensaje que está atendiendo")
             errores.append((n[1], f"'{n[0]}' solo existe dentro de un agente (es {que}); "
                                   "acá afuera no hay ninguno"))
+        if _es_nodo(n, "intentar", 5) or _es_nodo(n, "asegurar_falla", 4):
+            visitar(n[2], ag, True)
+            for x in n[3:]:  # (el 'si falla' y el texto esperado se miran como siempre)
+                visitar(x, ag, atajado)
+            return
         for x in n:
-            visitar(x, ag)
+            visitar(x, ag, atajado)
 
     def fuera_de_prueba(n):
         """mensajes_enviados() o simular_ia() escritos en el programa o en un agente."""
@@ -2524,6 +2558,28 @@ def clave_de_ia():
     return clave
 
 
+def tapar_clave(texto, clave):
+    """El texto sin la clave: ni entera, ni en mayúsculas, ni un pedazo de 8 o más
+    caracteres (por si un servidor la devuelve partida o cambiada en su error)."""
+    texto = str(texto)
+    if not clave:
+        return texto
+    minimo = min(8, len(clave))
+    bajo, llave = texto.lower(), clave.lower()
+    pedazos = {llave[i:i + minimo] for i in range(len(llave) - minimo + 1)}
+    partes, i, desde = [], 0, 0
+    while i <= len(bajo) - minimo:
+        if bajo[i:i + minimo] not in pedazos:
+            i += 1
+            continue
+        fin = i + minimo  # se estira mientras lo que sigue también sea parte de la clave
+        while fin < len(bajo) and bajo[i:fin + 1] in llave:
+            fin += 1
+        partes += [texto[desde:i], "(la clave)"]
+        i = desde = fin
+    return "".join(partes) + texto[desde:]
+
+
 def modelo_de_ia():
     modelo = os.environ.get("MATE_MODELO", "").strip().strip("\"'").strip() or IA_MODELO
     if not re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9._:@\[\]-]{0,99}", modelo):
@@ -2601,7 +2657,7 @@ def pedir_a_la_ia(instrucciones, pregunta):
     clave, modelo = clave_de_ia(), modelo_de_ia()
 
     def error(texto):
-        return error_de_ia(str(texto).replace(clave, "(la clave)"))
+        return error_de_ia(tapar_clave(texto, clave))
 
     tardo = error(f"la IA tardó más de {IA_ESPERA // 60} minutos en contestar y dejé de "
                   "esperar. Probá de nuevo, o con una pregunta más corta")
@@ -2655,6 +2711,7 @@ def pedir_a_la_ia(instrucciones, pregunta):
         detalle = datos.get("error") if isinstance(datos, dict) else None
         detalle = detalle if isinstance(detalle, dict) else {}
         dicho = detalle.get("message") if isinstance(detalle.get("message"), str) else ""
+        dicho = tapar_clave(dicho, clave)  # antes de recortarlo: que no quede media clave
         detalles = detalle.get("details") if isinstance(detalle.get("details"), dict) else {}
         if codigo == 400 and respaldo and re.search("anthropic-beta|fallback", dicho, re.I):
             _IA_SIN_RESPALDO.add(modelo)  # esta cuenta no tiene el respaldo: va sin él
@@ -3767,6 +3824,12 @@ class Interprete:
                 fallas, mostrado, salida = [], [], self.salida
                 if self.separar_salida:
                     self.salida = mostrado.append
+                if self.traza and self.anotar:
+                    # En el archivo de la conversación, cada prueba va con su título:
+                    # adentro los mensajes se numeran desde 1.
+                    self.anotar("")
+                    self.anotar(f'Prueba "{s[2]}" (los números arrancan de nuevo, igual '
+                                "que en mensajes_enviados()):")
                 try:
                     self.bloque(s[3], Entorno(self.glob, borde=True), nuevo=False)
                     self.vaciar_cola()
@@ -3883,6 +3946,9 @@ class Interprete:
             numero = self.cuenta["preguntar"] + self.cuenta["enviar"]
         de = rem.nombre if rem else "(programa)"
         conversacion, respuesta_a = sobre or (self.en_conversacion(), None)
+        # En una prueba la traza numera desde 1, igual que mensajes_enviados().
+        numero0, conversacion0 = self.desde if self.en_prueba else (0, 0)
+        visto = numero - numero0 if numero is not None else None
         if self.en_prueba and not aviso:
             self.historial.append(
                 (numero, de, dest.nombre, msg, pregunta, conversacion, respuesta_a))
@@ -3895,10 +3961,10 @@ class Interprete:
             # misma conversación que el renglón que lo contiene.
             anotado = ""
             if not hondo:
-                anotado = f"   (conversación {conversacion}" + (
-                    f", en respuesta al {respuesta_a})" if respuesta_a else ")")
+                anotado = f"   (conversación {conversacion - conversacion0}" + (
+                    f", en respuesta al {respuesta_a - numero0})" if respuesta_a else ")")
             self.trazar(f"{de} {flecha} {dest.nombre}: {formato(msg)}{anotado}",
-                        numero, hondo)
+                        visto, hondo)
         afuera, self.conversacion = self.conversacion, conversacion
         try:
             respondio, valor = self.atender(rem, dest, msg, pregunta, linea)
@@ -3906,17 +3972,17 @@ class Interprete:
             self.cuenta["fallaron"] += 1
             if self.traza and getattr(e, "sin_respuesta", None) is dest:
                 self.trazar(f"{dest.nombre} sin respuesta: terminó de atender {msg.tipo} sin "
-                            "llegar a un 'responder'", numero, hondo)
+                            "llegar a un 'responder'", visto, hondo)
             elif self.traza:
                 donde = " en su 'al fallar'" if aviso else ""
-                self.trazar(f"{dest.nombre} falló{donde}: {e.mensaje}", numero, hondo)
+                self.trazar(f"{dest.nombre} falló{donde}: {e.mensaje}", visto, hondo)
             raise
         finally:
             self.conversacion = afuera
         if pregunta:
             if self.traza:
                 self.trazar(f"{dest.nombre} responde a {de}: {formato(valor, False)}",
-                            numero, hondo)
+                            visto, hondo)
             return valor
         if respondio and rem is not None:
             self.cola.append((dest, rem, valor, (conversacion, numero)))
@@ -3924,7 +3990,7 @@ class Interprete:
             # Lo mandó el programa con 'enviar': no hay quién reciba la respuesta.
             self.trazar(f"la respuesta de {dest.nombre} se descartó (para recibirla, usá "
                         f"'preguntar' en vez de 'enviar'): {formato(valor, False)}",
-                        numero, hondo)
+                        visto, hondo)
         return None
 
     def trazar(self, texto, numero=None, hondo=0):
@@ -4705,6 +4771,7 @@ ANTES DE CORRER
 - --traza numera los mensajes y muestra cuál falló o quedó sin respuesta. Al final del
   renglón dice de qué conversación es (una por cada cosa que manda el programa) y, si es una
   respuesta, a qué mensaje contesta: (conversación 2, en respuesta al 4).
+  Con 'probar', la traza de cada prueba numera desde 1, igual que mensajes_enviados().
 
 UN PROGRAMA COMPLETO
 --- ejemplo ---
@@ -4987,10 +5054,13 @@ def falta_cerrar(texto):
 _SIGUEN = COMPARADORES + ("+", "-", "*", "/", "%", "=", "+=", "-=", ",")
 
 
-def consola(entrada=None, mostrar=print):
+def consola(entrada=None, mostrar=print, ia_simulada=False, ia_respuestas=()):
     """La orden 'consola': para probar renglones sueltos sin crear un archivo. Lo que se
-    declara queda para los renglones siguientes, y un valor suelto se muestra solo."""
+    declara queda para los renglones siguientes, y un valor suelto se muestra solo.
+    ia_simulada: con --ia-simulada, consultar_ia() tampoco sale a la red desde acá."""
     interprete = Interprete(salida=mostrar)
+    interprete.ia_simulada = bool(ia_simulada)
+    interprete.ia_respuestas = list(ia_respuestas)
     interprete.glob.se_pisa = True  # acá se puede volver a declarar algo para corregirlo
     if entrada is not None:
         interprete.entrada = entrada  # (en las pruebas: de ahí saca leer() su respuesta)
@@ -5367,7 +5437,14 @@ def _main(argv, donde):
         if len(args) > 1:
             avisar("'consola' va sola, sin archivo: ahí adentro se escriben los renglones")
             return 2
-        return consola()
+        preparadas = []
+        if respuestas:
+            try:
+                preparadas = respuestas_de_archivo(respuestas)
+            except ErrorMate as e:
+                avisar(e.mensaje)
+                return 2
+        return consola(ia_simulada="--ia-simulada" in opciones, ia_respuestas=preparadas)
 
     def parece_archivo(a):
         return (a.lower().endswith((".mate", ".mate.txt")) or os.path.isfile(a)

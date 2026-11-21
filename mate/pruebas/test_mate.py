@@ -5314,3 +5314,166 @@ def test_el_readme_y_la_ayuda_cuentan_lo_de_la_tanda_11():
     assert "Estado: hecha" in ficha and "Nota al hacerla (tanda 11)" in ficha
     assert "no se probó contra el servicio real" in ficha
     assert "Estado: pendiente*" not in mejoras
+
+
+# ───────────── Correcciones de la tercera revisión ─────────────
+
+COMPRA = """
+mensaje Encargar { producto: texto }
+mensaje Pedido { producto: texto }
+mensaje Ok { n: numero }
+agente Vendedor {
+    al recibir Pedido como p { responder Ok { n: 1 } }
+}
+agente Comprador {
+    estado oks = 0
+    al recibir Encargar como e { enviar Pedido { producto: e.producto } a Vendedor }
+    al recibir Ok como k { oks += 1 }
+}
+enviar Encargar { producto: "antes" } a Comprador
+prueba "uno" {
+    enviar Encargar { producto: "yerba" } a Comprador
+    asegurar largo(mensajes_enviados()) == 3
+}
+prueba "dos" {
+    enviar Encargar { producto: "azucar" } a Comprador
+    sea ok = mensajes_enviados("Ok")[0]
+    mostrar("{ok.numero} c{ok.conversacion} r{ok.respuesta_a}")
+}
+"""
+
+
+def test_la_traza_de_una_prueba_numera_igual_que_mensajes_enviados(tmp_path, capsys):
+    ruta = tmp_path / "compra.mate"
+    ruta.write_text(COMPRA, encoding="utf-8")
+    assert mate.main(["probar", str(ruta), "--traza"]) == 0
+    out = capsys.readouterr().out
+    # antes de las pruebas, la numeración de siempre
+    assert '·  3. Vendedor → Comprador: Ok { n: 1 }   (conversación 1, en respuesta al 2)' in out
+    dos = out.split("✓ dos")[1]
+    assert '|   ·  1. (programa) → Comprador: Encargar { producto: "azucar" }   (conversación 1)' in dos
+    assert "|   ·  3. Vendedor → Comprador: Ok { n: 1 }   (conversación 1, en respuesta al 2)" in dos
+    assert "| 3 c1 r2" in dos  # lo mismo que dice mensajes_enviados()
+    assert "conversación 2" not in out and "conversación 3" not in out and " 4. " not in out
+    # en el archivo, cada prueba va con su título y numera desde 1
+    destino = tmp_path / "conv.txt"
+    assert mate.main(["probar", str(ruta), f"--traza={destino}"]) == 0
+    capsys.readouterr()
+    texto = destino.read_text(encoding="utf-8-sig")
+    antes, uno, dos = texto.split('\nPrueba "')
+    assert '·  1. (programa) → Comprador: Encargar { producto: "antes" }' in antes
+    assert uno.startswith('uno" (los números arrancan de nuevo')
+    assert dos.startswith('dos" (los números arrancan de nuevo')
+    assert "·  3. Vendedor → Comprador: Ok { n: 1 }   (conversación 1, en respuesta al 2)" in dos
+    assert " 4. " not in texto and "Resumen: 9 mensaje(s)" in texto
+    # con 'correr' nada cambió
+    salida, _ = correr(COMPRA + 'enviar Encargar { producto: "pan" } a Comprador', traza=True)
+    assert salida[-1] == "  ·  6. Vendedor → Comprador: Ok { n: 1 }   (conversación 2, en respuesta al 4)"
+
+
+def test_la_consola_respeta_ia_simulada(capsys, monkeypatch, tmp_path):
+    monkeypatch.setenv("ANTHROPIC_API_KEY", "sk-ant-NO-SE-TIENE-QUE-USAR")  # (urlopen falla)
+    renglones = iter(['consultar_ia("sos amable", "hola", "preparada")', "salir"])
+    monkeypatch.setattr("builtins.input", lambda _="": next(renglones))
+    assert mate.main(["consola", "--ia-simulada"]) == 0
+    assert capsys.readouterr().out.splitlines()[2:] == ['"preparada"']
+    respuestas = tmp_path / "respuestas.txt"
+    respuestas.write_text("yerba => Sale $ 3.500\n* => No sé\n", encoding="utf-8")
+    renglones = iter(['mostrar(consultar_ia("", "¿y la yerba?"))', "salir"])
+    assert mate.main(["consola", f"--ia-simulada={respuestas}"]) == 0
+    assert capsys.readouterr().out.splitlines()[2:] == ["Sale $ 3.500"]
+    assert mate.main(["consola", f"--ia-simulada={tmp_path / 'no_esta.txt'}"]) == 2
+    assert capsys.readouterr().err.strip()
+    # sin la opción, la consola sigue yendo a la IA de verdad (acá: la red de mentira falla)
+    salida = []
+    lineas = iter(['consultar_ia("", "hola", "preparada")'])
+
+    def entrada(_=""):
+        try:
+            return next(lineas)
+        except StopIteration:
+            raise EOFError
+
+    mate.consola(entrada, salida.append)
+    assert "preparada" not in "\n".join(salida) and "error: consultar_ia()" in "\n".join(salida)
+
+
+def test_se_puede_probar_que_un_contrato_rechaza_un_valor_escrito_a_mano():
+    mensaje = "mensaje A { x: numero desde 1 hasta 10, color: texto en [\"rojo\", \"azul\"] = \"rojo\" }\n"
+    programa = mate.analizar(mensaje + """
+        prueba "rango" {
+            asegurar falla { A { x: 11 } }
+            asegurar falla { A { x: 1, color: "verde" } }
+        }
+        intentar { mostrar(A { x: 11 }) } si falla e { mostrar("atajado: {e}") }
+    """)
+    assert mate.verificar(programa) == []
+    salida = []
+    interprete = mate.Interprete(salida=salida.append)
+    assert interprete.correr(programa, pruebas=True) == [("rango", None)]
+    assert salida == ["atajado: A.x no puede valer 11: el mensaje dice 'desde 1 hasta 10', "
+                      "así que tiene que estar entre 1 y 10"]
+    # afuera se sigue avisando antes de correr, y en el 'si falla' también
+    assert falla(mensaje + "mostrar(A { x: 11 })").antes_de_correr
+    assert falla(mensaje + "intentar { fallar \"x\" } si falla e { mostrar(A { x: 11 }) }"
+                 ).antes_de_correr
+    # y adentro del 'intentar' lo demás (un tipo equivocado, un campo que falta) no cambió
+    assert "es de tipo numero" in falla(
+        mensaje + 'intentar { mostrar(A { x: "once" }) } si falla e { }').mensaje
+
+
+def test_el_error_de_una_regla_no_se_contradice_con_los_decimales():
+    salida, _ = correr("""
+        mensaje A { y: numero desde 0.1 hasta 0.3 }
+        mensaje P { precio: numero en [1.1, 2.2, 3.3] }
+        intentar { mostrar(A { y: 0.1 + 0.2 }) } si falla e { mostrar(e) }
+        intentar { mostrar(P { precio: 1.1 * 3 }) } si falla e { mostrar(e) }
+        mostrar(A { y: redondear(0.1 + 0.2, 2) }, P { precio: redondear(1.1 * 3, 2) })
+        intentar { mostrar(A { y: 0.5 }) } si falla e { mostrar(e) }
+    """)
+    assert salida[0].startswith("A.y no puede valer 0.30000000000000004: el mensaje dice "
+                                "'desde 0.1 hasta 0.3'")
+    assert "Se muestra 0.3, pero las cuentas con decimales dejan un resto" in salida[0]
+    assert "redondear(valor, 2)" in salida[0]
+    assert salida[1].startswith("P.precio no puede valer 3.3000000000000003: ")
+    assert "opciones: 1.1, 2.2, 3.3. Se muestra 3.3, pero" in salida[1]
+    assert salida[2] == "A { y: 0.3 } P { precio: 3.3 }"
+    # un valor que de verdad está afuera se dice como siempre
+    assert salida[3] == ("A.y no puede valer 0.5: el mensaje dice 'desde 0.1 hasta 0.3', "
+                         "así que tiene que estar entre 0.1 y 0.3")
+
+
+def test_tres_comillas_con_una_comilla_pegada_al_cierre():
+    assert correr('sea t = \"\"\"\n    Ella dijo "hola\"\"\"\"\nmostrar(t)')[0] == ['Ella dijo "hola"']
+    assert correr('mostrar(\"\"\"dijo "si" y "no\"\"\"\")')[0] == ['dijo "si" y "no"']
+    assert correr('mostrar(largo(\"\"\"\"\"\"), \"\"\"a\"\"\" + "b")')[0] == ["0 ab"]
+    # el renglón que termina en \""" se señala a él, no a unas comillas de más abajo
+    error = falla('sea t = \"\"\"\n    dijo hola\\\"\"\"\nmostrar(t)\nsea u = \"\"\" x \"\"\"\n')
+    assert error.linea == 2 and 'termina en \\"""' in error.mensaje
+    assert "en el renglón de abajo" in error.mensaje
+    error = falla('sea t = \"\"\"\n  hola\\\"\"\"\n')
+    assert error.linea == 2 and "quedan dos en vez de tres" in error.mensaje
+    # un texto sin cerrar de los de siempre da el error de siempre
+    assert falla('sea t = \"\"\"\n  hola\n').mensaje == mate.SIN_CERRAR_TEXTO
+
+
+def test_la_clave_no_aparece_ni_partida_ni_en_mayusculas(ia):
+    clave = CLAVE_DE_MENTIRA
+    programa = ('intentar { mostrar(consultar_ia("sos amable", "hola")) } '
+                "si falla e { mostrar(e) }")
+    # el servidor devuelve la clave justo donde se recorta su mensaje
+    ia.respuestas = [error_http(400, "invalid_request_error", "x" * 280 + " " + clave)]
+    salida, _ = correr(programa, traza=True)
+    # otro la devuelve por la mitad, y en mayúsculas
+    ia.respuestas = [error_http(403, "permission_error",
+                                f"key {clave[:12]} ; full {clave.upper()} ; fin")]
+    salida += correr(programa, traza=True)[0]
+    todo = "\n".join(salida)
+    assert "Anthropic dijo" in todo and "(la clave)" in todo and "; fin" in todo
+    for largo in range(8, len(clave) + 1):
+        assert clave[:largo].lower() not in todo.lower(), largo
+    assert clave[-10:].lower() not in todo.lower()
+    # y lo que no es la clave queda tal cual
+    assert mate.tapar_clave("el modelo no existe", clave) == "el modelo no existe"
+    assert mate.tapar_clave(f"a {clave[3:20]} b", clave) == "a (la clave) b"
+    assert mate.tapar_clave("abc", "") == "abc" and mate.tapar_clave("xabcx", "abc") == "x(la clave)x"
